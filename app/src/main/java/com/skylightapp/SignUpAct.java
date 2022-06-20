@@ -494,8 +494,6 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         setInitialLocation();
         txtLoc = findViewById(R.id.hereYou333);
         locTxt = findViewById(R.id.whereYou222);
-        dbHelper.insertNewPackage(1000000,1234,92345678,4567,"Test Package","Savings",31,5000,"2022-17-06",5000000,"","Confirmed");
-
 
         String provider = locationManager.getBestProvider(criteria, true);
         if (provider != null) {
@@ -704,19 +702,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         //dobText.setText("Your date of Birth:"+dateOfBirth);
 
         birthday = new Birthday();
-        sqLiteDatabase = dbHelper.getWritableDatabase();
-        if (dbHelper != null) {
-            dbHelper.onUpgrade(sqLiteDatabase, DATABASE_VERSION, DATABASE_NEW_VERSION);
 
-        } else {
-            try {
-                dbHelper.createDataBase();
-                //dbHelper.openDataBase();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
 
 
         if (managerProfile != null) {
@@ -1602,8 +1588,27 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
     public void SQLiteDataBaseBuild() {
 
+        dbHelper = new DBHelper(this);
 
-        sqLiteDatabaseObj = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        if (dbHelper != null) {
+            dbHelper.onUpgrade(sqLiteDatabase, DATABASE_VERSION, DATABASE_NEW_VERSION);
+
+        } else {
+            sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+
+
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.insertNewPackage(1000000,1234,92345678,4567,"Test Package","Savings",31,5000,"2022-17-06",5000000,"","Confirmed");
+            dbHelper.insertTellerCash(109,193,193,"TestItem",500.00,"2022-05-23","Uche","Elelenwo",8903,"new");
+            dbHelper.addProfile(345,"Ezekeil","","","","","","","","","","","password","",0);
+
+
+
+
+        }
+
 
     }
 

@@ -14,6 +14,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
@@ -24,6 +25,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.gson.Gson;
 import com.mig35.carousellayoutmanager.CarouselLayoutManager;
 import com.mig35.carousellayoutmanager.CarouselZoomPostLayoutListener;
@@ -96,6 +98,7 @@ public class TellerCountAct extends AppCompatActivity {
     private ArrayList<BarEntry> valueSetCustomers;
     private ArrayList<BarEntry> valueSetPackage;
     SQLiteDatabase sqLiteDatabase;
+    private  BarData data;
     private BarChart payoutChart,customersCharts,transXBarChart,savingsBarChart,paymentChart,packageChart,invBarChart,promoBarChart,itemsBarchart;
     private ChartData chartDataPackage,chartDataSavings,chartDataPromo,chartDataItems,chartDataTransaction,chartDataInvestment,chartDataCustomers,chartDataPayment;
     SupportSQLiteDatabase supportSQLiteDatabase;
@@ -431,7 +434,16 @@ public class TellerCountAct extends AppCompatActivity {
     }
     private void populateBarChartCustomer(ArrayList<ChartData> customersArrayList,  BarChart cusChart) {
 
-        BarData data = new BarData((IBarDataSet) getCusXAxisValues(customersArrayList), (IBarDataSet) getCusYAxisData(customersArrayList));
+
+        try {
+
+            data = new BarData((IBarDataSet) getCusXAxisValues(customersArrayList), (IBarDataSet) getCusYAxisData(customersArrayList));
+
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
+
+
         cusChart.setData(data);
         cusChart.setDescription(descriptionCus);
         cusChart.animateXY(150, 150);
@@ -457,22 +469,45 @@ public class TellerCountAct extends AppCompatActivity {
 
         return yVal333;
     }
-    private ArrayList<String> getCusXAxisValues(ArrayList<ChartData> customersArrayList) {
-        ArrayList<String> xVals = new ArrayList<String>();
+    private ArrayList<IBarDataSet> getCusXAxisValues(ArrayList<ChartData> customersArrayList) {
+
+        ArrayList<BarEntry> yVal333 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> xVal = new ArrayList<BarEntry>();
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+
 
         for (int i = 0; i < customersArrayList.size(); i++) {
             chartDataCustomers = customersArrayList.get(i);
-            String monthYear = chartDataCustomers.getData();
-            xVals.add(monthYear);
+            if (Math.random() * 100 < 25) {
+                xVal.add(new BarEntry(i, Float.parseFloat(chartDataCustomers.getData()), getResources().getDrawable(R.mipmap.star_round)));
+            } else {
+                xVal.add(new BarEntry(Float.parseFloat(chartDataCustomers.getData()), i));
+
+
+            }
+
 
         }
+        BarDataSet barDataSet1 = new BarDataSet(xVal, "Total");
+        barDataSet1.setColor(Color.rgb(0, 155, 0));
+        barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
 
-        return xVals;
+
+        dataSets = new ArrayList<>();
+        dataSets.add(barDataSet1);
+
+        return dataSets;
     }
-
     private void populateBarChartSavings(ArrayList<ChartData> savingsArrayList, BarChart savingCharts) {
 
-        BarData data = new BarData((IBarDataSet) getSavingsXAxisValues(savingsArrayList), (IBarDataSet) getSavingsYAxisData(savingsArrayList));
+        try {
+
+            data = new BarData((IBarDataSet) getSavingsXAxisValues(savingsArrayList), (IBarDataSet) getSavingsYAxisData(savingsArrayList));
+
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
+
         savingCharts.setData(data);
         savingCharts.setDescription(descriptionSavings);
         savingCharts.animateXY(150, 150);
@@ -498,18 +533,36 @@ public class TellerCountAct extends AppCompatActivity {
 
         return yVal333;
     }
-    private ArrayList<String> getSavingsXAxisValues(ArrayList<ChartData> savingsArrayList) {
-        ArrayList<String> xVals = new ArrayList<String>();
+    private ArrayList<IBarDataSet> getSavingsXAxisValues(ArrayList<ChartData> savingsArrayList) {
+
+        ArrayList<BarEntry> yVal333 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> xVal = new ArrayList<BarEntry>();
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+
 
         for (int i = 0; i < savingsArrayList.size(); i++) {
             chartDataSavings = savingsArrayList.get(i);
-            String monthYear = chartDataSavings.getData();
-            xVals.add(monthYear);
+            if (Math.random() * 100 < 25) {
+                xVal.add(new BarEntry(i, Float.parseFloat(chartDataSavings.getData()), getResources().getDrawable(R.mipmap.star_round)));
+            } else {
+                xVal.add(new BarEntry(Float.parseFloat(chartDataSavings.getData()), i));
+
+
+            }
+
 
         }
+        BarDataSet barDataSet1 = new BarDataSet(xVal, "Total");
+        barDataSet1.setColor(Color.rgb(0, 155, 0));
+        barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
 
-        return xVals;
+
+        dataSets = new ArrayList<>();
+        dataSets.add(barDataSet1);
+
+        return dataSets;
     }
+
 
     @Override
     protected Dialog onCreateDialog(int id) {

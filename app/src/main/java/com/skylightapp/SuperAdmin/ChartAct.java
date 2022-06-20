@@ -12,9 +12,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 
@@ -24,6 +27,8 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.ChartData;
 import com.skylightapp.Classes.Customer;
@@ -81,6 +86,7 @@ public class ChartAct extends AppCompatActivity {
     private int mYear = 2013;
     private int mMonth = 5;
     private int mDay = 30;
+    private BarData data;
     private AppCompatTextView txtPickADate;
     private AppCompatButton btnDate;
     DatePickerDialog.OnDateSetListener mDateSetListner;
@@ -97,6 +103,7 @@ public class ChartAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_chart);
+        setTitle("Skylight Multi-Chart Analysis");
         checkInternetConnection();
         bundle= new Bundle();
         stringType=null;
@@ -235,36 +242,147 @@ public class ChartAct extends AppCompatActivity {
 
 
 
-    private void populateBarCartPackage(ArrayList<ChartData> packageArrayList, ChartData chartDataPackage, ArrayList<BarEntry> valueSetPackage, BarChart payoutChart) {
-
-        BarData data = new BarData((IBarDataSet) getPackageXAxisValues(packageArrayList), (IBarDataSet) getPackageYAxisData(packageArrayList));
-        packageChart.setData(data);
-        packageChart.setDescription(descriptionPacks);
-        packageChart.animateXY(150, 150);
-        packageChart.invalidate();
-
-    }
-    private ArrayList<BarEntry> getPackageYAxisData(ArrayList<ChartData> packageArrayList) {
+    private void populateBarCartPackage(ArrayList<ChartData> packageArrayList, ChartData chartDataPackage, ArrayList<BarEntry> valueSetPackage, BarChart packageChart) {
         ArrayList<Double> yVals = new ArrayList<Double>();
         ArrayList<BarEntry> yVal333 = new ArrayList<BarEntry>();
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+
         double packageTotal=0.00;
+        float start = 1f;
 
         for (int i = 0; i < packageArrayList.size(); i++) {
             ChartData chartDataX = packageArrayList.get(i);
-            yVal333.add(new BarEntry(Float.parseFloat(String.valueOf(chartDataX.getValue())), i));
+            //float val = (float) (Math.random() * (60 + 1));
+            if (Math.random() * 100 < 25) {
+                yVal333.add(new BarEntry(i, (float) chartDataX.getValue(), getResources().getDrawable(R.mipmap.star_round)));
+            } else {
+                yVal333.add(new BarEntry(i, (float) chartDataX.getValue()));
+                //yVal333.add(new BarEntry(Float.parseFloat(String.valueOf(chartDataX.getValue())), i));
+
+            }
+
 
         }
-        for (int i = 0; i < packageArrayList.size(); i++) {
-            ChartData chartDataX = packageArrayList.get(i);
-            Double a12 = chartDataX.getValue();
-            yVals.add(a12);
+        /*BarData data=packageChart.getBarData();
+        IBarDataSet set = data.getDataSetByIndex(high.getDataSetIndex());*/
+        BarData data=null;
+        try {
 
+            data = new BarData((IBarDataSet) getPackageXAxisValues(packageArrayList), (IBarDataSet) getPackageYAxisData(packageArrayList));
+
+        } catch (ClassCastException e) {
+            e.printStackTrace();
         }
 
-        return yVal333;
+
+        BarDataSet barDataSet;
+        if (packageChart.getData() != null &&
+                packageChart.getData().getDataSetCount() > 0) {
+            barDataSet = (BarDataSet) packageChart.getData().getDataSetByIndex(0);
+            barDataSet.setValues(yVal333);
+            packageChart.setDescription(descriptionPacks);
+            //packageChart.animateXY(150, 150);
+            packageChart.animateXY(2000, 2000);
+            packageChart.animateX(2000);
+            packageChart.animateY(2000);
+            packageChart.invalidate();
+            packageChart.getData().notifyDataChanged();
+            packageChart.notifyDataSetChanged();
+            packageChart.getData().setHighlightEnabled(!packageChart.getData().isHighlightEnabled());
+            packageChart.setPinchZoom(true);
+            packageChart.setAutoScaleMinMaxEnabled(!packageChart.isAutoScaleMinMaxEnabled());
+            packageChart.setData(data);
+
+
+        } else {
+            barDataSet = new BarDataSet(yVal333, "June 2022");
+
+            barDataSet.setDrawIcons(true);
+
+            dataSets.add(barDataSet);
+
+
+            data = new BarData(dataSets);
+            data.setValueTextSize(10f);
+            data.setBarWidth(0.9f);
+
+            packageChart.setData(data);
+        }
+
+
     }
-    private ArrayList<String> getPackageXAxisValues(ArrayList<ChartData> packageArrayList) {
+    private ArrayList<IBarDataSet> getPackageYAxisData(ArrayList<ChartData> packageArrayList) {
+        ArrayList<Double> yVals = new ArrayList<Double>();
+        ArrayList<BarEntry> yVal333 = new ArrayList<BarEntry>();
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+
+        double packageTotal=0.00;
+        float start = 1f;
+
+        for (int i = 0; i < packageArrayList.size(); i++) {
+            ChartData chartDataX = packageArrayList.get(i);
+            //float val = (float) (Math.random() * (60 + 1));
+            if (Math.random() * 100 < 25) {
+                yVal333.add(new BarEntry(i, (float) chartDataX.getValue(), getResources().getDrawable(R.mipmap.star_round)));
+            } else {
+                yVal333.add(new BarEntry(i, (float) chartDataX.getValue()));
+                //yVal333.add(new BarEntry(Float.parseFloat(String.valueOf(chartDataX.getValue())), i));
+
+            }
+
+
+        }
+        BarDataSet barDataSet1 = new BarDataSet(yVal333, "Year and Month");
+        barDataSet1.setColor(Color.rgb(0, 155, 0));
+        barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
+
+
+        dataSets = new ArrayList<>();
+        dataSets.add(barDataSet1);
+
+
+        return dataSets;
+    }
+    private ArrayList<IBarDataSet> getPackageXAxisValues(ArrayList<ChartData> packageArrayList) {
         ArrayList<String> xVals = new ArrayList<String>();
+        ArrayList<BarEntry> yVal333 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> xVal = new ArrayList<BarEntry>();
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+
+        for (int i = 0; i < packageArrayList.size(); i++) {
+            chartDataPackage = packageArrayList.get(i);
+            String monthYear = chartDataPackage.getData();
+            xVals.add(monthYear);
+
+        }
+
+        for (int i = 0; i < packageArrayList.size(); i++) {
+            ChartData chartDataX = packageArrayList.get(i);
+            if (Math.random() * 100 < 25) {
+                xVal.add(new BarEntry(i, Float.parseFloat(chartDataPackage.getData()), getResources().getDrawable(R.mipmap.star_round)));
+            } else {
+                xVal.add(new BarEntry(Float.parseFloat(chartDataPackage.getData()), i));
+
+
+            }
+
+
+        }
+
+        BarDataSet barDataSet1 = new BarDataSet(xVal, "Total");
+        barDataSet1.setColor(Color.rgb(0, 155, 0));
+        barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
+
+
+        dataSets = new ArrayList<>();
+        dataSets.add(barDataSet1);
+
+        return dataSets;
+    }
+    /*private ArrayList<String> getPackageXAxisValues(ArrayList<ChartData> packageArrayList) {
+        ArrayList<String> xVals = new ArrayList<String>();
+        ArrayList<BarEntry> yVal333 = new ArrayList<BarEntry>();
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
 
         for (int i = 0; i < packageArrayList.size(); i++) {
             chartDataPackage = packageArrayList.get(i);
@@ -274,18 +392,28 @@ public class ChartAct extends AppCompatActivity {
         }
 
         return xVals;
-    }
+    }*/
 
     private void populateBarCartTransaction(ArrayList<ChartData> transactionArrayList, ChartData chartDataTransaction, ArrayList<BarEntry> valueSetTransaction) {
-        BarData data = new BarData((IBarDataSet) getTranxXAxisValues(transactionArrayList), (IBarDataSet) getTranxYAxisValues(transactionArrayList));
+        try {
+
+            data = new BarData((IBarDataSet) getTranxXAxisValues(transactionArrayList), (IBarDataSet) getTranxYAxisValues(transactionArrayList));
+
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
+
         transXBarChart.setData(data);
         transXBarChart.setDescription(descriptionTx);
         transXBarChart.animateXY(150, 150);
         transXBarChart.invalidate();
 
     }
-    private ArrayList<String> getTranxXAxisValues(ArrayList<ChartData> transactionArrayList) {
+    private ArrayList<IBarDataSet> getTranxXAxisValues(ArrayList<ChartData> transactionArrayList) {
         ArrayList<String> xVals = new ArrayList<String>();
+        ArrayList<BarEntry> xVal = new ArrayList<BarEntry>();
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+
 
         for (int i = 0; i < transactionArrayList.size(); i++) {
             chartDataTransaction = transactionArrayList.get(i);
@@ -294,12 +422,34 @@ public class ChartAct extends AppCompatActivity {
 
         }
 
-        return xVals;
+        for (int i = 0; i < transactionArrayList.size(); i++) {
+            chartDataTransaction = transactionArrayList.get(i);
+            if (Math.random() * 100 < 25) {
+                xVal.add(new BarEntry(i, Float.parseFloat(chartDataTransaction.getData()), getResources().getDrawable(R.mipmap.star_round)));
+            } else {
+                xVal.add(new BarEntry(Float.parseFloat(chartDataTransaction.getData()), i));
+
+
+            }
+
+
+        }
+        BarDataSet barDataSet1 = new BarDataSet(xVal, "Total");
+        barDataSet1.setColor(Color.rgb(0, 155, 0));
+        barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
+
+
+        dataSets = new ArrayList<>();
+        dataSets.add(barDataSet1);
+
+        return dataSets;
     }
+
     private ArrayList<BarEntry> getTranxYAxisValues(ArrayList<ChartData> transactionArrayList) {
         ArrayList<Double> yVals = new ArrayList<Double>();
         ArrayList<BarEntry> yVal333 = new ArrayList<BarEntry>();
         double packageTotal=0.00;
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
 
         for (int i = 0; i < transactionArrayList.size(); i++) {
             ChartData chartDataX = transactionArrayList.get(i);
@@ -317,29 +467,56 @@ public class ChartAct extends AppCompatActivity {
     }
 
     private void populateBarCartPayment(ArrayList<ChartData> payoutArrayList, ChartData chartDataPayment, ArrayList<BarEntry> valueSetPayment, BarChart payoutChart) {
-        BarData data = new BarData((IBarDataSet) getPaymentXAxisValues(payoutArrayList), (IBarDataSet) getPaymentYAxisValues(payoutArrayList));
+
+        try {
+
+            data = new BarData((IBarDataSet) getPaymentXAxisValues(payoutArrayList), (IBarDataSet) getPaymentYAxisValues(payoutArrayList));
+
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
+
         payoutChart.setData(data);
         payoutChart.setDescription(descriptionPayment);
         payoutChart.animateXY(150, 150);
         payoutChart.invalidate();
 
     }
-    private ArrayList<String> getPaymentXAxisValues(ArrayList<ChartData> payoutArrayList) {
-        ArrayList<String> xVals = new ArrayList<String>();
+    private ArrayList<IBarDataSet> getPaymentXAxisValues(ArrayList<ChartData> payoutArrayList) {
+
+        ArrayList<BarEntry> yVal333 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> xVal = new ArrayList<BarEntry>();
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+
 
         for (int i = 0; i < payoutArrayList.size(); i++) {
             chartDataPayment = payoutArrayList.get(i);
-            String monthYear = chartDataPayment.getData();
-            xVals.add(monthYear);
+            if (Math.random() * 100 < 25) {
+                xVal.add(new BarEntry(i, Float.parseFloat(chartDataPayment.getData()), getResources().getDrawable(R.mipmap.star_round)));
+            } else {
+                xVal.add(new BarEntry(Float.parseFloat(chartDataPayment.getData()), i));
+
+
+            }
+
 
         }
+        BarDataSet barDataSet1 = new BarDataSet(xVal, "Total");
+        barDataSet1.setColor(Color.rgb(0, 155, 0));
+        barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
 
-        return xVals;
+
+        dataSets = new ArrayList<>();
+        dataSets.add(barDataSet1);
+
+        return dataSets;
     }
+
     private ArrayList<BarEntry> getPaymentYAxisValues(ArrayList<ChartData> payoutArrayList) {
         ArrayList<Double> yVals = new ArrayList<Double>();
         ArrayList<BarEntry> yVal333 = new ArrayList<BarEntry>();
         double packageTotal=0.00;
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
 
         for (int i = 0; i < payoutArrayList.size(); i++) {
             ChartData chartDataX = payoutArrayList.get(i);
@@ -358,29 +535,57 @@ public class ChartAct extends AppCompatActivity {
 
 
     private void populateBarCartCustomer(ArrayList<ChartData> customersArrayList, ChartData chartDataCustomers, ArrayList<BarEntry> valueSetCustomers) {
-        BarData data = new BarData((IBarDataSet) getCusXAxisValues(customersArrayList), (IBarDataSet) getCusYAxisValues(customersArrayList));
+
+        try {
+
+            data = new BarData((IBarDataSet) getCusXAxisValues(customersArrayList), (IBarDataSet) getCusYAxisValues(customersArrayList));
+
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
+
+
         customersCharts.setData(data);
         customersCharts.setDescription(descriptionCus);
         customersCharts.animateXY(150, 150);
         customersCharts.invalidate();
 
     }
-    private ArrayList<String> getCusXAxisValues(ArrayList<ChartData> customersArrayList) {
-        ArrayList<String> xVals = new ArrayList<String>();
+    private ArrayList<IBarDataSet> getCusXAxisValues(ArrayList<ChartData> customersArrayList) {
+
+        ArrayList<BarEntry> yVal333 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> xVal = new ArrayList<BarEntry>();
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+
 
         for (int i = 0; i < customersArrayList.size(); i++) {
             chartDataCustomers = customersArrayList.get(i);
-            String monthYear = chartDataCustomers.getData();
-            xVals.add(monthYear);
+            if (Math.random() * 100 < 25) {
+                xVal.add(new BarEntry(i, Float.parseFloat(chartDataCustomers.getData()), getResources().getDrawable(R.mipmap.star_round)));
+            } else {
+                xVal.add(new BarEntry(Float.parseFloat(chartDataCustomers.getData()), i));
+
+
+            }
+
 
         }
+        BarDataSet barDataSet1 = new BarDataSet(xVal, "Total");
+        barDataSet1.setColor(Color.rgb(0, 155, 0));
+        barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
 
-        return xVals;
+
+        dataSets = new ArrayList<>();
+        dataSets.add(barDataSet1);
+
+        return dataSets;
     }
+
     private ArrayList<BarEntry> getCusYAxisValues(ArrayList<ChartData> customersArrayList) {
         ArrayList<Double> yVals = new ArrayList<Double>();
         ArrayList<BarEntry> yVal333 = new ArrayList<BarEntry>();
         double packageTotal=0.00;
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
 
         for (int i = 0; i < customersArrayList.size(); i++) {
             ChartData chartDataX = customersArrayList.get(i);
@@ -402,28 +607,56 @@ public class ChartAct extends AppCompatActivity {
 
 
     private void populateBarCartItem(ArrayList<ChartData> itemPurchaseArrayList, ChartData chartDataItems, ArrayList<BarEntry> valueSetItems, BarChart itemsBarchart) {
-        BarData data = new BarData((IBarDataSet) getItemsXAxisValues(itemPurchaseArrayList), (IBarDataSet) getItemsYAxisValues(itemPurchaseArrayList));
+        try {
+
+            data = new BarData((IBarDataSet) getItemsXAxisValues(itemPurchaseArrayList), (IBarDataSet) getItemsYAxisValues(itemPurchaseArrayList));
+
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
+
         itemsBarchart.setData(data);
         itemsBarchart.setDescription(descriptionItems);
         itemsBarchart.animateXY(150, 150);
         itemsBarchart.invalidate();
 
     }
-    private ArrayList<String> getItemsXAxisValues(ArrayList<ChartData> itemPurchaseArrayList) {
-        ArrayList<String> xVals = new ArrayList<String>();
+
+    private ArrayList<IBarDataSet> getItemsXAxisValues(ArrayList<ChartData> itemPurchaseArrayList) {
+
+        ArrayList<BarEntry> yVal333 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> xVal = new ArrayList<BarEntry>();
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+
 
         for (int i = 0; i < itemPurchaseArrayList.size(); i++) {
             chartDataItems = itemPurchaseArrayList.get(i);
-            String monthYear = chartDataItems.getData();
-            xVals.add(monthYear);
+            if (Math.random() * 100 < 25) {
+                xVal.add(new BarEntry(i, Float.parseFloat(chartDataItems.getData()), getResources().getDrawable(R.mipmap.star_round)));
+            } else {
+                xVal.add(new BarEntry(Float.parseFloat(chartDataItems.getData()), i));
+
+
+            }
+
 
         }
+        BarDataSet barDataSet1 = new BarDataSet(xVal, "Total");
+        barDataSet1.setColor(Color.rgb(0, 155, 0));
+        barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
 
-        return xVals;
+
+        dataSets = new ArrayList<>();
+        dataSets.add(barDataSet1);
+
+        return dataSets;
     }
+
+
     private ArrayList<BarEntry> getItemsYAxisValues(ArrayList<ChartData> itemPurchaseArrayList) {
         ArrayList<Double> yVals = new ArrayList<Double>();
         ArrayList<BarEntry> yVal333 = new ArrayList<BarEntry>();
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
         double packageTotal=0.00;
 
         for (int i = 0; i < itemPurchaseArrayList.size(); i++) {
@@ -443,28 +676,55 @@ public class ChartAct extends AppCompatActivity {
 
 
     private void populateBarCartSavings(ArrayList<ChartData> savingsArrayList, ChartData chartDataSavings, ArrayList<BarEntry> valueSetSavings, BarChart savingsBarChart) {
-        BarData data = new BarData((IBarDataSet) getSavingsXAxisValues(savingsArrayList), (IBarDataSet) getSavingsYAxisValues(savingsArrayList));
+
+        try {
+
+            data = new BarData((IBarDataSet) getSavingsXAxisValues(savingsArrayList), (IBarDataSet) getSavingsYAxisValues(savingsArrayList));
+
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
         savingsBarChart.setData(data);
         savingsBarChart.setDescription(descriptionSavings);
         savingsBarChart.animateXY(150, 150);
         savingsBarChart.invalidate();
 
     }
-    private ArrayList<String> getSavingsXAxisValues(ArrayList<ChartData> savingsArrayList) {
-        ArrayList<String> xVals = new ArrayList<String>();
+    private ArrayList<IBarDataSet> getSavingsXAxisValues(ArrayList<ChartData> savingsArrayList) {
+
+        ArrayList<BarEntry> yVal333 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> xVal = new ArrayList<BarEntry>();
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+
 
         for (int i = 0; i < savingsArrayList.size(); i++) {
             chartDataSavings = savingsArrayList.get(i);
-            String monthYear = chartDataSavings.getData();
-            xVals.add(monthYear);
+            if (Math.random() * 100 < 25) {
+                xVal.add(new BarEntry(i, Float.parseFloat(chartDataSavings.getData()), getResources().getDrawable(R.mipmap.star_round)));
+            } else {
+                xVal.add(new BarEntry(Float.parseFloat(chartDataSavings.getData()), i));
+
+
+            }
+
 
         }
+        BarDataSet barDataSet1 = new BarDataSet(xVal, "Total");
+        barDataSet1.setColor(Color.rgb(0, 155, 0));
+        barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
 
-        return xVals;
+
+        dataSets = new ArrayList<>();
+        dataSets.add(barDataSet1);
+
+        return dataSets;
     }
+
+
     private ArrayList<BarEntry> getSavingsYAxisValues(ArrayList<ChartData> savingsArrayList) {
         ArrayList<Double> yVals = new ArrayList<Double>();
         ArrayList<BarEntry> yVal333 = new ArrayList<BarEntry>();
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
         double packageTotal=0.00;
 
         for (int i = 0; i < savingsArrayList.size(); i++) {
@@ -484,25 +744,51 @@ public class ChartAct extends AppCompatActivity {
 
 
     private void populateBarCartPromo(ArrayList<ChartData> promoArrayList11, ChartData chartDataPromo, ArrayList<BarEntry> valueSetPromo, BarChart promoBarChart) {
-        BarData data = new BarData((IBarDataSet) getPromoXAxisValues(promoArrayList11), (IBarDataSet) getPromoYAxisValues(promoArrayList11));
+
+
+        try {
+
+            data = new BarData((IBarDataSet) getPromoXAxisValues(promoArrayList11), (IBarDataSet) getPromoYAxisValues(promoArrayList11));
+
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
         promoBarChart.setData(data);
         promoBarChart.setDescription(descriptionPromo);
         promoBarChart.animateXY(150, 150);
         promoBarChart.invalidate();
 
     }
-    private ArrayList<String> getPromoXAxisValues(ArrayList<ChartData> promoArrayList11) {
-        ArrayList<String> xVals = new ArrayList<String>();
+    private ArrayList<IBarDataSet> getPromoXAxisValues(ArrayList<ChartData> promoArrayList11) {
+
+        ArrayList<BarEntry> yVal333 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> xVal = new ArrayList<BarEntry>();
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+
 
         for (int i = 0; i < promoArrayList11.size(); i++) {
             chartDataPromo = promoArrayList11.get(i);
-            String monthYear = chartDataPromo.getData();
-            xVals.add(monthYear);
+            if (Math.random() * 100 < 25) {
+                xVal.add(new BarEntry(i, Float.parseFloat(chartDataPromo.getData()), getResources().getDrawable(R.mipmap.star_round)));
+            } else {
+                xVal.add(new BarEntry(Float.parseFloat(chartDataPromo.getData()), i));
+
+
+            }
+
 
         }
+        BarDataSet barDataSet1 = new BarDataSet(xVal, "Total");
+        barDataSet1.setColor(Color.rgb(0, 155, 0));
+        barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
 
-        return xVals;
+
+        dataSets = new ArrayList<>();
+        dataSets.add(barDataSet1);
+
+        return dataSets;
     }
+
     private ArrayList<BarEntry> getPromoYAxisValues(ArrayList<ChartData> promoArrayList11) {
         ArrayList<Double> yVals = new ArrayList<Double>();
         ArrayList<BarEntry> yVal333 = new ArrayList<BarEntry>();
@@ -525,25 +811,65 @@ public class ChartAct extends AppCompatActivity {
 
 
     private void populateBarCartInv(ArrayList<ChartData> investmentArrayList, ChartData chartDataInvestment, ArrayList<BarEntry> valueSetInvestment, BarChart invBarChart) {
-        BarData data = new BarData((IBarDataSet) getInvXAxisValues(investmentArrayList), (IBarDataSet) getInvYAxisValues(investmentArrayList));
+
+        try {
+
+            data = new BarData((IBarDataSet) getInvXAxisValues(investmentArrayList), (IBarDataSet) getInvYAxisValues(investmentArrayList));
+
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
         invBarChart.setData(data);
         invBarChart.setDescription(descriptionInv);
         invBarChart.animateXY(150, 150);
         invBarChart.invalidate();
 
     }
-    private ArrayList<String> getInvXAxisValues(ArrayList<ChartData> investmentArrayList) {
-        ArrayList<String> xVals = new ArrayList<String>();
+    private ArrayList<IBarDataSet> getInvXAxisValues(ArrayList<ChartData> investmentArrayList) {
+
+        ArrayList<BarEntry> yVal333 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> xVal = new ArrayList<BarEntry>();
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+
 
         for (int i = 0; i < investmentArrayList.size(); i++) {
             chartDataInvestment = investmentArrayList.get(i);
-            String monthYear = chartDataInvestment.getData();
-            xVals.add(monthYear);
+            if (Math.random() * 100 < 25) {
+                xVal.add(new BarEntry(i, Float.parseFloat(chartDataInvestment.getData()), getResources().getDrawable(R.mipmap.star_round)));
+            } else {
+                xVal.add(new BarEntry(Float.parseFloat(chartDataInvestment.getData()), i));
+
+
+            }
+
+
+        }
+        ArrayList<Double> yVals = new ArrayList<Double>();
+        double packageTotal=0.00;
+
+        for (int i = 0; i < investmentArrayList.size(); i++) {
+            ChartData chartDataX = investmentArrayList.get(i);
+            yVal333.add(new BarEntry(Float.parseFloat(String.valueOf(chartDataX.getValue())), i));
+
+        }
+        for (int i = 0; i < investmentArrayList.size(); i++) {
+            ChartData chartDataX = investmentArrayList.get(i);
+            Double a12 = chartDataX.getValue();
+            yVals.add(a12);
 
         }
 
-        return xVals;
+        BarDataSet barDataSet1 = new BarDataSet(xVal, "Total");
+        barDataSet1.setColor(Color.rgb(0, 155, 0));
+        barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
+
+        dataSets.add(barDataSet1);
+
+        //BarData d = new BarData(dataSets);
+
+        return dataSets;
     }
+
     private ArrayList<BarEntry> getInvYAxisValues(ArrayList<ChartData> investmentArrayList) {
         ArrayList<Double> yVals = new ArrayList<Double>();
         ArrayList<BarEntry> yVal333 = new ArrayList<BarEntry>();
@@ -665,5 +991,100 @@ public class ChartAct extends AppCompatActivity {
         builder.setPositiveButton(R.string.button_ok, null);
         builder.show();
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.chart_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        packageChart = (BarChart) findViewById(R.id.packsBarChart);
+
+        switch (item.getItemId()) {
+            case R.id.actionToggleValues: {
+                if( packageChart !=null){
+                    for (IDataSet set : packageChart.getData().getDataSets())
+                        set.setDrawValues(!set.isDrawValuesEnabled());
+
+                    packageChart.invalidate();
+                    break;
+
+                }
+                break;
+
+            }
+            case R.id.actionToggleIcons: {
+                if( packageChart !=null){
+                    for (IDataSet set : packageChart.getData().getDataSets())
+                        set.setDrawIcons(!set.isDrawIconsEnabled());
+
+                    packageChart.invalidate();
+                    break;
+
+                }
+
+            }
+            case R.id.actionToggleHighlight: {
+                if( packageChart !=null){
+                    if (packageChart.getData() != null) {
+                        packageChart.getData().setHighlightEnabled(!packageChart.getData().isHighlightEnabled());
+                        packageChart.invalidate();
+                    }
+                    break;
+
+                }
+
+            }
+            case R.id.actionTogglePinch: {
+                if( packageChart !=null){
+                    if (packageChart.isPinchZoomEnabled())
+                        packageChart.setPinchZoom(false);
+                    else
+                        packageChart.setPinchZoom(true);
+
+                    packageChart.invalidate();
+                    break;
+
+                }
+
+            }
+            case R.id.actionToggleAutoScaleMinMax: {
+                if( packageChart !=null){
+                    packageChart.setAutoScaleMinMaxEnabled(!packageChart.isAutoScaleMinMaxEnabled());
+                    packageChart.notifyDataSetChanged();
+                    break;
+
+                }
+
+            }
+            case R.id.actionToggleBarBorders: {
+                if( packageChart !=null){
+                    for (IBarDataSet set : packageChart.getData().getDataSets())
+                        ((BarDataSet) set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
+
+                    packageChart.invalidate();
+                    break;
+
+                }
+
+            }
+            case R.id.animateX: {
+                packageChart.animateX(2000);
+                break;
+            }
+            case R.id.animateY: {
+                packageChart.animateY(2000);
+                break;
+            }
+            case R.id.animateXY: {
+                packageChart.animateXY(2000, 2000);
+                break;
+            }
+
+        }
+        return true;
+    }
+
 
 }
