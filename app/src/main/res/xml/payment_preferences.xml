@@ -1,0 +1,58 @@
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        app:key="Bank_pref"
+        android:icon="@drawable/ic_admin_panel"
+        app:title="Skylight Payment Preferences"
+        app:summary="This is the Bank account for your payment"
+        app:initialExpandedChildrenCount="1">
+
+        <DropDownPreference
+            app:key="Bank"
+            app:title="Bank Name"
+            app:defaultValue="true"
+            android:icon="@drawable/ic_icon2"
+            app:positiveButtonText="OK"
+            app:enableCopying="true"
+            android:negativeButtonText="Cancel"
+            app:useSimpleSummaryProvider="true"
+            app:entries="@array/Banks"
+            app:entryValues="@array/Banks"/>
+        <EditTextPreference
+            app:key="Bank_Acct_Name"
+            app:title="Account Name"
+            android:negativeButtonText="Cancel"
+            android:icon="@drawable/bank_accounts"
+            app:allowDividerBelow="true"
+            app:defaultValue="true"
+            app:enableCopying="true"
+            app:positiveButtonText="OK"
+            app:useSimpleSummaryProvider="true"
+            app:dialogTitle="Account Name"/>
+        <EditTextPreference
+            app:key="Bank_Account_Number"
+            android:negativeButtonText="Cancel"
+            app:title="The Payment Acct No."
+            app:enableCopying="true"
+            android:icon="@drawable/bank_accounts"
+            app:allowDividerBelow="true"
+            app:defaultValue="true"
+            app:positiveButtonText="OK"
+            app:useSimpleSummaryProvider="true"
+            app:dialogTitle="Account Number"/>
+        <EditTextPreference
+            app:key="Amount_Requested"
+            android:negativeButtonText="Cancel"
+            app:title="The Amount to Withdraw."
+            app:enableCopying="true"
+            android:icon="@drawable/bank_accounts"
+            app:allowDividerBelow="true"
+            app:defaultValue="true"
+            app:positiveButtonText="OK"
+            app:useSimpleSummaryProvider="true"
+            app:dialogTitle="Amount"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>

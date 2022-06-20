@@ -1,0 +1,238 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/shape_rect13"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:id="@+id/prop1"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="80dp"
+            android:layout_marginStart="2dp"
+            app:srcCompat="@drawable/home2"
+            android:layout_height="70dp"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/propLabelTittle"
+            android:layout_width="wrap_content"
+            android:textSize="20sp"
+            android:layout_height="wrap_content"
+            android:text="Tittle : " />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="2dp"
+        android:layout_below="@id/prop1"
+        android:id="@+id/prop2"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/propType3"
+            android:layout_width="0dp"
+            android:textSize="15sp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="2dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Type : " />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/propPrice"
+            android:layout_width="0dp"
+            android:textSize="15sp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Price : " />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_below="@id/prop2"
+        android:id="@+id/prop3"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/priceDurationProp"
+            android:layout_width="match_parent"
+            android:textSize="15sp"
+            android:layout_marginStart="2dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Duration : " />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_below="@id/prop3"
+        android:id="@+id/propDescrip"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/propDescriptionLabel"
+            android:layout_width="match_parent"
+            android:textSize="15sp"
+            android:layout_marginStart="2dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Description : " />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_below="@id/propDescrip"
+        android:id="@+id/propTLGA"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/propTown"
+            android:layout_width="0dp"
+            android:textSize="15sp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="2dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Town : " />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:textSize="15sp"
+            android:id="@+id/propLGA"
+            android:layout_weight="1"
+            android:text="LGA: "
+            android:layout_marginEnd="2dp"
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_below="@id/propTLGA"
+        android:id="@+id/propStateCountry"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/propState"
+            android:layout_width="0dp"
+            android:textSize="15sp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="2dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="State : " />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:textSize="15sp"
+            android:id="@+id/propCountry"
+            android:layout_weight="1"
+            android:text="Country: "
+            android:layout_marginEnd="2dp"
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_below="@id/propStateCountry"
+        android:id="@+id/prop4"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/propCapacity"
+            android:layout_width="0dp"
+            android:textSize="15sp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="2dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Capacity : " />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:textSize="15sp"
+            android:id="@+id/propStatus4"
+            android:layout_weight="1"
+            android:text="Status: "
+            android:layout_marginEnd="2dp"
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_below="@id/prop4"
+        android:id="@+id/prop5"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnViewPictures"
+            android:layout_width="0dp"
+            android:textSize="15sp"
+            android:layout_marginStart="2dp"
+            android:layout_weight="1"
+            android:padding="15dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/shape_rect13"
+            android:layout_height="wrap_content"
+            android:text="View Pictures: " />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="0dp"
+            android:textSize="15sp"
+            android:padding="15dp"
+            android:id="@+id/btnBookSeeing"
+            android:background="@drawable/shape_rect13"
+            android:layout_weight="1"
+            android:text="Book Siteing : "
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_below="@id/prop5"
+        android:id="@+id/prop6"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="0dp"
+            android:textSize="15sp"
+            android:padding="15dp"
+            android:layout_weight="1"
+            android:id="@+id/btnViewMore"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/shape_rect13"
+            android:text="More : "
+            android:layout_marginStart="2dp"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="0dp"
+            android:textSize="15sp"
+            android:padding="15dp"
+            android:id="@+id/btnViewOnMap"
+            android:background="@drawable/shape_rect13"
+            android:layout_weight="1"
+            android:text="View on Map : "
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</RelativeLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_home_admin"
+        android:enabled="true"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/home"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_loan"
+        android:enabled="true"
+        android:icon="@drawable/support"
+        android:title="Loan request"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_reports"
+        android:enabled="true"
+        android:icon="@drawable/support"
+        android:title="Teller Reports"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_support_admin"
+        android:enabled="true"
+        android:icon="@drawable/support"
+        android:title="@string/support"
+        app:showAsAction="ifRoom" />
+</menu>

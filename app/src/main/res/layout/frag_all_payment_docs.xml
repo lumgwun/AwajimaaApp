@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_rect14"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.skylightapp.Admins.AllPaymentDocFragment">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/document_home_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            app:fab_colorRipple="@color/Darksalmon"
+            app:showMotionSpec="@anim/base_slide_right_in"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="10dp"
+            app:srcCompat="@android:drawable/ic_dialog_email" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_doc_all"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/documents_list_row"
+            android:clipToPadding="false"
+            android:scrollbars="vertical" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

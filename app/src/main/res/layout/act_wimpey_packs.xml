@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/rect_their_message"
+    tools:context=".Accountant.WimpeySavings">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Abuja Branch Savings"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewWimpeySavingsToday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clipToPadding="false"
+            android:layout_marginStart="5dp"
+            android:foregroundGravity="center"
+            android:orientation="horizontal" />
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rect6g"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tx_text_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center_vertical|left"
+                    android:gravity="center_vertical|left"
+                    android:background="@null"
+                    android:text="Select Date of Savings" />
+                <DatePicker
+                    android:id="@+id/Savings_date_Wimpey"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:inputType="date"
+                    android:backgroundTintMode="src_in"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:datePickerMode="spinner"
+                    android:spinnersShown="true"
+                    android:yearListSelectorColor="@color/white"
+                    android:calendarTextColor="@color/white"
+                    android:layout_gravity="center_vertical|left"
+                    android:gravity="center_vertical|left"
+                    android:calendarViewShown="false" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:gravity="end"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:weightSum="1"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:text="Search Database"
+                    android:textSize="17sp"
+                    android:padding="20dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textStyle="bold"
+                    android:id="@+id/btnSearchSavingsDBWimpey"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="2dp"
+            android:layout_marginBottom="3dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
+                android:textSize="20sp"
+                android:id="@+id/SavingsCountWimpey"
+                android:padding="20dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@drawable/rect_their_message"
+                android:textColorHint="@color/colorPrimary"
+                android:text="Savings Count: 30" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="2dp"
+            android:layout_marginBottom="3dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
+                android:textSize="20sp"
+                android:id="@+id/SavingsAmountWIMPEY"
+                android:padding="20dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@drawable/rect_their_message"
+                android:textColorHint="@color/colorPrimary"
+                android:text="Savings Total: N3,000,000" />
+
+        </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewSavingsWimpey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="5dp"
+            android:clipToPadding="false"
+            android:foregroundGravity="center" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</ScrollView>

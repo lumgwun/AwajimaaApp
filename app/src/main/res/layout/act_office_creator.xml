@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/coordinator1"
+    android:orientation="vertical"
+    android:theme="@style/NoActionBarTheme"
+    android:fitsSystemWindows="true"
+    android:background="@drawable/rect_their_message"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/line12"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/l0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:orientation="vertical">
+                <androidx.core.widget.ContentLoadingProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center|bottom"
+                    android:layout_marginBottom="20dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:background="@drawable/rect6e"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content">
+                <FrameLayout
+                    android:layout_height="match_parent"
+                    android:id="@+id/frameContainer_crus2"
+                    android:layout_width="match_parent">
+
+                    <LinearLayout
+                        android:layout_height="180dp"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/rect6g"
+
+                        android:layout_gravity="top">
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/GreetingsOffice"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:src="@drawable/good_afternoon1"
+                            android:layout_marginTop="5dp"
+                            android:layout_gravity="center"
+                            android:padding="5dp"
+                            android:stateListAnimator="@animator/nav_default_pop_enter_anim"
+                            app:civ_border_width="1dp"
+                            app:civ_border_color="#ffffff"/>
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/profile_image_j"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:src="@drawable/ic_admin_user"
+                            android:layout_gravity="center"
+                            android:padding="5dp"
+                            android:stateListAnimator="@animator/nav_default_pop_enter_anim"
+                            app:civ_border_width="1dp"
+                            app:civ_border_color="#ffffff"/>
+
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:text="Select Office"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/officeSelection"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:paddingLeft="10dp"
+                        android:foregroundGravity="center_horizontal"
+                        android:background="@drawable/shape_rect12a"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:entries="@array/officeBranch33"
+                        android:padding="20dp"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textColorHint="@android:color/holo_red_dark"
+                        android:textSize="20sp"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:clickable="false"
+                        />
+
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:text="or"
+                        android:textSize="20sp"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:layout_width="match_parent"
+                        android:text="Add New Office"
+                        android:padding="20dp"
+                        android:onClick="showAddNewOffice"
+                        android:textSize="17sp"
+                        android:id="@+id/btnAddNewEdt"
+                        android:background="@drawable/rect_their4"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:textSize="20sp"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/officeName"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:hint="Office Name"
+                        android:background="@drawable/rect_their4"
+                        android:focusable="true"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:textStyle="bold"
+                        android:textColorHint="@color/black"
+                        android:textSize="15sp"
+                        android:layout_gravity="center_vertical|start"
+                        android:gravity="center_vertical|start"
+                        android:clickable="false"
+                        />
+
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:textSize="20sp"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="5dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/officeAddress"
+                        android:layout_width="match_parent"
+                        android:textStyle="bold"
+                        android:focusable="true"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/rect_their4"
+                        android:textSize="15sp"
+                        android:textColorHint="@color/black"
+                        android:hint="Address"
+                        android:clickable="false"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:layout_gravity="center_vertical|start"
+                        android:gravity="center_vertical|start"
+                        />
+
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:textSize="20sp"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:gravity="end"
+                    android:layout_gravity="end"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:weightSum="1"
+                        android:layout_height="wrap_content">
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:text="Register"
+                            android:textSize="20sp"
+                            android:padding="20dp"
+                            android:onClick="doOfficeReg"
+                            android:layout_weight="1"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:textStyle="bold"
+                            android:id="@+id/submitNewOffice"
+                            android:textColor="@android:color/holo_red_dark"
+                            android:background="@drawable/rect6g"
+                            android:gravity="center_horizontal"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_height="wrap_content"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:textSize="20sp"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:gravity="end"
+                    android:layout_gravity="end"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:text="Powered By Lumgwun"
+                        android:textSize="15sp"
+                        android:padding="20dp"
+                        android:background="@drawable/shape_layer_1a"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:textStyle="italic"
+                        android:id="@+id/poweredBy"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_height="wrap_content"/>
+
+
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:textSize="20sp"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.cardview.widget.CardView>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </ScrollView>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

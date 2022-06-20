@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/admin_drawer3"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start"
+    tools:context="com.skylightapp.Admins.AdminDrawerActivity">
+    <include
+        layout="@layout/app_bar_admin"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_height="match_parent" />
+
+    <com.rom4ek.arcnavigationview.ArcNavigationView
+        android:id="@+id/nav_view_admin3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        app:arc_cropDirection="cropOutside"
+        app:arc_width="90dp"
+        android:background="@drawable/rect_their_message"
+        app:itemIconSize="20dp"
+        android:layout_marginStart="10dp"
+        android:fitsSystemWindows="true"
+        android:layout_marginEnd="10dp"
+        android:paddingVertical="20dp"
+        app:itemHorizontalPadding="40dp"
+        app:itemIconTint="@color/colorPrimary"
+        app:itemShapeFillColor="@color/ash_daek"
+        app:itemTextColor="@color/colorPrimaryDark"
+        android:layout_marginBottom="10dp"
+        app:itemBackground="@drawable/drawer_background"
+        app:headerLayout="@layout/admin_drawer_header"
+        app:menu="@menu/admin_drawer_menu" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

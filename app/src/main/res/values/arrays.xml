@@ -1,0 +1,2371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="reply_entries">
+        <item>Reply</item>
+        <item>Reply to all</item>
+    </string-array>
+    <string-array name="EmergencyType">
+        <item></item>
+        <item>Sickness</item>
+        <item>Rape</item>
+        <item>Accident</item>
+        <item>Robbery</item>
+        <item>Arrest</item>
+        <item>Unknown threat</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="fromAcctType">
+        <item></item>
+        <item>EWallet</item>
+        <item>StandingOrderAcct</item>
+    </string-array>
+
+
+
+    <string-array name="purposeOfMessage">
+        <item></item>
+        <item>Reply</item>
+        <item>About Your Transaction</item>
+        <item>About Your Standing Orders</item>
+        <item>About Your Request</item>
+        <item>About Your Loan</item>
+        <item>About Your Savings</item>
+        <item>About Your Investment</item>
+        <item>About Your Package</item>
+        <item>About Your Item Collection</item>
+    </string-array>
+    <string-array name="SuperUserType">
+        <item></item>
+        <item>Teller</item>
+        <item>Customer</item>
+        <item>Admin User</item>
+        <item>Accountant</item>
+        <item>Super Admin</item>
+    </string-array>
+    <string-array name="user_Status">
+        <item></item>
+        <item>Teller</item>
+        <item>Customer</item>
+        <item>AdminUser</item>
+        <item>SuperAdmin</item>
+        <item>Accountant</item>
+        <item>BlockedUser</item>
+    </string-array>
+
+    <string-array name="UserType">
+        <item></item>
+        <item>Teller</item>
+        <item>Customer</item>
+    </string-array>
+
+
+    <string-array name="reply_values">
+        <item>reply</item>
+        <item>reply_all</item>
+    </string-array>
+
+    <array name="array_dot_active">
+
+    <item>@color/dot_light_screen1</item>
+
+    <item>@color/dot_light_screen2</item>
+
+    </array>
+
+
+    -<array name="array_dot_inactive">
+
+    <item>@color/dot_dark_screen1</item>
+
+    <item>@color/dot_dark_screen2</item>
+
+</array>
+
+    <string-array name="EmergencyReport">
+        <item></item>
+        <item>Building Collapse</item>
+        <item>Rape</item>
+        <item>Flooding</item>
+        <item>Landslide</item>
+        <item>Outbreak of Disease</item>
+        <item>Fire Disaster</item>
+        <item>Road Accident</item>
+        <item>Air Accident</item>
+        <item>Water Accident</item>
+    </string-array>
+
+    <string-array name="Frequency_Of_Plan">
+        <item></item>
+        <item>daily</item>
+        <item>weekly</item>
+    </string-array>
+
+    <string-array name="Plan_Currency">
+        <item></item>
+        <item>NGN</item>
+        <item>GHS</item>
+        <item>ZAR</item>
+        <item>USD</item>
+    </string-array>
+
+    <string-array name="EnvironmentalReport">
+        <item></item>
+        <item>Oil Spillage</item>
+        <item>Chemical Spillage</item>
+        <item>Other Spillages</item>
+        <item>Flooding</item>
+        <item>Bad Roads</item>
+    </string-array>
+
+
+
+    <string-array name="CrimesReport">
+        <item></item>
+        <item>Robbery</item>
+        <item>Kidnapping</item>
+        <item>GunMen attack</item>
+        <item>Fake Product</item>
+        <item>Drug Abuse</item>
+        <item>Child Abuse</item>
+        <item>Car Jarking</item>
+        <item>Money Laundering</item>
+    </string-array>
+    <string-array name="Savings_Frequency">
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+        <item>Yearly</item>
+    </string-array>
+
+    <string-array name="RV_LGA">
+        <item></item>
+        <item>Others</item>
+        <item>Abua-Odual</item>
+        <item>Ahoada East </item>
+        <item>Ahoada West</item>
+        <item>Akuku Toru</item>
+        <item>Andoni</item>
+        <item>Asari-Toru</item>
+        <item>Bonny</item>
+        <item>Degema</item>
+        <item>Eleme</item>
+        <item>Emohua</item>
+        <item>Etche</item>
+        <item>Gokana</item>
+        <item>Ikwerre</item>
+        <item>Khana</item>
+        <item>Obio/Akpor</item>
+        <item>Ogba/Egbema/Ndoni</item>
+        <item>Ogu/Bolo</item>
+        <item>Okrika LGA</item>
+        <item>Omuma</item>
+        <item>Opobo/Nkoro</item>
+        <item>Oyigbo</item>
+        <item>Port-Harcourt</item>
+        <item>Tai</item>
+    </string-array>
+
+    <string-array name="typeOfOrg">
+        <item></item>
+        <item>Real Estate Company</item>
+        <item>Logistics Company</item>
+        <item>Thrift Org.</item>
+        <item>Cooperative Org.</item>
+        <item>Security Agency</item>
+        <item>Emergency Response Team</item>
+        <item>Environmental Issues Response Team</item>
+        <item>Food Wholesale Org</item>
+        <item>Award Org</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="users">
+        <item></item>
+        <item>Teller</item>
+        <item>Customer</item>
+        <item>Realtor</item>
+        <item>Logistics Agent</item>
+        <item>Artesian</item>
+        <item>Response Team</item>
+        <item>ICMT</item>
+        <item>Trade Employer</item>
+        <item>Award Org</item>
+        <item>Others</item>
+    </string-array>
+
+
+    <string-array name="property_type">
+        <item></item>
+        <item>Estate Land</item>
+        <item>Estate Uncompleted Building</item>
+        <item>Community Land</item>
+        <item>Event Center</item>
+        <item>Co-Work Office</item>
+        <item>Hall</item>
+        <item>Self-Con</item>
+        <item>One Bedroom</item>
+        <item>Two Bedroom Apartment</item>
+        <item>Three Bedroom Apartment</item>
+        <item>Four Bedroom Apartment</item>
+        <item>Duplex</item>
+        <item>Hotel</item>
+        <item>Shop</item>
+        <item>Shopping Center</item>
+        <item>Kios</item>
+    </string-array>
+
+
+    <string-array name="duration_Of_Price">
+        <item></item>
+        <item>Hourly</item>
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+        <item>Bi-Weekly</item>
+        <item>Monthly</item>
+        <item>Yearly</item>
+        <item>Forever</item>
+        <item>Not Applicable</item>
+    </string-array>
+
+    <string-array name="purpose_of_savings">
+        <item></item>
+        <item>Business Services</item>
+        <item>Education</item>
+        <item>Personal</item>
+        <item>Travel</item>
+        <item>Family</item>
+        <item>Upkeep</item>
+        <item>Others</item>
+    </string-array>
+    <string-array name="mobile_money">
+        <item></item>
+        <item>Ghana</item>
+        <item>Kenya</item>
+        <item>Uganda</item>
+        <item>Rwanda</item>
+        <item>Zambia</item>
+    </string-array>
+
+    <string-array name="property_mode">
+        <item></item>
+        <item>For rent</item>
+        <item>Leasing</item>
+        <item>For Sale</item>
+        <item>Co-ownership</item>
+        <item>Hire</item>
+    </string-array>
+
+
+    <string-array name="country_other_bills">
+        <item></item>
+        <item>Uganda</item>
+        <item>Nigeria</item>
+    </string-array>
+
+
+    <string-array name="biz_reg_type">
+        <item>Business Name</item>
+        <item>Company</item>
+        <item>Cooperative</item>
+    </string-array>
+
+
+    <string-array name="other_bills">
+        <item>Lekki Concession Company (Lekki - Epe Expressway)</item>
+        <item>Lekki Concession Company (Ikoyi Bridge)</item>
+        <item>NAIROBI WATER</item>
+    </string-array>
+
+    <string-array name="means_of_identification">
+        <item>BVN</item>
+    </string-array>
+
+    <string-array name="School">
+        <item>ADORABLE FOUNDATION FOR EDU. DEV</item>
+        <item>VERITAS UNIVERSITY</item>
+        <item>SUREFOOT AMERICAN INTL SCHOOL</item>
+        <item>STELLA MARIS COLLEGE</item>
+        <item>OXBRIDGE COLLEGE</item>
+        <item>LARIKEN SCHOOLS</item>
+        <item>LANDMARK UNIVERSITY OMU-ARAN</item>
+        <item>AIR FORCE SEC. SCHOOL PH</item>
+        <item>BARBARA COX COLLEGE</item>
+        <item>BERETON MONTESSORI</item>
+        <item>BINGHAM UNIVERSITY</item>
+        <item>CORONA SCHOOL LEKKI</item>
+        <item>CHIRST THE KING INTL SCHOOL</item>
+        <item>DEEPER LIFE HIGH SCHOOL-ABUJA</item>
+        <item>LAGOS BUSINESS SCHOOL</item>
+        <item>TENDERTOUCH COLLEGE</item>
+    </string-array>
+
+    <string-array name="country">
+        <item>NG</item>
+        <item>Kenya</item>
+        <item>Uganda</item>
+        <item>Zambia</item>
+        <item>Rwanda</item>
+        <item>Ghana</item>
+        <item>South Africa</item>
+        <item>Francophone Country</item>
+    </string-array>
+
+
+    <string-array name="country2">
+        <item>Ghana</item>
+        <item>Nigeria</item>
+        <item>Kenya</item>
+        <item>Uganda</item>
+        <item>Zambia</item>
+        <item>Rwanda</item>
+
+    </string-array>
+
+    <string-array name="Internet_Providers">
+        <item>Smile</item>
+        <item>Spectranet</item>
+        <item>SWIFT TOP UP</item>
+        <item>TOP UP ACCOUNT</item>
+        <item>ipNX Family Plan</item>
+        <item>Starter Basic Plan</item>
+        <item>Unlimited Starter Plan</item>
+
+    </string-array>
+
+    <string-array name="smile_Acct_Type">
+        <item>AccountID</item>
+        <item>PhoneNumber</item>
+        <item>EmailAddress</item>
+    </string-array>
+
+    <string-array name="countryBank_in_code">
+        <item>NG</item>
+        <item>GH</item>
+        <item>KE</item>
+        <item>UG</item>
+        <item>ZA </item>
+        <item>TZ </item>
+    </string-array>
+
+
+    <string-array name="Country_cable_sub">
+        <item>Ghana</item>
+        <item>Kenya</item>
+        <item>Uganda</item>
+        <item>Rwanda</item>
+
+    </string-array>
+
+    <string-array name="DSTV_Country">
+        <item>NIGERIA</item>
+        <item>GHANA</item>
+        <item>KENYA</item>
+        <item>UGANDA</item>
+    </string-array>
+
+    <string-array name="currency">
+        <item>NGN</item>
+        <item>GHS</item>
+        <item>RWF</item>
+        <item>ZAR</item>
+        <item>UGX</item>
+        <item>ZMW</item>
+        <item>XAF</item>
+        <item>XOF</item>
+        <item>KES</item>
+    </string-array>
+    <string-array name="glo_9ja_data">
+        <item>35mb, 1 day, N100</item>
+        <item>100mb, N200</item>
+        <item>920mb, N500</item>
+        <item>1.8GB, 30 days,N1,000</item>
+        <item>4.5GB,  N2,000</item>
+        <item>7.2GB,  N2,500</item>
+        <item>8.75GB,  N3,000</item>
+        <item>12.5GB, N4,000</item>
+        <item>15.6GB, N5,000</item>
+        <item>32.5GB, N10,000</item>
+        <item>52.5GB,  N15,000</item>
+        <item>62.5GB,  N18,000</item>
+    </string-array>
+
+
+    <string-array name="mtn_data">
+        <item>100mb, 1 day, N100</item>
+        <item>200mb, N200</item>
+        <item>350mb, 7 days,N300</item>
+        <item>750mb, 7 days,N500</item>
+        <item>1GB, 1 day, N350</item>
+        <item>1GB, 7 days, N500</item>
+        <item>1.5GB,30days, N1000</item>
+        <item>2GB,30 days,N1,200</item>
+        <item>2.5GB,2 days,N500</item>
+        <item>3GB,30 days,N1,500</item>
+        <item>4.5GB, 30 days,N2000</item>
+        <item>6GB, 7 day, N1,500</item>
+        <item>8GB data, 30 days,N3000</item>
+        <item>10GB ,30days, N3,500</item>
+        <item>15GB ,30 days,N5,000</item>
+        <item>40GB ,30 days,N10,000</item>
+        <item>75GB ,30 days,N20,000</item>
+        <item>120 GB, N30,000</item>
+
+
+    </string-array>
+    <string-array name="nine_mobile_data">
+        <item>650MB,  N200</item>
+        <item>1.5GB,  N1,000</item>
+        <item>4.5GB, N2,000</item>
+        <item>4GB, N3,000</item>
+        <item>11.5GB, N4000</item>
+        <item>15GB,  N5,000</item>
+        <item>27.5GB,  N18,000</item>
+        <item>30GB, N27,500</item>
+        <item>60GB, N55,000</item>
+    </string-array>
+
+
+
+    <string-array name="type_Of_Biz">
+        <item></item>
+        <item>Real Estate</item>
+        <item>Logistics/Delivery Biz</item>
+        <item>Thrift</item>
+        <item>Car Wash</item>
+        <item>Mechanic Workshop</item>
+        <item>Wholesale Biz</item>
+        <item>Boole Joint</item>
+        <item>Fitness Center</item>
+    </string-array>
+    <string-array name="PropertySearchParam">
+        <item></item>
+        <item>Town</item>
+        <item>Price</item>
+        <item>Type</item>
+        <item>Capacity</item>
+        <item>LGA</item>
+        <item>State</item>
+        <item>Country</item>
+        <item>Duration</item>
+    </string-array>
+
+
+
+    <string-array name="DSTV_Type">
+        <item>DSTV</item>
+        <item>DSTV BOX OFFICE</item>
+    </string-array>
+
+
+    <string-array name="AirTel_Data">
+        <item>40mb, 1 day, N100</item>
+        <item>100mb, N100</item>
+        <item>350mb, 7 days,N300</item>
+        <item>200mb, N200</item>
+        <item>350MB,  N300</item>
+        <item>750MB,  N500</item>
+        <item>1.5GB ,N1500</item>
+        <item>6GB,30 days,N2,500</item>
+        <item>8GB,N3,000</item>
+        <item>11GB, N4,000</item>
+        <item>15GB, N5000</item>
+        <item>40GB,  N10,000</item>
+        <item>75GB,  N15,000</item>
+    </string-array>
+
+    <string-array name="DSTV_Nig_Packages">
+        <item>DSTV Premium(N16,200 + N100)/Month</item>
+        <item>DSTV Compact Plus (N10,925 + N100)/Month</item>
+        <item>DSTV Confam(N4,615 + N100)/Month</item>
+        <item>DSTV Yanga Bouquet(N2,565 + N100)/Month</item>
+        <item>DSTV Padi Bouquet(N1,850 + N100)/Month</item>
+        <item>DSTV French Plus(N16,520 + N100)/Month</item>
+        <item>French Touch(N2300 + N100)/Month</item>
+        <item>HDPVR Access/Extraview(N2500 + N100)/Month</item>
+        <item>DSTV Compact Plus (N10,925 + N100)/Month</item>
+        <item>Confam + Xtraview(N7115 + N100)/Month</item>
+        <item>Yanga + Xtraview(N5065 + N100)/Month</item>
+        <item>Padi + Xtraview(N4350 + N100)/Month</item>
+        <item>Premium(N18400 + N100)/Month</item>
+        <item>Premium Asia + HD/ExtraView(N23000 + N100)/Month</item>
+        <item>Premium + Asia(N20500 + N100)/Month</item>
+        <item>Premium + Xtraview(N20900 + N100)/Month</item>
+        <item>Premium + French(N25550 + N100)/Month</item>
+        <item>Premium + French + Xtraview(N28050 + N100)/Month</item>
+        <item>Xtraview Access(N2500 + N100)/Month</item>
+    </string-array>
+
+    <string-array name="DSTV_UG_Packages">
+        <item>DSTV Family Uganda</item>
+        <item>DSTV Compact Plus</item>
+        <item>DSTV Access Uganda</item>
+    </string-array>
+
+    <string-array name="DSTV_GHANA_PACKAGES">
+        <item>DSTV Payment</item>
+
+    </string-array>
+
+
+    <string-array name="DSTV_KENYA_PACKAGES">
+        <item>DSTV Payment</item>
+    </string-array>
+    <string-array name="power_country">
+        <item>Kenya</item>
+        <item>Uganda</item>
+        <item>Nigeria</item>
+
+    </string-array>
+    <string-array name="Smile_packages">
+        <item>SMILE 21GB BUNDLE</item>
+        <item>SMILE LITE 1.5GB BUNDLE</item>
+        <item>SMILE 7GB BUNDLE</item>
+        <item>SMILE 15GB DATA BUNDLE</item>
+        <item>SMILE 1GB Flexi Daily Data Plan 1 Day</item>
+        <item>MILE 2GB Flexi Weekly Data Plan 7 Days</item>
+        <item>SMILE 30GB Bumpa Data Plan 60 Days</item>
+        <item>SMILE 60GB BumpaValue Data Plan 90 Days</item>
+        <item>SMILE 80GB BumpaValue Plan 120 Days</item>
+        <item>SMILE 2GB MidNite Plan</item>
+        <item>SMILE 3GB MidNite Plan</item>
+        <item>SMILE Smile 3GB Data Bundle</item>
+        <item>SMILE 3GB Weekend Plan</item>
+        <item>SMILE 10GB Data Bundle</item>
+        <item>SMILE 50GB Data Bundle</item>
+        <item>Smile UnlimitedLite Plan</item>
+        <item>Unlimited Access Bundle</item>
+        <item>SMILE - Unlimited Premium</item>
+        <item>SMILE - 100GB Data Bundle</item>
+        <item>200GB Data Bundle</item>
+    </string-array>
+
+    <string-array name="startTimes_Country">
+        <item>Nigeria</item>
+        <item>Kenya</item>
+        <item>Uganda</item>
+    </string-array>
+
+
+    <string-array
+        name="StartTimes_Nig_Packages">
+        <item>SUPER - One Week</item>
+        <item>UNIQUE - One Month</item>
+        <item>SUPER - One Month</item>
+        <item>SUPER - One Day</item>
+        <item>UNIQUE - One Week</item>
+        <item>UNIQUE - One Day</item>
+        <item>CLASSIC - One month</item>
+        <item>CLASSIC - One Week</item>
+        <item>CLASSIC - One Day</item>
+        <item>SMART - One Month</item>
+        <item>SMART - One Week</item>
+        <item>SMART - One Day</item>
+        <item>BASIC - One Month</item>
+        <item>BASIC - One Week</item>
+        <item>BASIC - One Day</item>
+        <item>NOVA - One Month</item>
+        <item>NOVA - One Week</item>
+        <item>NOVA - One Day</item>
+
+    </string-array>
+
+    <string-array name="StarTimes_Kenya">
+        <item>STARTIMES Payment</item>
+
+    </string-array>
+
+    <string-array name="StarTimes_Uganda">
+        <item>Startime Classic (1900+100)</item>
+        <item>Startime Basic(1300+100)</item>
+
+    </string-array>
+    <string-array name="TransactionTypes">
+        <item>PAYMENT</item>
+        <item>TRANSFER</item>
+        <item>DEPOSIT</item>
+        <item>MANUAL_WITHDRAWAL</item>
+        <item>SAVINGS</item>
+        <item>LOAN</item>
+        <item>STANDING_ORDER</item>
+        <item>GROUP_SAVINGS_DEPOSIT</item>
+        <item>GROUP_SAVINGS_WITHDRAWAL</item>
+        <item>WITHDRAWALTX</item>
+        <item>RETURNS</item>
+
+    </string-array>
+
+
+    <string-array name="StarTimes_Ghana">
+        <item>TELKOM</item>
+        <item>SAFARICOM</item>
+        <item>AIRTEL</item>
+
+    </string-array>
+
+
+
+    <string-array name="GOTV_Packages">
+        <item>GOTV MAX (N3,600 + N100), 75+ Channels</item>
+        <item>GOTV Jolli(N2,460 +N100),68 Channels+</item>
+        <item>GOTV Jinja(N1,640 +N100),47+ Channels</item>
+        <item>GOTV Smallie Monthly(N800 +100)</item>
+        <item>GOTV Smallie Annually(N6,200+ N100),30+ Channels</item>
+        <item>GOTV Smallie quarterly(N2,100+N100),30+</item>
+    </string-array>
+    <string-array name="GOTV_UG_Packages">
+        <item>GOTV Light (Monthly)(11000+100)</item>
+        <item>GOTV PLUS (28000+100)</item>
+        <item>GOTV MAX (39000+100)</item>
+        <item>Gotv Value (16000+100)</item>
+
+    </string-array>
+    <string-array name="GOTV_Kenya_Packages">
+        <item>GOTV Payment</item>
+    </string-array>
+
+    <string-array name="GOTV_Nigeria_Packages">
+        <item>GOTV MAX (N3,600 + N100), 75+ Channels</item>
+        <item>GOTV LIGHT</item>
+        <item>GOTV Jolli(N2,460 +N100),68 Channels+</item>
+        <item>GOTV Jolli(N2,460 +N100),68 Channels+</item>
+        <item>GOTV Jinja(N1,640 +N100),47+ Channels</item>
+        <item>GOTV Smallie Monthly(N800 +100)</item>
+        <item>GOTV Smallie Annually(N6,200+ N100),30+ Channels</item>
+        <item>GOTV Smallie quarterly(N2,100+N100),30+</item>
+    </string-array>
+    <string-array name="Power_Country">
+        <item>Kenya</item>
+        <item>Uganda</item>
+        <item>Nigeria</item>
+
+    </string-array>
+
+
+    <string-array name="Electricity_Discos">
+        <item>Port Harcourt Disco (PHEDC)</item>
+        <item>Ikeja Disco(IKEDC)</item>
+        <item>Enugu Disco(EEDC)</item>
+        <item>Kano Disco(KE)</item>
+        <item>Eko Disco(EKEDC)</item>
+        <item>Ibadan Disco(IBEDC)</item>
+
+        <item>BENIN DISCO (BEDC)</item>
+        <item>YOLA DISCO TOPUP</item>
+    </string-array>
+
+    <string-array name="other_Bills">
+        <item>Kenyan Prepaid</item>
+        <item>Kenyan Postpaid</item>
+        <item>Kenyan KPLC</item>
+        <item>NAIROBI WATER</item>
+        <item>Uganda NWSC Top up</item>
+        <item>Uganda Prepaid Topup</item>
+        <item>LCC Top payment</item>
+        <item>Lekki Concession Company (Lekki - Epe Expressway)</item>
+        <item>Uganda PostPaid Top up</item>
+        <item>Uganda PostPaid Top up</item>
+
+    </string-array>
+
+    <string-array name="Electricity_Sub_Type">
+        <item>Prepaid</item>
+        <item>Post Paid</item>
+    </string-array>
+
+
+
+
+    <string-array name="otherBills_Type">
+        <item>Uganda PostPaid Top up</item>
+        <item>Uganda Prepaid Topup</item>
+        <item>Uganda PostPaid Top up</item>
+        <item>Uganda Prepaid Topup</item>
+
+
+    </string-array>
+
+    <string-array name="EKEDCPaid_Type">
+        <item>IKEDC  PREPAID TOP UP</item>
+        <item>EKEDC POSTPAID TOPUP</item>
+
+    </string-array>
+    <string-array name="IKEDC_Type">
+        <item>IKEDC  PREPAID TOP UP</item>
+        <item>IKEDC  POSTPAID TOP UP</item>
+
+    </string-array>
+    <string-array name="Ibadan_Type">
+        <item>Ibadan disco prepaid topup</item>
+        <item>Ibadan disco postpaid topup</item>
+
+    </string-array>
+    <string-array name="EnuguDisco_Type">
+        <item>Enugu Disco Prepaid</item>
+        <item>Enugu Disco Postpaid</item>
+
+    </string-array>
+    <string-array name="Phc_Disco_Type">
+        <item>PHC Prepaid</item>
+        <item>PHC Postpaid</item>
+
+    </string-array>
+    <string-array name="Benin_Disco_Type">
+        <item>Benin Disco Prepaid</item>
+        <item>Benin Disco Post Paid</item>
+
+    </string-array>
+    <string-array name="yolaDiscoType">
+        <item>Yola Disco Topup</item>
+
+    </string-array>
+    <string-array name="Kano_disco_Type">
+        <item>Kano Disco Prepaid</item>
+        <item>Kano Disco Post Paid</item>
+
+    </string-array>
+    <string-array name="Kenya_disco_Type">
+        <item>KPLC PREPAID</item>
+        <item>KPLC POSTPAID</item>
+
+    </string-array>
+
+    <string-array name="Nairobi_water_Type">
+        <item>NAIROBI WATER</item>
+
+    </string-array>
+    <string-array name="Uganda_power_type">
+        <item>Prepaid Topup</item>
+        <item>PostPaid Top up</item>
+        <item>NWSC Top up</item>
+    </string-array>
+
+
+    <string-array name="network">
+        <item>MTN</item>
+        <item>AIRTEL</item>
+        <item>9Mobile</item>
+        <item>GLO</item>
+
+    </string-array>
+    <string-array name="NG_Airtime">
+        <item>Airtel Nigeria</item>
+        <item>AIRTEL</item>
+        <item>MTN NIgeria</item>
+        <item>9Mobile</item>
+
+    </string-array>
+    <string-array name="us_airtime">
+        <item>AIRTIME</item>
+
+    </string-array>
+    <string-array name="airtime_country">
+        <item>US</item>
+        <item>Nigeria</item>
+        <item>Uganda</item>
+        <item>Ghana</item>
+        <item>Kenya</item>
+
+
+
+    </string-array>
+    <string-array name="data_country">
+        <item>NG</item>
+
+
+    </string-array>
+    <string-array name="Ghana_airtime">
+        <item>MTN GHANA VTU</item>
+        <item>TIGO VTU</item>
+        <item>Vodafone VTU</item>
+        <item>VODAFONE PAYMENT</item>
+
+    </string-array>
+
+
+    <string-array name="Ghana_MOMO_network">
+        <item>MTN</item>
+        <item>VODAFONE</item>
+        <item>TIGO</item>
+        <item>AIRTEL</item>
+
+
+    </string-array>
+
+
+    <string-array name="Zambia_network">
+        <item>MTN</item>
+        <item>ZAMTEL</item>
+
+    </string-array>
+
+    <string-array name="Nig_data_companies">
+        <item>9Mobile</item>
+        <item>Airtel</item>
+        <item>MTN</item>
+        <item>Glo</item>
+
+    </string-array>
+
+    <string-array name="Nig_data_companies_code">
+        <item>BIL099</item>
+        <item>BIL099</item>
+        <item>BIL099</item>
+        <item>BIL099</item>
+
+    </string-array>
+    <string-array name="Uganda_airTime_companies">
+        <item>TIGO Uganda</item>
+        <item>MTN Uganda</item>
+        <item>VODAFONE Uganda</item>
+    </string-array>
+
+    <array name="Uganda_data_companies">
+        <item>TIGO</item>
+        <item>MTN</item>
+        <item>VODAFONE</item>
+    </array>
+    <string-array name="Uganda_data_companies_code">
+        <item>BIL133</item>
+        <item>BIL132</item>
+        <item>BIL134</item>
+    </string-array>
+
+    <string-array name="Kenya_data_companies">
+        <item>TELKOM</item>
+        <item>SAFARICOM</item>
+        <item>AIRTEL</item>
+
+    </string-array>
+    <string-array name="Kenya_airtime_Network">
+        <item>TELKOM</item>
+        <item>SAFARICOM</item>
+        <item>AIRTEL</item>
+
+    </string-array>
+
+    <string-array name="Kenya_data_companies_code">
+        <item>BIL189</item>
+        <item>BIL188</item>
+        <item>BIL187</item>
+
+    </string-array>
+
+
+    <string-array name="Ghana_data_companies">
+        <item>TIGO VTU</item>
+        <item>MTN VTU</item>
+        <item>VODAFONE VTU</item>
+        <item>VODAFONE POSTPAID PAYMENT</item>
+    </string-array>
+
+    <string-array name="Ghana_data_companies_codes">
+        <item>BIL133</item>
+        <item>BIL132</item>
+        <item>BIL134</item>
+        <item>BIL140</item>
+    </string-array>
+
+
+    <string-array name="Type_of_Transfer">
+        <item></item>
+        <item>Bank</item>
+        <item>Card</item>
+        <item>USSD</item>
+        <item>QRCode</item>
+        <item>Mobile Money</item>
+    </string-array>
+
+
+
+    <string-array name="months">
+        <item></item>
+        <item>01</item>
+        <item>02</item>
+        <item>03</item>
+        <item>04</item>
+        <item>05</item>
+        <item>06</item>
+        <item>07</item>
+        <item>08</item>
+        <item>09</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+    <string-array name="month_value">
+        <item></item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+    <string-array name="yearNoOfDays">
+        <item></item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+        <item>31</item>
+        <item>32</item>
+        <item>33</item>
+        <item>34</item>
+        <item>35</item>
+        <item>36</item>
+        <item>37</item>
+        <item>38</item>
+        <item>39</item>
+        <item>40</item>
+        <item>41</item>
+        <item>42</item>
+        <item>43</item>
+        <item>44</item>
+        <item>45</item>
+        <item>46</item>
+        <item>47</item>
+        <item>48</item>
+        <item>49</item>
+        <item>50</item>
+        <item>51</item>
+        <item>52</item>
+        <item>53</item>
+        <item>54</item>
+        <item>55</item>
+        <item>56</item>
+        <item>57</item>
+        <item>58</item>
+        <item>59</item>
+        <item>60</item>
+        <item>61</item>
+        <item>62</item>
+        <item>63</item>
+        <item>64</item>
+        <item>65</item>
+        <item>66</item>
+        <item>67</item>
+        <item>68</item>
+        <item>69</item>
+        <item>70</item>
+        <item>71</item>
+        <item>72</item>
+        <item>73</item>
+        <item>74</item>
+        <item>75</item>
+        <item>76</item>
+        <item>77</item>
+        <item>78</item>
+        <item>79</item>
+        <item>80</item>
+        <item>81</item>
+        <item>82</item>
+        <item>83</item>
+        <item>84</item>
+        <item>85</item>
+        <item>86</item>
+        <item>87</item>
+        <item>88</item>
+        <item>89</item>
+        <item>90</item>
+        <item>91</item>
+        <item>92</item>
+        <item>93</item>
+        <item>94</item>
+        <item>95</item>
+        <item>96</item>
+        <item>97</item>
+        <item>98</item>
+        <item>99</item>
+        <item>100</item>
+        <item>101</item>
+        <item>102</item>
+        <item>103</item>
+        <item>104</item>
+        <item>105</item>
+        <item>106</item>
+        <item>107</item>
+        <item>108</item>
+        <item>109</item>
+        <item>110</item>
+        <item>111</item>
+        <item>112</item>
+        <item>113</item>
+        <item>114</item>
+        <item>115</item>
+        <item>116</item>
+        <item>117</item>
+        <item>118</item>
+        <item>119</item>
+        <item>120</item>
+        <item>121</item>
+        <item>122</item>
+        <item>123</item>
+        <item>124</item>
+        <item>125</item>
+        <item>126</item>
+        <item>127</item>
+        <item>128</item>
+        <item>129</item>
+        <item>130</item>
+        <item>131</item>
+        <item>132</item>
+        <item>133</item>
+        <item>134</item>
+        <item>135</item>
+        <item>136</item>
+        <item>137</item>
+        <item>138</item>
+        <item>139</item>
+        <item>140</item>
+        <item>141</item>
+        <item>142</item>
+        <item>143</item>
+        <item>144</item>
+        <item>145</item>
+        <item>146</item>
+        <item>147</item>
+        <item>148</item>
+        <item>149</item>
+        <item>150</item>
+        <item>151</item>
+        <item>152</item>
+        <item>153</item>
+        <item>154</item>
+        <item>155</item>
+        <item>156</item>
+        <item>157</item>
+        <item>158</item>
+        <item>159</item>
+        <item>160</item>
+        <item>161</item>
+        <item>162</item>
+        <item>163</item>
+        <item>164</item>
+        <item>165</item>
+        <item>166</item>
+        <item>167</item>
+        <item>168</item>
+        <item>169</item>
+        <item>170</item>
+        <item>171</item>
+        <item>172</item>
+        <item>173</item>
+        <item>174</item>
+        <item>175</item>
+        <item>176</item>
+        <item>177</item>
+        <item>178</item>
+        <item>179</item>
+        <item>180</item>
+        <item>181</item>
+        <item>182</item>
+        <item>183</item>
+        <item>184</item>
+        <item>185</item>
+        <item>186</item>
+        <item>187</item>
+        <item>188</item>
+        <item>189</item>
+        <item>190</item>
+        <item>191</item>
+        <item>192</item>
+        <item>193</item>
+        <item>194</item>
+        <item>195</item>
+        <item>196</item>
+        <item>197</item>
+        <item>198</item>
+        <item>199</item>
+        <item>200</item>
+
+        <item>201</item>
+        <item>202</item>
+        <item>203</item>
+        <item>204</item>
+        <item>205</item>
+        <item>206</item>
+        <item>207</item>
+        <item>208</item>
+        <item>209</item>
+        <item>210</item>
+        <item>211</item>
+        <item>212</item>
+        <item>213</item>
+        <item>214</item>
+        <item>215</item>
+        <item>216</item>
+        <item>217</item>
+        <item>218</item>
+        <item>219</item>
+        <item>220</item>
+        <item>221</item>
+        <item>222</item>
+        <item>223</item>
+        <item>224</item>
+        <item>225</item>
+        <item>226</item>
+        <item>227</item>
+        <item>228</item>
+        <item>229</item>
+        <item>230</item>
+        <item>231</item>
+        <item>232</item>
+        <item>233</item>
+        <item>234</item>
+        <item>235</item>
+        <item>236</item>
+        <item>237</item>
+        <item>238</item>
+        <item>239</item>
+        <item>240</item>
+        <item>241</item>
+        <item>242</item>
+        <item>243</item>
+        <item>244</item>
+        <item>245</item>
+        <item>246</item>
+        <item>247</item>
+        <item>248</item>
+        <item>249</item>
+        <item>250</item>
+        <item>251</item>
+        <item>252</item>
+        <item>253</item>
+        <item>254</item>
+        <item>255</item>
+        <item>256</item>
+        <item>257</item>
+        <item>258</item>
+        <item>259</item>
+        <item>260</item>
+        <item>261</item>
+        <item>262</item>
+        <item>263</item>
+        <item>264</item>
+        <item>265</item>
+        <item>266</item>
+        <item>267</item>
+        <item>268</item>
+        <item>269</item>
+        <item>270</item>
+        <item>271</item>
+        <item>272</item>
+        <item>273</item>
+        <item>274</item>
+        <item>275</item>
+        <item>276</item>
+        <item>277</item>
+        <item>278</item>
+        <item>279</item>
+        <item>280</item>
+        <item>281</item>
+        <item>282</item>
+        <item>283</item>
+        <item>284</item>
+        <item>285</item>
+        <item>286</item>
+        <item>287</item>
+        <item>288</item>
+        <item>289</item>
+        <item>290</item>
+        <item>291</item>
+        <item>292</item>
+        <item>293</item>
+        <item>294</item>
+        <item>295</item>
+        <item>296</item>
+        <item>297</item>
+        <item>298</item>
+        <item>299</item>
+        <item>300</item>
+
+    </string-array>
+
+
+    <string-array name="NoOfClients">
+        <item></item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+        <item>31</item>
+        <item>32</item>
+        <item>33</item>
+        <item>34</item>
+        <item>35</item>
+        <item>36</item>
+        <item>37</item>
+        <item>38</item>
+        <item>39</item>
+        <item>40</item>
+        <item>41</item>
+        <item>42</item>
+        <item>43</item>
+        <item>44</item>
+        <item>45</item>
+        <item>46</item>
+        <item>47</item>
+        <item>48</item>
+        <item>49</item>
+        <item>50</item>
+        <item>51</item>
+        <item>52</item>
+        <item>53</item>
+        <item>54</item>
+        <item>55</item>
+        <item>56</item>
+        <item>57</item>
+        <item>58</item>
+        <item>59</item>
+        <item>60</item>
+        <item>61</item>
+        <item>62</item>
+        <item>63</item>
+        <item>64</item>
+        <item>65</item>
+        <item>66</item>
+        <item>67</item>
+        <item>68</item>
+        <item>69</item>
+        <item>70</item>
+        <item>71</item>
+        <item>72</item>
+        <item>73</item>
+        <item>74</item>
+        <item>75</item>
+        <item>76</item>
+        <item>77</item>
+        <item>78</item>
+        <item>79</item>
+        <item>80</item>
+        <item>81</item>
+        <item>82</item>
+        <item>83</item>
+        <item>84</item>
+        <item>85</item>
+        <item>86</item>
+        <item>87</item>
+        <item>88</item>
+        <item>89</item>
+        <item>90</item>
+        <item>91</item>
+        <item>92</item>
+        <item>93</item>
+        <item>94</item>
+        <item>95</item>
+        <item>96</item>
+        <item>97</item>
+        <item>98</item>
+        <item>99</item>
+        <item>100</item>
+
+    </string-array>
+    <string-array name="STANDING_ORDER_DAYS">
+        <item></item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+        <item>31</item>
+        <item>32</item>
+        <item>33</item>
+        <item>34</item>
+        <item>35</item>
+        <item>36</item>
+        <item>37</item>
+        <item>38</item>
+        <item>39</item>
+        <item>40</item>
+        <item>41</item>
+        <item>42</item>
+        <item>43</item>
+        <item>44</item>
+        <item>45</item>
+        <item>46</item>
+        <item>47</item>
+        <item>48</item>
+        <item>49</item>
+        <item>50</item>
+    </string-array>
+
+
+
+    <string-array name="packages">
+        <item></item>
+        <item>Package A</item>
+        <item>Package B</item>
+        <item>Package C</item>
+        <item>Package D</item>
+        <item>Package E</item>
+        <item>Package D</item>
+        <item>Package E</item>
+        <item>Package F</item>
+        <item>Package G</item>
+        <item>Package H</item>
+        <item>Package I</item>
+        <item>Package J</item>
+        <item>Package K</item>
+        <item>Package L</item>
+        <item>Package M</item>
+        <item>Package N</item>
+        <item>Package O</item>
+        <item>Package P</item>
+        <item>Package Q</item>
+
+    </string-array>
+
+    <string-array name="savings_plans">
+        <item></item>
+        <item>NGN50</item>
+        <item>NGN100</item>
+        <item>NGN200</item>
+        <item>NGN300</item>
+        <item>NGN400</item>
+        <item>NGN500</item>
+        <item>NGN600</item>
+        <item>NGN700</item>
+        <item>NGN800</item>
+        <item>NGN900</item>
+        <item>NGN1,000</item>
+        <item>NGN2,000</item>
+        <item>NGN3,000</item>
+        <item>NGN4,000</item>
+        <item>NGN5,000</item>
+        <item>NGN6,000</item>
+        <item>NGN7,000</item>
+        <item>NGN8,000</item>
+        <item>NGN9,000</item>
+        <item>NGN10,000</item>
+        <item>NGN20,000</item>
+        <item>NGN30,000</item>
+        <item>NGN40,000</item>
+        <item>NGN50,000</item>
+        <item>NGN60,000</item>
+        <item>NGN70,000</item>
+        <item>NGN80,000</item>
+        <item>NGN90,000</item>
+        <item>NGN100,000</item>
+        <item>NGN200,000</item>
+        <item>NGN300,000</item>
+        <item>NGN400,000</item>
+        <item>NGN500,000</item>
+        <item>NGN600,000</item>
+        <item>NGN700,000</item>
+        <item>NGN800,000</item>
+        <item>NGN900,000</item>
+        <item>NGN1,000,000</item>
+        <item>NGN10,000,000</item>
+    </string-array>
+
+
+
+    <string-array name="plans">
+        <item></item>
+        <item>NGN100</item>
+        <item>NGN200</item>
+        <item>NGN300</item>
+        <item>NGN400</item>
+        <item>NGN500</item>
+        <item>NGN600</item>
+        <item>NGN700</item>
+        <item>NGN800</item>
+        <item>NGN900</item>
+        <item>NGN1,000</item>
+        <item>NGN2,000</item>
+        <item>NGN3,000</item>
+        <item>NGN4,000</item>
+        <item>NGN5,000</item>
+        <item>NGN6,000</item>
+        <item>NGN7,000</item>
+        <item>NGN8,000</item>
+        <item>NGN9,000</item>
+        <item>NGN10,000</item>
+        <item>NGN20,000</item>
+        <item>NGN30,000</item>
+        <item>NGN40,000</item>
+        <item>NGN50,000</item>
+        <item>NGN60,000</item>
+        <item>NGN70,000</item>
+        <item>NGN80,000</item>
+        <item>NGN90,000</item>
+        <item>NGN100,000</item>
+        <item>NGN200,000</item>
+        <item>NGN300,000</item>
+        <item>NGN400,000</item>
+        <item>NGN500,000</item>
+        <item>NGN600,000</item>
+        <item>NGN700,000</item>
+        <item>NGN800,000</item>
+        <item>NGN900,000</item>
+        <item>NGN1,000,000</item>
+        <item>NGN10,000,000</item>
+    </string-array>
+
+    <string-array name="Countries_of_the_world">
+        <item></item>
+        <item>Afghanistan</item>
+        <item>Algeria</item>
+        <item>Andorra</item>
+        <item>Angola</item>
+        <item>Antigua and Barbuda</item>
+        <item>Argentina</item>
+        <item>Armenia</item>
+        <item>Australia</item>
+        <item>Austria</item>
+        <item>Azerbaijan</item>
+        <item>The Bahamas</item>
+        <item>Bahrain</item>
+        <item>Bangladesh</item>
+        <item>Barbados</item>
+        <item>Belarus</item>
+        <item>Belgium</item>
+        <item>Belize</item>
+        <item>Benin</item>
+        <item>Bhutan</item>
+        <item>Bolivia</item>
+        <item>Bosnia and Herzegovina</item>
+        <item>Botswana</item>
+        <item>Brazil</item>
+        <item>Brunei</item>
+        <item>Bulgaria</item>
+        <item>Burkina Faso</item>
+        <item>Burundi</item>
+        <item>Cabo Verde</item>
+        <item>Cambodia</item>
+        <item>Cameroon</item>
+        <item>Canada</item>
+        <item>Central African Republic</item>
+        <item>Chad</item>
+        <item>Chile</item>
+        <item>China</item>
+        <item>Colombia</item>
+        <item>Comoros</item>
+        <item>Congo, Democratic Republic of the
+            Congo,</item>
+        <item>Republic of the
+            Costa Rica</item>
+        <item>Côte d’Ivoire</item>
+        <item>Croatia</item>
+        <item>Cuba</item>
+        <item>Cyprus</item>
+        <item>Czech Republic</item>
+        <item>East Timor (Timor-Leste)</item>
+        <item>Ecuador</item>
+        <item>Egypt</item>
+        <item>El Salvador</item>
+        <item>Equatorial Guinea</item>
+        <item>Eritrea</item>
+        <item>Estonia</item>
+        <item>Eswatini</item>
+        <item>Ethiopia</item>
+        <item>Fiji</item>
+        <item>Finland</item>
+        <item>France</item>
+        <item>Gabon</item>
+        <item>The Gambia</item>
+        <item>Georgia</item>
+        <item>Germany</item>
+        <item>Ghana</item>
+        <item>Greece</item>
+        <item>Grenada</item>
+        <item>Guatemala</item>
+        <item>Guinea</item>
+        <item>Egypt</item>
+        <item>Guinea-Bissau</item>
+        <item>Equatorial Guinea</item>
+        <item>Guyana</item>
+        <item>Haiti</item>
+        <item>Honduras</item>
+        <item>Hungary</item>
+        <item>Iceland</item>
+        <item>India</item>
+        <item>Indonesia</item>
+        <item>Iran</item>
+        <item>Iraq</item>
+        <item>Ireland</item>
+        <item>Israel</item>
+        <item>Italy</item>
+        <item>Jamaica</item>
+        <item>Japan</item>
+        <item>Jordan</item>
+        <item>Kazakhstan</item>
+        <item>Kenya</item>
+        <item>Kiribati</item>
+        <item>Korea, North</item>
+        <item>Korea, South</item>
+        <item>Kosovo</item>
+        <item>Kuwait</item>
+        <item>Kyrgyzstan</item>
+        <item>Laos</item>
+        <item>Latvia</item>
+        <item>Lebanon</item>
+        <item>Lesotho</item>
+        <item>Liberia</item>
+        <item>Libya</item>
+        <item>Liechtenstein</item>
+        <item>Lithuania</item>
+        <item>Luxembourg</item>
+        <item>Madagascar</item>
+        <item>Malawi</item>
+        <item>Malaysia</item>
+        <item>Maldives</item>
+        <item>Mali</item>
+        <item>Malta</item>
+        <item>Marshall Islands</item>
+        <item>Mauritania</item>
+        <item>Mauritius</item>
+        <item>Mexico</item>
+        <item>Micronesia</item>
+        <item>Federated States of
+            Moldova</item>
+        <item>Monaco</item>
+        <item>Mongolia</item>
+        <item>Montenegro</item>
+        <item>Morocco</item>
+        <item>Mozambique</item>
+        <item>Myanmar (Burma)</item>
+        <item>Namibia</item>
+        <item>Nauru</item>
+        <item>Nepal</item>
+        <item>Netherlands</item>
+        <item>New Zealand</item>
+        <item>Nicaragua</item>
+        <item>Niger</item>
+        <item>Nigeria</item>
+        <item>North Macedonia</item>
+        <item>Norway</item>
+        <item>Oman</item>
+        <item>Pakistan</item>
+        <item>Palau</item>
+        <item>Panama</item>
+        <item>Papua New Guinea</item>
+        <item>Paraguay</item>
+        <item>Peru</item>
+        <item>Philippines</item>
+        <item>Poland</item>
+        <item>Portugal</item>
+        <item>Qatar</item>
+        <item>Romania</item>
+        <item>Russia</item>
+        <item>Rwanda</item>
+        <item>Saint Kitts and Nevis</item>
+        <item>Saint Lucia</item>
+        <item>Saint Vincent and the Grenadines</item>
+        <item>Samoa</item>
+        <item>San Marino</item>
+        <item>Sao Tome and Principe</item>
+        <item>Saudi Arabia</item>
+        <item>Senegal</item>
+        <item>Serbia</item>
+        <item>Seychelles</item>
+        <item>Sierra Leone</item>
+        <item>Singapore</item>
+        <item>Slovakia</item>
+        <item>Slovenia</item>
+        <item>Solomon Islands</item>
+        <item>Somalia</item>
+        <item>South Africa</item>
+        <item>Spain</item>
+        <item>Sri Lanka</item>
+        <item>Sudan</item>
+        <item>Sudan, South</item>
+        <item>Suriname</item>
+        <item>Sweden</item>
+        <item>Switzerland</item>
+        <item>Syria</item>
+        <item>Taiwan</item>
+        <item>Tajikistan</item>
+        <item>Tanzania</item>
+        <item>Thailand</item>
+        <item>Togo</item>
+        <item>Tonga</item>
+        <item>Trinidad and Tobago</item>
+        <item>Tunisia</item>
+        <item>Turkey</item>
+        <item>Turkmenistan</item>
+        <item>Tuvalu</item>
+        <item>Uganda</item>
+
+        <item>Ukraine</item>
+        <item>United Arab Emirates</item>
+        <item>United Kingdom</item>
+        <item>United States</item>
+        <item>Uruguay</item>
+        <item>Uzbekistan</item>
+        <item>Vanuatu</item>
+        <item>Vatican City</item>
+        <item>Venezuela</item>
+        <item>Vietnam</item>
+        <item>Yemen</item>
+        <item>Zambia</item>
+        <item>Zimbabwe</item>
+    </string-array>
+
+
+
+
+    <string-array name="planValues">
+        <item></item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+        <item>31</item>
+        <item>32</item>
+        <item>33</item>
+        <item>34</item>
+    </string-array>
+
+
+    <string-array name="stateValues">
+        <item></item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+        <item>31</item>
+        <item>32</item>
+        <item>33</item>
+        <item>34</item>
+        <item>35</item>
+        <item>36</item>
+        <item>37</item>
+    </string-array>
+
+
+    <string-array name="gender">
+        <item></item>
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+    <string-array name="number_of_months">
+        <item></item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+
+
+
+    <string-array name="number_of_day_spinner">
+        <item></item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+        <item>31</item>
+    </string-array>
+
+    <string-array name="skylight_bank">
+        <item></item>
+        <item>ACCESS BANK PLC</item>
+        <item>Zenith Bank</item>
+        <item>Sterling Bank</item>
+        <item>Wema Bank</item>
+    </string-array>
+
+    <string-array name="Banks">
+        <item></item>
+        <item>ACCESS BANK PLC</item>
+        <item>First Bank of Nigeria</item>
+        <item>UBA PLC</item>
+        <item>Heritage</item>
+        <item>Keystone Bank</item>
+        <item>Skye Bank</item>
+        <item>Sterling Bank</item>
+        <item>Union Bank</item>
+        <item>GTBank Plc</item>
+        <item>FCMB</item>
+        <item>TrustBond</item>
+        <item>SunTrust Bank</item>
+        <item>Diamond Bank</item>
+        <item>GT MOBILE MONEY</item>
+        <item>FET</item>
+        <item>Mkudi</item>
+        <item>FSDH</item>
+        <item>Coronation Merchant Bank</item>
+        <item>Enterprise Bank</item>
+        <item>Wema Bank</item>
+        <item>Parralex</item>
+        <item>Pagatech</item>
+        <item>Stanbic IBTC Bank</item>
+        <item>Fidelity Mobile</item>
+        <item>EcoMobile</item>
+        <item>Ecobank Plc</item>
+        <item>JAIZ Bank</item>
+        <item>Access Money</item>
+        <item>Unity Bank</item>
+        <item>CitiBank</item>
+        <item>Fidelity Bank</item>
+        <item>eTranzact</item>
+        <item>Standard Chartered Bank</item>
+        <item>Zenith Bank</item>
+        <item>Jubilee Life Mortgage Bank</item>
+        <item>Sterling Mobile</item>
+        <item>FBNMobile</item>
+        <item>Stanbic Mobile Money</item>
+        <item>TCF MFB</item>
+        <item>ASO Savings and Loans</item>
+        <item>Cellulant</item>
+        <item>NIP Virtual Bank</item>
+        <item>Paycom</item>
+        <item>NPF MicroFinance Bank</item>
+        <item>Imperial Homes Mortgage Bank</item>
+        <item>Covenant Microfinance Bank</item>
+        <item>SafeTrust Mortgage Bank</item>
+        <item>ChamsMobile</item>
+        <item>ZenithMobile</item>
+        <item>PayAttitude Online</item>
+        <item>Fortis Microfinance Bank</item>
+        <item>VTNetworks</item>
+        <item>TeasyMobile</item>
+        <item>MoneyBox</item>
+        <item>Hedonmark</item>
+        <item>Eartholeum</item>
+        <item>ReadyCash (Parkway)</item>
+        <item>Omoluabi Mortgage Bank</item>
+        <item>TagPay</item>
+        <item>FortisMobile</item>
+        <item>Page MFBank</item>
+        <item>Pagatech</item>
+    </string-array>
+
+    <string-array name="office">
+        <item></item>
+        <item>Trans-Amadi</item>
+        <item>University of Edu. Road</item>
+        <item>Ogoni Affiliate Center</item>
+        <item>Ahoada Affiliate Center</item>
+        <item>Ndoni Affiliate Center</item>
+        <item>Bayelsa Affiliate Center</item>
+        <item>Delta Affiliate Center</item>
+        <item>Edo Affiliate Center</item>
+        <item>Andoni Affiliate Center</item>
+        <item>Imo Affiliate Center</item>
+        <item>Abia Affiliate Center</item>
+    </string-array>
+
+    <string-array name="officeBranch">
+        <item></item>
+        <item>Port Harcourt</item>
+        <item>Lagos</item>
+        <item>Abuja</item>
+        <item>Soweto</item>
+        <item>Accra</item>
+        <item>Ebonyi</item>
+        <item>Uyo</item>
+        <item>Kaduna</item>
+    </string-array>
+
+    <string-array name="statusOfDeposit">
+        <item></item>
+        <item>Verified</item>
+        <item>UnVerified</item>
+    </string-array>
+    <string-array name="officeBranch33">
+        <item></item>
+        <item>Trans-Amadi</item>
+        <item>Wimpey</item>
+        <item>Elelenwo</item>
+        <item>Ozuoba</item>
+        <item>Eleme</item>
+        <item>Iriebe</item>
+        <item>Onne</item>
+        <item>Rumuomasi</item>
+    </string-array>
+
+    <string-array name="officeWareHouse">
+        <item></item>
+        <item>Skylight Warehouse</item>
+        <item>Trans-Amadi</item>
+        <item>Wimpey</item>
+        <item>Elelenwo</item>
+        <item>Ozuoba</item>
+        <item>Eleme</item>
+        <item>Iriebe</item>
+        <item>Onne</item>
+        <item>Rumuomasi</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="skylight_packages">
+        <item></item>
+        <item>Savings</item>
+        <item>Item Purchase</item>
+        <item>Promo</item>
+        <item>Investment</item>
+    </string-array>
+
+    <string-array name="Stock_Office_Branch">
+        <item></item>
+        <item>Soweto Warehouse</item>
+        <item>Ugama</item>
+        <item>Unyeada</item>
+        <item>Abuja</item>
+        <item>Lagos</item>
+        <item>Accra</item>
+        <item>Kenya</item>
+        <item>USA</item>
+        <item>Canada</item>
+        <item>Australia</item>
+        <item>Germany</item>
+    </string-array>
+
+    <string-array name="Stock_Office_Branches">
+        <item></item>
+        <item>Skylight Warehouse</item>
+        <item>Trans-Amadi</item>
+        <item>Wimpey</item>
+        <item>Elelenwo</item>
+        <item>Ozuoba</item>
+        <item>Eleme</item>
+        <item>Iriebe</item>
+        <item>Onne</item>
+        <item>Rumuomasi</item>
+    </string-array>
+
+
+
+
+    <string-array name="item_menu_array">
+        <item>Edit</item>
+        <item>Delete</item>
+        <item>Set Alarm</item>
+    </string-array>
+    <string-array name="type_of_package">
+        <item></item>
+        <item>Savings</item>
+        <item>Items Purchase</item>
+        <item>Promo</item>
+        <item>Investment</item>
+    </string-array>
+
+    <string-array name="status_of_package">
+        <item></item>
+        <item>Old</item>
+        <item>New</item>
+    </string-array>
+
+
+    <string-array name="ussd_banks">
+        <item></item>
+        <item>Select Bank</item>
+        <item>Access Bank</item>
+        <item>EcoBank</item>
+        <item>Fidelity Bank</item>
+        <item>First Bank of Nigeria</item>
+        <item>First City Monument Bank</item>
+        <item>Guaranty Trust Bank</item>
+        <item>Heritage Bank</item>
+        <item>Keystone Bank</item>
+        <item>Stanbic IBTC Bank</item>
+        <item>Sterling Bank PLC</item>
+        <item>Union Bank</item>
+        <item>United Bank for Africa</item>
+        <item>Unity Bank PLC</item>
+        <item>VFD Microfinance Bank</item>
+        <item>Wema Bank</item>
+        <item>Zenith bank PLC</item>
+    </string-array>
+
+    <array name="Brokers">
+        <item></item>
+        <item>Hantec</item>
+        <item>FXTM</item>
+
+    </array>
+    <string-array name="Final_status">
+        <item></item>
+        <item>inProgress</item>
+        <item>Complete</item>
+        <item>Unpaid</item>
+        <item>Paid</item>
+        <item>Delivered</item>
+    </string-array>
+
+
+    <string-array name="state">
+        <item></item>
+        <item>Outside Nigeria</item>
+        <item>Abia</item>
+        <item>Adamawa State</item>
+        <item>Akwa Ibom State</item>
+        <item>Anambra State</item>
+        <item>Bauchi State</item>
+        <item>Bayelsa State</item>
+        <item>Benue State</item>
+        <item>Borno State</item>
+        <item>Cross River State</item>
+        <item>Delta State</item>
+        <item>Ebonyi State</item>
+        <item>Edo State</item>
+        <item>Ekiti State</item>
+        <item>Enugu State</item>
+        <item>Gombe State</item>
+        <item>Imo State</item>
+        <item>Jigawa State</item>
+        <item>Kaduna State</item>
+        <item>Kano State</item>
+        <item>Katsina State</item>
+        <item>Kebbi State</item>
+        <item>Kogi State</item>
+        <item>Kwara State</item>
+        <item>Lagos State</item>
+        <item>Nasarawa State</item>
+        <item>Niger State</item>
+        <item>Ogun State</item>
+        <item>Ondo State</item>
+        <item>Osun State</item>
+        <item>Oyo State</item>
+        <item>Plateau State</item>
+        <item>Rivers State</item>
+        <item>Sokoto State</item>
+        <item>Taraba State</item>
+        <item>Yobe State</item>
+        <item>Zamfara State</item>
+    </string-array>
+
+    <string-array name="Package_Item_Purchase">
+        <item></item>
+        <item>Bread Toaster</item>
+        <item>Mattress Muoka Foam</item>
+        <item>Portable Wireless Radio(Small)</item>
+        <item>Portable Wireless Radio(Medium)</item>
+        <item>SMC Ceiling Fan(Long Blade)</item>
+        <item>SMC Ceiling Fan(Short Blade)</item>
+        <item>Siena Car 2006 Model</item>
+        <item>Keke bus</item>
+        <item>Butterfly Sewing Machine</item>
+        <item>Weaving Machine</item>
+        <item>Standing Hair Dryer</item>
+        <item>Microwave Oven</item>
+        <item>Keke Tricycle</item>
+        <item>Masterchef Non Stick pots set</item>
+        <item>Generic Non Stick Pot with Frying Pan</item>
+        <item>Washing Machine</item>
+        <item>LG DVD Player 542</item>
+        <item>LG DVD Audio 132</item>
+        <item>LG Flat screen 28 inches</item>
+        <item>LG Flat screen 32 inches</item>
+        <item>LG Flat screen 43 inches</item>
+        <item>Deep Freezer(100L, 2Ft) </item>
+        <item>Deep Freezer(200L, 2Ft) </item>
+        <item>Deep Freezer(Beko) </item>
+        <item>Refrigerator 2 doors (Beko)</item>
+        <item>Refrigerator 1 doors, Hier Thermocool</item>
+        <item>Refrigerator Medium Size</item>
+        <item>Electric Kettle</item>
+        <item>Cooking Stove(Big round)</item>
+        <item>Two Burner Stove</item>
+        <item>Single Burner Hot plate</item>
+        <item>8 KG Cylinder &amp; Burner</item>
+        <item>12kg cylinder</item>
+        <item>Hammer Mill Grinder Machine</item>
+        <item>Original Philips Iron</item>
+        <item>Generator Fireman(SPG 8.800EZ)</item>
+        <item>Generator Fireman Rugged Line(RDS 900 EX)</item>
+        <item>Generator Fireman Rugged Line(3910 EX)</item>
+        <item>Generator Fireman Ecological(Eco 1990s)</item>
+        <item>Home Theatre, 1200W</item>
+        <item>Home Theatre, 600W</item>
+        <item>Hair Clipper Set(Choba)</item>
+        <item>Hair Clipper Set(Tapper)</item>
+        <item>HP Laptop i3, 2Ghz,6GB RAM,500HDD</item>
+        <item>Lenovo Laptop idea Pad, 2Ghz,6GB RAM,500HDD</item>
+        <item>Gass Cooker and Oven</item>
+        <item>Two Burner Table Gas</item>
+        <item>Blender(3 in one)</item>
+        <item>Water dispenser</item>
+        <item>OX Fan</item>
+        <item>Standard Fan</item>
+        <item>Air conditioner</item>
+        <item>Water dispenser</item>
+        <item>OX Fan</item>
+        <item>Rechargeable Blender</item>
+        <item>Emel Ind Machine</item>
+        <item>Professional Hair Straightener</item>
+        <item>Others</item>
+
+    </string-array>
+
+
+
+    <string-array name="promo">
+        <item></item>
+        <item>Package A</item>
+        <item>Package B</item>
+        <item>Package C</item>
+        <item>Package D</item>
+        <item>Package E</item>
+        <item>Package F</item>
+        <item>Package G</item>
+        <item>Package H</item>
+        <item>Package I</item>
+        <item>Super Saver Package</item>
+        <item>Reward Package</item>
+        <item>Package I</item>
+        <item>Celebration Package 1</item>
+        <item>Celebration Package 2</item>
+        <item>Celebration Package 3</item>
+        <item>Celebration Package 4</item>
+        <item>Next Level 6 Months</item>
+        <item>Next Level 12 Months</item>
+        <item>Special Package 6 Months</item>
+        <item>Special Package 12 Months</item>
+        <item>Provision Package</item>
+        <item>Bread Toaster</item>
+        <item>Mattress Muoka Foam</item>
+        <item>Portable Wireless Radio(Small)</item>
+        <item>Portable Wireless Radio(Medium)</item>
+        <item>SMC Ceiling Fan(Long Blade)</item>
+        <item>SMC Ceiling Fan(Short Blade)</item>
+        <item>Siena Car 2006 Model</item>
+        <item>Keke bus</item>
+        <item>Butterfly Sewing Machine</item>
+        <item>Weaving Machine</item>
+        <item>Standing Hair Dryer</item>
+        <item>Microwave Oven</item>
+        <item>Keke Tricycle</item>
+        <item>Masterchef Non Stick pots set</item>
+        <item>Generic Non Stick Pot with Frying Pan</item>
+        <item>Washing Machine</item>
+        <item>LG DVD Player 542</item>
+        <item>LG DVD Audio 132</item>
+        <item>LG Flat screen 28 inches</item>
+        <item>LG Flat screen 32 inches</item>
+        <item>LG Flat screen 43 inches</item>
+        <item>Deep Freezer(100L, 2Ft) </item>
+        <item>Deep Freezer(200L, 2Ft) </item>
+        <item>Deep Freezer(Beko) </item>
+        <item>Refrigerator 2 doors (Beko)</item>
+        <item>Refrigerator 1 doors, Hier Thermocool</item>
+        <item>Refrigerator Medium Size</item>
+        <item>Electric Kettle</item>
+        <item>Cooking Stove(Big round)</item>
+        <item>Two Burner Stove</item>
+        <item>Single Burner Hot plate</item>
+        <item>8 KG Cylinder &amp; Burner</item>
+        <item>12kg cylinder</item>
+        <item>Hammer Mill Grinder Machine</item>
+        <item>Original Philips Iron</item>
+        <item>Generator Fireman(SPG 8.800EZ)</item>
+        <item>Generator Fireman Rugged Line(RDS 900 EX)</item>
+        <item>Generator Fireman Rugged Line(3910 EX)</item>
+        <item>Generator Fireman Ecological(Eco 1990s)</item>
+        <item>Home Theatre, 1200W</item>
+        <item>Home Theatre, 600W</item>
+        <item>Hair Clipper Set(Choba)</item>
+        <item>Hair Clipper Set(Tapper)</item>
+        <item>HP Laptop i3, 2Ghz,6GB RAM,500HDD</item>
+        <item>Lenovo Laptop idea Pad, 2Ghz,6GB RAM,500HDD</item>
+        <item>Gass Cooker and Oven</item>
+        <item>Two Burner Table Gas</item>
+        <item>Blender(3 in one)</item>
+        <item>Water dispenser</item>
+        <item>OX Fan</item>
+        <item>Standard Fan</item>
+        <item>Air conditioner</item>
+        <item>Water dispenser</item>
+        <item>OX Fan</item>
+        <item>Rechargeable Blender</item>
+        <item>Emel Ind Machine</item>
+        <item>Professional Hair Straightener</item>
+        <item>Others</item>
+
+    </string-array>
+
+
+    <string-array name="Food_Stuff_Provision">
+        <item></item>
+        <item>Package A</item>
+        <item>Package B</item>
+        <item>Package C</item>
+        <item>Package D</item>
+        <item>Package E</item>
+        <item>Package F</item>
+        <item>Package G</item>
+        <item>Package H</item>
+        <item>Package I</item>
+        <item>Super Saver Package</item>
+        <item>Reward Package</item>
+        <item>Hundred Naira Package</item>
+        <item>Fifty Naira Package</item>
+        <item>Package I</item>
+        <item>Celebration Package 1</item>
+        <item>Celebration Package 2</item>
+        <item>Celebration Package 3</item>
+        <item>Celebration Package 4</item>
+        <item>Next Level 6 Months</item>
+        <item>Next Level 12 Months</item>
+        <item>Special Package 6 Months</item>
+        <item>Special Package 12 Months</item>
+        <item>Provision Package</item>
+    </string-array>
+
+    <string-array name="investment_package">
+        <item></item>
+        <item>Plan 1,  N675, @ 5% Yearly</item>
+        <item>Plan 2, N1,350, @ 5% Yearly</item>
+        <item>Plan 3, N2,700, @5% Yearly</item>
+    </string-array>
+
+
+
+    <string-array name="Package_Collectable">
+        <item></item>
+        <item>Package A</item>
+        <item>Package B</item>
+        <item>Package C</item>
+        <item>Package D</item>
+        <item>Package E</item>
+        <item>Package F</item>
+        <item>Package G</item>
+        <item>Package H</item>
+        <item>Package I</item>
+        <item>Super Saver Package</item>
+        <item>Reward Package</item>
+        <item>Hundred Naira Package</item>
+        <item>Fifty Naira Package</item>
+        <item>Package I</item>
+        <item>Celebration Package 1</item>
+        <item>Celebration Package 2</item>
+        <item>Celebration Package 3</item>
+        <item>Celebration Package 4</item>
+        <item>Next Level 6 Months</item>
+        <item>Next Level 12 Months</item>
+        <item>Special Package 6 Months</item>
+        <item>Special Package 12 Months</item>
+        <item>Provision Package</item>
+
+        <item>Bread Toaster</item>
+        <item>Mattress Muoka Foam</item>
+        <item>Portable Wireless Radio(Small)</item>
+        <item>Portable Wireless Radio(Medium)</item>
+        <item>SMC Ceiling Fan(Long Blade)</item>
+        <item>SMC Ceiling Fan(Short Blade)</item>
+        <item>Siena Car 2006 Model</item>
+        <item>Keke bus</item>
+        <item>Butterfly Sewing Machine</item>
+        <item>Weaving Machine</item>
+        <item>Standing Hair Dryer</item>
+        <item>Microwave Oven</item>
+        <item>Keke Tricycle</item>
+        <item>Masterchef Non Stick pots set</item>
+        <item>Generic Non Stick Pot with Frying Pan</item>
+        <item>Washing Machine</item>
+        <item>LG DVD Player 542</item>
+        <item>LG DVD Audio 132</item>
+        <item>LG Flat screen 28 inches</item>
+        <item>LG Flat screen 32 inches</item>
+        <item>LG Flat screen 43 inches</item>
+        <item>Deep Freezer(100L, 2Ft) </item>
+        <item>Deep Freezer(200L, 2Ft) </item>
+        <item>Deep Freezer(Beko) </item>
+        <item>Refrigerator 2 doors (Beko)</item>
+        <item>Refrigerator 1 doors, Hier Thermocool</item>
+        <item>Refrigerator Medium Size</item>
+        <item>Electric Kettle</item>
+        <item>Cooking Stove(Big round)</item>
+        <item>Two Burner Stove</item>
+        <item>Single Burner Hot plate</item>
+        <item>8 KG Cylinder &amp; Burner</item>
+        <item>12kg cylinder</item>
+        <item>Hammer Mill Grinder Machine</item>
+        <item>Original Philips Iron</item>
+        <item>Generator Fireman(SPG 8.800EZ)</item>
+        <item>Generator Fireman Rugged Line(RDS 900 EX)</item>
+        <item>Generator Fireman Rugged Line(3910 EX)</item>
+        <item>Generator Fireman Ecological(Eco 1990s)</item>
+        <item>Home Theatre, 1200W</item>
+        <item>Home Theatre, 600W</item>
+        <item>Hair Clipper Set(Choba)</item>
+        <item>Hair Clipper Set(Tapper)</item>
+        <item>HP Laptop i3, 2Ghz,6GB RAM,500HDD</item>
+        <item>Lenovo Laptop idea Pad, 2Ghz,6GB RAM,500HDD</item>
+        <item>Gass Cooker and Oven</item>
+        <item>Two Burner Table Gas</item>
+        <item>Blender(3 in one)</item>
+        <item>Water dispenser</item>
+        <item>OX Fan</item>
+        <item>Standard Fan</item>
+        <item>Air conditioner</item>
+        <item>Water dispenser</item>
+        <item>OX Fan</item>
+        <item>Rechargeable Blender</item>
+        <item>Emel Ind Machine</item>
+        <item>Professional Hair Straightener</item>
+        <item>Others</item>
+
+    </string-array>
+
+</resources>

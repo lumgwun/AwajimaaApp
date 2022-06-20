@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.skylightapp.AllCustOldPackAct"
+    android:background="#fff">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Select from all Customers"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:textSize="17sp"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/rect_their4c"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:padding="20dp"
+            android:textAlignment="center"
+            android:layout_height="wrap_content"/>
+
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:layout_width="match_parent"
+            android:layout_marginTop="15dp"
+            android:textSize="17sp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/rect6h"
+            android:layout_marginEnd="2dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/old_customerAll"
+            android:padding="50dp"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/old_package"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="10dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:text="Select an Old package"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:textSize="17sp"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:padding="20dp"
+                android:textAlignment="center"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:layout_width="match_parent"
+                android:id="@+id/packageFromAllCus"
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/rect6h"
+                android:layout_marginEnd="2dp"
+                android:padding="50dp"
+                android:textColorHint="@color/colorPrimaryDark"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/days4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:weightSum="2"
+            android:padding="30dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rect6h"
+            android:orientation="horizontal">
+            <EditText
+                android:layout_width="match_parent"
+                android:id="@+id/edtNoOfDaysAllCus"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:imeOptions="actionDone"
+                android:nextFocusDown="@color/colorPrimaryDark"
+                android:textColorHint="@color/colorPrimaryDark"
+                android:hint="Enter Number of days"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:text="Total"
+            android:visibility="visible"
+            android:layout_marginStart="2dp"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:layout_marginEnd="2dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:id="@+id/total_amountAllCus"
+            android:layout_height="wrap_content">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+        <com.github.clans.fab.FloatingActionButton
+            android:layout_width="match_parent"
+            android:layout_gravity="right"
+            android:id="@+id/fabALLCus"
+            android:src="@drawable/ic_home_black_24dp"
+            android:layout_height="wrap_content"/>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:id="@+id/buttonLayoutALL"
+            android:padding="10dp"
+            android:weightSum="2"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/sky4"
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_width="0dp"
+                android:text="Add New"
+                android:textSize="20sp"
+                android:padding="10dp"
+                android:background="@drawable/rect_their4"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="10dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/add_savingsAllCus"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:layout_width="0dp"
+                android:text="Pay Now"
+                android:textSize="20sp"
+                android:padding="10dp"
+                android:onClick="payDialoq4"
+                android:background="@drawable/rect_their4"
+                android:layout_marginEnd="2dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/pay_now_savingsAllCus"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Powered by Lumgwun Soln."
+            android:layout_marginTop="10dp"
+            android:gravity="bottom"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/shape_rect13"
+            android:textColor="@android:color/holo_red_dark"
+            android:padding="20dp"
+            android:textStyle="bold" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</ScrollView>

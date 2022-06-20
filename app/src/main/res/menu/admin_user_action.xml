@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/nav_group_1"
+        android:checkableBehavior="all">
+        <item
+            android:id="@+id/delete_user0"
+            android:checked="true"
+            android:icon="@drawable/dashboard1"
+            android:title="Delete User" />
+        <item android:id="@+id/Edit_Contact"
+            android:icon="@drawable/icon_tab1"
+            android:title="Edit User" >
+        </item>
+        <item android:id="@+id/update_user"
+            android:icon="@drawable/icon_tab1"
+            android:title="Update User" >
+        </item>
+
+        <item android:id="@+id/item6"
+            android:icon="@drawable/icon_tab1"
+            android:title="Delete User" >
+        </item>
+    </group>
+
+    <group
+        android:id="@+id/nav_group_12"
+        android:checkableBehavior="all">
+        <item
+            android:id="@+id/transactions"
+            android:checked="true"
+            android:icon="@drawable/transaction"
+            android:title="All Transactions" />
+        <item
+            android:id="@+id/user_loans"
+            android:icon="@drawable/user3"
+            android:title="All Loans" />
+
+        <item android:id="@+id/users"
+            android:icon="@drawable/icon_tab1"
+            android:title="All Users" >
+        </item>
+        <item android:id="@+id/packages2"
+            android:icon="@drawable/icon_tab1"
+            android:title="All Subscription" >
+        </item>
+    </group>
+
+
+
+
+</menu>

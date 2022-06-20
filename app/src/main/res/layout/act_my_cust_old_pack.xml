@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.skylightapp.Tellers.MyCustOldPackAct"
+    android:background="@drawable/rect_their_message">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:text="Select from my Customers"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:textSize="17sp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:textAlignment="center"
+            android:layout_height="wrap_content"/>
+
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:layout_width="match_parent"
+            android:layout_marginTop="15dp"
+            android:textSize="17sp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/shape_rect11"
+            android:layout_marginEnd="2dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/old_cusMy"
+            android:padding="40dp"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/old_package"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rect_their_message">
+            <TextView
+                android:layout_width="match_parent"
+                android:text="Select an Old package"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"
+                android:textSize="17sp"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:padding="20dp"
+                android:textAlignment="center"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:layout_width="match_parent"
+                android:id="@+id/packOldMy"
+                android:textSize="30sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/shape_rect11"
+                android:layout_marginEnd="2dp"
+                android:padding="40dp"
+                android:textColorHint="@color/colorPrimaryDark"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/old_packageStuff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
+            android:weightSum="2"
+            android:background="@drawable/rect_their_message">
+            <TextView
+                android:layout_width="0dp"
+                android:text="Package Amount:N10,000"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:textSize="15sp"
+                android:id="@+id/old_packAmount"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:padding="20dp"
+                android:textAlignment="center"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:text="Amount Rem:N30,000"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:textSize="15sp"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/old_packAmountRem"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:padding="25dp"
+                android:textAlignment="center"
+                android:layout_height="wrap_content"
+                tools:ignore="RtlCompat" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/pStuff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
+            android:weightSum="2"
+            android:background="@drawable/rect_their_message">
+            <TextView
+                android:layout_width="0dp"
+                android:text="Package Total:N600,000"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:id="@+id/old_packTotal"
+                android:layout_weight="1"
+                android:textSize="15sp"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:padding="20dp"
+                android:textAlignment="center"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:text="Amount So far:N570,000"
+                android:id="@+id/old_packAmountSoFar"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:textSize="15sp"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:padding="20dp"
+                android:textAlignment="center"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/days4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:weightSum="2"
+            android:background="@drawable/rect_their_message"
+            android:orientation="horizontal">
+            <EditText
+                android:layout_width="match_parent"
+                android:id="@+id/edtNoOfDaysMyOld"
+                android:inputType="number"
+                android:background="@drawable/shape_ripples"
+                android:textAlignment="center"
+                android:padding="30dp"
+                android:imeOptions="actionDone"
+                android:nextFocusDown="@color/colorPrimaryDark"
+                android:textColorHint="@color/black"
+                android:hint="Enter Number of days"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:text="Total"
+            android:visibility="visible"
+            android:layout_marginStart="2dp"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:layout_marginEnd="2dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:id="@+id/total_amtOld"
+            android:layout_height="wrap_content">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/buttonLayout4"
+            android:padding="10dp"
+            android:weightSum="2"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/shape_rect12"
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_width="match_parent"
+                android:text="Add New"
+                android:textSize="20sp"
+                android:padding="25dp"
+                android:background="@drawable/rect6h"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/add_savingsOld"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:layout_width="0dp"
+                android:text="Pay Now"
+                android:textSize="20sp"
+                android:padding="10dp"
+                android:visibility="gone"
+                android:onClick="payDialoq4"
+                android:background="@drawable/shape_layer_2"
+                android:layout_marginEnd="2dp"
+                android:textColor="@color/white"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/pay_now_savingsOld"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Powered by Lumgwun Soln."
+            android:layout_marginTop="10dp"
+            android:gravity="bottom"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/rect_their4"
+            android:textColor="@android:color/black"
+            android:padding="20dp"
+            android:textStyle="bold" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</ScrollView>

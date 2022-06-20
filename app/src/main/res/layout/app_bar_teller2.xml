@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    style="@style/NoActionBar"
+    tools:showIn="@layout/act_tellers_drawer"
+    tools:context="com.skylightapp.Tellers.TellerDrawerAct">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/black"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:background="#f1f5f7"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar_teller3"
+                    android:layout_width="match_parent"
+                    app:title="Teller's Back Office"
+                    app:titleTextColor="@color/white"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_layer_1a">
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:layout_marginEnd="1dp"
+                            android:src="@drawable/good_morn"
+                            android:id="@+id/greetingsTellerr" />
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/welcome_teller019"
+                            android:textAllCaps="true"
+                            android:gravity="center_horizontal"
+                            android:layout_marginEnd="17dp"
+                            android:layout_marginTop="12dp"
+                            android:textAlignment="center"
+                            android:textSize="17sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:text="Welcome Yingifa Tamuno"/>
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:layout_width="70dp"
+                                android:id="@+id/profile_image_teller"
+                                android:layout_marginTop="12dp"
+                                android:layout_marginStart="3dp"
+                                android:src="@drawable/ic_admin_user"
+                                android:layout_height="100dp"/>
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_width="match_parent"
+                                android:orientation="vertical"
+                                android:layout_marginBottom="10dp"
+                                android:layout_height="wrap_content">
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/No_of_SO090"
+                                    android:textAllCaps="true"
+                                    android:layout_marginStart="50dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:layout_marginTop="12dp"
+                                    android:textAlignment="textStart"
+                                    android:textSize="15sp"
+                                    android:onClick="getMyStandingOrder"
+                                    android:textColor="@color/dark_and_red"
+                                    android:text="Standing Orders: 5"/>
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/cus90"
+                                    android:textAllCaps="true"
+                                    android:layout_marginStart="50dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:layout_marginTop="12dp"
+                                    android:textAlignment="viewStart"
+                                    android:textSize="15sp"
+                                    android:onClick="getMyCustomer"
+                                    android:textColor="@color/dark_and_red"
+                                    android:text="Customers: 49"/>
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/packages90"
+                                    android:textAllCaps="true"
+                                    android:layout_marginStart="50dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:layout_marginTop="12dp"
+                                    android:textAlignment="viewStart"
+                                    android:textSize="15sp"
+                                    android:onClick="getMyPackages"
+                                    android:textColor="@color/dark_and_red"
+                                    android:text="Packages :6"/>
+
+
+
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.1dp"
+                        android:background="@color/black"/>
+
+                    <com.github.clans.fab.FloatingActionButton
+                        android:id="@+id/fab_teller2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="1dp"
+                        android:layout_gravity="bottom|end"
+                        android:layout_marginEnd="12dp"
+                        app:srcCompat="@android:drawable/ic_dialog_email" />
+                </androidx.appcompat.widget.Toolbar>
+                <include layout="@layout/content_teller_home" />
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <FrameLayout
+                android:id="@+id/frameCont_Teller"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </ScrollView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

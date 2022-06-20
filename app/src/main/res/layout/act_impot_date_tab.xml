@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/sky11"
+    android:theme="@style/NoActionBarTheme"
+    android:layout_height="match_parent"
+    tools:context="com.skylightapp.Admins.ImportDateTab">
+    <include layout="@layout/tool_bar11d"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Skylight Due Packages"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+            <TextView
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No Packages for Today"
+                android:id="@+id/txtViewP"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewPack0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:clipToPadding="false"
+                android:foregroundGravity="center"
+                android:orientation="horizontal" />
+
+            <TextView
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No Packages for day 3"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:id="@+id/txtViewP3"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewPack3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:clipToPadding="false"
+                android:foregroundGravity="center" />
+            <TextView
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No Packages for day 7"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:id="@+id/txtViewP7"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewPack7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:clipToPadding="false"
+                android:foregroundGravity="center" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="2dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                app:cardPreventCornerOverlap="false"
+                app:contentPadding="0dp">
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/rect6g"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tx_text_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="15sp"
+                        android:focusable="false"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center_vertical|left"
+                        android:gravity="center_vertical|left"
+                        android:background="@null"
+                        android:text="Select Date of Package Ending" />
+                    <DatePicker
+                        android:id="@+id/p_date_"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="15sp"
+                        android:focusable="false"
+                        android:inputType="date"
+                        android:backgroundTintMode="src_in"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:datePickerMode="spinner"
+                        android:spinnersShown="true"
+                        android:yearListSelectorColor="@color/white"
+                        android:calendarTextColor="@color/white"
+                        android:layout_gravity="center_vertical|left"
+                        android:gravity="center_vertical|left"
+                        android:calendarViewShown="false" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="2dp"
+                android:gravity="end"
+                app:cardBackgroundColor="@color/white"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="end"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                app:cardPreventCornerOverlap="false"
+                app:contentPadding="0dp">
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:weightSum="1"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:layout_width="match_parent"
+                        android:text="Search Database"
+                        android:textSize="17sp"
+                        android:padding="20dp"
+                        android:layout_weight="1"
+                        android:onClick="runPackageSearch"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:textStyle="bold"
+                        android:id="@+id/buttonSearchPDB"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:background="@drawable/rect_their_message"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.cardview.widget.CardView>
+
+
+            <TextView
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No Packages for Selected Date"
+                android:id="@+id/txtViewPC"
+                android:layout_marginTop="10dp"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerCustom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:clipToPadding="false"
+                android:foregroundGravity="center" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

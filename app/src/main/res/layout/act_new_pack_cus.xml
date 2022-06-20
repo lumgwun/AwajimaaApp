@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.skylightapp.Customers.NewPackCusAct"
+    android:background="@drawable/rect_my_message">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:text="New Package Initiator"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/type_Layout"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Select Package Type"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    android:background="@drawable/rect_their_message"
+                    android:textSize="17sp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:padding="17dp"
+                    android:textAlignment="center"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/rect6g"
+                    android:layout_marginEnd="2dp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:entries="@array/skylight_packages"
+                    android:textColor="@color/colorPrimary"
+                    android:id="@+id/cus_pack_Type"
+                    android:padding="50dp"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:id="@+id/cus_inv_Layout"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Select Investment Type"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    android:background="@drawable/rect_their_message"
+                    android:textSize="17sp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:padding="17dp"
+                    android:textAlignment="center"
+                    android:layout_height="wrap_content"/>
+
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/rect6g"
+                    android:layout_marginEnd="2dp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:entries="@array/investment_package"
+                    android:textColor="@color/colorPrimary"
+                    android:id="@+id/cus_inv_Type"
+                    android:padding="50dp"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:id="@+id/_food_Stuff_Layout"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Select Food Stuff /Item Type"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    android:background="@drawable/rect_their_message"
+                    android:textSize="17sp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:padding="17dp"
+                    android:textAlignment="center"
+                    android:layout_height="wrap_content"/>
+
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/rect6g"
+                    android:layout_marginEnd="2dp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:entries="@array/promo"
+                    android:textColor="@color/colorPrimary"
+                    android:id="@+id/_foodStuff_Item"
+                    android:padding="50dp"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:id="@+id/_savings_Layout"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Select Savings Type"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    android:background="@drawable/rect_their_message"
+                    android:textSize="17sp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:padding="17dp"
+                    android:textAlignment="center"
+                    android:layout_height="wrap_content"/>
+
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/rect6g"
+                    android:layout_marginEnd="2dp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:entries="@array/savings_plans"
+                    android:textColor="@color/colorPrimary"
+                    android:id="@+id/_savings_plans"
+                    android:padding="50dp"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:id="@+id/_promo_Stuff_Layout"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Select Promo Type"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    android:background="@drawable/rect_their_message"
+                    android:textSize="17sp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:padding="17dp"
+                    android:textAlignment="center"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/rect6g"
+                    android:layout_marginEnd="2dp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:entries="@array/promo"
+                    android:textColor="@color/colorPrimary"
+                    android:id="@+id/_promoStuff"
+                    android:padding="50dp"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/layoutAmt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal"
+                    android:textColorHint="@color/colorPrimaryD"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:layout_width="match_parent"
+                        android:inputType="number"
+                        android:id="@+id/NewAmt"
+                        android:padding="40dp"
+                        android:background="@drawable/rect6g"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:textColorHighlight="@android:color/white"
+                        android:textColorHint="@android:color/white"
+                        android:gravity="center_horizontal"
+                        android:hint="Input the Amount for this New Package"
+                        android:layout_height="wrap_content"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/month_durationX"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="20dp"
+                android:padding="20dp"
+                android:visibility="visible">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Number of Months"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:padding="10dp"
+                    android:layout_marginStart="2dp"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="2dp"
+                    android:textAlignment="center"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="match_parent"
+                    android:id="@+id/numberOfMonths"
+                    android:textSize="17sp"
+                    android:entries="@array/number_of_months"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    android:background="@drawable/rect6g"
+                    android:layout_marginEnd="2dp"
+                    android:padding="40dp"
+                    android:textColorHint="@color/colorPrimaryDark"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/days90"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:padding="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/shape_rect14c"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:id="@+id/totalDuration"
+                    android:textSize="15sp"
+                    android:text="Total Number of the duration days"
+                    android:layout_marginStart="2dp"
+                    android:padding="20dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryD"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"/>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/layoutDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="20dp"
+                android:visibility="visible"
+                android:padding="20dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Number of Days for the first "
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:padding="10dp"
+                    android:layout_marginStart="2dp"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="2dp"
+                    android:textAlignment="center"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="match_parent"
+                    android:id="@+id/numberOfDDays"
+                    android:textSize="17sp"
+                    android:background="@drawable/rect6g"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textColorHint="@android:color/holo_red_dark"
+                    android:entries="@array/number_of_day_spinner"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="2dp"
+                    android:padding="40dp"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/months3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:weightSum="2"
+                android:padding="10dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/shape_rect14c"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:id="@+id/totalForToday"
+                    android:textSize="17sp"
+                    android:text="Total for the moment"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimaryD"
+                    android:padding="20dp"
+                    android:textAlignment="center"
+                    android:layout_height="wrap_content"/>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/buttonLay3"
+                android:weightSum="2"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/sky4"
+                android:layout_height="wrap_content">
+                <Button
+                    android:layout_width="0dp"
+                    android:text="Add New"
+                    android:textSize="20sp"
+                    android:padding="25dp"
+                    android:layout_marginTop="10dp"
+                    android:onClick="addNewSavings"
+                    android:background="@drawable/rect6g"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:textColor="@color/colorPrimaryD"
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/add_savingsNew"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"/>
+
+                <Button
+                    android:layout_width="0dp"
+                    android:text="Pay Now"
+                    android:textSize="20sp"
+                    android:padding="25dp"
+                    android:layout_marginTop="10dp"
+                    android:onClick="payDialoqNew"
+                    android:background="@drawable/rect6g"
+                    android:layout_marginEnd="2dp"
+                    android:textColor="@color/colorPrimaryD"
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/pay_now_New"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"/>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.github.florent37.shapeofview.shapes.ArcView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:elevation="5.0dp"
+                app:shape_arc_cropDirection="inside"
+                app:shape_arc_height="15dp"
+                app:shape_arc_position="top">
+                <com.google.android.material.appbar.AppBarLayout
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.Toolbar
+                        android:layout_width="match_parent"
+                        android:textStyle="bold"
+                        android:layout_marginStart="37dp"
+                        app:title="Powered by Lumgwun Soln."
+                        android:layout_marginEnd="1dp"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center_horizontal"
+                        android:textAlignment="center"
+                        app:titleTextColor="@color/white_good"
+                        android:layout_height="100dp"/>
+
+                </com.google.android.material.appbar.AppBarLayout>
+
+            </com.github.florent37.shapeofview.shapes.ArcView>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </ScrollView>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

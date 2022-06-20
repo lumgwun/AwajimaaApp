@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/rect_their_message"
+    android:layout_height="wrap_content">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="1dp"
+        android:clickable="true"
+        android:focusable="true"
+        card_view:cardElevation="10dp"
+        card_view:cardBackgroundColor="#f1f5f7"
+        android:foreground="?attr/selectableItemBackground"
+        card_view:cardCornerRadius="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/user_l1"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <com.mikepenz.materialdrawer.view.BezelImageView
+                        android:layout_width="70dp"
+                        android:id="@+id/user_pix11"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/ic_admin_user"
+                        android:layout_height="70dp"/>
+
+                    <TextView
+                        android:id="@+id/nameOfUser"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lines="1"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:textStyle="italic"
+                        android:text="@string/john_onaye"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18sp" />
+                    <TextView
+                        android:id="@+id/roleOUser"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Teller"
+                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="15sp" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:id="@+id/user_l2"
+                android:layout_below="@id/user_l1"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/dateOfCustomer1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:layout_weight="1"
+                    android:textStyle="italic"
+                    android:text="Date Signed up:"
+                    android:gravity="start"
+                    android:padding="10dp"
+                    android:textColor="#f00"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/dateOfUser2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:textStyle="italic"
+                    android:text="@string/_12_02_2021"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textColor="#f00"
+                    android:textSize="15sp" />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginEnd="1dp"
+                android:id="@+id/user_l3"
+                android:layout_below="@id/user_l2"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/dateOfBirth1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:textStyle="italic"
+                    android:text="Date of Birth:"
+                    android:gravity="start"
+                    android:textColor="#f00"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/dateOfBirth"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:textStyle="italic"
+                    android:text="@string/_12_02_2021"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textColor="#f00"
+                    android:textSize="19sp" />
+
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/user_l4"
+                android:layout_below="@id/user_l3"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/phoneNumberOfUser1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Phone Number"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/phoneNumberOfUser"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="070skylight"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/user_l5"
+                android:layout_below="@id/user_l4"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/emailOfCustomer0"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:text="Email Address"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15sp" />
+                <TextView
+                    android:id="@+id/emailOfUser"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:text="customer@skylightciacs.com"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15sp" />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/user_l6"
+                android:weightSum="2"
+                android:layout_marginEnd="2dp"
+                android:layout_below="@id/user_l5"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/usernameOfUser"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="UserName"
+                    android:padding="10dp"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15sp" />
+                <TextView
+                    android:id="@+id/genderOUser"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Female"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginEnd="2dp"
+                android:weightSum="2"
+                android:id="@+id/loan_l5"
+                android:layout_below="@id/user_l6"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/addressOfUser"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:textStyle="italic"
+                    android:text="No 4 Ima crescent, Abuja"
+                    android:gravity="start"
+                    android:textColor="#f00"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/user_status3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:textStyle="italic"
+                    android:text="Pending"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:layout_marginEnd="1dp"
+                    android:textColor="#f00"
+                    android:textSize="15sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_below="@id/loan_l5"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_user_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:gravity="end"
+                    android:text="Approve Account"
+                    android:textOn="@string/on"
+                    android:textOff="@string/off"
+                    android:textColor="#f00"
+                    android:padding="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/ic_admin_user"
+                    android:contentDescription="@string/app_name"
+                    android:focusable="true"
+                    android:scaleType="fitXY" />
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_marginTop="100dp"
+    android:layout_marginEnd="2dp"
+    android:paddingStart="50dp"
+    android:paddingBottom="20dp"
+    android:paddingTop="20dp"
+    android:layout_marginBottom="5dp"
+    android:background="@drawable/rect6g"
+    android:layout_height="wrap_content"
+    tools:context="com.skylightapp.SuperAdmin.SuperAdminOffice">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:text="User Name:"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:id="@+id/super_username"
+                android:textSize="15sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_height="match_parent"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:text="All Subscriptions"
+                android:textStyle="bold"
+                android:onClick="gpPackages"
+                android:id="@+id/Super_all_packs"
+                android:textSize="15sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_weight="1"
+                android:layout_height="match_parent"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:visibility="visible"
+            android:id="@+id/layoutReportAnd"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:layout_weight="1"
+                android:onClick="goSoSuper"
+                android:id="@+id/super_SO"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="Standing Orders"
+                android:layout_height="match_parent"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:visibility="visible"
+            android:id="@+id/layoutLoans"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:layout_weight="1"
+                android:onClick="goLoans"
+                android:id="@+id/super_loans"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="Loans"
+                android:layout_height="match_parent"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

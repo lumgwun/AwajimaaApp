@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_rect14"
+    tools:context=".Admins.AdminSupportAct">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_rect_7"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="10dp"
+            android:id="@+id/txtMessage3"
+            android:text="Skylight App Messages"
+            android:textColor="#111"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:textStyle="italic"
+            android:layout_marginBottom="12dp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="10dp"
+            android:id="@+id/txtMessage"
+            android:text=""
+            android:textColor="#111"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:textStyle="italic"
+            android:layout_marginBottom="12dp"
+            android:textSize="20sp" />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rect6g"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tx_text_date"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="15sp"
+                android:focusable="false"
+                android:drawableStart="@drawable/ic_icon_foreground"
+                android:textColor="@color/black"
+                android:layout_gravity="center_vertical|left"
+                android:gravity="center_vertical|left"
+                android:background="@null"
+                android:text="Select Date of Message" />
+            <DatePicker
+                android:id="@+id/PickerAdmin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="15sp"
+                android:focusable="false"
+                android:inputType="date"
+                android:backgroundTintMode="src_in"
+                android:drawableStart="@drawable/ic_icon_foreground"
+                android:datePickerMode="spinner"
+                android:spinnersShown="true"
+                android:yearListSelectorColor="@color/white"
+                android:calendarTextColor="@color/white"
+                android:layout_gravity="center_vertical|left"
+                android:gravity="center_vertical|left"
+                android:calendarViewShown="false" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:text="Search Database"
+            android:padding="20dp"
+            android:id="@+id/btnSearchMessages"
+            android:textSize="20sp"
+            android:background="@null"
+            android:layout_height="wrap_content"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_admin"
+            android:layout_width="match_parent"
+            tools:listitem="@layout/message_item_row"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:scrollbars="vertical" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_Today"
+            android:layout_width="match_parent"
+            tools:listitem="@layout/message_item_row"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:scrollbars="vertical" />
+
+    </LinearLayout>
+
+</ScrollView>

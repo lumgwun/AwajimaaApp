@@ -1,0 +1,891 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_rect14c"
+    tools:context="com.skylightapp.SuperAdmin.SuperAllSTList">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center">
+
+            <TextView
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Skylight Stocks Transfers"
+                android:textAlignment="center"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginBottom="3dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
+                android:textSize="15sp"
+                android:id="@+id/txtS"
+                android:padding="20dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textColorHint="@color/colorPrimary"
+                android:text="Search Database By:" />
+
+        </LinearLayout>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:gravity="end"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:weightSum="3"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="0dp"
+                    android:text="From Teller"
+                    android:textSize="15sp"
+                    android:padding="15dp"
+                    android:onClick="revealFromTellerLayout"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:textStyle="bold"
+                    android:id="@+id/buttonSTFromTellerBtn"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="0dp"
+                    android:text="From Branch"
+                    android:textSize="15sp"
+                    android:padding="15dp"
+                    android:onClick="revealFromBranchLayout"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:textStyle="bold"
+                    android:id="@+id/buttonSTFromBranch"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="0dp"
+                    android:text="Using the Date"
+                    android:textSize="15sp"
+                    android:padding="15dp"
+                    android:onClick="revealSTDateLayout"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:textStyle="bold"
+                    android:id="@+id/buttonSTByDate"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:gravity="end"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:weightSum="2"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="0dp"
+                    android:text="From Skylight"
+                    android:textSize="15sp"
+                    android:padding="15dp"
+                    android:onClick="revealFromSkylightLayout"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:textStyle="bold"
+                    android:id="@+id/buttonFromSkylight"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="0dp"
+                    android:text="To Customers"
+                    android:textSize="15sp"
+                    android:padding="15dp"
+                    android:onClick="revealToCustomersLayout"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:textStyle="bold"
+                    android:id="@+id/buttonToCustomers"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginBottom="3dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
+                android:textSize="15sp"
+                android:id="@+id/stTodayTotal"
+                android:padding="20dp"
+                android:gravity="start"
+                android:layout_gravity="start"
+                android:background="@drawable/shape_rect14c"
+                android:textColorHint="@color/colorPrimary"
+                android:text="From Skylight Today:" />
+
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerSTToday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:clipToPadding="false"
+            tools:listitem="@layout/st_row"
+            android:foregroundGravity="center"
+            android:orientation="horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="1dp"
+            android:id="@+id/layoutSTDate"
+            android:visibility="gone"
+            android:layout_marginBottom="3dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
+                android:textSize="15sp"
+                android:id="@+id/txtByDate"
+                android:padding="20dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@drawable/rect6b"
+                android:textColorHint="@color/colorPrimary"
+                android:text="ST for Selected Date:" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerSTCDate"
+            android:layout_width="match_parent"
+            tools:listitem="@layout/skylight_cash_row"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            android:clipToPadding="false"
+            android:foregroundGravity="center" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:visibility="gone"
+            android:id="@+id/cardSTDatePicker"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rect6g"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/daTE_text_"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center_vertical|left"
+                    android:gravity="center_vertical|left"
+                    android:background="@null"
+                    android:text="Select ST Date " />
+                <DatePicker
+                    android:id="@+id/stocksT_datePicker"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:inputType="date"
+                    android:backgroundTintMode="src_in"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:datePickerMode="spinner"
+                    android:spinnersShown="true"
+                    android:yearListSelectorColor="@color/white"
+                    android:calendarTextColor="@color/white"
+                    android:layout_gravity="center_vertical|left"
+                    android:gravity="center_vertical|left"
+                    android:calendarViewShown="false" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:gravity="end"
+            android:id="@+id/cardStDates"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:weightSum="1"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:text="Get ST from Date"
+                    android:textSize="17sp"
+                    android:padding="20dp"
+                    android:layout_weight="1"
+                    android:onClick="getSTByCustomDate"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textStyle="bold"
+                    android:id="@+id/btn_ST_Date"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginBottom="3dp"
+            android:id="@+id/layoutFromTeller"
+            android:visibility="gone"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
+                android:textSize="15sp"
+                android:id="@+id/txtByPayer"
+                android:padding="20dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@drawable/rect6b"
+                android:textColorHint="@color/colorPrimary"
+                android:text="ST for Teller:" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerSTTeller"
+            android:layout_width="match_parent"
+            tools:listitem="@layout/st_row"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            android:clipToPadding="false"
+            android:foregroundGravity="center" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:visibility="gone"
+            android:id="@+id/cardTellerLayout"
+            app:cardBackgroundColor="@color/cardview_shadow_end_color"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rect6g"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/text_Teller"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center_vertical|left"
+                    android:gravity="center_vertical|left"
+                    android:background="@null"
+                    android:text="Select Teller" />
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spnTeller_St"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:paddingStart="150dp"
+                    android:backgroundTintMode="src_in"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:spinnersShown="true"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:gravity="end"
+            android:visibility="gone"
+            android:id="@+id/cardTellerBtn"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:weightSum="1"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:text="Get ST from Teller"
+                    android:textSize="17sp"
+                    android:padding="20dp"
+                    android:layout_weight="1"
+                    android:onClick="getSTByTeller"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textStyle="bold"
+                    android:id="@+id/buttonSTByTeller"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginBottom="3dp"
+            android:id="@+id/layoutFromBranch"
+            android:visibility="gone"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
+                android:textSize="15sp"
+                android:id="@+id/txtFrom"
+                android:padding="20dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@drawable/rect6b"
+                android:textColorHint="@color/colorPrimary"
+                android:text="ST From Branch:" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerFromBranch"
+            android:layout_width="match_parent"
+            tools:listitem="@layout/st_row"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            android:clipToPadding="false"
+            android:foregroundGravity="center" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:visibility="gone"
+            android:id="@+id/cardLayoutFromBranch"
+            app:cardBackgroundColor="@color/cardview_shadow_end_color"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rect6g"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/text_From"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center_vertical|left"
+                    android:gravity="center_vertical|left"
+                    android:background="@null"
+                    android:text="Select From Branch" />
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spnSTFromBranch"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:entries="@array/officeBranch33"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:paddingStart="150dp"
+                    android:backgroundTintMode="src_in"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:spinnersShown="true"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:gravity="end"
+            android:visibility="gone"
+            android:id="@+id/cardStBtnBranch"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:weightSum="1"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:text="Get ST from Branch"
+                    android:textSize="17sp"
+                    android:padding="20dp"
+                    android:layout_weight="1"
+                    android:onClick="getSTByBranch"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textStyle="bold"
+                    android:id="@+id/buttonFromBranch"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginBottom="3dp"
+            android:id="@+id/layoutToCustomers"
+            android:visibility="gone"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
+                android:textSize="15sp"
+                android:id="@+id/txtByTo"
+                android:padding="20dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@drawable/rect6b"
+                android:textColorHint="@color/colorPrimary"
+                android:text="ST To Customers:" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerToCus"
+            android:layout_width="match_parent"
+            tools:listitem="@layout/st_row"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            android:clipToPadding="false"
+            android:foregroundGravity="center" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:visibility="gone"
+            android:id="@+id/cardLayoutToCus"
+            app:cardBackgroundColor="@color/cardview_shadow_end_color"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rect6g"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/text_To"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center_vertical|left"
+                    android:gravity="center_vertical|left"
+                    android:background="@null"
+                    android:text="Select Customer" />
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spnSTToCus"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:paddingStart="150dp"
+                    android:backgroundTintMode="src_in"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:spinnersShown="true"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:gravity="end"
+            android:visibility="gone"
+            android:id="@+id/cardBtnToCus"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:weightSum="1"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:text="Get ST for Cus"
+                    android:textSize="17sp"
+                    android:padding="20dp"
+                    android:layout_weight="1"
+                    android:onClick="getSTForCus"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textStyle="bold"
+                    android:id="@+id/buttonToSTCus"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginBottom="3dp"
+            android:id="@+id/layoutAllST"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
+                android:textSize="15sp"
+                android:id="@+id/txtByAll"
+                android:padding="20dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@drawable/rect6b"
+                android:textColorHint="@color/colorPrimary"
+                android:text="All Skylight ST :" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerAllST"
+            android:layout_width="match_parent"
+            tools:listitem="@layout/st_row"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            android:clipToPadding="false"
+            android:foregroundGravity="center" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:gravity="end"
+            android:visibility="gone"
+            android:id="@+id/cardAllST"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:weightSum="1"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:text="Get All ST"
+                    android:textSize="17sp"
+                    android:padding="20dp"
+                    android:layout_weight="1"
+                    android:onClick="getAllST"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textStyle="bold"
+                    android:id="@+id/buttonAllST"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginBottom="3dp"
+            android:id="@+id/layoutSkylightST"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
+                android:textSize="15sp"
+                android:id="@+id/txtByOffice"
+                android:padding="20dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@drawable/rect6b"
+                android:textColorHint="@color/colorPrimary"
+                android:text="ST for Skylight:" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerSTSky"
+            android:layout_width="match_parent"
+            tools:listitem="@layout/st_row"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            android:clipToPadding="false"
+            android:foregroundGravity="center" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:gravity="end"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:id="@+id/cardSkyLayout"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:weightSum="1"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:text="Search Database by Skylight"
+                    android:textSize="17sp"
+                    android:padding="20dp"
+                    android:layout_weight="1"
+                    android:onClick="getSkylightST"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textStyle="bold"
+                    android:id="@+id/buttonSTSkylight"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</ScrollView>

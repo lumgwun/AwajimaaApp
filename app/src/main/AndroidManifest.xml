@@ -1,0 +1,677 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.skylightapp">
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the "MyLocation" functionality.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_MMS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.provider.Telephony.SMS_RECEIVED" />
+    <uses-permission
+        android:name="android.permission.STATUS_BAR_SERVICE"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_PROFILE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.WRITE_SOCIAL_STREAM" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <application
+        android:allowBackup="true"
+        android:hardwareAccelerated="false"
+        android:icon="@drawable/skylight_2"
+        android:installLocation="preferExternal"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:roundIcon="@mipmap/ic_logo_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.OurCApp"
+        android:value="androidx.core.app.CoreComponentFactory"
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:node="replace">
+        <activity android:name=".SuperAdmin.TellerCountAct"></activity>
+        <activity android:name=".SuperAdmin.ChartAct" />
+        <activity android:name=".Tellers.TellerSendEmailAct" />
+        <activity android:name=".DeleteUserAct" />
+        <activity android:name=".Customers.CusStocksListAct" />
+        <activity android:name=".UnBlockUserAct" />
+        <activity android:name=".SuperAdmin.CusByPackAct" />
+        <activity android:name=".Customers.MySavingsListAct" />
+        <activity android:name=".Customers.CusPackageList" />
+        <activity android:name=".BlockedUserAct" />
+        <activity android:name=".EmergNextAct" />
+        <activity android:name=".NewLocAct" />
+        <activity android:name=".SuperAdmin.PayOutRequestList" />
+        <activity android:name=".SuperAdmin.TranxApprovalAct" />
+        <activity
+            android:name=".SignUpAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Tellers.TellerEmergAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <receiver
+            android:name=".MapAndLoc.UserLocBReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="my.action" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".SuperAdmin.StocksTab" />
+        <activity android:name=".Admins.DepDocAct" />
+        <activity android:name=".SuperAdmin.TellerDetailsAct" />
+        <activity android:name=".SuperAdmin.TellerCashList" />
+        <activity android:name=".MyInvAct" />
+        <activity android:name=".SuperAdmin.UpdateSTCode" />
+        <activity android:name=".SuperAdmin.SuperAllSTList" />
+        <activity android:name=".SuperAdmin.HelpersLocation" />
+        <activity android:name=".SuperAdmin.SuperStockTrAct" />
+        <activity android:name=".SuperAdmin.CreationTab" />
+        <activity android:name=".SuperAdmin.OfficeCreatorAct" />
+        <activity android:name=".Inventory.BranchInvTab" />
+        <activity android:name=".Inventory.MyInvTab" />
+        <activity android:name=".Inventory.StocksTransferAct" />
+        <activity android:name=".Inventory.UpDateStocksCode" />
+        <activity android:name=".Inventory.MyStocksList" />
+        <activity android:name=".Tellers.MyCashList" />
+        <activity android:name=".Tellers.UpdateTellerCashAct" />
+        <activity android:name=".SuperAdmin.SkylightCashList" />
+        <activity android:name=".SuperAdmin.UpDateDeposit" />
+        <activity android:name=".SuperAdmin.ADepositList" />
+        <activity android:name=".Admins.AdminDepositAct" />
+        <activity android:name=".LocationUpdateAct" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <uses-library android:name="com.google.android.maps" />
+
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <service
+            android:name=".MapAndLoc.GetAddressIntentService"
+            android:exported="false" />
+        <service
+            android:name=".MapAndLoc.GPSTracker"
+            android:exported="false" />
+
+        <activity android:name=".SuperAdmin.SuperAnyDayCount" />
+        <activity android:name=".SMSAct" />
+        <activity android:name=".RealEstate.OfficePropAct" />
+        <activity android:name=".RealEstate.EventCenterListAct" />
+        <activity android:name=".RealEstate.ResPropAct" />
+        <activity android:name=".RealEstate.SaveListingAct" />
+        <activity android:name=".VoiceRecogAct" />
+        <activity android:name=".RealEstate.PropLocUpdate" />
+        <activity android:name=".RealEstate.PropertyUpdateAct" />
+        <activity android:name=".RealEstate.EstatePropAct" />
+        <activity android:name=".RealEstate.OrgRegActivity" />
+        <activity android:name=".RealEstate.PropertyRegAct" />
+        <activity android:name=".RealEstate.AddPropPixActivity" />
+        <activity
+            android:name=".Inventory.SuperInvTab"
+            android:theme="@style/Theme.SkylightApp3" />
+        <activity
+            android:name=".Admins.AdminStocksTab"
+            android:theme="@style/Theme.SkylightApp3" />
+        <activity android:name=".SuperAdmin.SuperMessages" />
+        <activity android:name=".Customers.RequestItemAct" />
+        <activity
+            android:name=".Inventory.BranchStockOv"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Inventory.BranchItemCollection"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Inventory.BranchInStock"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Inventory.StocksOverview"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Inventory.InStocksAct" />
+        <activity android:name=".Tellers.CustomerDetailAct" />
+        <activity android:name=".Accountant.BranchMPayments" />
+        <activity android:name=".SuperAdmin.UpdateSavingsAct" />
+        <activity android:name=".Accountant.WimpeySavings" />
+        <activity android:name=".Accountant.ElelenwoSavings" />
+        <activity android:name=".Accountant.TransAmadiSavings" />
+        <activity android:name=".Accountant.WimpeyTranx" />
+        <activity android:name=".Accountant.ElelenwoTranx" />
+        <activity android:name=".SuperAdmin.UpdateTranxAct" />
+        <activity android:name=".Accountant.TransAmadiTranx" />
+        <activity android:name=".SuperAdmin.UpDateSO" />
+        <activity android:name=".Accountant.AcctantBackOffice" />
+        <activity android:name=".SuperAdmin.UpdatePackageAct" />
+        <activity android:name=".SuperAdmin.SuperEmergList" />
+        <activity android:name=".SuperAdmin.WorkersLocationAct" />
+        <activity android:name=".VoiceActionAct" />
+        <activity android:name=".Admins.TellerReportUpdateConf" />
+        <activity android:name=".SuperAdmin.SuperUnconfirmedSavings" />
+        <activity android:name=".Tellers.UnConfirmedSavingsList" />
+        <activity
+            android:name=".Tellers.SavingsCodeUpdateAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Tellers.ManualPCodeUpdate" />
+        <activity android:name=".Tellers.ManualPaymentList" />
+        <activity
+            android:name=".SuperAdmin.SuperMPaymentListA"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Admins.AdminCountAct" />
+        <activity
+            android:name=".Tellers.TellerCountAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Tellers.ManualPaymentAct" />
+        <activity android:name=".Tellers.TellerReportTab" />
+        <activity android:name=".SuperAdmin.AdminRepostingAct" />
+
+        <receiver
+            android:name=".Classes.AlertReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".NotificationAct" />
+        <activity
+            android:name=".SuperAdmin.SuperAdminCountAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Customers.AcctStatmOptions"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Tellers.DailyReportListAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Customers.CusStatementAct"
+            android:label="File Selector"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.PICK" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.OPENABLE" />
+
+                <data android:mimeType="text/plain" />
+                <data android:mimeType="image/*" />
+                <data android:mimeType="pdf/*" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SuperAdmin.SuperUserCreator" />
+        <activity android:name=".Admins.BranchReportTab" />
+        <activity android:name=".Admins.TellerReportBranchAll" />
+        <activity
+            android:name=".SuperAdmin.TellerReportActSuper"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Admins.TellerReportUpdateAct" />
+        <activity
+            android:name=".Admins.TellerReportBranchToday"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Tellers.DailyReportAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Customers.SendCustomerMessage"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".SuperAdmin.SuperAdminOffice" />
+        <activity
+            android:name=".UserSearchAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Tellers.UserTxAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Tellers.PayForMyCusAct" />
+        <activity android:name=".Tellers.TellerMessages" />
+        <activity
+            android:name=".Tellers.MyProfilePackList"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Tellers.MyCusList"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Customers.CusSubPackTab" />
+        <activity android:name=".UserTimeLineAct" />
+        <activity
+            android:name=".Admins.LoanApprovalAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Admins.AdminLoanList" />
+        <activity
+            android:name=".AllNewAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Admins.SOCompletedList"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Admins.SOListAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".SuperAdmin.AdminSOTabAct" />
+        <activity android:name=".SkylightSliderAct" />
+        <activity android:name=".Tellers.UniversalAct" />
+        <activity android:name=".Tellers.TellerDrawerTab" />
+        <activity
+            android:name=".Tellers.TellerDrawerAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Admins.AdminTimelineAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".TestAct" />
+        <activity
+            android:name=".Customers.CusLoanAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Customers.NewLoanOptions" />
+        <activity
+            android:name=".Customers.CustomerLoanListAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".MyTimelineAct" />
+        <activity
+            android:name=".GrpProfileTraxs"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".MyGrpSavingsUsers"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".UpdateGrpAcct" />
+        <activity
+            android:name=".AddNewGrpSavProfile"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".MyNewGrpSavings"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".MyGrpSavings"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".MyGrpSavingsList"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".MyGrpSavingsTab" />
+        <activity android:name=".Tellers.LoanRepaymentTab" />
+        <activity
+            android:name=".Tellers.AllCusLoanRepayment"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Tellers.MyCusLoanRepayment"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Customers.CusLoanRepaymentAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Customers.CusPackOverviewAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Customers.PackListTab" />
+        <activity android:name=".Customers.ProfilePackDetails" />
+        <activity
+            android:name=".SuperAdmin.DuePackagesAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Admins.TwilloConsole"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Admins.WebHostingAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Admins.SkylightAllWeb" />
+        <activity
+            android:name=".Admins.SkylightHistoryAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".UserLocatorAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".FingerprintAct" />
+        <activity
+            android:name=".Customers.TellerForCusLoanAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".OfficialEmailAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Tellers.WPAdminActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Tellers.MarketersActivityWeb" />
+        <activity android:name=".Tellers.TellerWebTab" />
+        <activity android:name=".Tellers.MyCustPackTab" />
+        <activity
+            android:name=".Tellers.MyCustOldPackAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".AllNewPackOptionAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".AllCustNewPackAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".CameraActivity" />
+        <activity android:name=".Customers.PackageTab" />
+        <activity android:name=".FlutterWavePayments.VerificationActivity" />
+        <activity
+            android:name=".GroupSavingsUnpaid"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".GroupSavingsAcctList"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".GroupSavingsTab" />
+        <activity
+            android:name=".Admins.ProfilePackHistoryAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Admins.CusPackHistoryAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".UserLocTrackingAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Tellers.MyCusNewPackAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Tellers.MyNewPackOptionAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Admins.AdminSupportAct" />
+        <activity
+            android:name=".Customers.CustomerPayAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".FlutterWavePayments.FluPayWithCard"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".FlutterWavePayments.FluPayWithTransfer"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".FlutterWavePayments.FluPaywithBank"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".AllCustOldPackAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".AllCusPackTab" />
+        <activity
+            android:name=".Customers.CustomerPackForPayment"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Customers.CusOrderTab" />
+        <activity
+            android:name=".Customers.CustomerPackageActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Customers.CusLoanTab" />
+        <activity android:name=".Customers.CustUtilTab" />
+        <activity
+            android:name=".Customers.NewPackCusAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Customers.StandingOrderList"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Customers.StandingOrderTab" />
+        <activity
+            android:name=".Customers.NewSOPaymentPlan"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Customers.OldPackCusAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Customers.SavingsStandingOrder"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Admins.AdminCusActionView"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Customers.RequestPaymentAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".CustomerPackageListAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Customers.SavingsStandingOrderWeb" />
+        <activity
+            android:name=".CheckMailActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".PrivacyPolicy_Web"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Tellers.StoreManagerWeb"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Admins.SendUserMessageAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Admins.AdminCusActionAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Admins.CustomerListActivity" />
+        <activity
+            android:name=".Tellers.TellerSMSAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Tellers.TellerSuccessActivity" />
+        <activity android:name=".PermissionActivity" />
+        <activity android:name=".CustomerSmsActivity" />
+        <activity
+            android:name=".Tellers.TellerDashboardAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Admins.AdminTransActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Admins.SkylightUsersActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Admins.AdminTabActivity"
+            android:theme="@style/Theme.SkylightApp3" />
+        <activity
+            android:name=".Tellers.TellerHomeChoices"
+            android:theme="@style/Theme.OurCApp" />
+        <activity android:name=".Customers.CustomerHelpActTab" />
+        <activity
+            android:name=".PasswordRecoveryActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".UpdateProfileAct" />
+        <activity android:name=".BaseActivity" />
+        <activity android:name=".Customers.NewCustomerDrawer" />
+        <activity android:name=".ConfirmationActivity" />
+        <activity
+            android:name=".WelcomeActivity"
+            android:exported="true"
+            tools:ignore="IntentFilterExportedReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MapAndLoc.ListingFiltersActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".MapAndLoc.MapSettingsActivity" />
+        <activity android:name=".MapAndLoc.GoogleMapActivity" />
+        <activity
+            android:name=".Transactions.MobileMoneyTransfer"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Transactions.MoneyTransferActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Transactions.SkylightBTransferAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Transactions.OurDepositMoneyAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".UserPrefActivity" />
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".MoneyTxDetailAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".LoanDetailsActivity" />
+        <activity
+            android:name=".Transactions.CashOutDetailsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Transactions.DataDetailsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".PackageDetailsActivity" />
+        <activity
+            android:name=".SupportMessageDetailsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Transactions.GOTVDetailsActivity" />
+        <activity android:name=".Transactions.StarTimeDetailsActivity" />
+        <activity
+            android:name=".PlanPaymentActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".NEPABILLDetailsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".SavingDetailsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".MapAndLoc.GeofenceActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Tellers.PackageAllCusAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <receiver
+            android:name=".Classes.NotificationBuilderReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+        <provider
+            android:name="com.google.firebase.provider.FirebaseInitProvider"
+            android:authorities="com.PACKAGE.NAME.firebaseinitprovider"
+            android:exported="false"
+            android:initOrder="100" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.UserContentProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepath_pdf" />
+        </provider>
+        <provider
+            android:name=".Database.UserContentProvider"
+            android:authorities="${applicationId}.UserContentProvider"
+            android:enabled="true"
+            android:exported="false" />
+
+        <service
+            android:name=".Classes.SetAlarmsService"
+            android:exported="false" />
+
+        <meta-data
+            android:name="firebase_performance_logcat_enabled"
+            android:value="true" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="default_channel_id" />
+        <meta-data
+            android:name="co.paystack.android.PublicKey"
+            android:value="pk_live_e71feb3d8f41ceccd2cb26c670e62ceb54113412" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".Transactions.CardDepositActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Transactions.OurAppBankTransfer"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".SignTabMainActivity" />
+        <activity
+            android:name=".Admins.GrpSavingsAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Admins.AdminPackageActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Admins.AdminHomeChoices" />
+        <activity android:name=".Admins.AdminDashboardTab" />
+        <activity android:name=".Admins.AdminDrawerActivity" />
+        <activity
+            android:name=".Admins.PackageUpdateAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".PayClientActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".SkyLightPackageActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".LoginDirectorActivity" />
+        <activity
+            android:name=".PayNowActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".MapAndLoc.ProfileLocSourceAct" />
+        <activity
+            android:name=".Admins.SevenDayBD"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Admins.MoroBirthdays"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Admins.TodayBirthDays"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Admins.BirthdayTab" />
+        <activity android:name=".Admins.ImportDateTab" />
+        <activity
+            android:name=".Admins.SODueDateListAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <receiver
+            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="${applicationId}" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".Classes.LocationUpdatesBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
+            android:name=".Admins.TrackWorkersAct"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

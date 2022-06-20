@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/rect12"
+    android:layout_height="wrap_content">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="1dp"
+        android:clickable="true"
+        android:focusable="true"
+        card_view:cardElevation="90dp"
+        card_view:cardBackgroundColor="@color/blue1"
+        android:foreground="?attr/selectableItemBackground"
+        card_view:cardCornerRadius="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/birth_l1"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <com.mikepenz.materialdrawer.view.BezelImageView
+                        android:layout_width="90dp"
+                        android:id="@+id/celebrant_pix"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/birthday"
+                        android:layout_height="70dp"/>
+
+                    <TextView
+                        android:id="@+id/nameOfCelebrant"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lines="1"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:textStyle="bold"
+                        android:text="@string/john_onaye"
+                        android:paddingTop="16dp"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:padding="20dp"
+                    android:weightSum="2"
+                    android:background="@drawable/rect6d"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/dateOfCelebrant1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:lines="1"
+                        android:layout_weight="1"
+                        android:textStyle="bold"
+                        android:text="Birthday:"
+                        android:gravity="start"
+                        android:textColor="#f00"
+                        android:textSize="19sp" />
+
+                    <TextView
+                        android:id="@+id/dateOfCelebrant"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:lines="1"
+                        android:layout_weight="1"
+                        android:textStyle="bold"
+                        android:text="@string/_12_02_2021"
+                        android:gravity="end"
+                        android:layout_marginEnd="2dp"
+                        android:textColor="#f00"
+                        android:textSize="19sp" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginEnd="2dp"
+                android:padding="10dp"
+                android:weightSum="2"
+                android:id="@+id/birth_l30"
+                android:layout_below="@id/birth_l1"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/daysB"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:text="Days between"
+                    android:gravity="start"
+                    android:textColor="@color/white"
+                    android:textSize="19sp" />
+
+                <TextView
+                    android:id="@+id/daysR"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:text="Days Remaining"
+                    android:textAlignment="viewEnd"
+                    android:gravity="end"
+                    android:layout_marginEnd="2dp"
+                    android:textColor="@color/white"
+                    android:textSize="19sp" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/birth_l1a"
+                android:weightSum="2"
+                android:visibility="gone"
+                android:padding="10dp"
+                android:layout_below="@id/birth_l30"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/phoneNumberOfCelebrant"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Phone:070skylight"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="19sp" />
+
+                <TextView
+                    android:id="@+id/emailOfCelebrant"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="j.jonny@gmail.com"
+                    android:layout_gravity="end"
+                    android:gravity="end"
+                    android:textAlignment="viewEnd"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="2dp"
+                    android:textColor="@color/white"
+                    android:textSize="19sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/birth_l2"
+                android:weightSum="3"
+                android:visibility="gone"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="2dp"
+                android:layout_below="@id/birth_l1a"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/genderOfCelebrant"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:text="Gender: Male"
+                    android:textColor="@color/white"
+                    android:textSize="19sp" />
+                <TextView
+                    android:id="@+id/addressOfCelebrant"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:gravity="end"
+                    android:textStyle="bold"
+                    android:textAlignment="viewEnd"
+                    android:text="56 Ndifereke Road, PH."
+                    android:paddingBottom="6dp"
+                    android:textColor="@color/white"
+                    android:textSize="19sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:weightSum="2"
+                android:visibility="gone"
+                android:id="@+id/loan_l51"
+                android:layout_below="@id/birth_l2"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/dateJoined1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:text="Date of Sign Up"
+                    android:gravity="start"
+                    android:textColor="@color/white"
+                    android:textSize="19sp" />
+
+                <TextView
+                    android:id="@+id/dateJoined"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:text="25/04/2021"
+                    android:textAlignment="viewEnd"
+                    android:gravity="end"
+                    android:layout_marginEnd="2dp"
+                    android:textColor="@color/white"
+                    android:textSize="19sp" />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/birth_l3"
+                android:weightSum="2"
+                android:padding="10dp"
+                android:layout_below="@+id/loan_l51"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/statusOfCelebrant1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="Status"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="5dp"
+                    android:textColor="@color/white"
+                    android:textSize="19sp" />
+                <TextView
+                    android:id="@+id/statusOfCelebrant"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Celebrated"
+                    android:textStyle="bold"
+                    android:textAlignment="viewEnd"
+                    android:gravity="end"
+                    android:layout_marginEnd="2dp"
+                    android:textColor="@color/white"
+                    android:textSize="19sp" />
+
+
+
+            </LinearLayout>
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:id="@+id/birthday_more"
+                android:text="More >>>"
+                android:padding="20dp"
+                android:background="@drawable/rect6b"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:textSize="19sp"
+                android:foregroundGravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:layout_below="@+id/birth_l3"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:id="@+id/b_btn"
+                android:padding="10dp"
+                android:layout_below="@id/birthday_more"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textSize="19sp"
+                    android:id="@+id/sendMessage"
+                    android:background="@drawable/rect6b"
+                    android:textColor="#f00"
+                    android:padding="20dp"
+                    android:textStyle="bold"
+                    android:text="Send Message"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_birthday_action"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:gravity="end"
+                    android:text="Update Status"
+                    android:textOn="@string/on"
+                    android:textStyle="bold"
+                    android:textSize="19sp"
+                    android:textOff="@string/off"
+                    android:textColor="@color/white"
+                    android:padding="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/ic_admin_user"
+                    android:contentDescription="@string/app_name"
+                    android:focusable="true"
+                    android:scaleType="fitXY" />
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

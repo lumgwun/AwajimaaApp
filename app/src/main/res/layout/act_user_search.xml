@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.skylightapp.UserSearchAct">
+
+    <Spinner
+        android:id="@+id/spn_Users4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/spn_type_filter3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_account3" />
+
+    <Spinner
+        android:id="@+id/spn_type_filter3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/spn_date_filter4"
+        app:layout_constraintStart_toEndOf="@+id/spn_Users4"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_trans_type" />
+
+    <Spinner
+        android:id="@+id/spn_date_filter4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/spn_type_filter3"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_date_filter4" />
+
+    <TextView
+        android:id="@+id/txt_account_name4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Acct. Name (ACC_NO)"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/txt_account_balance44"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spn_type_filter3" />
+
+    <TextView
+        android:id="@+id/txt_account_balance44"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Account Balance"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txt_account_name4"
+        app:layout_constraintTop_toBottomOf="@+id/spn_type_filter3" />
+
+    <TextView
+        android:id="@+id/txt_SOAccount_b"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Standing Order Acct. Balance"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txt_account_name4"
+        app:layout_constraintTop_toBottomOf="@+id/txt_account_balance44" />
+
+
+    <ListView
+        android:id="@+id/lst_transactions44"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_account_name4" />
+
+    <TextView
+        android:id="@+id/txt_no_transfers44"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:text="No Transfers Found"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:textColor="@color/colorPrimary"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_account_name4" />
+
+    <TextView
+        android:id="@+id/txt_no_deposits44"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:text="No Deposits Found"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:textColor="@color/colorPrimary"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_account_name4" />
+
+    <TextView
+        android:id="@+id/txt_no_payments33"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:text="No Payments Found"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:textColor="@color/colorPrimary"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_account_name4" />
+
+    <TextView
+        android:id="@+id/txt_no_transactions33"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:text="No Transactions Found for this Account"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:textColor="@color/colorPrimary"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_account_name4" />
+    <TextView
+        android:id="@+id/txt_no_Savings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:text="No Savings for this Account"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:textColor="@color/colorPrimary"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_account_name4" />
+    <TextView
+        android:id="@+id/txt_no_Loans"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:text="No Loans for this Account"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:textColor="@color/colorPrimary"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_account_name4" />
+    <TextView
+        android:id="@+id/txt_no_SO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:text="No Standing Orders"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:textColor="@color/colorPrimary"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_account_name4" />
+
+
+    <TextView
+        android:id="@+id/lbl_account3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Account"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/lbl_trans_type"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lbl_trans_type"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Type"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/lbl_date_filter4"
+        app:layout_constraintStart_toEndOf="@+id/lbl_account3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lbl_date_filter4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Order by"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/lbl_trans_type"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

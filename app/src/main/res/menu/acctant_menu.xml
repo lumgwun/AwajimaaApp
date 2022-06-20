@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:itemTextAppearance="@style/TextAppearance.AppCompat.Widget.PopupMenu.Header"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single"
+        android:menuCategory="system">
+        <item
+            android:id="@+id/nav_dashboardAcctant"
+            android:icon="@drawable/ic_dashboard_black_24dp"
+            android:title="My Dashboard" />
+
+        <item
+            android:id="@+id/timeline_Acctant"
+            android:icon="@drawable/skylight"
+            android:title="My Timeline" />
+
+        <item
+            android:id="@+id/nav_Acctant_Savings"
+            android:icon="@drawable/skylight"
+            android:title="Savings" />
+        <item
+            android:id="@+id/nav_Acctant_p"
+            android:icon="@drawable/skylight"
+            android:title="Packages" />
+
+
+        <item android:title="Transaction">
+            <menu>
+                <group android:checkableBehavior="single">
+
+                    <item
+                        android:id="@+id/nav_Acctant_SO"
+                        android:icon="@drawable/skylight"
+                        android:title="Standing Order" />
+
+
+                    <item
+                        android:id="@+id/nav_AcctantTX"
+                        android:icon="@drawable/skylight"
+                        android:title="TX Tab" />
+                    <item
+                        android:id="@+id/nav_loanAcctant"
+                        android:icon="@drawable/skylight"
+                        android:title="Loans" />
+                    <item
+                        android:id="@+id/nav_PaymentAcctant"
+                        android:icon="@drawable/skylight"
+                        android:title="Payments" />
+
+
+                </group>
+            </menu>
+
+        </item>
+
+        <item android:title="Support">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/navsupportAcctant"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Support Tab" />
+                </group>
+            </menu>
+        </item>
+
+
+
+        <item android:title="Settings">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_prefAcctant"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="My Settings" />
+                    <item
+                        android:id="@+id/nav_logoutAcctant"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Logout" />
+                </group>
+            </menu>
+        </item>
+
+    </group>
+
+</menu>
