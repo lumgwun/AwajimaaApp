@@ -3,6 +3,7 @@ package com.skylightapp.Admins;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -56,6 +57,7 @@ public class UserListFragment extends Fragment {
 
     private List<Profile> profiles;
     private UserAdapter mAdapter;
+    SQLiteDatabase sqLiteDatabase;
 
 
     DBHelper dbHelper;
@@ -96,36 +98,43 @@ public class UserListFragment extends Fragment {
         View view = inflater.inflate(R.layout.frag_user_list, container, false);
         profiles = new ArrayList<Profile>();
         dbHelper = new DBHelper(getContext());
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+
+            for ( int j=0; j<11; j++ ){
+                profiles.add(new Profile("Ebuka ","Micheal","Rivers", "michael78", "ofa",963));
+                profiles.add(new Profile("Joe","1910","Abuja", "oscar45", "ofa",99663));
+                profiles.add(new Profile("Igwenga","1901","Kano", "Igwe4", "ofa",89963));
+                profiles.add(new Profile("Ama","1190","Lagos", "fastBoy", "ofa",963));
+                profiles.add(new Profile("May","1290","Outside", "Maywheather", "ofa",9363));
+                profiles.add(new Profile("Udwak","1910","Rivers", "udbeke", "ofa",91263));
+                profiles.add(new Profile("James","2190","Cross Rivers", "Jboy78", "ofa",9963));
+                profiles.add(new Profile("Sunju","1990","Kogi", "SunjutY", "ofa",44963));
+                profiles.add(new Profile("Emma","1900","Niger", "Emmabest", "ofa",96023));
+                profiles.add(new Profile("Success","19001","Lagos", "SForSuccess", "ofa",96398));
+                System.out.println("element " + j + ": " + profiles.get(j) );
+
+            }
 
 
-        for ( int j=0; j<11; j++ ){
-            profiles.add(new Profile("Ebuka ","Micheal","Rivers", "michael78", "ofa",963));
-            profiles.add(new Profile("Joe","1910","Abuja", "oscar45", "ofa",99663));
-            profiles.add(new Profile("Igwenga","1901","Kano", "Igwe4", "ofa",89963));
-            profiles.add(new Profile("Ama","1190","Lagos", "fastBoy", "ofa",963));
-            profiles.add(new Profile("May","1290","Outside", "Maywheather", "ofa",9363));
-            profiles.add(new Profile("Udwak","1910","Rivers", "udbeke", "ofa",91263));
-            profiles.add(new Profile("James","2190","Cross Rivers", "Jboy78", "ofa",9963));
-            profiles.add(new Profile("Sunju","1990","Kogi", "SunjutY", "ofa",44963));
-            profiles.add(new Profile("Emma","1900","Niger", "Emmabest", "ofa",96023));
-            profiles.add(new Profile("Success","19001","Lagos", "SForSuccess", "ofa",96398));
-            System.out.println("element " + j + ": " + profiles.get(j) );
+            for ( int j=12; j<profiles.size(); j++ ){
+                try {
 
-        }
+                    profiles = dbHelper.getAllProfileUsers();
+                    //System.out.println("User: " + j + ": " + profiles.get(j) );
+
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("Oops!");
+                }
 
 
-        for ( int j=12; j<profiles.size(); j++ ){
-            try {
-
-                profiles = dbHelper.getAllProfileUsers();
-                //System.out.println("User: " + j + ": " + profiles.get(j) );
-
-            } catch (IndexOutOfBoundsException e) {
-                System.out.println("Oops!");
             }
 
 
         }
+
+
 
 
         recyclerView = view.findViewById(R.id.listUsers);
@@ -229,7 +238,7 @@ public class UserListFragment extends Fragment {
                 simpleSwitch.setVisibility(View.INVISIBLE);
                 Toast.makeText(getContext(), "User approval :" + userStatusSwitch, Toast.LENGTH_LONG).show();
                 DBHelper applicationDb = new DBHelper(getContext());
-                applicationDb.updateUser(profile,user);
+                applicationDb.updateUser(profile);
 
                 userCard.setOnClickListener(new View.OnClickListener() {
                     @Override

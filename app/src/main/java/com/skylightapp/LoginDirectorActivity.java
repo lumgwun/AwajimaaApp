@@ -53,6 +53,7 @@ public class LoginDirectorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_login_director);
+        setTitle("Login Director");
         dbHelper=new DBHelper(this);
         userExtras=getIntent().getExtras();
         sharedPref= getSharedPreferences(PREF_NAME, MODE_PRIVATE);

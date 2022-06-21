@@ -256,6 +256,7 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_all_cust_old_pack);
+        setTitle("Old Package");
         customer= new Customer();
         sharedpreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();

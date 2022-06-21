@@ -60,6 +60,7 @@ public class ElelenwoSavings extends AppCompatActivity implements SavingsAdapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_elelenwo_savings);
+        setTitle("Elelenwo Collections");
         customerDailyReports = new ArrayList<CustomerDailyReport>();
         customerDailyReportArrayList = new ArrayList<CustomerDailyReport>();
         RecyclerView recyclerView = findViewById(R.id.recyclerViewSavingsElelenwo);

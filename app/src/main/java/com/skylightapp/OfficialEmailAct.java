@@ -20,10 +20,9 @@ public class OfficialEmailAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_official_email);
+        setTitle("Official Email");
         mywebView = (WebView) findViewById(R.id.webView_email);
         mywebView.setWebViewClient(new WebViewClient());
-        /*getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-        getActionBar().hide();*/
         WebSettings webViewSettings = mywebView.getSettings();
         webViewSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         webViewSettings.setJavaScriptEnabled(true);

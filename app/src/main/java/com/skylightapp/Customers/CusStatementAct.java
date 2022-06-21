@@ -105,6 +105,7 @@ public class CusStatementAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_cus_statement);
+        setTitle("Account Statement");
         dbHelper=new DBHelper(this);
         file_name_path = getString(R.string.file_path_name);
         FILE = Environment.getExternalStorageDirectory()

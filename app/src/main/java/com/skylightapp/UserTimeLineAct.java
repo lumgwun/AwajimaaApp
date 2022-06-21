@@ -45,6 +45,7 @@ public class UserTimeLineAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_user_time_line);
+        setTitle("My TimeLine");
         recyclerView = findViewById(R.id._timelines);
         txtNoTm = findViewById(R.id.actTimeline);
         timeLines = new ArrayList<TimeLine>();

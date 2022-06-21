@@ -61,6 +61,7 @@ public class WimpeyTranx extends AppCompatActivity implements TransactionAdapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_wimpey_tranx);
+        setTitle("Wimpey Office Transactions");
         transactionArrayList = new ArrayList<Transaction>();
         customTransactionArrayList = new ArrayList<Transaction>();
         RecyclerView recyclerView = findViewById(R.id.recyclerViewTXWTR);
@@ -76,7 +77,7 @@ public class WimpeyTranx extends AppCompatActivity implements TransactionAdapter
                 chooseDate();
             }
         });
-        dateOfTransaction = picker.getDayOfMonth()+"-"+ (picker.getMonth() + 1)+"-"+picker.getYear();
+        dateOfTransaction = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
         SnapHelper snapHelper = new PagerSnapHelper();
         officeBranch="Wimpey";
         //   ,   Elelenwo
@@ -126,7 +127,7 @@ public class WimpeyTranx extends AppCompatActivity implements TransactionAdapter
             txtTransactionCount4theDay.setText("Transactions:0");
 
         }
-        dateOfTransaction = picker.getDayOfMonth()+"-"+ (picker.getMonth() + 1)+"-"+picker.getYear();
+        dateOfTransaction = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
 
         btnSearchDB.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
@@ -186,7 +187,7 @@ public class WimpeyTranx extends AppCompatActivity implements TransactionAdapter
 
     }
     private void chooseDate() {
-        dateOfTransaction = picker.getDayOfMonth()+"-"+ (picker.getMonth() + 1)+"-"+picker.getYear();
+        dateOfTransaction = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
 
     }
 

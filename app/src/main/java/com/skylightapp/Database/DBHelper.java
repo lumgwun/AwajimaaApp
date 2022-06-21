@@ -604,9 +604,9 @@ public class DBHelper extends SQLiteOpenHelper {
     private ArrayList<Customer> customers;
     SharedPreferences userPref;
     private Context context;
-    public static String DB_PATH = "/data/DB";
+    public static String DB_PATH = "/data/";
 
-    public static final String DATABASE_NAME = "Skylight.DB";
+    public static final String DATABASE_NAME = "SkyApp.DB";
     private static final String LOG = DBHelper.class.getName();
 
     public static final String TABLE_MYTABLE = "mytable";
@@ -614,8 +614,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String COl_MYTABLE_NAME = "name";
 
     public static final String BILL_ID_WITH_PREFIX = "bill.id";
-    public static final int DATABASE_VERSION = 7;
-    public static final int DATABASE_NEW_VERSION = 8;
+    public static final int DATABASE_VERSION = 8;
+    public static final int DATABASE_NEW_VERSION = 9;
     public static final int USER_SURNAME_COLUMN = 1;
     public static final int USER_FIRSTNAME_COLUMN = 2;
     public static final int USER_EMAIL_COLUMN = 3;
@@ -1847,8 +1847,8 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.query(
                 CUSTOMER_TABLE + " , " + PROFILES_TABLE,
                 Utils.concat(new String[]{CUSTOMER_TABLE, PROFILES_TABLE}),
-                PROFILE_ID + " = " + PROFILE_ID,
-                null, groupbyclause, null, orderbyclause);
+                selection,
+                selectionArgs, groupbyclause, null, orderbyclause);
 
         if(cursor!=null && cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
@@ -2271,6 +2271,7 @@ public class DBHelper extends SQLiteOpenHelper {
             double count = 0.00;
 
             String selection = TANSACTION_EXTRA_DATE + "=?";
+
             String[] selectionArgs = new String[]{valueOf(date)};
             Cursor cursor = db.rawQuery(
                     "select sum ("+ TANSACTION_EXTRA_AMOUNT +") from " + TANSACTION_EXTRA_TABLE + " WHERE " + selection,
@@ -2376,25 +2377,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    public int getCusMonthTransactionCount(int customerID,String date) {
+    public int getCusMonthTransactionCount1(int customerID,String monthYear) {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
             int count = 0;
-            String[] items2 = TRANSACTION_DATE.split("/");
-            String date11=items2[0];
-            String month1=items2[1];
-            String year1=items2[2];
+            String selection = "substr(" + TRANSACTION_DATE + ",4)" + "=? AND " + CUSTOMER_ID + "=?";
 
-            String monthTotal2 =month1+"/"+year1;
+            String queryString="select COUNT ("+ TRANSACTION_AMOUNT +") from " + TRANSACTIONS_TABLE + " WHERE " + selection;
 
-            String selection = CUSTOMER_ID + "=? AND " + monthTotal2 + "=?";
-            String[] selectionArgs = new String[]{valueOf(customerID), valueOf(date)};
+            String[] selectionArgs = new String[]{valueOf(monthYear), valueOf(customerID)};
 
+            @SuppressLint("Recycle") Cursor cursor = db.rawQuery(queryString,selectionArgs,
 
-            Cursor cursor = db.rawQuery(
-                    "SELECT COUNT (*) FROM " + TRANSACTIONS_TABLE + " WHERE " + selection,
-                    selectionArgs
-            );
+                    null);
 
             if(cursor!=null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
@@ -2416,46 +2411,34 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return 0;
     }
-    public int getCusMonthSOCount(int customerID,String date) {
-        try {
-            SQLiteDatabase db = this.getReadableDatabase();
-            int count = 0;
-            String[] items2 = SO_START_DATE.split("/");
-            String date11=items2[0];
-            String month1=items2[1];
-            String year1=items2[2];
+    public int getCusMonthSOCount1(int customerID,String monthYear) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int count = 0;
 
-            String monthTotal2 =month1+"/"+year1;
+        String selection = "substr(" + SO_START_DATE + ",4)" + "=? AND " + CUSTOMER_ID + "=?";
 
-            String selection = CUSTOMER_ID + "=? AND " + monthTotal2 + "=?";
-            String[] selectionArgs = new String[]{valueOf(customerID), valueOf(date)};
+        String queryString="select COUNT ("+ SO_ID +") from " + STANDING_ORDER_TABLE + " WHERE " + selection;
+
+        String[] selectionArgs = new String[]{valueOf(monthYear), valueOf(customerID)};
+
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(queryString,selectionArgs,
+
+                null);
 
 
-            Cursor cursor = db.rawQuery(
-                    "SELECT COUNT (*) FROM " + STANDING_ORDER_TABLE + " WHERE " + selection,
-                    selectionArgs
-            );
-
-            if(cursor!=null && cursor.getCount() > 0) {
-                if (cursor.moveToFirst()) {
-                    do {
-                        count = cursor.getColumnIndex(SO_START_DATE);
-                    } while (cursor.moveToNext());
-                    cursor.close();
-                }
-
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    count = cursor.getColumnIndex(SO_START_DATE);
+                } while (cursor.moveToNext());
+                cursor.close();
             }
-            db.close();
-            return count;
 
-
-
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
         }
+        db.close();
+        return count;
 
-        return 0;
+
     }
 
 
@@ -2479,47 +2462,33 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     }
-    public int getTellerMonthCusCount(String date) {
-        try {
-            SQLiteDatabase db = this.getReadableDatabase();
-            int count = 0;
-            //String date="dd/mm/yyyy";
-
-            String[] items2 = CUSTOMER_DATE_JOINED.split("/");
-            String date11=items2[0];
-            String month1=items2[1];
-            String year1=items2[2];
-
-            String monthTotal2 =month1+"/"+year1;
-
-            String selection = monthTotal2 + "=?";
-            String[] selectionArgs = new String[]{valueOf(date)};
+    public int getTellerMonthCusCount1( int tellerID,String monthYear) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int count = 0;
 
 
-            Cursor cursor = db.rawQuery(
-                    "SELECT COUNT (*) FROM " + CUSTOMER_TABLE + " WHERE " + selection,
-                    selectionArgs
-            );
+        String selection = "substr(" + CUSTOMER_DATE_JOINED + ",4)" + "=? AND " + PROFILE_ID + "=?";
 
-            if(cursor!=null && cursor.getCount() > 0) {
-                if (cursor.moveToFirst()) {
-                    do {
-                        count = cursor.getColumnIndex(CUSTOMER_ID);
-                    } while (cursor.moveToNext());
-                    cursor.close();
-                }
+        String queryString="select COUNT ("+ CUSTOMER_ID +") from " + CUSTOMER_TABLE + " WHERE " + selection;
 
+        String[] selectionArgs = new String[]{valueOf(monthYear), valueOf(tellerID)};
+
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(queryString,selectionArgs,
+
+                null);
+
+
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    count = cursor.getColumnIndex(CUSTOMER_ID);
+                } while (cursor.moveToNext());
+                cursor.close();
             }
-            db.close();
-            return count;
 
-
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
         }
-
-        return 0;
+        db.close();
+        return count;
     }
 
     /*public Cursor getSimpleCustomersFromCursor(ArrayList<Customer> customers, Cursor cursor) {
@@ -2614,126 +2583,92 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    public double getTellerTotalTellerCashForTheMonth(String tellerName,String date) {
+    public double getTellerTotalTellerCashForTheMonth(String tellerName,String monthYear) {
 
-        try {
-            SQLiteDatabase db = this.getReadableDatabase();
-            double count = 0.00;
+        SQLiteDatabase db = this.getReadableDatabase();
+        double count = 0.00;
 
-            String[] items2 = TELLER_CASH_DATE.split("/");
-            String date11=items2[0];
-            String month1=items2[1];
-            String year1=items2[2];
 
-            String monthTotal2 =month1+"/"+year1;
+        String selection = "substr(" + TELLER_CASH_DATE + ",4)" + "=? AND " + PROFILE_ID + "=?";
 
-            String selection = TELLER_CASH_TELLER_NAME + "=? AND " + monthTotal2 + "=?";
-            String[] selectionArgs = new String[]{valueOf(tellerName), valueOf(date)};
-            Cursor cursor = db.rawQuery(
-                    "select sum ("+ TELLER_CASH_AMOUNT +") from " + TELLER_CASH_TABLE + " WHERE " + selection,
-                    selectionArgs);
+        String queryString="select sum ("+ TELLER_CASH_AMOUNT +") from " + TELLER_CASH_TABLE + " WHERE " + selection;
 
-            if(cursor!=null && cursor.getCount() > 0) {
-                if (cursor.moveToFirst()) {
-                    do {
-                        count = cursor.getColumnIndex(TELLER_CASH_AMOUNT);
-                    } while (cursor.moveToNext());
-                    cursor.close();
-                }
+        String[] selectionArgs = new String[]{valueOf(monthYear), valueOf(tellerName)};
 
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(queryString,selectionArgs,
+
+                null);
+
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    count = cursor.getColumnIndex(TELLER_CASH_AMOUNT);
+                } while (cursor.moveToNext());
+                cursor.close();
             }
-            db.close();
-            return count;
 
-
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
         }
+        db.close();
+        return count;
 
-
-        return 0;
     }
-    public double getMonthTotalSavingsForCustomer(int customerID,String date) {
+    public double getMonthTotalSavingsForCustomer(int customerID,String monthYear) {
 
-        try {
-            SQLiteDatabase db = this.getReadableDatabase();
-            double count = 0.00;
+        SQLiteDatabase db = this.getReadableDatabase();
+        double count = 0.00;
 
-            String[] items2 = REPORT_DATE.split("/");
-            String date11=items2[0];
-            String month1=items2[1];
-            String year1=items2[2];
+        String selection = "substr(" + REPORT_DATE + ",4)" + "=? AND " + CUSTOMER_ID + "=?";
 
-            String monthTotal2 =month1+"/"+year1;
+        String queryString="select sum ("+ REPORT_TOTAL +") from " + DAILY_REPORT_TABLE + " WHERE " + selection;
 
-            String selection = CUSTOMER_ID + "=? AND " + monthTotal2 + "=?";
-            String[] selectionArgs = new String[]{valueOf(customerID), valueOf(date)};
-            Cursor cursor = db.rawQuery(
-                    "select sum ("+ REPORT_TOTAL +") from " + DAILY_REPORT_TABLE + " WHERE " + selection,
-                    selectionArgs);
+        String[] selectionArgs = new String[]{valueOf(monthYear), valueOf(customerID)};
 
-            if(cursor!=null && cursor.getCount() > 0) {
-                if (cursor.moveToFirst()) {
-                    do {
-                        count = cursor.getColumnIndex(REPORT_TOTAL);
-                    } while (cursor.moveToNext());
-                    cursor.close();
-                }
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(queryString,selectionArgs,
 
+                null);
+
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    count = cursor.getColumnIndex(REPORT_TOTAL);
+                } while (cursor.moveToNext());
+                cursor.close();
             }
-            db.close();
-            return count;
 
-
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
         }
-
-
-        return 0;
+        db.close();
+        return count;
     }
 
-    public double getMonthTotalTransactionForCus(int customerID,String date) {
+    public double getMonthTotalTransactionForCus1(int customerID,String yearMonth) {
 
-        try {
-            SQLiteDatabase db = this.getReadableDatabase();
-            double count = 0.00;
+        SQLiteDatabase db = this.getReadableDatabase();
+        double count = 0.00;
 
-            String[] items2 = TELLER_CASH_DATE.split("/");
-            String date11=items2[0];
-            String month1=items2[1];
-            String year1=items2[2];
 
-            String monthTotal2 =month1+"/"+year1;
+        String selection = "substr(" + TRANSACTION_DATE + ",4)" + "=? AND " + CUSTOMER_ID + "=?";
 
-            String selection = CUSTOMER_ID + "=? AND " + monthTotal2 + "=?";
-            String[] selectionArgs = new String[]{valueOf(customerID), valueOf(date)};
-            Cursor cursor = db.rawQuery(
-                    "select sum ("+ TRANSACTION_AMOUNT +") from " + TRANSACTIONS_TABLE + " WHERE " + selection,
-                    selectionArgs);
+        String queryString="select sum ("+ TRANSACTION_AMOUNT +") from " + TRANSACTIONS_TABLE + " WHERE " + selection;
 
-            if(cursor!=null && cursor.getCount() > 0) {
-                if (cursor.moveToFirst()) {
-                    do {
-                        count = cursor.getColumnIndex(TRANSACTION_AMOUNT);
-                    } while (cursor.moveToNext());
-                    cursor.close();
-                }
+        String[] selectionArgs = new String[]{valueOf(yearMonth), valueOf(customerID)};
 
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(queryString,selectionArgs,
+
+                null);
+
+
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    count = cursor.getColumnIndex(TRANSACTION_AMOUNT);
+                } while (cursor.moveToNext());
+                cursor.close();
             }
-            db.close();
-            return count;
 
-
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
         }
+        db.close();
+        return count;
 
-
-        return 0;
     }
 
     public double getTellerCashForTellerToday(String tellerName,String date) {
@@ -11103,6 +11038,7 @@ public class DBHelper extends SQLiteOpenHelper {
             sqLiteDatabase.insert(MESSAGE_TABLE, null, contentValues);
             sqLiteDatabase.close();
 
+
         }catch (SQLException e)
         {
             e.printStackTrace();
@@ -11905,49 +11841,47 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public ArrayList<SkyLightPackage> getAllPackagesCustomer(int customerID) {
-        try {
-            ArrayList<SkyLightPackage> packages = new ArrayList<>();
-            SQLiteDatabase db = this.getWritableDatabase();
-            Cursor cursor = db.query(PACKAGE_TABLE, null, CUSTOMER_ID
-                            + " = " + customerID, null, null,
-                    null, null);
-            getPackagesFromCursorAdmin(packages, cursor);
+        ArrayList<SkyLightPackage> packages = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = CUSTOMER_ID + "=? AND " + CUSTOMER_ID + "=?AND " + PACKAGE_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(customerID)};
 
-            cursor.close();
-            db.close();
+        Cursor cursor = db.query(PACKAGE_TABLE, null, selection, selectionArgs, null,
+                null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getPackagesFromCursorAdmin(packages, cursor);
 
-            return packages;
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
 
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
         }
+        db.close();
+        return packages;
 
-
-        return null;
     }
 
 
     public ArrayList<SkyLightPackage> getAllPackagesAdmin() {
-        try {
-            ArrayList<SkyLightPackage> packages = new ArrayList<>();
-            SQLiteDatabase db = this.getWritableDatabase();
-            Cursor cursor = db.query(PACKAGE_TABLE, null, null, null, null,
-                    null, null);
-            getPackagesFromCursorAdmin(packages, cursor);
+        ArrayList<SkyLightPackage> packages = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.query(PACKAGE_TABLE, null, null, null, null,
+                null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getPackagesFromCursorAdmin(packages, cursor);
 
-            cursor.close();
-            db.close();
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
 
-            return packages;
-
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
         }
+        db.close();
 
-
-        return null;
+        return packages;
     }
 
     private void getPackagesFromCursorAdmin(ArrayList<SkyLightPackage> packages, Cursor cursor) {
@@ -11980,42 +11914,35 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
+
     public void overwriteCustomerPackage(SkyLightPackage skyLightPackage, Customer customer, CustomerDailyReport customerDailyReport, Account account) {
-        try {
-            SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
 
-            ContentValues cv = new ContentValues();
-            cv.put(CUSTOMER_ID, customer.getCusUID());
-            cv.put(REPORT_NUMBER, customerDailyReport.getPackageId());
-            cv.put(PACKAGE_BALANCE, valueOf(skyLightPackage.getBalance()));
-            cv.put(PACKAGE_STATUS, skyLightPackage.getStatus());
-            cv.put(PACKAGE_END_DATE, skyLightPackage.getDateEnded());
-            db.update(PACKAGE_TABLE, cv, CUSTOMER_ID + "=? AND " + PACKAGE_ID + "=?",
-                    new String[]{valueOf(customer.getCusUID()), valueOf(skyLightPackage.getPackageId())});
-            db.close();
+        ContentValues cv = new ContentValues();
+        cv.put(CUSTOMER_ID, customer.getCusUID());
+        cv.put(REPORT_NUMBER, customerDailyReport.getPackageId());
+        cv.put(PACKAGE_BALANCE, valueOf(skyLightPackage.getBalance()));
+        cv.put(PACKAGE_STATUS, skyLightPackage.getStatus());
+        cv.put(PACKAGE_END_DATE, skyLightPackage.getDateEnded());
+        String selection = CUSTOMER_ID + "=?AND " + PACKAGE_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(customer.getCusUID()), valueOf(skyLightPackage.getPackID())};
 
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
+
+        db.update(PACKAGE_TABLE, cv, selection, selectionArgs);
+        db.close();
 
 
     }
 
     public void updatePackage(int customerID,int packageId,double packageBalance,String status) {
-        try {
-            SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues cv = new ContentValues();
-            cv.put(PACKAGE_BALANCE, valueOf(packageBalance));
-            cv.put(PACKAGE_STATUS, status);
-            db.update(PACKAGE_TABLE, cv, CUSTOMER_ID + "=? AND " + PACKAGE_ID + "=?",
-                    new String[]{valueOf(customerID), valueOf(packageId)});
-            db.close();
-
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(PACKAGE_BALANCE, valueOf(packageBalance));
+        cv.put(PACKAGE_STATUS, status);
+        String selection = CUSTOMER_ID + "=?AND " + PACKAGE_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(customerID), valueOf(packageId)};
+        db.update(PACKAGE_TABLE, cv, selection, selectionArgs);
+        db.close();
 
     }
     /*public void overwriteCustomerReport(int customerID,int packageID,int reportID, long acctID) {
@@ -12050,39 +11977,59 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public ArrayList<SkyLightPackage> getPackagesFromCurrentProfile(int profileID) {
-        try {
-            ArrayList<SkyLightPackage> skyLightPackages = new ArrayList<>();
-            SQLiteDatabase db = this.getWritableDatabase();
-            Cursor cursor = db.query(PACKAGE_TABLE, null, null, null, null,
-                    null, null);
-            getPackagesFromCursorCustomer(profileID, skyLightPackages);
+        ArrayList<SkyLightPackage> skyLightPackages = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.query(PACKAGE_TABLE, null, null, null, null,
+                null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getPackagesFromCursorCustomer(profileID, skyLightPackages);
 
-            cursor.close();
-            db.close();
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
 
-            return skyLightPackages;
-
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
         }
 
+        db.close();
 
-        return null;
+        return skyLightPackages;
     }
-    protected String getSpecificPackage(long packageId) {
-        return null;
+    protected String getSpecificPackage(int packageId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String skPackage=null;
+        String selection = PACKAGE_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(packageId)};
+        Cursor cursor = db.query(PACKAGE_TABLE, null, selection, selectionArgs, null,
+                null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    skPackage = cursor.getColumnName(4);
+
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        cursor.close();
+        db.close();
+
+        return skPackage;
     }
 
 
 
-    public void deletePackage(long packageId) {
+    public void deletePackage(int packageId) {
         try {
 
             SQLiteDatabase db = this.getWritableDatabase();
+            String selection = PACKAGE_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(packageId)};
             db.delete(PACKAGE_TABLE,
-                    "PACKAGE_ID = ? ",
-                    new String[]{Long.toString(packageId)});
+                    selection, selectionArgs);
 
         }catch (SQLException e)
         {
@@ -12091,25 +12038,24 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
     public ArrayList<SkyLightPackage> getPackagesFromCustomer(int customerID) {
-        try {
-            ArrayList<SkyLightPackage> skyLightPackages = new ArrayList<>();
-            SQLiteDatabase db = this.getWritableDatabase();
-            Cursor cursor = db.query(PACKAGE_TABLE, null, null, null, null,
-                    null, null);
-            getPackagesFromCursorCustomer1(customerID, cursor);
+        ArrayList<SkyLightPackage> skyLightPackages = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.query(PACKAGE_TABLE, null, null, null, null,
+                null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getPackagesFromCursorCustomer1(customerID, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
 
-            cursor.close();
-            db.close();
-
-            return skyLightPackages;
-
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
         }
 
+        cursor.close();
+        db.close();
 
-        return null;
+        return skyLightPackages;
     }
     private Cursor getPackagesFromCursorCustomer1(int customerID, Cursor cursor) {
         try {
@@ -12168,57 +12114,57 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public int getCustomerPackageCount(int packageId) {
-        try {
-            SQLiteDatabase db = this.getReadableDatabase();
-            Cursor cursor = db.rawQuery(
-                    "SELECT COUNT (*) FROM " + PACKAGE_TABLE + " WHERE " + PACKAGE_ID + "=?",
-                    new String[]{valueOf(packageId)}
-            );
-            int count = 0;
-            if (null != cursor)
-                if (cursor.getCount() > 0) {
-                    cursor.moveToFirst();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = PACKAGE_ID + "=? ";
+        String[] selectionArgs = new String[]{valueOf(packageId)};
+
+        Cursor cursor = db.rawQuery(
+                "SELECT COUNT (*) FROM " + PACKAGE_TABLE + " WHERE " + selection,
+                selectionArgs
+        );
+        int count = 0;
+
+
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
                     count = cursor.getInt(0);
-                }
-            if (cursor != null) {
+                } while (cursor.moveToNext());
                 cursor.close();
             }
-            return count;
 
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
         }
+        db.close();
 
 
-        return 0;
+        return count;
+
     }
 
     public int getPackageCountTeller(int profileID) {
-        try {
-            SQLiteDatabase db = this.getReadableDatabase();
-            int count = 0;
-            Cursor cursor = db.rawQuery(
-                    "SELECT COUNT (*) FROM " + CUSTOMER_TABLE + " WHERE " + PROFILE_ID + "=?",
-                    new String[]{valueOf(profileID)}
-            );
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = PROFILE_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(profileID)};
 
-            if (null != cursor)
-                if (cursor.getCount() > 0) {
-                    cursor.moveToFirst();
+        int count = 0;
+        Cursor cursor = db.rawQuery(
+                "SELECT COUNT (*) FROM " + CUSTOMER_TABLE + " WHERE " + selection,
+                selectionArgs
+        );
+
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
                     count = cursor.getInt(0);
-                }
-            if (cursor != null) {
+                } while (cursor.moveToNext());
                 cursor.close();
             }
-            return count;
 
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
         }
+        db.close();
 
-        return 0;
+        return count;
+
     }
 
     public ArrayList<SkyLightPackage> getPackagesForTellerProfileWithDate(int tellerID, String todayDate) {
@@ -12489,51 +12435,58 @@ public class DBHelper extends SQLiteOpenHelper {
         return null;
     }
     public int getPackageCountCustomDay(String dateOfCustomDays) {
-        try {
-            SQLiteDatabase db = this.getReadableDatabase();
-            int count = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        int count = 0;
 
-            Cursor cursor = db.rawQuery(
-                    "SELECT COUNT (*) FROM " + PACKAGE_TABLE + " WHERE " + PACKAGE_END_DATE + "=?",
-                    new String[]{valueOf(dateOfCustomDays)}
-            );
+        ArrayList<SkyLightPackage> packages = new ArrayList<>();
 
-            if (null != cursor)
-                if (cursor.getCount() > 0) {
-                    cursor.moveToFirst();
-                    count = cursor.getInt(0);
-                }
-            if (cursor != null) {
+        String selection = PACKAGE_END_DATE + "=?";
+        String[] selectionArgs = new String[]{valueOf(dateOfCustomDays)};
+
+        Cursor cursor = db.rawQuery(
+                "SELECT COUNT (*) FROM " + PACKAGE_TABLE + " WHERE " + selection,
+                selectionArgs
+        );
+
+
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getPackagesFromCursorAdmin(packages, cursor);
+                } while (cursor.moveToNext());
                 cursor.close();
             }
-            return count;
 
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
         }
+        db.close();
 
-        return 0;
+        return count;
     }
 
     public ArrayList<SkyLightPackage> getPackEndingCustomDay(String dateOfCustomDays) {
-        try {
-            ArrayList<SkyLightPackage> packages = new ArrayList<>();
-            SQLiteDatabase db = this.getWritableDatabase();
-            Cursor cursor = db.query(PACKAGE_TABLE, null,  PACKAGE_END_DATE + "=?",new String[]{valueOf(dateOfCustomDays)}, null, null,
-                    null, null);
-            getPackagesFromCursorAdmin(packages, cursor);
+        ArrayList<SkyLightPackage> packages = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
 
-            cursor.close();
-            db.close();
-            return packages;
+        String selection = PACKAGE_END_DATE + "=?";
+        String[] selectionArgs = new String[]{valueOf(dateOfCustomDays)};
 
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
+        Cursor cursor = db.query(PACKAGE_TABLE, null, selection, selectionArgs, null,
+                null, null);
+
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getPackagesFromCursorAdmin(packages, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
         }
+        db.close();
 
-        return null;
+
+        return packages;
+
     }
 
 
@@ -12543,12 +12496,25 @@ public class DBHelper extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
             String incomplete = null;
             //inProgress=incomplete;
-            Cursor cursor = db.query(PACKAGE_TABLE, null, CUSTOMER_ID + "=? AND " + PACKAGE_STATUS + "=?",new String[]{valueOf(customerId), valueOf(completed)}, PACKAGE_ID, null,
-                    null, null);
-            getPackagesFromCursorAdmin(packages, cursor);
 
-            cursor.close();
+            String selection = CUSTOMER_ID + "=? AND " + PACKAGE_STATUS + "=?";
+            String[] selectionArgs = new String[]{valueOf(PROFILE_ID), valueOf(completed)};
+
+            Cursor cursor = db.query(PACKAGE_TABLE, null, selection, selectionArgs, null,
+                    null, null);
+
+            if(cursor!=null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        getPackagesFromCursorAdmin(packages, cursor);
+                    } while (cursor.moveToNext());
+                    cursor.close();
+                }
+
+            }
             db.close();
+
+
             return packages;
 
         }catch (SQLException e)
@@ -12559,70 +12525,77 @@ public class DBHelper extends SQLiteOpenHelper {
         return null;
     }
     public ArrayList<SkyLightPackage> getProfileIncompletePack(int profileID, String inProgress) {
-        try {
-            ArrayList<SkyLightPackage> packages = new ArrayList<>();
-            SQLiteDatabase db = this.getWritableDatabase();
-            Cursor cursor = db.query(PACKAGE_TABLE, null, PROFILE_ID + "=? AND " + PACKAGE_STATUS + "=?",new String[]{valueOf(profileID), valueOf(inProgress)}, PACKAGE_ID, null,
-                    null, null);
-            getPackagesFromCursorAdmin(packages, cursor);
+        ArrayList<SkyLightPackage> packages = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
 
-            cursor.close();
-            db.close();
-            return packages;
+        String selection = PROFILE_ID + "=? AND " + PACKAGE_STATUS + "=?";
+        String[] selectionArgs = new String[]{valueOf(PROFILE_ID), valueOf(inProgress)};
 
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
+        Cursor cursor = db.query(PACKAGE_TABLE, null, selection, selectionArgs, null,
+                null, null);
 
-        return null;
-    }
-    public int getPackEndingTomoroCount(String dateOfTomorrow) {
-        try {
-            SQLiteDatabase db = this.getReadableDatabase();
-            int count = 0;
-
-            Cursor cursor = db.rawQuery(
-                    "SELECT COUNT (*) FROM " + PACKAGE_TABLE + " WHERE " + PACKAGE_END_DATE + "=?",
-                    new String[]{valueOf(dateOfTomorrow)}
-            );
-
-            if (null != cursor)
-                if (cursor.getCount() > 0) {
-                    cursor.moveToFirst();
-                    count = cursor.getInt(0);
-                }
-            if (cursor != null) {
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getPackagesFromCursorAdmin(packages, cursor);
+                } while (cursor.moveToNext());
                 cursor.close();
             }
-            return count;
 
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
         }
+        db.close();
 
-        return 0;
+
+        return packages;
+    }
+    public int getPackEndingTomoroCount(String dateOfTomorrow) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int count = 0;
+
+        String selection = PACKAGE_END_DATE + "=?";
+        String[] selectionArgs = new String[]{valueOf(dateOfTomorrow)};
+
+        Cursor cursor = db.rawQuery(
+                "SELECT COUNT (*) FROM " + PACKAGE_TABLE + " WHERE " + selection,
+                selectionArgs);
+
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    count = cursor.getInt(0);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+        db.close();
+
+        return count;
+
     }
 
     public int getPackEnding7DaysCount(String dateOfSevenDays) {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
             int count = 0;
+            String selection = PACKAGE_END_DATE + "=?";
+            String[] selectionArgs = new String[]{valueOf(dateOfSevenDays)};
 
             Cursor cursor = db.rawQuery(
-                    "SELECT COUNT (*) FROM " + PACKAGE_TABLE + " WHERE " + PACKAGE_END_DATE + "=?",
-                    new String[]{valueOf(dateOfSevenDays)}
-            );
+                    "SELECT COUNT (*) FROM " + PACKAGE_TABLE + " WHERE " + selection,
+                    selectionArgs);
 
-            if (null != cursor)
-                if (cursor.getCount() > 0) {
-                    cursor.moveToFirst();
-                    count = cursor.getInt(0);
+            if(cursor!=null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        count = cursor.getInt(0);
+                    } while (cursor.moveToNext());
+                    cursor.close();
                 }
-            if (cursor != null) {
-                cursor.close();
+
             }
+            db.close();
+
             return count;
 
         }catch (SQLException e)
@@ -12643,9 +12616,15 @@ public class DBHelper extends SQLiteOpenHelper {
 
             Cursor cursor = db.query(PACKAGE_TABLE, columns, selection, selectionArgs, null, null, null);
 
-            getPackagesFromCursorAdmin(skyLightPackageArrayList, cursor);
+            if(cursor!=null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        getPackagesFromCursorAdmin(skyLightPackageArrayList, cursor);
+                    } while (cursor.moveToNext());
+                    cursor.close();
+                }
 
-            cursor.close();
+            }
             db.close();
 
             return skyLightPackageArrayList;
@@ -12669,9 +12648,16 @@ public class DBHelper extends SQLiteOpenHelper {
             String[] selectionArgs = new String[]{valueOf(todayDate)};
 
             Cursor cursor = db.query(PACKAGE_TABLE, columns, selection, selectionArgs, null, null, null);
-            getPackagesFromCursorAdmin(skyLightPackages, cursor);
 
-            cursor.close();
+            if(cursor!=null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        getPackagesFromCursorAdmin(skyLightPackages, cursor);
+                    } while (cursor.moveToNext());
+                    cursor.close();
+                }
+
+            }
             db.close();
 
             return skyLightPackages;
@@ -12801,6 +12787,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             int sum=0;
             SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+
 
             try (Cursor cursor = sqLiteDatabase.rawQuery("SELECT SUM(" + PACKAGE_VALUE + ") as Total FROM " + PACKAGE_TABLE, null)) {
                 if (cursor.moveToFirst())
@@ -12946,11 +12933,17 @@ public class DBHelper extends SQLiteOpenHelper {
             String[] selectionArgs = new String[]{valueOf(customerID), valueOf(promo),valueOf(completed)};
 
             Cursor cursor = db.query(PACKAGE_TABLE, columns, selection, selectionArgs, null, null, null);
+            if(cursor!=null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        getPackagesFromCursorAdmin(skyLightPackageArrayList, cursor);
+                    } while (cursor.moveToNext());
+                    cursor.close();
+                }
 
-            getPackagesFromCursorAdmin(skyLightPackageArrayList, cursor);
-
-            cursor.close();
+            }
             db.close();
+
 
             return skyLightPackageArrayList;
 
@@ -15574,8 +15567,7 @@ public class DBHelper extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
             String selection = CUSTOMER_ID + "=?";
             String[] selectionArgs = new String[]{valueOf(customerID)};
-            Cursor cursor = db.query(DAILY_REPORT_TABLE, null, CUSTOMER_ID
-                            + " = " + customerID, new String[]{REPORT_AMOUNT,PACKAGE_START_DATE,REPORT_AMOUNT_REMAINING}, null,
+            Cursor cursor = db.query(DAILY_REPORT_TABLE, null, selection,selectionArgs , null,
                     null, null);
             if (cursor != null)
                 if (cursor.getCount() > 0) {
@@ -15645,78 +15637,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    /*protected long insertPackage(int profileId, int customerId, String lastName, String firstName, String phoneNumber, String email, String dob, String gender, String address, String state, String nextOfKin, String dateJoined, String userName, String password, String profilePicture, String s, int packageId, String packageType, double amount, String date, String startDate, double numberOfDays, String total, String ledgerBalance, String grandTotal, String endDate, int count, String remainingDays, String status) {
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        ContentValues packageValues = new ContentValues();
-        Calendar calendar = null;
-        Profile profile = new Profile();
-        dateJoined = String.valueOf(Calendar.getInstance().getTime());
-        SkyLightPackage skyLightPackage =new SkyLightPackage();
-        int packageCount = skyLightPackage.getCount();
-
-        remainingDays = String.valueOf((int) (31-numberOfDays));
-        String packageStatus = skyLightPackage.getPackageStatus();
-        packageValues.put(PROFILE_ID, profileId);
-        packageValues.put(PACKAGE_ID, packageId);
-        packageValues.put(CUSTOMER_ID, customerId);
-        packageValues.put(CUSTOMER_SURNAME, lastName);
-        packageValues.put(CUSTOMER_FIRST_NAME, firstName);
-        packageValues.put(CUSTOMER_PHONE_NUMBER, phoneNumber);
-        packageValues.put(CUSTOMER_EMAIL_ADDRESS, email);
-        packageValues.put(CUSTOMER_DOB, dob);
-        packageValues.put(CUSTOMER_GENDER, gender);
-        packageValues.put(CUSTOMER_ADDRESS, address);
-        packageValues.put(CUSTOMER_OFFICE, state);
-        packageValues.put("Next of Kin", nextOfKin);
-        packageValues.put(CUSTOMER_DATE_JOINED, dateJoined);
-        packageValues.put(CUSTOMER_USER_NAME, userName);
-        packageValues.put(CUSTOMER_PASSWORD, password);
-        packageValues.put("Profile Picture", profilePicture);
-        packageValues.put(PACKAGE_TYPE, packageType);
-        packageValues.put(PACKAGE_VALUE, amount);
-        packageValues.put(REPORT_DATE, date);
-        packageValues.put(PACKAGE_START_DATE, startDate);
-        packageValues.put(REPORT_NUMBER_OF_DAYS, numberOfDays);
-        packageValues.put(REPORT_TOTAL, total);
-        packageValues.put(PACKAGE_TOTAL_VALUE, ledgerBalance);
-        packageValues.put(REPORT_STATUS, packageStatus);
-        packageValues.put("PackageCount", packageCount);
-        return sqLiteDatabase.insert(PACKAGE_TABLE, null, packageValues);
-    }
-    public void saveNewPackage(Profile userProfile, Account account) {
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        int profileId =userProfile.getDbId();
-        Customer customer1 = new Customer();
-        int customerId =customer1.getId();
-        SkyLightPackage skyLightPackage = new SkyLightPackage();
-        String dateStart =skyLightPackage.getDateStarted();
-        String endStart =skyLightPackage.setDateEnded();
-        Long duration = skyLightPackage.getSubscriptionDays();
-        double savingsAmount = skyLightPackage.getDailyAmount();
-        double totalAmountPerDay = skyLightPackage.getTotalAmount();
-        String status = skyLightPackage.getStatus();
-        String type = String.valueOf(skyLightPackage.getType());
-        String recordDate = String.valueOf(skyLightPackage.getDate());
-        String numberOfDays = String.valueOf(skyLightPackage.getNumberOfDays());
-        String grandTotal = String.valueOf(skyLightPackage.getGrandTotal());
-        String accountBalance = String.valueOf(account.getAccountBalance());
-        String count = String.valueOf(skyLightPackage.getCount());
-
-        contentValues.put(PACKAGE_TYPE, type);
-        contentValues.put(PACKAGE_VALUE, savingsAmount);
-        contentValues.put(REPORT_DATE, recordDate);
-        contentValues.put(PACKAGE_START_DATE, endStart);
-        contentValues.put(PACKAGE_DURATION, duration);
-        contentValues.put(REPORT_NUMBER_OF_DAYS, numberOfDays);
-        contentValues.put(REPORT_TOTAL, totalAmountPerDay);
-        contentValues.put(PACKAGE_VALUE, grandTotal);
-        contentValues.put(REPORT_STATUS, status);
-        contentValues.put("PackageCount", count);
-
-    }*/
-
-
 
 
 
@@ -15733,8 +15653,10 @@ public class DBHelper extends SQLiteOpenHelper {
             }
             interestValues.put(INTEREST_ID, interestId);
             interestValues.put(INTEREST_RATE, interestRate);
-            interestValues.put("update date", valueOf(today));
-            db.update(INTEREST_TABLE, interestValues, INTEREST_ID + " = ?", new String[]{valueOf(id)});
+            //interestValues.put("update date", valueOf(today));
+            String selection = INTEREST_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(id)};
+            db.update(INTEREST_TABLE, interestValues, selection, selectionArgs);
             //db.close();
 
         }catch (SQLException e)
@@ -15751,11 +15673,10 @@ public class DBHelper extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getReadableDatabase();
             String[] columns = {PROFILE_SURNAME, PROFILE_FIRSTNAME, PROFILE_PHONE};
 
-            //String selection = "strSurname=? , strFirstName = ? and strFirstName = ?";
-            String[] selectionArgs = {PROFILE_SURNAME, PROFILE_PHONE};
+            String selection = PROFILE_PHONE + "=?";
+            String[] selectionArgs = new String[]{valueOf(strPhoneNumber)};
 
-            Cursor cursor = db.query(PROFILES_TABLE, columns, PROFILE_PHONE
-                    + " = " + strPhoneNumber, selectionArgs, PROFILE_SURNAME, PROFILE_PHONE, null);
+            Cursor cursor = db.query(PROFILES_TABLE, columns, selection, selectionArgs, null, null, null);
             int count = cursor.getCount();
 
             cursor.close();
@@ -15839,103 +15760,134 @@ public class DBHelper extends SQLiteOpenHelper {
         return null;
     }
     public BigInteger getSavingsSumValueOfCustomer(int customerID){
-        try {
-            int sum=0;
-            SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        int sum=0;
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
-            //Cursor cur = db.rawQuery("SELECT SUM(" + (REPORT_TOTAL) + ") FROM " + DAILY_REPORT_TABLE, null);
-            try (Cursor cursor = sqLiteDatabase.rawQuery("SELECT SUM(" + (REPORT_TOTAL) + ") FROM " + DAILY_REPORT_TABLE, new String[]{valueOf(customerID)})) {
-                if (cursor.moveToFirst())
-                    //cursor.moveToFirst();
+        //Cursor cur = db.rawQuery("SELECT SUM(" + (REPORT_TOTAL) + ") FROM " + DAILY_REPORT_TABLE, null);
+        String[] columns = {PROFILE_SURNAME, PROFILE_FIRSTNAME, PROFILE_PHONE};
+
+        String selection = CUSTOMER_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(customerID)};
+        Cursor cursor = db.rawQuery(
+                "SELECT SUM (("+ REPORT_TOTAL +")) FROM " + DAILY_REPORT_TABLE + " WHERE " + selection, selectionArgs);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
                     sum = cursor.getColumnIndex(REPORT_TOTAL);
-                return BigInteger.valueOf(sum);
-                //return cursor.getString(sum);
-                //sum = cursor.getInt(cursor.getColumnIndex(REPORT_TOTAL));
+                } while (cursor.moveToNext());
+                cursor.close();
             }
 
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
         }
+        sqLiteDatabase.close();
 
-
-        return null;
+        return BigInteger.valueOf(sum);
     }
     public BigInteger getLoansSumValueForCustomer(int customerID){
-        try {
-            int sum=0;
-            SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-            //String sumQuery=String.format("SELECT SUM(%s) as Total FROM %s",LOAN_AMOUNT,LOAN_TABLE);
-            try (Cursor cursor = sqLiteDatabase.rawQuery("SELECT SUM(" + (LOAN_AMOUNT) + ") FROM " + LOAN_TABLE, new String[]{valueOf(customerID)})) {
-                if (cursor.moveToFirst())
+        int sum=0;
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        //String sumQuery=String.format("SELECT SUM(%s) as Total FROM %s",LOAN_AMOUNT,LOAN_TABLE);
+
+        //Cursor cur = db.rawQuery("SELECT SUM(" + (REPORT_TOTAL) + ") FROM " + DAILY_REPORT_TABLE, null);
+        String[] columns = {PROFILE_SURNAME, PROFILE_FIRSTNAME, PROFILE_PHONE};
+
+        String selection = CUSTOMER_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(customerID)};
+        Cursor cursor = db.rawQuery(
+                "SELECT SUM (("+ LOAN_AMOUNT +")) FROM " + LOAN_TABLE + " WHERE " + selection, selectionArgs);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
                     sum = cursor.getColumnIndex(LOAN_AMOUNT);
-                return BigInteger.valueOf(sum);
+                } while (cursor.moveToNext());
+                cursor.close();
             }
 
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
         }
+        sqLiteDatabase.close();
 
-        return null;
+        return BigInteger.valueOf(sum);
+
     }
     public BigInteger getSOReceivedValue(int customerID){
-        try {
-            int sum=0;
-            SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-            //String sumQuery=String.format("SELECT SUM(%s) as Total FROM %s",SO_RECEIVED_AMOUNT,STANDING_ORDER_TABLE);
-            try (Cursor cursor = sqLiteDatabase.rawQuery("SELECT SUM(" + (SO_RECEIVED_AMOUNT) + ") FROM " + STANDING_ORDER_TABLE,  new String[]{valueOf(customerID)})) {
-                if (cursor.moveToFirst())
+        int sum=0;
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        //String sumQuery=String.format("SELECT SUM(%s) as Total FROM %s",SO_RECEIVED_AMOUNT,STANDING_ORDER_TABLE);
+        //String sumQuery=String.format("SELECT SUM(%s) as Total FROM %s",LOAN_AMOUNT,LOAN_TABLE);
+
+        String[] columns = {PROFILE_SURNAME, PROFILE_FIRSTNAME, PROFILE_PHONE};
+
+        String selection = CUSTOMER_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(customerID)};
+        Cursor cursor = db.rawQuery(
+                "SELECT SUM (("+ SO_RECEIVED_AMOUNT +")) FROM " + STANDING_ORDER_TABLE + " WHERE " + selection, selectionArgs);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
                     sum = cursor.getColumnIndex(SO_RECEIVED_AMOUNT);
-                return BigInteger.valueOf(sum);
+                } while (cursor.moveToNext());
+                cursor.close();
             }
 
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
         }
+        sqLiteDatabase.close();
 
+        return BigInteger.valueOf(sum);
 
-        return null;
     }
     public BigInteger getSOExpectedValue(int customerID){
-        try {
-            int sum=0;
-            SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-            //String sumQuery=String.format("SELECT SUM(%s) as Total FROM %s",SO_EXPECTED_AMOUNT,STANDING_ORDER_TABLE);
+        int sum=0;
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
-            try (Cursor cursor = sqLiteDatabase.rawQuery("SELECT SUM(" + (SO_EXPECTED_AMOUNT) + ") FROM " + STANDING_ORDER_TABLE,  new String[]{valueOf(customerID)})) {
-                if (cursor.moveToFirst())
+        //String sumQuery=String.format("SELECT SUM(%s) as Total FROM %s",SO_RECEIVED_AMOUNT,STANDING_ORDER_TABLE);
+        //String sumQuery=String.format("SELECT SUM(%s) as Total FROM %s",LOAN_AMOUNT,LOAN_TABLE);
+
+        String[] columns = {PROFILE_SURNAME, PROFILE_FIRSTNAME, PROFILE_PHONE};
+
+        String selection = CUSTOMER_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(customerID)};
+        Cursor cursor = db.rawQuery(
+                "SELECT SUM (("+ SO_EXPECTED_AMOUNT +")) FROM " + STANDING_ORDER_TABLE + " WHERE " + selection, selectionArgs);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
                     sum = cursor.getColumnIndex(SO_EXPECTED_AMOUNT);
-                return BigInteger.valueOf(sum);
+                } while (cursor.moveToNext());
+                cursor.close();
             }
 
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
         }
+        sqLiteDatabase.close();
 
+        return BigInteger.valueOf(sum);
 
-        return null;
     }
     public BigInteger getSoValue(int customerID){
-        try {
-            int sum=0;
-            SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        int sum=0;
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
-            //String sumQuery=String.format("SELECT SUM(%s) as Total FROM %s",PACKAGE_TOTAL_VALUE,PACKAGE_TABLE);
-            try (Cursor cursor = sqLiteDatabase.rawQuery("SELECT SUM(" + (SO_DAILY_AMOUNT) + ") FROM " + STANDING_ORDER_TABLE,  new String[]{valueOf(customerID)})) {
-                if (cursor.moveToFirst())
+        //String sumQuery=String.format("SELECT SUM(%s) as Total FROM %s",SO_RECEIVED_AMOUNT,STANDING_ORDER_TABLE);
+        //String sumQuery=String.format("SELECT SUM(%s) as Total FROM %s",LOAN_AMOUNT,LOAN_TABLE);
+
+        String[] columns = {PROFILE_SURNAME, PROFILE_FIRSTNAME, PROFILE_PHONE};
+
+        String selection = CUSTOMER_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(customerID)};
+        Cursor cursor = db.rawQuery(
+                "SELECT SUM (("+ SO_DAILY_AMOUNT +")) FROM " + STANDING_ORDER_TABLE + " WHERE " + selection, selectionArgs);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
                     sum = cursor.getColumnIndex(SO_DAILY_AMOUNT);
-                return BigInteger.valueOf(sum);
+                } while (cursor.moveToNext());
+                cursor.close();
             }
 
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
         }
+        sqLiteDatabase.close();
 
-        return null;
+        return BigInteger.valueOf(sum);
+
     }
     /*public String fetchAllReportChart(){
 
@@ -15956,25 +15908,31 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @SuppressLint("Recycle")
     public BigInteger getTotalOfSavingsForCustomer(int customerID) {
-        try {
-            SQLiteDatabase db = this.getReadableDatabase();
-            int sum=0;
-            //ArrayList<String> array_list = new ArrayList<String>();
-            Cursor res;
-            res = db.rawQuery("SELECT SUM(" + (PACKAGE_VALUE) + ") FROM " + DAILY_REPORT_TABLE,  new String[]{valueOf(customerID)});
+        int sum=0;
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
-            while (res.moveToNext()) {
-                sum = res.getColumnIndex(PACKAGE_VALUE);
-                return BigInteger.valueOf(sum);
+        //String sumQuery=String.format("SELECT SUM(%s) as Total FROM %s",SO_RECEIVED_AMOUNT,STANDING_ORDER_TABLE);
+        //String sumQuery=String.format("SELECT SUM(%s) as Total FROM %s",LOAN_AMOUNT,LOAN_TABLE);
+
+        String[] columns = {PROFILE_SURNAME, PROFILE_FIRSTNAME, PROFILE_PHONE};
+
+        String selection = CUSTOMER_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(customerID)};
+        Cursor cursor = db.rawQuery(
+                "SELECT SUM (("+ SO_DAILY_AMOUNT +")) FROM " + DAILY_REPORT_TABLE + " WHERE " + selection, selectionArgs);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    sum = cursor.getColumnIndex(SO_DAILY_AMOUNT);
+                } while (cursor.moveToNext());
+                cursor.close();
             }
-            return null;
 
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
         }
+        sqLiteDatabase.close();
 
-        return null;
+        return BigInteger.valueOf(sum);
+
     }
     /*public ArrayList getTotalOfSavings() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -16013,12 +15971,14 @@ public class DBHelper extends SQLiteOpenHelper {
     public void deleteUSer(int id) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
+            String selection = PROFILE_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(id)};
 
-            db.delete(PROFILES_TABLE, PROFILE_ID + " = ?", new String[]{valueOf(id)});
+            db.delete(PROFILES_TABLE, selection, selectionArgs);
 
-            db.delete(DAILY_REPORT_TABLE, CUSTOMER_ID + " = ?", new String[]{valueOf(id)});
+            db.delete(DAILY_REPORT_TABLE, selection, selectionArgs);
 
-            db.delete(TABLE_USER_TRANSACTIONS, CUSTOMER_ID + " = ?", new String[]{valueOf(id)});
+            db.delete(TABLE_USER_TRANSACTIONS, selection, selectionArgs);
             //db.close();
 
         }catch (SQLException e)
@@ -16029,10 +15989,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void updateUser(Profile profile, User user) {
+    public void updateUser(Profile profile) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
-            long id = profile.getPID();
+            int id = profile.getPID();
             ContentValues values = new ContentValues();
             values.put(PROFILE_SURNAME, profile.getProfileLastName());
             values.put(PROFILE_FIRSTNAME, profile.getProfileFirstName());
@@ -16042,15 +16002,17 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(PROFILE_DOB, profile.getProfileDob());
             values.put(PROFILE_GENDER, profile.getProfileGender());
             values.put(PROFILE_NEXT_OF_KIN, profile.getNextOfKin());
-            db.update(PROFILES_TABLE, values, PROFILE_ID + " = ?", new String[]{valueOf(id)});
+            String selection = PROFILE_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(id)};
+            db.update(PROFILES_TABLE, values, selection, selectionArgs);
 
             ContentValues valuesUser = new ContentValues();
             valuesUser.put(PROFILE_PHONE, profile.getProfilePhoneNumber());
-            db.update(USER_TABLE, valuesUser, PROFILE_ID + " = ?", new String[]{valueOf(id)});
+            db.update(USER_TABLE, valuesUser, selection, selectionArgs);
 
             ContentValues valuesCity = new ContentValues();
             valuesCity.put(CUSTOMER_ADDRESS, valueOf(profile.getProfileAddress()));
-            db.update(CUSTOMER_TABLE, valuesCity, CUSTOMER_ID + " = ?", new String[]{valueOf(id)});
+            db.update(CUSTOMER_TABLE, valuesCity, selection, selectionArgs);
             //db.close();
 
         }catch (SQLException e)
@@ -16062,9 +16024,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    public void overwriteUser(int PROFILE_ID) {
+    public void overwriteUser(int PROFILE_ID,Profile profile) {
         try {
-            Profile profile = new Profile();
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues cv = new ContentValues();
             //cv.put(PROFILE_ID,profile.getDbId());
@@ -16080,8 +16041,11 @@ public class DBHelper extends SQLiteOpenHelper {
             cv.put(PASSWORD, profile.getProfilePassword());
             cv.put(PROFILE_ROLE, profile.getProfileRole());
             cv.put(PROFILE_STATUS, profile.getProfileStatus());
+            String selection = PROFILE_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(PROFILE_ID)};
 
-            db.update(PROFILES_TABLE, cv, PROFILE_ID + "=?", new String[]{valueOf(profile.getPID())});
+
+            db.update(PROFILES_TABLE, cv, selection,selectionArgs);
             //db.close();
 
         }catch (SQLException e)
@@ -16110,8 +16074,10 @@ public class DBHelper extends SQLiteOpenHelper {
             cv.put(PASSWORD, customer.getCusPassword());
             cv.put(PROFILE_ROLE, customer.getCusRole());
             cv.put(PROFILE_STATUS, profile.getProfileStatus());
+            String selection = CUSTOMER_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(customerID)};
 
-            db.update(CUSTOMER_TABLE, cv, CUSTOMER_ID + "=?", new String[]{valueOf(customer.getCusUID())});
+            db.update(CUSTOMER_TABLE, cv, selection, selectionArgs);
             //db.close();
 
         }catch (SQLException e)
@@ -16128,7 +16094,10 @@ public class DBHelper extends SQLiteOpenHelper {
             Profile profile = new Profile();
             profileID = profile.getPID();
             cVals.put(PROFILE_STATUS, status);
-            long result = db.update(PROFILES_TABLE, cVals, PROFILE_ID + " = ?", new String[]{valueOf(profileID)});
+            String selection = PROFILE_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(profileID)};
+
+            long result = db.update(PROFILES_TABLE, cVals, selection, selectionArgs);
             Log.d("Update Result:", "=" + result);
 
         }catch (SQLException e)
@@ -16142,7 +16111,9 @@ public class DBHelper extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues cVals = new ContentValues();
             cVals.put(REPORT_STATUS, status);
-            long result = db.update(DAILY_REPORT_TABLE, cVals, REPORT_NUMBER + " = ?", new String[]{valueOf(savingsID)});
+            String selection = REPORT_NUMBER + "=?";
+            String[] selectionArgs = new String[]{valueOf(savingsID)};
+            long result = db.update(DAILY_REPORT_TABLE, cVals, selection, selectionArgs);
             Log.d("Savings Update Result:", "=" + result);
 
         }catch (SQLException e)
@@ -16157,7 +16128,9 @@ public class DBHelper extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues cVals = new ContentValues();
             cVals.put(ACCOUNT_BALANCE, balance);
-            long result = db.update(ACCOUNTS_TABLE, cVals, ACCOUNT_NO + " = ?", new String[]{valueOf(accountID)});
+            String selection = ACCOUNT_NO + "=?";
+            String[] selectionArgs = new String[]{valueOf(accountID)};
+            long result = db.update(ACCOUNTS_TABLE, cVals, selection, selectionArgs);
             Log.d("Update Result:", "=" + result);
 
         }catch (SQLException e)
@@ -16172,7 +16145,9 @@ public class DBHelper extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues cVals = new ContentValues();
             cVals.put(LOAN_BALANCE, amount);
-            long result = db.update(LOAN_TABLE, cVals, LOAN_ID + " = ?", new String[]{valueOf(loanID)});
+            String selection = LOAN_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(loanID)};
+            long result = db.update(LOAN_TABLE, cVals, selection, selectionArgs);
             Log.d("Update Result:", "=" + result);
 
         }catch (SQLException e)
@@ -16204,8 +16179,10 @@ public class DBHelper extends SQLiteOpenHelper {
             cv.put(LOAN_START_DATE, loan.getStartDate());
             cv.put(LOAN_END_DATE, loan.getEndDate());
             cv.put(LOAN_STATUS, loan.getStatus());
+            String selection = CUSTOMER_ID + "=? AND " + LOAN_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(customer.getCusUID()), valueOf(loan.getLoanId())};
 
-            db.update(LOAN_TABLE, cv, LOAN_ID + "=?", new String[]{valueOf(loan.getLoanId())});
+            db.update(LOAN_TABLE, cv, selection, selectionArgs);
             //db.close();
 
         }catch (SQLException e)
@@ -16220,8 +16197,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public void delete_Loan_byID(int LOAN_ID) {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
+            String selection = LOAN_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(LOAN_ID)};
 
-            db.delete(LOAN_TABLE, LOAN_ID + "=" + LOAN_ID, null);
+            db.delete(LOAN_TABLE, selection, selectionArgs);
 
         }catch (SQLException e)
         {
@@ -16234,8 +16213,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public void delete_Customer_byID(int id) {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
+            String selection = CUSTOMER_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(id)};
 
-            db.delete(CUSTOMER_TABLE, CUSTOMER_ID + "=" + id, null);
+            db.delete(CUSTOMER_TABLE, selection, selectionArgs);
 
         }catch (SQLException e)
         {
@@ -16247,8 +16228,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public void delete_User_byID(int id) {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
+            String selection = PROFILE_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(id)};
 
-            db.delete(USER_TABLE, PROFILE_ID + "=" + id, null);
+            db.delete(USER_TABLE, selection, selectionArgs);
 
         }catch (SQLException e)
         {
@@ -16316,9 +16299,10 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             ArrayList<Message> messageArrayList = new ArrayList<>();
             SQLiteDatabase db = this.getWritableDatabase();
+            String selection = PROFILE_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(profileID)};
 
-            Cursor cursor = db.query(MESSAGE_TABLE, null,  PROFILE_ID
-                            + " = " + profileID, null, null,
+            Cursor cursor = db.query(MESSAGE_TABLE, null,  selection, selectionArgs, null,
                     null, null);
 
             getMessagesFromCursor(messageArrayList, cursor);
@@ -16339,9 +16323,10 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             ArrayList<Message> messageArrayList = new ArrayList<>();
             SQLiteDatabase db = this.getWritableDatabase();
+            String selection = CUSTOMER_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(customerID)};
 
-            Cursor cursor = db.query(MESSAGE_TABLE, null,  CUSTOMER_ID
-                            + " = " + customerID, null, null,
+            Cursor cursor = db.query(MESSAGE_TABLE, null,  selection, selectionArgs, null,
                     null, null);
             if(cursor!=null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
@@ -16412,6 +16397,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public Cursor getAllMessagesUser(int profileID) {
         try {
             SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+            String selection = PROFILE_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(profileID)};
             return sqLiteDatabase.rawQuery("SELECT * FROM MESSAGE_TABLE WHERE PROFILE_ID = ?",
                     new String[]{valueOf(profileID)});
 
@@ -16539,9 +16526,10 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             ArrayList<Message> messageArrayList = new ArrayList<>();
             SQLiteDatabase db = this.getWritableDatabase();
+            String selection = PROFILE_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(profileID)};
 
-            Cursor cursor = db.query(MESSAGE_TABLE, null, PROFILE_ID
-                            + " = " + profileID, null, null,
+            Cursor cursor = db.query(MESSAGE_TABLE, null, selection, selectionArgs, null,
                     null, null);
             if (cursor != null)
                 if (cursor.getCount() > 0) {
@@ -16565,9 +16553,10 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             ArrayList<Message> messageArrayList = new ArrayList<>();
             SQLiteDatabase db = this.getWritableDatabase();
+            String selection = CUSTOMER_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(customerID)};
 
-            Cursor cursor = db.query(MESSAGE_TABLE, null, CUSTOMER_ID
-                            + " = " + customerID, null, null,
+            Cursor cursor = db.query(MESSAGE_TABLE, null, selection, selectionArgs, null,
                     null, null);
             if (cursor != null)
                 if (cursor.getCount() > 0) {
@@ -16591,9 +16580,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public void deleteDocument(int docID) {
         try {
             SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-            String[] whereArgs ={String.valueOf(docID)};
+            String selection = DOCUMENT_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(docID)};
 
-            int count =sqLiteDatabase.delete(DOCUMENT_TABLE ,DOCUMENT_ID+" = ?",whereArgs);
+            int count =sqLiteDatabase.delete(DOCUMENT_TABLE ,selection,selectionArgs);
 
         }catch (SQLException e)
         {
@@ -16608,8 +16598,9 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             ArrayList<Transaction> transactions = new ArrayList<>();
             SQLiteDatabase db = this.getWritableDatabase();
-            Cursor cursor = db.query(TRANSACTIONS_TABLE, null, CUSTOMER_ID
-                            + " = " + customerID, null, null,
+            String selection = CUSTOMER_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(customerID)};
+            Cursor cursor = db.query(TRANSACTIONS_TABLE, null, selection, selectionArgs, null,
                     null, null);
             if(cursor!=null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
@@ -16685,8 +16676,10 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             ArrayList<Transaction> transactions = new ArrayList<>();
             SQLiteDatabase db = this.getWritableDatabase();
-            Cursor cursor = db.query(TRANSACTIONS_TABLE, null,  PROFILE_ID
-                            + " = " + profileID, null, null,
+            String selection = PROFILE_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(profileID)};
+
+            Cursor cursor = db.query(TRANSACTIONS_TABLE, null,  selection, selectionArgs, null,
                     null, null);
             if(cursor!=null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
@@ -16789,9 +16782,10 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             ArrayList<TimeLine> timeLines = new ArrayList<>();
             SQLiteDatabase db = this.getWritableDatabase();
-            Cursor cursor = db.query(TIMELINE_TABLE, null, CUSTOMER_ID
-                            + " = " + customerID, null, null,
-                    null, TIMELINE_ID);
+            String selection = CUSTOMER_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(customerID)};
+            Cursor cursor = db.query(TIMELINE_TABLE, null, selection, selectionArgs, null,
+                    null, null);
 
             if(cursor!=null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
@@ -16816,9 +16810,10 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             ArrayList<TimeLine> timeLines = new ArrayList<>();
             SQLiteDatabase db = this.getWritableDatabase();
-            Cursor cursor = db.query(TIMELINE_TABLE, null, PROFILE_ID
-                            + " = " + profileID, null, null,
-                    null, TIMELINE_ID);
+            String selection = PROFILE_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(profileID)};
+            Cursor cursor = db.query(TIMELINE_TABLE, null, selection, selectionArgs, null,
+                    null, null);
 
             if(cursor!=null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
@@ -16966,8 +16961,9 @@ public class DBHelper extends SQLiteOpenHelper {
     public ArrayList<Loan> getAllLoansCustomer(int customerID) {
         ArrayList<Loan> loanArrayList = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.query(LOAN_TABLE, null, CUSTOMER_ID
-                        + " = " + customerID, null, null,
+        String selection = CUSTOMER_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(customerID)};
+        Cursor cursor = db.query(LOAN_TABLE, null, selection, selectionArgs, null,
                 null, null);
 
         if(cursor!=null && cursor.getCount() > 0) {
@@ -16985,8 +16981,9 @@ public class DBHelper extends SQLiteOpenHelper {
     public ArrayList<Loan> getAllLoansProfile(int profileID) {
         ArrayList<Loan> loanArrayList = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.query(LOAN_TABLE, null, PROFILE_ID
-                        + " = " + profileID, null, null,
+        String selection = PROFILE_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(profileID)};
+        Cursor cursor = db.query(LOAN_TABLE, null, selection, selectionArgs, null,
                 null, null);
 
         if(cursor!=null && cursor.getCount() > 0) {
@@ -17006,7 +17003,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public ArrayList<Loan> getAllLoansAdmin() {
         ArrayList<Loan> loanArrayList = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.query(LOAN_TABLE, null, null, null, LOAN_ID,
+        Cursor cursor = db.query(LOAN_TABLE, null, null, null, null,
                 null, null);
         if(cursor!=null && cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
@@ -17331,9 +17328,10 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             ArrayList<CustomerManager> customerManagerArrayList = new ArrayList<>();
             SQLiteDatabase db = this.getWritableDatabase();
+            String selection = CUSTOMER_TELLER_OFFICE + "=?";
+            String[] selectionArgs = new String[]{valueOf(branchOffice)};
 
-            @SuppressLint("Recycle") Cursor cursor = db.query(CUSTOMER_TELLER_TABLE, null, CUSTOMER_TELLER_OFFICE
-                            + " = " + branchOffice, null, null,
+            @SuppressLint("Recycle") Cursor cursor = db.query(CUSTOMER_TELLER_TABLE, null, selection, selectionArgs, null,
                     null, null);
             if (cursor != null)
                 if (cursor.getCount() > 0) {
@@ -21211,6 +21209,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
             int count = 0;
+
             Cursor cursor = db.rawQuery(
                     "SELECT COUNT (*) FROM " + STANDING_ORDER_TABLE + " WHERE " + CUSTOMER_ID + "=?",
                     new String[]{valueOf(customerID)}

@@ -58,7 +58,7 @@
         android:value="androidx.core.app.CoreComponentFactory"
         tools:ignore="GoogleAppIndexingWarning"
         tools:node="replace">
-        <activity android:name=".SuperAdmin.TellerCountAct"></activity>
+        <activity android:name=".SuperAdmin.TellerWorkAct"></activity>
         <activity android:name=".SuperAdmin.ChartAct" />
         <activity android:name=".Tellers.TellerSendEmailAct" />
         <activity android:name=".DeleteUserAct" />

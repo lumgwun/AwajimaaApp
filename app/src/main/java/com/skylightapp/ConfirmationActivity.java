@@ -22,6 +22,7 @@ import com.skylightapp.SuperAdmin.SuperAdminCountAct;
 import com.skylightapp.SuperAdmin.SuperAdminOffice;
 import com.skylightapp.SuperAdmin.SuperStockTrAct;
 import com.skylightapp.SuperAdmin.SuperUserCreator;
+import com.skylightapp.SuperAdmin.TellerWorkAct;
 import com.skylightapp.SuperAdmin.TranxApprovalAct;
 import com.skylightapp.Tellers.MyCusLoanRepayment;
 import com.skylightapp.Tellers.TellerHomeChoices;
@@ -58,7 +59,7 @@ public class ConfirmationActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
                             prefManager.setFirstTimeLaunch(false);
-                                Intent loginRIntent = new Intent(ConfirmationActivity.this, ChartAct.class);
+                                Intent loginRIntent = new Intent(ConfirmationActivity.this, TellerWorkAct.class);
                             loginRIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(loginRIntent);
                         }
@@ -73,7 +74,7 @@ public class ConfirmationActivity extends AppCompatActivity {
     }
     private void launchHomeScreen() {
         prefManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(ConfirmationActivity.this, ChartAct.class));
+        startActivity(new Intent(ConfirmationActivity.this, TellerWorkAct.class));
         finish();
     }
 }

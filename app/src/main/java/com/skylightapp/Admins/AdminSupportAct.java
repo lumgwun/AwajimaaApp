@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.SnapHelper;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,15 +59,18 @@ public class AdminSupportAct extends AppCompatActivity implements  MessageAdapte
     String json0,json1,json2,officeBranch;
     private OnFragmentInteractionListener listener;
     AppCompatButton btnSearchMessages;
+    private static final String PREF_NAME = "skylight";
+    SQLiteDatabase sqLiteDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbHelper= new DBHelper(this);
         setContentView(R.layout.act_admin_support);
+        setTitle("Supports Messages");
         userProfile= new Profile();
         adminUser= new AdminUser();
-        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
@@ -100,7 +104,7 @@ public class AdminSupportAct extends AppCompatActivity implements  MessageAdapte
             officeBranch=userProfile.getProfileOffice();
         }
 
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String dateString = mdformat.format(calendar.getTime());
         picker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,19 +112,29 @@ public class AdminSupportAct extends AppCompatActivity implements  MessageAdapte
                 chooseDate();
             }
         });
-        dateOfMessage = picker.getDayOfMonth()+"/"+ (picker.getMonth() + 1)+"/"+picker.getYear();
+        dateOfMessage = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
 
         btnSearchMessages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
 
-                    messages = dbHelper.getAllMessagesForBranch(officeBranch);
-                    messagesToday=dbHelper.getMessagesToday(dateOfMessage);
-                    messageCount=dbHelper.getMessageCountToday(dateOfMessage);
-                } catch (Exception e) {
-                    System.out.println("Oops!");
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    dbHelper = new DBHelper(AdminSupportAct.this);
+                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    try {
+
+                        messages = dbHelper.getAllMessagesForBranch(officeBranch);
+                        messagesToday=dbHelper.getMessagesToday(dateOfMessage);
+                        messageCount=dbHelper.getMessageCountToday(dateOfMessage);
+                    } catch (Exception e) {
+                        System.out.println("Oops!");
+                    }
+
+
                 }
+
+
+
 
 
             }
@@ -149,7 +163,7 @@ public class AdminSupportAct extends AppCompatActivity implements  MessageAdapte
 
     }
     private void chooseDate() {
-        dateOfMessage = picker.getDayOfMonth()+"/"+ (picker.getMonth() + 1)+"/"+picker.getYear();
+        dateOfMessage = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
 
     }
 

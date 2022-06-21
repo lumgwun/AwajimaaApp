@@ -76,6 +76,7 @@ public class BranchMPayments extends AppCompatActivity implements  PaymentAdapte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_branch_m_payments);
+        setTitle("Branch Manual Payment");
         calendar=Calendar.getInstance();
         com.github.clans.fab.FloatingActionButton home = findViewById(R.id.AllPayments);
         recyclerView = findViewById(R.id.recycler_AcctantPayment);

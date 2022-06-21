@@ -48,6 +48,7 @@ public class AdminStocksTab extends TabActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_admin_stocks_tab);
+        setTitle("Stocks Tab");
         floatingActionButton = findViewById(R.id.fab_admin_Home_in);
         floatingActionButton2 = findViewById(R.id.fab_admin_home);
         Resources resources = getResources();

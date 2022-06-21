@@ -100,6 +100,7 @@ public class AdminCusActionView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_admin_cus_action_view);
+        setTitle("Admin Customer Actions");
         customerBundle= getIntent().getExtras();
         RecyclerView recyclerPackages = findViewById(R.id.recyclerPackages);
         RecyclerView recyclerSavings = findViewById(R.id.recyclerSavings);

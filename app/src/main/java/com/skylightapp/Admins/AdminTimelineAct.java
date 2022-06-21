@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.Button;
@@ -41,21 +42,32 @@ public class AdminTimelineAct extends AppCompatActivity {
 
     DBHelper dbHelper;
     String json;
+    private static final String PREF_NAME = "skylight";
+    SQLiteDatabase sqLiteDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_admin_timeline);
+        setTitle("Users Timelines");
         com.github.clans.fab.FloatingActionButton home = findViewById(R.id.notification_fab2);
         //long profileID =userProfile.getuID();
         recyclerView = findViewById(R.id.recycler_view_timeline25);
         timeLines = new ArrayList<TimeLine>();
-
-        mAdapter = new TimeLineAdapter(this, R.layout.timeline_list_row_admin, timeLines);
-
         dbHelper = new DBHelper(this);
 
-        timeLines = dbHelper.getAllTimeLinesAdmin();
+
+        mAdapter = new TimeLineAdapter(this, R.layout.timeline_list_row_admin, timeLines);
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            //dbHelper = new DBHelper(this);
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+
+            timeLines = dbHelper.getAllTimeLinesAdmin();
+
+
+        }
+
+
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);

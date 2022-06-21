@@ -65,6 +65,7 @@ public class TransAmadiSavings extends AppCompatActivity implements SavingsAdapt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_trans_amadi_packs);
+        setTitle("Trans-Amadi Collections");
         customerDailyReports = new ArrayList<CustomerDailyReport>();
         customerDailyReportArrayList = new ArrayList<CustomerDailyReport>();
         RecyclerView recyclerView = findViewById(R.id.recyclerViewSavingsTR);
@@ -80,7 +81,8 @@ public class TransAmadiSavings extends AppCompatActivity implements SavingsAdapt
                 chooseDate();
             }
         });
-        dateOfSavings = picker.getDayOfMonth()+"-"+ (picker.getMonth() + 1)+"-"+picker.getYear();
+
+        dateOfSavings = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
         SnapHelper snapHelper = new PagerSnapHelper();
         officeBranch="Elelenwo";
         //   ,   Elelenwo .Trans-Amadi
@@ -103,7 +105,6 @@ public class TransAmadiSavings extends AppCompatActivity implements SavingsAdapt
         LinearLayoutManager layoutManagerC
                 = new LinearLayoutManager(TransAmadiSavings.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerViewTXToday.setLayoutManager(layoutManagerC);
-        //recyclerViewTXToday.setHasFixedSize(true);
         savingsAdapter = new SavingsAdapter(TransAmadiSavings.this, customerDailyReports);
         recyclerViewTXToday.setAdapter(savingsAdapter);
         DividerItemDecoration dividerItemDecoration7 = new DividerItemDecoration(recyclerViewTXToday.getContext(),
@@ -124,7 +125,7 @@ public class TransAmadiSavings extends AppCompatActivity implements SavingsAdapt
             txtSavingsCount4theDay.setText("Savings:0");
 
         }
-        dateOfSavings = picker.getDayOfMonth()+"-"+ (picker.getMonth() + 1)+"-"+picker.getYear();
+        dateOfSavings = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
 
         btnSearchDB.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
@@ -138,7 +139,7 @@ public class TransAmadiSavings extends AppCompatActivity implements SavingsAdapt
                 LinearLayoutManager layoutManagerC
                         = new LinearLayoutManager(TransAmadiSavings.this, LinearLayoutManager.HORIZONTAL, false);
                 recyclerView.setLayoutManager(layoutManagerC);
-                //recyclerView.setHasFixedSize(true);
+
                 savingsAdapter = new SavingsAdapter(TransAmadiSavings.this, customerDailyReportArrayList);
                 recyclerView.setAdapter(savingsAdapter);
                 DividerItemDecoration dividerItemDecoration7 = new DividerItemDecoration(recyclerView.getContext(),
@@ -175,7 +176,7 @@ public class TransAmadiSavings extends AppCompatActivity implements SavingsAdapt
 
     }
     private void chooseDate() {
-        dateOfSavings = picker.getDayOfMonth()+"-"+ (picker.getMonth() + 1)+"-"+picker.getYear();
+        dateOfSavings = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
 
     }
 

@@ -482,6 +482,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_sign_up);
         dbHelper = new DBHelper(this);
+        setTitle("Skylight onBoarding");
         createLocationRequest();
         referrerClient = InstallReferrerClient.newBuilder(this).build();
         locationManager =(LocationManager)getSystemService(Context.LOCATION_SERVICE);
@@ -1031,13 +1032,10 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                                     if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                         //dbHelper = new DBHelper(this);
                                         sqLiteDatabase = dbHelper.getWritableDatabase();
-
+                                        dbHelper.insertMessage(profileID, customerID, messageID, otpMessage, "Skylight", customerName, selectedOffice, joinedDate);
 
                                     }
 
-
-
-                                    dbHelper.insertMessage(profileID, customerID, messageID, otpMessage, "Skylight", customerName, selectedOffice, joinedDate);
 
                                     //sendOTPVerCode(otpPhoneNumber,mAuth,sponsorID,account,standingOrderAcct,customer,joinedDate,uFirstName,uSurname,uPhoneNumber,uAddress,uUserName,uPassword,customer,customerProfile,nIN,managerProfile,dateOfBirth,selectedGender,selectedOffice,selectedState,birthday,customerManager,dateOfBirth,profileID1,virtualAccountNumber,soAccountNumber, customerID,profileID2,birthdayID, investmentAcctID,itemPurchaseAcctID,promoAcctID,packageAcctID,profiles,customers,tellers,adminUserArrayList,superAdminArrayList);
                                 }

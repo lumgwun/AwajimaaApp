@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.SnapHelper;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
@@ -58,11 +59,13 @@ public class ElelenwoTranx extends AppCompatActivity implements TransactionAdapt
     DatePicker picker;
     double transactionTotal;
     protected DatePickerDialog datePickerDialog;
+    SQLiteDatabase sqLiteDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_elelenwo_tranx);
+        setTitle("Elelenwo Transactions");
         transactionArrayList = new ArrayList<Transaction>();
         customTransactionArrayList = new ArrayList<Transaction>();
         RecyclerView recyclerView = findViewById(R.id.recyclerViewTXElelenwo);
@@ -78,7 +81,7 @@ public class ElelenwoTranx extends AppCompatActivity implements TransactionAdapt
                 chooseDate();
             }
         });
-        dateOfTransaction = picker.getDayOfMonth()+"-"+ (picker.getMonth() + 1)+"-"+picker.getYear();
+        dateOfTransaction = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
         SnapHelper snapHelper = new PagerSnapHelper();
         officeBranch="Trans-Amadi";
         //Wimpey   ,   Elelenwo
@@ -88,16 +91,32 @@ public class ElelenwoTranx extends AppCompatActivity implements TransactionAdapt
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd", Locale.getDefault());
         currentDate = dateFormat.format(calendar.getTime());
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper = new DBHelper(this);
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+                transactionArrayList = dbHelper.getTransactionsForBranchAtDate(officeBranch,currentDate);
+                branchTranxCount =dbHelper.getTransactionCountForBranchAtDate(officeBranch,currentDate);
+                transactionTotal=dbHelper.getTotalTransactionForBranchAtDate(officeBranch,currentDate);
 
-        try {
-            transactionArrayList = dbHelper.getTransactionsForBranchAtDate(officeBranch,currentDate);
-            branchTranxCount =dbHelper.getTransactionCountForBranchAtDate(officeBranch,currentDate);
-            transactionTotal=dbHelper.getTotalTransactionForBranchAtDate(officeBranch,currentDate);
+            }catch (NullPointerException e)
+            {
+                e.printStackTrace();
+            }
+            try {
+                transactionArrayList = dbHelper.getTransactionsForBranchAtDate(officeBranch,dateOfTransaction);
+                transactionTotal=dbHelper.getTotalTransactionForBranchAtDate(officeBranch,dateOfTransaction);
+                branchTranxCount =dbHelper.getTransactionCountForBranchAtDate(officeBranch,dateOfTransaction);
+            }catch (NullPointerException e)
+            {
+                e.printStackTrace();
+            }
 
-        }catch (NullPointerException e)
-        {
-            e.printStackTrace();
+
+
         }
+
+
 
         LinearLayoutManager layoutManagerC
                 = new LinearLayoutManager(ElelenwoTranx.this, LinearLayoutManager.HORIZONTAL, false);
@@ -123,7 +142,7 @@ public class ElelenwoTranx extends AppCompatActivity implements TransactionAdapt
             txtTransactionCount4theDay.setText("Transactions:0");
 
         }
-        dateOfTransaction = picker.getDayOfMonth()+"-"+ (picker.getMonth() + 1)+"-"+picker.getYear();
+        dateOfTransaction = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
 
         btnSearchDB.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
@@ -131,14 +150,6 @@ public class ElelenwoTranx extends AppCompatActivity implements TransactionAdapt
             public void onClick(View view) {
                 recyclerViewTXToday.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
-                try {
-                    transactionArrayList = dbHelper.getTransactionsForBranchAtDate(officeBranch,dateOfTransaction);
-                    transactionTotal=dbHelper.getTotalTransactionForBranchAtDate(officeBranch,dateOfTransaction);
-                    branchTranxCount =dbHelper.getTransactionCountForBranchAtDate(officeBranch,dateOfTransaction);
-                }catch (NullPointerException e)
-                {
-                    e.printStackTrace();
-                }
 
 
                 LinearLayoutManager layoutManagerC
@@ -183,7 +194,7 @@ public class ElelenwoTranx extends AppCompatActivity implements TransactionAdapt
 
     }
     private void chooseDate() {
-        dateOfTransaction = picker.getDayOfMonth()+"-"+ (picker.getMonth() + 1)+"-"+picker.getYear();
+        dateOfTransaction = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
 
     }
 

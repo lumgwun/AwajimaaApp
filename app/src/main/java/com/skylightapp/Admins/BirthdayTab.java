@@ -34,6 +34,7 @@ public class BirthdayTab extends TabActivity {
     PrefManager prefManager;
     private Gson gson,gson1;
     private String json,json1;
+    private static final String PREF_NAME = "skylight";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,8 @@ public class BirthdayTab extends TabActivity {
         setContentView(R.layout.act_birthday_tab);
         TabHost tabhost = findViewById(android.R.id.tabhost);
         TabWidget tabs = findViewById(android.R.id.tabs);
+        setTitle("Birthday Tab");
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         // setting up the tab host
         tabhost.setup(getLocalActivityManager());
         Resources resources = getResources();

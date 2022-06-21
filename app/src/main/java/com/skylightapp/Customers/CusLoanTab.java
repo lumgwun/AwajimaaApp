@@ -30,6 +30,7 @@ public class CusLoanTab extends TabActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_cus_loan_tab);
+        setTitle("Loan Tab");
         FloatingActionButton floatingActionButton = findViewById(R.id.fab_Loan2Tab);
         userPreferences = this.getSharedPreferences("LastProfileUsed", MODE_PRIVATE);
         gson = new Gson();

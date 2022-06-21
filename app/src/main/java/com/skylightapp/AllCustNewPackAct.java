@@ -281,6 +281,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_all_cust_new_pack);
+        setTitle("New Package onBoarding");
         checkInternetConnection();
         dbHelper = new DBHelper(this);
         customer= new Customer();

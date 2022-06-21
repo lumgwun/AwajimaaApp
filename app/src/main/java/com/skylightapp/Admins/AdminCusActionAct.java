@@ -26,6 +26,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
+import static com.skylightapp.Classes.Customer.CUSTOMER_PHONE_NUMBER;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 public class AdminCusActionAct extends AppCompatActivity {
@@ -75,25 +76,22 @@ public class AdminCusActionAct extends AppCompatActivity {
 
 
 
+            userBundle.putLong("PROFILE_ID",userProfile.getPID());
             userBundle.putLong(PROFILE_ID,userProfile.getPID());
             userBundle.putString("Machine",machine);
             userBundle.putParcelable("Profile", userProfile);
             userBundle.putString("Machine",machine);
+            userBundle.putString("CUSTOMER_ID",CUSTOMER_ID);
             userBundle.putString(CUSTOMER_ID,CUSTOMER_ID);
+            userBundle.putString("CUSTOMER_FIRST_NAME",CUSTOMER_FIRST_NAME);
             userBundle.putString(CUSTOMER_FIRST_NAME,CUSTOMER_FIRST_NAME);
+            userBundle.putString("CUSTOMER_SURNAME",CUSTOMER_SURNAME);
             userBundle.putString(CUSTOMER_SURNAME,CUSTOMER_SURNAME);
+            userBundle.putString("CUSTOMER_EMAIL_ADDRESS",CUSTOMER_EMAIL_ADDRESS);
             userBundle.putString(CUSTOMER_EMAIL_ADDRESS,CUSTOMER_EMAIL_ADDRESS);
-            userBundle.putParcelable("LastLocation",CUSTOMER_LATLONG);
-            userBundle.putString(USER_PHONE,USER_PHONE);
-            userBundle.putString(loans,loans);
-            userBundle.putString(packages,packages);
-            userBundle.putString(savings,savings);
-            userBundle.putString(savingsCode,savingsCode);
-            userBundle.putString(doc,doc);
-            userBundle.putString(messages,messages);
-            userBundle.putString(transactions,transactions);
-            userBundle.putString(so,so);
-            userBundle.putString(grpSavings,grpSavings);
+            userBundle.putParcelable(String.valueOf(CUSTOMER_LATLONG),CUSTOMER_LATLONG);
+            userBundle.putString("CUSTOMER_PHONE_NUMBER",USER_PHONE);
+            userBundle.putString(CUSTOMER_PHONE_NUMBER,USER_PHONE);
             userBundle.putParcelable("PreviousLocation",CUSTOMER_LATLONG);
             userBundle.putParcelable("Customer",customer);
             userBundle.putParcelable("Profile",customerProfile);

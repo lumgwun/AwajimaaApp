@@ -20,6 +20,7 @@ public class StandingOrderTab extends TabActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_standing_order_tab);
+        setTitle("Standing Orders Tab");
         Resources resources = getResources();
         TabHost tabhost = (TabHost) findViewById(android.R.id.tabhost);
         tabhost.setup(getLocalActivityManager());

@@ -44,6 +44,7 @@ public class SignTabMainActivity extends TabActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_sign_tab_main);
         TabHost tabhost = findViewById(android.R.id.tabhost);
+        setTitle("Sign up / Login");
         TabWidget tabs = findViewById(android.R.id.tabs);
         tabhost.setup(getLocalActivityManager());
         Resources resources = getResources();

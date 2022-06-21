@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="30dp"
-    android:background="@drawable/rect_their4"
+    android:background="#f1f3f7"
     android:layout_marginTop="8dp"
     android:orientation="vertical">
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -19,7 +19,7 @@
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:paddingEnd="1dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:paddingLeft="1dp"
             android:paddingRight="1dp"
@@ -32,7 +32,8 @@
                 android:layout_weight="1"
                 android:layout_marginTop="10dp"
                 android:textSize="15sp"
-                android:paddingStart="30dp"
+                android:layout_marginBottom="10dp"
+                android:paddingStart="40dp"
                 android:layout_marginStart="3dp"
                 android:onClick="getMonthAndYear"
                 android:layout_marginEnd="3dp"

@@ -20,6 +20,7 @@ import com.skylightapp.Classes.AdminUser;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.LoginDirectorActivity;
 import com.skylightapp.R;
 
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
@@ -40,22 +41,23 @@ public class BranchReportTab extends TabActivity {
     DBHelper dbHelper;
     Gson gson;
     String json,machine;
-    long profileUID;
+    int profileUID;
     Bundle bundle;
     String currentDate;
     Gson gson1,gson2;
     String json1,json2,officeBranch;
     private AdminUser adminUser;
+    private static final String PREF_NAME = "skylight";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_branch_report_tab);
-
+        setTitle("Branch Reports");
         TabHost tabhost = findViewById(android.R.id.tabhost);
         TabWidget tabs = findViewById(android.R.id.tabs);
         tabhost.setup(getLocalActivityManager());
         Resources resources = getResources();
-        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         gson1 = new Gson();
         gson2 = new Gson();
@@ -67,12 +69,7 @@ public class BranchReportTab extends TabActivity {
         userProfile = gson.fromJson(json, Profile.class);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        officeBranch=userPreferences.getString("USER_OFFICE","");
-        userPreferences = this.getSharedPreferences("LastProfileUsed", MODE_PRIVATE);
-        gson = new Gson();
-        userProfile=new Profile();
-        json = userPreferences.getString("LastProfileUsed", "");
-        userProfile = gson.fromJson(json, Profile.class);
+        officeBranch=userPreferences.getString("PROFILE_OFFICE","");
         bundle = new Bundle();
         if(userProfile !=null){
             machine=userProfile.getProfileMachine();
@@ -111,12 +108,11 @@ public class BranchReportTab extends TabActivity {
 
 
     }
-    public void recoverAccount(long profileUID,String machine) {
+    public void recoverAccount(int profileUID,String machine) {
         bundle.putLong("ProfileID", profileUID);
         bundle.putString(machine, machine);
         bundle.putString("machine", machine);
-        Intent intent = new Intent(this, AdminDrawerActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Intent intent = new Intent(this, LoginDirectorActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(PROFILE_ID, profileUID);
         intent.putExtras(bundle);

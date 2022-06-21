@@ -87,6 +87,7 @@ public class AcctStatmOptions extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_acct_statm_options);
+        setTitle("Account Statement Selections");
         typeBundle= new Bundle();
         stringDate=null;
         dbHelper=new DBHelper(this);
@@ -282,11 +283,11 @@ public class AcctStatmOptions extends AppCompatActivity {
 
 
         monthPackCount =dbHelper.getCusMonthPackagesCount1(customerID,yearMonth);
-        monthSOCount =dbHelper.getCusMonthSOCount(customerID,stringDate);
+        monthSOCount =dbHelper.getCusMonthSOCount1(customerID,yearMonth);
         monthSavingsCount=dbHelper.getCusMonthSavingsCount1(customerID,yearMonth);
-        monthTranxCount=dbHelper.getCusMonthTransactionCount(customerID,stringDate);
-        monthTotalSavings =dbHelper.getMonthTotalSavingsForCustomer(customerID,stringDate);
-        monthTotalTranx =dbHelper.getMonthTotalTransactionForCus(customerID,stringDate);
+        monthTranxCount=dbHelper.getCusMonthTransactionCount1(customerID,stringDate);
+        monthTotalSavings =dbHelper.getMonthTotalSavingsForCustomer(customerID,yearMonth);
+        monthTotalTranx =dbHelper.getMonthTotalTransactionForCus1(customerID,yearMonth);
 
         String finalYearMonth = yearMonth;
         btnGetByDate.setOnClickListener(new View.OnClickListener() {
@@ -295,10 +296,10 @@ public class AcctStatmOptions extends AppCompatActivity {
                 monthPackCount =dbHelper.getCusMonthPackagesCount1(customerID, finalYearMonth);
                 monthSavingsCount=dbHelper.getCusMonthSavingsCount1(customerID, finalYearMonth);
 
-                monthSOCount =dbHelper.getCusMonthSOCount(customerID,dateOfStatement);
-                monthTranxCount=dbHelper.getCusMonthTransactionCount(customerID,dateOfStatement);
+                monthSOCount =dbHelper.getCusMonthSOCount1(customerID,finalYearMonth);
+                monthTranxCount=dbHelper.getCusMonthTransactionCount1(customerID,finalYearMonth);
                 monthTotalSavings =dbHelper.getMonthTotalSavingsForCustomer(customerID,dateOfStatement);
-                monthTotalTranx =dbHelper.getMonthTotalTransactionForCus(customerID,dateOfStatement);
+                monthTotalTranx =dbHelper.getMonthTotalTransactionForCus1(customerID,finalYearMonth);
                 statementType="byDate";
                 typeBundle.putString("PackageType",statementType);
                 typeBundle.putString("customerName",cmName);
@@ -326,11 +327,11 @@ public class AcctStatmOptions extends AppCompatActivity {
             public void onClick(View view) {
 
                 monthPackCount =dbHelper.getCusMonthPackagesCount1(customerID, finalYearMonth1);
-                monthSOCount =dbHelper.getCusMonthSOCount(customerID, finalYearMonth1);
+                monthSOCount =dbHelper.getCusMonthSOCount1(customerID, finalYearMonth1);
                 monthSavingsCount=dbHelper.getCusMonthSavingsCount1(customerID, finalYearMonth1);
-                monthTranxCount=dbHelper.getCusMonthTransactionCount(customerID, finalYearMonth1);
+                monthTranxCount=dbHelper.getCusMonthTransactionCount1(customerID, finalYearMonth1);
                 monthTotalSavings =dbHelper.getMonthTotalSavingsForCustomer(customerID, finalYearMonth1);
-                monthTotalTranx =dbHelper.getMonthTotalTransactionForCus(customerID, finalYearMonth1);
+                monthTotalTranx =dbHelper.getMonthTotalTransactionForCus1(customerID, finalYearMonth1);
 
                 statementType="daysAgo";
                 typeBundle.putString("PackageType",statementType);

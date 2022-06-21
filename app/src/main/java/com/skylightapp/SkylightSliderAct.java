@@ -34,6 +34,7 @@ public class SkylightSliderAct extends AppCompatActivity implements SkylightPack
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_skylight_slider);
+        setTitle("Packages Slider");
         SliderView sliderView = findViewById(R.id.slider);
         skyLightPackage_2s = new ArrayList<>() ;
         manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);

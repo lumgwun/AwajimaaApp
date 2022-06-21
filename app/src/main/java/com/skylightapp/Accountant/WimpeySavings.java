@@ -60,6 +60,7 @@ public class WimpeySavings extends AppCompatActivity implements SavingsAdapter.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_wimpey_packs);
+        setTitle("Elelenwo Transactions");
         customerDailyReports = new ArrayList<CustomerDailyReport>();
         customerDailyReportArrayList = new ArrayList<CustomerDailyReport>();
         RecyclerView recyclerView = findViewById(R.id.recyclerViewSavingsWimpey);
@@ -75,7 +76,8 @@ public class WimpeySavings extends AppCompatActivity implements SavingsAdapter.O
                 chooseDate();
             }
         });
-        dateOfTransaction = picker.getDayOfMonth()+"-"+ (picker.getMonth() + 1)+"-"+picker.getYear();
+        dateOfTransaction = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
+
         SnapHelper snapHelper = new PagerSnapHelper();
         officeBranch="Wimpey";
         //   ,   Elelenwo .Trans-Amadi
@@ -118,7 +120,7 @@ public class WimpeySavings extends AppCompatActivity implements SavingsAdapter.O
             txtSavingsCount4theDay.setText("Savings:0");
 
         }
-        dateOfTransaction = picker.getDayOfMonth()+"-"+ (picker.getMonth() + 1)+"-"+picker.getYear();
+        dateOfTransaction = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
 
         btnSearchDB.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
@@ -169,7 +171,7 @@ public class WimpeySavings extends AppCompatActivity implements SavingsAdapter.O
 
     }
     private void chooseDate() {
-        dateOfTransaction = picker.getDayOfMonth()+"-"+ (picker.getMonth() + 1)+"-"+picker.getYear();
+        dateOfTransaction = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
 
     }
 

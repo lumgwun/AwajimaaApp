@@ -52,6 +52,7 @@ public class AdminCountAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_admin_count);
+        setTitle("Admin Counts");
 
         gson = new Gson();
         PaymentCode paymentCode=new PaymentCode();

@@ -39,6 +39,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import static com.skylightapp.Classes.Profile.PROFILE_USERNAME;
+
 public class AdminDepositAct extends AppCompatActivity {
     Date currentDate;
     public final static int KEY_EXTRA_REPORT_ID = 1224;
@@ -122,6 +124,7 @@ public class AdminDepositAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_admin_deposit);
+        setTitle("Admin Depositing");
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         gson1 = new Gson();
@@ -131,8 +134,8 @@ public class AdminDepositAct extends AppCompatActivity {
         random = new SecureRandom();
         adminBankDeposits =new ArrayList<>();
         applicationDb = new DBHelper(this);
-        SharedPrefUserName=userPreferences.getString("USER_NAME", "");
-        SharedPrefUserPassword=userPreferences.getString("USER_PASSWORD", "");
+        SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
         SharedPrefUserMachine=userPreferences.getString("machine", "");
         SharedPrefProfileID=userPreferences.getString("PROFILE_ID", "");
         json = userPreferences.getString("LastProfileUsed", "");

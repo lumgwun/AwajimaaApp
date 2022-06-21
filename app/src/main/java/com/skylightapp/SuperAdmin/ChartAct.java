@@ -1002,7 +1002,7 @@ public class ChartAct extends AppCompatActivity {
         packageChart = (BarChart) findViewById(R.id.packsBarChart);
 
         switch (item.getItemId()) {
-            case R.id.actionToggleValues: {
+            /*case R.id.actionToggleValues: {
                 if( packageChart !=null){
                     for (IDataSet set : packageChart.getData().getDataSets())
                         set.setDrawValues(!set.isDrawValuesEnabled());
@@ -1025,6 +1025,17 @@ public class ChartAct extends AppCompatActivity {
                 }
 
             }
+            case R.id.actionToggleBarBorders: {
+                if( packageChart !=null){
+                    for (IBarDataSet set : packageChart.getData().getDataSets())
+                        ((BarDataSet) set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
+
+                    packageChart.invalidate();
+                    break;
+
+                }
+
+            }
             case R.id.actionToggleHighlight: {
                 if( packageChart !=null){
                     if (packageChart.getData() != null) {
@@ -1035,7 +1046,7 @@ public class ChartAct extends AppCompatActivity {
 
                 }
 
-            }
+            }*/
             case R.id.actionTogglePinch: {
                 if( packageChart !=null){
                     if (packageChart.isPinchZoomEnabled())
@@ -1058,17 +1069,7 @@ public class ChartAct extends AppCompatActivity {
                 }
 
             }
-            case R.id.actionToggleBarBorders: {
-                if( packageChart !=null){
-                    for (IBarDataSet set : packageChart.getData().getDataSets())
-                        ((BarDataSet) set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
 
-                    packageChart.invalidate();
-                    break;
-
-                }
-
-            }
             case R.id.animateX: {
                 packageChart.animateX(2000);
                 break;

@@ -71,10 +71,9 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_admin_package);
-        /*getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-        getActionBar().hide();*/
+        setTitle("PACKAGES INSIGHTS");
         Calendar calendar = Calendar.getInstance();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         todayDate = sdf.format(calendar.getTime().getDate());
         dbHelper= new DBHelper(this);
         txtSavings = findViewById(R.id.txtViewSavings);

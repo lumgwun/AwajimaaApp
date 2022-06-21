@@ -46,7 +46,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class TellerCountAct extends AppCompatActivity {
+public class TellerWorkAct extends AppCompatActivity {
     private DBHelper dbHelper;
     private static final String PREF_NAME = "skylight";
     private Bundle tellerBundle;
@@ -110,9 +110,20 @@ public class TellerCountAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_teller_cus_count);
+        setTitle("Teller work Counts");
         dbHelper=new DBHelper(this);
         tellerBundle=new Bundle();
         tellerProfile=new Profile();
+        gson = new Gson();
+        gson1 = new Gson();
+        tellerProfile=new Profile();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
+        SharedPrefUserMachine=userPreferences.getString("machine", "");
+        SharedPrefProfileID=userPreferences.getString("PROFILE_ID", "");
+        json = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
         descriptionSavings = new Description();
         descriptionCus= new Description();
         valueSetCus = new ArrayList<BarEntry>();
@@ -157,7 +168,7 @@ public class TellerCountAct extends AppCompatActivity {
 
         btnSelect = findViewById(R.id.buttonDSelect);
         btnSelect.setOnClickListener(this::getMAndY);
-        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+
         tellerCountDataPayments= new ArrayList<>();
         tellerCountDataInvestment= new ArrayList<>();
         tellerCountDataPromos= new ArrayList<>();
@@ -166,9 +177,6 @@ public class TellerCountAct extends AppCompatActivity {
         tellerCountDataCus= new ArrayList<>();
         tellerCountTReports= new ArrayList<>();
 
-        gson = new Gson();
-        gson1 = new Gson();
-        tellerProfile=new Profile();
         tellerBundle=getIntent().getExtras();
         if(tellerBundle !=null){
             tellerProfile=tellerBundle.getParcelable("Profile");
@@ -203,13 +211,6 @@ public class TellerCountAct extends AppCompatActivity {
         String year1 = items2[0];
         String month1 = items2[1];
         monthYearStr = year1 + "-" + month1;
-
-        SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
-        SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
-        SharedPrefUserMachine=userPreferences.getString("machine", "");
-        SharedPrefProfileID=userPreferences.getString("PROFILE_ID", "");
-        json = userPreferences.getString("LastProfileUsed", "");
-        userProfile = gson.fromJson(json, Profile.class);
 
         dateText = findViewById(R.id.date_text_);
         dateText.setOnClickListener(this::datePicker);
@@ -258,7 +259,7 @@ public class TellerCountAct extends AppCompatActivity {
         LinearLayoutManager layoutManagerInv
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerInv.setLayoutManager(layoutManagerInv);
-        tellerCountAdatInv = new TellerCountAdat(TellerCountAct.this, tellerCountDataInvestment);
+        tellerCountAdatInv = new TellerCountAdat(TellerWorkAct.this, tellerCountDataInvestment);
         recyclerInv.setAdapter(tellerCountAdatInv);
         recyclerInv.setItemAnimator(new DefaultItemAnimator());
         DividerItemDecoration dividerItemDecorationTToday = new DividerItemDecoration(recyclerInv.getContext(),
@@ -283,7 +284,7 @@ public class TellerCountAct extends AppCompatActivity {
         LinearLayoutManager layoutManagerItems
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerItems.setLayoutManager(layoutManagerItems);
-        tellerCountAdatItems = new TellerCountAdat(TellerCountAct.this, tellerCountDataItems);
+        tellerCountAdatItems = new TellerCountAdat(TellerWorkAct.this, tellerCountDataItems);
         recyclerItems.setAdapter(tellerCountAdatItems);
         recyclerItems.setItemAnimator(new DefaultItemAnimator());
         DividerItemDecoration dividerItemDecorationItems = new DividerItemDecoration(recyclerItems.getContext(),
@@ -309,7 +310,7 @@ public class TellerCountAct extends AppCompatActivity {
         LinearLayoutManager layoutManagerSavings
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerSavings.setLayoutManager(layoutManagerSavings);
-        tellerCountAdatSavings = new TellerCountAdat(TellerCountAct.this, tellerCountDataSavings);
+        tellerCountAdatSavings = new TellerCountAdat(TellerWorkAct.this, tellerCountDataSavings);
         recyclerSavings.setAdapter(tellerCountAdatSavings);
         recyclerSavings.setItemAnimator(new DefaultItemAnimator());
         DividerItemDecoration dividerItemDecorationSavings = new DividerItemDecoration(recyclerSavings.getContext(),
@@ -335,7 +336,7 @@ public class TellerCountAct extends AppCompatActivity {
         LinearLayoutManager layoutManagerPayment
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerPayment.setLayoutManager(layoutManagerPayment);
-        tellerCountAdatPayment = new TellerCountAdat(TellerCountAct.this, tellerCountDataPayments);
+        tellerCountAdatPayment = new TellerCountAdat(TellerWorkAct.this, tellerCountDataPayments);
         recyclerPayment.setAdapter(tellerCountAdatPayment);
         recyclerPayment.setItemAnimator(new DefaultItemAnimator());
         DividerItemDecoration dividerItemDecorationPayment = new DividerItemDecoration(recyclerPayment.getContext(),
@@ -362,7 +363,7 @@ public class TellerCountAct extends AppCompatActivity {
         LinearLayoutManager layoutManagerReport
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerReports.setLayoutManager(layoutManagerReport);
-        tellerCountAdatReports = new TellerCountAdat(TellerCountAct.this, tellerCountTReports);
+        tellerCountAdatReports = new TellerCountAdat(TellerWorkAct.this, tellerCountTReports);
         recyclerReports.setAdapter(tellerCountAdatReports);
         recyclerReports.setItemAnimator(new DefaultItemAnimator());
         DividerItemDecoration dividerItemDecorationReport = new DividerItemDecoration(recyclerReports.getContext(),
@@ -622,7 +623,7 @@ public class TellerCountAct extends AppCompatActivity {
         mMonth = cal.get(Calendar.MONTH+1);
         mDay = cal.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog dialog = new DatePickerDialog( TellerCountAct.this, R.style.DatePickerDialogStyle,mDateSetListener,mYear,mMonth,mDay);
+        DatePickerDialog dialog = new DatePickerDialog( TellerWorkAct.this, R.style.DatePickerDialogStyle,mDateSetListener,mYear,mMonth,mDay);
         dialog.show();
         stringDate = mYear+"-"+ mMonth+"-"+mDay;
     }

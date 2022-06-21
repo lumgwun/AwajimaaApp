@@ -35,6 +35,7 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_welcome);
+        setTitle("Skylight Reception Area");
         //int messageCount = strings.length;
         final int[] currentIndex = {-1};
 
