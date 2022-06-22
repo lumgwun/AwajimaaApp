@@ -28,6 +28,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.google.android.gms.maps.model.LatLng;
 import com.skylightapp.Admins.AdminBankDeposit;
 import com.skylightapp.Classes.ChartData;
+import com.skylightapp.Classes.DatabaseHelper;
 import com.skylightapp.Classes.EmergReportNext;
 import com.skylightapp.Classes.EmergencyReport;
 import com.skylightapp.Classes.OfficeBranch;
@@ -599,7 +600,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private ContentResolver myCR;
     private SQLiteDatabase myDB;
     private SQLiteOpenHelper sqLiteOpenHelper;
-    private SQLiteDatabase db;
+    private SQLiteDatabase sqLiteDatabase;
     private HashMap hp;
     private ArrayList<Customer> customers;
     SharedPreferences userPref;
@@ -1064,7 +1065,18 @@ public class DBHelper extends SQLiteOpenHelper {
     public void openDataBase() throws SQLException {
         String myPath = DB_PATH + DATABASE_NAME;
         myDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
+        sqLiteDatabase.execSQL("PRAGMA foreign_keys=ON");
     }
+    public SQLiteDatabase openDataBase(SQLiteDatabase db) {
+        if(db.isOpen()){
+            sqLiteDatabase.execSQL("PRAGMA foreign_keys=ON");
+            return sqLiteDatabase;
+        }
+        //sqLiteDatabase = db.getWritableDatabase();
+        sqLiteDatabase.execSQL("PRAGMA foreign_keys=ON");
+        return sqLiteDatabase;
+    }
+
 
     public void createDataBase() throws IOException {
         boolean dbExist = checkDataBase();
@@ -1843,12 +1855,9 @@ public class DBHelper extends SQLiteOpenHelper {
         String[] columns = new String[]{"COUNT(" + CUSTOMER_ID + ") AS " + tmpcol_monthly_total, "substr(" + CUSTOMER_DATE_JOINED + ",4) AS " + tmpcol_month_year, PROFILE_ID};
         String groupbyclause = "substr(" + CUSTOMER_DATE_JOINED + ",4)";
         String orderbyclause = "substr(" + CUSTOMER_DATE_JOINED + ",7,2)||substr(" + CUSTOMER_DATE_JOINED + ",4,2)";
+        Cursor cursor = db.query(CUSTOMER_TABLE, null, selection,
+                selectionArgs, groupbyclause, null, orderbyclause, null);
 
-        Cursor cursor = db.query(
-                CUSTOMER_TABLE + " , " + PROFILES_TABLE,
-                Utils.concat(new String[]{CUSTOMER_TABLE, PROFILES_TABLE}),
-                selection,
-                selectionArgs, groupbyclause, null, orderbyclause);
 
         if(cursor!=null && cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
@@ -15768,7 +15777,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String selection = CUSTOMER_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(customerID)};
-        Cursor cursor = db.rawQuery(
+        Cursor cursor = sqLiteDatabase.rawQuery(
                 "SELECT SUM (("+ REPORT_TOTAL +")) FROM " + DAILY_REPORT_TABLE + " WHERE " + selection, selectionArgs);
         if(cursor!=null && cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
@@ -15793,7 +15802,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String selection = CUSTOMER_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(customerID)};
-        Cursor cursor = db.rawQuery(
+        Cursor cursor = sqLiteDatabase.rawQuery(
                 "SELECT SUM (("+ LOAN_AMOUNT +")) FROM " + LOAN_TABLE + " WHERE " + selection, selectionArgs);
         if(cursor!=null && cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
@@ -15819,7 +15828,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String selection = CUSTOMER_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(customerID)};
-        Cursor cursor = db.rawQuery(
+        Cursor cursor = sqLiteDatabase.rawQuery(
                 "SELECT SUM (("+ SO_RECEIVED_AMOUNT +")) FROM " + STANDING_ORDER_TABLE + " WHERE " + selection, selectionArgs);
         if(cursor!=null && cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
@@ -15846,7 +15855,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String selection = CUSTOMER_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(customerID)};
-        Cursor cursor = db.rawQuery(
+        Cursor cursor = sqLiteDatabase.rawQuery(
                 "SELECT SUM (("+ SO_EXPECTED_AMOUNT +")) FROM " + STANDING_ORDER_TABLE + " WHERE " + selection, selectionArgs);
         if(cursor!=null && cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
@@ -15873,7 +15882,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String selection = CUSTOMER_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(customerID)};
-        Cursor cursor = db.rawQuery(
+        Cursor cursor = sqLiteDatabase.rawQuery(
                 "SELECT SUM (("+ SO_DAILY_AMOUNT +")) FROM " + STANDING_ORDER_TABLE + " WHERE " + selection, selectionArgs);
         if(cursor!=null && cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
@@ -15918,7 +15927,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String selection = CUSTOMER_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(customerID)};
-        Cursor cursor = db.rawQuery(
+        Cursor cursor = sqLiteDatabase.rawQuery(
                 "SELECT SUM (("+ SO_DAILY_AMOUNT +")) FROM " + DAILY_REPORT_TABLE + " WHERE " + selection, selectionArgs);
         if(cursor!=null && cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {

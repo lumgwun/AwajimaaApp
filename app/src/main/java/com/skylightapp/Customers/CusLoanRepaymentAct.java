@@ -140,6 +140,7 @@ public class CusLoanRepaymentAct extends AppCompatActivity {
     double unpaidLoanBalance,residueAmt;
     SharedPreferences sharedpreferences;
     String json,customerName;
+    private static final String PREF_NAME = "skylight";
     Bundle loanBundle, bundle1;
     ActivityResultLauncher<Intent> mStartLoanRepaymentForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -171,9 +172,7 @@ public class CusLoanRepaymentAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_loan_repayment);
-        /*getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-        getActionBar().hide();*/
-        userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         random= new SecureRandom();
         loanBundle=new Bundle();
@@ -181,7 +180,7 @@ public class CusLoanRepaymentAct extends AppCompatActivity {
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         date = new Date();
-        dateFormatWithZone= new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        dateFormatWithZone= new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         currentDate = dateFormatWithZone.format(date);
         btnPay = findViewById(R.id.loanPayNow);
         loanBalance = findViewById(R.id.loanBalance);

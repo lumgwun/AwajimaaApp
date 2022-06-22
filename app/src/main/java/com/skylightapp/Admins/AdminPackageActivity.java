@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.TextView;
@@ -65,6 +66,7 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
     private ArrayList<PaymentCode> paymentCodeArrayList;
     private TextView txtSavings, txtCodes,txtPacks,txtSO,txtTx,txtAcct;
     int soInt,txInt,savingsInt,codeInt,packageInt,acctInt;
+    SQLiteDatabase sqLiteDatabase;
 
 
     @Override
@@ -95,13 +97,40 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
         RecyclerView rcyclerTransactions = findViewById(R.id.recyclerViewTx);
         RecyclerView recyclerAccounts = findViewById(R.id.recyclerViewAcct);
         RecyclerView recyclerStandingOrder = findViewById(R.id.recyclerViewSO);
-        try {
-            standingOrders = dbHelper.getStandingOrdersToday(todayDate);
-            paymentCodeArrayList=dbHelper.getAllSavingsCodes();
 
-        } catch (NullPointerException e) {
-            e.printStackTrace();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            //dbHelper = new DBHelper(this);
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+                standingOrders = dbHelper.getStandingOrdersToday(todayDate);
+                paymentCodeArrayList=dbHelper.getAllSavingsCodes();
+
+                skyLightPackages = dbHelper.getPackageEndingToday1(todayDate);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+            try {
+                customerDailyReports3 = dbHelper.getAllReportsAdmin();
+
+
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+            }
+            try {
+                accounts = dbHelper.getAllAccounts();
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+
+
         }
+
+
+
 
         try {
             soInt=standingOrders.size();
@@ -133,7 +162,7 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
         //snapHelper1.attachToRecyclerView(recyclerStandingOrder);
 
 
-        skyLightPackages = dbHelper.getPackageEndingToday1(todayDate);
+
 
         try {
             packageInt=skyLightPackages.size();
@@ -232,13 +261,7 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
         recyclerSavings.setLayoutManager(layoutManager5);
 
         recyclerSavings.setItemAnimator(new DefaultItemAnimator());
-        try {
-            customerDailyReports3 = dbHelper.getAllReportsAdmin();
 
-
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
         try {
             savingsInt=customerDailyReports3.size();
 
@@ -267,13 +290,6 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
         //SnapHelper snapHelperSavings= new PagerSnapHelper();
         //snapHelperSavings.attachToRecyclerView(recyclerSavings);
 
-        try {
-            accounts = dbHelper.getAllAccounts();
-
-
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
 
 
 

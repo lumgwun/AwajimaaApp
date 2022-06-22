@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -61,6 +62,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.SignUpAct.hasPermissions;
 
 public class CustomerListActivity extends AppCompatActivity implements AdminCusAdapter.CustomerListener{
@@ -84,7 +86,9 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
     MenuItem searchItem;
     private static final String PREF_NAME = "skylight";
     long cusProfileID;
+    SQLiteDatabase sqLiteDatabase;
     Profile cusProfile;
+    Bundle bundle;
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {
             Manifest.permission.CAMERA,
@@ -147,7 +151,19 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
         if ((data != null) && requestCode == PICK_PHOTO_CODE) {
             Uri photoUri = data.getData();
             dbHelper= new DBHelper(this);
-            dbHelper.insertProfilePicture(profileID,customerID,photoUri);
+            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                //dbHelper = new DBHelper(this);
+                sqLiteDatabase = dbHelper.getWritableDatabase();
+                try {
+                    dbHelper.insertProfilePicture(profileID,customerID,photoUri);
+                } catch (Exception e) {
+                    System.out.println("Oops!");
+                }
+
+
+            }
+
+
 
 
         }
@@ -240,14 +256,39 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
                 if ((data != null) && requestCode == PICK_PHOTO_CODE) {
                     Uri photoUri = data.getData();
                     dbHelper= new DBHelper(CustomerListActivity.this);
-                    dbHelper.updateProfilePix(profileID,customerID,photoUri);
+
+                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                        //dbHelper = new DBHelper(this);
+                        sqLiteDatabase = dbHelper.getWritableDatabase();
+                        try {
+                            dbHelper.updateProfilePix(profileID,customerID,photoUri);
+                        } catch (Exception e) {
+                            System.out.println("Oops!");
+                        }
+
+
+                    }
+
+
 
 
                 }
                 if ((data != null) && requestCode == RESULT_LOAD_IMAGE) {
                     Uri photoUri = data.getData();
                     dbHelper= new DBHelper(CustomerListActivity.this);
-                    dbHelper.updateProfilePix(profileID,customerID,photoUri);
+
+                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+
+                        sqLiteDatabase = dbHelper.getWritableDatabase();
+                        try {
+                            dbHelper.updateProfilePix(profileID,customerID,photoUri);
+                        } catch (Exception e) {
+                            System.out.println("Oops!");
+                        }
+
+
+                    }
+
 
 
                 }
@@ -272,8 +313,20 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
                     String email=edtEmailAddress.getText().toString();
                     String address=edtAddress.getText().toString();
                     String password=edtPassword.getText().toString();
+                    dbHelper= new DBHelper(CustomerListActivity.this);
 
-                    dbHelper.updateCustomer(customerID,"","",phoneNo,email,"",address,"","",password,selectedStatus);
+                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+
+                        sqLiteDatabase = dbHelper.getWritableDatabase();
+                        try {
+                            dbHelper.updateCustomer(customerID,"","",phoneNo,email,"",address,"","",password,selectedStatus);
+                        } catch (Exception e) {
+                            System.out.println("Oops!");
+                        }
+
+
+                    }
+
                     dialog.cancel();
                     displayCustomers();
                 }
@@ -291,7 +344,19 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
         return true;
     }
     public void displayCustomers() {
-        customers = new ArrayList<>(dbHelper.getAllCustomers11());
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+                customers = new ArrayList<>(dbHelper.getAllCustomers11());
+            } catch (Exception e) {
+                System.out.println("Oops!");
+            }
+
+
+        }
+
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         SnapHelper snapHelper = new PagerSnapHelper();
@@ -345,12 +410,9 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
 
     }
 
-
-
-
     @Override
     public void onItemClick(Customer customer) {
-        Bundle bundle = new Bundle();
+        bundle = new Bundle();
         if (customer != null) {
             customerID = customer.getCusUID();
             cusProfile = customer.getCusProfile();
@@ -363,8 +425,15 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
                 cusProfileID = cusProfile.getPID();
 
             }
+            bundle=new Bundle();
+            bundle.putInt("customerID",customerID);
+            bundle.putInt(CUSTOMER_ID,customerID);
+            bundle.putInt("CUSTOMER_ID",customerID);
+            bundle.putParcelable("Customer",customer);
+            bundle.putParcelable("customer",customer);
             AlertDialog.Builder builder = new AlertDialog.Builder(CustomerListActivity.this);
             builder.setTitle("Choose Action on Customer");
+            Bundle finalBundle = bundle;
             builder.setItems(new CharSequence[]
                             {"Delete Customer", "Update Profile", "Loans", "Packages", "Savings", "Standing Orders", "Transactions", "Savings Codes", "Payment Docs", " Location", "Messages", " Send Customer message"},
                     new DialogInterface.OnClickListener() {
@@ -381,49 +450,82 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
                                     break;
                                 case 2:
                                     Toast.makeText(CustomerListActivity.this, "Check Loan Overview", Toast.LENGTH_SHORT).show();
-                                    Bundle bundle=new Bundle();
-                                    bundle.putInt("customerID",customerID);
-                                    bundle.putParcelable("Customer",customer);
+
                                     Intent intent = new Intent(CustomerListActivity.this, CustomerLoanListAct.class);
-                                    intent.putExtras(bundle);
+                                    intent.putExtras(finalBundle);
                                     startActivity(intent);
                                     break;
                                 case 3:
                                     Toast.makeText(CustomerListActivity.this, "Check package overview", Toast.LENGTH_SHORT).show();
                                     //dbHelper.getPackagesFromCustomer(customerID);
-                                    Bundle bundle22=new Bundle();
-                                    bundle22.putInt("customerID",customerID);
-                                    bundle22.putParcelable("Customer",customer);
+
                                     Intent intent22 = new Intent(CustomerListActivity.this, CusPackageList.class);
-                                    intent22.putExtras(bundle22);
+                                    intent22.putExtras(finalBundle);
                                     startActivity(intent22);
                                     break;
                                 case 4:
                                     Toast.makeText(CustomerListActivity.this, "Savings option, selected ", Toast.LENGTH_SHORT).show();
                                     //dbHelper.getSavingsFromCurrentCustomer(customerID);
 
-                                    Bundle savingsBundle=new Bundle();
-                                    savingsBundle.putInt("customerID",customerID);
-                                    savingsBundle.putParcelable("Customer",customer);
                                     Intent cusIntent = new Intent(CustomerListActivity.this, MySavingsListAct.class);
-                                    cusIntent.putExtras(savingsBundle);
+                                    cusIntent.putExtras(finalBundle);
                                     startActivity(cusIntent);
                                     break;
                                 case 5:
                                     Toast.makeText(CustomerListActivity.this, "View standing orders option, selected ", Toast.LENGTH_SHORT).show();
-                                    dbHelper.getAllStandingOrdersForCustomer(customerID);
+                                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                        //dbHelper = new DBHelper(this);
+                                        sqLiteDatabase = dbHelper.getWritableDatabase();
+                                        try {
+                                            dbHelper.getAllStandingOrdersForCustomer(customerID);
+                                        } catch (Exception e) {
+                                            System.out.println("Oops!");
+                                        }
+
+
+                                    }
+
                                     break;
                                 case 6:
                                     Toast.makeText(CustomerListActivity.this, "View transaction option, selected ", Toast.LENGTH_SHORT).show();
-                                    dbHelper.getAllTransactionCustomer(customerID);
+                                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                        sqLiteDatabase = dbHelper.getWritableDatabase();
+                                        try {
+                                            dbHelper.getAllTransactionCustomer(customerID);
+                                        } catch (Exception e) {
+                                            System.out.println("Oops!");
+                                        }
+
+                                    }
+
                                     break;
                                 case 7:
                                     Toast.makeText(CustomerListActivity.this, "View savings codes option, selected ", Toast.LENGTH_SHORT).show();
-                                    dbHelper.getSavingsCodesCustomer(customerID);
+
+                                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                        sqLiteDatabase = dbHelper.getWritableDatabase();
+                                        try {
+                                            dbHelper.getSavingsCodesCustomer(customerID);
+                                        } catch (Exception e) {
+                                            System.out.println("Oops!");
+                                        }
+
+                                    }
+
                                     break;
                                 case 8:
                                     Toast.makeText(CustomerListActivity.this, "View payment documents option, selected ", Toast.LENGTH_SHORT).show();
-                                    dbHelper.getDocumentsFromCurrentCustomer(customerID);
+
+                                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                        sqLiteDatabase = dbHelper.getWritableDatabase();
+                                        try {
+                                            dbHelper.getDocumentsFromCurrentCustomer(customerID);
+                                        } catch (Exception e) {
+                                            System.out.println("Oops!");
+                                        }
+
+                                    }
+
                                     break;
 
                                 case 9:
@@ -439,7 +541,16 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
                                     break;
                                 case 10:
                                     Toast.makeText(CustomerListActivity.this, "Customer messages, selected ", Toast.LENGTH_SHORT).show();
-                                    dbHelper.getMessagesForCurrentCustomer(customerID);
+                                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                        sqLiteDatabase = dbHelper.getWritableDatabase();
+                                        try {
+                                            dbHelper.getMessagesForCurrentCustomer(customerID);
+                                        } catch (Exception e) {
+                                            System.out.println("Oops!");
+                                        }
+
+                                    }
+
                                     break;
 
                                 case 11:

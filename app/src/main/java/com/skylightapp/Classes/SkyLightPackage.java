@@ -52,7 +52,7 @@ public class SkyLightPackage extends CustomerDailyReport implements Parcelable, 
     public static final String CREATE_PACKAGE_TABLE = "CREATE TABLE IF NOT EXISTS " + PACKAGE_TABLE + " (" + PACKAGE_ID + " INTEGER  , " + PROFILE_ID + " INTEGER NOT NULL, " + CUSTOMER_ID + " INTEGER NOT NULL, " +
             REPORT_NUMBER + " INTEGER , " + PACKAGE_NAME + " TEXT, " + PACKAGE_TYPE + " TEXT, " + PACKAGE_START_DATE + " TEXT, " + PACKAGE_DURATION + " TEXT, " + PACKAGE_END_DATE + " TEXT, " +
             PACKAGE_VALUE + " TEXT, " + PACKAGE_EXPECTED_VALUE + " TEXT, " + PACKAGE_BALANCE + " TEXT, " + PACKAGE_STATUS + " TEXT, " + PACKAGE_CODE + " TEXT, " + PACKAGE_ITEM + " TEXT, " +
-            "PRIMARY KEY("  + PACKAGE_ID + "),"+ "FOREIGN KEY(" + PACKAGE_FKEY + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+            "PRIMARY KEY("  + PACKAGE_ID + "),"+ "FOREIGN KEY(" + CUSTOMER_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
     private static int count;
 
 

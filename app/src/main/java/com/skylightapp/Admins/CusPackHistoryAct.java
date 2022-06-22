@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -66,12 +67,14 @@ public class CusPackHistoryAct extends AppCompatActivity implements SkyLightPack
     private Customer customer;
     private int customerID;
     private TextView txtCusName;
+    SQLiteDatabase sqLiteDatabase;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_cus_pack_history);
+        setTitle("Customer Package History");
         RecyclerView recyclerPackages = findViewById(R.id.recyclerViewPackages2);
         RecyclerView recyclerSavings = findViewById(R.id.recyclerViewSavings42);
         RecyclerView recyclerCodes = findViewById(R.id.recyclerViewCodes2);
@@ -87,9 +90,23 @@ public class CusPackHistoryAct extends AppCompatActivity implements SkyLightPack
         dbHelper= new DBHelper(this);
         if(customer !=null){
             customerID=customer.getCusUID();
+        }
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            standingOrders = dbHelper.getSOFromCurrentCustomer(customerID);
+            skyLightPackages = dbHelper.getPacksFromCurrentCustomer(customerID);
+            paymentCodeArrayList = dbHelper.getSavingsCodesCustomer(customerID);
+            messages = dbHelper.getMessagesForCurrentCustomer(customerID);transactions2 = dbHelper.getAllTransactionCustomer(customerID);
+            accounts4 = dbHelper.getAccountsForCustomer(customerID);
+
+
+        }
+        if(customer !=null){
+            customerID=customer.getCusUID();
             txtCusName.setText(MessageFormat.format("Cus:{0},{1}", customer.getCusSurname(), customer.getCusFirstName()));
 
-            standingOrders = dbHelper.getSOFromCurrentCustomer(customerID);
+
             LinearLayoutManager layoutManager
                     = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
             recyclerStandingOrder.setLayoutManager(layoutManager);
@@ -106,9 +123,7 @@ public class CusPackHistoryAct extends AppCompatActivity implements SkyLightPack
                     = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
             recyclerPackages.setLayoutManager(layoutManager1);
-            skyLightPackages = dbHelper.getPacksFromCurrentCustomer(customerID);
             packageAdapter = new SkyLightPackageAdapter(CusPackHistoryAct.this,skyLightPackages);
-            //recyclerPackages.setHasFixedSize(true);
             recyclerPackages.setAdapter(packageAdapter);
             DividerItemDecoration dividerItemDecoration1 = new DividerItemDecoration(recyclerPackages.getContext(),
                     layoutManager.getOrientation());
@@ -119,7 +134,6 @@ public class CusPackHistoryAct extends AppCompatActivity implements SkyLightPack
 
             LinearLayoutManager layoutManager2
                     = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-            paymentCodeArrayList = dbHelper.getSavingsCodesCustomer(customerID);
             recyclerCodes.setLayoutManager(layoutManager2);
             codeAdapter = new MySavingsCodeAdapter(CusPackHistoryAct.this,paymentCodeArrayList);
             //recyclerCodes.setHasFixedSize(true);
@@ -136,7 +150,6 @@ public class CusPackHistoryAct extends AppCompatActivity implements SkyLightPack
                     = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
             rcyclerTransactions.setLayoutManager(layoutManager3);
-            transactions2 = dbHelper.getAllTransactionCustomer(customerID);
             transactionAdapter = new TransactionAdapter(CusPackHistoryAct.this,transactions2);
             //rcyclerTransactions.setHasFixedSize(true);
             rcyclerTransactions.setAdapter(transactionAdapter);
@@ -146,12 +159,13 @@ public class CusPackHistoryAct extends AppCompatActivity implements SkyLightPack
             LinearLayoutManager layoutManager4
                     = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
-            recyclerPackages.setLayoutManager(layoutManager4);
-            messages = dbHelper.getMessagesForCurrentCustomer(customerID);
+            recyclerMessages.setLayoutManager(layoutManager4);
             messageAdapter = new MessageAdapter(CusPackHistoryAct.this,messages);
-            //recyclerPackages.setHasFixedSize(true);
-            recyclerPackages.setAdapter(messageAdapter);
-            recyclerPackages.setItemAnimator(new DefaultItemAnimator());
+            recyclerMessages.setAdapter(messageAdapter);
+            DividerItemDecoration dividerItemDecorationM = new DividerItemDecoration(recyclerAccounts.getContext(),
+                    layoutManager.getOrientation());
+            recyclerMessages.addItemDecoration(dividerItemDecorationM);
+            recyclerMessages.setItemAnimator(new DefaultItemAnimator());
 
 
             LinearLayoutManager layoutManager5
@@ -167,7 +181,6 @@ public class CusPackHistoryAct extends AppCompatActivity implements SkyLightPack
                     = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
             recyclerAccounts.setLayoutManager(layoutManager6);
-            accounts4 = dbHelper.getAccountsForCustomer(customerID);
             recyclerAccounts.setItemAnimator(new DefaultItemAnimator());
             DividerItemDecoration dividerItemDecorationL = new DividerItemDecoration(recyclerAccounts.getContext(),
                     layoutManager.getOrientation());
