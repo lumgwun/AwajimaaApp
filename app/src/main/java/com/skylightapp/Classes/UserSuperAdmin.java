@@ -249,6 +249,12 @@ public class UserSuperAdmin extends User implements  Parcelable, Serializable {
     }
     public ArrayList<Transaction> getTransactions() { return transactions;
     }
+    public void addTimeLine(int id, String tittle,String timelineDetails) {
+        timeLines= new ArrayList<>();
+        String history = "History" + (timeLines.size() + 1);
+        TimeLine timeLine = new TimeLine(id, tittle,timelineDetails);
+        timeLines.add(timeLine);
+    }
     public void addTimeLine(String tittle,String timelineDetails) {
         timeLines= new ArrayList<>();
         String history = "History" + (timeLines.size() + 1);

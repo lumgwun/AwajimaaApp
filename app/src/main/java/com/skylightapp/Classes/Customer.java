@@ -3,12 +3,10 @@ package com.skylightapp.Classes;
 import android.annotation.SuppressLint;
 import android.location.Address;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -43,25 +41,29 @@ public class Customer  implements Parcelable, Serializable {
     public static final String CUSTOMER_USER_NAME = "customer_user_name";
     public static final String CUSTOMER_PASSWORD = "customer_password";
     public static final String CUSTOMER_NIN = "customer_NIN";
+    public static final String CUSTOMER_STATUS = "customer_Status";
     public static final String CUSTOMER_TABLE = "customers";
 
     public static final String CUSTOMER_LOCATION_TABLE = "customer_LocTable";
     public static final String CUSTOMER_LOC_ID = "cusLoc_id";
+    public static final String CUSTOMER_PROF_ID = "cus_Prof_id";
     public static final String CUSTOMER_LONGITUDE = "customer_Longitude";
     public static final String CUSTOMER_LATITUDE = "customer_Latitude";
     public static final String CUSTOMER_LATLONG = "customer_LatLong";
     public static final String CUSTOMER_CITY = "customer_City";
     public static final String CUSTOMER_WARD = "customer_Ward";
+    public static final String CUS_LOC_CUS_ID = "cusLoc_CusId";
+    public static final String CUS_CUS_LOCID = "cus_Cus_LocId";
 
 
-    public static final String CREATE_CUSTOMERS_TABLE = "CREATE TABLE IF NOT EXISTS " + CUSTOMER_TABLE + " ( " + CUSTOMER_ID + " INTEGER  , " + CUSTOMER_LOC_ID + " INTEGER , " + PROFILE_ID + " INTEGER  , " +
+    public static final String CREATE_CUSTOMERS_TABLE = "CREATE TABLE IF NOT EXISTS " + CUSTOMER_TABLE + " ( " + CUSTOMER_ID + " INTEGER  , " + CUS_CUS_LOCID + " INTEGER , " + CUSTOMER_PROF_ID + " INTEGER  , " +
             CUSTOMER_SURNAME + " TEXT, " + CUSTOMER_FIRST_NAME + " TEXT, " + CUSTOMER_PHONE_NUMBER + " TEXT, " + CUSTOMER_EMAIL_ADDRESS + " TEXT, " + CUSTOMER_NIN + " TEXT, " +
             CUSTOMER_DOB + " TEXT, " + CUSTOMER_GENDER + " TEXT, " + CUSTOMER_ADDRESS + " TEXT, " + CUSTOMER_USER_NAME + " TEXT, " + CUSTOMER_PASSWORD + " TEXT, " +
-            CUSTOMER_OFFICE + " TEXT, " + CUSTOMER_DATE_JOINED + " TEXT, " + "FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + CUSTOMER_ID  + "))";
+            CUSTOMER_OFFICE + " TEXT, " + CUSTOMER_DATE_JOINED + " TEXT, " + CUSTOMER_STATUS + " TEXT, "+ "FOREIGN KEY(" + CUS_CUS_LOCID + ") REFERENCES " + CUSTOMER_LOCATION_TABLE + "(" + CUSTOMER_LOC_ID + "),"+ "FOREIGN KEY(" + CUSTOMER_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + CUSTOMER_ID  + "))";
 
 
-    public static final String CREATE_CUSTOMER_LOCATION_TABLE = "CREATE TABLE IF NOT EXISTS " + CUSTOMER_LOCATION_TABLE + " ( " + CUSTOMER_ID + " INTEGER  , " + CUSTOMER_LOC_ID + " INTEGER  , " +
-            CUSTOMER_LONGITUDE + " TEXT, " + CUSTOMER_LATITUDE + " TEXT, " + CUSTOMER_LATLONG + " TEXT, " + CUSTOMER_WARD + " TEXT, " + CUSTOMER_CITY + " TEXT, "+ "FOREIGN KEY(" + CUSTOMER_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "),"+"PRIMARY KEY(" + CUSTOMER_LOC_ID  + "))";
+    public static final String CREATE_CUSTOMER_LOCATION_TABLE = "CREATE TABLE IF NOT EXISTS " + CUSTOMER_LOCATION_TABLE + " ( " + CUSTOMER_LOC_ID + " INTEGER  , " + CUS_LOC_CUS_ID + " INTEGER  , " +
+            CUSTOMER_LONGITUDE + " TEXT, " + CUSTOMER_LATITUDE + " TEXT, " + CUSTOMER_LATLONG + " TEXT, " + CUSTOMER_WARD + " TEXT, " + CUSTOMER_CITY + " TEXT, "+ "FOREIGN KEY(" + CUS_LOC_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "),"+"PRIMARY KEY(" + CUSTOMER_LOC_ID  + "))";
 
     private static final long serialVersionUID = 8924708152697574031L;
     @SuppressLint("SimpleDateFormat")
@@ -73,6 +75,7 @@ public class Customer  implements Parcelable, Serializable {
     String middleName;
     String gender;
     String office;
+    private String cusStatus;
     String state;
     String nin;
     private String address;
@@ -392,7 +395,7 @@ public class Customer  implements Parcelable, Serializable {
         standingOrders.add(standingOrder);
     }
 
-    public void addCusAccount(int virtualAccountID, String customerBank, String customerNames, long accountNo, double accountBalance, AccountTypes accountTypeStr) {
+    public void addCusAccount(int virtualAccountID, String customerBank, String customerNames, String accountNo, double accountBalance, AccountTypes accountTypeStr) {
         ArrayList<Account> accounts = null;
         String accNo = "A" + (accounts.size() + 1);
         Account account = new Account(virtualAccountID,customerBank,customerNames, accountNo, accountBalance,accountTypeStr);
@@ -510,6 +513,13 @@ public class Customer  implements Parcelable, Serializable {
         this.pin = pin;
     }
 
+    public String getCusStatus() {
+        return cusStatus;
+    }
+
+    public void setCusStatus(String cusStatus) {
+        this.cusStatus = cusStatus;
+    }
 
 
     public static class CustomerItem {
@@ -690,7 +700,7 @@ public class Customer  implements Parcelable, Serializable {
     public void setCusMiddleName(String middleName) {
         this.middleName = middleName;
     }
-    @RequiresApi(api = Build.VERSION_CODES.N)
+
     /*public long getId() {
         return Math.toIntExact(uID);
     }

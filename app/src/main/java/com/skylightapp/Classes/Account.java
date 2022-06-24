@@ -15,59 +15,155 @@ import java.util.Currency;
 import java.util.Locale;
 
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
-import static com.skylightapp.Classes.CustomerDailyReport.REPORT_NUMBER;
+import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
+import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ID;
 import static com.skylightapp.Classes.Transaction.TRANSACTIONS_TABLE;
 import static com.skylightapp.Classes.Transaction.TRANSACTION_ID;
 
 @Entity(tableName = Account.ACCOUNTS_TABLE)
 public class Account implements Serializable, Parcelable {
+    private BigDecimal savingsAcctBalance;
+    private BigDecimal itemAcctBalance;
+
+    public Account(){
+        super();
+
+    }
     public static final String ACCOUNTS_TABLE = "accounts";
     public static final String ACCOUNT_BANK = "account_bank";
     public static final String ACCOUNT_NO = "a_id";
     public static final String ACCOUNT_NAME = "account_name";
     public static final String ACCOUNT_BALANCE = "account_balance";
     public static final String ACCOUNT_TYPE = "account_type";
-    public static final String ACCOUNT_EXPECTED_SAVINGS = "total_amount_exp";
-    public static final String ACCOUNT_SAVED_AMOUNT = "saved_amount";
-    public static final String BANK_ACCT_NO = "acct_id";
-
+    public static final String ACCOUNT_EXPECTED_SAVINGS = "acct_total_amount_exp";
+    public static final String ACCOUNT_SAVED_AMOUNT = "acct_saved_amount";
+    public static final String BANK_ACCT_NO = "bank_acct_no";
+    public static final String BANK_ACCT_BALANCE = "bank_acct_Balance";
 
     public static final String ACCOUNT_TYPES_TABLE = "account_type";
     public static final String ACCOUNT_TYPE_INTEREST = "interest";
     public static final String ACCOUNT_TYPE_NAME = "type_name";
     public static final String ACCOUNT_TYPE_BANK = "type_bank";
-    public static final String ACCOUNT_TYPE_NUMBER = "type_number";
+    public static final String ACCOUNT_TYPE_ID = "type_number";
+    public static final String ACCOUNT_CUS_ID = "acct_cus__number";
+    public static final String ACCOUNT_TYPE_NO_F = "acct_F_Key";
+    public static final String ACCOUNT_PROF_ID = "acct_prof_number";
+    public static final String ACCOUNT_TX_ID = "acct_TX_ID";
 
 
+    public static final String CREATE_ACCOUNT_TYPE_TABLE = "CREATE TABLE " + ACCOUNT_TYPES_TABLE + " (" + ACCOUNT_TYPE_ID + " INTEGER, " +
+            ACCOUNT_TYPE_NO_F + " INTEGER, " + ACCOUNT_TYPE + " TEXT , " + ACCOUNT_TYPE_INTEREST + " FLOAT , " +
+            "PRIMARY KEY(" + ACCOUNT_TYPE_ID + "), " + "FOREIGN KEY(" + ACCOUNT_TYPE_NO_F + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + "))";
 
 
-
-
-    public static final String CREATE_ACCOUNT_TYPE_TABLE = "CREATE TABLE " + ACCOUNT_TYPES_TABLE + " (" + ACCOUNT_TYPE_NUMBER + " INTEGER, " +
-            ACCOUNT_NO + " INTEGER, " + ACCOUNT_TYPE + " TEXT , " + ACCOUNT_TYPE_INTEREST + " DOUBLE , " +
-            "PRIMARY KEY(" + ACCOUNT_TYPE_NUMBER + "), " + "FOREIGN KEY(" + ACCOUNT_NO + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + "))";
-
-
-    public static final String CREATE_ACCOUNTS_TABLE = "CREATE TABLE IF NOT EXISTS " + ACCOUNTS_TABLE + " (" + ACCOUNT_NO + " INTEGER , " + BANK_ACCT_NO + "LONG," + PROFILE_ID + " INTEGER , " +
-            CUSTOMER_ID + " INTEGER , " + REPORT_NUMBER + " INTEGER , " + PACKAGE_ID + " INTEGER , " + TRANSACTION_ID + " INTEGER , " +
-            ACCOUNT_TYPE + " TEXT , " + ACCOUNT_BANK + " TEXT , " + ACCOUNT_NAME + " TEXT, " + ACCOUNT_BALANCE + " DOUBLE, " +
-            ACCOUNT_EXPECTED_SAVINGS + " TEXT, " + ACCOUNT_SAVED_AMOUNT + " DOUBLE, " + "FOREIGN KEY(" + TRANSACTION_ID + ") REFERENCES " + TRANSACTIONS_TABLE + "(" + TRANSACTION_ID + ")," +
+    public static final String CREATE_ACCOUNTS_TABLE = "CREATE TABLE IF NOT EXISTS " + ACCOUNTS_TABLE + " (" + ACCOUNT_NO + " INTEGER , " + BANK_ACCT_NO + "TEXT," + ACCOUNT_PROF_ID + " INTEGER , " +
+            ACCOUNT_CUS_ID + " INTEGER , " + ACCOUNT_TX_ID + " INTEGER , " +
+            ACCOUNT_TYPE + " TEXT , " + ACCOUNT_BANK + " TEXT , " + ACCOUNT_NAME + " TEXT, " + ACCOUNT_BALANCE + " FLOAT, " +
+            ACCOUNT_EXPECTED_SAVINGS + " TEXT, " + ACCOUNT_SAVED_AMOUNT + " FLOAT, " + BANK_ACCT_BALANCE + "FLOAT, "+"FOREIGN KEY(" + ACCOUNT_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + ACCOUNT_CUS_ID  + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + ")," + "FOREIGN KEY(" + ACCOUNT_TX_ID + ") REFERENCES " + TRANSACTIONS_TABLE + "(" + TRANSACTION_ID + ")," +
             "PRIMARY KEY(" + ACCOUNT_NO + "))";
+
+    protected Account(Parcel in) {
+        skyLightAcctNo = in.readInt();
+        bankAcct_No = in.readString();
+        grpAcctNo = in.readInt();
+        accountBalance = in.readDouble();
+        skylightAccountName = in.readString();
+        bankAccountName = in.readString();
+        bankAccountBalance = in.readString();
+        bankName = in.readString();
+        sortCode = in.readString();
+        country = in.readString();
+        transaction = in.readParcelable(Transaction.class.getClassLoader());
+        record = in.readParcelable(CustomerDailyReport.class.getClassLoader());
+        loan = in.readParcelable(Loan.class.getClassLoader());
+        skyLightPackage = in.readParcelable(SkyLightPackage.class.getClassLoader());
+        totalAmountToSave = in.readDouble();
+        interest = in.readDouble();
+        image = in.readString();
+        transactions = in.createTypedArrayList(Transaction.CREATOR);
+        packages = in.createTypedArrayList(SkyLightPackage.CREATOR);
+        DailyPayments = in.createTypedArrayList(CustomerDailyReport.CREATOR);
+        id_For_BigDecimal = in.readInt();
+        type_BigDecimal = in.readInt();
+        //loans = in.createTypedArrayList(Loan.CREATOR);
+    }
+
+    public static final Creator<Account> CREATOR = new Creator<Account>() {
+        @Override
+        public Account createFromParcel(Parcel in) {
+            return new Account(in);
+        }
+
+        @Override
+        public Account[] newArray(int size) {
+            return new Account[size];
+        }
+    };
+
+    public String getBankAccountName() {
+        return bankAccountName;
+    }
+
+    public void setBankAccountName(String bankAccountName) {
+        this.bankAccountName = bankAccountName;
+    }
+
+    public String getSkylightAccountName() {
+        return skylightAccountName;
+    }
+
+    public void setSkylightAccountName(String skylightAccountName) {
+        this.skylightAccountName = skylightAccountName;
+    }
+
+    public String getBankAccountBalance() {
+        return bankAccountBalance;
+    }
+
+    public void setBankAccountBalance(String bankAccountBalance) {
+        this.bankAccountBalance = bankAccountBalance;
+    }
+
+    protected void setPromoAcctName(String name) {
+
+    }
+
+    public void setSavingsAcctBalance(BigDecimal savingsAcctBalance) {
+        this.savingsAcctBalance = savingsAcctBalance;
+    }
+
+    public BigDecimal getSavingsAcctBalance() {
+        return savingsAcctBalance;
+    }
+
+    public void setItemAcctBalance(BigDecimal itemAcctBalance) {
+        this.itemAcctBalance = itemAcctBalance;
+    }
+
+    public BigDecimal getItemAcctBalance() {
+        return itemAcctBalance;
+    }
 
     public enum ACCOUNT_TYPE {
         WALLET, STANDING_ORDER, GROUP_SAVINGS;
     }
 
-
     private static int nextAcNum = 88769912;
-    private String username, password;
+    @PrimaryKey(autoGenerate = true)
+    private int skyLightAcctNo =100321;
 
+    private String bankAcct_No;
+    int grpAcctNo;
+    double accountBalance;
     DBHelper dbHelper;
 
-    String name;
-    String bank;
+    private String skylightAccountName;
+    private String bankAccountName;
+    private String bankAccountBalance;
+
+    String bankName;
+    private Currency currency;
     String sortCode;
     String country;
     Transaction transaction;
@@ -75,20 +171,14 @@ public class Account implements Serializable, Parcelable {
     Loan loan;
     SkylightPackageModel shopPackage;
     SkyLightPackage skyLightPackage;
-    double accountBalance;
+
     double totalAmountToSave;
     double interest;
     private String image;
     private BigDecimal balance1 = null;
     private BigDecimal interestRate = BigDecimal.ZERO;
 
-    @PrimaryKey(autoGenerate = true)
-    private int acctID=100321;
-    private String number;
-    private int productId;
-    private long bankAcct_No;
-    private Currency currency;
-    int grpAcctNo;
+
     AccountTypes type;
     private ArrayList<Transaction> transactions;
     private ArrayList<SkyLightPackage> packages;
@@ -107,9 +197,9 @@ public class Account implements Serializable, Parcelable {
 
         super();
     }
-    public Account(int acctNo, int acctID) {
+    public Account(int acctNo, int skyLightAcctNo) {
         this.grpAcctNo = acctNo;
-        this.acctID = acctID;
+        this.skyLightAcctNo = skyLightAcctNo;
 
     }
     /*public Account(String uName, String pass) {
@@ -122,20 +212,16 @@ public class Account implements Serializable, Parcelable {
         transactions = new ArrayList<>();
 
     }*/
-    public Account (String uName, String pass, double bal,String bank) {
+    public Account (String uName, String pass, double bal,String bankName) {
         this.transactions = new ArrayList<>();
-        this.username = uName;
-        this.password = pass;
-        this.number = String.valueOf(nextAcNum);
+        this.skyLightAcctNo = nextAcNum;
         this.accountBalance = bal;
-
-        //increment account number, so next one will be updated
         nextAcNum++;
     }
     public Account(String name, int dbID, Currency currency, String country, String sortCode, int accountNo, double accountBalance) {
         this(name, accountNo, BigDecimal.valueOf(accountBalance), String.valueOf(currency),country,sortCode);
-        this.acctID = dbID;
-        this.name = name;
+        this.skyLightAcctNo = dbID;
+        this.skylightAccountName = name;
         this.accountBalance = accountBalance;
         this.sortCode = sortCode;
         this.country = country;
@@ -148,71 +234,61 @@ public class Account implements Serializable, Parcelable {
         super();
     }
 
-    public Account(String accountName, String accNo, double accountBalance, int acctID) {
-        this.name = accountName;
-        this.number = accNo;
+    public Account(String accountName, String bankAcct_No, double accountBalance, int skyLightAcctNo) {
+        this.skylightAccountName = accountName;
+        this.bankAcct_No = bankAcct_No;
         this.accountBalance = accountBalance;
-        this.acctID = acctID;
+        this.skyLightAcctNo = skyLightAcctNo;
     }
     public Account(String accountBank, String accountNo,String authorization) {
         this.accountBalance = accountBalance;
-        this.number = accountNo;
-        this.bank = accountBank;
+        this.bankAcct_No = accountNo;
+        this.bankName = accountBank;
         this.accountBalance = accountBalance;
     }
 
-    public Account(String skylightMFb, String accountName, long accountNumber, double accountBalance, AccountTypes accountTypeStr) {
+    public Account(String skylightMFb, String accountName, int accountNumber, double accountBalance, AccountTypes accountTypeStr) {
         this.accountBalance = accountBalance;
-        this.name = accountName;
-        this.number = String.valueOf(accountNumber);
+        this.skylightAccountName = accountName;
+        this.skyLightAcctNo = accountNumber;
         this.type = accountTypeStr;
-        this.bank = skylightMFb;
-        this.accountBalance = accountBalance;
+        this.bankName = skylightMFb;
+
     }
 
-    public Account(int acctID, String accountBank, String accountName, String accountNo, double accountBalance, AccountTypes accountType) {
-        this.acctID = acctID;
+    public Account(int skyLightAcctNo, String accountBank, String accountName, String accountNo, double accountBalance, AccountTypes accountType) {
+        this.skyLightAcctNo = skyLightAcctNo;
         this.accountBalance = accountBalance;
-        this.name = accountName;
-        this.number = accountNo;
+        this.skylightAccountName = accountName;
+        this.bankAcct_No = accountNo;
         this.type = accountType;
-        this.bank = accountBank;
-        this.accountBalance = accountBalance;
+        this.bankName = accountBank;
     }
 
-    public Account(int virtualAccountID, String customerBank, String customerNames, long accountNo, double accountBalance, AccountTypes accountTypeStr) {
-        this.acctID = virtualAccountID;
-        this.accountBalance = accountBalance;
-        this.name = customerNames;
-        this.number = String.valueOf(accountNo);
-        this.type = accountTypeStr;
-        this.bank = customerBank;
-        this.accountBalance = accountBalance;
-    }
 
     public Account(int virtualAccountID, String customerNames, double accountBalance, AccountTypes accountTypeStr) {
-        this.acctID = virtualAccountID;
+        this.skyLightAcctNo = virtualAccountID;
         this.accountBalance = accountBalance;
-        this.name = customerNames;
+        this.skylightAccountName = customerNames;
         this.type = accountTypeStr;
         this.accountBalance = accountBalance;
     }
 
     public Account(String customerBank, String customerNames, int accountNo, AccountTypes accountTypeStr) {
-        this.name = customerNames;
+        this.skylightAccountName = customerNames;
         this.type = accountTypeStr;
-        this.acctID = accountNo;
-        this.bank = customerBank;
+        this.skyLightAcctNo = accountNo;
+        this.bankName = customerBank;
     }
 
     public Account(String reportID, int accountNumber) {
-        this.acctID = accountNumber;
+        this.skyLightAcctNo = accountNumber;
 
     }
 
 
 
-    public void setBalance(BigDecimal balance1) {
+    /*public void setBalance(BigDecimal balance1) {
         if (this.balance1 == null) {
             this.balance1 = balance1;
         } else if (balance1 != null) {
@@ -221,7 +297,7 @@ public class Account implements Serializable, Parcelable {
             dbHelper.updateAccountBalance(balance1.setScale(2, BigDecimal.ROUND_HALF_UP),
                     this.id_For_BigDecimal);
         }
-    }
+    }*/
     public Promo getPromo() {
         return promo;
     }
@@ -253,21 +329,13 @@ public class Account implements Serializable, Parcelable {
     }
 
 
-    public void setAcctID(int id_For_BigDecimal) {
-        if (id_For_BigDecimal > 0) {
-            this.id_For_BigDecimal = id_For_BigDecimal;
-        }
+    public void setSkyLightAcctNo(int acctNo) {
+        this.skyLightAcctNo = acctNo;
     }
 
-    public void setBankAcctName(String name) {
-        if (name != null && name.length() > 0) {
-            // check if the name is being updated
-            if (!this.name.equals("")) {
-                // update the name in the database
-                dbHelper.updateProfileUserName(name, this.id_For_BigDecimal);
-            }
-            this.name = name;
-        }
+    public void setBankAcctName(String bankName) {
+        this.bankAccountName = bankName;
+
     }
     public BigDecimal getBalanceInBigDecimal() {
         return this.balance1;
@@ -286,58 +354,14 @@ public class Account implements Serializable, Parcelable {
         return this.interest;
     }
 
-    protected Account(Parcel in) {
-        name = in.readString();
-        bank = in.readString();
-        sortCode = in.readString();
-        country = in.readString();
-        accountBalance = in.readDouble();
-        image = in.readString();
-        accountBalance = in.readDouble();
-        acctID = in.readInt();
-        number = in.readString();
-        productId = in.readInt();
-    }
 
-
-    public static final Creator<Account> CREATOR = new Creator<Account>() {
-        @Override
-        public Account createFromParcel(Parcel in) {
-            return new Account(in);
-        }
-
-        @Override
-        public Account[] newArray(int size) {
-            return new Account[size];
-        }
-    };
-
-    public Account() {
-
-    }
 
     public Account(String accountBank, String accountName, String accountNumber, double accountBalance) {
-        this.name = accountName;
-        this.number = accountNumber;
-        this.bank = accountBank;
+        this.bankAccountName = accountName;
+        this.bankAcct_No = accountNumber;
+        this.bankName = accountBank;
         this.accountBalance = accountBalance;
 
-    }
-    public Account(int acctID, String bankName, String accountName, String bankNumber) {
-        this.name = accountName;
-        this.acctID = acctID;
-        this.number = bankNumber;
-        this.bank = bankName;
-
-    }
-
-    public void addTransaction(Transaction t) {
-        this.transactions.add(t);
-    }
-
-    //getters and setters
-    public String getUserName() {
-        return username;
     }
 
 
@@ -345,65 +369,36 @@ public class Account implements Serializable, Parcelable {
         this.totalAmountToSave = totalAmountToSave;
     }
 
-    public double getTotalAmountToSave() {
-        return this.totalAmountToSave;
-    }
-
-    public void setUserName(String userName) {
-        this.username = userName;
-    }
 
 
     public double setBalance(double accountBalance) {
         this.accountBalance = accountBalance;
         return accountBalance;
     }
-    public long getBankAcct_No() {
+    public String getBankAcct_No() {
         return this.bankAcct_No;
     }
 
-    public void setBankAcctNo(long bankAcct_No) {
+    public void setBankAcctNo(String bankAcct_No) {
         this.bankAcct_No = bankAcct_No;
     }
 
 
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
 
-
-    public int getAcctID() {
-        return acctID;
+    public int getSkyLightAcctNo() {
+        return skyLightAcctNo;
     }
     /*public void setId(int id) {
         this.acctID = id;
     }*/
 
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getImage() {
-        return image;
-    }
 
-    public void setImage(String image) {
-        this.image = image;
+    public String getAccName() {
+        return skylightAccountName;
     }
-
-    public long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setAcctName(String name) {
+        this.skylightAccountName = name;
     }
 
     public String getCountry() {
@@ -421,11 +416,11 @@ public class Account implements Serializable, Parcelable {
         currency.getDisplayName();
         return currency;
     }
-    public void setBank(String bank) {
-        this.bank = bank;
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
-    public String getBank() {
-        return bank;
+    public String getBankName() {
+        return bankName;
     }
 
     public String getSortCode() {
@@ -439,12 +434,7 @@ public class Account implements Serializable, Parcelable {
     public ArrayList<Transaction> getTransactions() {
         return transactions;
     }
-    /*public void setTransactions(Transaction transaction) {
-        this.transaction = transaction;
-    }
-    public Transaction getTransaction() {
-        return transaction;
-    }*/
+
 
     public SkyLightPackage getSkyLightPackage() {
         return skyLightPackage;
@@ -538,12 +528,6 @@ public class Account implements Serializable, Parcelable {
        // transactions.add(deposit);
     }
 
-    public String toString() {
-        return (name + ""+this.number+" (NGN" + String.format(Locale.getDefault(), "%.2f",this.accountBalance) + ")");
-    }
-
-    public String toTransactionString() { return (name + " (" + number + ")"); }
-
 
 
 
@@ -554,7 +538,29 @@ public class Account implements Serializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-
+        parcel.writeInt(skyLightAcctNo);
+        parcel.writeString(bankAcct_No);
+        parcel.writeInt(grpAcctNo);
+        parcel.writeDouble(accountBalance);
+        parcel.writeString(skylightAccountName);
+        parcel.writeString(bankAccountName);
+        parcel.writeString(bankAccountBalance);
+        parcel.writeString(bankName);
+        parcel.writeString(sortCode);
+        parcel.writeString(country);
+        parcel.writeParcelable(transaction, i);
+        parcel.writeParcelable(record, i);
+        parcel.writeParcelable(loan, i);
+        parcel.writeParcelable(skyLightPackage, i);
+        parcel.writeDouble(totalAmountToSave);
+        parcel.writeDouble(interest);
+        parcel.writeString(image);
+        parcel.writeTypedList(transactions);
+        parcel.writeTypedList(packages);
+        parcel.writeTypedList(DailyPayments);
+        parcel.writeInt(id_For_BigDecimal);
+        parcel.writeInt(type_BigDecimal);
+        parcel.writeTypedList(loans);
     }
 
 
@@ -564,7 +570,7 @@ public class Account implements Serializable, Parcelable {
     }
 
     public String getAccountName() {
-        return name;
+        return skylightAccountName;
     }
 
     public void addBorrowingTransaction(double borrowedAmount) {

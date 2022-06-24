@@ -48,18 +48,22 @@ public class Transaction extends CustomerDailyReport implements Parcelable, Seri
     public static final String TRANSACTION_APPROVER = "transaction_approver";
     public static final String TRANSACTION_APPROVAL_DATE = "transaction_approval_Date";
     public static final String TRANSACTION_METHOD_OF_PAYMENT = "transaction_method_of_payment";
+    public static final String TRANSACTION_PROF_ID = "transaction_Prof_ID";
+    public static final String GRP_TRANX_PROF_ID = "grp_tX_Prof_ID";
+    public static final String TRANSACTION_CUS_ID = "transaction_Cus_ID";
+    public static final String TRANSACTION_ACCT_ID = "transaction_Acct_ID";
 
 
-    public static final String CREATE_TRANSACTIONS_TABLE = "CREATE TABLE IF NOT EXISTS " + TRANSACTIONS_TABLE + " (" + TRANSACTION_ID + " INTEGER, " + PROFILE_ID + " INTEGER , " +
-            CUSTOMER_ID + " INTEGER NOT NULL, " + ACCOUNT_NO + " INTEGER , " + TRANSACTION_DATE + " TEXT, " + SENDING_ACCOUNT + " TEXT, " +
+    public static final String CREATE_TRANSACTIONS_TABLE = "CREATE TABLE IF NOT EXISTS " + TRANSACTIONS_TABLE + " (" + TRANSACTION_ID + " INTEGER, " + TRANSACTION_PROF_ID + " INTEGER , " +
+            TRANSACTION_CUS_ID + " INTEGER , " + TRANSACTION_ACCT_ID + " INTEGER , " + TRANSACTION_DATE + " TEXT, " + SENDING_ACCOUNT + " TEXT, " +
             DESTINATION_ACCOUNT + " TEXT, " + TRANSACTION_PAYEE + " TEXT, " + TRANSACTION_PAYER + " TEXT, " + TRANSACTION_AMOUNT + " DOUBLE, " +
-            TRANSACTIONS_TYPE + " TEXT, " + TRANSACTION_METHOD_OF_PAYMENT + " TEXT, " + TRANSACTION_OFFICE_BRANCH + " TEXT, "+ TRANSACTION_APPROVER + TRANSACTION_APPROVAL_DATE + " TEXT, "+  TRANSACTION_STATUS + " TEXT, " + "PRIMARY KEY(" +TRANSACTION_ID + "), " +"FOREIGN KEY(" + ACCOUNT_NO  + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," +"FOREIGN KEY(" + CUSTOMER_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+            TRANSACTIONS_TYPE + " TEXT, " + TRANSACTION_METHOD_OF_PAYMENT + " TEXT, " + TRANSACTION_OFFICE_BRANCH + " TEXT, "+ TRANSACTION_APPROVER + TRANSACTION_APPROVAL_DATE + " TEXT, "+  TRANSACTION_STATUS + " TEXT, " + "PRIMARY KEY(" +TRANSACTION_ID + "), "+"FOREIGN KEY(" + TRANSACTION_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + TRANSACTION_ACCT_ID  + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," +"FOREIGN KEY(" + TRANSACTION_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
 
 
-    public static final String CREATE_GRP_TX_TABLE = "CREATE TABLE IF NOT EXISTS " + GRP_TRANX_TABLE + " (" + GRP_TRANX_ID + " INTEGER, " + PROFILE_ID + " INTEGER , " +
+    public static final String CREATE_GRP_TX_TABLE = "CREATE TABLE IF NOT EXISTS " + GRP_TRANX_TABLE + " (" + GRP_TRANX_ID + " INTEGER, " + GRP_TRANX_PROF_ID + " INTEGER , " +
             GRPA_ID + " INTEGER NOT NULL, " + TRANS_TYPE + " TEXT, " + TRANSACTION_AMOUNT + " DOUBLE, " + TRANSACTION_DATE + " TEXT, " + GRP_PAYMENT_METHOD + " TEXT, " + SENDING_ACCOUNT + " LONG, " +
-            DESTINATION_ACCOUNT + " LONG, " + TRANSACTION_STATUS + " TEXT, " + "PRIMARY KEY(" +GRP_TRANX_ID + "), " +"FOREIGN KEY(" + PROFILE_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + GRPA_ID + ") REFERENCES " + GRP_ACCT_TABLE + "(" + GRPA_ID + "))";
+            DESTINATION_ACCOUNT + " LONG, " + TRANSACTION_STATUS + " TEXT, " + "PRIMARY KEY(" +GRP_TRANX_ID + "), " +"FOREIGN KEY(" + GRP_TRANX_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + GRPA_ID + ") REFERENCES " + GRP_ACCT_TABLE + "(" + GRPA_ID + "))";
     private String payer;
     private String bankAcct;
     private String bankAccName;
@@ -160,6 +164,18 @@ public class Transaction extends CustomerDailyReport implements Parcelable, Seri
         this.branchOffice = officeBranch;
         this.status = status;
     }
+    public Transaction(int id, String type, String method,String date, int sendingAcct, int destination, double amount, String payee, String payer, String status) {
+        this.transactionID = id;
+        this.payee = payee;
+        this.payer = payer;
+        this.amount = amount;
+        this.date = date;
+        this.sendingAccount = sendingAcct;
+        this.destinationAccount = destination;
+        this.transactionType = TRANSACTION_TYPE.valueOf(type);
+        this.methodOfPay = method;
+        this.status = status;
+    }
     public Transaction(int transactionID, String timestamp, String payee, double amount) {
         this.transactionID = transactionID;
         this.timestamp = timestamp;
@@ -176,6 +192,7 @@ public class Transaction extends CustomerDailyReport implements Parcelable, Seri
     public Transaction() {
         super();
     }
+
 
 
 

@@ -254,7 +254,7 @@ public class MobileMoneyTransfer extends AppCompatActivity {
         transferFee = 0.02 * amountRequested;
         availableBalance = accountBalance - unAvailableAmount;
         newBalance = availableBalance - amountRequested-transferFee;
-        accountNo = account.getAcctID();
+        accountNo = account.getSkyLightAcctNo();
         customerNames = account.getAccountName();
         payeeNames = payeeSurName+","+payeeFirstName;
         customerID = mySelectedCustomer.getCusUID();
@@ -299,10 +299,10 @@ public class MobileMoneyTransfer extends AppCompatActivity {
                         Loan loan = new Loan();
                         Transaction.TRANSACTION_TYPE type = Transaction.TRANSACTION_TYPE.TRANSFER;
                         applicationDb.insertTimeLine(title, details, momoTransferDate, location);
-                        applicationDb.overwriteAccount(userProfile, acctOfCustomer);
-                        applicationDb.saveNewTransaction11(profileID, customerID, accountNo, type,amountRequested, newBalance,momoOperator, Long.parseLong(momoPhoneNO),
+                        /*applicationDb.overwriteAccount(userProfile, acctOfCustomer);
+                        applicationDb.savNewT(profileID, customerID, accountNo, type,amountRequested, newBalance,momoOperator, Long.parseLong(momoPhoneNO),
                                 momoOperator, refID, momoPhoneNO,
-                                "", momoTransferDate);
+                                "", momoTransferDate);*/
 
                         MobileMoney mobileMoney = new MobileMoney();
                         MobilemoneyPayload mobilemoneyPayload = new MobilemoneyPayload();
@@ -339,7 +339,7 @@ public class MobileMoneyTransfer extends AppCompatActivity {
 
                         Toast.makeText(this, "Transfer of " +currency + String.format(Locale.getDefault(), "%.2f", amountRequested) + " was successful.", Toast.LENGTH_SHORT).show();
 
-                        applicationDb.saveNewTransaction11(profileID, customerID, accountNo, type, amountRequested, balanceAfterBorrowing, momoOperator, Long.parseLong(borrowerNo), momoPhoneNO, borrowingId, borrowingId, response, momoTransferDate);
+                        //applicationDb.saveNewTransaction(profileID, customerID, accountNo, type, amountRequested, balanceAfterBorrowing, momoOperator, Long.parseLong(borrowerNo), momoPhoneNO, borrowingId, borrowingId, response, momoTransferDate);
 
                     }
                 }

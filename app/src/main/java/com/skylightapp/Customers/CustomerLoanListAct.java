@@ -105,7 +105,7 @@ public class CustomerLoanListAct extends AppCompatActivity implements LoanAdapte
 
         }else {
             if(userProfile !=null){
-                customer=userProfile.getTimelineCustomer();
+                customer=userProfile.getProfileCus();
 
 
             }

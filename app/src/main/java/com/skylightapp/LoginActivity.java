@@ -21,7 +21,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
@@ -467,7 +466,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if(userProfile !=null){
             profileID=userProfile.getPID();
-            customer1=userProfile.getTimelineCustomer();
+            customer1=userProfile.getProfileCus();
             sharedPrefPhone=userProfile.getProfilePhoneNumber();
             sharedPrefEmail=userProfile.getProfileEmail();
             sharedPrefRole=userProfile.getProfileRole();

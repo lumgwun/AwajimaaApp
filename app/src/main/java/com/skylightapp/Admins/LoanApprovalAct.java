@@ -86,8 +86,8 @@ public class LoanApprovalAct extends AppCompatActivity {
             loanAmt = loan.getAmount1();
             loanCustomer = loan.getCustomer();
             customerPhone = loan.getCustomer().getCusPhoneNumber();
-            loanAcctID = loan.getAccount().getAcctID();
-            acctBank = loan.getBank();
+            loanAcctID = loan.getAccount().getSkyLightAcctNo();
+            acctBank = loan.getBankName();
             acctName = loan.getAccountName();
             customerID = loanCustomer.getCusUID();
             acctNumber = loan.getLoanId();

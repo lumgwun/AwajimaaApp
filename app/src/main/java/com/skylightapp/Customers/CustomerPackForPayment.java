@@ -114,7 +114,7 @@ public class CustomerPackForPayment extends AppCompatActivity implements Package
         }
         else {
             if(userProfile !=null){
-                customer=userProfile.getTimelineCustomer();
+                customer=userProfile.getProfileCus();
             }
 
             if (customer !=null){
@@ -292,7 +292,7 @@ public class CustomerPackForPayment extends AppCompatActivity implements Package
             grandTotal = skyLightPackage.getGrandTotal();
             double packageAmount=skyLightPackage.getDailyAmount();
             account = skyLightPackage.getAccount();
-            long acctID=account.getAcctID();
+            long acctID=account.getSkyLightAcctNo();
             String status=skyLightPackage.getPackageStatus();
             customer = skyLightPackage.getCustomer();
             long customerID=customer.getCusUID();

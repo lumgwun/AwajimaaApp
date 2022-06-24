@@ -1264,12 +1264,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        try {
-            dbHelper.insertUser112(profileID1, customerID, "Ezekiel", "Gwun-orene", "07038843102", "lumgwun1@gmail.com", "25/04/1983", "male", "Ilabuchi", "Rivers", "", "19/04/2022","Lumgwun", "@Awajima1", "","","SuperAdmin");
 
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
 
         ArrayList<Profile> profiles = new ArrayList<>();
         ArrayList<CustomerManager> tellers = new ArrayList<>();
@@ -1552,35 +1547,62 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                     customer.addCusAccountManager(managerProfileID, superSurname, superFirstName, "", selectedOffice);
                     dbHelper.openDataBase();
-                    if (cusLatLng != null) {
+
+                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                        dbHelper.openDataBase();
+                        dbHelper.insertCustomer11(profileID1, customerID, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedState, "", joinedDate, uUserName, uPassword, mImageUri, "Customer");
+
+
+
+                    }
+
+                    /*if (cusLatLng != null) {
                         try {
                             dbHelper.openDataBase();
-                            dbHelper.insertCustomer11(profileID1, customerID, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedState, "", joinedDate, uUserName, uPassword, mImageUri, "Customer");
 
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                    }*/
+                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                        dbHelper.openDataBase();
+                        dbHelper.insertStandingOrderAcct(profileID2, customerID1, soAccountNumber, accountName, 0.00);
+
                     }
-                    dbHelper.insertStandingOrderAcct(profileID2, customerID1, soAccountNumber, accountName, 0.00);
-                    try {
-                        dbHelper.insertBirthDay3(birthday, dateOfBirth);
+
+                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                        dbHelper.openDataBase();
                         dbHelper.addReminder(importantDates2);
 
-                    } catch (SQLiteException e) {
-                        System.out.println("Oops!");
+
                     }
 
 
-                    if (cusLatLng != null) {
-                        try {
-                            dbHelper.openDataBase();
-                            dbHelper.insertCustomerLocation(customerID, this.cusLatLng);
+                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                        dbHelper.openDataBase();
+                        dbHelper.insertBirthDay3(birthday, dateOfBirth);
 
 
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                    }
+
+
+
+                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                        dbHelper.openDataBase();
+                        if (cusLatLng != null) {
+                            try {
+                                dbHelper.openDataBase();
+                                dbHelper.insertCustomerLocation(customerID, this.cusLatLng);
+
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
+
+
                     }
+
                     try {
 
                         dbHelper.openDataBase();
@@ -1590,51 +1612,43 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-
-                    try {
+                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                         dbHelper.openDataBase();
                         dbHelper.insertAccount(profileID1, customerID, skylightMFb, accountName, virtualAccountNumber, accountBalance, accountTypeStr);
 
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        dbHelper.openDataBase();
-
-                        dbHelper.insertUser112(profileID1, customerID, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedState, "", joinedDate, uUserName, uPassword, "", "New", selectedUserType);
-
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
 
 
-                    try {
+                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                         dbHelper.openDataBase();
-
                         dbHelper.saveNewProfile(newUserProfileL);
 
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
+
 
                     if (selectedUserType != null) {
                         if (selectedUserType.equalsIgnoreCase("Customer")) {
                             String timelineDetailCus = uSurname + "," + uFirstName + "was added as a Customer" + "by" + "Skylight Alpha" + "@" + timeLineTime;
                             String tittleTCus = "Customer Sign Up Alert!";
                             String timelineDetailsTMyCus = "You added" + uSurname + "," + uFirstName + "as a Customer" + "on" + timeLineTime;
-                            try {
+
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
                                 dbHelper.insertTimeLine(tittleTCus, timelineDetailCus, timeLineTime, mCurrentLocation);
 
 
-                            } catch (Exception e) {
-                                e.printStackTrace();
+
                             }
-                            dbHelper.insertRole(profileID1, "Customer", uUserName, uPassword, uPhoneNumber);
+
+
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                dbHelper.openDataBase();
+                                dbHelper.insertRole(profileID1, "Customer", uUserName, uPassword, uPhoneNumber);
+
+                            }
+
+
 
                         }
                         if (selectedUserType.equalsIgnoreCase("Teller")) {
@@ -1648,26 +1662,45 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                             String tittleTeller = "Teller Sign Up Alert!";
                             String timelineMySelf = "You added" + uSurname + "," + uFirstName + "as a Teller" + "on" + timeLineTime;
                             teller = new CustomerManager(profileID2, uSurname, uFirstName, uPhoneNumber, dateOfBirth, uEmail, uAddress, selectedGender, selectedOffice, selectedState, selectedImage, joinedDate, uUserName, uPassword);
-                            dbHelper.saveNewWorker(profileID1, namesT);
+
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                dbHelper.openDataBase();
+                                dbHelper.saveNewWorker(profileID1, namesT);
+                            }
+
+
                             customerManager2 = new CustomerManager(profileID1, namesT);
                             newUserProfileL.setCustomerManager(customerManager2);
                             superAdminProfile.addTimeLine(tittleTeller, timelineMySelf);
-                            dbHelper.insertTeller(profileID2, uSurname, uFirstName, uPhoneNumber, dateOfBirth, uEmail, uAddress, selectedGender, selectedOffice, selectedState, selectedImage, joinedDate, nIN, uUserName, uPassword);
-                            try {
+
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                dbHelper.openDataBase();
+                                dbHelper.insertTeller(profileID2, uSurname, uFirstName, uPhoneNumber, dateOfBirth, uEmail, uAddress, selectedGender, selectedOffice, selectedState, selectedImage, joinedDate, nIN, uUserName, uPassword);
+
+                            }
+
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
                                 dbHelper.insertTimeLine(tittleTeller, timelineDetailsT, timeLineTime, mCurrentLocation);
 
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
                             }
-                            dbHelper.insertRole(profileID1, "Teller", uUserName, uPassword, uPhoneNumber);
+
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                dbHelper.openDataBase();
+                                dbHelper.insertRole(profileID1, "Teller", uUserName, uPassword, uPhoneNumber);
+
+                            }
+
                         }
                         if (selectedUserType.equalsIgnoreCase("Admin User")) {
                             String managerFullNamesT = superSurname + "," + superFirstName;
                             String namesT = uSurname + "," + uFirstName;
 
-                            dbHelper.saveNewWorker(profileID1, namesT);
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                dbHelper.openDataBase();
+                                dbHelper.saveNewWorker(profileID1, namesT);
+                            }
+
 
                             adminUser2 = new AdminUser(profileID1, namesT);
                             newUserProfileL.setAdminUser(adminUser2);
@@ -1678,38 +1711,65 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                             String timelineDetMe = "You added" + uSurname + "," + uFirstName + "as an Admin User" + "on" + timeLineTime;
                             superAdminProfile.addTimeLine(tittleAdmin, timelineDetMe);
                             adminUser = new AdminUser(profileID2, uSurname, uFirstName, uPhoneNumber, dateOfBirth, uEmail, uAddress, selectedGender, selectedOffice, selectedState, selectedImage, joinedDate, uUserName, uPassword);
-                            try {
+
+
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
                                 dbHelper.insertTimeLine(tittleAdmin, timelineDAd, timeLineTime, mCurrentLocation);
 
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
                             }
-                            dbHelper.saveNewWorker(profileID1, namesT);
 
-                            try {
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                dbHelper.openDataBase();
+                                dbHelper.saveNewWorker(profileID1, namesT);
+                            }
+
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                dbHelper.openDataBase();
                                 dbHelper.insertAdminUser(profileID2, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedOffice, joinedDate, uUserName, uPassword, nIN, selectedState, selectedImage, "new");
 
-                            } catch (SQLiteException e) {
-                                System.out.println("Oops!");
                             }
-                            dbHelper.insertRole(profileID1, "AdminUser", uUserName, uPassword, uPhoneNumber);
+
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                dbHelper.openDataBase();
+                                dbHelper.insertRole(profileID1, "AdminUser", uUserName, uPassword, uPhoneNumber);
+
+                            }
+
+
                         }
                         if (selectedUserType.equalsIgnoreCase("Accountant")) {
                             String timelineDAd = uSurname + "," + uFirstName + "was added as an Accountant" + "by" + "Skylight Alpha" + "@" + timeLineTime;
                             String tittleAcct = "Account Sign Up Alert!";
                             String superAcctantNames = superSurname + "," + superFirstName;
-                            dbHelper.saveNewWorker(profileID1, superAcctantNames);
+
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                dbHelper.openDataBase();
+                                dbHelper.saveNewWorker(profileID1, superAcctantNames);
+                            }
+
+
+
+
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                dbHelper.openDataBase();
+                                dbHelper.insertRole(profileID1, "Accountant", uUserName, uPassword, uPhoneNumber);
+
+                            }
+
+
                             String timelineDetAcct = "You added" + uSurname + "," + uFirstName + "as an Admin User" + "on" + timeLineTime;
                             superAdminProfile.addTimeLine(tittleAcct, timelineDetAcct);
-                            dbHelper.insertRole(profileID1, "Accountant", uUserName, uPassword, uPhoneNumber);
                         }
 
                         if (selectedUserType.equalsIgnoreCase("Super Admin")) {
                             String managerFullNamesT = superSurname + "," + superFirstName;
                             String namesT = uSurname + "," + uFirstName;
-                            dbHelper.saveNewWorker(profileID1, namesT);
+
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                dbHelper.openDataBase();
+                                dbHelper.saveNewWorker(profileID1, namesT);
+                            }
 
                             String tittleT = "Super Admin Sign Up Alert!";
                             superAdmin = new UserSuperAdmin(namesT);
@@ -1722,14 +1782,20 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                             if (superAdmin != null) {
                                 superAdmin.addTimeLine(tittleT1, timelineDetailsT11);
                             }
-                            try {
 
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                dbHelper.openDataBase();
                                 dbHelper.insertSuperAdmin(profileID2, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedOffice, uUserName, uPassword, selectedImage);
 
-                            } catch (SQLiteException e) {
-                                System.out.println("Oops!");
                             }
-                            dbHelper.insertRole(profileID1, "SuperAdmin", uUserName, uPassword, uPhoneNumber);
+
+
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                dbHelper.openDataBase();
+                                dbHelper.insertRole(profileID1, "SuperAdmin", uUserName, uPassword, uPhoneNumber);
+
+                            }
+
 
                             superAdminProfile.addTimeLine(tittleSuper, timelineDetailsTMe);
 
@@ -1737,7 +1803,12 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                         if (selectedUserType.equalsIgnoreCase("Support Manager")) {
                             String managerFullNamesT = superSurname + "," + superFirstName;
                             String namesT = uSurname + "," + uFirstName;
-                            dbHelper.saveNewWorker(profileID1, namesT);
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                dbHelper.openDataBase();
+                                dbHelper.saveNewWorker(profileID1, namesT);
+                            }
+
+
 
                             String tittleT = "Support Manager Sign Up Alert!";
 
@@ -1745,12 +1816,14 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                             String timelineDetailsSuport = uSurname + "," + uFirstName + "was added as a Support Manager" + "by" + managerFullNames + "@" + timeLineTime;
                             String tittleTSupport = "Support Manager Sign Up Alert!";
                             String timelineDetailsTme = "You added" + uSurname + "," + uFirstName + "as a Support Manager" + "on" + timeLineTime;
-                            try {
+
+
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                dbHelper.openDataBase();
                                 dbHelper.insertRole(profileID1, "SupportManager", uUserName, uPassword, uPhoneNumber);
 
-                            } catch (SQLiteException e) {
-                                System.out.println("Oops!");
                             }
+
 
                             if (superAdminProfile != null) {
                                 superAdminProfile.addTimeLine(tittleTSupport, timelineDetailsTme);

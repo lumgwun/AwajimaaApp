@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 8,
-    "identityHash": "be9b154b40107c1361169447e7d1cba5",
+    "identityHash": "4d2cdc18494172d23e95b5aa2c34825a",
     "entities": [
       {
         "tableName": "RoomProfileTable",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`profile_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `P_surname` TEXT, `P_first_name` TEXT, `p_phone` TEXT, `P_email` TEXT, `P_dob` TEXT, `P_gender` TEXT, `P_street` TEXT, `p_office` TEXT, `p_join_date` TEXT, `p_state` TEXT, `p_role` TEXT, `p_next_of_kin` TEXT, `p_username` TEXT, `p_password` TEXT, `p_sponsor` INTEGER NOT NULL, `cus_id` INTEGER NOT NULL, `p_status` TEXT, `picture_uri` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`profile_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `P_surname` TEXT, `P_first_name` TEXT, `p_phone` TEXT, `P_email` TEXT, `P_dob` TEXT, `P_gender` TEXT, `P_street` TEXT, `p_office` TEXT, `p_join_date` TEXT, `p_state` TEXT, `p_role` TEXT, `p_next_of_kin` TEXT, `p_username` TEXT, `p_password` TEXT, `p_sponsor` INTEGER NOT NULL, `customer_ID_Foreign_key` INTEGER NOT NULL, `profID_For_keyP` INTEGER NOT NULL, `prof_ID_FkeyPassW` INTEGER NOT NULL, `p_status` TEXT, `picture_uri` TEXT)",
         "fields": [
           {
             "fieldPath": "pID",
@@ -106,7 +106,19 @@
           },
           {
             "fieldPath": "profCusID",
-            "columnName": "cus_id",
+            "columnName": "customer_ID_Foreign_key",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "profPixID",
+            "columnName": "profID_For_keyP",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "profPassID",
+            "columnName": "prof_ID_FkeyPassW",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -136,7 +148,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'be9b154b40107c1361169447e7d1cba5')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4d2cdc18494172d23e95b5aa2c34825a')"
     ]
   }
 }

@@ -200,7 +200,7 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
 
         }
         if(adminBalance !=null){
-            accountN=adminBalance.getAcctID();
+            accountN=adminBalance.getSkyLightAcctNo();
 
         }
         if(accountBalance>0){

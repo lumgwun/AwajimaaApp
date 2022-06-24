@@ -25,6 +25,7 @@ import java.util.List;
 
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
+import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 import static java.lang.String.valueOf;
 
@@ -45,14 +46,14 @@ public class SkyLightPackage extends CustomerDailyReport implements Parcelable, 
     public static final String PACKAGE_CODE = "package_Code";
     public static final String PACKAGE_EXPECTED_VALUE = "package_expected_amount";
     public static final String PACKAGE_ITEM = "package_item";
-    public static final String PACKAGE_FKEY = "package_FK";
+    public static final String PACKAGE_PROFILE_ID_FOREIGN = "profile_ID_Foreign";
+    public static final String PACKAGE_CUSTOMER_ID_FOREIGN = "package_cus_ID_Foreign";
 
 
-
-    public static final String CREATE_PACKAGE_TABLE = "CREATE TABLE IF NOT EXISTS " + PACKAGE_TABLE + " (" + PACKAGE_ID + " INTEGER  , " + PROFILE_ID + " INTEGER NOT NULL, " + CUSTOMER_ID + " INTEGER NOT NULL, " +
-            REPORT_NUMBER + " INTEGER , " + PACKAGE_NAME + " TEXT, " + PACKAGE_TYPE + " TEXT, " + PACKAGE_START_DATE + " TEXT, " + PACKAGE_DURATION + " TEXT, " + PACKAGE_END_DATE + " TEXT, " +
+    public static final String CREATE_PACKAGE_TABLE = "CREATE TABLE IF NOT EXISTS " + PACKAGE_TABLE + " (" + PACKAGE_ID + " INTEGER  , " + PACKAGE_PROFILE_ID_FOREIGN + " INTEGER NOT NULL, " + PACKAGE_CUSTOMER_ID_FOREIGN + " INTEGER NOT NULL, " +
+            REPORT_ID + " INTEGER , " + PACKAGE_NAME + " TEXT, " + PACKAGE_TYPE + " TEXT, " + PACKAGE_START_DATE + " TEXT, " + PACKAGE_DURATION + " TEXT, " + PACKAGE_END_DATE + " TEXT, " +
             PACKAGE_VALUE + " TEXT, " + PACKAGE_EXPECTED_VALUE + " TEXT, " + PACKAGE_BALANCE + " TEXT, " + PACKAGE_STATUS + " TEXT, " + PACKAGE_CODE + " TEXT, " + PACKAGE_ITEM + " TEXT, " +
-            "PRIMARY KEY("  + PACKAGE_ID + "),"+ "FOREIGN KEY(" + CUSTOMER_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+            "PRIMARY KEY("  + PACKAGE_ID + "),"+ "FOREIGN KEY(" + PACKAGE_PROFILE_ID_FOREIGN + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + PACKAGE_CUSTOMER_ID_FOREIGN + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
     private static int count;
 
 

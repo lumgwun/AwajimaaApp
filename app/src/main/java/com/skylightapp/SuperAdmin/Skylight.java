@@ -144,10 +144,16 @@ public class Skylight {
         customers.add(customer);
 
     }
+    public void addTimeLine(int id,String tittle,String timelineDetails) {
+        timeLines= new ArrayList<>();
+        String history = "History" + (timeLines.size() + 1);
+        TimeLine timeLine = new TimeLine(id, tittle,timelineDetails);
+        timeLines.add(timeLine);
+    }
     public void addTimeLine(String tittle,String timelineDetails) {
         timeLines= new ArrayList<>();
         String history = "History" + (timeLines.size() + 1);
-        TimeLine timeLine = new TimeLine(tittle,timelineDetails);
+        TimeLine timeLine = new TimeLine( tittle,timelineDetails);
         timeLines.add(timeLine);
     }
     public void addTransaction(long transactionId, String surname, String firstName, String customerPhoneNumber, double amount,String accountNumber,String description,String date,String type) {

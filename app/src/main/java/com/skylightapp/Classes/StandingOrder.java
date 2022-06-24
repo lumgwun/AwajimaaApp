@@ -6,6 +6,8 @@ import androidx.room.PrimaryKey;
 
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
+import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
+import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 @Entity(tableName = StandingOrder.STANDING_ORDER_TABLE)
 public class StandingOrder extends Account {
@@ -21,10 +23,13 @@ public class StandingOrder extends Account {
     public static final String SO_ACCT_NO = "SO_Acct_no";
     public static final String SO_START_DATE = "SO_Start_Date";
     public static final String SO_END_DATE = "SO_End_Date";
+    public static final String SO_CUS_ID = "SO_Cus_ID";
+    public static final String SO_PROF_ID = "SO_End_Date";
+    public static final String SO_APPROF_DATE = "SO_APProval_Date";
 
     public static final String CREATE_SO_TABLE = "CREATE TABLE IF NOT EXISTS " + STANDING_ORDER_TABLE + " (" + SO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + SO_DAILY_AMOUNT + " DOUBLE, " +
-            CUSTOMER_ID + " INTEGER NOT NULL, " + SO_EXPECTED_AMOUNT + " DOUBLE , " + SO_RECEIVED_AMOUNT + " DOUBLE , " + SO_TOTAL_DAYS + " DOUBLE , " + SO_AMOUNT_DIFF + " DOUBLE , " +
-            SO_DAYS_REMAINING + " DOUBLE , " + SO_STATUS + " TEXT , " + SO_ACCT_NO + " INTEGER , " + SO_START_DATE + " TEXT, " + SO_END_DATE + " TEXT, " + "FOREIGN KEY(" + CUSTOMER_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+            SO_CUS_ID + " INTEGER , " + SO_EXPECTED_AMOUNT + " DOUBLE , " + SO_RECEIVED_AMOUNT + " DOUBLE , " + SO_TOTAL_DAYS + " DOUBLE , " + SO_AMOUNT_DIFF + " DOUBLE , " +
+            SO_DAYS_REMAINING + " DOUBLE , " + SO_STATUS + " TEXT , " + SO_ACCT_NO + " INTEGER , " + SO_START_DATE + " TEXT, " + SO_END_DATE + " TEXT, "+ SO_APPROF_DATE + " TEXT, " + SO_PROF_ID + " INTEGER, " +"FOREIGN KEY(" + SO_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + SO_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
 
     @PrimaryKey(autoGenerate = true)

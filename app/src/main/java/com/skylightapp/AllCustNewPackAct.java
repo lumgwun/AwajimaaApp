@@ -64,7 +64,6 @@ import com.skylightapp.Classes.PaymentCode;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.Tellers.MyCusNewPackAct;
 import com.skylightapp.Tellers.TellerCash;
 import com.skylightapp.Tellers.TellerHomeChoices;
 
@@ -747,7 +746,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
             account1=customer.getCusAccount();
             if(account1 !=null){
                 packageAccountBalance=account1.getAccountBalance()+ totalAmountCalc;
-                acctID=account1.getAcctID();
+                acctID=account1.getSkyLightAcctNo();
 
             }
             transactionID="SkyLight/"+packageID;

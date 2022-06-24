@@ -55,10 +55,10 @@ public class BorrowingAdapter extends RecyclerView.Adapter<BorrowingAdapter.Recy
         Loan recyclerData = loanArrayList.get(position);
         holder.amount.setText(String.valueOf(recyclerData.getAmount1()));
         holder.date.setText(recyclerData.getDate());
-        holder.bank.setText(String.valueOf(recyclerData.getBank()));
+        holder.bank.setText(String.valueOf(recyclerData.getBankName()));
         holder.name.setText(String.valueOf(recyclerData.getAccountName()));
         holder.status.setText(String.valueOf(recyclerData.getStatus()));
-        holder.acctNo.setText(String.valueOf(recyclerData.getAcctID()));
+        holder.acctNo.setText(String.valueOf(recyclerData.getSkyLightAcctNo()));
         holder.acctBalance.setText(String.valueOf(recyclerData.getAccountBalance()));
 
 

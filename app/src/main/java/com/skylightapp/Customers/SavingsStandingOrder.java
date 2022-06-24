@@ -39,10 +39,7 @@ import com.skylightapp.Database.DBHelper;
 import com.skylightapp.PayNowActivity;
 import com.skylightapp.R;
 import com.skylightapp.SMSAct;
-import com.skylightapp.SignUpAct;
 import com.skylightapp.Transactions.OurConfig;
-import com.twilio.Twilio;
-import com.twilio.rest.api.v2010.account.Message;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -297,7 +294,7 @@ public class SavingsStandingOrder extends AppCompatActivity {
             uSurname=customer.getCusSurname();
             account = customer.getCusAccount();
             if(account !=null){
-                acctID = account.getAcctID();
+                acctID = account.getSkyLightAcctNo();
             }
             customerID = customer.getCusUID();
 
@@ -859,7 +856,7 @@ public class SavingsStandingOrder extends AppCompatActivity {
                     managerFirstName=userProfile.getProfileFirstName();
                     uFirstName= customer.getCusFirstName();
                     profileID=userProfile.getPID();
-                    customer=userProfile.getTimelineCustomer();
+                    customer=userProfile.getProfileCus();
                     if(customer !=null){
                         customerName=customer.getCusSurname()+""+customer.getCusFirstName();
                         customerPhoneNo=customer.getCusPhoneNumber();
@@ -874,7 +871,7 @@ public class SavingsStandingOrder extends AppCompatActivity {
                         customerEmail=customer.getCusEmailAddress();
                         //account = customer.getStandingOrderAcct();
                     }
-                    customer=userProfile.getTimelineCustomer();
+                    customer=userProfile.getProfileCus();
 
                 }
                 applicationDb = new DBHelper(SavingsStandingOrder.this);

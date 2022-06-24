@@ -426,7 +426,7 @@ public class OldPackCusAct extends AppCompatActivity {
                 account = selectedPackage.getAccount();
                 if (account != null) {
                     newBalance = account.getAccountBalance() + totalAmountSum;
-                    acctID = account1.getAcctID();
+                    acctID = account1.getSkyLightAcctNo();
 
 
                 }

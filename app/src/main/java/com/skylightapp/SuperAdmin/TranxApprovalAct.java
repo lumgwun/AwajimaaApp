@@ -143,7 +143,7 @@ public class TranxApprovalAct extends AppCompatActivity {
             account=loan.getAccount();
             loanCode=loan.getLoanCode();
             loanProfile=loan.getProfile();
-            acctNo=loan.getAcctID();
+            acctNo=loan.getSkyLightAcctNo();
             dbLoanCode=dbHelper.getLoanCode(loanID);
         }
 
@@ -395,7 +395,7 @@ public class TranxApprovalAct extends AppCompatActivity {
                             if(fromType.equalsIgnoreCase("EWallet")){
                                 if(account !=null){
                                     e_WalletBalance=account.getAccountBalance();
-                                    acctNo=account.getAcctID();
+                                    acctNo=account.getSkyLightAcctNo();
 
 
                                 }
@@ -410,7 +410,7 @@ public class TranxApprovalAct extends AppCompatActivity {
                             if(fromType.equalsIgnoreCase("StandingOrderAcct")){
                                 if(standingOrderAcct !=null){
                                     sOBalance=standingOrderAcct.getSoAcctBalance();
-                                    soAcctID=standingOrderAcct.getAcctID();
+                                    soAcctID=standingOrderAcct.getSkyLightAcctNo();
 
                                 }
                                 if(sOBalance>0.00){

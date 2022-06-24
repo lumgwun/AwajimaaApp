@@ -34,7 +34,6 @@ import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
 import com.twilio.Twilio;
 
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_SURNAME;
 import static com.skylightapp.Classes.CustomerDailyReport.REPORT_CODE;
 import static com.skylightapp.Classes.CustomerDailyReport.REPORT_DATE;
-import static com.skylightapp.Classes.CustomerDailyReport.REPORT_NUMBER;
+import static com.skylightapp.Classes.CustomerDailyReport.REPORT_ID;
 import static com.skylightapp.Classes.CustomerDailyReport.REPORT_NUMBER_OF_DAYS;
 import static com.skylightapp.Classes.CustomerDailyReport.REPORT_TOTAL;
 import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ID;
@@ -114,7 +113,7 @@ public class CustomerSmsActivity extends AppCompatActivity {
             cusSurname= extras.getString(CUSTOMER_SURNAME);
             cusNames= cusSurname+","+ cusSurname;
             packageID= extras.getLong(PACKAGE_ID);
-            savingsID= extras.getLong(REPORT_NUMBER);
+            savingsID= extras.getLong(REPORT_ID);
             totalAmount= extras.getDouble(REPORT_TOTAL);
             date= extras.getString(REPORT_DATE);
             days= extras.getString(REPORT_NUMBER_OF_DAYS);

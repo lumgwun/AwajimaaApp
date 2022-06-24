@@ -57,7 +57,9 @@ public class OrgRegActivity extends AppCompatActivity {
     private Gson gson;
     private String json,phoneNo, joinedDate,propertyCapacity,propertyTittle,propertyDescription;
     private Profile userProfile;
-    private long profileID,businessID,bizAcctID;
+    private long profileID;
+    private long businessID;
+    private int bizAcctID;
     AppCompatEditText orgBrandName,orgName,orgAddress,orgEmail,orgPhoneNo,orgRegNo;
     AppCompatSpinner spnLga,spnPriceDuration, spnRegType,spnMode,spnOrgType;
     Button mapLocation, btnLogo, btnRegister;

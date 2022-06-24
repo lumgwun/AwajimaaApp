@@ -20,11 +20,12 @@ public class EmergReportNext implements Parcelable, Serializable {
     public static final String EMERGENCY_NEXT_LAT = "emerg_next_lat";
     public static final String EMERGENCY_NEXT_LNG = "emerg_next_lng";
     public static final String EMERGENCY_NEXT_LATLNG = "emerg_next_LatLng";
+    public static final String EMERGENCY_NEXT_REPORT_ID = "emerg_next_RID";
     public static final String EMERGENCY_NEXT_REPORT_TABLE = "emeg_next_table";
 
-    public static final String CREATE_EMERGENCY_NEXT_REPORT_TABLE = "CREATE TABLE IF NOT EXISTS " + EMERGENCY_NEXT_REPORT_TABLE + " (" + EMERGENCY_NEXT_LOCID + " LONG , " + EMERGENCY_LOCID + " LONG , " +
+    public static final String CREATE_EMERGENCY_NEXT_REPORT_TABLE = "CREATE TABLE IF NOT EXISTS " + EMERGENCY_NEXT_REPORT_TABLE + " (" + EMERGENCY_NEXT_LOCID + " INTERGER , " + EMERGENCY_NEXT_REPORT_ID + " INTEGER , " +
             EMERGENCY_NEXT_LOCTIME + " TEXT , " + EMERGENCY_NEXT_LAT + " DOUBLE , " + EMERGENCY_NEXT_LNG + " DOUBLE , " + EMERGENCY_NEXT_LATLNG + " DOUBLE , "  + "PRIMARY KEY(" + EMERGENCY_NEXT_LOCID + "), " +
-            "FOREIGN KEY(" + EMERGENCY_LOCID + ") REFERENCES " + EMERGENCY_REPORT_TABLE + "(" + EMERGENCY_LOCID + "))";
+            "FOREIGN KEY(" + EMERGENCY_NEXT_REPORT_ID + ") REFERENCES " + EMERGENCY_REPORT_TABLE + "(" + EMERGENCY_LOCID + "))";
 
 
     @PrimaryKey(autoGenerate = true)

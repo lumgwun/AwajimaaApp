@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,7 +30,6 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.preference.PreferenceManager;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -71,6 +71,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static com.skylightapp.Classes.Profile.PROFILE_PHONE;
 import static com.skylightapp.FlutterWavePayments.OTPFragment.EXTRA_OTP;
@@ -132,10 +133,11 @@ public class TellerForCusLoanAct extends AppCompatActivity {
     int length;
     int myBorrowingCustomerIndex,allBorrowingCustomerIndex,code;
     Intent intent;
-    int OTP,index_no;
+    int OTP,index_no, grantingID,tXID, loanOTP;
     ProgressDialog dialog;
-    long accountNo,borrowerNo;
+    int accountNo,borrowerNo;
     int customerID;
+    SQLiteDatabase sqLiteDatabase;
     double unAvailableAmount,availableBalance;
     private  Bundle paymentBundle,loanBundle;
     private static final String PREF_NAME = "skylight";
@@ -172,10 +174,12 @@ public class TellerForCusLoanAct extends AppCompatActivity {
         mySelectedCustomer=new Customer();
         loanBundle = new Bundle();
         final Date[] readDate = {null};
-        borrowingID = ran.nextInt((int) (Math.random() * 99) + 11+19);
-        long tXID = ran.nextInt((int) (Math.random() * 9) + 11);
+        borrowingID = ran.nextInt((int) (Math.random() * 190) + 11+19);
+        tXID = ran.nextInt((int) (Math.random() * 139) + 11);
+        loanOTP = ThreadLocalRandom.current().nextInt(120, 1631);
+        grantingID = ThreadLocalRandom.current().nextInt(1025, 10410);
         borrowingId= "SKY_Loan/"+tXID;
-        code=((1 + ran.nextInt(2)) * 10000 + ran.nextInt(10020));
+        code=((1 + ran.nextInt(2)) * 105 + ran.nextInt(10020));
         codeSms="Your Skylight New Loan confirmation code is:"+code;
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
@@ -197,7 +201,7 @@ public class TellerForCusLoanAct extends AppCompatActivity {
         if(paymentBundle !=null){
             mySelectedCustomer=paymentBundle.getParcelable("Customer");
             account=paymentBundle.getParcelable("Account");
-            customerId=account.getAcctID();
+            customerId=account.getSkyLightAcctNo();
             spnFromAllCustomer.setVisibility(View.GONE);
             spnMyCustomer.setVisibility(View.GONE);
 
@@ -205,9 +209,12 @@ public class TellerForCusLoanAct extends AppCompatActivity {
         else {
             if(userProfile !=null) {
                 profileID = userProfile.getPID();
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    dbHelper.openDataBase();
+                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    customers = dbHelper.getCustomerFromCurrentProfile(profileID);
 
-
-                customers = dbHelper.getCustomerFromCurrentProfile(profileID);
+                }
 
                 myCustomerAdapter = new CusSpinnerAdapter(this,  customers);
                 //myCustomerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -231,7 +238,12 @@ public class TellerForCusLoanAct extends AppCompatActivity {
                     System.out.println("Oops!");
                 }
             }
-            AllCustomers=dbHelper.getAllCustomers11();
+            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                dbHelper.openDataBase();
+                sqLiteDatabase = dbHelper.getWritableDatabase();
+                AllCustomers=dbHelper.getAllCustomers11();
+
+            }
 
             allCustomerAdapter = new ArrayAdapter<Customer>(this, android.R.layout.simple_spinner_item, AllCustomers);
             allCustomerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -440,7 +452,7 @@ public class TellerForCusLoanAct extends AppCompatActivity {
                     bank_CODE.equals("057");
                     if (customer != null) {
                         dob = customer.getCusDob();
-                        @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                        @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
 
                         try {
@@ -676,16 +688,16 @@ public class TellerForCusLoanAct extends AppCompatActivity {
 
     private void confirmBorrowing() {
 
-        code=((1 + ran.nextInt(2)) * 10000 + ran.nextInt(10000));
+        code=((1 + ran.nextInt(2)) * 10010 + ran.nextInt(10000));
         Calendar calendar = Calendar.getInstance();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
         String borrowingDate = mdformat.format(calendar.getTime());
 
         if(acctOfCustomer !=null){
             accountBalance = acctOfCustomer.getAccountBalance();
             unAvailableAmount = 0.033 * accountBalance;
             availableBalance = accountBalance-unAvailableAmount;
-            accountNo = acctOfCustomer.getAcctID();
+            accountNo = acctOfCustomer.getSkyLightAcctNo();
             customerNames = acctOfCustomer.getAccountName();
 
         }
@@ -868,7 +880,7 @@ public class TellerForCusLoanAct extends AppCompatActivity {
                     bank_CODE.equals("057");
                     if (customer != null) {
                         dob = customer.getCusDob();
-                        @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                        @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
 
                         try {
@@ -878,7 +890,7 @@ public class TellerForCusLoanAct extends AppCompatActivity {
                         }
                         Calendar cal = Calendar.getInstance();
                         cal.setTimeInMillis(readDate[0].getTime());
-                        passCode = String.valueOf(cal.get(Calendar.DAY_OF_MONTH) + cal.get(Calendar.MONTH) + cal.get(Calendar.YEAR));
+                        passCode = String.valueOf(cal.get(Calendar.DAY_OF_MONTH) + cal.get(Calendar.MONTH+1) + cal.get(Calendar.YEAR));
 
                     }
                 }
@@ -1062,7 +1074,7 @@ public class TellerForCusLoanAct extends AppCompatActivity {
 
         try {
             amountToBorrow = Double.parseDouble(edtBorrowableAmount.getText().toString());
-            borrowerNo = Long.parseLong(Objects.requireNonNull(acct_No.getText()).toString());
+            bankAcctNo = acct_No.getText().toString();
             hasNum = true;
 
         } catch (Exception e) {
@@ -1107,14 +1119,21 @@ public class TellerForCusLoanAct extends AppCompatActivity {
                         Loan loan = new Loan();
                         Transaction.TRANSACTION_TYPE type = Transaction.TRANSACTION_TYPE.BORROWING;
                         applicationDb.insertTimeLine(title,details,borrowingDate,location);
-                        applicationDb.overwriteAccount(userProfile, acctOfCustomer);
-                        /*applicationDb.insertNewLoan(profileID, customerID, borrowingID, amountToBorrow, borrowingDate,
-                                bankName, borrowerNo,loanAcctType,mySelectedCustomer, borrower,
-                                "", "");*/
+                        loanOTP = ThreadLocalRandom.current().nextInt(120, 1631);
+                        grantingID = ThreadLocalRandom.current().nextInt(1025, 10410);
+                        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                            dbHelper.openDataBase();
+                            sqLiteDatabase = dbHelper.getWritableDatabase();
+                            //applicationDb.overwriteAccount(userProfile, acctOfCustomer);
+
+                        }
+                        applicationDb.insertNewLoan(profileID, customerID, borrowingID, amountToBorrow, borrowingDate,
+                                bankName,bankAcctNo,borrower,accountNo, loanAcctType, code,0.00,"pending");
+
 
                         Toast.makeText(this, "Borrowing of NGN" + String.format(Locale.getDefault(), "%.2f", amountToBorrow) + " was successfully submitted for approval", Toast.LENGTH_SHORT).show();
 
-                        applicationDb.saveNewTransaction11(profileID, customerID, accountNo, type,  amountToBorrow, balanceAfterBorrowing,  bankName, borrowerNo, borrower,  borrowingId, borrowingId,"response", borrowingDate);
+                        applicationDb.insertTransaction_Granting(grantingID,profileID, customerID,borrower,amountToBorrow,borrowingDate,bankName, borrower,bankAcctNo, "Loan","","","Borrowing","pending");
 
                     }
                 }
@@ -1314,7 +1333,7 @@ public class TellerForCusLoanAct extends AppCompatActivity {
                         bank_CODE.equals("057");
                         if (customer != null) {
                             dob = customer.getCusDob();
-                            @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                            @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
 
                             try {

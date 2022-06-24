@@ -173,9 +173,9 @@ public class PrefManager {
         editor.apply();
     }
     public void saveBankAccountDetails(Account account) {
-        String bankName = account.getBank();
+        String bankName = account.getBankName();
         String userName=account.getAccountName();
-        int accountNumber =account.getAcctID();
+        int accountNumber =account.getSkyLightAcctNo();
         AccountTypes accountType = (AccountTypes) account.getType();
         String accountBalance = String.valueOf(account.getAccountBalance());
         SharedPreferences sharedPreferences = _context.getSharedPreferences("BankAccountDetails", Context.MODE_PRIVATE);

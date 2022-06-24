@@ -2,6 +2,7 @@ package com.skylightapp.Admins;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -43,7 +44,7 @@ public class LoanApplFragment extends Fragment {
 
 
     DBHelper dbHelper;
-    SharedPreferences userPreferences;
+    SQLiteDatabase sqLiteDatabase;
     Gson gson;
     String json;
     Profile userProfile;
@@ -93,19 +94,25 @@ public class LoanApplFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_loan_admin);
         loanList = new ArrayList<Loan>();
         mAdapter = new LoanAdapter(getContext(), loanList);
-        /*SharedPreferences.Editor prefsEditor = userPreferences.edit();
-        json = gson.toJson(userProfile);
-        prefsEditor.putString("LastProfileUsed", json).apply();*/
 
         dbHelper = new DBHelper(getContext());
-        try {
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
 
-            loanList = dbHelper.getAllLoansAdmin();
+            dbHelper.openDataBase();
+            try {
+
+                loanList = dbHelper.getAllLoansAdmin();
 
 
-        } catch (SQLiteException e) {
-            System.out.println("Oops!");
+            } catch (SQLiteException e) {
+                System.out.println("Oops!");
+            }
+
+
+
         }
+
 
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -162,8 +169,24 @@ public class LoanApplFragment extends Fragment {
                 simpleSwitch.setVisibility(View.INVISIBLE);
 
                 Toast.makeText(getContext(), "Loan approval :" + loanStatusSwitch, Toast.LENGTH_LONG).show();
-                DBHelper applicationDb = new DBHelper(getContext());
-                applicationDb.overwriteLoan(profile,customer,account,loan);
+                dbHelper = new DBHelper(getContext());
+                sqLiteDatabase = dbHelper.getWritableDatabase();
+
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+
+                    dbHelper.openDataBase();
+                    try {
+
+                        dbHelper.overwriteLoan1(profile,customer,loan);
+
+
+                    } catch (SQLiteException e) {
+                        System.out.println("Oops!");
+                    }
+
+
+
+                }
 
 
             }
@@ -188,7 +211,6 @@ public class LoanApplFragment extends Fragment {
         public void onBindViewHolder(MyViewHolder holder, final int position) {
             final Loan loan = loans.get(position);
             final Profile profile = loan.getProfile();
-            final Account account = loan.getAccount();
             final Customer customer = loan.getCustomer();
             holder.profileName.setText(MessageFormat.format("{0},{1}", profile.getProfileLastName(), profile.getProfileFirstName()));
             holder.customerName.setText("Customer Name:"+customer.getCusSurname()+""+customer.getCusFirstName());

@@ -85,6 +85,9 @@ public class Profile extends User implements Parcelable, Serializable, BaseColum
     @Ignore
     public static final String PASSWORD = "p_password";
     @Ignore
+    public static final String PASSWORD_ID = "password_Id";
+
+    @Ignore
     public static final String PASSWORD_TABLE = "password_table";
     @Ignore
     public static final String PROFILE_NIN = "profile_NIN";
@@ -94,6 +97,61 @@ public class Profile extends User implements Parcelable, Serializable, BaseColum
     public static final String PROFILE_OFFICE = "p_office";
     @Ignore
     public static final String PROFILE_PIC_ID = "picture_id";
+    @Ignore
+    public static final String PROFILE_CUS_ID_KEY = "customer_ID_Foreign_key";
+
+    @Ignore
+    public static final String CUS_ID_PIX_KEY = "cus_ID_Pix_key";
+    @Ignore
+    public static final String CUS_ID_PASS_KEY = "cus_ID_Pass_key";
+
+    @Ignore
+    public static final String PROF_SPONSOR_ID = "prof_SponsorID";
+
+    @Ignore
+    public static final String PROFID_FOREIGN_KEY_PIX = "profID_For_keyP";
+
+
+    @Ignore
+    public static final String PROF_SPONSOR_KEY = "prof_Sponsor_Key";
+    @Ignore
+    public static final String SPONSOR_TABLE = "sponsor_Table";
+    @Ignore
+    public static final String SPONSOR_TABLE_ID = "sponsor_TableID";
+
+    @Ignore
+    public static final String SPONSOR_TABLE_CUS_ID = "sponsor_TableCus_ID";
+
+    @Ignore
+    public static final String SPONSOR_TABLE_PROF_ID = "sponsor_Table_Prof_ID";
+
+    @Ignore
+    public static final String SPONSOR_TABLE_PHONE = "sponsor_Table_Phone";
+
+    @Ignore
+    public static final String SPONSOR_TABLE_EMAIL = "sponsor_Table_Email";
+
+
+
+
+    @Ignore
+    public static final String PROF_ID_FOREIGN_KEY_PASSWORD = "prof_ID_FkeyPassW";
+
+    @Ignore
+    public static final String CREATE_PIXTURE_TABLE = "CREATE TABLE " + PICTURE_TABLE + " (" + PROFILE_PIC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PROFID_FOREIGN_KEY_PIX + " INTEGER, " + CUS_ID_PIX_KEY + " INTEGER , " +
+            PICTURE_URI + " TEXT ,"+"FOREIGN KEY(" + PROFID_FOREIGN_KEY_PIX  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + CUS_ID_PIX_KEY + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+    @Ignore
+    public static final String CREATE_PASSWORD_TABLE = "CREATE TABLE IF NOT EXISTS " + PASSWORD_TABLE + " (" + PASSWORD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PROF_ID_FOREIGN_KEY_PASSWORD + " INTEGER, "+
+            PASSWORD + " TEXT , " + CUS_ID_PASS_KEY + " INTEGER , " +"FOREIGN KEY(" + PROF_ID_FOREIGN_KEY_PASSWORD  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +
+            "FOREIGN KEY(" + CUS_ID_PASS_KEY + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+    @Ignore
+    public static final String CREATE_PROFILES_TABLE = "CREATE TABLE " + PROFILES_TABLE + " (" + PROFILE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PROFILE_SURNAME + " TEXT, " + PROFILE_FIRSTNAME + " TEXT, " + PROFILE_PHONE + " TEXT, " + PROFILE_EMAIL + " TEXT, " + PROFILE_DOB + " TEXT, " + PROFILE_GENDER + " TEXT, " +
+            PROFILE_ADDRESS + " TEXT, " + PROFILE_NIN + " TEXT, " + PROFILE_UNIT + " TEXT, " + PROFILE_WARD + " TEXT, " + PROFILE_TOWN + " TEXT, " + PROFILE_STATE + " TEXT, " + PROFILE_COUNTRY + " TEXT, " + PROFILE_OFFICE + " TEXT, " + PROFILE_DATE_JOINED + " TEXT, " + PROFILE_ROLE + " TEXT, " + PROFILE_USERNAME + " TEXT, " + PROFILE_PASSWORD + " TEXT, " + PROFILE_STATUS + " TEXT, " + PROFILE_NEXT_OF_KIN + " TEXT,"+ PROFILE_SPONSOR_ID + " TEXT,"+ PROFILE_CUS_ID_KEY + " INTEGER," + "FOREIGN KEY(" + PROFILE_CUS_ID_KEY + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+
+    @Ignore
+    public static final String CREATE_SPONSOR_TABLE = "CREATE TABLE " + SPONSOR_TABLE + " (" + SPONSOR_TABLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + SPONSOR_TABLE_CUS_ID + " INTEGER, " + SPONSOR_TABLE_PROF_ID + " INTEGER, " + SPONSOR_TABLE_PHONE + " TEXT, " + SPONSOR_TABLE_EMAIL + " TEXT, " + "FOREIGN KEY(" + SPONSOR_TABLE_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+
+
 
 
     @Ignore
@@ -171,8 +229,16 @@ public class Profile extends User implements Parcelable, Serializable, BaseColum
     private int profileSponsorID;
 
 
-    @ColumnInfo(name = CUSTOMER_ID)
+    @ColumnInfo(name = PROFILE_CUS_ID_KEY)
     private int profCusID;
+
+    @ColumnInfo(name = PROFID_FOREIGN_KEY_PIX)
+    private int profPixID;
+
+
+    @ColumnInfo(name = PROF_ID_FOREIGN_KEY_PASSWORD)
+    private int profPassID;
+
 
     @ColumnInfo(name = PROFILE_STATUS)
     private String profileStatus;
@@ -211,11 +277,6 @@ public class Profile extends User implements Parcelable, Serializable, BaseColum
     @TypeConverters
     @ColumnInfo(name = PICTURE_URI)
     private Uri profilePicture;
-
-
-
-
-
 
 
 
@@ -291,16 +352,6 @@ public class Profile extends User implements Parcelable, Serializable, BaseColum
     public ArrayList<Address> getProfileAddresses() { return addresses; }
     @Ignore
     AdminUser adminUser2;
-    @Ignore
-    public static final String CREATE_PIXTURE_TABLE = "CREATE TABLE " + PICTURE_TABLE + " (" + PROFILE_PIC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PROFILE_ID + " TEXT, " + CUSTOMER_ID + " INTEGER , " +
-            PICTURE_URI + " TEXT ,"+"FOREIGN KEY(" + PROFILE_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + CUSTOMER_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
-    @Ignore
-    public static final String CREATE_PASSWORD_TABLE = "CREATE TABLE IF NOT EXISTS " + PASSWORD_TABLE + " (" + PROFILE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            PASSWORD + " TEXT , " + CUSTOMER_ID + " INTEGER , " +
-            "FOREIGN KEY(" + CUSTOMER_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
-    @Ignore
-    public static final String CREATE_PROFILES_TABLE = "CREATE TABLE " + PROFILES_TABLE + " (" + PROFILE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PROFILE_SURNAME + " TEXT, " + PROFILE_FIRSTNAME + " TEXT, " + PROFILE_PHONE + " TEXT, " + PROFILE_EMAIL + " TEXT, " + PROFILE_DOB + " TEXT, " + PROFILE_GENDER + " TEXT, " +
-            PROFILE_ADDRESS + " TEXT, " + PROFILE_NIN + " TEXT, " + PROFILE_UNIT + " TEXT, " + PROFILE_WARD + " TEXT, " + PROFILE_TOWN + " TEXT, " + PROFILE_STATE + " TEXT, " + PROFILE_COUNTRY + " TEXT, " + PROFILE_OFFICE + " TEXT, " + PROFILE_DATE_JOINED + " TEXT, " + PROFILE_ROLE + " TEXT, " + PROFILE_USERNAME + " TEXT, " + PROFILE_PASSWORD + " TEXT, " + PROFILE_STATUS + " TEXT, " + PROFILE_NEXT_OF_KIN + " TEXT,"+ PROFILE_SPONSOR_ID + " TEXT,"+ CUSTOMER_ID + " TEXT," + "FOREIGN KEY(" + CUSTOMER_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
 
     @Ignore
@@ -1117,10 +1168,10 @@ public class Profile extends User implements Parcelable, Serializable, BaseColum
     public ArrayList<TimeLine> getTimeLines() { return timeLineArrayList;
     }
     @Ignore
-    public Customer getTimelineCustomer() { return customer;
+    public Customer getProfileCus() { return customer;
     }
     @Ignore
-    public void setTimelineCustomer(Customer timelineCustomer) { this.customer = timelineCustomer; }
+    public void setProfileCus(Customer timelineCustomer) { this.customer = timelineCustomer; }
 
     @Ignore
     public void setSkyLightPackagesFromDB(ArrayList<SkyLightPackage> skyLightPackages) {
@@ -1206,7 +1257,7 @@ public class Profile extends User implements Parcelable, Serializable, BaseColum
         paymentCodeArrayList.add(paymentCode);
     }
     @Ignore
-    public void addAccount(String accountBank, String accountName, long accountNumber, double accountBalance, AccountTypes accountTypes) {
+    public void addAccount(String accountBank, String accountName, int accountNumber, double accountBalance, AccountTypes accountTypes) {
         accounts= new ArrayList<>();
         String accNo = "A" + (accounts.size() + 1);
         Account account = new Account(accountBank,accountName, accountNumber, accountBalance,accountTypes);
@@ -1541,5 +1592,21 @@ public class Profile extends User implements Parcelable, Serializable, BaseColum
 
     public void setTimelineProfile(Profile timelineProfile) {
         this.profile = timelineProfile;
+    }
+
+    public int getProfPassID() {
+        return profPassID;
+    }
+
+    public void setProfPassID(int profPassID) {
+        this.profPassID = profPassID;
+    }
+
+    public int getProfPixID() {
+        return profPixID;
+    }
+
+    public void setProfPixID(int profPixID) {
+        this.profPixID = profPixID;
     }
 }

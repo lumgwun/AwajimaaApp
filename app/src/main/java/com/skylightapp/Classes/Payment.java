@@ -31,12 +31,14 @@ public class Payment implements Parcelable,Serializable {
     public static final String PAYMENT_ACCOUNT = "payment_account";
     public static final String PAYMENT_ACCOUNT_TYPE = "payment_account_type";
     public static final String PAYMENT_STATUS = "payment_status";
+    public static final String PAYMENT_PROF_ID = "payment_Prof_ID";
+    public static final String PAYMENT_CUS_ID = "payment_Cus_ID";
 
 
-    public static final String CREATE_PAYMENT_TABLE = "CREATE TABLE IF NOT EXISTS " + PAYMENTS_TABLE + " (" + PAYMENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PROFILE_ID + " INTEGER , " +
-            CUSTOMER_ID + " INTEGER , " + ADMIN_ID + " INTEGER, " + PAYMENTTYPE + " TEXT, " + PAYMENT_AMOUNT + " DOUBLE, " + PAYMENT_DATE + " DATE, " + PAYMENT_APPROVAL_DATE + " DATE, " +
+    public static final String CREATE_PAYMENT_TABLE = "CREATE TABLE IF NOT EXISTS " + PAYMENTS_TABLE + " (" + PAYMENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PAYMENT_PROF_ID + " INTEGER , " +
+            PAYMENT_CUS_ID + " INTEGER , " + ADMIN_ID + " INTEGER, " + PAYMENTTYPE + " TEXT, " + PAYMENT_AMOUNT + " DOUBLE, " + PAYMENT_DATE + " DATE, " + PAYMENT_APPROVAL_DATE + " DATE, " +
             PAYMENT_APPROVER + " TEXT, " + PAYMENT_CODE + " LONG, " + PAYMENT_ACCOUNT + " INTEGER, " +
-            PAYMENT_ACCOUNT_TYPE + " TEXT, " + PAYMENT_OFFICE + " TEXT, " + PAYMENT_STATUS + " TEXT, " +"FOREIGN KEY(" + PROFILE_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + CUSTOMER_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+            PAYMENT_ACCOUNT_TYPE + " TEXT, " + PAYMENT_OFFICE + " TEXT, " + PAYMENT_STATUS + " TEXT, " +"FOREIGN KEY(" + PAYMENT_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + PAYMENT_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
 
 

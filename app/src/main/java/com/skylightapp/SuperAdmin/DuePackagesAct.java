@@ -10,11 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.skylightapp.Adapters.SuperSkylightPackageAdapter;
-import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
@@ -40,12 +36,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import static com.skylightapp.Classes.CustomerDailyReport.DAILY_REPORT_TABLE;
-import static com.skylightapp.Classes.CustomerDailyReport.REPORT_NUMBER;
-import static com.skylightapp.Classes.CustomerDailyReport.REPORT_STATUS;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_BALANCE;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ID;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_TABLE;
 import static java.lang.String.valueOf;
 
 public class DuePackagesAct extends AppCompatActivity implements SuperSkylightPackageAdapter.OnItemsClickListener {

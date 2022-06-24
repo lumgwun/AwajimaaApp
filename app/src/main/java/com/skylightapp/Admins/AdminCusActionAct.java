@@ -43,7 +43,7 @@ public class AdminCusActionAct extends AppCompatActivity {
     String json,CUSTOMER_FIRST_NAME,CUSTOMER_SURNAME,USER_PHONE,CUSTOMER_EMAIL_ADDRESS;
     DBHelper dbHelper;
     LatLng CUSTOMER_LATLONG;
-    private  Profile userProfile,customerProfile;
+    private  Profile userProfile,customerProfile,theProfile;
     private static final String PREF_NAME = "skylight";
     String packages,loans,savings,transactions,so,savingsCode,doc,messages,grpSavings;
 
@@ -57,6 +57,7 @@ public class AdminCusActionAct extends AppCompatActivity {
         userBundle=new Bundle();
         userProfile= new Profile();
         customerProfile= new Profile();
+        theProfile= new Profile();
         json = sharedpreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         getIntentBundle=getIntent().getExtras();
@@ -64,6 +65,7 @@ public class AdminCusActionAct extends AppCompatActivity {
 
         if(getIntentBundle !=null){
             customer=getIntentBundle.getParcelable("Customer");
+            theProfile=getIntentBundle.getParcelable("Profile");
             customerID=customer.getCusUID();
             CUSTOMER_FIRST_NAME=customer.getCusFirstName();
             CUSTOMER_SURNAME=customer.getCusSurname();
@@ -74,12 +76,12 @@ public class AdminCusActionAct extends AppCompatActivity {
             txtCus = findViewById(R.id.nameCus);
             txtCus.setText(MessageFormat.format("Cus:{0}{1}", names, customerID));
 
-
-
-            userBundle.putLong("PROFILE_ID",userProfile.getPID());
-            userBundle.putLong(PROFILE_ID,userProfile.getPID());
+        }
+        if(theProfile !=null){
+            userBundle.putLong("PROFILE_ID",theProfile.getPID());
+            userBundle.putLong(PROFILE_ID,theProfile.getPID());
             userBundle.putString("Machine",machine);
-            userBundle.putParcelable("Profile", userProfile);
+            userBundle.putParcelable("Profile", theProfile);
             userBundle.putString("Machine",machine);
             userBundle.putString("CUSTOMER_ID",CUSTOMER_ID);
             userBundle.putString(CUSTOMER_ID,CUSTOMER_ID);
@@ -94,95 +96,96 @@ public class AdminCusActionAct extends AppCompatActivity {
             userBundle.putString(CUSTOMER_PHONE_NUMBER,USER_PHONE);
             userBundle.putParcelable("PreviousLocation",CUSTOMER_LATLONG);
             userBundle.putParcelable("Customer",customer);
-            userBundle.putParcelable("Profile",customerProfile);
+            userBundle.putParcelable("Profile",theProfile);
             userBundle.putParcelable("CUSTOMER_LATLONG",CUSTOMER_LATLONG);
 
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(AdminCusActionAct.this);
-            builder.setTitle("Choose Action on Customer");
-            builder.setItems(new CharSequence[]
-                            {"Delete Customer", "Update Profile","Loans","Packages","Savings","Standing Orders","Transactions","Savings Codes","Payment Docs"," Location","Messages"," Send Customer message"," Block User"},
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            switch (which) {
-                                case 0:
-                                    Toast.makeText(AdminCusActionAct.this, "delete option, selected ", Toast.LENGTH_SHORT).show();
-                                    deleteCustomer(userBundle);
-                                    break;
-                                case 1:
-                                    Toast.makeText(AdminCusActionAct.this, "update customer, selected", Toast.LENGTH_SHORT).show();
-                                    setContentView(R.layout.update_customer);
-                                    break;
-                                case 2:
-                                    Toast.makeText(AdminCusActionAct.this, "Check Loan Overview", Toast.LENGTH_SHORT).show();
-                                    loans(userBundle);
-                                    break;
-                                case 3:
-                                    Toast.makeText(AdminCusActionAct.this, "Check package overview", Toast.LENGTH_SHORT).show();
-                                    doPackage(userBundle);
-                                    break;
-                                case 4:
-                                    Toast.makeText(AdminCusActionAct.this, "Savings option, selected ", Toast.LENGTH_SHORT).show();
-                                    savings(userBundle);
-                                    break;
-                                case 5:
-                                    Toast.makeText(AdminCusActionAct.this, "View standing orders option, selected ", Toast.LENGTH_SHORT).show();
-                                    so(userBundle);
-                                    break;
-                                case 6:
-                                    Toast.makeText(AdminCusActionAct.this, "View transaction option, selected ", Toast.LENGTH_SHORT).show();
-                                    tx(userBundle);
-                                    break;
-                                case 7:
-                                    Toast.makeText(AdminCusActionAct.this, "View savings codes option, selected ", Toast.LENGTH_SHORT).show();
-                                    savingsCode(userBundle);
-                                    break;
-                                case 8:
-                                    Toast.makeText(AdminCusActionAct.this, "View payment documents option, selected ", Toast.LENGTH_SHORT).show();
-                                    doc(userBundle);
-                                    break;
-
-                                case 9:
-                                    Toast.makeText(AdminCusActionAct.this, "View Customer's Loc.", Toast.LENGTH_SHORT).show();
-                                    location(userBundle);
-                                    break;
-                                case 10:
-                                    Toast.makeText(AdminCusActionAct.this, "Customer messages, selected ", Toast.LENGTH_SHORT).show();
-                                    messages(userBundle);
-                                    break;
-
-
-                                case 11:
-                                    Toast.makeText(AdminCusActionAct.this, "Send a message to the Customer", Toast.LENGTH_SHORT).show();
-                                    sendMessage(userBundle);
-                                    break;
-                                case 12:
-                                    Toast.makeText(AdminCusActionAct.this, "Block User", Toast.LENGTH_SHORT).show();
-                                    blockUser(userBundle);
-                                    break;
-
-                            }
-                        }
-                    })
-                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-
-
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-
-                        }
-                    });
-
-            builder.create().show();
-
-
         }
+
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(AdminCusActionAct.this);
+        builder.setTitle("Choose Action on Customer");
+        builder.setItems(new CharSequence[]
+                        {"Delete Customer", "Update Profile","Loans","Packages","Savings","Standing Orders","Transactions","Savings Codes","Payment Docs"," Location","Messages"," Send Customer message"," Block User"},
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        switch (which) {
+                            case 0:
+                                Toast.makeText(AdminCusActionAct.this, "delete option, selected ", Toast.LENGTH_SHORT).show();
+                                deleteCustomer(userBundle);
+                                break;
+                            case 1:
+                                Toast.makeText(AdminCusActionAct.this, "update customer, selected", Toast.LENGTH_SHORT).show();
+                                setContentView(R.layout.update_customer);
+                                break;
+                            case 2:
+                                Toast.makeText(AdminCusActionAct.this, "Check Loan Overview", Toast.LENGTH_SHORT).show();
+                                loans(userBundle);
+                                break;
+                            case 3:
+                                Toast.makeText(AdminCusActionAct.this, "Check package overview", Toast.LENGTH_SHORT).show();
+                                doPackage(userBundle);
+                                break;
+                            case 4:
+                                Toast.makeText(AdminCusActionAct.this, "Savings option, selected ", Toast.LENGTH_SHORT).show();
+                                savings(userBundle);
+                                break;
+                            case 5:
+                                Toast.makeText(AdminCusActionAct.this, "View standing orders option, selected ", Toast.LENGTH_SHORT).show();
+                                so(userBundle);
+                                break;
+                            case 6:
+                                Toast.makeText(AdminCusActionAct.this, "View transaction option, selected ", Toast.LENGTH_SHORT).show();
+                                tx(userBundle);
+                                break;
+                            case 7:
+                                Toast.makeText(AdminCusActionAct.this, "View savings codes option, selected ", Toast.LENGTH_SHORT).show();
+                                savingsCode(userBundle);
+                                break;
+                            case 8:
+                                Toast.makeText(AdminCusActionAct.this, "View payment documents option, selected ", Toast.LENGTH_SHORT).show();
+                                doc(userBundle);
+                                break;
+
+                            case 9:
+                                Toast.makeText(AdminCusActionAct.this, "View Customer's Loc.", Toast.LENGTH_SHORT).show();
+                                location(userBundle);
+                                break;
+                            case 10:
+                                Toast.makeText(AdminCusActionAct.this, "Customer messages, selected ", Toast.LENGTH_SHORT).show();
+                                messages(userBundle);
+                                break;
+
+
+                            case 11:
+                                Toast.makeText(AdminCusActionAct.this, "Send a message to the Customer", Toast.LENGTH_SHORT).show();
+                                sendMessage(userBundle);
+                                break;
+                            case 12:
+                                Toast.makeText(AdminCusActionAct.this, "Block User", Toast.LENGTH_SHORT).show();
+                                blockUser(userBundle);
+                                break;
+
+                        }
+                    }
+                })
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+
+
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+
+        builder.create().show();
+
 
 
 

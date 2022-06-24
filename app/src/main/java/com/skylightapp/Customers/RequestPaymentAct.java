@@ -98,7 +98,7 @@ public class RequestPaymentAct extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         if(userProfile !=null){
-            customer=userProfile.getTimelineCustomer();
+            customer=userProfile.getProfileCus();
         }
         if(customer !=null){
             customerID =customer.getCusUID();
@@ -417,7 +417,7 @@ public class RequestPaymentAct extends AppCompatActivity {
                 customer.addCusTranxGranding(tranxPayoutID,customerID,customerName,amountRequested,acctBank,bankName, acctBankNo,customerName,requestDate);
                 dbHelper.insertMessage(profileID,customerID,messageID,paymentMessage,sender,"Admin",officeBranch,requestDate);
                 dbHelper.insertTimeLine(tittle,paymentMessage,requestDate,location);
-                dbHelper.insertTransaction_Granting(tranxPayoutID,profileID,customerID,customerName,amountRequested,requestDate,acctBank,bankName, Long.parseLong(acctBankNo),"Payout","","","Payout","pending");
+                dbHelper.insertTransaction_Granting(tranxPayoutID,profileID,customerID,customerName,amountRequested,requestDate,acctBank,bankName,acctBankNo,"Payout","","","Payout","pending");
                 //customer.addCusTransactions(amountRequested);
                 //userProfile.addTransaction(transactionID,surName,firstName,customerPhone,amountRequested, String.valueOf(e_walletNo),acctDetails,requestDate,"Requested Payment");
                 //dbHelper.savePaymentTransactionP(profileID,customerID,type,"");

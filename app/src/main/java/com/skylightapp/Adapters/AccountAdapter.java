@@ -53,7 +53,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
         assert account != null;
         txtAccountName.setText(account.getAccountName());
         TextView txtAccountNo = convertView.findViewById(R.id.txt_acc_no);
-        txtAccountNo.setText(String.format("%s %s", context.getString(R.string.account_no), account.getAcctID()));
+        txtAccountNo.setText(String.format("%s %s", context.getString(R.string.account_no), account.getSkyLightAcctNo()));
         TextView txtAccountBalance = convertView.findViewById(R.id.txt_balance);
         txtAccountBalance.setText(MessageFormat.format("Account balance: NGN{0}", String.format("%.2f", account.getAccountBalance())));
 

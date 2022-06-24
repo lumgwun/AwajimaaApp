@@ -21,7 +21,6 @@ import com.skylightapp.Classes.PaymentCode;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Settings;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.LoginDirectorActivity;
 import com.skylightapp.R;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
@@ -32,10 +31,9 @@ import static com.skylightapp.Classes.AppConstants.ACCOUNT_SID;
 import static com.skylightapp.Classes.AppConstants.AUTH_TOKEN;
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.CustomerDailyReport.REPORT_DATE;
-import static com.skylightapp.Classes.CustomerDailyReport.REPORT_NUMBER;
+import static com.skylightapp.Classes.CustomerDailyReport.REPORT_ID;
 import static com.skylightapp.Classes.CustomerDailyReport.REPORT_TOTAL;
 import static com.skylightapp.Classes.PaymentCode.CODE_DATE;
-import static com.skylightapp.Classes.PaymentCode.CODE_PIN;
 import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ID;
 
 public class TellerSMSAct extends AppCompatActivity {
@@ -83,7 +81,7 @@ public class TellerSMSAct extends AppCompatActivity {
         if(extras != null) {
             customerID= extras.getInt(CUSTOMER_ID);
             packageID= extras.getInt(PACKAGE_ID);
-            savingsID= extras.getInt(REPORT_NUMBER);
+            savingsID= extras.getInt(REPORT_ID);
             totalAmount= extras.getDouble(REPORT_TOTAL);
             date= extras.getString(REPORT_DATE);
             dailyReport=extras.getParcelable("Savings");

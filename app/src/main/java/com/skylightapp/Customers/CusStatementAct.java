@@ -33,7 +33,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.skylightapp.Admins.TellerReportUpdateAct;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
@@ -171,8 +170,8 @@ public class CusStatementAct extends AppCompatActivity {
         }
         cmName=cmLastName+""+cmFirstName;
         if(account !=null){
-            acctID=account.getAcctID();
-            accountID=account.getAcctID();
+            acctID=account.getSkyLightAcctNo();
+            accountID=account.getSkyLightAcctNo();
             wBalance=account.getAccountBalance();
         }
         if(standingOrderAcct !=null){

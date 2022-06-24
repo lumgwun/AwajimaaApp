@@ -187,7 +187,7 @@ public class StandingOrderAdapterC extends RecyclerView.Adapter<StandingOrderAda
         standingOrders.sort(new Comparator<StandingOrder>() {
             @Override
             public int compare(StandingOrder b1, StandingOrder b2) {
-                return b1.getName().compareTo(b2.getName());
+                return b1.getSoStatus().compareTo(b2.getSoStatus());
             }
         });
     }

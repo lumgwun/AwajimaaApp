@@ -9,7 +9,6 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.preference.PreferenceManager;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -316,7 +315,7 @@ public class NewSOPaymentPlan extends AppCompatActivity {
                 managerFirstName=userProfile.getProfileFirstName();
                 uFirstName= customer.getCusFirstName();
                 profileID=userProfile.getPID();
-                customer=userProfile.getTimelineCustomer();
+                customer=userProfile.getProfileCus();
                 customerSurname=customer.getCusSurname();
                 customerFirstName=customer.getCusFirstName();
                 customerName=customer.getCusSurname()+""+customer.getCusFirstName();
@@ -425,7 +424,7 @@ public class NewSOPaymentPlan extends AppCompatActivity {
                         managerFirstName=userProfile.getProfileFirstName();
                         uFirstName= customer.getCusFirstName();
                         profileID=userProfile.getPID();
-                        customer=userProfile.getTimelineCustomer();
+                        customer=userProfile.getProfileCus();
                         if(customer !=null){
                             customerName=customer.getCusSurname()+""+customer.getCusFirstName();
                             customerPhoneNo=customer.getCusPhoneNumber();
@@ -440,7 +439,7 @@ public class NewSOPaymentPlan extends AppCompatActivity {
                             customerEmail=customer.getCusEmailAddress();
                             //account = customer.getStandingOrderAcct();
                         }
-                        customer=userProfile.getTimelineCustomer();
+                        customer=userProfile.getProfileCus();
 
                     }
 

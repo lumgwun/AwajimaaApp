@@ -37,6 +37,7 @@ public class Birthday extends Profile {
     public static final String B_EMAIL = "B_Email";
     public static final String B_PHONE = "B_Phone";
     public static final String B_DOB = "B_DOb";
+    public static final String B_PROF_ID = "B_Prof_ID";
     private static final String JSON_DATE = "Bdate";
     private static final String JSON_YEAR = "Byear";
     private static final String JSON_REMIND = "Bremind";
@@ -44,9 +45,9 @@ public class Birthday extends Profile {
     private static final String JSON_SHOW_YEAR = "Bshow_year";
 
 
-    public static final String CREATE_BIRTHDAY_TABLE = "CREATE TABLE IF NOT EXISTS " + BIRTHDAY_TABLE + " (" + PROFILE_ID + " INTEGER , " + BIRTHDAY_ID + " INTEGER PRIMARY KEY   , " +
+    public static final String CREATE_BIRTHDAY_TABLE = "CREATE TABLE IF NOT EXISTS " + BIRTHDAY_TABLE + " (" + B_PROF_ID + " INTEGER , " + BIRTHDAY_ID + " INTEGER PRIMARY KEY   , " +
             B_FIRSTNAME + " TEXT, " + B_SURNAME + " TEXT, " + B_EMAIL + " TEXT, " + B_PHONE + " TEXT, " +
-            B_DOB + " TEXT, " + BIRTHDAY_DAYS_REMAINING + " TEXT, " + BIRTHDAY_DAYS_BTWN + " TEXT, " + BIRTHDAY_STATUS + " TEXT, " + "FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+            B_DOB + " TEXT, " + BIRTHDAY_DAYS_REMAINING + " TEXT, " + BIRTHDAY_DAYS_BTWN + " TEXT, " + BIRTHDAY_STATUS + " TEXT, " + "FOREIGN KEY(" + B_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
 
     @SuppressLint("ConstantLocale")

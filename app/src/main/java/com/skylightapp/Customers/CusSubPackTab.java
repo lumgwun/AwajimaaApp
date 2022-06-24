@@ -61,7 +61,7 @@ public class CusSubPackTab extends TabActivity {
         }
         else {
             if(userProfile !=null){
-                customer=userProfile.getTimelineCustomer();
+                customer=userProfile.getProfileCus();
                 profileUID11 = userProfile.getPID();
 
             }

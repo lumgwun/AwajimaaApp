@@ -110,7 +110,7 @@ public class MyMessageFragment extends Fragment{
         dbHelper = new DBHelper(getContext());
         if(userProfile !=null){
             profileID =userProfile.getPID();
-            customer=userProfile.getTimelineCustomer();
+            customer=userProfile.getProfileCus();
 
         }
         if(customer !=null){

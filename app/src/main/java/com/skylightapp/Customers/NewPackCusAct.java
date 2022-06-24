@@ -20,11 +20,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -318,7 +316,7 @@ public class NewPackCusAct extends AppCompatActivity {
 
         if(userProfile !=null){
             officeBranch=userProfile.getProfileOffice();
-            customer=userProfile.getTimelineCustomer();
+            customer=userProfile.getProfileCus();
         }
 
         packageTypeBundle = getIntent().getExtras() ;

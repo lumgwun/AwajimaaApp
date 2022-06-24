@@ -560,7 +560,7 @@ public class PayNowActivity extends AppCompatActivity  {
             }
 
             if(account !=null){
-                accountID=account.getAcctID();
+                accountID=account.getSkyLightAcctNo();
             }
             if (skyLightPackage != null) {
                 packageDaysRem = skyLightPackage.getRemainingDays();
@@ -628,7 +628,7 @@ public class PayNowActivity extends AppCompatActivity  {
 
         String customerName=null;
         if (userProfile != null) {
-            customer=userProfile.getTimelineCustomer();
+            customer=userProfile.getProfileCus();
             if(customer !=null){
                 customerId8=customer.getCusUID();
             }
@@ -972,7 +972,7 @@ public class PayNowActivity extends AppCompatActivity  {
         }
 
         if(account !=null){
-            accountNo=account.getAcctID();
+            accountNo=account.getSkyLightAcctNo();
         }
 
         Transaction transaction1 = new Transaction();

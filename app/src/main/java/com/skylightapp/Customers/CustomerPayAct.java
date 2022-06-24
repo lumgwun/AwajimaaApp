@@ -251,7 +251,7 @@ public class CustomerPayAct extends AppCompatActivity {
 
             try {
                 if (userProfile != null) {
-                    customer=userProfile.getTimelineCustomer();
+                    customer=userProfile.getProfileCus();
                     if(customer !=null){
                         customerID=customer.getCusUID();
                     }
@@ -274,7 +274,7 @@ public class CustomerPayAct extends AppCompatActivity {
                         account=skyLightPackage.getAccount();
                         if(account !=null){
                             accountBalance=account.getAccountBalance();
-                            accountID=account.getAcctID();
+                            accountID=account.getSkyLightAcctNo();
 
                         }
 
@@ -305,7 +305,7 @@ public class CustomerPayAct extends AppCompatActivity {
                 if(account !=null){
                     accountBalanceNow=account.getAccountBalance();
                     accountBalance=account.getAccountBalance();
-                    accountID=account.getAcctID();
+                    accountID=account.getSkyLightAcctNo();
 
                 }
             }
@@ -437,7 +437,7 @@ public class CustomerPayAct extends AppCompatActivity {
         Bundle smsBundle= new Bundle();
         String customerName=null;
         if (userProfile != null) {
-            customer=userProfile.getTimelineCustomer();
+            customer=userProfile.getProfileCus();
             if(customer !=null){
                 customerID=customer.getCusUID();
             }
@@ -512,7 +512,7 @@ public class CustomerPayAct extends AppCompatActivity {
                     account=skyLightPackage.getAccount();
                     packageAmount=skyLightPackage.getDailyAmount();
                     accountBalance=account.getAccountBalance();
-                    accountID=account.getAcctID();
+                    accountID=account.getSkyLightAcctNo();
                 } catch (IndexOutOfBoundsException e) {
                     System.out.println("Oops!");
                 }

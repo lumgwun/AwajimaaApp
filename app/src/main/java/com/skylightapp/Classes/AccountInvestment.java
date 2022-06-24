@@ -6,14 +6,33 @@ import java.math.BigDecimal;
 
 public class AccountInvestment extends Account {
 
-    public AccountInvestment(String bank,String name, int dbID, long accountNo, BigDecimal accountBalance, String type , Context context) {
+    private String acctInvName;
+    private BigDecimal balance;
+
+    public AccountInvestment(String bank, String name, int dbID, long accountNo, BigDecimal accountBalance, String type , Context context) {
         this.enumMap = new AccountTypesEnumMap(context);
-        this.setAcctID(dbID);
+        this.setSkyLightAcctNo(dbID);
         this.setType_BigDecimal(this.enumMap.getAccountId("INVESTMENT"));;
-        this.setName(name);
+        this.setAcctInvName(name);
         this.setBalance(accountBalance);
     }
     public AccountInvestment(){
 
+    }
+
+    public void setAcctInvName(String acctInvName) {
+        this.acctInvName = acctInvName;
+    }
+
+    public String getAcctInvName() {
+        return acctInvName;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
     }
 }

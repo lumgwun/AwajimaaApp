@@ -23,18 +23,15 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.skylightapp.Admins.AdminDashboardTab;
 import com.skylightapp.LoanDetailsActivity;
 import com.skylightapp.MoneyTxDetailAct;
-import com.skylightapp.NEPABILLDetailsActivity;
 import com.skylightapp.PackageDetailsActivity;
 import com.skylightapp.PlanPaymentActivity;
 import com.skylightapp.R;
 import com.skylightapp.SavingDetailsActivity;
-import com.skylightapp.SupportMessageDetailsActivity;
 import com.skylightapp.Transactions.CashOutDetailsActivity;
-import com.skylightapp.Transactions.DataDetailsActivity;
 import com.skylightapp.Transactions.GOTVDetailsActivity;
 import com.skylightapp.Transactions.StarTimeDetailsActivity;
 
-import static com.skylightapp.Classes.CustomerDailyReport.REPORT_NUMBER;
+import static com.skylightapp.Classes.CustomerDailyReport.REPORT_ID;
 import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ID;
 import static com.skylightapp.Transactions.BillModel.BILL_ID;
 
@@ -187,7 +184,7 @@ public class FirebaseMessagingService  extends Service {
 
         Intent backIntent = new Intent(this, AdminDashboardTab.class);
         Intent intent = new Intent(this, SavingDetailsActivity.class);
-        intent.putExtra(REPORT_NUMBER, savingsId);
+        intent.putExtra(REPORT_ID, savingsId);
 
         Bitmap bitmap = getBitmapFromUrl(notificationImageUrl);
 

@@ -72,7 +72,7 @@ public class OfficeCreatorAct extends AppCompatActivity {
     Birthday birthday;
     String uSurname, uAddress,superFirstName;
 
-    long virtualAccountNumber;
+    int virtualAccountNumber;
     int customerID;
     int profileID1;
 
@@ -84,7 +84,7 @@ public class OfficeCreatorAct extends AppCompatActivity {
 
     Calendar calendar = Calendar.getInstance();
     @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
     String timeLineTime = mdformat.format(calendar.getTime());
     Profile managerProfile;
     AppCompatButton btnCreateNewOffice,btnAddNewEdt,btnRegisterNewOffice;
@@ -110,6 +110,7 @@ public class OfficeCreatorAct extends AppCompatActivity {
     private static final String PREF_NAME = "skylight";
     private SQLiteDatabase sqLiteDatabaseObj;
 
+    @SuppressLint("SimpleDateFormat")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,8 +158,7 @@ public class OfficeCreatorAct extends AppCompatActivity {
             }
         });
         Calendar calendar = Calendar.getInstance();
-        @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
+        mdformat = new SimpleDateFormat("yyyy-MM-dd");
         String currentDate = mdformat.format(calendar.getTime());
         officeBranchArrayList = dbHelper.getAllBranchOffices();
 
@@ -239,7 +239,7 @@ public class OfficeCreatorAct extends AppCompatActivity {
         });
 
     }
-    public void startProfileActivity(String selectedOffice, String uAddress, int officeID, UserSuperAdmin userSuperAdmin, long virtualAccountNumber, String currentDate) {
+    public void startProfileActivity(String selectedOffice, String uAddress, int officeID, UserSuperAdmin userSuperAdmin, int virtualAccountNumber, String currentDate) {
         ran = new Random();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         random = new SecureRandom();
@@ -301,7 +301,7 @@ public class OfficeCreatorAct extends AppCompatActivity {
         double accountBalance = 0.00;
         officeBranch =  new OfficeBranch(officeID,selectedOffice,"Approved");
 
-        Account newAccount = new Account("Skylight", selectedOffice, this.virtualAccountNumber, accountBalance, accountTypeStr);
+        Account newAccount = new Account("Skylight", selectedOffice, virtualAccountNumber, accountBalance, accountTypeStr);
         Profile officeProfile= new Profile(profileID1,selectedOffice,"Branch");
 
         if(officeBranch !=null){

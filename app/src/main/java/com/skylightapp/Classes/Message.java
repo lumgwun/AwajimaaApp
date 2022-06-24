@@ -12,6 +12,7 @@ import androidx.room.PrimaryKey;
 import java.io.Serializable;
 
 ;import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
+import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
@@ -27,22 +28,24 @@ public class Message implements Serializable, Parcelable {
     public static final String MESSAGE_PURPOSE = "purpose";
     public static final String MESSAGE_ADMIN_NAME = "admin_name";
     public static final String MESSAGE_ADMIN_ID = "admin_id";
+    public static final String MESSAGE_CUS_ID = "admin_Cus_id";
+    public static final String MESSAGE_PROF_ID = "admin_Prof_id";
     public static final String MESSAGE_BRANCH_OFFICE = "message_office";
 
 
 
 
     public static final String CODE_OWNER = "Code_owner";
-    public static final String CODE_TABLE = "Code_table";
+    /*public static final String CODE_TABLE = "Code_table";
     public static final String CODE_OWNER_PHONE = "Code_owner_phone";
     public static final String CODE_PIN = "Code";
     public static final String CODE_DATE = "Code_Date";
     public static final String CODE_STATUS = "Code_status";
-    public static final String CODE_MANAGER = "Code_manager";
+    public static final String CODE_MANAGER = "Code_manager";*/
 
-    public static final String CREATE_MESSAGE_TABLE = "CREATE TABLE IF NOT EXISTS " + MESSAGE_TABLE + " (" + PROFILE_ID + " INTEGER, " + MESSAGE_ID + " INTEGER , " +
-            CUSTOMER_ID + " INTEGER , "+ MESSAGE_ADMIN_ID + " TEXT , "+ MESSAGE_ADMIN_NAME + " TEXT , " + MESSAGE_PURPOSE + " TEXT , "+ MESSAGE_DETAILS + " TEXT , " + MESSAGE_SENDER + " TEXT , "+ MESSAGE_SENDEE + " TEXT , " + MESSAGE_TIME + " TEXT , " +
-            VIEWED + " INTEGER, " + MESSAGE_BRANCH_OFFICE + " TEXT , " + "PRIMARY KEY("  + MESSAGE_ID + "), " + "FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+    public static final String CREATE_MESSAGE_TABLE = "CREATE TABLE IF NOT EXISTS " + MESSAGE_TABLE + " (" + MESSAGE_PROF_ID + " INTEGER, " + MESSAGE_ID + " INTEGER , " +
+            MESSAGE_CUS_ID + " INTEGER , "+ MESSAGE_ADMIN_ID + " TEXT , "+ MESSAGE_ADMIN_NAME + " TEXT , " + MESSAGE_PURPOSE + " TEXT , "+ MESSAGE_DETAILS + " TEXT , " + MESSAGE_SENDER + " TEXT , "+ MESSAGE_SENDEE + " TEXT , " + MESSAGE_TIME + " TEXT , " +
+            VIEWED + " INTEGER, " + MESSAGE_BRANCH_OFFICE + " TEXT , " + "PRIMARY KEY("  + MESSAGE_ID + "), " +"FOREIGN KEY(" + MESSAGE_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "),"+ "FOREIGN KEY(" + MESSAGE_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
 
     public static final String MESSAGE_REPLY_TABLE = "Message_Reply_table";
@@ -50,14 +53,14 @@ public class Message implements Serializable, Parcelable {
     public static final String MESSAGE_REPLY_DETAILS = "message_Reply_Details";
     public static final String MESSAGE_REPLY_TIME = "message_Reply_Time";
     public static final String MESSAGE_REPLY_TIMEA = "message_Reply_TimeA";
+    public static final String MESSAGE_REPLY_MESSAGE_ID = "message_Reply_MID";
     public static final String MESSAGE_REPLY_DETAILS_ADMIN = "message_Reply_DetailsA";
 
 
+    public static final String CREATE_MESSAGE_REPLY_TABLE = "CREATE TABLE IF NOT EXISTS " + MESSAGE_REPLY_TABLE + " (" + MESSAGE_REPLY_ID + " INTEGER NOT NULL, " + MESSAGE_REPLY_MESSAGE_ID + " INTEGER , "+ MESSAGE_REPLY_DETAILS + " TEXT , " + MESSAGE_REPLY_DETAILS_ADMIN + " TEXT , "+ MESSAGE_REPLY_TIME + " TEXT , " + MESSAGE_REPLY_TIMEA + " TEXT , "+ "PRIMARY KEY("  + MESSAGE_REPLY_ID + "), " + "FOREIGN KEY(" + MESSAGE_REPLY_MESSAGE_ID + ") REFERENCES " + MESSAGE_TABLE + "(" + MESSAGE_ID + "))";
 
-    public static final String CREATE_MESSAGE_REPLY_TABLE = "CREATE TABLE IF NOT EXISTS " + MESSAGE_REPLY_TABLE + " (" + MESSAGE_REPLY_ID + " INTEGER NOT NULL, " + MESSAGE_ID + " INTEGER , "+ MESSAGE_REPLY_DETAILS + " TEXT , " + MESSAGE_REPLY_DETAILS_ADMIN + " TEXT , "+ MESSAGE_REPLY_TIME + " TEXT , " + MESSAGE_REPLY_TIMEA + " TEXT , "+ "PRIMARY KEY("  + MESSAGE_REPLY_ID + "), " + "FOREIGN KEY(" + MESSAGE_ID + ") REFERENCES " + MESSAGE_TABLE + "(" + MESSAGE_ID + "))";
-
-    public static final String CREATE_CODE_TABLE = "CREATE TABLE " + CODE_TABLE + " (" + PROFILE_ID + " LONG NOT NULL, " + CODE_OWNER_PHONE + " TEXT , " +
-            CODE_PIN + " TEXT , " + CODE_DATE + " TEXT , " + CODE_STATUS + " TEXT , " + CODE_MANAGER + " TEXT , " + "PRIMARY KEY("  + CODE_OWNER_PHONE + "), " + "FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+    /*public static final String CREATE_CODE_TABLE = "CREATE TABLE " + CODE_TABLE + " (" + PROFILE_ID + " LONG NOT NULL, " + CODE_OWNER_PHONE + " TEXT , " +
+            CODE_PIN + " TEXT , " + CODE_DATE + " TEXT , " + CODE_STATUS + " TEXT , " + CODE_MANAGER + " TEXT , " + "PRIMARY KEY("  + CODE_OWNER_PHONE + "), " + "FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";*/
 
     public Message() {
         super();

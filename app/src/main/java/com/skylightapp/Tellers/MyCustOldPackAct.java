@@ -55,9 +55,6 @@ import com.skylightapp.Database.DBHelper;
 import com.skylightapp.PayNowActivity;
 import com.skylightapp.R;
 import com.skylightapp.SMSAct;
-import com.skylightapp.SignUpAct;
-import com.twilio.Twilio;
-import com.twilio.rest.api.v2010.account.Message;
 
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
@@ -271,7 +268,7 @@ public class MyCustOldPackAct extends AppCompatActivity implements View.OnClickL
             try {
                 customer = customersN.get(selectedCustomerIndex);
                 account=customer.getCusAccount();
-                acctID=account.getAcctID();
+                acctID=account.getSkyLightAcctNo();
                 accountBalance1=account.getAccountBalance();
                 getSkylightPackages(customer,account,acctID,accountBalance1);
                 try {
@@ -385,7 +382,7 @@ public class MyCustOldPackAct extends AppCompatActivity implements View.OnClickL
             account = selectedPackage.getAccount();
             if (account != null) {
                 packageAccountBalance = account.getAccountBalance() + totalAmountSum;
-                acctID = account.getAcctID();
+                acctID = account.getSkyLightAcctNo();
 
             }
             if(customer !=null){

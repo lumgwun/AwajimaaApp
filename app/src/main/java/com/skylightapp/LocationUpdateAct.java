@@ -253,7 +253,7 @@ public class LocationUpdateAct extends AppCompatActivity implements LocationList
         reportTime = SystemClock.uptimeMillis();
         reportID = random.nextInt((int) (Math.random() * 100) + 111);
         if (userProfile != null) {
-            customer = userProfile.getTimelineCustomer();
+            customer = userProfile.getProfileCus();
         }
         if(userLocBundle !=null){
             emergencyReport=userLocBundle.getParcelable("EmergencyReport");

@@ -248,11 +248,11 @@ public class ProfileLocSourceAct extends FragmentActivity implements LocationLis
             customer=customerBundle.getParcelable("Customer");
 
         }else {
-            customer=userProfile.getTimelineCustomer();
+            customer=userProfile.getProfileCus();
         }
         reportTime = SystemClock.uptimeMillis();
         if(userProfile !=null){
-            customer=userProfile.getTimelineCustomer();
+            customer=userProfile.getProfileCus();
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd/MM/yyyy", Locale.getDefault());

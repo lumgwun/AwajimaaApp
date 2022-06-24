@@ -290,7 +290,7 @@ public class ManualPaymentAct extends AppCompatActivity {
 
         }
         if(account !=null){
-            accountID=account.getAcctID();
+            accountID=account.getSkyLightAcctNo();
             accountBalance=account.getAccountBalance();
             newBalance=account.getAccountBalance()-totalToWithdraw;
         }
@@ -298,7 +298,7 @@ public class ManualPaymentAct extends AppCompatActivity {
             if(standingOrderAcct !=null){
                 soAccountBalance=standingOrderAcct.getSoAcctBalance();
 
-                standingOrderAcctID=standingOrderAcct.getAcctID();
+                standingOrderAcctID=standingOrderAcct.getSkyLightAcctNo();
                 newSOBalance=standingOrderAcct.getSoAcctBalance()-totalToWithdraw;
 
             }

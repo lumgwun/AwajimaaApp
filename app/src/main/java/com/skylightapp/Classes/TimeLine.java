@@ -9,6 +9,7 @@ import androidx.room.PrimaryKey;
 import java.io.Serializable;
 
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
+import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
 
 
 @Entity(tableName = TimeLine.TIMELINE_TABLE)
@@ -20,16 +21,17 @@ public class TimeLine extends Profile implements Serializable ,Parcelable{
     public static final String TIMELINE_LOCATION = "location";
     public static final String TIMELINE_TIME = "time";
     public static final String TIMELINE_CUS_ID = "timeLine_CusID";
+    public static final String TIMELINE_PROF_ID = "timeLine_ProfID";
     public static final String TIMELINE_AMOUNT = "amount";
     public static final String TIMELINE_SENDING_ACCOUNT = "sending_account";
     public static final String TIMELINE_GETTING_ACCOUNT = "Getting_account";
     public static final String TIMELINE_WORKER_NAME = "worker_name";
     public static final String TIMELINE_CLIENT_NAME = "client_name";
 
-    public static final String CREATE_TIMELINE_TABLE = "CREATE TABLE " + TIMELINE_TABLE + " (" + PROFILE_ID + " INTEGER NOT NULL, " + TIMELINE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT , " +
-            CUSTOMER_ID + " INTEGER , " + TIMELINE_TITTLE + " TEXT , " + TIMELINE_DETAILS + " TEXT , " + TIMELINE_LOCATION + " TEXT , " +
+    public static final String CREATE_TIMELINE_TABLE = "CREATE TABLE " + TIMELINE_TABLE + " (" + TIMELINE_PROF_ID + " INTEGER NOT NULL, " + TIMELINE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT , " +
+            TIMELINE_CUS_ID + " INTEGER , " + TIMELINE_TITTLE + " TEXT , " + TIMELINE_DETAILS + " TEXT , " + TIMELINE_LOCATION + " TEXT , " +
             TIMELINE_WORKER_NAME + " TEXT, " + TIMELINE_CLIENT_NAME + " TEXT , " + TIMELINE_SENDING_ACCOUNT + " TEXT , " +
-            TIMELINE_GETTING_ACCOUNT + " TEXT, " + TIMELINE_AMOUNT + " DOUBLE , "+ TIMELINE_CUS_ID + " INTEGER , " + "FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+            TIMELINE_GETTING_ACCOUNT + " TEXT, " + TIMELINE_AMOUNT + " FLOAT , " +"FOREIGN KEY(" + TIMELINE_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + ")," + "FOREIGN KEY(" + TIMELINE_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
     public TimeLine(int timelineID, String timelineTittle, String timelineDetails, String timestamp) {
         super();
@@ -40,6 +42,12 @@ public class TimeLine extends Profile implements Serializable ,Parcelable{
 
     }
 
+    public TimeLine(String tittle, String timelineDetails) {
+        this.timelineTittle = tittle;
+        this.timelineDetails = timelineDetails;
+
+    }
+
     public int getTimeLineCusID() {
         return timeLineCusID;
     }
@@ -47,8 +55,6 @@ public class TimeLine extends Profile implements Serializable ,Parcelable{
     public void setTimeLineCusID(int timeLineCusID) {
         this.timeLineCusID = timeLineCusID;
     }
-            /*"FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," + "FOREIGN KEY(" + CUSTOMER_ID + ","+ PROFILE_ID + ") REFERENCES " +
-            CUSTOMER_TABLE + "(" + CUSTOMER_ID + ")," + "FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";*/
 
 
 
@@ -72,7 +78,7 @@ public class TimeLine extends Profile implements Serializable ,Parcelable{
     private int timeLineCusID;
     public Location location;
 
-    public TimeLine(String timelineTittle, String timelineDetails) {
+    public TimeLine(int id, String timelineTittle, String timelineDetails) {
         super();
         this.timelineTittle = timelineTittle;
         this.timelineDetails = timelineDetails;
@@ -168,11 +174,11 @@ public class TimeLine extends Profile implements Serializable ,Parcelable{
     public void setPayingAccount(String payingAccount) {
         this.payingAccount = payingAccount;
     }
-    public Customer getTimelineCustomer() {
+    public Customer getProfileCus() {
         return timelineCustomer;
     }
 
-    public void setTimelineCustomer(Customer timelineCustomer) {
+    public void setProfileCus(Customer timelineCustomer) {
         this.timelineCustomer = timelineCustomer;
     }
 

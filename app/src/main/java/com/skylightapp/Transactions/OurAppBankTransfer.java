@@ -62,18 +62,18 @@ public class OurAppBankTransfer extends AppCompatActivity {
     String response;
     Random random;
     AppCompatSpinner spnNigBank;
-    long depositID;
+    int depositID;
     private ArrayAdapter<Account> accountAdapter;
     Profile userProfile;
     Customer customer;
     Context context;
     long customerId;
-    long accountNo;
-    long customerID;
+    String accountNo;
+    int customerID;
     AppCompatButton depositBtn;
     AppCompatTextView verifyName,mTextError;
     Account account;
-    long profileID;
+    int profileID;
     AppCompatEditText amountToDeposit, accountNumberEdt, accountName;
 
     ProgressDialog dialog;
@@ -90,10 +90,11 @@ public class OurAppBankTransfer extends AppCompatActivity {
     Message message;
     String transferDate;
     private Loan loan;
-    private  long bankAcctNumber;
+    private  String bankAcctNumber;
     com.skylightapp.Classes.Transaction.TRANSACTION_TYPE transaction_type;
     private  Bundle loanBundle;
     private  ProgressDialog progressDialog;
+    private static final String PREF_NAME = "skylight";
     String transferType,bankTransferMessage, bank, bankAcctName,profileSurname, profileUserName,machine,profilePhone,profileEmailAddress,profileFirstName,textMessage;
 
 
@@ -108,7 +109,7 @@ public class OurAppBankTransfer extends AppCompatActivity {
         amountToDeposit = findViewById(R.id.bank_deposit_amount);
         accountNumberEdt = findViewById(R.id._deposit_account_no);
         accountName = findViewById(R.id._deposit_account_name);
-        userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         random= new Random();
         standingOrderAcct= new StandingOrderAcct();
@@ -131,7 +132,7 @@ public class OurAppBankTransfer extends AppCompatActivity {
         }
 
         try {
-            depositID = random.nextInt((int) (Math.random() * 99) + 11+77);
+            depositID = random.nextInt((int) (Math.random() * 109) + 11+77);
             txRef="OurCoopAppPayment"+random;
         } catch (NullPointerException e) {
             System.out.println("Oops!");
@@ -142,7 +143,7 @@ public class OurAppBankTransfer extends AppCompatActivity {
         if(userProfile !=null) {
             try {
                 profileID = userProfile.getPID();
-                customer = userProfile.getTimelineCustomer();
+                customer = userProfile.getProfileCus();
                 if(customer !=null){
                     customerID=customer.getCusUID();
                 }
@@ -159,13 +160,12 @@ public class OurAppBankTransfer extends AppCompatActivity {
 
 
 
-        profileSurname = userPreferences.getString("SURNAME_KEY", "");
-        profileFirstName = userPreferences.getString("FIRST_NAME_KEY", "");
-        profilePhone = userPreferences.getString("PHONE_NUMBER_KEY", "");
-        profileEmailAddress = userPreferences.getString("EMAIL_ADDRESS", "");
-        profileUserName = userPreferences.getString("USER_NAME", "");
-        int userRole = userPreferences.getInt("Role", Integer.parseInt("Role"));
-        machine=userPreferences.getString("machine","");
+        profileSurname = userPreferences.getString("PROFILE_SURNAME", "");
+        profileFirstName = userPreferences.getString("PROFILE_FIRSTNAME", "");
+        profilePhone = userPreferences.getString("PROFILE_PHONE", "");
+        profileEmailAddress = userPreferences.getString("PROFILE_EMAIL", "");
+        profileUserName = userPreferences.getString("PROFILE_USERNAME", "");
+        machine=userPreferences.getString("PROFILE_ROLE","");
         submitBankTransfer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -392,7 +392,7 @@ public class OurAppBankTransfer extends AppCompatActivity {
             accountName.requestFocus();
         }
         try {
-            bankAcctNumber = Long.parseLong(accountNumberEdt.getText().toString());
+            bankAcctNumber = accountNumberEdt.getText().toString();
 
         } catch (Exception e) {
             Toast.makeText(this, "Please enter a valid First Name", Toast.LENGTH_SHORT).show();
@@ -411,7 +411,7 @@ public class OurAppBankTransfer extends AppCompatActivity {
 
     }
 
-    private void createTransferRecepient(long bankAcctNumber,String bankAcctName,String accountbank,double transactionAmount) {
+    private void createTransferRecepient(String bankAcctNumber, String bankAcctName, String accountbank, double transactionAmount) {
 
         @SuppressLint("StaticFieldLeak")
         class SendPostReqAsyncTask extends AsyncTask<String, String, String> {
@@ -496,7 +496,7 @@ public class OurAppBankTransfer extends AppCompatActivity {
                 } catch (Exception e) {
                 }
                 Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 Date newDate = calendar.getTime();
                 String transferDate = sdf.format(newDate);
                 try {

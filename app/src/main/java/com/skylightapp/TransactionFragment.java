@@ -128,8 +128,8 @@ public class TransactionFragment extends Fragment {
             double accountBalance =(userProfile.getProfileAccounts().get(selectedAccountIndex).getAccountBalance());
             if (adapterView.getId() == spnAccounts.getId()) {
                 selectedAccountIndex = i;
-                txtAccountName.setText("Account: " + userProfile.getProfileAccounts().get(selectedAccountIndex).toTransactionString());
-                txtAccountBalance.setText("Balance: NGN" + String.format(Locale.getDefault(), "%.2f",accountBalance));
+                txtAccountName.setText(MessageFormat.format("Account: {0}", userProfile.getProfileAccounts().get(selectedAccountIndex)));
+                txtAccountBalance.setText(MessageFormat.format("Balance: NGN{0}", String.format(Locale.getDefault(), "%.2f", accountBalance)));
             }
             else if (adapterView.getId() == spnTransactionTypeFilter.getId()) {
                 transFilter = transFilter.getTransFilter(i);
@@ -224,7 +224,7 @@ public class TransactionFragment extends Fragment {
         spnAccounts.setSelection(selectedAccountIndex);
         account=userProfile.getProfileAccount();
 
-        txtAccountName.setText(MessageFormat.format("Account: {0}", userProfile.getProfileAccounts().get(selectedAccountIndex).toTransactionString()));
+        txtAccountName.setText(MessageFormat.format("Account: {0}", userProfile.getProfileAccounts().get(selectedAccountIndex).toString()));
         txtAccountBalance.setText(MessageFormat.format("Balance: NGN{0}", String.format(Locale.getDefault(), "%.2f", userProfile.getProfileAccounts().get(selectedAccountIndex).getAccountBalance())));
     }
 

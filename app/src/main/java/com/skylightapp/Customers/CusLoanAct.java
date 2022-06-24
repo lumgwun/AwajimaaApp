@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -69,9 +70,11 @@ public class CusLoanAct extends AppCompatActivity {
     private StandingOrderAcct standingOrderAcct;
     double accountBalance1;
     String loanDate,customerName;
-    long accountNo,acctID;
+    int accountNo;
+    int acctID;
     int customerID;
     int profileID;
+    String bankAccountNo;
 
     int loanCode;
     String acctName;
@@ -97,6 +100,7 @@ public class CusLoanAct extends AppCompatActivity {
     private AdminBalance adminBalance;
     private TransactionGranting granting;
     private static final String PREF_NAME = "skylight";
+    private SQLiteDatabase sqLiteDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +137,7 @@ public class CusLoanAct extends AppCompatActivity {
         }
 
         if(userProfile !=null){
-            selectedCustomer=userProfile.getTimelineCustomer();
+            selectedCustomer=userProfile.getProfileCus();
             standingOrderAcct=selectedCustomer.getCusStandingOrderAcct();
             standingOrderBalance=standingOrderAcct.getSoAcctBalance();
             account=userProfile.getProfileAccount();
@@ -158,7 +162,7 @@ public class CusLoanAct extends AppCompatActivity {
         if(loanType.equals("EWallet")){
             balance=accountBalance1;
             if(account !=null){
-                loanAcctNo=account.getAcctID();
+                loanAcctNo=account.getSkyLightAcctNo();
 
             }
 
@@ -166,7 +170,7 @@ public class CusLoanAct extends AppCompatActivity {
             if(loanType.equals("StandingOrderAcct")){
                 balance=standingOrderBalance;
                 if(standingOrderAcct !=null){
-                    loanAcctNo=standingOrderAcct.getAcctID();
+                    loanAcctNo=standingOrderAcct.getSkyLightAcctNo();
 
                 }
 
@@ -381,7 +385,7 @@ public class CusLoanAct extends AppCompatActivity {
             public void onClick(View view) {
 
                 try {
-                    accountNo = Long.parseLong(edtAcctNO.getText().toString());
+                    bankAccountNo = edtAcctNO.getText().toString();
 
                 } catch (NumberFormatException e) {
                     Toast.makeText(CusLoanAct.this, "Please enter a valid Account Number", Toast.LENGTH_SHORT).show();
@@ -425,7 +429,7 @@ public class CusLoanAct extends AppCompatActivity {
                         String timelineTittle2="Your Loan Request Alert";
                         Location location=null;
                         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-                        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                         //calendar.add(Calendar.DAY_OF_YEAR, noOfDays);
                         Date newDate = calendar.getTime();
                         loanDate = sdf.format(newDate);
@@ -457,23 +461,42 @@ public class CusLoanAct extends AppCompatActivity {
                         }
 
 
-                        loan.setAcctID(loanAcctNo);
+                        loan.setSkyLightAcctNo(loanAcctNo);
                         loan.setBankAcctName(acctName);
-                        loan.setBankAcctNo(accountNo);
+                        loan.setBankAcctNo("");
                         loan.setInterest(0.05);
                         loan.setLoanCode(loanCode);
                         loan.setProfile(userProfile);
                         loan.setLoanOfficeBranch(loanOffice);
-                        granting= new TransactionGranting(loanNumber,profileID,customerID,customerName,selectedBank,acctName,accountNo,amountDouble1,"",loanDate,"","","inProgress");
-                        dbHelper.insertTimeLine(timelineTittle,timelineDetails,loanDate,location);
+                        granting= new TransactionGranting(loanNumber,profileID,customerID,customerName,selectedBank,acctName,bankAccountNo,amountDouble1,"",loanDate,"","","inProgress");
+
+                        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                            dbHelper.openDataBase();
+                            dbHelper.insertTimeLine(timelineTittle,timelineDetails,loanDate,location);
+
+
+                        }
+                        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                            dbHelper.openDataBase();
+                            dbHelper.insertTransaction_Granting(loanNumber,profileID,customerID,customerName,amountDouble1,loanDate,selectedBank,acctName,bankAccountNo,"Loan","","","Loan","inProgress");
+
+
+
+                        }
+                        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                            dbHelper.openDataBase();
+                            dbHelper.insertNewLoan(profileID,customerID,loanNumber,0.00,amountDouble1,loanDate, accountNo,loanType,loanCode,"inProgress");
+
+
+
+                        }
+
                         granting.setTe_Type("Loan");
                         granting.setLoan(loan);
                         loan.setGranting(granting);
                         customer.addLoans(loanNumber,amountDouble,loanDate,"inProgress","",0.00);
                         userProfile.addLoans(loanNumber,amountDouble,loanDate,"inProgress","",0.00);
-                        //dbHelper.saveNewAdminBalance();
-                        dbHelper.insertTransaction_Granting(loanNumber,profileID,customerID,customerName,amountDouble1,loanDate,selectedBank,acctName,accountNo,"Loan","","","Loan","inProgress");
-                        dbHelper.insertNewLoan(profileID,customerID,loanNumber,amountDouble1,loanDate, accountNo,loanType,loanCode,"inProgress");
+
 
                     }
                 } catch (NumberFormatException e) {
@@ -535,7 +558,7 @@ public class CusLoanAct extends AppCompatActivity {
         standingOrderAcct= new StandingOrderAcct();
 
         try {
-            accountNo = Long.parseLong(edtAcctNO.getText().toString());
+            accountNo = Integer.parseInt(edtAcctNO.getText().toString());
 
         } catch (NumberFormatException e) {
             Toast.makeText(CusLoanAct.this, "Please enter a valid Account Number", Toast.LENGTH_SHORT).show();
@@ -579,7 +602,7 @@ public class CusLoanAct extends AppCompatActivity {
                 String timelineTittle2="Your Loan Request Alert";
                 Location location=null;
                 Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 //calendar.add(Calendar.DAY_OF_YEAR, noOfDays);
                 Date newDate = calendar.getTime();
                 loanDate = sdf.format(newDate);
@@ -609,20 +632,37 @@ public class CusLoanAct extends AppCompatActivity {
                 }
 
 
-                loan.setAcctID(loanAcctNo);
+                loan.setSkyLightAcctNo(loanAcctNo);
                 loan.setBankAcctName(acctName);
-                loan.setBankAcctNo(accountNo);
-                loan.setInterest(0.05);
+                loan.setBankAcctNo("");
+                loan.setInterest(0.00);
                 loan.setLoanCode(loanCode);
-                granting= new TransactionGranting(loanNumber,profileID,customerID,customerName,selectedBank,acctName,accountNo,amountDouble1,"",loanDate,"","","inProgress");
-                dbHelper.insertTimeLine(timelineTittle,timelineDetails,loanDate,location);
+                granting= new TransactionGranting(loanNumber,profileID,customerID,customerName,selectedBank,acctName,bankAccountNo,amountDouble1,"",loanDate,"","","inProgress");
+
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    dbHelper.openDataBase();
+                    dbHelper.insertTimeLine(timelineTittle,timelineDetails,loanDate,location);
+
+                }
+
                 granting.setTe_Type("Loan");
                 loan.setGranting(granting);
                 customer.addLoans(loanNumber,amountDouble,loanDate,"inProgress","",0.00);
                 userProfile.addLoans(loanNumber,amountDouble,loanDate,"inProgress","",0.00);
-                //dbHelper.saveNewAdminBalance();
-                dbHelper.insertTransaction_Granting(loanNumber,profileID,customerID,customerName,amountDouble1,loanDate,selectedBank,acctName,accountNo,"Loan","","","Loan","inProgress");
-                dbHelper.insertNewLoan(profileID,customerID,loanNumber,amountDouble1,loanDate, accountNo,loanType,loanCode,"inProgress");
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    dbHelper.openDataBase();
+                    dbHelper.insertTransaction_Granting(loanNumber,profileID,customerID,customerName,amountDouble1,loanDate,selectedBank,acctName,bankAccountNo,"Loan","","","Loan","inProgress");
+
+
+
+                }
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    dbHelper.openDataBase();
+                    dbHelper.insertNewLoan(profileID,customerID,loanNumber,0.00,amountDouble1,loanDate, accountNo,loanType,loanCode,"inProgress");
+
+
+
+                }
 
             }
 
@@ -820,11 +860,11 @@ public class CusLoanAct extends AppCompatActivity {
                     }*/
                     result = stringBuilder1.toString();
                     if(userProfile !=null){
-                        selectedCustomer=userProfile.getTimelineCustomer();
+                        selectedCustomer=userProfile.getProfileCus();
                         standingOrderAcct=selectedCustomer.getCusStandingOrderAcct();
                         standingOrderBalance=standingOrderAcct.getSoAcctBalance();
                         accountBalance1=standingOrderBalance-amountDouble1-fees;
-                        customer=userProfile.getTimelineCustomer();
+                        customer=userProfile.getProfileCus();
 
 
                     }

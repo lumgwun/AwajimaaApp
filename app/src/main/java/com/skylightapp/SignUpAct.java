@@ -389,7 +389,13 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                                 //logo = findViewById(R.id.imageLogo);
                                 Intent data = result.getData();
                                 mImageUri = data.getData();
-                                dbHelper.insertProfilePicture(profileID1, customerID, mImageUri);
+
+                                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                    dbHelper.openDataBase();
+                                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                                    dbHelper.insertProfilePicture(profileID1, customerID, mImageUri);
+                                }
+
                                 /*if (selectedImage != null) {
                                     logo.setImageBitmap(getScaledBitmap(selectedImage));
                                 } else {
@@ -1030,7 +1036,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                                     sendOTPMessage(otpPhoneNumber, otpMessage);
 
                                     if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                                        //dbHelper = new DBHelper(this);
+                                        dbHelper.openDataBase();
                                         sqLiteDatabase = dbHelper.getWritableDatabase();
                                         dbHelper.insertMessage(profileID, customerID, messageID, otpMessage, "Skylight", customerName, selectedOffice, joinedDate);
 
@@ -1092,32 +1098,44 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                 .allowMainThreadQueries()
                 .build();
         roomTableDao = mRoomDB.roomProfileTableDao();
+        userProfile1 = new Profile(10000, "Emmanuel", "Becky", "08069524599", "urskylight@gmail.com", "1980-04-19", "female", "Skylight", "", "Rivers", "Elelenwo", "2022-04-19", "SuperAdmin", "Skylight4ever", "@Awajima2", "Confirmed", "");
+        userProfile2= new Profile(1000,"Benedict", "Benedict", "08059250176", "bener@gmail.com", "25/04/1989", "male", "PH", "","Rivers", "Elelenwo", "19/04/2022","Customer", "Lumgwun", "@Awajima3","Confirmed","");
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.insertCustomer11(1000002, 10, "Ezekiel", "Gwun-orene", "07038843102", "lumgwun1@gmail.com", "1983-04-25", "male", "Ilabuchi", "Rivers", "", "2022-04-19", "Lumgwun", "@Awajima1", Uri.parse(""), "Customer");
+
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.insertTimeLine("Sign up", "", "2022-04-19", mCurrentLocation);
+
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.insertMessage(profileID, customerID, messageID, otpMessage, "Skylight", customerName, selectedOffice, joinedDate);
+
+        }
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             //dbHelper = new DBHelper(this);
             sqLiteDatabase = dbHelper.getWritableDatabase();
-
-            dbHelper.insertCustomer11(0, 10, "Ezekiel", "Gwun-orene", "07038843102", "lumgwun1@gmail.com", "1983-04-25", "male", "Ilabuchi", "Rivers", "", "2022-04-19", "Lumgwun", "@Awajima1", Uri.parse(""), "Customer");
-
-            dbHelper.insertTimeLine("Sign up", "", "2022-04-19", mCurrentLocation);
-
-            //dbHelper.saveNewProfile(userProfile);
-
-            dbHelper.insertUser112(0, 102, "Ezekiel", "Gwun-orene", "07038843102", "lumgwun1@gmail.com", "1983-04-25", "male", "Ilabuchi", "Rivers", "", "2022-04-19", "Lumgwun", "@Awajima1", "", "", "SuperAdmin");
-
-            userProfile1 = new Profile(0, "Emmanuel", "Becky", "08069524599", "urskylight@gmail.com", "1980-04-19", "female", "Skylight", "", "Rivers", "Elelenwo", "2022-04-19", "SuperAdmin", "Skylight4ever", "@Awajima2", "Confirmed", "");
-            userProfile2= new Profile(0,"Benedict", "Benedict", "08059250176", "bener@gmail.com", "25/04/1989", "male", "PH", "","Rivers", "Elelenwo", "19/04/2022","Customer", "Lumgwun", "@Awajima3","Confirmed","");
-
-            dbHelper.saveNewProfile(userProfile1);
+            dbHelper.openDataBase();
             dbHelper.saveNewProfile(userProfile2);
 
 
-            /*List<Profile> profileArrayList = new ArrayList<Profile>();
-            for (Profile profile : profileArrayList) {
-                profileArrayList.add(userProfile1);
-                profileArrayList.add(userProfile2);
-                dbHelper.saveNewProfile(profile);
-            }*/
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            //dbHelper = new DBHelper(this);
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.openDataBase();
+            dbHelper.saveNewProfile(userProfile1);
+
+
         }
 
 
@@ -1505,7 +1523,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
             dbHelper.insertCustomer11(profileID1, customerID, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedState, "", joinedDate, uUserName, uPassword, mImageUri, "Customer");
 
 
-            dbHelper.insertUser112(profileID1, customerID, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedState, "", joinedDate, uUserName, uPassword, "", "New", "Customer");
+            //dbHelper.insertUser1(profileID1, customerID, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedState, "", joinedDate, uUserName, uPassword, "", "New", "Customer");
 
             dbHelper.insertBirthDay3(birthday, "1983-04-25");
             dbHelper.saveNewProfile(customerProfile);
@@ -1542,8 +1560,8 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         userProfile2= new Profile(0,"Benedict", "Benedict", "08059250176", "bener@gmail.com", "25/04/1989", "male", "PH", "","Rivers", "Elelenwo", "19/04/2022","Customer", "Lumgwun", "@Awajima3","Confirmed","");
 
         if (DatabaseUtils.queryNumEntries(dbHelper.getWritableDatabase(),DATABASE_NAME) < 1) {
-            dbHelper.insert(userProfile1);
-            dbHelper.insert(userProfile2);
+            dbHelper.insertProfile(userProfile1);
+            dbHelper.insertProfile(userProfile2);
         }
     }
 
@@ -1587,6 +1605,9 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     public void SQLiteDataBaseBuild() {
 
         dbHelper = new DBHelper(this);
+        Profile profile33= new Profile();
+        profile33 = new Profile(12903, "TestBoy", "Emeka", "07034123456", "leaveme@yahoo.com", "1987-02-09", "male", "no address", "", "Rivers", "Head Office", joinedDate, "Customer", "seeme", "finish", "pending", "");
+
 
         sqLiteDatabase = dbHelper.getWritableDatabase();
         if (dbHelper != null) {
@@ -1598,11 +1619,19 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
         }
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
             dbHelper.insertNewPackage(1000000,1234,92345678,4567,"Test Package","Savings",31,5000,"2022-17-06",5000000,"","Confirmed");
+
+
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
             dbHelper.insertTellerCash(109,193,193,"TestItem",500.00,"2022-05-23","Uche","Elelenwo",8903,"new");
-            dbHelper.addProfile(345,"Ezekeil","","","","","","","","","","","password","",0);
 
-
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            dbHelper.insertProfile(profile33);
 
 
         }

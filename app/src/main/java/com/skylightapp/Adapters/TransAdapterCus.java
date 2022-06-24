@@ -73,7 +73,7 @@ public class TransAdapterCus extends ArrayAdapter<Transaction> {
         txtID.setText(MessageFormat.format("{0} - {1}", "Package ID:", customerDailyReport.getPackageId()));
         txtType.setText(MessageFormat.format("{0} - {1}", "Package Type:", customerDailyReport.getPackageType()));
         txtSavingsID.setText(MessageFormat.format("{0} - {1}", "Report ID:", customerDailyReport.getRecordNo()));
-        txtTx_Ewallet.setText(MessageFormat.format("{0} - {1}", "Account ID:", customerDailyReport.getCustomer().getCusAccount().getAcctID()));
+        txtTx_Ewallet.setText(MessageFormat.format("{0} - {1}", "Account ID:", customerDailyReport.getCustomer().getCusAccount().getSkyLightAcctNo()));
         txtTransactionTimestamp.setText(MessageFormat.format("Date{0}", transaction.getTimestamp()));
         txtTransactionAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", transaction.getAmount())));
 

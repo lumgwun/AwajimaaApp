@@ -458,7 +458,7 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
             data = getIntent();
             if(userProfile !=null){
                 profileID =userProfile.getPID();
-                customer=userProfile.getTimelineCustomer();
+                customer=userProfile.getProfileCus();
 
             }
             if(customer !=null){

@@ -8,11 +8,16 @@ public class AccountItemPurchase extends Account {
 
     public AccountItemPurchase(String bank,String name, int dbID, long accountNo, BigDecimal accountBalance, String type, Context context) {
         this.enumMap = new AccountTypesEnumMap(context);
-        this.setAcctID(dbID);
+        this.setSkyLightAcctNo(dbID);
         this.setType_BigDecimal(this.enumMap.getAccountId("ITEM PURCHASE"));;
-        this.setName(name);
-        this.setBalance(accountBalance);
+        this.setItemsAcctName(name);
+        this.setItemAcctBalance(accountBalance);
     }
+
+    private void setItemsAcctName(String name) {
+
+    }
+
     public AccountItemPurchase(){
 
     }

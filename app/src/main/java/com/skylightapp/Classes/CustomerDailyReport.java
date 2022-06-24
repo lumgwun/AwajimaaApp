@@ -29,12 +29,15 @@ import java.util.Locale;
 import java.util.UUID;
 
 
+import static com.skylightapp.Classes.Account.ACCOUNTS_TABLE;
 import static com.skylightapp.Classes.Account.ACCOUNT_NO;
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
+import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ID;
 
+import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_TABLE;
 import static java.lang.String.valueOf;
 
 @SuppressWarnings("deprecation")
@@ -42,12 +45,12 @@ import static java.lang.String.valueOf;
 public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
     public static final String REPORT_NUMBER_OF_DAYS_SO_FAR = "no_of_days_so_far";
     public static final String REPORT_AMOUNT_COLLECTED_SO_FAR = "amount_so_far";
-    public static final String RECORD_REPORT_ID = "r_id";
+    //public static final String RECORD_REPORT_ID = "r_id";
 
 
     public static final String DAILY_REPORT_TABLE = "daily_reports";
     public static final String REPORT_PACKAGE = "package";
-    public static final String REPORT_NUMBER = "serial_number";
+    public static final String REPORT_ID = "serial_number";
     public static final String REPORT_AMOUNT = "amount";
     public static final String REPORT_NUMBER_OF_DAYS = "days";
     public static final String REPORT_DATE = "date";
@@ -61,17 +64,17 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
 
     public static final String REPORT_STATUS = "status";
     public static final String REPORT_CODE = "savingsCode";
+    public static final String REPORT_PROF_ID_FK = "profile_ID_Fk";
+    public static final String REPORT_CUS_ID_FK = "cus_ID_FK";
+    public static final String REPORT_PACK_ID_FK = "report_ID_FK";
+    public static final String REPORT_ACCOUNT_NO_FK = "report_AcctNo_FK";
     //public static final String TABLE_CUSTOMER_RECORD = "customer_record";
 
-    public static final String CREATE_DAILY_REPORT_TABLE = "CREATE TABLE " + DAILY_REPORT_TABLE + " (" + PROFILE_ID + " INTEGER NOT NULL, " + CUSTOMER_ID + " INTEGER NOT NULL, " +
-            REPORT_NUMBER + " INTEGER , " + PACKAGE_ID + " INTEGER NOT NULL, " + ACCOUNT_NO + " INTEGER NOT NULL, " + REPORT_PACKAGE + " TEXT, " + REPORT_AMOUNT + " NUMERIC, " + REPORT_OFFICE_BRANCH + " TEXT, " + REPORT_CODE + " TEXT, "+
-            REPORT_NUMBER_OF_DAYS + " INTEGER NOT NULL, " + REPORT_TOTAL + " NUMERIC,"+ REPORT_DAYS_REMAINING + " INTEGER, " + REPORT_AMOUNT_REMAINING + " TEXT, " + REPORT_DATE + " DATE, " +
+    public static final String CREATE_DAILY_REPORT_TABLE = "CREATE TABLE " + DAILY_REPORT_TABLE + " (" + REPORT_PROF_ID_FK + " INTEGER , " + REPORT_CUS_ID_FK + " INTEGER , " +
+            REPORT_ID + " INTEGER , " + REPORT_PACK_ID_FK + " INTEGER NOT NULL, " + REPORT_ACCOUNT_NO_FK + " INTEGER , " + REPORT_PACKAGE + " TEXT, " + REPORT_AMOUNT + " NUMERIC, " + REPORT_OFFICE_BRANCH + " TEXT, " + REPORT_CODE + " TEXT, "+
+            REPORT_NUMBER_OF_DAYS + " INTEGER , " + REPORT_TOTAL + " NUMERIC,"+ REPORT_DAYS_REMAINING + " INTEGER, " + REPORT_AMOUNT_REMAINING + " TEXT, " + REPORT_DATE + " TEXT, " +
             REPORT_STATUS + " TEXT, " + REPORT_COUNT + " TEXT, " + REPORT_AMOUNT_COLLECTED_SO_FAR + " TEXT, " + REPORT_NUMBER_OF_DAYS_SO_FAR + " TEXT, " +
-            "PRIMARY KEY(" + REPORT_NUMBER + "), " +"FOREIGN KEY(" + CUSTOMER_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
-
-            /*"FOREIGN KEY(" + PACKAGE_ID + "," + PROFILE_ID+","+ACCOUNT_NO +","+ CUSTOMER_ID + ") REFERENCES " + PACKAGE_TABLE + "(" + PACKAGE_ID + ")," +
-            "FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + ACCOUNT_NO + ") REFERENCES " +
-            ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," + "FOREIGN KEY(" + CUSTOMER_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";*/
+            "PRIMARY KEY(" + REPORT_ID + "), "+ "FOREIGN KEY(" + REPORT_ACCOUNT_NO_FK + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + "),"+ "FOREIGN KEY(" + REPORT_PACK_ID_FK + ") REFERENCES " + PACKAGE_TABLE + "(" + PACKAGE_ID + ")," + "FOREIGN KEY(" + REPORT_PROF_ID_FK + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"FOREIGN KEY(" + REPORT_CUS_ID_FK + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
 
 

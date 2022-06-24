@@ -90,7 +90,7 @@ public class CusPackageList extends AppCompatActivity implements PackageRecycler
 
         }else {
             if(userProfile !=null){
-                customer=userProfile.getTimelineCustomer();
+                customer=userProfile.getProfileCus();
                 customerID=customer.getCusUID();
 
             }

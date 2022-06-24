@@ -39,8 +39,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import static com.skylightapp.Classes.ImageUtil.TAG;
-import static com.skylightapp.Classes.Profile.PROFILE_PASSWORD;
-import static com.skylightapp.Classes.Profile.PROFILE_USERNAME;
 
 public class AcctStatmOptions extends AppCompatActivity {
     private Bundle typeBundle;
@@ -198,11 +196,11 @@ public class AcctStatmOptions extends AppCompatActivity {
 
         if(userProfile !=null){
             account=userProfile.getProfileAccount();
-            customer=userProfile.getTimelineCustomer();
+            customer=userProfile.getProfileCus();
             profileID=userProfile.getPID();
         }
         if(account!=null){
-            acctID=account.getAcctID();
+            acctID=account.getSkyLightAcctNo();
             walletBalance=account.getAccountBalance();
 
 

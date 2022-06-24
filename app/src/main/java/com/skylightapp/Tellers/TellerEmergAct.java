@@ -235,7 +235,7 @@ public class TellerEmergAct extends AppCompatActivity implements LocationListene
         dateOfToday =dateFormat.format(calendar.getTime());
 
         if(tellerProfile !=null){
-            customer= tellerProfile.getTimelineCustomer();
+            customer= tellerProfile.getProfileCus();
         }
         if(customer !=null){
             customerID=customer.getCusUID();

@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -65,11 +64,11 @@ public class AccountAdapter2 extends RecyclerView.Adapter<AccountAdapter2.Recycl
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         Account recyclerData = accountArrayList.get(position);
         holder.txtAccountName.setText(MessageFormat.format("Acct Name:{0}", recyclerData.getAccountName()));
-        holder.txtAccountID.setText(MessageFormat.format("Acct No:{0}", recyclerData.getAcctID()));
-        holder.txtAccountBank.setText(MessageFormat.format("Bank:{0}", recyclerData.getAcctID()));
+        holder.txtAccountID.setText(MessageFormat.format("Acct No:{0}", recyclerData.getSkyLightAcctNo()));
+        holder.txtAccountBank.setText(MessageFormat.format("Bank:{0}", recyclerData.getSkyLightAcctNo()));
         holder.txtAccountBalance.setText(MessageFormat.format("Account balance: NGN{0}", String.format("%.2f", recyclerData.getAccountBalance())));
         holder.txtAccountType.setText(MessageFormat.format("Acct Type:{0}", String.valueOf(recyclerData.getType())));
-        holder.txtAccountID.setText(MessageFormat.format("Acct ID:{0}", String.valueOf(recyclerData.getAcctID())));
+        holder.txtAccountID.setText(MessageFormat.format("Acct ID:{0}", String.valueOf(recyclerData.getSkyLightAcctNo())));
 
 
     }

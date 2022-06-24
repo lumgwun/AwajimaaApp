@@ -69,7 +69,7 @@ public class RequestItemAct extends AppCompatActivity {
         userProfile = gson.fromJson(json, Profile.class);
         packBundle = getIntent().getExtras();
         if(userProfile !=null){
-            customer=userProfile.getTimelineCustomer();
+            customer=userProfile.getProfileCus();
             profileID=userProfile.getPID();
 
         }

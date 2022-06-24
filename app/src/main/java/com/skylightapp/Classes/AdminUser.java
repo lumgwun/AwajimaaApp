@@ -53,13 +53,16 @@ public class AdminUser extends User implements Parcelable, Serializable {
     @Ignore
     public static final String ADMIN_PIX = "ad_picture";
     @Ignore
+    public static final String ADMIN_PROFILE_ID = "ad_prof_ID";
+
+    @Ignore
     public static final String ADMIN_TABLE = "admin_table";
     @Ignore
 
-    public static final String CREATE_ADMIN_TABLE = "CREATE TABLE IF NOT EXISTS " + ADMIN_TABLE + " ( " + ADMIN_ID + " INTEGER   , " + PROFILE_ID + " INTEGER , " + ADMIN_SURNAME + " TEXT  , " +
+    public static final String CREATE_ADMIN_TABLE = "CREATE TABLE IF NOT EXISTS " + ADMIN_TABLE + " ( " + ADMIN_ID + " INTEGER   , " + ADMIN_PROFILE_ID + " INTEGER , " + ADMIN_SURNAME + " TEXT  , " +
             ADMIN_FIRST_NAME + " TEXT, " + ADMIN_PHONE_NUMBER + " TEXT, " + ADMIN_EMAIL_ADDRESS + " TEXT, " + ADMIN_DOB + " TEXT, " + ADMIN_GENDER + " TEXT, " +
             ADMIN_ADDRESS + " TEXT, " + ADMIN_OFFICE + " TEXT, " + ADMIN_DATE_JOINED + " TEXT, " + ADMIN_USER_NAME + " TEXT, " + ADMIN_PASSWORD + " TEXT, " +
-            ADMIN_NIN + " TEXT,  " + ADMIN_PIX + " TEXT, " + ADMIN_STATUS + " TEXT, " + "FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + ADMIN_ID  + "))";
+            ADMIN_NIN + " TEXT,  " + ADMIN_PIX + " TEXT, " + ADMIN_STATUS + " TEXT, " + "FOREIGN KEY(" + ADMIN_PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + ADMIN_ID  + "))";
 
     private static final long serialVersionUID = 8924708152697574031L;
     @SuppressLint("SimpleDateFormat")
@@ -386,6 +389,13 @@ public class AdminUser extends User implements Parcelable, Serializable {
     @Ignore
 
     public ArrayList<Transaction> getTransactions() { return transactions; }
+    @Ignore
+    public void addTimeLine(int iD,String tittle,String timelineDetails) {
+        timeLines= new ArrayList<>();
+        String history = "History" + (timeLines.size() + 1);
+        TimeLine timeLine = new TimeLine(iD, tittle,timelineDetails);
+        timeLines.add(timeLine);
+    }
     @Ignore
     public void addTimeLine(String tittle,String timelineDetails) {
         timeLines= new ArrayList<>();

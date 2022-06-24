@@ -120,7 +120,7 @@ public class MySavingsListAct extends AppCompatActivity {
 
         }else {
             if(userProfile !=null){
-                customer=userProfile.getTimelineCustomer();
+                customer=userProfile.getProfileCus();
                 customerID=customer.getCusUID();
             }
         }

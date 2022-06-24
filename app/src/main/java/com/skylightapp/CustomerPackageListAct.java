@@ -80,7 +80,7 @@ public class CustomerPackageListAct extends AppCompatActivity implements  SuperS
         }
         else {
             if(userProfile !=null){
-                customer=userProfile.getTimelineCustomer();
+                customer=userProfile.getProfileCus();
             }
 
             if (customer !=null){
@@ -120,7 +120,7 @@ public class CustomerPackageListAct extends AppCompatActivity implements  SuperS
                     grandTotal = skyLightPackage.getGrandTotal();
                     packageAmount=skyLightPackage.getDailyAmount();
                     account = skyLightPackage.getAccount();
-                    long acctID=account.getAcctID();
+                    long acctID=account.getSkyLightAcctNo();
                     String status=skyLightPackage.getPackageStatus();
                     customerID=customer.getCusUID();
                     double amtRem = skyLightPackage.getAmountRemaining();

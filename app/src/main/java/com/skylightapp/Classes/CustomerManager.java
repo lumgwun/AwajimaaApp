@@ -62,6 +62,9 @@ public class CustomerManager extends User implements Parcelable, Serializable , 
     @Ignore
     public static final String CUSTOMER_TELLER_STATUS = "StatusT";
     @Ignore
+    public static final String CUSTOMER_TELLER_PROF_ID = "teller_Prof_ID";
+
+    @Ignore
     public static final String CUSTOMER_TELLER_TABLE = "tellers_table";
     @Ignore
     public static final String WORKER_TABLE = "workers_table";
@@ -75,10 +78,10 @@ public class CustomerManager extends User implements Parcelable, Serializable , 
             PROFILE_ID + " INTEGER, " + "FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + WORKER_ID  + "))";
 
     @Ignore
-    public static final String CREATE_CUSTOMERS_TELLER_TABLE = "CREATE TABLE IF NOT EXISTS " + CUSTOMER_TELLER_TABLE + " ( " + CUSTOMER_TELLER_ID + " INTEGER   ,  " + PROFILE_ID + " INTEGER  , " +
+    public static final String CREATE_CUSTOMERS_TELLER_TABLE = "CREATE TABLE IF NOT EXISTS " + CUSTOMER_TELLER_TABLE + " ( " + CUSTOMER_TELLER_ID + " INTEGER   ,  " + CUSTOMER_TELLER_PROF_ID + " INTEGER  , " +
             CUSTOMER_TELLER_SURNAME + " TEXT, " + CUSTOMER_TELLER_FIRST_NAME + " TEXT, " + CUSTOMER_TELLER_PHONE_NUMBER + " TEXT, " + CUSTOMER_TELLER_EMAIL_ADDRESS + " TEXT, " + CUSTOMER_TELLER_USER_NAME + " TEXT, " +
             CUSTOMER_TELLER_DOB + " TEXT, " + CUSTOMER_TELLER_GENDER + " TEXT, " + CUSTOMER_TELLER_ADDRESS + " TEXT, " + CUSTOMER_TELLER_OFFICE + " TEXT, " + CUSTOMER_TELLER_DATE_JOINED + " TEXT, " +
-            CUSTOMER_TELLER_PASSWORD + " TEXT, " + CUSTOMER_TELLER_NIN + " TEXT," + CUSTOMER_TELLER_PIX + " TEXT," + CUSTOMER_TELLER_STATUS + " TEXT, " + "FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + CUSTOMER_TELLER_ID  + "))";
+            CUSTOMER_TELLER_PASSWORD + " TEXT, " + CUSTOMER_TELLER_NIN + " TEXT," + CUSTOMER_TELLER_PIX + " TEXT," + CUSTOMER_TELLER_STATUS + " TEXT, " + "FOREIGN KEY(" + CUSTOMER_TELLER_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + CUSTOMER_TELLER_ID  + "))";
     @Ignore
     private static final long serialVersionUID = 8924708152697574031L;
     @SuppressLint("SimpleDateFormat")
@@ -492,6 +495,14 @@ public class CustomerManager extends User implements Parcelable, Serializable , 
         timeLines= new ArrayList<>();
         String history = "History" + (timeLines.size() + 1);
         TimeLine timeLine = new TimeLine(tittle,timelineDetails);
+        timeLines.add(timeLine);
+    }
+
+    @Ignore
+    public void addTimeLine(int timeLineID,String tittle,String timelineDetails) {
+        timeLines= new ArrayList<>();
+        String history = "History" + (timeLines.size() + 1);
+        TimeLine timeLine = new TimeLine(timeLineID, tittle,timelineDetails);
         timeLines.add(timeLine);
     }
     @Ignore

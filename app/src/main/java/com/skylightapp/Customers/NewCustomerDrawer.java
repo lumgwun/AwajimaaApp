@@ -242,7 +242,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
             standingOrderAcct=customer.getCusStandingOrderAcct();
             if(account !=null){
                 accountBalance = account.getAccountBalance();
-                accountN = account.getAcctID();
+                accountN = account.getSkyLightAcctNo();
 
             }
 
@@ -570,7 +570,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
             standingOrderAcct=customer.getCusStandingOrderAcct();
             if(account !=null){
                 accountBalance = account.getAccountBalance();
-                accountN = account.getAcctID();
+                accountN = account.getSkyLightAcctNo();
 
             }
             if (accountBalance == 0.00) {

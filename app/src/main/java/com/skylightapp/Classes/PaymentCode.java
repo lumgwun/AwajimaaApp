@@ -6,7 +6,12 @@ import androidx.room.PrimaryKey;
 import java.io.Serializable;
 
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
+import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
 import static com.skylightapp.Classes.PaymentCode.CODE_TABLE;
+import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
+import static com.skylightapp.Classes.Profile.PROFILE_ID;
+import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ID;
+import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_TABLE;
 
 
 @Entity(tableName = CODE_TABLE)
@@ -29,9 +34,13 @@ public class PaymentCode extends  CustomerDailyReport implements Serializable {
     public static final String CODE_DATE = "code_date";
     public static final String CODE_STATUS = "code_status";
     public static final String CODE_MANAGER = "code_manager";
+    public static final String CODE_CUS_ID = "code_Cus_ID";
+    public static final String CODE_PROFILE_ID = "code_Prof_ID";
+    public static final String CODE_REPORT_NO = "code_Report_No";
 
-    public static final String CREATE_CODE_TABLE = "CREATE TABLE IF NOT EXISTS " + CODE_TABLE + " (" + CUSTOMER_ID + " INTEGER NOT NULL, " + REPORT_NUMBER + " INTEGER , " + CODE_OWNER_PHONE + " TEXT , " +
-            CODE_PIN + " LONG , " + CODE_DATE + " TEXT , " + CODE_STATUS + " TEXT , " + CODE_MANAGER + " TEXT , " + CODE_ID + " INTEGER PRIMARY KEY , " +  "FOREIGN KEY(" + REPORT_NUMBER + ") REFERENCES " + DAILY_REPORT_TABLE + "(" + REPORT_NUMBER + "))";
+    public static final String CREATE_CODE_TABLE = "CREATE TABLE IF NOT EXISTS " + CODE_TABLE + " (" + CODE_CUS_ID + " INTEGER NOT NULL, " + CODE_REPORT_NO + " INTEGER , " + CODE_OWNER_PHONE + " TEXT , " +
+            CODE_PIN + " LONG , " + CODE_DATE + " TEXT , " + CODE_STATUS + " TEXT , " + CODE_MANAGER + " TEXT , " + CODE_ID + " INTEGER PRIMARY KEY , "+ CODE_PROFILE_ID + " INTEGER , "+ "FOREIGN KEY(" + CODE_PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," + "FOREIGN KEY(" + CODE_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "),"+  "FOREIGN KEY(" + CODE_REPORT_NO + ") REFERENCES " + DAILY_REPORT_TABLE + "(" + REPORT_ID + "))";
+
     private CustomerDailyReport customerDailyReport;
 
     public PaymentCode () {

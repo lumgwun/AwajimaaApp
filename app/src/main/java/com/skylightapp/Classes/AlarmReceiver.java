@@ -24,7 +24,7 @@ import java.util.Calendar;
 
 import static com.skylightapp.Admins.SODueDateListAct.IMPORTANT_LIST_ID;
 import static com.skylightapp.Classes.Birthday.BIRTHDAY_ID;
-import static com.skylightapp.Classes.CustomerDailyReport.REPORT_NUMBER;
+import static com.skylightapp.Classes.CustomerDailyReport.REPORT_ID;
 import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ID;
 import static com.skylightapp.Classes.StandingOrder.SO_ID;
 
@@ -42,7 +42,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         String mReceivedID = intent.getStringExtra(PACKAGE_ID);
         String birthdayReceivedID = intent.getStringExtra(BIRTHDAY_ID);
         String soID = intent.getStringExtra(SO_ID);
-        String savingsID = intent.getStringExtra(REPORT_NUMBER);
+        String savingsID = intent.getStringExtra(REPORT_ID);
 
         DBHelper dbHelper = new DBHelper(context);
         Birthday birthday = dbHelper.getBirthdayReminder(birthdayReceivedID);

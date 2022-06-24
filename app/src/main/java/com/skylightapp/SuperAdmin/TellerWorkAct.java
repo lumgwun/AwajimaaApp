@@ -189,6 +189,7 @@ public class TellerWorkAct extends AppCompatActivity {
         mMonth = calendar.get(Calendar.MONTH);
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             //dbHelper = new DBHelper(this);
+            dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
             tellerCountDataCus=dbHelper.getTellerMonthCuSs(tellerProfileID);
             tellerCountDataInvestment=dbHelper.getTellerMonthInvs(tellerProfileID);
