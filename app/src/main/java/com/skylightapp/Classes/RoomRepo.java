@@ -67,7 +67,7 @@ public class RoomRepo {
     private LiveData<List<CustomerManager>> allTellers;
 
     public RoomRepo(Application application) {
-        RoomController database = RoomController.getInstance(application);
+       /* RoomController database = RoomController.getInstance(application);
         timeLineDao = database.TimeLineDao();
         allTimeLines = timeLineDao.getAllTimeLine();
         tellerCashDao = database.TellerCashDao();
@@ -164,6 +164,6 @@ public class RoomRepo {
         protected Void doInBackground(Void... voids) {
             profileDao.deleteAllProfiles();
             return null;
-        }
+        }*/
     }
 }

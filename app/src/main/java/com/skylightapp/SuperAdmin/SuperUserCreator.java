@@ -1644,7 +1644,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
-                                dbHelper.insertRole(profileID1, "Customer", uUserName, uPassword, uPhoneNumber);
+                                dbHelper.insertRole(profileID1, "Customer",  uPhoneNumber);
 
                             }
 
@@ -1687,7 +1687,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
-                                dbHelper.insertRole(profileID1, "Teller", uUserName, uPassword, uPhoneNumber);
+                                dbHelper.insertRole(profileID1, "Teller",  uPhoneNumber);
 
                             }
 
@@ -1732,7 +1732,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
-                                dbHelper.insertRole(profileID1, "AdminUser", uUserName, uPassword, uPhoneNumber);
+                                dbHelper.insertRole(profileID1, "AdminUser",  uPhoneNumber);
 
                             }
 
@@ -1753,7 +1753,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
-                                dbHelper.insertRole(profileID1, "Accountant", uUserName, uPassword, uPhoneNumber);
+                                dbHelper.insertRole(profileID1, "Accountant",  uPhoneNumber);
 
                             }
 
@@ -1792,7 +1792,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
-                                dbHelper.insertRole(profileID1, "SuperAdmin", uUserName, uPassword, uPhoneNumber);
+                                dbHelper.insertRole(profileID1, "SuperAdmin", uPhoneNumber);
 
                             }
 
@@ -1820,7 +1820,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
-                                dbHelper.insertRole(profileID1, "SupportManager", uUserName, uPassword, uPhoneNumber);
+                                dbHelper.insertRole(profileID1, "SupportManager", uPhoneNumber);
 
                             }
 

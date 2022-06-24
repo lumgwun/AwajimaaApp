@@ -112,7 +112,6 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.PinEntryView;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.RoomController;
 import com.skylightapp.Classes.RoomRepo;
 import com.skylightapp.Classes.StandingOrderAcct;
 import com.skylightapp.Classes.TimeLine;
@@ -343,7 +342,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     String referrer = "";
     private LocationCallback locationCallback;
     public static final Boolean USINGROOM = true;
-    RoomController mRoomDB;
+    //RoomController mRoomDB;
     RoomRepo roomRepo;
     ProfileDao roomTableDao;
     SupportSQLiteDatabase supportSQLiteDatabase;
@@ -561,9 +560,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                 }
             }
         };
-        RoomController db = Room.databaseBuilder(getApplicationContext(),
 
-                RoomController.class, DATABASE_NAME).build();
 
 
 
@@ -1094,10 +1091,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
     }
     public void loadProfiles(DBHelper dbHelper) {
-        mRoomDB = Room.databaseBuilder(this,RoomController.class,DATABASE_NAME)
-                .allowMainThreadQueries()
-                .build();
-        roomTableDao = mRoomDB.roomProfileTableDao();
+
         userProfile1 = new Profile(10000, "Emmanuel", "Becky", "08069524599", "urskylight@gmail.com", "1980-04-19", "female", "Skylight", "", "Rivers", "Elelenwo", "2022-04-19", "SuperAdmin", "Skylight4ever", "@Awajima2", "Confirmed", "");
         userProfile2= new Profile(1000,"Benedict", "Benedict", "08059250176", "bener@gmail.com", "25/04/1989", "male", "PH", "","Rivers", "Elelenwo", "19/04/2022","Customer", "Lumgwun", "@Awajima3","Confirmed","");
 
@@ -1519,7 +1513,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
             //dbHelper = new DBHelper(this);
             sqLiteDatabase = dbHelper.getWritableDatabase();
             dbHelper.insertAccount(profileID1, customerID, skylightMFb, accountName, virtualAccountNumber, accountBalance, accountTypeStr);
-            dbHelper.insertRole(profileID1, "Customer", uUserName, uPassword, uPhoneNumber);
+            dbHelper.insertRole(profileID1, "Customer",  uPhoneNumber);
             dbHelper.insertCustomer11(profileID1, customerID, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedState, "", joinedDate, uUserName, uPassword, mImageUri, "Customer");
 
 
@@ -1567,21 +1561,29 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
 
     private void PostRoomCode() {
-        createRoomTableIfNeeded();
-        mRoomDB = Room.databaseBuilder(this,RoomController.class,DATABASE_NAME)
-                .allowMainThreadQueries()
-                .build();
-        roomTableDao = mRoomDB.roomProfileTableDao();
-        supportSQLiteDatabase = mRoomDB.getOpenHelper().getWritableDatabase();
+        dbHelper=new DBHelper(this);
         userProfile1 = new Profile(0, "Emmanuel", "Becky", "08069524599", "urskylight@gmail.com", "1980-04-19", "female", "Skylight", "", "Rivers", "Elelenwo", "2022-04-19", "SuperAdmin", "Skylight4ever", "@Awajima2", "Confirmed", "");
         userProfile2= new Profile(0,"Benedict", "Benedict", "08059250176", "bener@gmail.com", "25/04/1989", "male", "PH", "","Rivers", "Elelenwo", "19/04/2022","Customer", "Lumgwun", "@Awajima3","Confirmed","");
 
-        if (roomTableDao.getProfileCount() < 1) {
-            //roomTableDao.insertProfile(userProfile1);
-            roomTableDao.insertProfile(userProfile2);
-            DBHelper.insertPostRoom(supportSQLiteDatabase,userProfile2);
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.insertProfile(userProfile1);
+
+
 
         }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.insertProfile(userProfile2);
+
+
+
+        }
+
 
 
     }
@@ -1691,21 +1693,6 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         manager.notify(0, builder.build());
     }
 
-
-
-    /*private void sendOTPVerCode(String otpPhoneNumber, FirebaseAuth mAuth, String sponsorID, Account account, StandingOrderAcct standingOrderAcct, Customer customer, String joinedDate, String uFirstName, String uSurname, String uPhoneNumber, String uAddress, String uUserName, String uPassword, Customer customer1, Profile customerProfile, String nIN, Profile managerProfile, String dateOfBirth, String selectedGender, String selectedOffice, String selectedState, Birthday birthday, CustomerManager customerManager, String ofBirth, long profileID1, int virtualAccountNumber, int soAccountNumber, long customerID, Long profileID2, long birthdayID, Long investmentAcctID, Long itemPurchaseAcctID, Long promoAcctID, Long packageAcctID, ArrayList<Profile> profiles, ArrayList<Customer> customers, ArrayList<CustomerManager> tellers, ArrayList<AdminUser> adminUserArrayList, ArrayList<UserSuperAdmin> superAdminArrayList) {
-        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
-                .setPhoneNumber(otpPhoneNumber)
-                .setTimeout(60L, TimeUnit.SECONDS)
-                .setActivity(SignUpAct.this)
-                .setCallbacks(codeCallBack)
-                .build();
-        PhoneAuthProvider.verifyPhoneNumber(options);
-        //firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber(otpPhoneNumber, String.valueOf(itemPurchaseAcctID));
-
-
-    }*/
-
     private void setupLocationManager() {
 
         createLocationRequest();
@@ -1723,43 +1710,6 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         request.setFastestInterval(50000);
         request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         request.setNumUpdates(3);
-
-        /*LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-                .addLocationRequest(request);
-        builder.setAlwaysShow(true);
-        PendingResult<LocationSettingsResult> result =
-                LocationServices.SettingsApi.checkLocationSettings(googleApiClient,
-                        builder.build());
-
-
-        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
-            @Override
-            public void onResult(@NonNull LocationSettingsResult result) {
-                final Status status = result.getStatus();
-                switch (status.getStatusCode()) {
-
-                    case LocationSettingsStatusCodes.SUCCESS:
-                        setInitialLocation();
-                        break;
-
-                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-
-                        try {
-
-                            status.startResolutionForResult(
-                                    SignUpAct.this,
-                                    REQUEST_CHECK_SETTINGS);
-                        } catch (IntentSender.SendIntentException e) {
-                            // Ignore the error.
-                        }
-                        break;
-
-                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-
-                        break;
-                }
-            }
-        });*/
 
 
 

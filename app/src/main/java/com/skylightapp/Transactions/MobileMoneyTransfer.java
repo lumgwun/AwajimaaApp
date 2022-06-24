@@ -295,7 +295,6 @@ public class MobileMoneyTransfer extends AppCompatActivity {
                         mySelectedCustomer.addCusTransactions(amountRequested);
                         //mySelectedCustomer.addLoans(borrowingID, amountRequested, borrowingDate, status, "", 0.00);
                         mySelectedCustomer.addCusTimeLine(title, details1);
-                        Payee payment = new Payee(momoPhoneNO, momoOperator + "," + borrowerNo, 0);
                         Loan loan = new Loan();
                         Transaction.TRANSACTION_TYPE type = Transaction.TRANSACTION_TYPE.TRANSFER;
                         applicationDb.insertTimeLine(title, details, momoTransferDate, location);

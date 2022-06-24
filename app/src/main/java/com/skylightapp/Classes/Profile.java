@@ -245,6 +245,7 @@ public class Profile extends User implements Parcelable, Serializable, BaseColum
 
 
 
+
     public void setProfilePassword(String profilePassword)   {
         this.profilePassword = profilePassword;
     }
@@ -634,6 +635,14 @@ public class Profile extends User implements Parcelable, Serializable, BaseColum
         this.profileEmail = profileEmail;
         this.nin = identity;
 
+
+    }
+    public Profile(int id, String firstName, String lastName, String state, String username) {
+        this.pID = id;
+        this.profileFirstName = firstName;
+        this.profileLastName = lastName;
+        this.profileState = state;
+        this.profileUserName = username;
 
     }
 
@@ -1422,7 +1431,7 @@ public class Profile extends User implements Parcelable, Serializable, BaseColum
 
     public void addPayee(String payeeName) {
         payees= new ArrayList<>();
-        String payeeID = "P" + (payees.size() + 1);
+        int payeeID = payees.size() + 1;
         Payee payee = new Payee(payeeID, payeeName);
         payees.add(payee);
     }

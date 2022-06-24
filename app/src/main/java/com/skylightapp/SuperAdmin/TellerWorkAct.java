@@ -192,11 +192,49 @@ public class TellerWorkAct extends AppCompatActivity {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
             tellerCountDataCus=dbHelper.getTellerMonthCuSs(tellerProfileID);
+
+
+
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            //dbHelper = new DBHelper(this);
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
             tellerCountDataInvestment=dbHelper.getTellerMonthInvs(tellerProfileID);
+
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            //dbHelper = new DBHelper(this);
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
             tellerCountDataItems=dbHelper.getTellerMonthItems(tellerProfileID);
+
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            //dbHelper = new DBHelper(this);
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
             tellerCountDataPayments=dbHelper.getTellerMonthPayment(tellerProfileID);
+
+
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            //dbHelper = new DBHelper(this);
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
             tellerCountDataSavings=dbHelper.getTellerMonthSavings(tellerProfileID);
+
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            //dbHelper = new DBHelper(this);
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
             tellerCountDataPromos=dbHelper.getTellerMonthPromo(tellerProfileID);
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            //dbHelper = new DBHelper(this);
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
             tellerCountTReports=dbHelper.getTellerMonthTReport(tellerProfileID);
 
 

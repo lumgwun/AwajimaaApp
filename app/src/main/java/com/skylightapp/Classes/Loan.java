@@ -15,6 +15,8 @@ import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
+import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ID;
+import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_TABLE;
 
 @Entity(tableName = Loan.LOAN_TABLE)
 public class Loan extends Account implements Serializable, Parcelable {
@@ -37,6 +39,7 @@ public class Loan extends Account implements Serializable, Parcelable {
     public static final String LOAN_CODE = "loan_code";
     public static final String LOAN_TABLE = "loan_table";
     public static final String LOAN_CUS_ID = "loan_Cus_id";
+    public static final String LOAN_PACK_ID = "loan_Package_id";
     public static final String LOAN_PROF_ID = "loan_Prof_id";
     public static final String LOAN_ACCT_NO = "loan_Acct_No";
 
@@ -44,7 +47,7 @@ public class Loan extends Account implements Serializable, Parcelable {
             LOAN_CUS_ID + " INTEGER , " +LOAN_PROF_ID + " INTEGER  , " + LOAN_ACCT_NO + " INTEGER , " + LOAN_TYPE + " TEXT, " + LOAN_AMOUNT + " FLOAT, " + LOAN_DURATION + " TEXT, " +
             LOAN_INTEREST + " TEXT, " + LOAN_FIXED_PAYMENT + " TEXT, " + LOAN_TOTAL_INTEREST + " TEXT, " + LOAN_DOWN_PAYMENT + " TEXT, " + LOAN_DISPOSABLE_COM + " TEXT, " +
             LOAN_MONTHLY_COM + " TEXT, " + LOAN_BALANCE + " TEXT, " + LOAN_DATE + " TEXT, " + LOAN_START_DATE + " TEXT, " + LOAN_END_DATE + " TEXT, " +
-            LOAN_STATUS + " TEXT, " + LOAN_CUSTOMER + " TEXT, " + LOAN_CODE + " LONG, " + "FOREIGN KEY(" + LOAN_ACCT_NO + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + "),"+ "FOREIGN KEY(" + LOAN_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "PRIMARY KEY(" + LOAN_ID  + "), " +
+            LOAN_STATUS + " TEXT, " + LOAN_CUSTOMER + " TEXT, " + LOAN_CODE + " LONG, "  + LOAN_PACK_ID + " LONG, " + "FOREIGN KEY(" + LOAN_PACK_ID + ") REFERENCES " + PACKAGE_TABLE + "(" + PACKAGE_ID + ")," + "FOREIGN KEY(" + LOAN_ACCT_NO + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + "),"+ "FOREIGN KEY(" + LOAN_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "PRIMARY KEY(" + LOAN_ID  + "), " +
             "FOREIGN KEY(" + LOAN_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
     private static final long serialVersionUID = 1L;

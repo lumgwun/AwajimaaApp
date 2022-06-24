@@ -46,14 +46,15 @@ public class SkyLightPackage extends CustomerDailyReport implements Parcelable, 
     public static final String PACKAGE_CODE = "package_Code";
     public static final String PACKAGE_EXPECTED_VALUE = "package_expected_amount";
     public static final String PACKAGE_ITEM = "package_item";
+    public static final String PACKAGE_REPORT_ID = "package_ReportID";
     public static final String PACKAGE_PROFILE_ID_FOREIGN = "profile_ID_Foreign";
     public static final String PACKAGE_CUSTOMER_ID_FOREIGN = "package_cus_ID_Foreign";
 
 
     public static final String CREATE_PACKAGE_TABLE = "CREATE TABLE IF NOT EXISTS " + PACKAGE_TABLE + " (" + PACKAGE_ID + " INTEGER  , " + PACKAGE_PROFILE_ID_FOREIGN + " INTEGER NOT NULL, " + PACKAGE_CUSTOMER_ID_FOREIGN + " INTEGER NOT NULL, " +
-            REPORT_ID + " INTEGER , " + PACKAGE_NAME + " TEXT, " + PACKAGE_TYPE + " TEXT, " + PACKAGE_START_DATE + " TEXT, " + PACKAGE_DURATION + " TEXT, " + PACKAGE_END_DATE + " TEXT, " +
+            PACKAGE_REPORT_ID + " INTEGER , " + PACKAGE_NAME + " TEXT, " + PACKAGE_TYPE + " TEXT, " + PACKAGE_START_DATE + " TEXT, " + PACKAGE_DURATION + " TEXT, " + PACKAGE_END_DATE + " TEXT, " +
             PACKAGE_VALUE + " TEXT, " + PACKAGE_EXPECTED_VALUE + " TEXT, " + PACKAGE_BALANCE + " TEXT, " + PACKAGE_STATUS + " TEXT, " + PACKAGE_CODE + " TEXT, " + PACKAGE_ITEM + " TEXT, " +
-            "PRIMARY KEY("  + PACKAGE_ID + "),"+ "FOREIGN KEY(" + PACKAGE_PROFILE_ID_FOREIGN + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + PACKAGE_CUSTOMER_ID_FOREIGN + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+            "PRIMARY KEY("  + PACKAGE_ID + "),"+ "FOREIGN KEY(" + PACKAGE_REPORT_ID + ") REFERENCES " + DAILY_REPORT_TABLE + "(" + REPORT_ID + "),"+ "FOREIGN KEY(" + PACKAGE_PROFILE_ID_FOREIGN + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + PACKAGE_CUSTOMER_ID_FOREIGN + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
     private static int count;
 
 

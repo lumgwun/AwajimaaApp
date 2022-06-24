@@ -239,7 +239,7 @@ public class UserSuperAdmin extends User implements  Parcelable, Serializable {
 
     public void addPayee(String payeeName) {
         payees= new ArrayList<>();
-        String payeeID = "P" + (payees.size() + 1);
+        int payeeID = payees.size() + 1;
         Payee payee = new Payee(payeeID, payeeName);
         payees.add(payee);
     }

@@ -33,7 +33,7 @@ public class AlarmsHelper {
     }*/
     public static void cancelAllPayeeAlarm(Context context, ArrayList<Payee> payees) {
         for (Payee b: payees) {
-            cancelAlarm(context, b.getPayeeID().hashCode());
+           // cancelAlarm(context, b.getPayeeID().hashCode());
         }
     }
     /*public static void cancelAllTransactionAlarm(Context context, ArrayList<Transaction> transactions) {

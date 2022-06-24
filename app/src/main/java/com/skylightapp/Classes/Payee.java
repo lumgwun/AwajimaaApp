@@ -11,6 +11,7 @@ import java.io.Serializable;
 
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
+import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 
@@ -20,35 +21,43 @@ public class Payee implements Serializable, Parcelable {
 
     public static final String PAYEE_ID = "payee_id";
     public static final String PAYEE_NAME = "payee_name";
+    public static final String PAYEE_CUS_ID = "payee_Cus_ID";
+    public static final String PAYEE_PROF_ID = "payee_Prof_ID";
 
 
-    public static final String CREATE_PAYEES_TABLE = "CREATE TABLE IF NOT EXISTS " + PAYEES_TABLE + " (" + PAYEE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT  , " + CUSTOMER_ID + " INTEGER , " + PROFILE_ID + " INTEGER , " +
-            PAYEE_NAME + " TEXT, " + "FOREIGN KEY(" + CUSTOMER_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+    public static final String CREATE_PAYEES_TABLE = "CREATE TABLE IF NOT EXISTS " + PAYEES_TABLE + " (" + PAYEE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT  , " + PAYEE_CUS_ID + " INTEGER , " + PAYEE_PROF_ID + " INTEGER , " +
+            PAYEE_NAME + " TEXT, " + "FOREIGN KEY(" + PAYEE_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," + "FOREIGN KEY(" + CUSTOMER_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
 
-    private String payeeID;
     private String payeeName;
     private String phoneNo;
     private String email;
     private String bankName;
-    private long bankAcctNo;
+    private String bankAcctNo;
     private String need;
+    private int payeeCusID;
+    private int payeeProfileID;
     private String status;
     @PrimaryKey(autoGenerate = true)
-    private int payeeDbId=1013;
+    private int payeeID=1013;
 
-    public Payee (String payeeID, String payeeName) {
+    public Payee () {
+
+    }
+
+    public Payee (int payeeID, String payeeName) {
         this.payeeID = payeeID;
         this.payeeName = payeeName;
     }
 
-    public Payee (String payeeID, String payeeName, int dbId) {
-        this(payeeID, payeeName);
-        this.payeeDbId = dbId;
+    public Payee (int payeeID, String payeeName, int dbId) {
+        this.payeeID = payeeID;
+        this.payeeName = payeeName;
+        this.payeeProfileID = dbId;
     }
 
-    public Payee(int payeeID, String phoneNo, String email, String bankName, String name, long bankAcctNo, String need, String status) {
-        this.payeeDbId = payeeID;
+    public Payee(int payeeID, String phoneNo, String email, String bankName, String name, String bankAcctNo, String need, String status) {
+        this.payeeID = payeeID;
         this.phoneNo = phoneNo;
         this.email = email;
         this.bankName = bankName;
@@ -56,18 +65,24 @@ public class Payee implements Serializable, Parcelable {
         this.need = need;
         this.status = status;
     }
+    public Payee(int payeeID, int profID, String payeeName) {
+        this.payeeID = payeeID;
+        this.payeeProfileID = profID;
+        this.payeeName = payeeName;
+
+    }
 
 
     protected Payee(Parcel in) {
-        payeeID = in.readString();
+        payeeID = in.readInt();
         payeeName = in.readString();
         phoneNo = in.readString();
         email = in.readString();
         bankName = in.readString();
-        bankAcctNo = in.readLong();
+        bankAcctNo = in.readString();
         need = in.readString();
         status = in.readString();
-        payeeDbId = in.readInt();
+        payeeID = in.readInt();
     }
 
     public static final Creator<Payee> CREATOR = new Creator<Payee>() {
@@ -82,13 +97,15 @@ public class Payee implements Serializable, Parcelable {
         }
     };
 
+
+
     public String getPayeeName() {
         return payeeName;
     }
-    public String getPayeeID() { return payeeID; }
+    public int getPayeeID() { return payeeID; }
 
     public void setPayeeDbId(int payeeDbId) {
-        this.payeeDbId = payeeDbId;
+        this.payeeID = payeeDbId;
     }
 
     @NonNull
@@ -101,14 +118,30 @@ public class Payee implements Serializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(payeeID);
+        parcel.writeInt(payeeID);
         parcel.writeString(payeeName);
         parcel.writeString(phoneNo);
         parcel.writeString(email);
         parcel.writeString(bankName);
-        parcel.writeLong(bankAcctNo);
+        parcel.writeString(bankAcctNo);
         parcel.writeString(need);
         parcel.writeString(status);
-        parcel.writeLong(payeeDbId);
+        parcel.writeLong(payeeID);
+    }
+
+    public int getPayeeCusID() {
+        return payeeCusID;
+    }
+
+    public void setPayeeCusID(int payeeCusID) {
+        this.payeeCusID = payeeCusID;
+    }
+
+    public int getPayeeProfileID() {
+        return payeeProfileID;
+    }
+
+    public void setPayeeProfileID(int payeeProfileID) {
+        this.payeeProfileID = payeeProfileID;
     }
 }

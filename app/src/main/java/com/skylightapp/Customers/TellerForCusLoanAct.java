@@ -1115,8 +1115,7 @@ public class TellerForCusLoanAct extends AppCompatActivity {
                         userProfile.addBorrowingTransaction(acctOfCustomer, amountToBorrow);
                         mySelectedCustomer.addLoans(borrowingID, amountToBorrow, borrowingDate, status, "", 0.00);
                         mySelectedCustomer.addCusTimeLine(title, details1);
-                        Payee payment = new Payee(borrower,bankName+","+borrowerNo,0);
-                        Loan loan = new Loan();
+
                         Transaction.TRANSACTION_TYPE type = Transaction.TRANSACTION_TYPE.BORROWING;
                         applicationDb.insertTimeLine(title,details,borrowingDate,location);
                         loanOTP = ThreadLocalRandom.current().nextInt(120, 1631);
@@ -1124,16 +1123,23 @@ public class TellerForCusLoanAct extends AppCompatActivity {
                         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                             dbHelper.openDataBase();
                             sqLiteDatabase = dbHelper.getWritableDatabase();
+                            applicationDb.insertNewLoan(profileID, customerID, borrowingID, amountToBorrow, borrowingDate,
+                                    bankName,bankAcctNo,borrower,accountNo, loanAcctType, code,0.00,"pending");
                             //applicationDb.overwriteAccount(userProfile, acctOfCustomer);
 
                         }
-                        applicationDb.insertNewLoan(profileID, customerID, borrowingID, amountToBorrow, borrowingDate,
-                                bankName,bankAcctNo,borrower,accountNo, loanAcctType, code,0.00,"pending");
+                        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                            dbHelper.openDataBase();
+                            sqLiteDatabase = dbHelper.getWritableDatabase();
+                            applicationDb.insertTransaction_Granting(grantingID,profileID, customerID,borrower,amountToBorrow,borrowingDate,bankName, borrower,bankAcctNo, "Loan","","","Borrowing","pending");
+
+
+                        }
+
 
 
                         Toast.makeText(this, "Borrowing of NGN" + String.format(Locale.getDefault(), "%.2f", amountToBorrow) + " was successfully submitted for approval", Toast.LENGTH_SHORT).show();
 
-                        applicationDb.insertTransaction_Granting(grantingID,profileID, customerID,borrower,amountToBorrow,borrowingDate,bankName, borrower,bankAcctNo, "Loan","","","Borrowing","pending");
 
                     }
                 }
