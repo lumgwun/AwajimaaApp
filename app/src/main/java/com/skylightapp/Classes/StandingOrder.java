@@ -24,7 +24,7 @@ public class StandingOrder extends Account {
     public static final String SO_START_DATE = "SO_Start_Date";
     public static final String SO_END_DATE = "SO_End_Date";
     public static final String SO_CUS_ID = "SO_Cus_ID";
-    public static final String SO_PROF_ID = "SO_End_Date";
+    public static final String SO_PROF_ID = "SO_Prof_ID";
     public static final String SO_APPROF_DATE = "SO_APProval_Date";
 
     public static final String CREATE_SO_TABLE = "CREATE TABLE IF NOT EXISTS " + STANDING_ORDER_TABLE + " (" + SO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + SO_DAILY_AMOUNT + " DOUBLE, " +

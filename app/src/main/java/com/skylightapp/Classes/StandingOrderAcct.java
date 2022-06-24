@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
+import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 @Entity(tableName = StandingOrderAcct.SO_ACCT_TABLE)
@@ -18,10 +19,12 @@ public class StandingOrderAcct extends  Account{
     public static final String SO_FIXED_AMOUNT = "SO_Amount";
     public static final String SO_EXPECTED_SAVINGS = "TotalAmountToSave";
     public static final String SO_SAVED_AMOUNT = "SavedAmount";
+    public static final String SO_ACCT_CUS_ID = "SO_Acct_cus_id";
+    public static final String SO_ACCT_PROF_ID = "SO_Acct_Prof_id";
 
-    public static final String CREATE_SO_ACCT_TABLE = "CREATE TABLE IF NOT EXISTS " + SO_ACCT_TABLE + " (" + SO_ACCOUNT_NO + " INTEGER, " + PROFILE_ID + " INTEGER , " +
-            CUSTOMER_ID + " INTEGER , " +  SO_ACCOUNT_NAME +"TEXT,"+
-             " TEXT, " + SO_ACCOUNT_BALANCE + " DOUBLE, " + "FOREIGN KEY(" + CUSTOMER_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "),"+
+    public static final String CREATE_SO_ACCT_TABLE = "CREATE TABLE IF NOT EXISTS " + SO_ACCT_TABLE + " (" + SO_ACCOUNT_NO + " INTEGER, " + SO_ACCT_PROF_ID + " INTEGER , " +
+            SO_ACCT_CUS_ID + " INTEGER , " +  SO_ACCOUNT_NAME +"TEXT,"+
+             " TEXT, " + SO_ACCOUNT_BALANCE + " DOUBLE, " +"FOREIGN KEY(" + SO_ACCT_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + SO_ACCT_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "),"+
             "PRIMARY KEY(" + SO_ACCOUNT_NO +  "))";
 
 

@@ -724,6 +724,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
             profileID = profileID1;
 
         }
+        edtSponsorID.setText("Your Sponsor's ID:"+profileID);
 
         profiles = new ArrayList<>();
         customers = new ArrayList<>();
