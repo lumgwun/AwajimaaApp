@@ -15,6 +15,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -106,11 +107,14 @@ public class StocksTransferAct extends AppCompatActivity {
     OfficeBranch officeBranch;
     private int recipientStockQty;
     private OfficeAdapter officeAdapter;
+    private static final String PREF_NAME = "skylight";
+    private SQLiteDatabase sqLiteDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_stocks_transfer);
+        setTitle("Stocks Transfer");
         checkInternetConnection();
         dbHelper= new DBHelper(this);
         gson = new Gson();
@@ -148,8 +152,7 @@ public class StocksTransferAct extends AppCompatActivity {
         layoutCompatCus = findViewById(R.id.layoutCus);
         layoutCompatTeller = findViewById(R.id.layoutTeller);
         layoutCompatBranch = findViewById(R.id.layoutBranch);
-
-        userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         ran = new Random();
@@ -165,14 +168,19 @@ public class StocksTransferAct extends AppCompatActivity {
         transferCode = (long) random.nextInt((int) (Math.random() * 101) + 101);
 
         @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
         transferDate = mdformat.format(calendar.getTime());
 
         itemBundle=getIntent().getExtras();
         if(itemBundle !=null){
             userProfile=itemBundle.getParcelable("Profile");
         }
-        officeBranchArrayList=dbHelper.getAllBranchOffices();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            officeBranchArrayList=dbHelper.getAllBranchOffices();
+        }
+
 
         if(userProfile !=null){
             transferer=userProfile.getProfileLastName()+","+userProfile.getProfileFirstName();
@@ -222,9 +230,14 @@ public class StocksTransferAct extends AppCompatActivity {
         if(selectedBranch !=null){
             selectedOffice=selectedBranch.getOfficeBranchName();
         }
-        stocksArrayList =dbHelper.getAllStockForProfile(profileID);
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            stocksArrayList =dbHelper.getAllStockForProfile(profileID);
+        }
 
-        //stocksArrayListForRecipient=dbHelper.getAllStockForProfile(receiverID);
+
+
 
         stocksArrayAdapter = new StocksArrayAdapter(this, android.R.layout.simple_spinner_item, stocksArrayList);
         spnStocks.setAdapter(stocksArrayAdapter);
@@ -510,8 +523,19 @@ public class StocksTransferAct extends AppCompatActivity {
                             recipientProfile.addStocks(selectedStocksID,stocksName,null,qty,transferCode,"",transferDate,"UnVerified");
 
                         }
-                        dbHelper.saveNewStocksTransfer(transferID,selectedStocksID,profileID,receiverID,stocksName,qty,transferer,transferAccepter,from,to,transferDate, this.transferCode,"UnVerified");
-                        dbHelper.updateStocksQty(selectedStocksID,newQuantity);
+                        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                            dbHelper.openDataBase();
+                            sqLiteDatabase = dbHelper.getWritableDatabase();
+                            dbHelper.saveNewStocksTransfer(transferID,selectedStocksID,profileID,receiverID,stocksName,qty,transferer,transferAccepter,from,to,transferDate, this.transferCode,"UnVerified");
+
+                        }
+                        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                            dbHelper.openDataBase();
+                            sqLiteDatabase = dbHelper.getWritableDatabase();
+                            dbHelper.updateStocksQty(selectedStocksID,newQuantity);
+                        }
+
+
                         selectedStocks.setStockItemQty(newQuantity);
                         startTellerTransferNoti();
                     }

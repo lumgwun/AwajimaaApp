@@ -15,15 +15,16 @@ public class SuperCash implements Serializable, Parcelable {
     public static final String SUPER_CASH_DATE = "SC_Date";
     public static final String SUPER_CASH_CODE = "SC_Code";
     public static final String SUPER_CASH_COLLECTOR_TYPE = "SC_Type";
-    public static final String SUPER_CASH_TRANX_STATUS = "D_status";
+    public static final String SUPER_CASH_TRANX_STATUS = "Super_Cash_status";
     public static final String SUPER_CASH_BRANCH = "SC_Branch";
     public static final String SUPER_CASH_APPROVER = "SC_Approver";
     public static final String SUPER_CASH_COLLECTOR = "SC_Collector";
+    public static final String SUPER_CASH_PROFILE_ID = "SC_Profile-ID";
     public static final String SUPER_CASH_CONFIRMATION_DATE = "SCConfirmation_Date";
 
-    public static final String CREATE_SUPER_CASH_TABLE = "CREATE TABLE IF NOT EXISTS " + SUPER_CASH_TABLE + " (" + SUPER_CASH_ID + " INTEGER PRIMARY KEY, " + PROFILE_ID + " INTEGER , " + SUPER_CASH_AMOUNT + " DOUBLE , " +
+    public static final String CREATE_SUPER_CASH_TABLE = "CREATE TABLE IF NOT EXISTS " + SUPER_CASH_TABLE + " (" + SUPER_CASH_ID + " INTEGER PRIMARY KEY, " + SUPER_CASH_PROFILE_ID + " INTEGER , " + SUPER_CASH_AMOUNT + " DOUBLE , " +
             SUPER_CASH_BRANCH + " TEXT, " + SUPER_CASH_COLLECTOR_TYPE + " TEXT , " + SUPER_CASH_COLLECTOR + " TEXT, " + SUPER_CASH_CODE + " TEXT, " + SUPER_CASH_DATE + " TEXT, " + SUPER_CASH_APPROVER + " TEXT, " +
-            SUPER_CASH_CONFIRMATION_DATE + " TEXT, " + SUPER_CASH_TRANX_STATUS + " TEXT, " +"FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+            SUPER_CASH_CONFIRMATION_DATE + " TEXT, " + SUPER_CASH_TRANX_STATUS + " TEXT, " +"FOREIGN KEY(" + SUPER_CASH_PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
 
 

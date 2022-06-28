@@ -25,7 +25,7 @@ public class AdminBankDeposit implements Serializable, Parcelable {
     public static final String DEPOSIT_ACCOUNT = "DAccount";
     public static final String DEPOSIT_BANK = "D_Bank";
     public static final String DEPOSIT_ACCOUNT_NAME = "D_Account_Name";
-    public static final String DEPOSITOR = "Depositor";
+    public static final String DEPOSITOR = "admin_Depositor";
     public static final String DEPOSIT_TRANSACTION_STATUS = "D_status";
 
     public static final String DEPOSIT_TRANS_TYPE = "D_Type";
@@ -33,12 +33,13 @@ public class AdminBankDeposit implements Serializable, Parcelable {
     public static final String DEPOSIT_APPROVER = "transaction_Approver";
     public static final String DEPOSIT_CONFIRMATION_DATE = "DConfirmation_Date";
     public static final String DEPOSIT_DOC = "deposit_doc";
+    public static final String DEPOSIT_PROFILE_ID = "deposit_Profile_Doc";
 
 
-    public static final String CREATE_ADMIN_DEPOSIT_TABLE = "CREATE TABLE IF NOT EXISTS " + DEPOSIT_TABLE + " (" + DEPOSIT_ID + " LONG, " + PROFILE_ID + " LONG , " + DEPOSIT_AMOUNT + " DOUBLE , " +
+    public static final String CREATE_ADMIN_DEPOSIT_TABLE = "CREATE TABLE IF NOT EXISTS " + DEPOSIT_TABLE + " (" + DEPOSIT_ID + " LONG, " + DEPOSIT_PROFILE_ID + " INTEGER , " + DEPOSIT_AMOUNT + " FLOAT , " +
             DEPOSIT_OFFICE_BRANCH + " TEXT, " + DEPOSIT_TRANS_TYPE + " TEXT , " + DEPOSIT_BANK + " TEXT, " + DEPOSIT_ACCOUNT_NAME + " TEXT, " +
             DEPOSIT_ACCOUNT + " TEXT, " + DEPOSIT_DATE + " TEXT, " + DEPOSITOR + " TEXT, " + DEPOSIT_APPROVER + " TEXT, " +
-            DEPOSIT_CONFIRMATION_DATE + " TEXT, " + DEPOSIT_TRANSACTION_STATUS + " TEXT, " +  DEPOSIT_DOC + " TEXT, " +"PRIMARY KEY(" +DEPOSIT_ID + "), " +"FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+            DEPOSIT_CONFIRMATION_DATE + " TEXT, " + DEPOSIT_TRANSACTION_STATUS + " TEXT, " +  DEPOSIT_DOC + " TEXT, " +"PRIMARY KEY(" +DEPOSIT_ID + "), " +"FOREIGN KEY(" + DEPOSIT_PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
 
 

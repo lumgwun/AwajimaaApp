@@ -162,7 +162,7 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
         gridLayout=(GridLayout)findViewById(R.id.ViewAdmin3);
         setSingleEvent(gridLayout);
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         //calendar.add(Calendar.DAY_OF_YEAR, 31);
         Date newDate = calendar.getTime();
         String todayDate = sdf.format(newDate);
@@ -178,7 +178,7 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
         txtGrpSavings = findViewById(R.id.GrpSavingsAdmin56);
         txtNoOfPaymentsToday = findViewById(R.id.paymentNO);
         txtTotalPayments = findViewById(R.id.adminTotalPayment);
-        paymentTotal=dbHelper.getTotalPaymentTodayForBranch(SharedPrefOffice,newDate1);
+        paymentTotal=dbHelper.getTotalPaymentTodayForBranch1(SharedPrefOffice,todayDate);
         paymentCount=dbHelper.getPaymentCountTodayForBranch(SharedPrefOffice,todayDate);
         txtNoOfPaymentsToday.setText(MessageFormat.format("Branch Payments:{0}", paymentCount));
         txtTotalPayments.setText(MessageFormat.format("Payments: N{0}", paymentTotal));

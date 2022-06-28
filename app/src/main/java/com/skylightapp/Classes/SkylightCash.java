@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
@@ -12,28 +13,41 @@ import java.util.Date;
 
 import static com.skylightapp.Classes.AdminUser.ADMIN_ID;
 import static com.skylightapp.Classes.AdminUser.ADMIN_TABLE;
+import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
+import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
 import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_ID;
 import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
-@Entity(tableName = SkylightCash.SKYLIGHT_CASH_TABLE)
+@Entity(tableName = SkylightCash.S_CASH_TABLE)
 public class SkylightCash implements Serializable, Parcelable {
-    public static final String SKYLIGHT_CASH_TABLE = "s_cash_table";
-    public static final String SKYLIGHT_CASH_ID = "sc_id";
-    public static final String SKYLIGHT_CASH_DATE = "s_cash_date";
-    public static final String SKYLIGHT_CASH_AMOUNT = "s_cash_amount";
-    public static final String SC_PAYER = "s_cash_name";
-    public static final String SC_PAYEE = "s_cash_office";
-    public static final String SKYLIGHT_CASH_ADMIN = "s_cash_admin";
-    public static final String SKYLIGHT_CASH_STATUS = "s_cash_status";
-    public static final String SKYLIGHT_CASH_CODE = "s_cash_code";
-    public static final String SKYLIGHT_CASH_FROM = "s_cash_from";
-    public static final String SKYLIGHT_CASH_TO = "s_cash_to";
+    public static final String S_CASH_TABLE = "s_cash_table";
+    public static final String S_CASH_ID = "sc_id";
+    public static final String S_CASH_DATE = "s_cash_date";
+    public static final String S_CASH_AMOUNT = "s_cash_amount";
+    public static final String S_CASH_PAYER = "s_cash_Payer";
+    public static final String S_CASH_PAYEE = "s_cash_Payee";
+    public static final String S_CASH_ADMIN = "s_cash_admin";
+    public static final String S_CASH_STATUS = "s_cash_status";
+    public static final String S_CASH_CODE = "s_cash_code";
+    public static final String S_CASH_FROM = "s_cash_from";
+    public static final String S_CASH_TO = "s_cash_to";
+    public static final String S_CASH_OFFICE_ID = "s_cash_office_ID";
+    public static final String S_CASH_ADMIN_ID = "s_cash_Admin_ID";
+    public static final String S_CASH_PROFILE_ID = "s_cash_Profile_ID";
 
-    public static final String CREATE_TELLER_CASH_TABLE = "CREATE TABLE IF NOT EXISTS " + SKYLIGHT_CASH_TABLE + " (" + SKYLIGHT_CASH_ID + " INTEGER PRIMARY KEY AUTOINCREMENT , " + OFFICE_BRANCH_ID + " INTEGER , " + ADMIN_ID + " INTEGER , " + PROFILE_ID + " INTEGER , " +
-            SKYLIGHT_CASH_DATE + " TEXT, " + SKYLIGHT_CASH_AMOUNT + " DOUBLE, " + SC_PAYER + " TEXT, " + SC_PAYEE + " TEXT, " +
-            SKYLIGHT_CASH_ADMIN + " TEXT, "  + SKYLIGHT_CASH_CODE + " TEXT," + SKYLIGHT_CASH_STATUS + " TEXT, " +SKYLIGHT_CASH_FROM + " TEXT, " + SKYLIGHT_CASH_TO + " TEXT," +"FOREIGN KEY(" + OFFICE_BRANCH_ID  + ") REFERENCES " + OFFICE_BRANCH_TABLE + "(" + OFFICE_BRANCH_ID + ")," +"FOREIGN KEY(" + PROFILE_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + ADMIN_ID + ") REFERENCES " + ADMIN_TABLE + "(" + ADMIN_ID + "))";
+
+
+
+
+    public static final String CREATE_TELLER_CASH_TABLE = "CREATE TABLE " + S_CASH_TABLE + " (" + S_CASH_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + S_CASH_OFFICE_ID + " TEXT, " + S_CASH_ADMIN_ID + " TEXT, " + S_CASH_PROFILE_ID + " TEXT, " + S_CASH_DATE + " TEXT, " + S_CASH_AMOUNT + " TEXT, " + S_CASH_PAYER + " TEXT, " +
+            S_CASH_PAYEE + " TEXT, " + S_CASH_ADMIN + " TEXT, " + S_CASH_CODE + " TEXT, " + S_CASH_STATUS + " TEXT, " + S_CASH_FROM + " TEXT, " + S_CASH_TO + " TEXT, "  + "FOREIGN KEY(" + S_CASH_OFFICE_ID + ") REFERENCES " + OFFICE_BRANCH_TABLE + "(" + OFFICE_BRANCH_ID + "))";
+
+
+
+   /* public static final String CREATE_TELLER_CASH_TABLE = "CREATE TABLE IF NOT EXISTS " + S_CASH_TABLE + " (" + S_CASH_ID + " INTEGER PRIMARY KEY AUTOINCREMENT , " + S_CASH_OFFICE_ID + " INTEGER , " + S_CASH_ADMIN_ID + " INTEGER , " + S_CASH_PROFILE_ID + " INTEGER , " + S_CASH_DATE + " TEXT, " + S_CASH_AMOUNT + " FLOAT, " + S_CASH_PAYER + " TEXT, " + S_CASH_PAYEE + " TEXT, " +
+            S_CASH_ADMIN + " TEXT, "  + S_CASH_CODE + " TEXT," + S_CASH_STATUS + " TEXT, " + S_CASH_FROM + " TEXT, " + S_CASH_TO + " TEXT," +"FOREIGN KEY(" + S_CASH_OFFICE_ID + ") REFERENCES " + OFFICE_BRANCH_TABLE + "(" + OFFICE_BRANCH_ID + ")," +"FOREIGN KEY(" + S_CASH_PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + S_CASH_ADMIN_ID + ") REFERENCES " + ADMIN_TABLE + "(" + ADMIN_ID + "))";*/
 
     //private long skylightCashID;
     @PrimaryKey(autoGenerate = true)

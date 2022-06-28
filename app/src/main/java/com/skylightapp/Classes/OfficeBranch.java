@@ -14,15 +14,16 @@ import static com.skylightapp.Classes.UserSuperAdmin.SUPER_ADMIN_TABLE;
 @Entity(tableName = OfficeBranch.OFFICE_BRANCH_TABLE)
 public class OfficeBranch implements Parcelable, Serializable{
     public static final String OFFICE_BRANCH_TABLE = "office_branch_table";
-    public static final String OFFICE_BRANCH_ID = "branch_id";
+    public static final String OFFICE_BRANCH_ID = "office_space_id";
     public static final String OFFICE_BRANCH_NAME = "office_branch_name";
     public static final String OFFICE_BRANCH_DATE = "office_branch_date";
     public static final String OFFICE_BRANCH_ADDRESS = "office_branch_address";
     public static final String OFFICE_BRANCH_APPROVER = "office_branch_approver";
     public static final String OFFICE_BRANCH_STATUS = "office_branch_status";
+    public static final String OFFICE_SUPERADMIN_ID = "branch_id";
 
-    public static final String CREATE_OFFICE_BRANCH = "CREATE TABLE IF NOT EXISTS " + OFFICE_BRANCH_TABLE + " (" + OFFICE_BRANCH_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + SUPER_ADMIN_ID + " INTEGER , " +
-            OFFICE_BRANCH_NAME + " TEXT , " + OFFICE_BRANCH_DATE + " TEXT, " + OFFICE_BRANCH_ADDRESS + " TEXT, " + OFFICE_BRANCH_APPROVER + " TEXT, " + OFFICE_BRANCH_STATUS + " TEXT, " + "FOREIGN KEY(" + SUPER_ADMIN_ID + ") REFERENCES " + SUPER_ADMIN_TABLE + "(" + SUPER_ADMIN_ID + "))";
+    public static final String CREATE_OFFICE_BRANCH = "CREATE TABLE IF NOT EXISTS " + OFFICE_BRANCH_TABLE + " (" + OFFICE_BRANCH_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + OFFICE_SUPERADMIN_ID + " INTEGER , " +
+            OFFICE_BRANCH_NAME + " TEXT , " + OFFICE_BRANCH_DATE + " TEXT, " + OFFICE_BRANCH_ADDRESS + " TEXT, " + OFFICE_BRANCH_APPROVER + " TEXT, " + OFFICE_BRANCH_STATUS + " TEXT, " + "FOREIGN KEY(" + OFFICE_SUPERADMIN_ID + ") REFERENCES " + SUPER_ADMIN_TABLE + "(" + SUPER_ADMIN_ID + "))";
     private Account account;
 
     public OfficeBranch(Parcel in) {

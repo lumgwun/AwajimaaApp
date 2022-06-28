@@ -26,7 +26,7 @@ public class Payee implements Serializable, Parcelable {
 
 
     public static final String CREATE_PAYEES_TABLE = "CREATE TABLE IF NOT EXISTS " + PAYEES_TABLE + " (" + PAYEE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT  , " + PAYEE_CUS_ID + " INTEGER , " + PAYEE_PROF_ID + " INTEGER , " +
-            PAYEE_NAME + " TEXT, " + "FOREIGN KEY(" + PAYEE_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," + "FOREIGN KEY(" + CUSTOMER_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+            PAYEE_NAME + " TEXT, " + "FOREIGN KEY(" + PAYEE_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," + "FOREIGN KEY(" + PAYEE_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
 
     private String payeeName;

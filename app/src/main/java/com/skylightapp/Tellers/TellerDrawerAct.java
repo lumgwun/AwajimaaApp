@@ -337,7 +337,7 @@ public class TellerDrawerAct extends AppCompatActivity {
         txtTellerProfileBalance = findViewById(R.id.teller_balancer);
 
         double totalSavingsForTellerToday=dbHelper.getTotalSavingsTodayForTeller(profileId,dateToday);
-        double totalPaymentForTellerToday=dbHelper.getTotalPaymentTodayForTeller(profileId,dateToday);
+        double totalPaymentForTellerToday=dbHelper.getTotalPaymentTodayForTeller1(profileId,todayDate);
         tellerTotalCash=dbHelper.getTellerCashForTellerToday(tellerName,todayDate);
         //tellerTotalCash=dbHelper.getTellerCashForTellerTheMonth(tellerName,todayDate);
         skylightTotalCashForToday=dbHelper.getSkylightCashTotalForProfileAndDate(profileId,todayDate);

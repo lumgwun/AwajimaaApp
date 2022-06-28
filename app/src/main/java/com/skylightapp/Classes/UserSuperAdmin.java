@@ -34,12 +34,13 @@ public class UserSuperAdmin extends User implements  Parcelable, Serializable {
     public static final String SUPER_ADMIN_USER_NAME = "super_admin_user_name";
     public static final String SUPER_ADMIN_PASSWORD = "super_admin_password";
     public static final String SUPER_ADMIN_NIN = "super_admin_NIN";
+    public static final String SUPER_ADMIN_PROFILE_ID = "super_admin_Prof_ID";
     public static final String SUPER_ADMIN_TABLE = "super_admin_Table";
 
 
-    public static final String CREATE_SUPER_ADMIN_TABLE = "CREATE TABLE IF NOT EXISTS " + SUPER_ADMIN_TABLE + " ( " + SUPER_ADMIN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT  , " + SUPER_ADMIN_SURNAME + " TEXT , " + PROFILE_ID + " INTEGER  , " +
+    public static final String CREATE_SUPER_ADMIN_TABLE = "CREATE TABLE IF NOT EXISTS " + SUPER_ADMIN_TABLE + " ( " + SUPER_ADMIN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT  , " + SUPER_ADMIN_SURNAME + " TEXT , " + SUPER_ADMIN_PROFILE_ID + " INTEGER  , " +
             SUPER_ADMIN_FIRST_NAME + " TEXT, " + SUPER_ADMIN_PHONE_NUMBER + " TEXT, " + SUPER_ADMIN_EMAIL_ADDRESS + " TEXT, " + SUPER_ADMIN_DOB + " TEXT, " + SUPER_ADMIN_GENDER + " TEXT, " +
-            SUPER_ADMIN_ADDRESS + " TEXT, " + SUPER_ADMIN_OFFICE + " TEXT, " + SUPER_ADMIN_USER_NAME + " TEXT, " + SUPER_ADMIN_PASSWORD + " TEXT, " + SUPER_ADMIN_NIN + " TEXT, " + "FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+            SUPER_ADMIN_ADDRESS + " TEXT, " + SUPER_ADMIN_OFFICE + " TEXT, " + SUPER_ADMIN_USER_NAME + " TEXT, " + SUPER_ADMIN_PASSWORD + " TEXT, " + SUPER_ADMIN_NIN + " TEXT, " + "FOREIGN KEY(" + SUPER_ADMIN_PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
     private static final long serialVersionUID = 8924708152697574031L;
     private int superID;

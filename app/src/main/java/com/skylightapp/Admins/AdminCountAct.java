@@ -237,7 +237,7 @@ public class AdminCountAct extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        paymentForBranchToday=dbHelper.getTotalPaymentTodayForBranch(branchName,date);
+        paymentForBranchToday=dbHelper.getTotalPaymentTodayForBranch1(branchName,todayDate);
         txtBranchPaymentToday.setText(MessageFormat.format("Branch''s Payment ,today : N{0}", paymentForBranchToday));
 
 
@@ -260,7 +260,7 @@ public class AdminCountAct extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        paymentForCusToday=dbHelper.getTotalPaymentTodayForCustomer(customerID,date);
+        paymentForCusToday=dbHelper.getTotalPaymentTodayForCustomer(customerID,todayDate);
         txtCustomerPaymentToday.setText(MessageFormat.format("Customer''s Payment ,today : N{0}", paymentForCusToday));
 
     }
@@ -282,7 +282,7 @@ public class AdminCountAct extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        paymentForTellerToday=dbHelper.getTotalPaymentTodayForTeller(tellerID1,date);
+        paymentForTellerToday=dbHelper.getTotalPaymentTodayForTeller1(tellerID1,todayDate);
         txtTellerPaymentT.setText(MessageFormat.format("Teller''s Payment ,today : N{0}", paymentForTellerToday));
 
 

@@ -15,22 +15,22 @@ import static com.skylightapp.Classes.Profile.PROFILE_ID;
 @Entity(tableName = EmergencyReport.EMERGENCY_REPORT_TABLE)
 public class EmergencyReport implements Parcelable, Serializable {
     public static final String EMERGENCY_LOCID = "emerg_id";
-    public static final String EMERGENCY_LOCTIME = "locTime";
-    public static final String EMERGENCY_REPORT = "report";
-    public static final String EMERGENCY_REPORT_ADDRESS = "address";
+    public static final String EMERGENCY_LOCTIME = "Emeg_locTime";
+    public static final String EMERGENCY_REPORT = "emerg_report";
+    public static final String EMERGENCY_REPORT_ADDRESS = "emerg_address";
     public static final String EMERGENCY_REPORT_LAT = "emerg_lat";
     public static final String EMERGENCY_REPORT_LNG = "emerg_lng";
     public static final String EMERGENCY_REPORT_LATLNG = "emerg_LatLng";
-    public static final String EMERGENCY_REPORT_TABLE = "loc_table";
-    public static final String EMERGENCY_REPORT_TYPE = "lOC_report_type";
-    public static final String EMERGENCY_REPORT_STATUS = "lOC_report_status";
+    public static final String EMERGENCY_REPORT_TABLE = "emerg_loc_table";
+    public static final String EMERGENCY_REPORT_TYPE = "emerg_lOC_report_type";
+    public static final String EMERGENCY_REPORT_PROF_ID = "emerg_lOC_report_Prof_id";
+    public static final String EMERGENCY_REPORT_STATUS = "emerg_lOC_report_status";
 
 
 
-
-    public static final String CREATE_EMERGENCY_REPORT_TABLE = "CREATE TABLE IF NOT EXISTS " + EMERGENCY_REPORT_TABLE + " (" + EMERGENCY_LOCID + " INTEGER , " + PROFILE_ID + " INTEGER , " +
+    public static final String CREATE_EMERGENCY_REPORT_TABLE = "CREATE TABLE IF NOT EXISTS " + EMERGENCY_REPORT_TABLE + " (" + EMERGENCY_LOCID + " INTEGER , " + EMERGENCY_REPORT_PROF_ID + " INTEGER , " +
             EMERGENCY_LOCTIME + " TEXT , " + EMERGENCY_REPORT_TYPE + " TEXT , " + EMERGENCY_REPORT_LAT + " TEXT , "+ EMERGENCY_REPORT_LNG + " TEXT , " + EMERGENCY_REPORT_STATUS + " TEXT , " + EMERGENCY_REPORT + " TEXT , " + EMERGENCY_REPORT_ADDRESS + " TEXT , " + EMERGENCY_REPORT_LATLNG + " TEXT , " + "PRIMARY KEY(" + EMERGENCY_LOCID + "), " +
-            "FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+            "FOREIGN KEY(" + EMERGENCY_REPORT_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
 
 

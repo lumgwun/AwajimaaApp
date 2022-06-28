@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.SnapHelper;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 
 import com.firebase.ui.auth.ui.phone.SpacedEditText;
 import com.google.gson.Gson;
+import com.skylightapp.Accountant.ElelenwoSavings;
 import com.skylightapp.Classes.AdminUser;
 import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.Profile;
@@ -43,7 +45,7 @@ public class MyStocksList extends AppCompatActivity implements MyInventAdapter.O
     int selectedDepositIndex;
     SpacedEditText edtCode;
     DBHelper dbHelper;
-    long tellerCashID,code,tellerCashCode,profileID;
+    int profileID;
     TextView txtDepositID;
     Bundle userBundle;
     PreferenceManager preferenceManager;
@@ -64,23 +66,25 @@ public class MyStocksList extends AppCompatActivity implements MyInventAdapter.O
     private ArrayList<Stocks> stocksListDate;
     private ArrayList<Stocks> stocksArrayAll;
     private AppCompatButton btnByDate;
-    TextView txtTotalSCForDate,txtTotalSCForToday,txtTotalSCTotal;
+    TextView txtTotalStocksForDate, txtTotalStocksForToday, txtTotalStocksTotal;
     double totalSCForDate,totalSCForToday,totalSC;
+    private static final String PREF_NAME = "skylight";
+    SQLiteDatabase sqLiteDatabase;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_my_stocks_list);
-        skylightCash = new SkylightCash();
+        setTitle("My Stocks List");
         stocksListDate =new ArrayList<>();
         stocksArrayListToday =new ArrayList<>();
         stocksArrayAll =new ArrayList<>();
         gson = new Gson();
         gson1 = new Gson();
-        txtTotalSCForDate = findViewById(R.id.StocksD);
-        txtTotalSCTotal = findViewById(R.id.txtTotalStocks);
-        txtTotalSCForToday = findViewById(R.id.StocksToday);
+        txtTotalStocksForDate = findViewById(R.id.StocksD);
+        txtTotalStocksTotal = findViewById(R.id.txtTotalStocks);
+        txtTotalStocksForToday = findViewById(R.id.StocksToday);
         recyclerViewCustomDate = findViewById(R.id.recyclerStocksD);
         recyclerViewToday = findViewById(R.id.recyclerStocksToday);
         recyclerViewAll = findViewById(R.id.recycler_All_Stocks);
@@ -90,11 +94,12 @@ public class MyStocksList extends AppCompatActivity implements MyInventAdapter.O
         managerProfile= new Profile();
         customerManager=new CustomerManager();
         dbHelper= new DBHelper(this);
-        userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
         managerProfile = gson.fromJson(json, Profile.class);
         json1 = userPreferences.getString("LastTellerProfileUsed", "");
         customerManager = gson1.fromJson(json, CustomerManager.class);
+        dateOfCash = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
         userBundle= new Bundle();
 
         if(managerProfile !=null){
@@ -108,45 +113,78 @@ public class MyStocksList extends AppCompatActivity implements MyInventAdapter.O
             }
         });
 
-        dateOfCash = picker.getDayOfMonth()+"/"+ (picker.getMonth() + 1)+"/"+picker.getYear();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        dateOfCash = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String todayDate = sdf.format(calendar1.getTime());
         if(dateOfCash ==null){
             dateOfCash=todayDate;
         }
-        stocksArrayListToday =dbHelper.getStocksForProfileAtDate(profileID,todayDate);
-        stocksListDate =dbHelper.getStocksForProfileAtDate(profileID,dateOfCash);
-        stocksArrayAll =dbHelper.getAllStocksForProfile(profileID);
-        totalSCForDate =dbHelper.getTotalStocksTodayForProfile(profileID,dateOfCash);
-        totalSCForToday =dbHelper.getTotalStocksTodayForProfile(profileID,todayDate);
-        totalSC=dbHelper.getStocksTotalForProfile(profileID);
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            stocksArrayListToday =dbHelper.getStocksForProfileAtDate(profileID,todayDate);
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            stocksListDate =dbHelper.getStocksForProfileAtDate(profileID,dateOfCash);
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            stocksArrayAll =dbHelper.getAllStocksForProfile(profileID);
+        }
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            totalSCForDate =dbHelper.getTotalStocksTodayForProfile(profileID,dateOfCash);
+
+        }
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            totalSCForToday =dbHelper.getTotalStocksTodayForProfile(profileID,todayDate);
+        }
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            totalSC=dbHelper.getStocksTotalForProfile(profileID);
+        }
+
 
         if(totalSC >0){
-            txtTotalSCTotal.setText("Total Items:"+ totalSC);
+            txtTotalStocksTotal.setText("Total Items:"+ totalSC);
 
         }else{
             if(totalSC ==0){
-                txtTotalSCTotal.setText("Oops! no Skylight Stocks for this profile");
+                txtTotalStocksTotal.setText("Oops! no Skylight Stocks for this profile");
 
             }
 
         }
         if(totalSCForToday >0){
-            txtTotalSCForToday.setText("Today Cash  N:"+ totalSCForToday);
+            txtTotalStocksForToday.setText("Today Cash  N:"+ totalSCForToday);
 
         }else{
             if(totalSCForToday ==0){
-                txtTotalSCForToday.setText("Oops! no Skylight Stocks for Today");
+                txtTotalStocksForToday.setText("Oops! no Skylight Stocks for Today");
 
             }
 
         }
         if(totalSCForDate >0){
-            txtTotalSCForDate.setText("Selected Date Stocks :"+ totalSCForDate);
+            txtTotalStocksForDate.setText("Selected Date Stocks :"+ totalSCForDate);
 
         }else{
             if(totalSCForDate ==0){
-                txtTotalSCForDate.setText("Oops! no Skylight Stocks for the Date");
+                txtTotalStocksForDate.setText("Oops! no Skylight Stocks for the Date");
 
             }
 
@@ -154,7 +192,8 @@ public class MyStocksList extends AppCompatActivity implements MyInventAdapter.O
 
 
         adapterToday = new MyInventAdapter(this, stocksArrayListToday);
-        LinearLayoutManager linearLayoutManagerT = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManagerT
+                = new LinearLayoutManager(MyStocksList.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerViewToday.setLayoutManager(linearLayoutManagerT);
         recyclerViewToday.setItemAnimator(new DefaultItemAnimator());
         recyclerViewToday.setAdapter(adapterToday);
@@ -164,7 +203,8 @@ public class MyStocksList extends AppCompatActivity implements MyInventAdapter.O
 
 
         adapterAll = new MyInventAdapter(this, stocksArrayAll);
-        LinearLayoutManager linearLayoutManagerAll = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManagerAll
+                = new LinearLayoutManager(MyStocksList.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerViewAll.setLayoutManager(linearLayoutManagerAll);
         recyclerViewAll.setItemAnimator(new DefaultItemAnimator());
         recyclerViewAll.setAdapter(adapterAll);
@@ -189,7 +229,7 @@ public class MyStocksList extends AppCompatActivity implements MyInventAdapter.O
         });
     }
     private void chooseDate(String dateOfCash) {
-        dateOfCash = picker.getDayOfMonth()+"/"+ (picker.getMonth() + 1)+"/"+picker.getYear();
+        dateOfCash = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
 
 
     }

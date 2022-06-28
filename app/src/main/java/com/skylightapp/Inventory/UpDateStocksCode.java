@@ -33,22 +33,26 @@ public class UpDateStocksCode extends AppCompatActivity {
     TextView txtStocksID;
     String dateOfApproval;
     DatePicker picker;
-    long profileID,code,stocksCode;
+    private  int profileID;
+    long code,stocksCode;
     String selectedStatus, profileName,officeBranch;
     Gson gson,gson1;
     String json,json1,nIN;
     Profile userProfile;
     PreferenceManager preferenceManager;
     SharedPreferences userPreferences;
+    private static final String PREF_NAME = "skylight";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_up_date_stocks_code);
+        setTitle("Stocks Code Updating");
         stocks= new Stocks();
         gson1 = new Gson();
         gson = new Gson();
-        userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        userProfile= new Profile();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         json = userPreferences.getString("LastTellerProfileUsed", "");
@@ -70,7 +74,7 @@ public class UpDateStocksCode extends AppCompatActivity {
         btnRunUpdate = findViewById(R.id.confirmStocksUpdate);
         btnRunUpdate.setOnClickListener(this::updateStocksCode);
         Calendar calendar1 = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String todayDate = sdf.format(calendar1.getTime());
 
 
@@ -94,7 +98,7 @@ public class UpDateStocksCode extends AppCompatActivity {
         });
     }
     private void chooseDate(String dateOfApproval) {
-        dateOfApproval = picker.getDayOfMonth()+"/"+ (picker.getMonth() + 1)+"/"+picker.getYear();
+        dateOfApproval = picker.getYear()+"/"+ (picker.getMonth() + 1)+"/"+picker.getDayOfMonth();
 
 
 

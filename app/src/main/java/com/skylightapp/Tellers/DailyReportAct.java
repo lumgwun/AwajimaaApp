@@ -251,7 +251,7 @@ public class DailyReportAct extends AppCompatActivity {
 
     }
     private void processReport(CustomerManager customerManager, String dateOfReport, String SharedPrefProfileID, Profile userProfile, ArrayList<TellerReport> tellerReports, int noOfSavings, int officeBranchID){
-        Date reportDate=null;
+        String reportDate=null;
         tellerReports = null;
         if(dateOfReport ==null){
             Calendar calendar = Calendar.getInstance();
@@ -259,13 +259,9 @@ public class DailyReportAct extends AppCompatActivity {
             SimpleDateFormat dateFormat = new SimpleDateFormat(
                     "yyyy-MM-dd", Locale.getDefault());
 
-            try {
-                dateOfReport=dateFormat.format(currentDate);
-                reportDate = dateFormat.parse(dateOfReport);
+            dateOfReport=dateFormat.format(currentDate);
+            reportDate = dateOfReport;
 
-
-            } catch (ParseException e) {
-            }
 
         }
         spnNoOfClients = findViewById(R.id.spinnerNoOfClients);
@@ -354,7 +350,7 @@ public class DailyReportAct extends AppCompatActivity {
                     if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                         sqLiteDatabase = applicationDb.getWritableDatabase();
                         try {
-                            applicationDb.insertTellerReport(tellerID, officeBranchID,reportDate,officeBranch,amountEntered, noOfSavings,cmName);
+                            applicationDb.insertTellerReport1( officeBranchID,0,tellerID,reportDate,amountEntered, noOfSavings,0.00,0.00,0.00,officeBranch,cmName,"");
                             applicationDb.insertTimeLine(timelineTittle,timelineDetails,dateOfReport,location);
                             startNotification();
                             Toast.makeText(DailyReportAct.this, "Report submission was successful" , Toast.LENGTH_LONG).show();

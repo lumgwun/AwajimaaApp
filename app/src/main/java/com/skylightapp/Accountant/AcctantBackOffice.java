@@ -190,7 +190,7 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
             }
         });
         accountBalance = dbHelper.getAdminReceivedBalance();
-        manualPayment=dbHelper.getTotalPaymentToday(today);
+        manualPayment=dbHelper.getTotalPaymentToday1(dateOfToday);
         totalSavingsToday=dbHelper.getTotalSavingsToday(dateOfToday);
         if(totalSavingsToday>0){
             textAmtOfSavings.setText(MessageFormat.format("Savings today:{0}", totalSavingsToday));

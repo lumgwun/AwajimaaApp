@@ -19,11 +19,14 @@ public class AdminBalance extends Account {
     public static final String ADMIN_EXPECTED_BALANCE = "Ab_exp_mount";
     public static final String ADMIN_RECEIVED_AMOUNT = "ab_received_mount";
     public static final String ADMIN_BALANCE_DATE = "ab_Date";
+    public static final String ADMIN_BALANCE_PROFILE_ID = "ab_Prof_ID";
+    public static final String ADMIN_BALANCE_CUS_ID = "ab_Cus_ID";
+    public static final String ADMIN_BALANCE_PACKID = "ab_PackID";
     public static final String ADMIN_BALANCE_STATUS = "admin_balance_status";
 
 
-    public static final String CREATE_ADMIN_BALANCE_TABLE = "CREATE TABLE " + ADMIN_BALANCE_TABLE + " (" + ADMIN_BALANCE_NO + " INTEGER, " + PROFILE_ID + " INTEGER, " + CUSTOMER_ID + " INTEGER, " + PACKAGE_ID + " LONG, " + ADMIN_EXPECTED_BALANCE + " DOUBLE, " +
-            ADMIN_RECEIVED_AMOUNT + " DOUBLE, " + ADMIN_BALANCE_DATE + " TEXT , " + ADMIN_BALANCE_STATUS + " DOUBLE, " +
+    public static final String CREATE_ADMIN_BALANCE_TABLE = "CREATE TABLE " + ADMIN_BALANCE_TABLE + " (" + ADMIN_BALANCE_NO + " INTEGER, " + ADMIN_BALANCE_PROFILE_ID + " INTEGER, " + ADMIN_BALANCE_CUS_ID + " INTEGER, " + ADMIN_BALANCE_PACKID + " INTEGER, " + ADMIN_EXPECTED_BALANCE + " FLOAT, " +
+            ADMIN_RECEIVED_AMOUNT + " FLOAT, " + ADMIN_BALANCE_DATE + " TEXT , " + ADMIN_BALANCE_STATUS + " TEXT, " +
             "PRIMARY KEY(" + ADMIN_BALANCE_NO  + "))";
 
 

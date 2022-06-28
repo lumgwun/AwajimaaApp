@@ -52,6 +52,8 @@ import com.skylightapp.Classes.Utils;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.LoginDirectorActivity;
 import com.skylightapp.R;
+import com.skylightapp.SMSAct;
+import com.skylightapp.SignUpAct;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 
@@ -69,6 +71,7 @@ import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.skylightapp.Classes.Profile.PROFILE_PHONE;
 import static com.skylightapp.Transactions.OurConfig.TWILIO_ACCOUNT_SID;
 import static com.skylightapp.Transactions.OurConfig.TWILIO_AUTH_TOKEN;
 
@@ -112,7 +115,6 @@ public class InStocksAct extends AppCompatActivity {
 
     int stockIDNumber,uStockQuantity;
     int customerID1 ;
-    long profileID1 ;
     DBHelper dbHelper;
 
     public static final String ACCOUNT_SID = System.getenv("ACb6e4c829a5792a4b744a3e6bd1cf2b4e");
@@ -150,14 +152,17 @@ public class InStocksAct extends AppCompatActivity {
     CircleImageView stocksPix;
     private UserSuperAdmin userSuperAdmin;
     private AdminUser adminUser;
-    long stocksID;
+    int stocksID;
     private  Spinner spnStockBranch,spnStockPackage;
-    String todayDate;
+    String todayDate,name;
+    private static final String PREF_NAME = "skylight";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_in_stocks);
+        setTitle("New Stocks onBoarding");
         checkInternetConnection();
         btnDoStockProcessing = findViewById(R.id.submitStocks);
         adminUser=new AdminUser();
@@ -166,7 +171,7 @@ public class InStocksAct extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBarStocks);
         userSuperAdmin =new UserSuperAdmin();
         stocksArrayList = new ArrayList<>();
-        userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
         stockManager = gson.fromJson(json, Profile.class);
         json1 = userPreferences.getString("LastSuperProfileUsed", "");
@@ -190,10 +195,10 @@ public class InStocksAct extends AppCompatActivity {
         spnStockBranch = findViewById(R.id.StockBranch);
         spnStockPackage = findViewById(R.id.StockPackageName);
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-        stocksID = (long) random.nextInt((int) (Math.random() * 101) + 110);
+        stocksID = random.nextInt((int) (Math.random() * 101) + 110);
 
         @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
         todayDate = mdformat.format(calendar.getTime());
 
         spnStockPackage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -262,6 +267,7 @@ public class InStocksAct extends AppCompatActivity {
             }
 
         }
+        name=superSurname +""+superFirstName;
 
         if(stockManager !=null){
             superSurname = stockManager.getProfileLastName();
@@ -282,7 +288,7 @@ public class InStocksAct extends AppCompatActivity {
                 chooseDate();
             }
         });
-        stockDate = picker.getDayOfMonth()+"/"+ (picker.getMonth() + 1)+"/"+picker.getYear();
+        stockDate = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
 
         stockIDNumber = random.nextInt((int) (Math.random() * 1573) + 1753);
 
@@ -302,22 +308,28 @@ public class InStocksAct extends AppCompatActivity {
     }
 
     private void chooseDate() {
-        stockDate = picker.getDayOfMonth()+"/"+ (picker.getMonth() + 1)+"/"+picker.getYear();
+        stockDate = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
+
 
     }
     public void submitStocks(View view) {
         startStockingActivity(selectedOfficeBranch, stockManager, stocksArrayList, stockDate,userSuperAdmin, selectedStockPackage, (int) stocksID);
     }
-    protected void sendSMSMessage22() {
-        String welcomeMessage="New Stocks have been added";
-        Twilio.init(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
-        Message message = Message.creator(
-                new com.twilio.type.PhoneNumber("08069524599"),
-                new com.twilio.type.PhoneNumber("2348069524599"),
-                welcomeMessage)
-                .create();
+    public void sendTextMessage(String name) {
+        Bundle smsBundle = new Bundle();
+        String theMessage="New Stocks have been added"+""+"by"+name;
+        smsBundle.putString(PROFILE_PHONE, "234806952459");
+        smsBundle.putString("USER_PHONE", "234806952459");
+        smsBundle.putString("smsMessage", theMessage);
+        smsBundle.putString("to", "234806952459");
+        Intent otpIntent = new Intent(InStocksAct.this, SMSAct.class);
+        otpIntent.putExtras(smsBundle);
+        otpIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        setResult(RESULT_OK, otpIntent);
+        //startActivity(itemPurchaseIntent);
 
     }
+
 
     public void startStockingActivity(String selectedOfficeBranch, Profile stockManager, ArrayList<Stocks> stocksArrayList, String stockDate, UserSuperAdmin userSuperAdmin, String selectedStockPackage, int stocksID) {
         userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
@@ -448,10 +460,22 @@ public class InStocksAct extends AppCompatActivity {
                         if (userSuperAdmin != null) {
                             userSuperAdmin.addStocks(stocksID,selectedStockPackage,uStockType,uStockModel,uStockColor,uStockSize,uStockQuantity,selectedOfficeBranch,uStockPricePerUnit,stockDate);
                         }
-                        dbHelper.insertStock(stocksID,superID,selectedStockPackage,uStockType,uStockModel,uStockColor,uStockSize,uStockQuantity,selectedOfficeBranch,stockDate,stockerName);
-                        dbHelper.insertTimeLine(tittle,details,stockDate,location);
+                        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                            dbHelper.openDataBase();
+                            sqLiteDatabase = dbHelper.getWritableDatabase();
+                            dbHelper.insertStock(stocksID,superID,selectedStockPackage,uStockType,uStockModel,uStockColor,uStockSize,uStockQuantity,selectedOfficeBranch,stockDate,stockerName);
+
+                        }
+
+                        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                            dbHelper.openDataBase();
+                            sqLiteDatabase = dbHelper.getWritableDatabase();
+                            dbHelper.insertTimeLine(tittle,details,stockDate,location);
+                        }
+
 
                         startStocksNotification();
+                        sendTextMessage(stockerName);
                     }
                 } catch (NullPointerException e) {
                     System.out.println("Oops!");

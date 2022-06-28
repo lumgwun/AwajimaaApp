@@ -11,10 +11,10 @@ import java.util.Date;
 
 import static com.skylightapp.Classes.AdminUser.ADMIN_ID;
 import static com.skylightapp.Classes.AdminUser.ADMIN_TABLE;
-import static com.skylightapp.Classes.CustomerManager.CUSTOMER_TELLER_ID;
-import static com.skylightapp.Classes.CustomerManager.CUSTOMER_TELLER_TABLE;
 import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_ID;
 import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_TABLE;
+import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
+import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 @Entity(tableName = TellerReport.TELLER_REPORT_TABLE)
 public class TellerReport  implements Serializable, Parcelable {
@@ -22,7 +22,7 @@ public class TellerReport  implements Serializable, Parcelable {
     public static final String TELLER_REPORT_ID = "teller_report_id";
     public static final String TELLER_REPORT_DATE = "T_R_Date";
     public static final String TELLER_REPORT_AMOUNT_SUBMITTED = "T_R_Amt_Submitted";
-    public static final String TELLER_REPORT_NO_OF_CUS = "T_R_No_Of_Savings";
+    public static final String TELLER_REPORT_NO_OF_SAVINGS = "T_R_No_Of_Savings";
     public static final String TELLER_REPORT_BALANCE = "T_R_Balance";
     public static final String TELLER_REPORT_AMT_PAID = "T_R_Amt_Paid";
     public static final String TELLER_REPORT_EXPECTED_AMT = "T_R_Expected_Amt";
@@ -36,13 +36,13 @@ public class TellerReport  implements Serializable, Parcelable {
     public static final String TELLER_REPORT_APPROVAL_DATE = "T_R_ApprovalDate";
     public static final String TELLER_REPORT_ADMIN_ID = "T_R_AdminID";
     public static final String TELLER_REPORT_OFFICE_ID = "T_R_OfficeID";
-    public static final String TELLER_REPORT_TELLER_ID = "T_R_TellerCID";
+    //public static final String TELLER_REPORT_TELLER_ID = "T_R_TellerCID";
 
 
-    public static final String CREATE_TELLER_REPORT_TABLE = "CREATE TABLE IF NOT EXISTS " + TELLER_REPORT_TABLE + " (" + TELLER_REPORT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TELLER_REPORT_OFFICE_ID + " INTEGER , " + TELLER_REPORT_ADMIN_ID + " INTEGER , " + CUSTOMER_TELLER_ID + " INTEGER , " +
-            TELLER_REPORT_DATE + " TEXT, " + TELLER_REPORT_AMOUNT_SUBMITTED + " DOUBLE , " + TELLER_REPORT_NO_OF_CUS + " TEXT, " + TELLER_REPORT_BALANCE + " DOUBLE, " +
-            TELLER_REPORT_AMT_PAID + " DOUBLE, " + TELLER_REPORT_EXPECTED_AMT + " DOUBLE, " + TELLER_REPORT_BRANCH + " DOUBLE, " +
-            TELLER_REPORT_ADMIN + " TEXT, " + TELLER_REPORT_MARKETER + " TEXT, " + TELLER_REPORT_APPROVAL_DATE + " DATE," + TELLER_REPORT_STATUS + " TEXT," + "FOREIGN KEY(" + TELLER_REPORT_OFFICE_ID  + ") REFERENCES " + OFFICE_BRANCH_TABLE + "(" + OFFICE_BRANCH_ID + ")," +"FOREIGN KEY(" + TELLER_REPORT_TELLER_ID  + ") REFERENCES " + CUSTOMER_TELLER_TABLE + "(" + CUSTOMER_TELLER_ID + ")," +"FOREIGN KEY(" + TELLER_REPORT_ADMIN_ID + ") REFERENCES " + ADMIN_TABLE + "(" + ADMIN_ID + "))";
+    public static final String CREATE_TELLER_REPORT_TABLE = "CREATE TABLE IF NOT EXISTS " + TELLER_REPORT_TABLE + " (" + TELLER_REPORT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TELLER_REPORT_OFFICE_ID + " INTEGER , " + TELLER_REPORT_ADMIN_ID + " INTEGER , " + TELLER_REPORT_PROF_ID + " INTEGER , " +
+            TELLER_REPORT_DATE + " TEXT, " + TELLER_REPORT_AMOUNT_SUBMITTED + " FLOAT , " + TELLER_REPORT_NO_OF_SAVINGS + " TEXT, " + TELLER_REPORT_BALANCE + " FLOAT, " +
+            TELLER_REPORT_AMT_PAID + " FLOAT, " + TELLER_REPORT_EXPECTED_AMT + " FLOAT, " + TELLER_REPORT_BRANCH + " FLOAT, " +
+            TELLER_REPORT_ADMIN + " TEXT, " + TELLER_REPORT_MARKETER + " TEXT, " + TELLER_REPORT_APPROVAL_DATE + " TEXT," + TELLER_REPORT_STATUS + " TEXT," + "FOREIGN KEY(" + TELLER_REPORT_OFFICE_ID  + ") REFERENCES " + OFFICE_BRANCH_TABLE + "(" + OFFICE_BRANCH_ID + ")," +"FOREIGN KEY(" + TELLER_REPORT_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + TELLER_REPORT_ADMIN_ID + ") REFERENCES " + ADMIN_TABLE + "(" + ADMIN_ID + "))";
 
 
 

@@ -6,6 +6,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -44,7 +45,7 @@ public class SuperAnyDayCount extends AppCompatActivity {
     ArrayAdapter<Profile> profileArrayAdapter2;
     ArrayList<Profile> profileArrayList;
     ArrayList<Profile> profileArrayList2;
-    String json, branchName, branchName1, todayDate,dateOfCount,tellerMachine, customerMachine, stringTeller, stringCustomer, branchName2, tellerIDString, tellerIDString1, tellerIDString2, customerIDString;
+    String json, branchName, branchName1, todayDate, dateOf,tellerMachine, customerMachine, stringTeller, stringCustomer, branchName2, tellerIDString, tellerIDString1, tellerIDString2, customerIDString;
     double totalSavings2Today33;
     int totalSavingsToday, soCount, selectedTellerIndex, cusCountForOffice, selectedCusIndex, countToday, countPackageToday, customerCountToday, customersForTeller;
     private Profile userProfile;
@@ -58,6 +59,7 @@ public class SuperAnyDayCount extends AppCompatActivity {
     protected DatePickerDialog datePickerDialog;
     DatePicker picker;
     SimpleDateFormat sdf;
+    private SQLiteDatabase sqLiteDatabase;
 
     private Spinner spnPaymentBranchT, spnCusDetails, spnTellersDetails;
     String finalTodayDate;
@@ -87,8 +89,7 @@ public class SuperAnyDayCount extends AppCompatActivity {
                 chooseDate();
             }
         });
-        dateOfCount = picker.getDayOfMonth()+"-"+ (picker.getMonth() + 1)+"-"+picker.getYear();
-        //AdminBalance adminBalance = new AdminBalance();
+        dateOf = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
         json = sharedpreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
@@ -99,6 +100,10 @@ public class SuperAnyDayCount extends AppCompatActivity {
             date=sdf.parse(todayDate);
         } catch (ParseException e) {
             e.printStackTrace();
+        }
+        if(dateOf ==null){
+            dateOf=todayDate;
+
         }
         txtCustomerPaymentToday = findViewById(R.id.CustomerPaymentToday22);
         btnGetCusDetails = findViewById(R.id.buttonCusPayment);
@@ -118,9 +123,18 @@ public class SuperAnyDayCount extends AppCompatActivity {
         txtTellerPaymentT = findViewById(R.id.tellerPaymentT);
 
         txtTellerNewCus = findViewById(R.id.TellerNewCus);
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            profileArrayList = dbHelper.getTellersFromMachine(tellerMachine);
+        }
 
-        profileArrayList = dbHelper.getTellersFromMachine(tellerMachine);
-        customerArrayList = dbHelper.getAllCustomerSpinner();
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            customerArrayList = dbHelper.getAllCustomerSpinner();
+        }
 
         spnTellersDetails = findViewById(R.id.spnTellerPayment);
         spnCusDetails = findViewById(R.id.spnCusPayment);
@@ -184,44 +198,98 @@ public class SuperAnyDayCount extends AppCompatActivity {
         btnGetCusDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                paymentForCusToday = dbHelper.getTotalPaymentTodayForCustomer(customerID, date);
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    dbHelper.openDataBase();
+                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    paymentForCusToday = dbHelper.getTotalPaymentTodayForCustomer(customerID, dateOf);
+                }
+
 
             }
         });
 
         btnGetTellerDetails.setOnClickListener(this::getTellerTotalPayment);
 
-        finalTodayDate = dateOfCount;
+        finalTodayDate = dateOf;
         btnGetTellerDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                paymentForTellerToday = dbHelper.getTotalPaymentTodayForTeller(tellerID1, date);
-                paymentTotalForTeller = dbHelper.getTotalPaymentForTeller(tellerID);
-                customersForTeller = dbHelper.getNewCustomersCountForTodayTeller(tellerID2, finalTodayDate);
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    dbHelper.openDataBase();
+                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    paymentForTellerToday = dbHelper.getTotalPaymentTodayForTeller1(tellerID1, dateOf);
+                }
+
+
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    dbHelper.openDataBase();
+                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    paymentTotalForTeller = dbHelper.getTotalPaymentForTeller(tellerID);
+                }
+
+
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    dbHelper.openDataBase();
+                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    customersForTeller = dbHelper.getNewCustomersCountForTodayTeller(tellerID2, finalTodayDate);
+                }
+
 
 
             }
         });
 
         btnGetBranchDetails.setOnClickListener(this::getTotalPaymentBranch);
-        String finalTodayDate1 = dateOfCount;
+        String finalTodayDate1 = dateOf;
         btnGetBranchDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 cusCountForOffice = dbHelper.getNewCustomersCountForTodayOffice(branchName, finalTodayDate1);
                 paymentForBranchTotal = dbHelper.getTotalPaymentForBranch(branchName1);
-                paymentForBranchToday = dbHelper.getTotalPaymentTodayForBranch(branchName2, date);
+                paymentForBranchToday = dbHelper.getTotalPaymentTodayForBranch1(branchName2, dateOf);
 
 
             }
         });
-        soCount = dbHelper.getStandingOrderCountToday(dateOfCount);
-        totalSavingsToday = dbHelper.getSavingsCountToday(dateOfCount);
-        totalSavings2Today33 = dbHelper.getTotalSavingsToday(dateOfCount);
-        customerCountToday = dbHelper.getAllNewCusCountForToday(dateOfCount);
-        countPackageToday = dbHelper.getNewPackageCountToday(dateOfCount);
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            soCount = dbHelper.getStandingOrderCountToday(dateOf);
+        }
 
-        countToday = dbHelper.getAllTxCountForToday(dateOfCount);
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            totalSavingsToday = dbHelper.getSavingsCountToday(dateOf);
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            totalSavings2Today33 = dbHelper.getTotalSavingsToday(dateOf);
+        }
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            customerCountToday = dbHelper.getAllNewCusCountForToday(dateOf);
+
+        }
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            countPackageToday = dbHelper.getNewPackageCountToday(dateOf);
+        }
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            countToday = dbHelper.getAllTxCountForToday(dateOf);
+        }
+
 
         txtNewCusToday.setText(MessageFormat.format("New Customers:{0}", customerCountToday));
         txtTellerNewCus.setText(MessageFormat.format("Teller Cus:{0}", customersForTeller));
@@ -235,7 +303,7 @@ public class SuperAnyDayCount extends AppCompatActivity {
 
     }
     private void chooseDate() {
-        dateOfCount = picker.getDayOfMonth()+"-"+ (picker.getMonth() + 1)+"-"+picker.getYear();
+        dateOf = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
 
     }
 

@@ -7,6 +7,8 @@ import androidx.appcompat.widget.AppCompatEditText;
 
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +20,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import com.google.gson.Gson;
+import com.skylightapp.Classes.AdminUser;
+import com.skylightapp.Classes.Profile;
+import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.R;
 import com.squareup.picasso.Picasso;
@@ -31,21 +37,39 @@ public class DepDocAct extends AppCompatActivity {
     private AppCompatEditText edtDocID;
     private ImageView chosenImageView;
     private ProgressBar uploadProgressBar;
+    SQLiteDatabase sqLiteDatabase;
 
     private Uri mImageUri;
 
     private Bundle docBundle;
-    long adminDepositID;
+    int adminDepositID;
     DBHelper dbHelper;
     private AdminBankDeposit adminBankDeposit;
+    Gson gson,gson1;
+    String json,json1;
+    private Profile managerProfile;
+    SharedPreferences userPreferences;
+    private  AdminUser adminUser;
+    private static final String PREF_NAME = "skylight";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_dep_doc);
+        setTitle("Admin Deposit Doc.");
+        adminUser=new AdminUser();
+        gson1 = new Gson();
+        gson = new Gson();
+        managerProfile= new Profile();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        json = userPreferences.getString("LastProfileUsed", "");
+        managerProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastAdminProfileUsed", "");
+        adminUser = gson1.fromJson(json, AdminUser.class);
         chooseImageBtn = findViewById(R.id.button_choose_image);
         uploadBtn = findViewById(R.id.uploadBtn);
         mImageUri=null;
+        sqLiteDatabase = dbHelper.getWritableDatabase();
         adminBankDeposit= new AdminBankDeposit();
         docBundle=getIntent().getExtras();
         dbHelper = new DBHelper(this);
@@ -72,7 +96,12 @@ public class DepDocAct extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(mImageUri !=null){
-                    dbHelper.updateAdminDeposit(adminDepositID,mImageUri);
+                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                        dbHelper.openDataBase();
+                        dbHelper.updateAdminDeposit(adminDepositID,mImageUri);
+
+                    }
                 }else{
                     Toast.makeText(DepDocAct.this, "Deposit Document can not be Empty", Toast.LENGTH_LONG).show();
 

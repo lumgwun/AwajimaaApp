@@ -8,6 +8,7 @@ import androidx.preference.PreferenceManager;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,13 +38,15 @@ public class UpDateDeposit extends AppCompatActivity {
     int selectedDepositIndex;
     AppCompatEditText edtAmount;
     DBHelper dbHelper;
-    long adminDepositID;
+    int adminDepositID;
     TextView txtDepositID;
     Gson gson,gson1;
     String json,json1,nIN;
     Profile userProfile;
     PreferenceManager preferenceManager;
     SharedPreferences userPreferences;
+    private static final String PREF_NAME = "skylight";
+    SQLiteDatabase sqLiteDatabase;
 
     Spinner.OnItemSelectedListener spnClickListener = new AdapterView.OnItemSelectedListener() {
         @Override
@@ -82,12 +85,13 @@ public class UpDateDeposit extends AppCompatActivity {
         setContentView(R.layout.act_up_date_deposit);
         adminBankDeposit= new AdminBankDeposit();
         dbHelper= new DBHelper(this);
+        sqLiteDatabase = dbHelper.getWritableDatabase();
         spnDepositStatus = findViewById(R.id.spinnerUpdateS);
         edtAmount = findViewById(R.id.adminEdtAmount);
         txtDepositID = findViewById(R.id.txtDepositID);
         gson1 = new Gson();
         gson = new Gson();
-        userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         json = userPreferences.getString("LastTellerProfileUsed", "");
@@ -96,7 +100,7 @@ public class UpDateDeposit extends AppCompatActivity {
         btnRunUpdate.setOnClickListener(this::updateDepositReport);
         superAdminName="Super Admin";
         Calendar calendar1 = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String todayDate = sdf.format(calendar1.getTime());
         picker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +108,7 @@ public class UpDateDeposit extends AppCompatActivity {
                 chooseDate(dateOfApproval);
             }
         });
-        dateOfApproval = picker.getDayOfMonth()+"/"+ (picker.getMonth() + 1)+"/"+picker.getYear();
+        dateOfApproval = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
 
         spnDepositStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -135,13 +139,22 @@ public class UpDateDeposit extends AppCompatActivity {
         btnRunUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dbHelper.updateAdminDeposit(adminDepositID,selectedStatus,superAdminName,dateOfApproval);
+                sqLiteDatabase = dbHelper.getWritableDatabase();
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    dbHelper.openDataBase();
+                    dbHelper.updateAdminDeposit(adminDepositID,selectedStatus,superAdminName,dateOfApproval);
+
+
+
+
+                }
+
 
             }
         });
     }
     private void chooseDate(String dateOfApproval) {
-        dateOfApproval = picker.getDayOfMonth()+"/"+ (picker.getMonth() + 1)+"/"+picker.getYear();
+        dateOfApproval = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
 
 
     }

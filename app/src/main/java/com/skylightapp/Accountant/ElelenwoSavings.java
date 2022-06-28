@@ -76,7 +76,7 @@ public class ElelenwoSavings extends AppCompatActivity implements SavingsAdapter
                 chooseDate();
             }
         });
-        dateOfTransaction = picker.getDayOfMonth()+"-"+ (picker.getMonth() + 1)+"-"+picker.getYear();
+        dateOfTransaction = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
         SnapHelper snapHelper = new PagerSnapHelper();
         officeBranch="Elelenwo";
         //   ,   Elelenwo .Trans-Amadi
@@ -172,6 +172,7 @@ public class ElelenwoSavings extends AppCompatActivity implements SavingsAdapter
     }
     private void chooseDate() {
         dateOfTransaction = picker.getYear() +"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
+
 
     }
 

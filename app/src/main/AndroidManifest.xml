@@ -164,9 +164,6 @@
             android:name=".Inventory.BranchItemCollection"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".Inventory.BranchInStock"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
             android:name=".Inventory.StocksOverview"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".Inventory.InStocksAct" />

@@ -21,14 +21,15 @@ public class TellerCash implements Serializable, Parcelable {
     public static final String TELLER_CASH_DATE = "tc_Date";
     public static final String TELLER_CASH_CODE = "tc_Code";
     public static final String TELLER_CASH_PACKAGE_ID = "tc_package_id";
+    public static final String TELLER_CASH_PROFILE_ID = "tc_profile_id";
     public static final String TELLER_CASH_STATUS = "tc_status";
     public static final String TELLER_CASH_BRANCH = "tc_Branch";
     public static final String TELLER_CASH_ITEM_NAME = "tc_item";
     public static final String TELLER_CASH_TELLER_NAME = "tc_teller";
 
-    public static final String CREATE_TELLER_CASH_TABLE = "CREATE TABLE IF NOT EXISTS " + TELLER_CASH_TABLE + " (" + TELLER_CASH_ID + " INTEGER PRIMARY KEY, " + PROFILE_ID + " INTEGER , " + TELLER_CASH_ITEM_NAME + " TEXT, " + TELLER_CASH_AMOUNT + " DOUBLE , " +
+    public static final String CREATE_TELLER_CASH_TABLE = "CREATE TABLE IF NOT EXISTS " + TELLER_CASH_TABLE + " (" + TELLER_CASH_ID + " INTEGER PRIMARY KEY, " + TELLER_CASH_PROFILE_ID + " INTEGER , " + TELLER_CASH_ITEM_NAME + " TEXT, " + TELLER_CASH_AMOUNT + " FLOAT , " +
             TELLER_CASH_DATE + " TEXT, " + TELLER_CASH_PACKAGE_ID + " INTEGER , " + TELLER_CASH_TELLER_NAME + " TEXT, " + TELLER_CASH_BRANCH + " TEXT, " +
-            TELLER_CASH_CODE + " LONG, " + TELLER_CASH_STATUS + " TEXT, " +"FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+            TELLER_CASH_CODE + " LONG, " + TELLER_CASH_STATUS + " TEXT, " +"FOREIGN KEY(" + TELLER_CASH_PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
 
 

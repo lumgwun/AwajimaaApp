@@ -13,22 +13,13 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <TextView
-            style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="My Skylight Stocks List"
-            android:textAlignment="center"
-            android:layout_marginBottom="10dp"
-            android:gravity="center_horizontal"
-            android:textSize="20sp"
-            android:textStyle="bold" />
 
         <TextView
             style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Stocks Total"
+            android:layout_marginTop="10dp"
             android:layout_marginStart="5dp"
             android:layout_marginBottom="10dp"
             android:textAlignment="center"

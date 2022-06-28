@@ -6,6 +6,8 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 
+import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_ID;
+import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 
 public class Stocks implements Parcelable, Serializable {
@@ -35,7 +37,7 @@ public class Stocks implements Parcelable, Serializable {
 
     public static final String CREATE_STOCK_TABLE = "CREATE TABLE " + STOCKS_TABLE + " (" + STOCK_ID + " INTEGER PRIMARY KEY, " + STOCK_ITEM_NAME + " TEXT, " +
             STOCK_TYPE + " TEXT, " + STOCK_MODEL + " TEXT, "+ STOCK_COLOR + " TEXT, " +  STOCK_SIZE + " TEXT, " + STOCK_OFFICE + " TEXT, " +STOCK_QTY + " TEXT, " + STOCK_DATE + " TEXT, " +
-            STOCK_40_DATE + " TEXT, " + STOCK_20_DATE + " TEXT, " + STOCK_10_DATE + " TEXT, " + STOCK_5_DATE + " TEXT, " + STOCK_DEFECTIVE + " TEXT, " +STOCK_OUT_DATE + " TEXT, " + STOCK_ACCEPTER + " TEXT, " + STOCK_ACCEPTANCE_DATE + " TEXT, " + STOCK_MANAGER + " TEXT,"+ STOCK_STATUS + " TEXT,"+ STOCK_PROFILE_ID + " LONG,"+ STOCK_CODE + " LONG,"+ STOCK_BRANCH_ID + " LONG," +"FOREIGN KEY(" + STOCK_PROFILE_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + STOCK_PROFILE_ID + "))";
+            STOCK_40_DATE + " TEXT, " + STOCK_20_DATE + " TEXT, " + STOCK_10_DATE + " TEXT, " + STOCK_5_DATE + " TEXT, " + STOCK_DEFECTIVE + " TEXT, " +STOCK_OUT_DATE + " TEXT, " + STOCK_ACCEPTER + " TEXT, " + STOCK_ACCEPTANCE_DATE + " TEXT, " + STOCK_MANAGER + " TEXT,"+ STOCK_STATUS + " TEXT,"+ STOCK_PROFILE_ID + " INTEGER,"+ STOCK_CODE + " LONG,"+ STOCK_BRANCH_ID + " INTEGER," + "FOREIGN KEY(" + STOCK_BRANCH_ID + ") REFERENCES " + OFFICE_BRANCH_TABLE + "(" + OFFICE_BRANCH_ID + "),"+"FOREIGN KEY(" + STOCK_PROFILE_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + STOCK_PROFILE_ID + "))";
 
 
     private long stockCode;
@@ -241,7 +243,7 @@ public class Stocks implements Parcelable, Serializable {
     public void setStockBranchID(int branchID) { this.branchID = branchID; }
 
 
-    public long getStockProfileID() { return stockProfileID; }
+    public int getStockProfileID() { return stockProfileID; }
     public void setStockProfileID(int stockProfileID) { this.stockProfileID = stockProfileID; }
 
 

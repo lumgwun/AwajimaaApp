@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -191,6 +192,7 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
     private int mMonth = 5;
     private int mDay = 30;
     private Calendar calendar1;
+    SQLiteDatabase sqLiteDatabase;
     private String monthYearStr,monthYearStrFinal;
 
     @Override
@@ -379,9 +381,13 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
 
 
         btnGetBranchDetails.setOnClickListener(this::getBranchPaymentToday);
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            profileArrayList=dbHelper.getTellersFromMachine(tellerMachine);
 
+        }
 
-        profileArrayList=dbHelper.getTellersFromMachine(tellerMachine);
 
         //customerArrayList=dbHelper.getCustomerFromMachine();
         spnPaymentBranchT =  findViewById(R.id.spnPaymentBranchT);
@@ -470,43 +476,244 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            standingOrders = dbHelper.getAllStandingOrders11();
 
-        standingOrders = dbHelper.getAllStandingOrders11();
-        skyLightPackages = dbHelper.getAllPackagesAdmin();
-        paymentCodeArrayList = dbHelper.getAllSavingsCodes();
-        customerDailyReports3 = dbHelper.getAllReportsAdmin();
-        allUsers = dbHelper.getAllProfileUsers();
-        paymentArrayListAll=dbHelper.getALLPaymentsSuper();
-        tellerReportsAll=dbHelper.getTellerReportsAll();
-        paymentForTellerToday=dbHelper.getTotalPaymentTodayForTeller(tellerID,date);
-        paymentTotalForTeller=dbHelper.getTotalPaymentForTeller(tellerID);
-        customersForTeller=dbHelper.getNewCustomersCountForTodayTeller(tellerID,todayDate);
-        paymentForBranchTotal=dbHelper.getTotalPaymentForBranch(branchName1);
-        paymentForBranchToday=dbHelper.getTotalPaymentTodayForBranch(branchName2,date);
-        soCount=dbHelper.getStandingOrderCountToday(todayDate);
-        totalSavingsToday=dbHelper.getSavingsCountToday(todayDate);
-        totalSavings2Today33=dbHelper.getTotalSavingsToday(todayDate);
-        customerCountToday=dbHelper.getAllNewCusCountForToday(todayDate);
-        countPackageToday=dbHelper.getNewPackageCountToday(todayDate);
-        countToday =dbHelper.getAllTxCountForToday(todayDate);
-        customersNewToday=dbHelper.getCustomersToday(todayDate);
-        savingsAll=dbHelper.getAllReportsAdmin();
-        paymentCodeDate =dbHelper.getSavingsCodeForDate(stringDate);
+        }
 
-        customersTellerAll=dbHelper.getCustomersFromCurrentProfile(tellerID);
-        customersTellerToday=dbHelper.getCustomersFromProfileWithDate(tellerID,stringDate);
-        skyLightPackagesTellerAll=dbHelper.getAllPackagesProfile(tellerID);
-        skyLightPackagesTellerToday=dbHelper.getPackagesForTellerProfileWithDate(tellerID,stringDate);
-        paymentCodeForTeller=dbHelper.getCodesFromCurrentTeller(tellerNames);
-        tellerCashArrayList=dbHelper.getTellerCashForTeller(tellerID);
-        tellerReportsTeller=dbHelper.getTellerReportForTeller(tellerID);
-        manualPaymentTeller=dbHelper.getALLPaymentsTeller(tellerID);
 
-        skyLightPackagesToday= dbHelper.getPackagesSubscribedToday(todayDate);
-        savingsToday=dbHelper.getCustomerDailyReportToday(todayDate);
-        transactionsToday=dbHelper.getTransactionsToday(todayDate);
-        manualPaymentToday=dbHelper.getALLPaymentsSuperToday(todayDate);
-        paymentCodeForCus=dbHelper.getCodesFromCurrentCustomer(customerID);
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            skyLightPackages = dbHelper.getAllPackagesAdmin();
+
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            paymentCodeArrayList = dbHelper.getAllSavingsCodes();
+
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            customerDailyReports3 = dbHelper.getAllReportsAdmin();
+
+        }
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            allUsers = dbHelper.getAllProfileUsers();
+
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            paymentArrayListAll=dbHelper.getALLPaymentsSuper();
+
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            tellerReportsAll=dbHelper.getTellerReportsAll();
+
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            paymentForTellerToday=dbHelper.getTotalPaymentTodayForTeller1(tellerID,stringDate);
+
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            paymentTotalForTeller=dbHelper.getTotalPaymentForTeller(tellerID);
+
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            customersForTeller=dbHelper.getNewCustomersCountForTodayTeller(tellerID,todayDate);
+
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            paymentForBranchTotal=dbHelper.getTotalPaymentForBranch(branchName1);
+
+        }
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            paymentForBranchToday=dbHelper.getTotalPaymentTodayForBranch1(branchName2,stringDate);
+
+        }
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            soCount=dbHelper.getStandingOrderCountToday(todayDate);
+
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            totalSavingsToday=dbHelper.getSavingsCountToday(todayDate);
+
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            totalSavings2Today33=dbHelper.getTotalSavingsToday(todayDate);
+
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            customerCountToday=dbHelper.getAllNewCusCountForToday(todayDate);
+
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            countPackageToday=dbHelper.getNewPackageCountToday(todayDate);
+
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            countToday =dbHelper.getAllTxCountForToday(todayDate);
+
+        }
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            customersNewToday=dbHelper.getCustomersToday(todayDate);
+
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            savingsAll=dbHelper.getAllReportsAdmin();
+
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            paymentCodeDate =dbHelper.getSavingsCodeForDate(stringDate);
+
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            customersTellerAll=dbHelper.getCustomersFromCurrentProfile(tellerID);
+
+        }
+
+
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            customersTellerToday=dbHelper.getCustomersFromProfileWithDate(tellerID,stringDate);
+
+        }
+
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            skyLightPackagesTellerAll=dbHelper.getAllPackagesProfile(tellerID);
+
+        }
+
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            skyLightPackagesTellerToday=dbHelper.getPackagesForTellerProfileWithDate(tellerID,stringDate);
+
+        }
+
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            paymentCodeForTeller=dbHelper.getCodesFromCurrentTeller(tellerNames);
+
+        }
+
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            tellerCashArrayList=dbHelper.getTellerCashForTeller(tellerID);
+
+        }
+
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            tellerReportsTeller=dbHelper.getTellerReportForTeller(tellerID);
+
+        }
+
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            manualPaymentTeller=dbHelper.getALLPaymentsTeller(tellerID);
+
+        }
+
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            skyLightPackagesToday= dbHelper.getPackagesSubscribedToday(todayDate);
+
+        }
+
+
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            savingsToday=dbHelper.getCustomerDailyReportToday(todayDate);
+
+        }
+
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            transactionsToday=dbHelper.getTransactionsToday(todayDate);
+
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            manualPaymentToday=dbHelper.getALLPaymentsSuperToday(todayDate);
+
+        }
+
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            paymentCodeForCus=dbHelper.getCodesFromCurrentCustomer(customerID);
+
+        }
+
         //transactionAll=dbHelper.getAllTransactionAdmin();
 
 
@@ -724,7 +931,12 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
                 recyclerCusTXToday.setVisibility(View.VISIBLE);
                 recyclerCusAllPayments.setVisibility(View.VISIBLE);
                 recyclerCusUnconfirmedSavings.setVisibility(View.VISIBLE);
-                paymentForCusToday=dbHelper.getTotalPaymentTodayForCustomer(customerID,date);
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    dbHelper.openDataBase();
+                    paymentForCusToday=dbHelper.getTotalPaymentTodayForCustomer(customerID,todayDate);
+
+                }
+
                 recyclerBranchAllDeposits.setVisibility(View.GONE);
                 recyclerBranchAllStocks.setVisibility(View.GONE);
                 recyclerBranchSuperCash.setVisibility(View.GONE);
@@ -781,9 +993,19 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
                 recyclerCusTXToday.setVisibility(View.GONE);
                 recyclerCusAllPayments.setVisibility(View.GONE);
                 recyclerCusUnconfirmedSavings.setVisibility(View.GONE);
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    dbHelper.openDataBase();
+                    totalTellerCashForTheMonth = dbHelper.getTellerTotalTellerCashForTheMonth(tellerNames, monthYearStrFinal);
 
-                totalTellerNewCusForTheMonth = dbHelper.getTellerMonthCusCountNew(tellerID,monthYearStrFinal);
-                totalTellerCashForTheMonth = dbHelper.getTellerTotalTellerCashForTheMonth(tellerNames, monthYearStrFinal);
+
+                }
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    dbHelper.openDataBase();
+                    totalTellerNewCusForTheMonth = dbHelper.getTellerMonthCusCountNew(tellerID,monthYearStrFinal);
+
+
+                }
+
 
                 if (totalTellerNewCusForTheMonth > 0) {
                     txtTellerNewCus.setText("Number of New Customers for the Month" + totalTellerNewCusForTheMonth);
@@ -833,7 +1055,6 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
                 recyclerTellerCash.addItemDecoration(dividerItemDecorationTC);
                 recyclerTellerCash.setItemAnimator(new DefaultItemAnimator());
                 tellerCashAdapter = new TellerCashAdapter(SuperAdminCountAct.this, tellerCashArrayList);
-                //recyclerTellerCash.setHasFixedSize(true);
                 recyclerTellerCash.setAdapter(tellerCashAdapter);
 
                 LinearLayoutManager layoutManagerCode
@@ -1015,7 +1236,7 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
 
         DatePickerDialog dialog = new DatePickerDialog( SuperAdminCountAct.this, R.style.DatePickerDialogStyle,mDateSetListener,year,month,day);
         dialog.show();
-        stringDate = day+"-"+ month+"-"+year;
+        stringDate = year+"-"+ month+"-"+day;
     }
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position,long id) {

@@ -226,6 +226,15 @@ public class Birthday extends Profile {
     public void setBirthdayID(int birthdayID) {
         this.birthdayID = birthdayID;
     }
+    public int getbProfileID() {
+        return bProfileID;
+    }
+
+    public void setbProfileID(int bProfileID) {
+        this.bProfileID = bProfileID;
+    }
+
+
 
     public boolean getbRemind() {
         return bRemind;

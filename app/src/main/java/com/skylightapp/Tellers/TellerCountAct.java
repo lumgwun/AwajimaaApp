@@ -37,6 +37,7 @@ public class TellerCountAct extends AppCompatActivity {
     private int tellerID;
     private long tellerID1;
     private int customerID;
+    private static final String PREF_NAME = "skylight";
     private long tellerID2;
     private AppCompatButton btnCusIDToGetPayment;
     private AppCompatEditText edtCustomerPaymentToday;
@@ -47,13 +48,13 @@ public class TellerCountAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_teller_count);
-        sharedpreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        sharedpreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         newDate1= new Date();
         json = sharedpreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         //calendar.add(Calendar.DAY_OF_YEAR, 31);
         Date newDate = calendar.getTime();
         String todayDate = sdf.format(newDate);
@@ -81,7 +82,7 @@ public class TellerCountAct extends AppCompatActivity {
         txtNewPackageCountToday.setText(MessageFormat.format("New Pack Count:{0}", newPackCount));
         txtNewTXToday = findViewById(R.id.txtTellerNewTXToday);
         txtTotalManualPaymentToday =  findViewById(R.id.TotalTellerManualPayments);
-        totalManualPaymentToday=dbHelper.getTotalPaymentTodayForTeller(tellerID,newDate1);
+        totalManualPaymentToday=dbHelper.getTotalPaymentTodayForTeller1(tellerID,todayDate);
         txtTotalManualPaymentToday.setText(MessageFormat.format("Total Manual Payment N{0}", totalManualPaymentToday));
 
         txtCustomerPaymentToday = findViewById(R.id.TellerCustomerPaymentToday);
@@ -97,7 +98,7 @@ public class TellerCountAct extends AppCompatActivity {
                 } catch (Exception e) {
                     System.out.println("Oops!");
                 }
-                paymentTotalForCustomer =dbHelper.getTotalPaymentTodayForCustomer(customerID, finalNewDate);
+                paymentTotalForCustomer =dbHelper.getTotalPaymentTodayForCustomer(customerID, todayDate);
                 txtCustomerPaymentToday.setText(MessageFormat.format("Customer Payment today{0}", paymentTotalForCustomer));
 
             }

@@ -38,10 +38,11 @@ public class StockTransfer implements Parcelable, Serializable {
 
     public static final String T_STOCK_STATUS = "T_Stock_Status";
     public static final String T_STOCK_DATE = "T_Stock_Date";
+    public static final String T_STOCK_STOCKID = "T_Stock_Stock_ID";
 
-    public static final String CREATE_T_STOCKS_TABLE = "CREATE TABLE IF NOT EXISTS " + T_STOCKS_TABLE + " (" + T_STOCK_ID + " INTEGER, " + STOCK_ID + " INTEGER , " + T_STOCK_TRANSFERER_ID + " INTEGER , " + T_STOCK_RECIPIENT_ID + " INTEGER , " + T_STOCK_ITEM_NAME + " TEXT, " + T_STOCK_QTY + " INTEGER, " +
+    public static final String CREATE_T_STOCKS_TABLE = "CREATE TABLE IF NOT EXISTS " + T_STOCKS_TABLE + " (" + T_STOCK_ID + " INTEGER, " + T_STOCK_STOCKID + " INTEGER , " + T_STOCK_TRANSFERER_ID + " INTEGER , " + T_STOCK_RECIPIENT_ID + " INTEGER , " + T_STOCK_ITEM_NAME + " TEXT, " + T_STOCK_QTY + " INTEGER, " +
             T_STOCK_DATE + " TEXT, " + T_STOCK_TRANSFERER + " TEXT, " + T_STOCK_ACCEPTER + " TEXT, " + T_STOCK_ACCEPTANCE_DATE + " TEXT, " + T_STOCK_CODE + " TEXT, " +
-              T_STOCK_STATUS + " TEXT, " +T_STOCK_FROM + " TEXT, " +T_STOCK_To + " TEXT, " + "PRIMARY KEY(" +T_STOCK_ID + "), " + "FOREIGN KEY(" + STOCK_ID  + ") REFERENCES " + STOCKS_TABLE + "(" + STOCK_ID + "),"+ "FOREIGN KEY(" + T_STOCK_TRANSFERER_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + T_STOCK_RECIPIENT_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+              T_STOCK_STATUS + " TEXT, " +T_STOCK_FROM + " TEXT, " +T_STOCK_To + " TEXT, " + "PRIMARY KEY(" +T_STOCK_ID + "), " + "FOREIGN KEY(" + T_STOCK_STOCKID  + ") REFERENCES " + STOCKS_TABLE + "(" + STOCK_ID + "),"+ "FOREIGN KEY(" + T_STOCK_TRANSFERER_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + T_STOCK_RECIPIENT_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
 
 

@@ -1,6 +1,5 @@
 package com.skylightapp.Admins;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
@@ -19,16 +18,10 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Inventory.BranchInStock;
-import com.skylightapp.Inventory.BranchItemCollection;
 import com.skylightapp.Inventory.BranchStockOv;
-import com.skylightapp.Inventory.InStocksAct;
 import com.skylightapp.Inventory.MyStocksList;
 import com.skylightapp.Inventory.StocksTransferAct;
-import com.skylightapp.OfficialEmailAct;
 import com.skylightapp.R;
-import com.skylightapp.Tellers.StoreManagerWeb;
-import com.skylightapp.Tellers.WPAdminActivity;
 
 public class AdminStocksTab extends TabActivity {
     public static final String USER_ID_EXTRA_KEY = "AdminStocksTab.USER_ID_EXTRA_KEY";
@@ -57,34 +50,28 @@ public class AdminStocksTab extends TabActivity {
         tabhost.setup();
         Toolbar toolbar = (Toolbar) findViewById(R.id.web_toolbar);
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_admin_inv);
-        Intent webEmail = new Intent().setClass(this, StocksTransferAct.class);
-        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec email = tabhost
+        Intent stocksTransferIntent = new Intent().setClass(this, StocksTransferAct.class);
+        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec itemCollection = tabhost
                 .newTabSpec("Item Collection")
                 .setIndicator("", resources.getDrawable(R.drawable.web_hosting))
-                .setContent(webEmail);
+                .setContent(stocksTransferIntent);
 
-        Intent intentWebHosting = new Intent().setClass(this, BranchInStock.class);
-        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecHosting = tabhost
-                .newTabSpec("Branch Stocks")
-                .setIndicator("", resources.getDrawable(R.drawable.web_hosting))
-                .setContent(intentWebHosting);
 
-        Intent intentWebShop = new Intent().setClass(this, BranchStockOv.class);
-        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabWebStore = tabhost
+        Intent intentB = new Intent().setClass(this, BranchStockOv.class);
+        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec stocksOverview = tabhost
                 .newTabSpec("Stocks Overview")
                 .setIndicator("", resources.getDrawable(R.drawable.web_hosting))
-                .setContent(intentWebShop);
+                .setContent(intentB);
 
-        Intent intentWebAdmin = new Intent().setClass(this, MyStocksList.class);
-        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabAdmin = tabhost
+        Intent intentList = new Intent().setClass(this, MyStocksList.class);
+        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec newStocks = tabhost
                 .newTabSpec("New Stocks")
                 .setIndicator("", resources.getDrawable(R.drawable.web_hosting))
-                .setContent(intentWebAdmin);
+                .setContent(intentList);
 
-        tabhost.addTab(email);
-        tabhost.addTab(tabSpecHosting);
-        tabhost.addTab(tabWebStore);
-        tabhost.addTab(tabAdmin);
+        tabhost.addTab(itemCollection);
+        tabhost.addTab(stocksOverview);
+        tabhost.addTab(newStocks);
         tabhost.setCurrentTab(0);
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
