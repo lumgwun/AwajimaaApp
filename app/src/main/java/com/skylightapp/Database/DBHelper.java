@@ -210,12 +210,12 @@ import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ITEM;
 import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_NAME;
 import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_PROFILE_ID_FOREIGN;
 import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_REPORT_ID;
+import static com.skylightapp.Classes.SkylightCash.CREATE_SKYLIGHT_CASH_TABLE;
 import static com.skylightapp.Classes.SkylightCash.S_CASH_ADMIN_ID;
 import static com.skylightapp.Classes.SkylightCash.S_CASH_PROFILE_ID;
 import static com.skylightapp.Classes.SkylightCash.S_CASH_FROM;
 import static com.skylightapp.Classes.SkylightCash.S_CASH_TO;
 import static com.skylightapp.Classes.StandingOrder.SO_CUS_ID;
-import static com.skylightapp.Classes.SkylightCash.CREATE_TELLER_CASH_TABLE;
 import static com.skylightapp.Classes.SkylightCash.S_CASH_ADMIN;
 import static com.skylightapp.Classes.SkylightCash.S_CASH_AMOUNT;
 import static com.skylightapp.Classes.SkylightCash.S_CASH_CODE;
@@ -611,7 +611,6 @@ import static com.skylightapp.Classes.UserSuperAdmin.SUPER_ADMIN_PHONE_NUMBER;
 import static com.skylightapp.Classes.UserSuperAdmin.SUPER_ADMIN_SURNAME;
 import static com.skylightapp.Classes.UserSuperAdmin.SUPER_ADMIN_TABLE;
 import static com.skylightapp.Classes.UserSuperAdmin.SUPER_ADMIN_USER_NAME;
-import static com.skylightapp.SuperAdmin.SuperCash.CREATE_SUPER_CASH_TABLE;
 import static com.skylightapp.SuperAdmin.SuperCash.SUPER_CASH_AMOUNT;
 import static com.skylightapp.SuperAdmin.SuperCash.SUPER_CASH_APPROVER;
 import static com.skylightapp.SuperAdmin.SuperCash.SUPER_CASH_BRANCH;
@@ -623,6 +622,7 @@ import static com.skylightapp.SuperAdmin.SuperCash.SUPER_CASH_ID;
 import static com.skylightapp.SuperAdmin.SuperCash.SUPER_CASH_PROFILE_ID;
 import static com.skylightapp.SuperAdmin.SuperCash.SUPER_CASH_TABLE;
 import static com.skylightapp.SuperAdmin.SuperCash.SUPER_CASH_TRANX_STATUS;
+import static com.skylightapp.Tellers.TellerCash.CREATE_TELLER_CASH_TABLE;
 import static com.skylightapp.Tellers.TellerCash.TELLER_CASH_AMOUNT;
 import static com.skylightapp.Tellers.TellerCash.TELLER_CASH_BRANCH;
 import static com.skylightapp.Tellers.TellerCash.TELLER_CASH_CODE;
@@ -660,9 +660,9 @@ public class DBHelper extends SQLiteOpenHelper {
     private ArrayList<Customer> customers;
     SharedPreferences userPref;
     private Context context;
-    public static String DB_PATH = "/data/";
+    public static String DB_PATH = "/data/D";
 
-    public static final String DATABASE_NAME = "MySkylight";
+    public static final String DATABASE_NAME = "dBSkylight";
     private static final String LOG = DBHelper.class.getName();
 
     public static final String TABLE_MYTABLE = "mytable";
@@ -670,8 +670,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String COl_MYTABLE_NAME = "name";
 
     public static final String BILL_ID_WITH_PREFIX = "bill.id";
-    public static final int DATABASE_VERSION = 1;
-    public static final int DATABASE_NEW_VERSION = 2;
+    public static final int DATABASE_VERSION = 10;
+    public static final int DATABASE_NEW_VERSION = 11;
     public static final int USER_SURNAME_COLUMN = 1;
     public static final int USER_FIRSTNAME_COLUMN = 2;
     public static final int USER_EMAIL_COLUMN = 3;
@@ -813,11 +813,9 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.d("table", CREATE_AWARD_TABLE);
         Log.d("table", CREATE_ADMIN_DEPOSIT_TABLE);
         Log.d("table", CREATE_TELLER_CASH_TABLE);
-        Log.d("table", CREATE_SUPER_CASH_TABLE);
         Log.d("table", CREATE_WORKERS_TABLE);
         Log.d("table", CREATE_T_STOCKS_TABLE);
         Log.d("table", CREATE_CUSTOMER_LOCATION_TABLE);
-        Log.d("table", CREATE_TELLER_CASH_TABLE);
         Log.d("table", CREATE_TANSACTION_EXTRA_TABLE);
         Log.d("table", CREATE_SPONSOR_TABLE);
         Log.d("table", CREATE_EMERGENCY_NEXT_REPORT_TABLE);
@@ -879,13 +877,13 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_AWARD_TABLE);
         db.execSQL(CREATE_ADMIN_DEPOSIT_TABLE);
         db.execSQL(CREATE_TELLER_CASH_TABLE);
-        db.execSQL(CREATE_SUPER_CASH_TABLE);
         db.execSQL(CREATE_WORKERS_TABLE);
         db.execSQL(CREATE_T_STOCKS_TABLE);
         db.execSQL(CREATE_TELLER_CASH_TABLE);
         db.execSQL(CREATE_SPONSOR_TABLE);
         db.execSQL(CREATE_EMERGENCY_NEXT_REPORT_TABLE);
         db.execSQL(CREATE_TELLER_REPORT_TABLE);
+        db.execSQL(CREATE_SKYLIGHT_CASH_TABLE);
         db.execSQL("create table ROLES " + "(role_ID integer primary key, roleUserName text,rolePassword text,rolePhoneNo text,role text)");
 
 

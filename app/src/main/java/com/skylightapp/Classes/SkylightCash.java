@@ -41,7 +41,7 @@ public class SkylightCash implements Serializable, Parcelable {
 
 
 
-    public static final String CREATE_TELLER_CASH_TABLE = "CREATE TABLE " + S_CASH_TABLE + " (" + S_CASH_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + S_CASH_OFFICE_ID + " TEXT, " + S_CASH_ADMIN_ID + " TEXT, " + S_CASH_PROFILE_ID + " TEXT, " + S_CASH_DATE + " TEXT, " + S_CASH_AMOUNT + " TEXT, " + S_CASH_PAYER + " TEXT, " +
+    public static final String CREATE_SKYLIGHT_CASH_TABLE = "CREATE TABLE " + S_CASH_TABLE + " (" + S_CASH_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + S_CASH_OFFICE_ID + " TEXT, " + S_CASH_ADMIN_ID + " TEXT, " + S_CASH_PROFILE_ID + " TEXT, " + S_CASH_DATE + " TEXT, " + S_CASH_AMOUNT + " TEXT, " + S_CASH_PAYER + " TEXT, " +
             S_CASH_PAYEE + " TEXT, " + S_CASH_ADMIN + " TEXT, " + S_CASH_CODE + " TEXT, " + S_CASH_STATUS + " TEXT, " + S_CASH_FROM + " TEXT, " + S_CASH_TO + " TEXT, "  + "FOREIGN KEY(" + S_CASH_OFFICE_ID + ") REFERENCES " + OFFICE_BRANCH_TABLE + "(" + OFFICE_BRANCH_ID + "))";
 
 
