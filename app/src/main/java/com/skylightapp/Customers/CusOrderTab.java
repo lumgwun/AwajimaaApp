@@ -45,7 +45,7 @@ public class CusOrderTab extends TabActivity {
 
 
 
-        Intent privacyPolicyIntent = new Intent(this, CustomerPackForPayment.class);
+        Intent privacyPolicyIntent = new Intent(this, CusPackForPayment.class);
         TabHost.TabSpec cPFP = tabHost.newTabSpec("My Packs");
         cPFP.setIndicator("Packs", getResources().getDrawable(R.drawable.ic_icon2));
         cPFP.setContent(privacyPolicyIntent);

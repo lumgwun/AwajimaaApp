@@ -40,7 +40,7 @@ import java.util.List;
 
 import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ID;
 
-public class CustomerPackForPayment extends AppCompatActivity implements PackageRecyclerAdapter.OnItemsClickListener{
+public class CusPackForPayment extends AppCompatActivity implements PackageRecyclerAdapter.OnItemsClickListener{
     DBHelper dbHelper;
     Customer customer;
     private List<SkyLightPackage> packages;
@@ -83,10 +83,10 @@ public class CustomerPackForPayment extends AppCompatActivity implements Package
 
                             }
 
-                            Toast.makeText(CustomerPackForPayment.this, "Activity returned ok", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CusPackForPayment.this, "Activity returned ok", Toast.LENGTH_SHORT).show();
                             break;
                         case Activity.RESULT_CANCELED:
-                            Toast.makeText(CustomerPackForPayment.this, "Activity canceled", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CusPackForPayment.this, "Activity canceled", Toast.LENGTH_SHORT).show();
                             break;
                     }
                 }
@@ -129,10 +129,10 @@ public class CustomerPackForPayment extends AppCompatActivity implements Package
 
 
         LinearLayoutManager layoutManagerC
-                = new LinearLayoutManager(CustomerPackForPayment.this, LinearLayoutManager.HORIZONTAL, false);
+                = new LinearLayoutManager(CusPackForPayment.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManagerC);
 
-        packageRecyclerAdapter = new PackageRecyclerAdapter(CustomerPackForPayment.this, packages);
+        packageRecyclerAdapter = new PackageRecyclerAdapter(CusPackForPayment.this, packages);
         recyclerView.setAdapter(packageRecyclerAdapter);
         DividerItemDecoration dividerItemDecoration7 = new DividerItemDecoration(recyclerView.getContext(),
                 layoutManagerC.getOrientation());
@@ -195,7 +195,7 @@ public class CustomerPackForPayment extends AppCompatActivity implements Package
         builder.setAdapter(dataAdapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(CustomerPackForPayment.this,"You have selected " + lables1.get(which), Toast.LENGTH_LONG).show();
+                Toast.makeText(CusPackForPayment.this,"You have selected " + lables1.get(which), Toast.LENGTH_LONG).show();
                 if(lables1.get(which).equalsIgnoreCase("Continue Savings")){
                     continueSaving();
 
@@ -315,7 +315,7 @@ public class CustomerPackForPayment extends AppCompatActivity implements Package
 
             }
             if(amountContributedSoFar==grandTotal && status.equalsIgnoreCase("Ended")){
-                Toast.makeText(CustomerPackForPayment.this,"The package you selected has been cleared" , Toast.LENGTH_LONG).show();
+                Toast.makeText(CusPackForPayment.this,"The package you selected has been cleared" , Toast.LENGTH_LONG).show();
                 sendNotification();
                 finish();
 
@@ -344,7 +344,7 @@ public class CustomerPackForPayment extends AppCompatActivity implements Package
                     paymentBundle.putParcelable("SkyLightPackage", skyLightPackage);
                     paymentBundle.putParcelable("Account", account);
                     paymentBundle.putParcelable("Customer", customer);
-                    Intent intent = new Intent(CustomerPackForPayment.this, OldPackCusAct.class);
+                    Intent intent = new Intent(CusPackForPayment.this, OldPackCusAct.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtras(paymentBundle);
                     startActivity(intent);

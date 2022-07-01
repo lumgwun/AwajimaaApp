@@ -27,14 +27,16 @@ public class PackageTab extends TabActivity {
     Gson gson;
     String json,machine;
     Profile userProfile;
-    long profileUID;
+    int profileUID;
+    private static final String PREF_NAME = "skylight";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_package_tab);
+        setTitle("Package Tab");
         userProfile=new Profile();
-        userPreferences = this.getSharedPreferences("LastProfileUsed", MODE_PRIVATE);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
@@ -67,7 +69,7 @@ public class PackageTab extends TabActivity {
 
 
 
-        Intent intentPack = new Intent().setClass(this, CustomerPackForPayment.class);
+        Intent intentPack = new Intent().setClass(this, CusPackForPayment.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecPP = tabHost
                 .newTabSpec("Unpaid Pack")
                 .setIndicator("", resources.getDrawable(R.drawable.ic_icon2))

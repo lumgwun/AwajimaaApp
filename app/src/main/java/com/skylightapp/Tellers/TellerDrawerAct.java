@@ -51,7 +51,7 @@ import com.skylightapp.Classes.Payment;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkylightCash;
 import com.skylightapp.Customers.TellerForCusLoanAct;
-import com.skylightapp.Customers.CustomerPackageActivity;
+import com.skylightapp.Customers.CusPacksAct;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Inventory.StocksTransferAct;
 import com.skylightapp.MyInvAct;
@@ -713,7 +713,7 @@ public class TellerDrawerAct extends AppCompatActivity {
                     }
                     else if(finalI==17) {
                         tosend = "Customer More";
-                        Intent intent=new Intent(TellerDrawerAct.this, CustomerPackageActivity.class);
+                        Intent intent=new Intent(TellerDrawerAct.this, CusPacksAct.class);
                         intent.putExtra("Customer More",tosend);
                         startActivity(intent);
                     }

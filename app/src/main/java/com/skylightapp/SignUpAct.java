@@ -20,7 +20,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
 import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.preference.PreferenceManager;
-import androidx.room.Room;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import android.Manifest;
@@ -117,6 +116,7 @@ import com.skylightapp.Classes.StandingOrderAcct;
 import com.skylightapp.Classes.TimeLine;
 import com.skylightapp.Classes.User;
 import com.skylightapp.Classes.UserSuperAdmin;
+import com.skylightapp.Customers.NewBankAcctAct;
 import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Interfaces.ProfileDao;
@@ -145,6 +145,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.skylightapp.Classes.Account.BANK_ACCT_NO;
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_LATLONG;
 import static com.skylightapp.Classes.ImageUtil.TAG;
@@ -345,6 +346,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     //RoomController mRoomDB;
     RoomRepo roomRepo;
     ProfileDao roomTableDao;
+    private String bankAcctNumber;
     SupportSQLiteDatabase supportSQLiteDatabase;
 
 
@@ -389,11 +391,11 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                                 Intent data = result.getData();
                                 mImageUri = data.getData();
 
-                                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                /*if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                     dbHelper.openDataBase();
                                     sqLiteDatabase = dbHelper.getWritableDatabase();
                                     dbHelper.insertProfilePicture(profileID1, customerID, mImageUri);
-                                }
+                                }*/
 
                                 /*if (selectedImage != null) {
                                     logo.setImageBitmap(getScaledBitmap(selectedImage));
@@ -433,6 +435,19 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                             cusLatLng = intent.getParcelableExtra("CusLatLng");
                         }
                         // Handle the Intent
+                    }
+                }
+            });
+    ActivityResultLauncher<Intent> startBankAcctCreationForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent intent = result.getData();
+                        if (intent != null) {
+                            bankAcctNumber = intent.getStringExtra("BankAcct");
+                        }
+
                     }
                 }
             });
@@ -628,6 +643,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         account = new Account();
         customerProfile = new Profile();
         birthday = new Birthday();
+        PrePopulateDB();
         //dbHelper.onUpgrade(sqLiteDatabase, dbHelper.getDatabaseVersion(), DBHelper.DATABASE_NEW_VERSION);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
@@ -721,7 +737,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
             userRole = managerProfile.getProfileRole();
 
         } else {
-            profileID = profileID1;
+            profileID = 0;
 
         }
         edtSponsorID.setText("Your Sponsor's ID:"+profileID);
@@ -938,7 +954,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
             userRole = managerProfile.getProfileRole();
 
         } else {
-            profileID = profileID1;
+            profileID = 0;
 
         }
 
@@ -1222,23 +1238,27 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     }
 
     public void startProfileActivity(int sponsorID, LatLng cusLatLng, Account account, StandingOrderAcct standingOrderAcct, String joinedDate, String uFirstName, String uSurname, String uPhoneNumber, String uAddress, String uUserName, String uPassword, Customer customer, Profile customerProfile, String nIN, Profile managerProfile, String dateOfBirth, String selectedGender, String selectedOffice, String selectedState, Birthday birthday, CustomerManager customerManager, String ofBirth, int profileID1, int virtualAccountNumber, int soAccountNumber, int customerID, int birthdayID, int investmentAcctID, int itemPurchaseAcctID, int promoAcctID, int packageAcctID, ArrayList<Customer> customers) {
-        if (!USINGROOM) {
-            PreRoomCode();
-        } else {
-            PostRoomCode();
-        }
+        saveMyPreferences(sponsorID,cusLatLng,account,standingOrderAcct,joinedDate,uFirstName,uSurname,uPhoneNumber,uAddress,uUserName,uPassword,customer,customerProfile,nIN,managerProfile, dateOfBirth, selectedGender, selectedOffice, selectedState, birthday,  customerManager, ofBirth, profileID1,  virtualAccountNumber, soAccountNumber,  customerID, birthdayID, investmentAcctID,itemPurchaseAcctID,  promoAcctID, packageAcctID,  customers);
         Toast.makeText(SignUpAct.this, "Gender: " + selectedGender + "," + "Office:" + selectedOffice + "" + "State:" + selectedState, Toast.LENGTH_SHORT).show();
         showProgressDialog();
+        dbHelper = new DBHelper(this);
         ran = new Random();
         SQLiteDataBaseBuild();
         calendar = Calendar.getInstance();
         sqLiteDatabase = dbHelper.getWritableDatabase();
+        startBankAcctCreationForResult.launch(new Intent(SignUpAct.this, NewBankAcctAct.class));
+
 
         @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         timeLineTime = mdformat.format(calendar.getTime());
-        profiles = dbHelper.getAllProfiles();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            profiles = dbHelper.getAllProfiles();
+        }
+
+
         //customers = dbHelper.getAllCustomers();
-        smsMessage = "Welcome to the Skylight  App, may you have the best experience";
+
         String names = uSurname + uFirstName;
         //long customerId = customer.getId();
         //Customer c = new Customer();
@@ -1251,18 +1271,14 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         String timelineDetailsT11 = "You added" + uSurname + "," + uFirstName + "as a Customer" + "on" + timeLineTime;
 
         random = new SecureRandom();
-        gson = new Gson();
         String accountName = uSurname + "," + uFirstName;
 
-        Date date = new Date();
 
-
-        //birthdayID = random.nextInt((int) (Math.random() * 1001) + 1010);
+        birthdayID = random.nextInt((int) (Math.random() * 1001) + 1010);
         String skylightMFb = "E-Wallet";
         double accountBalance = 0.00;
         accountTypeStr = AccountTypes.EWALLET;
         String interestRate = "0.0";
-        dbHelper = new DBHelper(this);
 
         if (managerProfile != null) {
             ManagerSurname = managerProfile.getProfileLastName();
@@ -1280,21 +1296,100 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
         }
         int finalProfileID = profileID1;
-        lastProfileUsed = new Profile();
-        account = new Account("EWallet Account", accountName, virtualAccountNumber, accountBalance, accountTypeStr);
+
+        account = new Account(virtualAccountNumber,"", accountName,bankAcctNumber, accountBalance, accountTypeStr);
         standingOrderAcct = new StandingOrderAcct(virtualAccountNumber + 12, accountName, 0.00);
         customer = new Customer(customerID, uSurname, uFirstName, uPhoneNumber, uEmail, nIN, dateOfBirth, selectedGender, uAddress, uUserName, uPassword, selectedOffice, joinedDate);
         birthday = new Birthday(birthdayID, profileID1, uSurname + "," + uFirstName, uPhoneNumber, uEmail, selectedGender, uAddress, dateOfBirth, 0, "", "Not celebrated");
         customerProfile = new Profile(profileID1, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, "", selectedState, selectedOffice, joinedDate, "Customer", uUserName, uPassword, "pending", "");
 
         lastProfileUsed = customerProfile;
-        json = gson.toJson(lastProfileUsed);
 
-        sendSMSMessage22(uPhoneNumber, smsMessage);
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
 
+            dbHelper.insertAccount(profileID1, customerID, skylightMFb, accountName, virtualAccountNumber, accountBalance, accountTypeStr);
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.insertRole(profileID1, "Customer",  uPhoneNumber);
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.insertCustomer11(profileID1, customerID, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedState, "", joinedDate, uUserName, uPassword, mImageUri, "Customer");
+
+        }
+
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.insertBirthDay3(birthday, dateOfBirth);
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.saveNewProfile(customerProfile);
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.insertTimeLine(tittleT1, timelineDetailsTD, timeLineTime, mCurrentLocation);
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.insertStandingOrderAcct(profileID1, customerID, virtualAccountNumber, accountName, 0.00);
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.insertStandingOrderAcct(profileID1, customerID, virtualAccountNumber, accountName, 0.00);
+        }
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            //dbHelper = new DBHelper(this);
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            if (cusLatLng != null) {
+                try {
+                    dbHelper.openDataBase();
+                    dbHelper.insertCustomerLocation(customerID, this.cusLatLng);
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            EmptyEditTextAfterDataInsert();
+
+
+
+        }
+
+
+    }
+    private void saveMyPreferences(int sponsorID, LatLng cusLatLng, Account account, StandingOrderAcct standingOrderAcct, String joinedDate, String uFirstName, String uSurname, String uPhoneNumber, String uAddress, String uUserName, String uPassword, Customer customer, Profile customerProfile, String nIN, Profile managerProfile, String dateOfBirth, String selectedGender, String selectedOffice, String selectedState, Birthday birthday, CustomerManager customerManager, String ofBirth, int profileID1, int virtualAccountNumber, int soAccountNumber, int customerID, int birthdayID, int investmentAcctID, int itemPurchaseAcctID, int promoAcctID, int packageAcctID, ArrayList<Customer> customers) {
         Bundle userBundle = new Bundle();
-
+        smsMessage = "Welcome to the Skylight  App, may you have the best experience";
+        gson = new Gson();
+        lastProfileUsed = customerProfile;
+        Customer lastCustomerUsed= customer;
+        json = gson.toJson(lastProfileUsed);
+        json1 = gson1.toJson(lastCustomerUsed);
+        sendSMSMessage22(uPhoneNumber, smsMessage);
         userBundle.putString(PROFILE_DOB, dateOfBirth);
+        userBundle.putString(BANK_ACCT_NO, bankAcctNumber);
+        userBundle.putString("BANK_ACCT_NO", bankAcctNumber);
         userBundle.putString(PROFILE_EMAIL, uEmail);
         userBundle.putString(PROFILE_OFFICE, selectedOffice);
         userBundle.putString(PROFILE_FIRSTNAME, uFirstName);
@@ -1358,8 +1453,6 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         Toast.makeText(SignUpAct.this, "Thank you" + "" +
                 "for Signing up " + "" + uFirstName + "" + "on the Skylight. App", Toast.LENGTH_LONG).show();
         setResult(Activity.RESULT_OK, new Intent());
-
-
 
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = userPreferences.edit();
@@ -1461,6 +1554,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         editor.putString("USER_DATE_JOINED", joinedDate);
         editor.putString("Machine", "Customer");
         editor.putString(PROFILE_ROLE, "Customer");
+        editor.putString("LastCustomerUsed", json1);
         editor.putString("LastProfileUsed", json).apply();
 
         customer.setCusFirstName(uFirstName);
@@ -1510,54 +1604,28 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            //dbHelper = new DBHelper(this);
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.insertAccount(profileID1, customerID, skylightMFb, accountName, virtualAccountNumber, accountBalance, accountTypeStr);
-            dbHelper.insertRole(profileID1, "Customer",  uPhoneNumber);
-            dbHelper.insertCustomer11(profileID1, customerID, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedState, "", joinedDate, uUserName, uPassword, mImageUri, "Customer");
-
-
-            //dbHelper.insertUser1(profileID1, customerID, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedState, "", joinedDate, uUserName, uPassword, "", "New", "Customer");
-
-            dbHelper.insertBirthDay3(birthday, "1983-04-25");
-            dbHelper.saveNewProfile(customerProfile);
-            dbHelper.insertTimeLine(tittleT1, timelineDetailsTD, timeLineTime, mCurrentLocation);
-            dbHelper.insertStandingOrderAcct(profileID1, customerID, virtualAccountNumber, accountName, 0.00);
-
-
-            if (cusLatLng != null) {
-                try {
-                    //dbHelper.openDataBase();
-                    dbHelper.insertCustomerLocation(customerID, this.cusLatLng);
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            EmptyEditTextAfterDataInsert();
-
-
-
-
-
-
-
-        }
-
-
-
     }
-    private void PreRoomCode() {
+    private void PrePopulateDB() {
         dbHelper = new DBHelper(this);
         userProfile1 = new Profile(0, "Emmanuel", "Becky", "08069524599", "urskylight@gmail.com", "1980-04-19", "female", "Skylight", "", "Rivers", "Elelenwo", "2022-04-19", "SuperAdmin", "Skylight4ever", "@Awajima2", "Confirmed", "");
         userProfile2= new Profile(0,"Benedict", "Benedict", "08059250176", "bener@gmail.com", "25/04/1989", "male", "PH", "","Rivers", "Elelenwo", "19/04/2022","Customer", "Lumgwun", "@Awajima3","Confirmed","");
 
-        if (DatabaseUtils.queryNumEntries(dbHelper.getWritableDatabase(),DATABASE_NAME) < 1) {
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
             dbHelper.insertProfile(userProfile1);
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
             dbHelper.insertProfile(userProfile2);
         }
+
+
+        /*if (DatabaseUtils.queryNumEntries(dbHelper.getWritableDatabase(),DATABASE_NAME) < 1) {
+
+
+        }*/
     }
 
 

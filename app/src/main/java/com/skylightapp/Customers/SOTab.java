@@ -14,7 +14,7 @@ import com.skylightapp.Admins.SkylightUsersActivity;
 import com.skylightapp.R;
 import com.skylightapp.SignTabMainActivity;
 
-public class StandingOrderTab extends TabActivity {
+public class SOTab extends TabActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

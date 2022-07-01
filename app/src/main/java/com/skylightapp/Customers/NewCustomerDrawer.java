@@ -91,7 +91,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
     CircleImageView profileImage;
     private Profile profile;
 
-    private AppCompatTextView txtMessage, balance, sPackages, accountNo,txtSO, grpSavings, txtUserName, reports;
+    private AppCompatTextView txtMessage,txtBankName, balance, sPackages, accountNo,txtSO, grpSavings, txtUserName, reports;
     private Intent data;
     private FloatingActionButton floatingActionButton;
     private Customer customer;
@@ -216,6 +216,10 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
         textAcctNo = findViewById(R.id.allCus_Super);
         textBalance = findViewById(R.id.balance_normalCus);
         textSavings = findViewById(R.id.savingsCus);
+        txtBankName = findViewById(R.id.cus_BankN);
+        balance = findViewById(R.id.cus_BankBalance4444);
+        accountNo = findViewById(R.id.cus_BankNo33);
+
         imgProfilePic = findViewById(R.id.profile_image_cus);
         DBHelper applicationDb = new DBHelper(this);
         if(userProfile !=null){
@@ -245,6 +249,12 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                 accountN = account.getSkyLightAcctNo();
 
             }
+            String nBank=customer.getCusBank();
+            double nBankB=customer.getCusBankBalance();
+            String nBankN=customer.getCusBankAcctNo();
+            txtBankName.setText(MessageFormat.format("Bank :{0}", nBank));
+            balance.setText(MessageFormat.format("Balance :{0}", nBankB));
+            accountNo.setText(MessageFormat.format("Acct :{0}", nBankN));
 
             savings = customer.getCusDailyReports().size();
             skPackages = customer.getCusSkyLightPackages().size();
@@ -426,7 +436,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
 
 
             case R.id.so_menu:
-                Intent grpIntent = new Intent(this, StandingOrderTab.class);
+                Intent grpIntent = new Intent(this, SOTab.class);
                 grpIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(grpIntent);
                 return true;
@@ -659,20 +669,20 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                     else if(finalI==1)
                     {
                         tosend="History";
-                        Intent intent=new Intent(NewCustomerDrawer.this, CustomerPackageActivity.class);
+                        Intent intent=new Intent(NewCustomerDrawer.this, CusPacksAct.class);
                         intent.putExtra("info",tosend);
                         startActivity(intent);
                     }
                     else if(finalI==2)
                     {
-                        tosend="Group Savings";
+                        tosend="Customer Pay";
                         Intent intent=new Intent(NewCustomerDrawer.this, CustomerPayAct.class);
                         intent.putExtra("Customer Pay",tosend);
                         startActivity(intent);
                     }
                     else if(finalI==3) {
                         tosend = "Standing Orders";
-                        Intent intent=new Intent(NewCustomerDrawer.this, StandingOrderTab.class);
+                        Intent intent=new Intent(NewCustomerDrawer.this, SOTab.class);
                         intent.putExtra("Standing Orders",tosend);
                         startActivity(intent);
                     }
@@ -731,11 +741,11 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                 startActivity(profile);
                 break;
             case R.id.nav_my_package44:
-                Intent active = new Intent(NewCustomerDrawer.this, CustomerPackageActivity.class);
+                Intent active = new Intent(NewCustomerDrawer.this, CusPacksAct.class);
                 startActivity(active);
                 break;
             case R.id.nav_my_package44_payment:
-                Intent history = new Intent(NewCustomerDrawer.this, CustomerPackForPayment.class);
+                Intent history = new Intent(NewCustomerDrawer.this, CusPackForPayment.class);
                 startActivity(history);
                 break;
 
@@ -753,7 +763,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                 startActivity(intPref);
                 break;
             case R.id.nav_so0994:
-                Intent intSO = new Intent(NewCustomerDrawer.this, StandingOrderTab.class);
+                Intent intSO = new Intent(NewCustomerDrawer.this, SOTab.class);
                 startActivity(intSO);
                 break;
             case R.id.my_packageTab:

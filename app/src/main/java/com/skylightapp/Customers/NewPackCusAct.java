@@ -75,6 +75,7 @@ import java.util.Random;
 import java.util.TimeZone;
 
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
+import static com.skylightapp.Classes.Profile.PROFILE_OFFICE;
 import static com.skylightapp.Classes.Profile.PROFILE_PHONE;
 import static com.skylightapp.Transactions.OurConfig.TWILIO_ACCOUNT_SID;
 import static com.skylightapp.Transactions.OurConfig.TWILIO_AUTH_TOKEN;
@@ -126,7 +127,7 @@ public class NewPackCusAct extends AppCompatActivity {
     public final static int SENT = 4;
     public final static int SHUTDOWN = 5;
 
-    private static final String TAG = "CustomerSavingsPackageAddFragment";
+    private static final String TAG = "NewPackCusAct";
     private static final long INTERVAL = 1000 * 10;
     private static final long FASTEST_INTERVAL = 1000 * 5;
     Button btnFusedLocation, btn_backTo_dashboard;
@@ -375,7 +376,7 @@ public class NewPackCusAct extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        tellerOffice = userPreferences.getString("CHOSEN_OFFICE", "");
+        tellerOffice = userPreferences.getString("PROFILE_OFFICE", "");
         machine=userPreferences.getString(machine,"");
         checkInternetConnection();
         //userProfile= new Profile();
@@ -801,7 +802,7 @@ public class NewPackCusAct extends AppCompatActivity {
                                 //paymentBundle.putString("Total", String.valueOf(totalAmountSum));*/
 
 
-                                Intent standingOrderIntent = new Intent(NewPackCusAct.this, StandingOrderTab.class);
+                                Intent standingOrderIntent = new Intent(NewPackCusAct.this, SOTab.class);
                                 standingOrderIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 mStandingOrder.launch(standingOrderIntent);
                                 //amountIntent.putExtras(paymentBundle);

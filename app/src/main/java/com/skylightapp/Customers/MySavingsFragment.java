@@ -147,7 +147,7 @@ public class MySavingsFragment extends Fragment {
 
 
         requireActivity().setTitle("My Savings");
-        ((CustomerPackageActivity ) requireActivity()).showUpButton();
+        ((CusPacksAct) requireActivity()).showUpButton();
 
         setValues();
 

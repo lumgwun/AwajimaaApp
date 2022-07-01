@@ -176,6 +176,7 @@ public class OldPackCusAct extends AppCompatActivity {
     Button btn_MyCustomers, btn_AllOurCustomers;
     private static boolean isPersistenceEnabled = false;
     private  Account account;
+    private static final String PREF_NAME = "skylight";
 
 
     private LinearLayoutCompat layout_month,layout_total,layout_button,layout_days,layout_amount,layout_type_package,layout_old_package,layout_select_my_cust, layout_select_customer,layout_sub_status;
@@ -213,7 +214,8 @@ public class OldPackCusAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_old_pack_cus);
-        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        setTitle("My Old Pack Continuation");
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         paymentBundle= new Bundle();
         textTotalForTheDay =  findViewById(R.id.tittleTotal);

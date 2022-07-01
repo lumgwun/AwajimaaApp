@@ -58,7 +58,8 @@
         android:value="androidx.core.app.CoreComponentFactory"
         tools:ignore="GoogleAppIndexingWarning"
         tools:node="replace">
-        <activity android:name=".SuperAdmin.TellerWorkAct"></activity>
+        <activity android:name=".Customers.NewBankAcctAct"></activity>
+        <activity android:name=".SuperAdmin.TellerWorkAct" />
         <activity android:name=".SuperAdmin.ChartAct" />
         <activity android:name=".Tellers.TellerSendEmailAct" />
         <activity android:name=".DeleteUserAct" />
@@ -413,11 +414,11 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".AllCusPackTab" />
         <activity
-            android:name=".Customers.CustomerPackForPayment"
+            android:name=".Customers.CusPackForPayment"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".Customers.CusOrderTab" />
         <activity
-            android:name=".Customers.CustomerPackageActivity"
+            android:name=".Customers.CusPacksAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".Customers.CusLoanTab" />
         <activity android:name=".Customers.CustUtilTab" />
@@ -427,7 +428,7 @@
         <activity
             android:name=".Customers.StandingOrderList"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".Customers.StandingOrderTab" />
+        <activity android:name=".Customers.SOTab" />
         <activity
             android:name=".Customers.NewSOPaymentPlan"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

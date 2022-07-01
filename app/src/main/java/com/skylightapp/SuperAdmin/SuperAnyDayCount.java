@@ -73,6 +73,7 @@ public class SuperAnyDayCount extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_super_any_day_count);
+        setTitle("Selected Day Details");
         sharedpreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         dbHelper = new DBHelper(this);
@@ -231,7 +232,7 @@ public class SuperAnyDayCount extends AppCompatActivity {
                 if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                     dbHelper.openDataBase();
                     sqLiteDatabase = dbHelper.getWritableDatabase();
-                    customersForTeller = dbHelper.getNewCustomersCountForTodayTeller(tellerID2, finalTodayDate);
+                    customersForTeller = dbHelper.getNewCustomersCountForTodayTeller(tellerID2, dateOf);
                 }
 
 
@@ -244,7 +245,7 @@ public class SuperAnyDayCount extends AppCompatActivity {
         btnGetBranchDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cusCountForOffice = dbHelper.getNewCustomersCountForTodayOffice(branchName, finalTodayDate1);
+                cusCountForOffice = dbHelper.getNewCustomersCountForTodayOffice(branchName, dateOf);
                 paymentForBranchTotal = dbHelper.getTotalPaymentForBranch(branchName1);
                 paymentForBranchToday = dbHelper.getTotalPaymentTodayForBranch1(branchName2, dateOf);
 
@@ -293,12 +294,12 @@ public class SuperAnyDayCount extends AppCompatActivity {
 
         txtNewCusToday.setText(MessageFormat.format("New Customers:{0}", customerCountToday));
         txtTellerNewCus.setText(MessageFormat.format("Teller Cus:{0}", customersForTeller));
-        txtTellerPaymentT.setText(MessageFormat.format("Teller's Payment ,today : N{0}", paymentForTellerToday));
+        txtTellerPaymentT.setText(MessageFormat.format("Teller's Payment for the day : N{0}", paymentForTellerToday));
         txtTellerTotalPayment.setText(MessageFormat.format("Teller's Total Payment: N{0}", paymentTotalForTeller));
-        txtCustomerPaymentToday.setText(MessageFormat.format("Customer's Payment ,today : N{0}", paymentForCusToday));
-        txtBranchPaymentToday.setText(MessageFormat.format("Branch's Payment ,today : N{0}", paymentForBranchToday));
-        txtBranchTotalPayment.setText(MessageFormat.format("Branch's Total Payment: N{0}", paymentForBranchTotal));
-        txtCustomersforBranch.setText(MessageFormat.format("Branch Customers ,Today:{0}", cusCountForOffice));
+        txtCustomerPaymentToday.setText(MessageFormat.format("Customer's Payment for the day : N{0}", paymentForCusToday));
+        txtBranchPaymentToday.setText(MessageFormat.format("Branch's Payment for the day : N{0}", paymentForBranchToday));
+        txtBranchTotalPayment.setText(MessageFormat.format("Branch's day Payment: N{0}", paymentForBranchTotal));
+        txtCustomersforBranch.setText(MessageFormat.format("Branch Customers for the day:{0}", cusCountForOffice));
 
 
     }

@@ -199,8 +199,8 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_super_admin_count);
+        setTitle("Selected Day More Details");
         sharedpreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);

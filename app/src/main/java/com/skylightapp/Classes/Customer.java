@@ -136,6 +136,9 @@ public class Customer  implements Parcelable, Serializable {
 
     private int sponsorID;
     private String pin;
+    private String cusBank;
+    private double cusBankBalance;
+    private String cusBankAcctNo;
 
     public Customer(String refID, String phoneNumber) {
 
@@ -519,6 +522,30 @@ public class Customer  implements Parcelable, Serializable {
 
     public void setCusStatus(String cusStatus) {
         this.cusStatus = cusStatus;
+    }
+
+    public String getCusBank() {
+        return cusBank;
+    }
+
+    public void setCusBank(String cusBank) {
+        this.cusBank = cusBank;
+    }
+
+    public double getCusBankBalance() {
+        return cusBankBalance;
+    }
+
+    public void setCusBankBalance(double cusBankBalance) {
+        this.cusBankBalance = cusBankBalance;
+    }
+
+    public String getCusBankAcctNo() {
+        return cusBankAcctNo;
+    }
+
+    public void setCusBankAcctNo(String cusBankAcctNo) {
+        this.cusBankAcctNo = cusBankAcctNo;
     }
 
 

@@ -18,7 +18,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Customers.CustomerPackageActivity;
+import com.skylightapp.Customers.CusPacksAct;
 import com.skylightapp.R;
 
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
@@ -76,7 +76,7 @@ public class TellerHomeChoices extends TabActivity {
                 .newTabSpec("Home")
                 .setIndicator("", resources.getDrawable(R.drawable.ic_icon2))
                 .setContent(intentSignUp);
-        Intent intentSignIn = new Intent().setClass(this, CustomerPackageActivity.class);
+        Intent intentSignIn = new Intent().setClass(this, CusPacksAct.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecLogin = tabhost
                 .newTabSpec("History")
                 .setIndicator("", resources.getDrawable(R.drawable.ic_icon2))

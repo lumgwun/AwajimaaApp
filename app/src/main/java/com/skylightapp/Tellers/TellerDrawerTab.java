@@ -23,8 +23,7 @@ import com.github.mzule.fantasyslide.SideBar;
 import com.github.mzule.fantasyslide.SimpleFantasyListener;
 import com.github.mzule.fantasyslide.Transformer;
 import com.skylightapp.AllCusPackTab;
-import com.skylightapp.Customers.StandingOrderTab;
-import com.skylightapp.GroupSavingsTab;
+import com.skylightapp.Customers.SOTab;
 import com.skylightapp.LoginActivity;
 import com.skylightapp.PasswordRecoveryActivity;
 import com.skylightapp.PrivacyPolicy_Web;
@@ -191,7 +190,7 @@ public class TellerDrawerTab extends AppCompatActivity {
 
         }
         if (id == R.id.standingOrders) {
-            Intent mainIntent = new Intent(this, StandingOrderTab.class);
+            Intent mainIntent = new Intent(this, SOTab.class);
             mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(mainIntent);
 
@@ -274,7 +273,7 @@ public class TellerDrawerTab extends AppCompatActivity {
     }
 
     public void goSO(View view) {
-        Intent mainIntent = new Intent(this, StandingOrderTab.class);
+        Intent mainIntent = new Intent(this, SOTab.class);
         mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(mainIntent);
     }

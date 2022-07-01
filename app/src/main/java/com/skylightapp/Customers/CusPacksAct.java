@@ -23,7 +23,7 @@ import com.skylightapp.LoginDirectorActivity;
 import com.skylightapp.R;
 import com.twilio.Twilio;
 
-public class CustomerPackageActivity extends AppCompatActivity implements MySavingsCodesFrag.OnFragmentInteractionListener,MySavingsFragment.OnFragmentInteractionListener {
+public class CusPacksAct extends AppCompatActivity implements MySavingsCodesFrag.OnFragmentInteractionListener,MySavingsFragment.OnFragmentInteractionListener {
     private SharedPreferences userPreferences;
     PrefManager prefManager;
     private Gson gson;

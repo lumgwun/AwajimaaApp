@@ -1,8 +1,5 @@
 package com.skylightapp.SuperAdmin;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.annotation.SuppressLint;
 import android.app.TabActivity;
 import android.content.Intent;
@@ -19,11 +16,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Customers.CustomerPackageActivity;
 import com.skylightapp.R;
-import com.skylightapp.Tellers.MyCustPackTab;
-import com.skylightapp.Tellers.TellerDrawerAct;
-import com.skylightapp.Tellers.TellerHomeChoices;
 
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
@@ -46,31 +39,33 @@ public class StocksTab extends TabActivity {
     private static final String PREF_NAME = "skylight";
 
 
-    String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,
-            SharedPrefProfileID
+    String SharedPrefUserPassword;
+    int SharedPrefCusID;
+    String SharedPrefUserMachine;
+    int SharedPrefProfileID
                     ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_stocks_tab);
+        setTitle("Stocks Tab");
         TabHost tabhost = findViewById(android.R.id.tabhost);
         TabWidget tabs = findViewById(android.R.id.tabs);
         // setting up the tab host
         tabhost.setup(getLocalActivityManager());
         Resources resources = getResources();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.stocks_toolbar);
         floatingActionButton = findViewById(R.id.ic_stocksTab);
         userProfile=new Profile();
         sharedPreferences= getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         json = sharedPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
-        SharedPrefUserName=sharedPreferences.getString("USER_NAME", "");
-        SharedPrefUserPassword=sharedPreferences.getString("USER_PASSWORD", "");
-        SharedPrefCusID=sharedPreferences.getString("CUSTOMER_ID", "");
+        SharedPrefUserName=sharedPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserPassword=sharedPreferences.getString("PROFILE_PASSWORD", "");
+        SharedPrefCusID=sharedPreferences.getInt("CUSTOMER_ID", 0);
         SharedPrefUserMachine=sharedPreferences.getString("machine", "");
-        SharedPrefProfileID=sharedPreferences.getString("PROFILE_ID", "");
+        SharedPrefProfileID=sharedPreferences.getInt("PROFILE_ID", 0);
         Intent intentSignUp = new Intent().setClass(this, SuperAllSTList.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecSignUp = tabhost
                 .newTabSpec("Stocks List")

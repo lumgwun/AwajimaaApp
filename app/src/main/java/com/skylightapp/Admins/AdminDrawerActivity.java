@@ -42,7 +42,7 @@ import com.skylightapp.CameraActivity;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Customers.StandingOrderTab;
+import com.skylightapp.Customers.SOTab;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.GroupSavingsTab;
 import com.skylightapp.PasswordRecoveryActivity;
@@ -547,7 +547,7 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
                 return true;
 
             case R.id.nav_so:
-                Intent standingOIntent = new Intent(this, StandingOrderTab.class);
+                Intent standingOIntent = new Intent(this, SOTab.class);
                 standingOIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(standingOIntent);
                 return true;

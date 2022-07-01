@@ -2,12 +2,10 @@ package com.skylightapp.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,7 +18,7 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.Utils;
 import com.skylightapp.Customers.CusPackageList;
-import com.skylightapp.Customers.CustomerPackForPayment;
+import com.skylightapp.Customers.CusPackForPayment;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -49,9 +47,9 @@ public class PackageRecyclerAdapter extends RecyclerView.Adapter<PackageRecycler
 
     }
 
-    public PackageRecyclerAdapter(CustomerPackForPayment customerPackForPayment, List<SkyLightPackage> packages) {
+    public PackageRecyclerAdapter(CusPackForPayment cusPackForPayment, List<SkyLightPackage> packages) {
         this.skyLightPackages2 = packages;
-        this.mcontext = customerPackForPayment;
+        this.mcontext = cusPackForPayment;
     }
 
     public PackageRecyclerAdapter(CusPackageList cusPackageList, ArrayList<SkyLightPackage> skyLightPackages) {

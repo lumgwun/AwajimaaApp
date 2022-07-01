@@ -7,10 +7,12 @@
     android:layout_height="match_parent"
     android:id="@android:id/tabhost"
     android:theme="@style/Theme.OurCApp"
-    android:background="@drawable/sky4"
-    tools:context="com.skylightapp.Customers.StandingOrderTab">
+    android:background="@drawable/rect_their_message"
+    tools:context="com.skylightapp.Customers.SOTab">
+    <include layout="@layout/tool_bar11d"/>
     <LinearLayout
         android:orientation="vertical"
+        android:layout_marginTop="100dp"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 

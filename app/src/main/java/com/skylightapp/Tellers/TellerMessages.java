@@ -27,6 +27,7 @@ public class TellerMessages extends AppCompatActivity {
 
 
     private MessageAdapter mAdapter;
+    private static final String PREF_NAME = "skylight";
 
 
     DBHelper dbHelper;
@@ -39,11 +40,11 @@ public class TellerMessages extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.act_teller_messages);
+        setTitle("Teller Messages");
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         recyclerView = findViewById(R.id.recycler_Mymessage);
         userProfile=new Profile();
-        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         gson = new Gson();
         String json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);

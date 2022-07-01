@@ -80,7 +80,7 @@ public class CusSubPackTab extends TabActivity {
         fHome = findViewById(R.id.fab_SubTab);
 
 
-        Intent pack2Intent = new Intent().setClass(this, CustomerPackForPayment.class);
+        Intent pack2Intent = new Intent().setClass(this, CusPackForPayment.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpec2 = tabhost
                 .newTabSpec("Pack For Payment")
                 .setIndicator("", resources.getDrawable(R.drawable.ic__category))

@@ -40,12 +40,12 @@ import com.skylightapp.Customers.CusOrderTab;
 import com.skylightapp.Customers.CustUtilTab;
 import com.skylightapp.Customers.CustomerHelpActTab;
 import com.skylightapp.Customers.CusLoanTab;
-import com.skylightapp.Customers.CustomerPackForPayment;
-import com.skylightapp.Customers.CustomerPackageActivity;
+import com.skylightapp.Customers.CusPackForPayment;
+import com.skylightapp.Customers.CusPacksAct;
 import com.skylightapp.Customers.NewPackCusAct;
 import com.skylightapp.Customers.PackListTab;
 import com.skylightapp.Customers.PackageTab;
-import com.skylightapp.Customers.StandingOrderTab;
+import com.skylightapp.Customers.SOTab;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.LoginActivity;
 import com.skylightapp.MyTimelineAct;
@@ -626,11 +626,11 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
                 startActivity(profile);
                 break;
             case R.id.nav_Acctant_Savings:
-                Intent active = new Intent(AcctantBackOffice.this, CustomerPackageActivity.class);
+                Intent active = new Intent(AcctantBackOffice.this, CusPacksAct.class);
                 startActivity(active);
                 break;
             case R.id.nav_Acctant_p:
-                Intent history = new Intent(AcctantBackOffice.this, CustomerPackForPayment.class);
+                Intent history = new Intent(AcctantBackOffice.this, CusPackForPayment.class);
                 startActivity(history);
                 break;
 
@@ -648,7 +648,7 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
                 startActivity(intPref);
                 break;
             case R.id.nav_PaymentAcctant:
-                Intent intSO = new Intent(AcctantBackOffice.this, StandingOrderTab.class);
+                Intent intSO = new Intent(AcctantBackOffice.this, SOTab.class);
                 startActivity(intSO);
                 break;
             case R.id.navsupportAcctant:
