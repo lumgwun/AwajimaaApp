@@ -19,7 +19,7 @@ import com.google.gson.Gson;
 import com.skylightapp.Classes.CubeOutDepthTransformation;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.LoginDirectorActivity;
+import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 import com.twilio.Twilio;
 
@@ -117,7 +117,7 @@ public class CusPacksAct extends AppCompatActivity implements MySavingsCodesFrag
         bundle.putString(machine, machine);
         //bundle.putString("machine", "machine");
         //bundle.putString("FirstName", profileFirstName);
-        Intent intent = new Intent(this, LoginDirectorActivity.class);
+        Intent intent = new Intent(this, LoginDirAct.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("User", (Parcelable) userProfile);
         intent.putExtras(bundle);

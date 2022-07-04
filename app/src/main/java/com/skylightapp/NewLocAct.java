@@ -43,9 +43,11 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.CancellationTokenSource;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -67,7 +69,7 @@ import java.util.Random;
 
 import static com.skylightapp.Classes.ImageUtil.TAG;
 
-public class NewLocAct extends AppCompatActivity implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+public class NewLocAct extends AppCompatActivity implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationClient;
     double lat,lng;
     private LocationRequest request;
@@ -90,9 +92,6 @@ public class NewLocAct extends AppCompatActivity implements LocationListener, Go
     Gson gson,gson1;
     SQLiteDatabase sqLiteDatabase;
     DBHelper dbHelper;
-    int virtualAccountNumber ,soAccountNumber;
-    long customerID;
-    long profileID1 ;
     String json,json1,address;
     private boolean locationPermissionGranted;
     Location location;
@@ -124,9 +123,11 @@ public class NewLocAct extends AppCompatActivity implements LocationListener, Go
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_new_loc);
+        setTitle("User Loc. Detection in Progress...");
         if (!hasPermissions(NewLocAct.this, PERMISSIONS33)) {
             ActivityCompat.requestPermissions(NewLocAct.this, PERMISSIONS33, PERMISSION_ALL33);
         }
+
         ran = new Random();
         userProfile=new Profile();
         random = new SecureRandom();
@@ -144,7 +145,7 @@ public class NewLocAct extends AppCompatActivity implements LocationListener, Go
         googleApiClient.connect();
         createLocationRequest();
         getDeviceLocation();
-        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map98);
+        //mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map98);
         geocoder = new Geocoder(NewLocAct.this, Locale.getDefault());
         /*if (mapFragment != null) {
             mapFragment.getMapAsync(this);
@@ -188,20 +189,7 @@ public class NewLocAct extends AppCompatActivity implements LocationListener, Go
         builder.setPositiveButton(R.string.button_ok, null);
         builder.show();
     }
-    private void setupLocationManager() {
-        if (googleApiClient == null) {
 
-            googleApiClient = new GoogleApiClient.Builder( this )
-                    .addConnectionCallbacks( this )
-                    .addOnConnectionFailedListener( this )
-                    .addApi( LocationServices.API )
-                    //.addApi( Places.GEO_DATA_API )
-                    //.addApi( Places.PLACE_DETECTION_API )
-                    .build();
-        }
-        googleApiClient.connect();
-        createLocationRequest();
-    }
     protected void createLocationRequest() {
 
         request = new LocationRequest();
@@ -329,6 +317,7 @@ public class NewLocAct extends AppCompatActivity implements LocationListener, Go
     }
     @SuppressLint("MissingPermission")
     private void getDeviceLocation() {
+
         try {
             if (locationPermissionGranted) {
                 Task<Location> locationResult = fusedLocationClient.getLastLocation();
@@ -467,6 +456,9 @@ public class NewLocAct extends AppCompatActivity implements LocationListener, Go
                                         longitude = location2.getLongitude();
                                         userLocation = new LatLng(latitude, longitude);
                                         long duration = 1000;
+                                        /*mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                                new LatLng(latitude,
+                                                        longitude), 13));*/
 
 
                                     }
@@ -522,6 +514,35 @@ public class NewLocAct extends AppCompatActivity implements LocationListener, Go
 
     }
 
+
+    @Override
+    public void onLocationChanged(@NonNull @NotNull Location location) {
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
+        mMap = googleMap;
+        if (mMap == null) {
+            return;
+        }
+
+        LatLng skylight = new LatLng(4.52871, 7.44507);
+        mMap.addMarker(new MarkerOptions()
+                .position(skylight)
+                .title("Marker in Skylight"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                new LatLng(4.52871,
+                        7.44507), 10));
+
+
+    }
+
     @Override
     public void onConnected(@Nullable @org.jetbrains.annotations.Nullable Bundle bundle) {
 
@@ -537,8 +558,5 @@ public class NewLocAct extends AppCompatActivity implements LocationListener, Go
 
     }
 
-    @Override
-    public void onLocationChanged(@NonNull @NotNull Location location) {
 
-    }
 }

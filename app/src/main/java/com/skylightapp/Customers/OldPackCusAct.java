@@ -49,7 +49,7 @@ import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.LoginDirectorActivity;
+import com.skylightapp.LoginDirAct;
 import com.skylightapp.PayNowActivity;
 import com.skylightapp.R;
 import com.twilio.Twilio;
@@ -324,7 +324,7 @@ public class OldPackCusAct extends AppCompatActivity {
 
         }
         bundle.putLong("ProfileID", profileID);
-        Intent intent = new Intent(this, LoginDirectorActivity.class);
+        Intent intent = new Intent(this, LoginDirAct.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtras(bundle);
         startActivity(intent);

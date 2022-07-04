@@ -623,7 +623,7 @@
         <activity
             android:name=".SkyLightPackageActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".LoginDirectorActivity" />
+        <activity android:name=".LoginDirAct" />
         <activity
             android:name=".PayNowActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

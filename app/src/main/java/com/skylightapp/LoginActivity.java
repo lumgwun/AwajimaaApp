@@ -1372,7 +1372,7 @@ public class LoginActivity extends AppCompatActivity {
         sharedPrefUserMachine = userPreferences.getString("machine", "");
 
         if (userProfile != null) {
-            Intent tellerIntent = new Intent(LoginActivity.this, LoginDirectorActivity.class);
+            Intent tellerIntent = new Intent(LoginActivity.this, LoginDirAct.class);
             tellerIntent.putExtra(PROFILE_ID, profileID);
             tellerIntent.putExtra(PROFILE_PASSWORD, sharedPrefUserPassword);
             tellerIntent.putExtra(PROFILE_OFFICE, SharedPrefOffice);

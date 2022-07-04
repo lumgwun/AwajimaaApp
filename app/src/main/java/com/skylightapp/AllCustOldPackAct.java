@@ -232,7 +232,7 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
                         case Activity.RESULT_OK:
                             Toast.makeText(AllCustOldPackAct.this, "Payment returned successful", Toast.LENGTH_SHORT).show();
                             dbHelper.updatePackageRecord(profileID, customerID, oldPackageId, reportID, "paid");
-                            Intent intent = new Intent(AllCustOldPackAct.this, LoginDirectorActivity.class);
+                            Intent intent = new Intent(AllCustOldPackAct.this, LoginDirAct.class);
                             startActivity(intent);
                             break;
                         case Activity.RESULT_CANCELED:
@@ -387,7 +387,7 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
         bundle.putString(machine, machine);
         //bundle.putString("machine", "machine");
         //bundle.putString("FirstName", profileFirstName);
-        Intent intent = new Intent(this, LoginDirectorActivity.class);
+        Intent intent = new Intent(this, LoginDirAct.class);
         intent.putExtras(bundle);
         startActivity(intent);
 
@@ -586,9 +586,9 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
                         .setContentTitle("Skylight Message")
                         .setContentText("Start a New Package");
 
-        Intent notificationIntent = new Intent(this, LoginDirectorActivity.class);
+        Intent notificationIntent = new Intent(this, LoginDirAct.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(LoginDirectorActivity.class);
+        stackBuilder.addParentStack(LoginDirAct.class);
         stackBuilder.addNextIntent(notificationIntent);
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(resultPendingIntent);

@@ -50,12 +50,10 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Classes.Utils;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.LoginDirectorActivity;
+import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 import com.skylightapp.SMSAct;
-import com.skylightapp.SignUpAct;
 import com.twilio.Twilio;
-import com.twilio.rest.api.v2010.account.Message;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -72,8 +70,6 @@ import java.util.TimeZone;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.skylightapp.Classes.Profile.PROFILE_PHONE;
-import static com.skylightapp.Transactions.OurConfig.TWILIO_ACCOUNT_SID;
-import static com.skylightapp.Transactions.OurConfig.TWILIO_AUTH_TOKEN;
 
 public class InStocksAct extends AppCompatActivity {
     private static final String TAG = InStocksAct.class.getSimpleName();
@@ -509,9 +505,9 @@ public class InStocksAct extends AppCompatActivity {
                         .setContentTitle("New Stock Alert")
                         .setContentText("A New Stock has just been added");
 
-        Intent notificationIntent = new Intent(this, LoginDirectorActivity.class);
+        Intent notificationIntent = new Intent(this, LoginDirAct.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(LoginDirectorActivity.class);
+        stackBuilder.addParentStack(LoginDirAct.class);
         stackBuilder.addNextIntent(notificationIntent);
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(resultPendingIntent);

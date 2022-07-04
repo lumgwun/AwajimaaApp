@@ -228,7 +228,7 @@ public class MyNewGrpSavings extends AppCompatActivity {
                                 .create();
                         //message.getStatus();
 
-                        Intent amTIntent = new Intent(MyNewGrpSavings.this, LoginDirectorActivity.class);
+                        Intent amTIntent = new Intent(MyNewGrpSavings.this, LoginDirAct.class);
                         amTIntent.putExtras(userBundle);
                         amTIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -248,9 +248,9 @@ public class MyNewGrpSavings extends AppCompatActivity {
                         .setContentTitle("Group Creation")
                         .setContentText("A new Group was successfully created");
 
-        Intent notificationIntent = new Intent(this, LoginDirectorActivity.class);
+        Intent notificationIntent = new Intent(this, LoginDirAct.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(LoginDirectorActivity.class);
+        stackBuilder.addParentStack(LoginDirAct.class);
         stackBuilder.addNextIntent(notificationIntent);
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(resultPendingIntent);

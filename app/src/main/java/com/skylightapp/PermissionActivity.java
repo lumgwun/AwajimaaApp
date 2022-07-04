@@ -37,7 +37,7 @@ public class PermissionActivity extends AppCompatActivity {
                 .putBoolean("request_permissions", false)
                 .apply();
 
-        startActivity(new Intent(this, LoginDirectorActivity.class));
+        startActivity(new Intent(this, LoginDirAct.class));
         finish();
     }
 

@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import com.melnykov.fab.FloatingActionButton;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.LoginDirectorActivity;
+import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
@@ -105,7 +105,7 @@ public class PackageTab extends TabActivity {
 
             bundle.putLong("ProfileID", profileUID);
             bundle.putString(machine, machine);
-            Intent intent = new Intent(this, LoginDirectorActivity.class);
+            Intent intent = new Intent(this, LoginDirAct.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(PROFILE_ID, profileUID);
             intent.putExtras(bundle);

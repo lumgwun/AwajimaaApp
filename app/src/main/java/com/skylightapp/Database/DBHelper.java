@@ -660,6 +660,21 @@ public class DBHelper extends SQLiteOpenHelper {
     private ArrayList<Customer> customers;
     SharedPreferences userPref;
     private Context context;
+    public static String  password;
+    public String getPassword(int profileID) {
+
+        /*SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        String[] columns = {PROFILE_PASSWORD,PROFILE_ID};
+        Cursor cursor =sqLiteDatabase.query(PROFILES_TABLE,columns,null,null,null,null,null);
+        StringBuffer buffer= new StringBuffer();
+        while (cursor.moveToNext())
+        {
+            int cid =cursor.getInt(1);
+            password =cursor.getString(6);
+        }*/
+
+        return password;
+    }
     public static String DB_PATH = "/data/D";
 
     public static final String DATABASE_NAME = "dBSkylight";
@@ -672,18 +687,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String BILL_ID_WITH_PREFIX = "bill.id";
     public static final int DATABASE_VERSION = 10;
     public static final int DATABASE_NEW_VERSION = 11;
-    public static final int USER_SURNAME_COLUMN = 1;
-    public static final int USER_FIRSTNAME_COLUMN = 2;
-    public static final int USER_EMAIL_COLUMN = 3;
-    public static final int USER_PHONE_COLUMN = 4;
-    public static final int USER_DOB_COLUMN = 5;
-    public static final int USER_GENDER_COLUMN = 6;
-    public static final int USER_ADDRESS_COLUMN = 7;
-    public static final int USER_DATE_JOINED_COLUMN = 8;
-    public static final int USER_ROLE_COLUMN = 9;
-    public static final int USER_NEXT_OF_KIN_COLUMN = 10;
-    public static final int USER_STATUS_COLUMN = 11;
-    public static final int USER_PASSWORD_COLUMN = 12;
 
     public static final int SO_ID_COLUMN = 0;
     public static final int SO_CUSTOMER_ID_COLUMN = 1;
@@ -695,8 +698,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final int SO_START_COLUMN = 7;
     public static final int SO_STATUS_COLUMN = 8;
     public static final int SO_END_DATE_COLUMN = 9;
-
-
     public static final int BOOKING_ID_COLUMN = 0;
     public static final int BOOKING_TITTLE_COLUMN = 1;
     public static final int BOOKING_NAME_COLUMN = 2;
@@ -723,7 +724,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final int PACKAGE_VALUE_COLUMN = 4;
     public static final int PACKAGE_STATUS_COLUMN = 8;
 
-
     public static final int PROFILE_ID_COLUMN = 0;
     public static final int USERNAME_COLUMN = 4;
 
@@ -731,7 +731,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final int TIMESTAMP_COLUMN = 3;
     public static final int TRANSACTION_TYPE_COLUMN = 8;
     public static final int TIMELINE_TIME_COLUMN = 5;
-
 
     public static final int PROPERTY_ID_COLUMN = 0;
     public static final int PROPERTY_DESCRIPTION_COLUMN = 2;
@@ -1062,19 +1061,13 @@ public class DBHelper extends SQLiteOpenHelper {
         return instance;
     }
 
-    public static String getPassword(long id) {
-        return null;
-    }
+
 
     public int getDatabaseVersion() {
         return DATABASE_VERSION;
     }
 
 
-    /*@Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        onCreate(db);
-    }*/
 
 
     private String getDate(Date date) {
@@ -9980,6 +9973,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return 0;
     }
+
     public double getAdminReceivedBalance() {
         try {
             String selectQuery = "SELECT * FROM " + ADMIN_BALANCE_TABLE;
@@ -20434,6 +20428,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return null;
     }
+
     public Cursor getLoanCursor(int loanID) {
         try {
             SQLiteDatabase db = this.getReadableDatabase();

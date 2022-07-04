@@ -250,7 +250,7 @@ public class CustomerPackageListAct extends AppCompatActivity implements  SuperS
         dashboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CustomerPackageListAct.this, LoginDirectorActivity.class);
+                Intent intent = new Intent(CustomerPackageListAct.this, LoginDirAct.class);
 
             }
         });

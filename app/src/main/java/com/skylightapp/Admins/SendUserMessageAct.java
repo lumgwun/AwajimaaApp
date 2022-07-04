@@ -26,7 +26,7 @@ import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.LoginDirectorActivity;
+import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 import com.twilio.Twilio;
 
@@ -690,7 +690,7 @@ public class SendUserMessageAct extends AppCompatActivity {
                 messageToCustomer)
                 .create();*/
 
-        Intent userIntent = new Intent(SendUserMessageAct.this, LoginDirectorActivity.class);
+        Intent userIntent = new Intent(SendUserMessageAct.this, LoginDirAct.class);
         userIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         userIntent.putExtras(userBundle);
         startActivity(userIntent);

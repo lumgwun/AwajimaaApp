@@ -37,7 +37,7 @@ import com.skylightapp.Inventory.StockTransfer;
 import com.skylightapp.Inventory.StockTransferAdapter;
 import com.skylightapp.Inventory.Stocks;
 import com.skylightapp.Inventory.StocksArrayAdapter;
-import com.skylightapp.LoginDirectorActivity;
+import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 import com.skylightapp.Tellers.TellerHomeChoices;
 
@@ -542,7 +542,7 @@ public class SuperStockTrAct extends AppCompatActivity {
 
         Intent notificationIntent = new Intent(this, TellerHomeChoices.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(LoginDirectorActivity.class);
+        stackBuilder.addParentStack(LoginDirAct.class);
         stackBuilder.addNextIntent(notificationIntent);
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(resultPendingIntent);

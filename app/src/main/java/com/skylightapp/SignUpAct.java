@@ -390,19 +390,13 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                                 //logo = findViewById(R.id.imageLogo);
                                 Intent data = result.getData();
                                 mImageUri = data.getData();
-
-                                /*if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                                    dbHelper.openDataBase();
-                                    sqLiteDatabase = dbHelper.getWritableDatabase();
-                                    dbHelper.insertProfilePicture(profileID1, customerID, mImageUri);
-                                }*/
-
-                                /*if (selectedImage != null) {
-                                    logo.setImageBitmap(getScaledBitmap(selectedImage));
+                                if (mImageUri != null) {
+                                    profilePix.setImageBitmap(getScaledBitmap(mImageUri));
                                 } else {
-                                    Toast.makeText(NewSignUpActivity.this, "Error getting Image",
+                                    Toast.makeText(SignUpAct.this, "Error getting Photo",
                                             Toast.LENGTH_SHORT).show();
-                                }*/
+                                }
+
 
                             }
 
@@ -605,7 +599,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
         cancellationTokenSource = new CancellationTokenSource();
 
-        new Thread(new Runnable() {
+        /*new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -626,7 +620,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                 });
 
             }
-        }).start();
+        }).start();*/
 
         userProfile = new Profile();
         account = new Account();
@@ -895,6 +889,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
                 final PopupMenu popup = new PopupMenu(SignUpAct.this, profilePix);
                 popup.getMenuInflater().inflate(R.menu.profile, popup.getMenu());
+                setTitle("Photo selection in Progress...");
 
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
@@ -911,7 +906,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                             startActivityForResult(i, RESULT_LOAD_IMAGE);
                         }
                         if (item.getItemId() == R.id.cancel_action) {
-                            // finish();
+                            setTitle("Skylight onBoarding");
                         }
 
                         return true;
@@ -1570,11 +1565,11 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         customer.setCustomerLocation(this.cusLatLng);
         customer.setCusUserName(uUserName);
         customer.setCusState(selectedState);
-        customer.setCustomerLocation(this.cusLatLng);
         customer.setCusSponsorID(sponsorID);
         customer.setCusOffice(selectedOffice);
         customer.setCusAccount(account);
         customer.setCusStandingOrderAcct(standingOrderAcct);
+        customer.setCusProfilePicture(String.valueOf(mImageUri));
 
         customerProfile.setProfileFirstName(uFirstName);
         customerProfile.setProfileLastName(uSurname);
@@ -1593,6 +1588,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         customerProfile.setProfileSponsorID(profileID);
         customerProfile.setProfileOffice(selectedOffice);
         customerProfile.setCustomerManager(customerManager);
+        customerProfile.setProfilePicture(mImageUri);
 
 
         try {

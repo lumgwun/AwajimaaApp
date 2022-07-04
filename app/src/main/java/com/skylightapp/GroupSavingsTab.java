@@ -80,7 +80,7 @@ public class GroupSavingsTab extends TabActivity {
 
     }
     public  void helpHome(){
-        Intent intent = new Intent(this, LoginDirectorActivity.class);
+        Intent intent = new Intent(this, LoginDirAct.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("Profile", profileUID);
         startActivity(intent);

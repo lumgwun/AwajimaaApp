@@ -181,7 +181,7 @@ public class CustomerSmsActivity extends AppCompatActivity {
 
     private void homeMe() {
         Intent usersIntent = new Intent(CustomerSmsActivity.this,
-                LoginDirectorActivity.class);
+                LoginDirAct.class);
         usersIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
     }
@@ -216,7 +216,7 @@ public class CustomerSmsActivity extends AppCompatActivity {
                         userProfile.addTimeLine("Code Update","You confirmed the savings code for"+savingsID+"@"+codeDate);
                         dbHelper.insertTimeLine("Code Update","The savings code for"+savingsID+""+"of"+cusNames+"was confirmed",codeDate,null);
                         new Intent(this,
-                                LoginDirectorActivity.class);
+                                LoginDirAct.class);
                         Toast.makeText(this, "Savings status has been updated Successfully", Toast.LENGTH_SHORT).show();
 
                     }else {

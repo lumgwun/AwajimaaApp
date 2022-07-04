@@ -8,7 +8,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.skylightapp.LoginDirectorActivity;
+import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 
 
@@ -43,7 +43,7 @@ public class MoneyTransferActivity extends AppCompatActivity {
                                 break;
                             case 2:
                                 Toast.makeText(MoneyTransferActivity.this, "Home option selected", Toast.LENGTH_SHORT).show();
-                                Intent intentHomeWards = new Intent(MoneyTransferActivity.this, LoginDirectorActivity.class);
+                                Intent intentHomeWards = new Intent(MoneyTransferActivity.this, LoginDirAct.class);
                                 intentHomeWards.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 intentHomeWards.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 intentHomeWards.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

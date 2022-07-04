@@ -11,6 +11,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -46,7 +47,6 @@ import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Transactions.OurConfig;
 import com.twilio.Twilio;
-import com.twilio.rest.api.v2010.account.Message;
 
 import org.json.JSONException;
 
@@ -102,8 +102,6 @@ public class PayNowActivity extends AppCompatActivity  {
     String imageBundleString;
     double totalBundleString;
 
-    private int selectedAllCustomerIndex;
-    private int selectedCustomerIndex;
 
     private SharedPreferences userPreferences;
     private Gson gson;
@@ -196,6 +194,7 @@ public class PayNowActivity extends AppCompatActivity  {
     Button btnLayoutFlutter, btnLayoutPaystack;
     private static final String PREF_NAME = "skylight";
     RavePayInitializer ravePayInitializer;
+    SQLiteDatabase sqLiteDatabase;
 
 
     @Override
@@ -205,6 +204,7 @@ public class PayNowActivity extends AppCompatActivity  {
         Skylightransaction= new com.skylightapp.Classes.Transaction();
         random = new SecureRandom();
         FirebaseApp.initializeApp(this);
+        sqLiteDatabase = dbHelper.getWritableDatabase();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
         refID = "SkyLightT/"+ random.nextInt((int) (Math.random() * 100) + 1010);
@@ -447,7 +447,7 @@ public class PayNowActivity extends AppCompatActivity  {
     }
     private void processFlutterPayment(String profileEmail, double amountSoFar, double packageTotal, int numberOfDaysRemaining, double amountRemaining, double accountBalance, long profileID, String profileSurname, String profileFirstName, String profilePhone, SkyLightPackage skyLightPackage, double totalToday, int selectedNumberOfDays, double packageAmount, long reportID, CustomerDailyReport customerDailyReport, Transaction transaction, Customer customer, Account account,  long packageID, String packageType) {
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date newDate = calendar.getTime();
         final Date[] readDate = {null};
         String theDate = sdf.format(newDate);
@@ -561,6 +561,7 @@ public class PayNowActivity extends AppCompatActivity  {
 
             if(account !=null){
                 accountID=account.getSkyLightAcctNo();
+                accountBalance=account.getAccountBalance();
             }
             if (skyLightPackage != null) {
                 packageDaysRem = skyLightPackage.getRemainingDays();
@@ -577,12 +578,11 @@ public class PayNowActivity extends AppCompatActivity  {
             if (resultCode == RavePayActivity.RESULT_SUCCESS) {
                 Toast.makeText(this, "SUCCESS " + message, Toast.LENGTH_LONG).show();
                 Twilio.init(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
-                sendTransactionMessage();
                 newSavingsID = random.nextInt((int) (Math.random() * 1201) + 10876);
                 transactionID = random.nextInt((int) (Math.random() * 401) + 1780);
 
                 refID = "SkyLightT/"+ random.nextInt((int) (Math.random() * 900000) + 100000);
-                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 String currentDateAndTime = sdf.format(new Date());
 
                 transactionId = transaction.getTransactionID();
@@ -593,23 +593,19 @@ public class PayNowActivity extends AppCompatActivity  {
                 String tittle1 = "Your Successful Online Payment Alert";
                 String detail = "NGN" + totalToday + "was paid for" + customerName+""+"on"+currentDateAndTime;
                 String managerName = userProfile.getProfileLastName() + userProfile.getProfileFirstName();
-                String details = managerName + "paid" + "NGN" + totalToday + "for" + customerName;
+                String details = managerName +""+ "paid" + ""+ "NGN" + totalToday +""+ "for" +""+ customerName;
                 userProfile.addTransaction( transactionId, customerName, "", customerPhoneNo, totalToday, String.valueOf(AccountID),  PackageName,currentDateAndTime, "type");
-                DBHelper applicationDb = new DBHelper (this);
                 customer.addCusTransactions(totalToday);
                 customer.addCusTimeLine(tittle1,details);
                 parseResponse(transaction.getReceiptId());
                 newAccountBalance = accountBalance+totalToday;
                 userProfile.addTimeLine(tittle1,detail);
                 customer.getCusAccount().setAccountBalance(newAccountBalance);
-                Skylightransaction= new com.skylightapp.Classes.Transaction(transactionID, accountID, currentDateAndTime, 1001001, AccountID, "Skylight", customerName, totalToday, Transaction.TRANSACTION_TYPE.DEPOSIT, "",officeBranch, "", "", "");
+                Skylightransaction= new com.skylightapp.Classes.Transaction(transactionID, accountID, currentDateAndTime, accountID, AccountID, "Skylight", customerName, totalToday, Transaction.TRANSACTION_TYPE.DEPOSIT, "FlutterWave",officeBranch, "", "", "");
 
-                applicationDb.insertDailyReport(packageID,newSavingsID,profileID, customerId8,currentDateAndTime,packageAmount,selectedNumberOfDays,totalToday,amountSoFar+totalToday,amountRemaining,numberOfDaysRemaining,"paid");
-                skyLightPackage.addSavings(profileID,customerId8,0,packageAmount,selectedNumberOfDays,totalToday,numberOfDaysRemaining,amountRemaining,currentDateAndTime,"paid");
-                applicationDb.insertTimeLine(tittle,details,currentDateAndTime,mCurrentLocation);
-                applicationDb.saveNewTransaction(profileID, customerId8,Skylightransaction, accountID, "Skylight", customerName, Transaction.TRANSACTION_TYPE.DEPOSIT,totalToday, transactionID, officeBranch, currentDateAndTime);
-
-
+                skyLightPackage.addSavings(profileID,customerId8,newSavingsID,packageAmount,selectedNumberOfDays,totalToday,numberOfDaysRemaining,amountRemaining,currentDateAndTime,"paid");
+                saveToDB(tittle,tittle1,details,skyLightPackage,customer,profileID,customerPhoneNo,customerId8,PackageName,packageAmount,newAccountBalance,newSavingsID,packageAmount,transactionID,currentDateAndTime,accountID,customerName,selectedNumberOfDays,totalToday,numberOfDaysRemaining,amountRemaining,currentDateAndTime);
+                sendTransactionMessage(totalToday,PackageName,customerPhoneNo);
                 Intent itemPurchaseIntent = new Intent(PayNowActivity.this, NewCustomerDrawer.class);
                 itemPurchaseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(itemPurchaseIntent);
@@ -622,8 +618,48 @@ public class PayNowActivity extends AppCompatActivity  {
             }
         }
     }
+    private void saveToDB(String tittle, String tittle1, String details, SkyLightPackage skyLightPackage, Customer customer, int profileID, String customerPhoneNo, int customerId8, String packageName, double packageAmount, double newAccountBalance, int newSavingsID, double amount, int transactionID, String currentDateAndTime, int accountID, String customerName, int selectedNumberOfDays, double totalToday, int numberOfDaysRemaining, double amountRemaining, String dateAndTime){
+        dbHelper = new DBHelper(this);
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.openDataBase();
+            dbHelper.insertDailyReport(packageID, newSavingsID, profileID, customerId8,currentDateAndTime, packageAmount, selectedNumberOfDays, totalToday,amountSoFar+ totalToday, amountRemaining, numberOfDaysRemaining,"paid");
 
-    protected void sendTransactionMessage() {
+
+
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.openDataBase();
+            dbHelper.insertTimeLine(tittle,details,currentDateAndTime,mCurrentLocation);
+
+
+
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.openDataBase();
+            dbHelper.saveNewTransaction(profileID, customerId8,Skylightransaction, accountID, "Skylight", customerName, Transaction.TRANSACTION_TYPE.DEPOSIT, totalToday, transactionID, officeBranch, currentDateAndTime);
+
+
+
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.openDataBase();
+
+
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.openDataBase();
+
+
+        }
+    }
+
+    protected void sendTransactionMessage(double totalToday, String packageName, String customerPhoneNo) {
         Bundle smsBundle= new Bundle();
 
         String customerName=null;
@@ -641,12 +677,11 @@ public class PayNowActivity extends AppCompatActivity  {
 
         }
         customerName=profileSurname+","+profileFirstName;
-        String smsMessage=customerName+""+"Your online payment of"+"was successful";
-        smsBundle.putString(PROFILE_PHONE,profilePhone);
-        smsBundle.putString("USER_PHONE",profilePhone);
+        String smsMessage=customerName+""+"Your online payment of NGN"+totalToday+""+"was successful";
+        smsBundle.putString(PROFILE_PHONE,customerPhoneNo);
+        smsBundle.putString("USER_PHONE",customerPhoneNo);
         smsBundle.putString("smsMessage",smsMessage);
-        smsBundle.putString("from","Skylight");
-        smsBundle.putString("to",profilePhone);
+        smsBundle.putString("to",customerPhoneNo);
         Intent itemPurchaseIntent = new Intent(PayNowActivity.this, SMSAct.class);
         itemPurchaseIntent.putExtras(smsBundle);
         itemPurchaseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -657,7 +692,7 @@ public class PayNowActivity extends AppCompatActivity  {
     private void doPayStackPayment(Bundle finalTotalBundle) {
         try {
             layoutPaystack.setVisibility(View.VISIBLE);
-            performCharge(true);
+            performCharge(true,finalTotalBundle);
         } catch (Exception e) {
             Toast.makeText(PayNowActivity.this, "An error occurred while charging card", Toast.LENGTH_LONG).show();
 
@@ -701,9 +736,9 @@ public class PayNowActivity extends AppCompatActivity  {
             year = Integer.parseInt(sYear);
         } catch (Exception ignored) {
         }
-        card.setExpiryYear(year);
+        card1.setExpiryYear(year);
 
-        return card;
+        return card1;
     }
 
     @Override
@@ -717,8 +752,8 @@ public class PayNowActivity extends AppCompatActivity  {
     }
 
 
-    private void performCharge(boolean local) {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+    private void performCharge(boolean local, Bundle finalTotalBundle) {
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         if(totalBundle !=null) {
 
             dateOfReport = totalBundle.getString("Date");
@@ -806,13 +841,9 @@ public class PayNowActivity extends AppCompatActivity  {
                 mTextError.setText(" ");
                 Toast.makeText(PayNowActivity.this, paymentReference, Toast.LENGTH_LONG).show();
                 updateTextViews();
-                String welcomeMessage="Your payment of NGN"+totalToday+""+"was received today";
-                Twilio.init(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
-                Message message = Message.creator(
-                        new com.twilio.type.PhoneNumber(customerPhoneNo),
-                        new com.twilio.type.PhoneNumber("234"+customerPhoneNo),
-                        welcomeMessage)
-                        .create();
+                String txMessage="Your payment of NGN"+totalToday+""+"was received today";
+
+                sendTXMessage(customerPhoneNo, txMessage);
                 setResult(Activity.RESULT_OK);
                 setResult(Activity.RESULT_OK, new Intent());
                 //finish();
@@ -831,7 +862,7 @@ public class PayNowActivity extends AppCompatActivity  {
             public void onError(Throwable error, co.paystack.android.Transaction transaction) {
                 setResult(Activity.RESULT_CANCELED, new Intent());
                 if (error instanceof ExpiredAccessCodeException) {
-                    PayNowActivity.this.performCharge(false);
+                    PayNowActivity.this.performCharge(false, totalBundle);
                     //PayNowActivity.this.chargeCard();
                     return;
                 }
@@ -852,6 +883,18 @@ public class PayNowActivity extends AppCompatActivity  {
 
         });
     }
+    public void sendTXMessage(String customerPhoneNo, String txMessage) {
+        Bundle smsBundle = new Bundle();
+        smsBundle.putString("PROFILE_PHONE", customerPhoneNo);
+        smsBundle.putString("USER_PHONE", customerPhoneNo);
+        smsBundle.putString("smsMessage", txMessage);
+        smsBundle.putString("to", customerPhoneNo);
+        Intent otpIntent = new Intent(PayNowActivity.this, SMSAct.class);
+        otpIntent.putExtras(smsBundle);
+        otpIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //startActivity(itemPurchaseIntent);
+
+    }
 
     public void revealFlutterwave(View view) {
     }
@@ -868,7 +911,7 @@ public class PayNowActivity extends AppCompatActivity  {
             if (result != null) {
                 charge.setAccessCode(result);
                 //chargeCard();
-                startActivity(new Intent(PayNowActivity.this, LoginDirectorActivity.class));
+                startActivity(new Intent(PayNowActivity.this, LoginDirAct.class));
             } else {
                 PayNowActivity.this.resultText.setText(String.format("There was a problem getting a new access code form the backend: %s", error));
                 dismissDialog();
@@ -1012,12 +1055,12 @@ public class PayNowActivity extends AppCompatActivity  {
         applicationDb.saveNewTransaction(profileID, customerId8,Skylightransaction, AccountID, "Skylight", customerName,transaction_type,totalToday, transactionID, officeBranch, currentDateAndTime);
 
 
-        startActivity(new Intent(PayNowActivity.this, LoginDirectorActivity.class));
+        startActivity(new Intent(PayNowActivity.this, LoginDirAct.class));
     }
     private void parseResponse (String transactionReference){
         String message = "Skylight Payment Successful - " + transactionReference;
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        startActivity(new Intent(PayNowActivity.this, LoginDirectorActivity.class));
+        startActivity(new Intent(PayNowActivity.this, LoginDirAct.class));
 
     }
 

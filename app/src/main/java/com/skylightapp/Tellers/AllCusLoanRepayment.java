@@ -39,7 +39,7 @@ import com.skylightapp.Classes.Loan;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.FlutterWavePayments.FluPaywithBank;
-import com.skylightapp.LoginDirectorActivity;
+import com.skylightapp.LoginDirAct;
 import com.skylightapp.PayNowActivity;
 import com.skylightapp.R;
 import com.twilio.Twilio;
@@ -278,9 +278,9 @@ public class AllCusLoanRepayment extends AppCompatActivity {
                         .setContentTitle("New Loan Repayment Alert")
                         .setContentText("A Customer just repaid his/her Loan");
 
-        Intent notificationIntent = new Intent(this, LoginDirectorActivity.class);
+        Intent notificationIntent = new Intent(this, LoginDirAct.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(LoginDirectorActivity.class);
+        stackBuilder.addParentStack(LoginDirAct.class);
         stackBuilder.addNextIntent(notificationIntent);
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(resultPendingIntent);

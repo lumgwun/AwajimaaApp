@@ -13,7 +13,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.melnykov.fab.FloatingActionButton;
 import com.skylightapp.Classes.CubeOutDepthTransformation;
 import com.skylightapp.Classes.HistoryViewPagerAdapter;
-import com.skylightapp.LoginDirectorActivity;
+import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 
 public class SkylightHistoryAct extends AppCompatActivity {
@@ -79,7 +79,7 @@ public class SkylightHistoryAct extends AppCompatActivity {
     }
     public void homeAdminHistory() {
 
-        Intent intent = new Intent(this, LoginDirectorActivity.class);
+        Intent intent = new Intent(this, LoginDirAct.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         Toast.makeText(this, getString(R.string.teller_dashboard_taking), Toast.LENGTH_LONG).show();
         startActivity(intent);

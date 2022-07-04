@@ -25,7 +25,7 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.LoginDirectorActivity;
+import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -107,7 +107,7 @@ public class MySavingsListAct extends AppCompatActivity {
                 bundle.putString("USER_PASSWORD",SharedPrefUserPassword);
                 bundle.putString("PROFILE_USERNAME",SharedPrefUserName);
                 bundle.putString("PROFILE_PASSWORD",SharedPrefUserPassword);
-                Intent loginRIntent = new Intent(MySavingsListAct.this, LoginDirectorActivity.class);
+                Intent loginRIntent = new Intent(MySavingsListAct.this, LoginDirAct.class);
                 loginRIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(loginRIntent);
 

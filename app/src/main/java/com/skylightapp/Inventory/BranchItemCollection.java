@@ -22,7 +22,7 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.LoginDirectorActivity;
+import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 import com.skylightapp.SuperAdmin.UpdatePackageAct;
 import com.twilio.Twilio;
@@ -153,9 +153,9 @@ public class BranchItemCollection extends AppCompatActivity {
                         .setContentTitle("No Item For Collection")
                         .setContentText("There is no Item for the Customer");
 
-        Intent notificationIntent = new Intent(this, LoginDirectorActivity.class);
+        Intent notificationIntent = new Intent(this, LoginDirAct.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(LoginDirectorActivity.class);
+        stackBuilder.addParentStack(LoginDirAct.class);
         stackBuilder.addNextIntent(notificationIntent);
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(resultPendingIntent);
@@ -170,9 +170,9 @@ public class BranchItemCollection extends AppCompatActivity {
                         .setContentTitle("Customer from Another Branch")
                         .setContentText("This Admin is not authorised for this Branch");
 
-        Intent notificationIntent = new Intent(this, LoginDirectorActivity.class);
+        Intent notificationIntent = new Intent(this, LoginDirAct.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(LoginDirectorActivity.class);
+        stackBuilder.addParentStack(LoginDirAct.class);
         stackBuilder.addNextIntent(notificationIntent);
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(resultPendingIntent);

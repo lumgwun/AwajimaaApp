@@ -38,7 +38,7 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.SkyLightPackModel;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.LoginDirectorActivity;
+import com.skylightapp.LoginDirAct;
 import com.skylightapp.PayNowActivity;
 import com.skylightapp.R;
 import com.skylightapp.Transactions.OurConfig;
@@ -172,7 +172,7 @@ public class PayForMyCusAct extends AppCompatActivity {
                     switch (result.getResultCode()) {
                         case Activity.RESULT_OK:
                             Intent intent = result.getData();
-                            startActivity(new Intent(PayForMyCusAct.this, LoginDirectorActivity.class));
+                            startActivity(new Intent(PayForMyCusAct.this, LoginDirAct.class));
 
                             /*Transaction transaction = new Transaction();
                             String tId = transaction.getTransactionID();
@@ -396,7 +396,7 @@ public class PayForMyCusAct extends AppCompatActivity {
     private void parseResponse (String transactionReference){
         String message = "Skylight Payment Successful - " + transactionReference;
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        startActivity(new Intent(PayForMyCusAct.this, LoginDirectorActivity.class));
+        startActivity(new Intent(PayForMyCusAct.this, LoginDirAct.class));
 
     }
 

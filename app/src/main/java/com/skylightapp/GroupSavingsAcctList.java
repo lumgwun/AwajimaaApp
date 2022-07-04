@@ -222,7 +222,7 @@ public class GroupSavingsAcctList extends AppCompatActivity implements GroupAcct
         bundle.putString(machine, machine);
         //bundle.putString("machine", "machine");
         //bundle.putString("FirstName", profileFirstName);
-        Intent intent = new Intent(this, LoginDirectorActivity.class);
+        Intent intent = new Intent(this, LoginDirAct.class);
         intent.putExtras(bundle);
         startActivity(intent);
 

@@ -1209,7 +1209,7 @@ public class Profile extends User implements Parcelable, Serializable, BaseColum
                 //DatabaseInsertHelper.insertAccount(this.getuID(), account.getId());
             }
         }
-    }*/
+    }
     @Ignore
     public final boolean authenticateProfile(String password) throws ConnectionFailedException {
         if (DBHelper.getPassword(this.pID) != null) {
@@ -1217,7 +1217,7 @@ public class Profile extends User implements Parcelable, Serializable, BaseColum
                     password);
         }
         return this.authenticated;
-    }
+    }*/
     @Ignore
 
     public String toString() {

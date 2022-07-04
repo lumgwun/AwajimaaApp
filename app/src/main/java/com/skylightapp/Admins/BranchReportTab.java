@@ -1,7 +1,5 @@
 package com.skylightapp.Admins;
 
-import androidx.preference.PreferenceManager;
-
 import android.annotation.SuppressLint;
 import android.app.TabActivity;
 import android.content.Intent;
@@ -20,7 +18,7 @@ import com.skylightapp.Classes.AdminUser;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.LoginDirectorActivity;
+import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
@@ -112,7 +110,7 @@ public class BranchReportTab extends TabActivity {
         bundle.putLong("ProfileID", profileUID);
         bundle.putString(machine, machine);
         bundle.putString("machine", machine);
-        Intent intent = new Intent(this, LoginDirectorActivity.class);
+        Intent intent = new Intent(this, LoginDirAct.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(PROFILE_ID, profileUID);
         intent.putExtras(bundle);

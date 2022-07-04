@@ -254,7 +254,7 @@ public class PasswordRecoveryActivity extends AppCompatActivity {
 
     }
     public void homeGo() {
-        Intent intent = new Intent(PasswordRecoveryActivity.this, LoginDirectorActivity.class);
+        Intent intent = new Intent(PasswordRecoveryActivity.this, LoginDirAct.class);
         startActivity(intent);
 
     }

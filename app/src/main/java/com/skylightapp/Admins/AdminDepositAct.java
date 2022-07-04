@@ -28,7 +28,7 @@ import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Utils;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.LoginDirectorActivity;
+import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 
 import java.security.SecureRandom;
@@ -38,8 +38,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import static com.skylightapp.Classes.Profile.PROFILE_USERNAME;
 
 public class AdminDepositAct extends AppCompatActivity {
     Date currentDate;
@@ -359,9 +357,9 @@ public class AdminDepositAct extends AppCompatActivity {
                         .setContentTitle("New Admin Deposit Submission Alert")
                         .setContentText(adminName+ ""+"just submitted a new Deposit Report @"+ Utils.formatDateTime(currentDate));
 
-        Intent notificationIntent = new Intent(this, LoginDirectorActivity.class);
+        Intent notificationIntent = new Intent(this, LoginDirAct.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(LoginDirectorActivity.class);
+        stackBuilder.addParentStack(LoginDirAct.class);
         stackBuilder.addNextIntent(notificationIntent);
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(resultPendingIntent);

@@ -43,7 +43,7 @@ import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.SkyLightPackModel;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.LoginDirectorActivity;
+import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 import com.skylightapp.SMSAct;
 import com.twilio.Twilio;
@@ -788,7 +788,7 @@ public class CustomerPayAct extends AppCompatActivity {
     private void parseResponse (String transactionReference){
         String message = "Skylight Payment Successful - " + transactionReference;
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        startActivity(new Intent(CustomerPayAct.this, LoginDirectorActivity.class));
+        startActivity(new Intent(CustomerPayAct.this, LoginDirAct.class));
 
     }
 

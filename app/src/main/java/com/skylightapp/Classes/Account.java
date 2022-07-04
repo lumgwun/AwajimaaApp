@@ -30,9 +30,9 @@ public class Account implements Serializable, Parcelable {
         super();
 
     }
-    public static final String ACCOUNTS_TABLE = "accounts";
+    public static final String ACCOUNTS_TABLE = "accounts_table";
     public static final String ACCOUNT_BANK = "account_bank";
-    public static final String ACCOUNT_NO = "a_id";
+    public static final String ACCOUNT_NO = "account_id";
     public static final String ACCOUNT_NAME = "account_name";
     public static final String ACCOUNT_BALANCE = "account_balance";
     public static final String ACCOUNT_TYPE = "account_type";
@@ -41,7 +41,7 @@ public class Account implements Serializable, Parcelable {
     public static final String BANK_ACCT_NO = "bank_acct_no";
     public static final String BANK_ACCT_BALANCE = "bank_acct_Balance";
 
-    public static final String ACCOUNT_TYPES_TABLE = "account_type";
+    public static final String ACCOUNT_TYPES_TABLE = "account_type_table";
     public static final String ACCOUNT_TYPE_INTEREST = "interest";
     public static final String ACCOUNT_TYPE_NAME = "type_name";
     public static final String ACCOUNT_TYPE_BANK = "type_bank";

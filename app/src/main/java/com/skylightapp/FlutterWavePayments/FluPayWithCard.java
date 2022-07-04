@@ -29,9 +29,8 @@ import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Interfaces.PaymentResultListener;
-import com.skylightapp.LoginDirectorActivity;
+import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
-import com.skylightapp.Transactions.Card;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -240,7 +239,7 @@ public class FluPayWithCard extends AppCompatActivity implements PaymentResultLi
         String message = "Payment Successful - " + refID;
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 
-        startActivity(new Intent(FluPayWithCard.this, LoginDirectorActivity.class));
+        startActivity(new Intent(FluPayWithCard.this, LoginDirAct.class));
     }
 
     @Override

@@ -113,7 +113,7 @@ public class MyGrpSavingsUsers extends AppCompatActivity implements  GrpProfileA
         Bundle bundle = new Bundle();
         bundle.putLong("ProfileID", profileID);
         bundle.putString(machine, machine);
-        Intent intent = new Intent(this, LoginDirectorActivity.class);
+        Intent intent = new Intent(this, LoginDirAct.class);
         intent.putExtras(bundle);
         startActivity(intent);
 

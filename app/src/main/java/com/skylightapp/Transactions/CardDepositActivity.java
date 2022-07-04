@@ -21,7 +21,7 @@ import com.google.gson.Gson;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.LoginDirectorActivity;
+import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
@@ -211,7 +211,7 @@ public class CardDepositActivity extends AppCompatActivity {
                 mTextError.setText(" ");
                 Toast.makeText(CardDepositActivity.this, transaction.getReference(), Toast.LENGTH_LONG).show();
                 updateTextViews();
-                Intent intent = new Intent(CardDepositActivity.this, LoginDirectorActivity.class);
+                Intent intent = new Intent(CardDepositActivity.this, LoginDirAct.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

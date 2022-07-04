@@ -94,7 +94,7 @@ public class AllNewAct extends TabActivity {
 
     }
     public void recoverAccount() {
-        Intent intent = new Intent(this, LoginDirectorActivity.class);
+        Intent intent = new Intent(this, LoginDirAct.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("User", (Parcelable) userProfile);
         intent.putExtra("Machine", SharedPrefUserMachine);

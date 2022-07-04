@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 import com.melnykov.fab.FloatingActionButton;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.LoginDirectorActivity;
+import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 
 @SuppressWarnings("deprecation")
@@ -102,7 +102,7 @@ public class BirthdayTab extends TabActivity {
 
         }
         bundle.putLong("ProfileID", profileID);
-        Intent intent = new Intent(this, LoginDirectorActivity.class);
+        Intent intent = new Intent(this, LoginDirAct.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtras(bundle);
         startActivity(intent);

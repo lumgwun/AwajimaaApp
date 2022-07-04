@@ -37,16 +37,14 @@ import static com.skylightapp.Classes.Profile.PROFILE_SURNAME;
 import static com.skylightapp.Classes.Profile.PROFILE_USERNAME;
 
 
-public class LoginDirectorActivity extends AppCompatActivity {
-    long profileID,customerID;
-    AppCompatButton btnCustomer,btnAdmin, btnTeller;
+public class LoginDirAct extends AppCompatActivity {
+    int profileID,customerID;
     String machinePref;
     Uri pictureLink;
     SharedPreferences sharedPref;
     Bundle userExtras;
     private static final String PREF_NAME = "skylight";
     private DBHelper dbHelper;
-    private boolean checkRole;
     String machineUser,userName, office,state,role,dbRole,joinedDate,password,surname, email,phoneNO, firstName, dob,gender,address;
 
     @Override
