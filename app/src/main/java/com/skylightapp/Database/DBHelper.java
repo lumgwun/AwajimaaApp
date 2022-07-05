@@ -585,9 +585,9 @@ import static com.skylightapp.Classes.TimeLine.TIMELINE_TIME;
 import static com.skylightapp.Classes.TimeLine.TIMELINE_WORKER_NAME;
 import static com.skylightapp.Classes.Transaction.CREATE_GRP_TX_TABLE;
 import static com.skylightapp.Classes.Transaction.CREATE_TRANSACTIONS_TABLE;
-import static com.skylightapp.Classes.Transaction.DESTINATION_ACCOUNT;
+import static com.skylightapp.Classes.Transaction.TRANSACTION_DEST_ACCT;
 import static com.skylightapp.Classes.Transaction.GRP_TRANX_TABLE;
-import static com.skylightapp.Classes.Transaction.SENDING_ACCOUNT;
+import static com.skylightapp.Classes.Transaction.TRANSACTION_SENDING_ACCT;
 import static com.skylightapp.Classes.Transaction.TIMESTAMP;
 import static com.skylightapp.Classes.Transaction.TRANSACTIONS_TABLE;
 import static com.skylightapp.Classes.Transaction.TRANSACTIONS_TYPE;
@@ -13913,15 +13913,15 @@ public class DBHelper extends SQLiteOpenHelper {
             cv.put(TIMESTAMP, date);
 
             if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.MANUAL_WITHDRAWAL) {
-                cv.put(SENDING_ACCOUNT, "Skylight");
-                cv.put(DESTINATION_ACCOUNT, transaction.getDestinationAccount());
+                cv.put(TRANSACTION_SENDING_ACCT, "Skylight");
+                cv.put(TRANSACTION_DEST_ACCT, transaction.getDestinationAccount());
             } else if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.LOAN) {
-                cv.put(SENDING_ACCOUNT, "Skylight");
-                cv.put(DESTINATION_ACCOUNT, transaction.getDestinationAccount());
+                cv.put(TRANSACTION_SENDING_ACCT, "Skylight");
+                cv.put(TRANSACTION_DEST_ACCT, transaction.getDestinationAccount());
                 cv.put(TRANSACTION_PAYEE, transaction.getPayee());
             } else if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.GROUP_SAVINGS_WITHDRAWAL) {
-                cv.put(SENDING_ACCOUNT, transaction.getSendingAccount());
-                cv.put(DESTINATION_ACCOUNT, transaction.getDestinationAccount());
+                cv.put(TRANSACTION_SENDING_ACCT, transaction.getSendingAccount());
+                cv.put(TRANSACTION_DEST_ACCT, transaction.getDestinationAccount());
             } else if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.STANDING_ORDER) {
                 cv.put(TRANSACTION_PAYEE, transaction.getPayee());
             } else if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.GROUP_SAVINGS_DEPOSIT) {
@@ -13931,7 +13931,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 //cv.putNull(DESTINATION_ACCOUNT);
                 cv.put(TRANSACTION_PAYEE, transaction.getPayee());
             } else if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.DEPOSIT) {
-                cv.put(DESTINATION_ACCOUNT, transaction.getDestinationAccount());
+                cv.put(TRANSACTION_DEST_ACCT, transaction.getDestinationAccount());
                 //cv.putNull(SENDING_ACCOUNT);
                 //cv.putNull(DESTINATION_ACCOUNT);
                 //cv.putNull(TRANSACTION_PAYEE);

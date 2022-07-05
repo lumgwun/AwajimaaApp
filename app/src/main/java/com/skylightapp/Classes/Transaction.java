@@ -30,17 +30,17 @@ public class Transaction extends CustomerDailyReport implements Parcelable, Seri
     public static final String TRANSACTIONS_TABLE = "transactions";
     public static final String TRANSACTION_ID = "transaction_id";
 
-    public static final String TIMESTAMP = "timestamp";
-    public static final String SENDING_ACCOUNT = "sending_account";
-    public static final String DESTINATION_ACCOUNT = "destination_account";
-    public static final String TRANSACTION_PAYEE = "payee";
-    public static final String TRANSACTION_PAYER = "payer";
+    //public static final String TIMESTAMP = "timestamp";
+    public static final String TRANSACTION_SENDING_ACCT = "transaction_sending_acct";
+    public static final String TRANSACTION_DEST_ACCT = "transaction_dest_acct";
+    public static final String TRANSACTION_PAYEE = "transaction_payee";
+    public static final String TRANSACTION_PAYER = "transaction_payer";
     public static final String TRANSACTION_STATUS = "transaction_status";
     public static final String TRANS_TYPE = "Type";
     public static final String TRANSACTIONS_TYPE = "transaction_type";
     public static final String TRANSACTION_AMOUNT = "transaction_amount";
     public static final String TRANSACTION_DATE = "transaction_date";
-    public static final String TABLE_USER_TRANSACTIONS = "users_transactions";
+    //public static final String TABLE_USER_TRANSACTIONS = "users_transactions";
     public static final String GRP_TRANX_TABLE = "grpTranX";
     public static final String GRP_TRANX_ID = "grp_tX_id";
     public static final String GRP_PAYMENT_METHOD = "grp_tX_payment_id";
@@ -55,15 +55,15 @@ public class Transaction extends CustomerDailyReport implements Parcelable, Seri
 
 
     public static final String CREATE_TRANSACTIONS_TABLE = "CREATE TABLE IF NOT EXISTS " + TRANSACTIONS_TABLE + " (" + TRANSACTION_ID + " INTEGER, " + TRANSACTION_PROF_ID + " INTEGER , " +
-            TRANSACTION_CUS_ID + " INTEGER , " + TRANSACTION_ACCT_ID + " INTEGER , " + TRANSACTION_DATE + " TEXT, " + SENDING_ACCOUNT + " TEXT, " +
-            DESTINATION_ACCOUNT + " TEXT, " + TRANSACTION_PAYEE + " TEXT, " + TRANSACTION_PAYER + " TEXT, " + TRANSACTION_AMOUNT + " DOUBLE, " +
+            TRANSACTION_CUS_ID + " INTEGER , " + TRANSACTION_ACCT_ID + " INTEGER , " + TRANSACTION_DATE + " TEXT, " + TRANSACTION_SENDING_ACCT + " TEXT, " +
+            TRANSACTION_DEST_ACCT + " TEXT, " + TRANSACTION_PAYEE + " TEXT, " + TRANSACTION_PAYER + " TEXT, " + TRANSACTION_AMOUNT + " DOUBLE, " +
             TRANSACTIONS_TYPE + " TEXT, " + TRANSACTION_METHOD_OF_PAYMENT + " TEXT, " + TRANSACTION_OFFICE_BRANCH + " TEXT, "+ TRANSACTION_APPROVER + TRANSACTION_APPROVAL_DATE + " TEXT, "+  TRANSACTION_STATUS + " TEXT, " + "PRIMARY KEY(" +TRANSACTION_ID + "), "+"FOREIGN KEY(" + TRANSACTION_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + TRANSACTION_ACCT_ID  + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," +"FOREIGN KEY(" + TRANSACTION_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
 
 
     public static final String CREATE_GRP_TX_TABLE = "CREATE TABLE IF NOT EXISTS " + GRP_TRANX_TABLE + " (" + GRP_TRANX_ID + " INTEGER, " + GRP_TRANX_PROF_ID + " INTEGER , " +
-            GRPA_ID + " INTEGER NOT NULL, " + TRANS_TYPE + " TEXT, " + TRANSACTION_AMOUNT + " DOUBLE, " + TRANSACTION_DATE + " TEXT, " + GRP_PAYMENT_METHOD + " TEXT, " + SENDING_ACCOUNT + " LONG, " +
-            DESTINATION_ACCOUNT + " LONG, " + TRANSACTION_STATUS + " TEXT, " + "PRIMARY KEY(" +GRP_TRANX_ID + "), " +"FOREIGN KEY(" + GRP_TRANX_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + GRPA_ID + ") REFERENCES " + GRP_ACCT_TABLE + "(" + GRPA_ID + "))";
+            GRPA_ID + " INTEGER NOT NULL, " + TRANS_TYPE + " TEXT, " + TRANSACTION_AMOUNT + " DOUBLE, " + TRANSACTION_DATE + " TEXT, " + GRP_PAYMENT_METHOD + " TEXT, " + TRANSACTION_SENDING_ACCT + " LONG, " +
+            TRANSACTION_DEST_ACCT + " LONG, " + TRANSACTION_STATUS + " TEXT, " + "PRIMARY KEY(" +GRP_TRANX_ID + "), " +"FOREIGN KEY(" + GRP_TRANX_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + GRPA_ID + ") REFERENCES " + GRP_ACCT_TABLE + "(" + GRPA_ID + "))";
     private String payer;
     private String bankAcct;
     private String bankAccName;

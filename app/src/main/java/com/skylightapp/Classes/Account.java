@@ -42,10 +42,10 @@ public class Account implements Serializable, Parcelable {
     public static final String BANK_ACCT_BALANCE = "bank_acct_Balance";
 
     public static final String ACCOUNT_TYPES_TABLE = "account_type_table";
-    public static final String ACCOUNT_TYPE_INTEREST = "interest";
-    public static final String ACCOUNT_TYPE_NAME = "type_name";
-    public static final String ACCOUNT_TYPE_BANK = "type_bank";
-    public static final String ACCOUNT_TYPE_ID = "type_number";
+    public static final String ACCOUNT_TYPE_INTEREST = "acct_type_interest";
+    public static final String ACCOUNT_TYPE_NAME = "acct_type_name";
+    public static final String ACCOUNT_TYPE_BANK = "acct_type_bank";
+    public static final String ACCOUNT_TYPE_ID = "acct_type_id";
     public static final String ACCOUNT_CUS_ID = "acct_cus__number";
     public static final String ACCOUNT_TYPE_NO_F = "acct_F_Key";
     public static final String ACCOUNT_PROF_ID = "acct_prof_number";
