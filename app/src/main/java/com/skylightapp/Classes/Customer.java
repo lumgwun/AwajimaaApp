@@ -29,8 +29,8 @@ import static com.skylightapp.Classes.Profile.PROFILE_ID;
 @Entity(tableName = Customer.CUSTOMER_TABLE)
 public class Customer  implements Parcelable, Serializable {
     public static final String CUSTOMER_ID = "cus_id";
-    public static final String CUSTOMER_SURNAME = "surname";
-    public static final String CUSTOMER_FIRST_NAME = "first_name";
+    public static final String CUSTOMER_SURNAME = "cus_surname";
+    public static final String CUSTOMER_FIRST_NAME = "cus_first_name";
     public static final String CUSTOMER_PHONE_NUMBER = "customer_phone_number";
     public static final String CUSTOMER_EMAIL_ADDRESS = "customer_email_address";
     public static final String CUSTOMER_DOB = "customer_date_of_birth";
@@ -42,7 +42,7 @@ public class Customer  implements Parcelable, Serializable {
     public static final String CUSTOMER_PASSWORD = "customer_password";
     public static final String CUSTOMER_NIN = "customer_NIN";
     public static final String CUSTOMER_STATUS = "customer_Status";
-    public static final String CUSTOMER_TABLE = "customers";
+    public static final String CUSTOMER_TABLE = "customers_table";
 
     public static final String CUSTOMER_LOCATION_TABLE = "customer_LocTable";
     public static final String CUSTOMER_LOC_ID = "cusLoc_id";

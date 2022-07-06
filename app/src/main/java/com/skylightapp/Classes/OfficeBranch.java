@@ -20,7 +20,7 @@ public class OfficeBranch implements Parcelable, Serializable{
     public static final String OFFICE_BRANCH_ADDRESS = "office_branch_address";
     public static final String OFFICE_BRANCH_APPROVER = "office_branch_approver";
     public static final String OFFICE_BRANCH_STATUS = "office_branch_status";
-    public static final String OFFICE_SUPERADMIN_ID = "branch_id";
+    public static final String OFFICE_SUPERADMIN_ID = "officeS_superAdmin_id";
 
     public static final String CREATE_OFFICE_BRANCH = "CREATE TABLE IF NOT EXISTS " + OFFICE_BRANCH_TABLE + " (" + OFFICE_BRANCH_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + OFFICE_SUPERADMIN_ID + " INTEGER , " +
             OFFICE_BRANCH_NAME + " TEXT , " + OFFICE_BRANCH_DATE + " TEXT, " + OFFICE_BRANCH_ADDRESS + " TEXT, " + OFFICE_BRANCH_APPROVER + " TEXT, " + OFFICE_BRANCH_STATUS + " TEXT, " + "FOREIGN KEY(" + OFFICE_SUPERADMIN_ID + ") REFERENCES " + SUPER_ADMIN_TABLE + "(" + SUPER_ADMIN_ID + "))";

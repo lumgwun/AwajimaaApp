@@ -19,8 +19,8 @@ public class Order extends SkyLightPackage {
         this.recordNo=recordNo;
 
     }
-    public void setStatus(String status) {
-        this.status=status;
+    public void setDocStatus(String docStatus) {
+        this.status= docStatus;
 
     }
     @Override

@@ -61,9 +61,9 @@ public class PackageDetailsActivity extends AppCompatActivity implements Savings
             txtPackID.setText(MessageFormat.format("Pack ID:{0}", packageId));
             txtType.setText(MessageFormat.format("Type:{0}", skylightPackage.getSkylightPackage()));
             txtDuration.setText(MessageFormat.format("Duration:{0}", duration));
-            txtStartDate.setText(MessageFormat.format("Start Date:{0}", skylightPackage.getDateStarted()));
+            txtStartDate.setText(MessageFormat.format("Start Date:{0}", skylightPackage.getPackageDateStarted()));
             txtGrandTotal.setText(MessageFormat.format("Grand Total:N{0}", skylightPackage.getGrandTotal()));
-            txtName.setText(MessageFormat.format("Customer:{0}", skylightPackage.getCustomer().getCusFirstName()));
+            txtName.setText(MessageFormat.format("Customer:{0}", skylightPackage.getDocCustomer().getCusFirstName()));
             customerDailyReports = dbHelper.getPackageSavings2(packageId);
             mAdapter = new SavingsAdapter(PackageDetailsActivity.this, customerDailyReports);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false);

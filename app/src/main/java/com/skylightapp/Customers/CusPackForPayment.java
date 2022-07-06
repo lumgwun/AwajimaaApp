@@ -287,17 +287,17 @@ public class CusPackForPayment extends AppCompatActivity implements PackageRecyc
     @Override
     public void onItemClick(SkyLightPackage skyLightPackage) {
         if(skyLightPackage !=null){
-            packageID = skyLightPackage.getPackageId();
-            double amountContributedSoFar = skyLightPackage.getAmount_collected();
+            packageID = skyLightPackage.getRecordPackageId();
+            double amountContributedSoFar = skyLightPackage.getPackageAmount_collected();
             grandTotal = skyLightPackage.getGrandTotal();
-            double packageAmount=skyLightPackage.getDailyAmount();
+            double packageAmount=skyLightPackage.getPackageDailyAmount();
             account = skyLightPackage.getAccount();
             long acctID=account.getSkyLightAcctNo();
             String status=skyLightPackage.getPackageStatus();
-            customer = skyLightPackage.getCustomer();
+            customer = skyLightPackage.getDocCustomer();
             long customerID=customer.getCusUID();
-            double amtRem = skyLightPackage.getAmountRemaining();
-            int daysRem = skyLightPackage.getRemainingDays();
+            double amtRem = skyLightPackage.getRecordAmountRemaining();
+            int daysRem = skyLightPackage.getRecordRemainingDays();
             String type= String.valueOf(skyLightPackage.getPackageType());
             bundle.putParcelable("SkyLightPackage",skyLightPackage);
             bundle.putParcelable("Customer",customer);

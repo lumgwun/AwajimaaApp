@@ -872,10 +872,10 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
                     }
                     if(skyLightPackage1 !=null){
                         skyLightPackage1.addProfileManager(userProfile);
-                        skyLightPackage1.setAmount_collected(newAmountContributedSoFar);
+                        skyLightPackage1.setPackageAmount_collected(newAmountContributedSoFar);
                         skyLightPackage1.addReportCount(packageID, numberOfDays);
-                        skyLightPackage1.setCustomer(customer);
-                        skyLightPackage1.setOfficeBranch(officeBranch);
+                        skyLightPackage1.setDocCustomer(customer);
+                        skyLightPackage1.setPackageOfficeBranch(officeBranch);
                         skyLightPackage1.setPackageCode(skylightCode);
                         skyLightPackage1.addSavings(profileID, customerID, reportID, savingsAmount, numberOfDays, initialDeposit, daysRemaining, amountRemaining, reportDate, "first");
 

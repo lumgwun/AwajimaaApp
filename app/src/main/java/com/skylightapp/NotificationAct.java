@@ -82,7 +82,7 @@ public class NotificationAct extends AppCompatActivity {
         bundle=getIntent().getExtras();
         if(bundle !=null){
             skyLightPackage=bundle.getParcelable("Package");
-            endDate=skyLightPackage.getDateEnded();
+            endDate=skyLightPackage.getPackageDateEnded();
 
         }
         long futureInMillis = SystemClock. elapsedRealtime () + 30000 ;

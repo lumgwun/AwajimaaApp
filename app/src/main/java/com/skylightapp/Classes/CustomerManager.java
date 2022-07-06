@@ -34,15 +34,15 @@ public class CustomerManager extends User implements Parcelable, Serializable , 
     @Ignore
     public static final String CUSTOMER_TELLER_ID = "ct_idT";
     @Ignore
-    public static final String CUSTOMER_TELLER_SURNAME = "surnameT";
+    public static final String CUSTOMER_TELLER_SURNAME = "ct_surnameT";
     @Ignore
-    public static final String CUSTOMER_TELLER_FIRST_NAME = "first_nameT";
+    public static final String CUSTOMER_TELLER_FIRST_NAME = "ct_first_nameT";
     @Ignore
-    public static final String CUSTOMER_TELLER_PHONE_NUMBER = "phone_numberT";
+    public static final String CUSTOMER_TELLER_PHONE_NUMBER = "ct_phone_numberT";
     @Ignore
-    public static final String CUSTOMER_TELLER_EMAIL_ADDRESS = "email_addressT";
+    public static final String CUSTOMER_TELLER_EMAIL_ADDRESS = "ct_email_addressT";
     @Ignore
-    public static final String CUSTOMER_TELLER_DOB = "date_of_birthT";
+    public static final String CUSTOMER_TELLER_DOB = "ct_date_of_birthT";
     @Ignore
     public static final String CUSTOMER_TELLER_GENDER = "genderT";
     @Ignore
@@ -65,17 +65,21 @@ public class CustomerManager extends User implements Parcelable, Serializable , 
     public static final String CUSTOMER_TELLER_PROF_ID = "teller_Prof_ID";
 
     @Ignore
+    public static final String WORKER_TELLER_PROF_ID = "worker_Prof_ID";
+
+
+    @Ignore
     public static final String CUSTOMER_TELLER_TABLE = "tellers_table";
     @Ignore
     public static final String WORKER_TABLE = "workers_table";
     @Ignore
-    public static final String WORKER = "worker";
+    public static final String WORKER = "workerName";
     @Ignore
     public static final String WORKER_ID = "worker_id";
     @Ignore
 
     public static final String CREATE_WORKERS_TABLE = "CREATE TABLE IF NOT EXISTS " + WORKER_TABLE + " ( " + WORKER_ID + " INTEGER ,  " + WORKER + " TEXT  , " +
-            PROFILE_ID + " INTEGER, " + "FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + WORKER_ID  + "))";
+            WORKER_TELLER_PROF_ID + " INTEGER, " + "FOREIGN KEY(" + WORKER_TELLER_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + WORKER_ID  + "))";
 
     @Ignore
     public static final String CREATE_CUSTOMERS_TELLER_TABLE = "CREATE TABLE IF NOT EXISTS " + CUSTOMER_TELLER_TABLE + " ( " + CUSTOMER_TELLER_ID + " INTEGER   ,  " + CUSTOMER_TELLER_PROF_ID + " INTEGER  , " +

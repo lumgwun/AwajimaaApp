@@ -297,11 +297,11 @@ public class CustomerPayAct extends AppCompatActivity {
                 account=skyLightPackage.getAccount();
                 //packageID=skyLightPackage.getPackageId();
                 savingsCount=skyLightPackage.getTotalPSavingsCount(packageID);
-                numberOfDaysRemaining=skyLightPackage.getRemainingDays();
-                amountSoFar =skyLightPackage.getAmount_collected();
+                numberOfDaysRemaining=skyLightPackage.getRecordRemainingDays();
+                amountSoFar =skyLightPackage.getPackageAmount_collected();
                 packageTotal=skyLightPackage.getGrandTotal();
-                packageAmount=skyLightPackage.getDailyAmount();
-                amountRemaining=skyLightPackage.getAmountRemaining();
+                packageAmount=skyLightPackage.getPackageDailyAmount();
+                amountRemaining=skyLightPackage.getRecordAmountRemaining();
                 if(account !=null){
                     accountBalanceNow=account.getAccountBalance();
                     accountBalance=account.getAccountBalance();
@@ -510,7 +510,7 @@ public class CustomerPayAct extends AppCompatActivity {
                     skyLightPackage = (SkyLightPackage) spn_customer_packages.getItemAtPosition(packageIndex);
                     packageID=skyLightPackage.getPackageID();
                     account=skyLightPackage.getAccount();
-                    packageAmount=skyLightPackage.getDailyAmount();
+                    packageAmount=skyLightPackage.getPackageDailyAmount();
                     accountBalance=account.getAccountBalance();
                     accountID=account.getSkyLightAcctNo();
                 } catch (IndexOutOfBoundsException e) {
@@ -736,7 +736,7 @@ public class CustomerPayAct extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
 
 
-        transaction.setAmount(totalToday);
+        transaction.setRecordAmount(totalToday);
         gson = new Gson();
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
@@ -772,7 +772,7 @@ public class CustomerPayAct extends AppCompatActivity {
         parseResponse(transaction.getReceiptId());
         newAccountBalance = accountBalance+totalToday;
         customer.getCusAccount().setAccountBalance(newAccountBalance);
-        Skylightransaction.setAmount(totalToday);
+        Skylightransaction.setRecordAmount(totalToday);
         Skylightransaction.setAccountId(AccountID);
         Skylightransaction.setCustomerID(customerID);
         Skylightransaction.setCurrency(Currency.getInstance("NGN"));

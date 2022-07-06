@@ -10,8 +10,6 @@ import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
 import static com.skylightapp.Classes.PaymentCode.CODE_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ID;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_TABLE;
 
 
 @Entity(tableName = CODE_TABLE)
@@ -21,18 +19,18 @@ public class PaymentCode extends  CustomerDailyReport implements Serializable {
     private String codeDate;
     private String codeStatus;
     private String codeManager;
-    private int customer_ID;
+    private int cod_customer_ID;
     @PrimaryKey(autoGenerate = true)
     private int code_ID=101401;
-    private int savingsID;
+    private int code_savingsID;
 
     public static final String CODE_OWNER = "code_owner";
-    public static final String CODE_TABLE = "code_table";
+    public static final String CODE_TABLE = "p_code_table";
     public static final String CODE_OWNER_PHONE = "code_owner_phone";
     public static final String CODE_ID = "payment_code_id";
     public static final String CODE_PIN = "paymentCode";
-    public static final String CODE_DATE = "code_date";
-    public static final String CODE_STATUS = "code_status";
+    public static final String CODE_DATE = "p_code_date";
+    public static final String CODE_STATUS = "p_code_status";
     public static final String CODE_MANAGER = "code_manager";
     public static final String CODE_CUS_ID = "code_Cus_ID";
     public static final String CODE_PROFILE_ID = "code_Prof_ID";
@@ -47,8 +45,8 @@ public class PaymentCode extends  CustomerDailyReport implements Serializable {
 
     }
 
-    public PaymentCode(int customer_ID,String CODE_OWNER_PHONE, long CODE_PIN,String CODE_DATE,String CODE_STATUS,String CODE_MANAGER) {
-        this.customer_ID = customer_ID;
+    public PaymentCode(int cod_customer_ID, String CODE_OWNER_PHONE, long CODE_PIN, String CODE_DATE, String CODE_STATUS, String CODE_MANAGER) {
+        this.cod_customer_ID = cod_customer_ID;
         this.ownerPhone = CODE_OWNER_PHONE;
         this.code = CODE_PIN;
         this.codeDate = CODE_DATE;
@@ -56,34 +54,34 @@ public class PaymentCode extends  CustomerDailyReport implements Serializable {
         this.codeStatus = CODE_STATUS;
 
     }
-    public PaymentCode(int customer_ID,int savingsID, long CODE_PIN,String CODE_DATE,String CODE_STATUS) {
-        this.customer_ID = customer_ID;
-        this.savingsID = savingsID;
+    public PaymentCode(int cod_customer_ID, int code_savingsID, long CODE_PIN, String CODE_DATE, String CODE_STATUS) {
+        this.cod_customer_ID = cod_customer_ID;
+        this.code_savingsID = code_savingsID;
         this.code = CODE_PIN;
         this.codeDate = CODE_DATE;
         this.codeStatus = CODE_STATUS;
 
     }
-    public PaymentCode(int customer_ID,int savingsID, long CODE_PIN,String CODE_DATE) {
-        this.customer_ID = customer_ID;
-        this.savingsID = savingsID;
+    public PaymentCode(int cod_customer_ID, int code_savingsID, long CODE_PIN, String CODE_DATE) {
+        this.cod_customer_ID = cod_customer_ID;
+        this.code_savingsID = code_savingsID;
         this.code = CODE_PIN;
         this.codeDate = CODE_DATE;
 
     }
-    public int getSavingsID() {
-        return savingsID;
+    public int getCode_savingsID() {
+        return code_savingsID;
     }
-    public void setSavingsID(int savingsID) {
-        this.savingsID = savingsID;
+    public void setCode_savingsID(int code_savingsID) {
+        this.code_savingsID = code_savingsID;
     }
 
 
-    public int getCustomer_ID() {
-        return customer_ID;
+    public int getCod_customer_ID() {
+        return cod_customer_ID;
     }
-    public void setCustomer_ID(int customer_ID) {
-        this.customer_ID = customer_ID;
+    public void setCod_customer_ID(int cod_customer_ID) {
+        this.cod_customer_ID = cod_customer_ID;
     }
 
     public String getOwnerPhone() {

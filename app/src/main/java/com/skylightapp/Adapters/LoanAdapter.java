@@ -71,14 +71,14 @@ public class LoanAdapter extends RecyclerView.Adapter<LoanAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(LoanAdapter.MyViewHolder holder, final int position) {
         final Loan loan = loans.get(position);
-        final Profile profile = loan.getProfile();
-        final Account account = loan.getAccount();
-        final Customer customer = loan.getCustomer();
+        final Profile profile = loan.getLoan_profile();
+        final Account account = loan.getLoan_account();
+        final Customer customer = loan.getLoan_customer();
         holder.txtLoanID.setText(MessageFormat.format("Loan ID:{0}", loan.getLoanId()));
         holder.txtLoanAmount.setText(MessageFormat.format("N{0}", loan.getAmount1()));
-        holder.status.setText(loan.getStatus());
-        holder.startDate.setText(MessageFormat.format("Start Date:{0}", loan.getStartDate()));
-        holder.endDate.setText(("End Date"+loan.getEndDate()));
+        holder.status.setText(loan.getLoan_status());
+        holder.startDate.setText(MessageFormat.format("Start Date:{0}", loan.getLoan_startDate()));
+        holder.endDate.setText(("End Date"+loan.getLoan_endDate()));
         holder.loanBalance.setText(MessageFormat.format("NGN{0}", loan.getAccountBalance()));
 
 

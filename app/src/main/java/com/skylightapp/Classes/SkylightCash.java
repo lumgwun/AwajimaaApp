@@ -4,21 +4,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.skylightapp.Classes.AdminUser.ADMIN_ID;
-import static com.skylightapp.Classes.AdminUser.ADMIN_TABLE;
-import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
-import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
 import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_ID;
 import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_TABLE;
-import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
-import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 @Entity(tableName = SkylightCash.S_CASH_TABLE)
 public class SkylightCash implements Serializable, Parcelable {
@@ -61,8 +54,8 @@ public class SkylightCash implements Serializable, Parcelable {
     private String sC_Payee;
     private String sC_From;
     private String sC_To;
-    private int tC_AdminID;
-    private int tc_ProfileID;
+    private int sc_AdminID;
+    private int sc_ProfileID;
     private ArrayList<TellerReport> tellerReportArrayList;
     private ArrayList<Payment> paymentArrayList= null;
 
@@ -111,8 +104,8 @@ public class SkylightCash implements Serializable, Parcelable {
 
     public SkylightCash(int tellerCashID, int adminID, int profileID, String date, double amount, String tellerName, String office, String adminName, long code, String status) {
         this.skylightCashID = tellerCashID;
-        this.tC_AdminID = adminID;
-        this.tc_ProfileID = profileID;
+        this.sc_AdminID = adminID;
+        this.sc_ProfileID = profileID;
         this.skylightCashDate = date;
         this.skylightCashAmount = amount;
         this.sC_Payee = office;
@@ -143,8 +136,8 @@ public class SkylightCash implements Serializable, Parcelable {
         sCAdminName = in.readString();
         sCPayer = in.readString();
         sC_Payee = in.readString();
-        tC_AdminID = in.readInt();
-        tc_ProfileID = in.readInt();
+        sc_AdminID = in.readInt();
+        sc_ProfileID = in.readInt();
     }
 
     public static final Creator<SkylightCash> CREATOR = new Creator<SkylightCash>() {
@@ -172,10 +165,10 @@ public class SkylightCash implements Serializable, Parcelable {
     public double getSkylightCashAmount() {
         return skylightCashAmount;
     }
-    public long getTellerCash_AdminID() {
-        return tC_AdminID;
+    public int getSCash_AdminID() {
+        return sc_AdminID;
     }
-    public long getTellerCash_ProfileID() { return tc_ProfileID; }
+    public int getSCash_ProfileID() { return sc_ProfileID; }
     public String getSkylightCashStatus() { return skylightCashStatus; }
     public String getSCPayee() {
         return sC_Payee;
@@ -200,18 +193,18 @@ public class SkylightCash implements Serializable, Parcelable {
     public void setSkylightCashAmount(double skylightCashAmount) {
         this.skylightCashAmount = skylightCashAmount;
     }
-    public void setTellerCash_AdminID(int tC_AdminID) {
-        this.tC_AdminID = tC_AdminID;
+    public void setSCash_AdminID(int tC_AdminID) {
+        this.sc_AdminID = tC_AdminID;
     }
-    public void setTellerCash_ProfileID(int tc_ProfileID) {
-        this.tc_ProfileID = tc_ProfileID;
+    public void setSCash_ProfileID(int tc_ProfileID) {
+        this.sc_ProfileID = tc_ProfileID;
     }
 
-    public String getTellerCashAdminName() {
+    public String getSCashAdminName() {
         return sCAdminName;
     }
 
-    public void setTellerCashAdminName(String tCAdminName) {
+    public void setSCashAdminName(String tCAdminName) {
         this.sCAdminName = tCAdminName;
     }
 
@@ -237,7 +230,7 @@ public class SkylightCash implements Serializable, Parcelable {
         parcel.writeString(sCAdminName);
         parcel.writeString(sCPayer);
         parcel.writeString(sC_Payee);
-        parcel.writeLong(tC_AdminID);
-        parcel.writeLong(tc_ProfileID);
+        parcel.writeLong(sc_AdminID);
+        parcel.writeLong(sc_ProfileID);
     }
 }

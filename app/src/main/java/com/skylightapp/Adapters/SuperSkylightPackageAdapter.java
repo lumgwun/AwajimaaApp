@@ -20,9 +20,9 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.skylightapp.Admins.AdminBankDeposit;
 import com.skylightapp.Admins.PackageUpdateAct;
 import com.skylightapp.Classes.Customer;
+import com.skylightapp.Classes.PaymentCode;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Interfaces.SkylightPackageListener;
@@ -32,6 +32,8 @@ import com.skylightapp.SkyLightPackageActivity;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.String.valueOf;
 
 
 @SuppressWarnings("deprecation")
@@ -114,28 +116,6 @@ public class SuperSkylightPackageAdapter extends RecyclerView.Adapter<SuperSkyli
         return false;
     }
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.package_list_row, parent, false);
-        return new ViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        final SkyLightPackage modelItems = packageList.get(position);
-
-        holder.singleItemCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onItemClick(modelItems);
-                }
-            }
-        });
-    }
-
     @Override
     public int getItemCount() {
         //return packageList.size();
@@ -191,6 +171,11 @@ public class SuperSkylightPackageAdapter extends RecyclerView.Adapter<SuperSkyli
             }
         };
     }
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.package_list_row, parent, false);
+        return new ViewHolder(view);
+    }
 
     public  class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -216,7 +201,6 @@ public class SuperSkylightPackageAdapter extends RecyclerView.Adapter<SuperSkyli
         Customer customer= new Customer();
         Profile userProfile= new Profile();
 
-        // Link up the Main-List items layout components with their respective id
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
@@ -237,58 +221,7 @@ public class SuperSkylightPackageAdapter extends RecyclerView.Adapter<SuperSkyli
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Bundle updateBundle = new Bundle();
-                    if(skyLightPackage !=null){
-                        String packageName =skyLightPackage.getPackageName();
-                        String startDate =skyLightPackage.getDateStarted();
-                        String endDate =skyLightPackage.getDateEnded();
-                        double paymentAmount =skyLightPackage.getAmount();
-                        double totalAmount =skyLightPackage.getPackageTotalAmount();
-                        double savedAmount =skyLightPackage.getAmount_collected();
-                        double remAmount =skyLightPackage.getAmountRemaining();
-                        int duration =skyLightPackage.getPackageDuration();
-                        long packageId = skyLightPackage.getPackageId();
-                        customer=skyLightPackage.getCustomer();
-                        userProfile=skyLightPackage.getProfile();
-                        String manager = userProfile.getProfileFirstName();
-                        String surName = customer.getCusSurname();
-                        String firstName = customer.getCusFirstName();
-                        String email = customer.getCusEmailAddress();
-                        String address = String.valueOf(customer.getCusAddress());
-                        String phoneNumber = customer.getCusPhoneNumber();
-                        LatLng location = customer.getCusLocation();
-                        //String cusLat= customer.getLatitude();
-                        //String cusLongitude=customer.getLongitude();
-                        String customerOfficeBranch = customer.getCusOfficeBranch();
-                        String type = String.valueOf(skyLightPackage.getPackageType());
-                        String status = skyLightPackage.getStatus();
-                        String userNames =surName +","+ firstName;
-                        updateBundle.putString("Package Name",packageName);
-                        updateBundle.putString("StartDate",startDate);
-                        updateBundle.putString("EndDate",endDate);
-                        updateBundle.putString("Package Id", String.valueOf(packageId));
-                        updateBundle.putDouble("Amount",paymentAmount);
-                        updateBundle.putDouble("GrandTotal",totalAmount);
-                        updateBundle.putString("Names",userNames);
-                        updateBundle.putString("PackageType",type);
-                        updateBundle.putString("SavedAmount", String.valueOf(savedAmount));
-                        updateBundle.putString("AmtRem", String.valueOf(remAmount));
-                        updateBundle.putString("Duration", String.valueOf(duration));
-                        updateBundle.putString("Phone Number",phoneNumber);
-                        updateBundle.putString("Email Address",email);
-                        updateBundle.putString("Address",address);
-                        updateBundle.putString("Manager",manager);
-                        updateBundle.putString("Status",status);
-                        updateBundle.putString("Location", String.valueOf(location));
-                        updateBundle.putString("Office",customerOfficeBranch);
-                        Intent packageIntent = new Intent(context,
-                                PackageUpdateAct.class);
-                        packageIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        packageIntent.putExtras(updateBundle);
-
-
-                    }
-
+                    setData(skyLightPackage);
                 }
 
 
@@ -299,29 +232,29 @@ public class SuperSkylightPackageAdapter extends RecyclerView.Adapter<SuperSkyli
         public void setData(SkyLightPackage skyLightPackage) {
             this.skyLightPackage = skyLightPackage;
             this.itemImage.setImageResource(R.drawable.ic_icon2);
-            cusName.setText(MessageFormat.format("{0} - {1}", skyLightPackage.getPackageType().toString(), skyLightPackage.getPackageId()));
-            startDate.setText(MessageFormat.format("Start date:{0}", skyLightPackage.getDateStarted()));
-            packageAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", skyLightPackage.getAmount())));
-            packageAmtRem.setText(MessageFormat.format("Rem Amount: NGN{0}", String.format("%.2f", skyLightPackage.getAmountRemaining())));
-            packageTotal.setText(MessageFormat.format("Grand Total:{0}", skyLightPackage.getGrandTotal()));
+            cusName.setText(MessageFormat.format("{0} - {1}", skyLightPackage.getPackageType().toString(), skyLightPackage.getRecordPackageId()));
+            startDate.setText(MessageFormat.format("Start date:{0}", skyLightPackage.getPackageDateStarted()));
+            packageAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", skyLightPackage.getRecordAmount())));
+            packageAmtRem.setText(MessageFormat.format("Rem Amount: NGN{0}", String.format("%.2f", skyLightPackage.getRecordAmountRemaining())));
+            packageTotal.setText(MessageFormat.format("Grand Total:{0}", skyLightPackage.getPackageTotalAmount()));
             status.setText(MessageFormat.format("Status:{0}", skyLightPackage.getPackageStatus()));
-            endDate.setText(MessageFormat.format("End date:{0}", skyLightPackage.getDateEnded()));
-            packageDaysRem.setText(MessageFormat.format("Days Rem:{0}", skyLightPackage.getRemainingDays()));
+            endDate.setText(MessageFormat.format("End date:{0}", skyLightPackage.getPackageDateEnded()));
+            packageDaysRem.setText(MessageFormat.format("Days Rem:{0}", skyLightPackage.getRecordRemainingDays()));
             duration1.setText(MessageFormat.format("Duration:{0}", skyLightPackage.getPackageDuration()));
 
             amountSaved.setText(MessageFormat.format("Status:{0}", skyLightPackage.getPackageStatus()));
-            type.setText(MessageFormat.format("End date:{0}", skyLightPackage.getDateEnded()));
-            manager.setText(MessageFormat.format("Days Rem:{0}", skyLightPackage.getRemainingDays()));
+            type.setText(MessageFormat.format("End date:{0}", skyLightPackage.getPackageDateEnded()));
+            manager.setText(MessageFormat.format("Days Rem:{0}", skyLightPackage.getRecordRemainingDays()));
 
-            if (skyLightPackage.getSkylightPackage() == SkyLightPackage.SkylightPackage_Type.SAVINGS) {
+            if (skyLightPackage.getPackageType().equalsIgnoreCase("Savings")) {
                 itemImage.setImageResource(R.drawable.shape_rect_1);
-            } else if (skyLightPackage.getSkylightPackage() == SkyLightPackage.SkylightPackage_Type.ITEM_PURCHASE) {
+            } else if (skyLightPackage.getPackageType().equalsIgnoreCase("Item Purchase")) {
                 itemImage.setImageResource(R.drawable.ic_icon2);
                 packageAmtRem.setTextColor(context.getResources().getColor(android.R.color.holo_blue_light));
-            } else if (skyLightPackage.getSkylightPackage() == SkyLightPackage.SkylightPackage_Type.BORROWING) {
+            } else if (skyLightPackage.getPackageType().equalsIgnoreCase("Investment")) {
                 itemImage.setImageResource(R.drawable.ic__category);
                 packageAmtRem.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
-            }else if (skyLightPackage.getSkylightPackage() == SkyLightPackage.SkylightPackage_Type.PROMO) {
+            }else if (skyLightPackage.getPackageType().equalsIgnoreCase("Promo")) {
                 itemImage.setImageResource(R.drawable.ic_expand_more);
                 packageAmtRem.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark));
             }
@@ -337,6 +270,48 @@ public class SuperSkylightPackageAdapter extends RecyclerView.Adapter<SuperSkyli
 
         }
     }
+    @Override
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+
+        skyLightPackage = packageList.get(position);
+        holder.cusName.setText(MessageFormat.format("{0} - {1}", skyLightPackage.getPackageType(), skyLightPackage.getRecordPackageId()));
+        holder.startDate.setText(MessageFormat.format("Start date:{0}", skyLightPackage.getPackageDateStarted()));
+        holder.packageAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", skyLightPackage.getRecordAmount())));
+        holder.packageAmtRem.setText(MessageFormat.format("Rem Amount: NGN{0}", String.format("%.2f", skyLightPackage.getRecordAmountRemaining())));
+        holder.packageTotal.setText(MessageFormat.format("Grand Total:{0}", skyLightPackage.getPackageTotalAmount()));
+        holder.status.setText(MessageFormat.format("Status:{0}", skyLightPackage.getPackageStatus()));
+        holder.endDate.setText(MessageFormat.format("End date:{0}", skyLightPackage.getPackageDateEnded()));
+        holder.packageDaysRem.setText(MessageFormat.format("Days Rem:{0}", skyLightPackage.getRecordRemainingDays()));
+        holder.duration1.setText(MessageFormat.format("Duration:{0}", skyLightPackage.getPackageDuration()));
+
+        holder.amountSaved.setText(MessageFormat.format("Status:{0}", skyLightPackage.getPackageStatus()));
+        holder.type.setText(MessageFormat.format("End date:{0}", skyLightPackage.getPackageDateEnded()));
+        holder.manager.setText(MessageFormat.format("Days Rem:{0}", skyLightPackage.getRecordRemainingDays()));
+
+        if (skyLightPackage.getPackageType().equalsIgnoreCase("Savings")) {
+            holder.itemImage.setImageResource(R.drawable.shape_rect_1);
+        } else if (skyLightPackage.getPackageType().equalsIgnoreCase("Item Purchase")) {
+            holder.itemImage.setImageResource(R.drawable.ic_icon2);
+            holder.packageAmtRem.setTextColor(context.getResources().getColor(android.R.color.holo_blue_light));
+        } else if (skyLightPackage.getPackageType().equalsIgnoreCase("Investment")) {
+            holder.itemImage.setImageResource(R.drawable.ic__category);
+            holder.packageAmtRem.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
+        }else if (skyLightPackage.getPackageType().equalsIgnoreCase("Promo")) {
+            holder.itemImage.setImageResource(R.drawable.ic_expand_more);
+            holder.packageAmtRem.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark));
+        }
+
+
+        holder.singleItemCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onItemClick(skyLightPackage);
+                }
+            }
+        });
+    }
+
 
     public interface OnItemsClickListener{
         void onItemClick(SkyLightPackage lightPackage);

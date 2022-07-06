@@ -14,28 +14,29 @@ import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 
 public class SavingsGroup implements Parcelable, Serializable {
-    public static final String SAVINGS_GROUP_TABLE = "Grp_savings_Table";
-    public static final String GS_ID = "GS_id";
+    public static final String SAVINGS_GROUP_TABLE = "savings_GrpTable";
+    public static final String SGT_ID = "st_id";
 
-    public static final String GROUP_NAME = "GS_Name";
-    public static final String GROUP_PURPOSE = "Purpose_amount";
-    public static final String GROUP_AMOUNT = "GS_amount";
-    public static final String GROUP_START_DATE = "GS_Date";
-    public static final String GS_CURRENCY = "GS_Currency";
-    public static final String GS_COUNTRY = "GS_Country";
-    public static final String GS_ACOUNT = "GS_Account";
+    public static final String SGT__NAME = "st_Name";
+    public static final String SGT_PURPOSE = "stPurpose";
+    public static final String ST_AMOUNT = "st_amount";
+    public static final String ST_DATE = "st_Date";
+    public static final String ST_CURRENCY = "st_Currency";
+    public static final String ST_COUNTRY = "st_Country";
+    public static final String GST_ACCOUNT = "Gst_Account";
 
-    public static final String GS_WHO_SHOULDBE_PAID = "Who_should_";
-    public static final String GS_END_DATE = "GS_End_Date";
-    public static final String GS_AMOUNT_CONTRIBUTED = "GS_Amount_So_Far";
+    public static final String SGT_WHO_SHOULDBE_PAID = "sWho_should_";
+    public static final String ST_END_DATE = "st_End_Date";
+    public static final String SGT_AMOUNT_CONTRIBUTED = "st_Amount_So_Far";
 
-    public static final String GS_FINE = "Fine";
-    public static final String GS_DOC = "Inv_Doc";
+    //public static final String GS_FINE = "Fine";
+    public static final String ST_DOC = "st_Doc";
+    public static final String ST_PROFID = "st_Pid";
+    public static final String ST_CUSID = "st_Cid";
 
 
-    public static final String CREATE_SAVINGS_GROUP_TABLE = "CREATE TABLE IF NOT EXISTS " + SAVINGS_GROUP_TABLE + " (" + PROFILE_ID + " INTEGER , " + CUSTOMER_ID + " INTEGER , " +
-            GS_ID + " INTEGER , " + GROUP_NAME + " TEXT, " + GROUP_PURPOSE + " TEXT, " + GROUP_AMOUNT + " NUMERIC, " + GS_CURRENCY +" TEXT, "+ GS_ACOUNT + " NUMERIC, "  + GS_COUNTRY + " TEXT, " + GS_AMOUNT_CONTRIBUTED + " TEXT,  " + GS_WHO_SHOULDBE_PAID + " TEXT," +  GS_DOC + " TEXT, " + GS_END_DATE + " TEXT, " +
-            "PRIMARY KEY(" + GS_ID +  "," + CUSTOMER_ID + "), " +"FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+    public static final String CREATE_SAVINGS_GROUP_TABLE = "CREATE TABLE IF NOT EXISTS " + SAVINGS_GROUP_TABLE + " (" + ST_PROFID + " INTEGER , " + ST_CUSID + " INTEGER , " +
+            SGT_ID + " INTEGER , " + SGT__NAME + " TEXT, " + SGT_PURPOSE + " TEXT, " + ST_AMOUNT + " NUMERIC, " + ST_CURRENCY +" TEXT, "+ GST_ACCOUNT + " NUMERIC, "  + ST_COUNTRY + " TEXT, " + SGT_AMOUNT_CONTRIBUTED + " TEXT,  " + SGT_WHO_SHOULDBE_PAID + " TEXT," + ST_DOC + " TEXT, " + ST_END_DATE + " TEXT, " + SGT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +"FOREIGN KEY(" + ST_PROFID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
 
     private int gsID;

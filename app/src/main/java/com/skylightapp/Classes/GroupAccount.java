@@ -36,15 +36,20 @@ public class GroupAccount implements Parcelable, Serializable {
     public static final String GRPP_FIRSTNAME = "GRPPFirstName";
     public static final String GRPP_JOINED_DATE = "GRPPJoinedDate";
     public static final String GRPP_JOINED_STATUS = "GRPPJoinedStatus";
+    public static final String GRPP_PROFILE_ID = "GRPP_Prof_ID";
+    public static final String GRPA_PROFID = "GRPP_Acct_Prof_ID";
 
-    public static final String CREATE_GRP_ACCT_TABLE = "CREATE TABLE IF NOT EXISTS " + GRP_ACCT_TABLE + " (" + GRPA_ID + " INTEGER, " + PROFILE_ID + " INTEGER , " +
+    public static final String GRPP_ACCT_PROFILE_ID = "GRPP_Acct_Prof_ID";
+
+
+    public static final String CREATE_GRP_ACCT_TABLE = "CREATE TABLE IF NOT EXISTS " + GRP_ACCT_TABLE + " (" + GRPA_ID + " INTEGER, " + GRPP_ACCT_PROFILE_ID + " INTEGER , " +
             GRPA_TITTLE + " TEXT, " + GRPA_PURPOSE + " TEXT, "+ GRPA_SURNAME + " TEXT, " + GRPA_FIRSTNAME + " TEXT, " + GRPA_EMAIL + " TEXT, " + GRPA_PHONE + " TEXT, " +
             GRPA_START_DATE + " DATE, " + GRPA_END_DATE + " DATE, " + GRPA_BALANCE + " DOUBLE, "+ GRPA_STATUS + " TEXT, " +
-            ISCOMPLETE + " BOOLEAN, " + HASCARRIED + " BOOLEAN, " + "PRIMARY KEY(" +GRPA_ID + "), " +"FOREIGN KEY(" + PROFILE_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+            ISCOMPLETE + " BOOLEAN, " + HASCARRIED + " BOOLEAN, " + "PRIMARY KEY(" +GRPA_ID + "), " +"FOREIGN KEY(" + GRPP_ACCT_PROFILE_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
 
-    public static final String CREATE_GRP_ACCT_PROFILE_TABLE = "CREATE TABLE IF NOT EXISTS " + GRP_PROFILE_TABLE + " (" + GRPP_ID + " INTEGER, " + PROFILE_ID + " INTEGER , " +
-            GRPA_ID + " INTEGER, " + GRPP_PIX + " TEXT, "+ GRPP_SURNAME + " TEXT, " + GRPP_FIRSTNAME + " TEXT, " + GRPP_JOINED_DATE + " TEXT, "+ GRPP_JOINED_STATUS + " TEXT, " + "PRIMARY KEY(" +GRPP_ID + "), " +"FOREIGN KEY(" + PROFILE_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + GRPA_ID  + ") REFERENCES " + GRP_ACCT_TABLE + "(" + GRPA_ID + "))";
+    public static final String CREATE_GRP_ACCT_PROFILE_TABLE = "CREATE TABLE IF NOT EXISTS " + GRP_PROFILE_TABLE + " (" + GRPP_ID + " INTEGER, " + GRPP_PROFILE_ID + " INTEGER , " +
+            GRPA_PROFID + " INTEGER, " + GRPP_PIX + " TEXT, "+ GRPP_SURNAME + " TEXT, " + GRPP_FIRSTNAME + " TEXT, " + GRPP_JOINED_DATE + " TEXT, "+ GRPP_JOINED_STATUS + " TEXT, " + "PRIMARY KEY(" +GRPP_ID + "), " +"FOREIGN KEY(" + GRPP_PROFILE_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + GRPA_PROFID  + ") REFERENCES " + GRP_ACCT_TABLE + "(" + GRPA_ID + "))";
 
     private ArrayList<Account> accounts;
     private ArrayList<Profile> profiles;

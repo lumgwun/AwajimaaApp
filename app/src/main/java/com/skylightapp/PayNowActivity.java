@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -299,10 +300,10 @@ public class PayNowActivity extends AppCompatActivity  {
 
             }
             if(skyLightPackage !=null){
-                packageDaysRem=skyLightPackage.getRemainingDays();
-                amountRemaining=skyLightPackage.getAmountRemaining();
-                packageTotal=skyLightPackage.getGrandTotal();
-                amountSoFar=skyLightPackage.getAmount_collected();
+                packageDaysRem=skyLightPackage.getRecordRemainingDays();
+                amountRemaining=skyLightPackage.getRecordAmountRemaining();
+                packageTotal=skyLightPackage.getPackageTotalAmount();
+                amountSoFar=skyLightPackage.getPackageAmount_collected();
 
             }
             //packageDaysRem = totalBundle.getInt("Day Remaining");
@@ -564,10 +565,10 @@ public class PayNowActivity extends AppCompatActivity  {
                 accountBalance=account.getAccountBalance();
             }
             if (skyLightPackage != null) {
-                packageDaysRem = skyLightPackage.getRemainingDays();
-                amountRemaining = skyLightPackage.getAmountRemaining();
-                packageTotal = skyLightPackage.getGrandTotal();
-                amountSoFar = skyLightPackage.getAmount_collected();
+                packageDaysRem = skyLightPackage.getRecordRemainingDays();
+                amountRemaining = skyLightPackage.getRecordAmountRemaining();
+                packageTotal = skyLightPackage.getPackageTotalAmount();
+                amountSoFar = skyLightPackage.getPackageAmount_collected();
 
             }
         }
@@ -794,10 +795,10 @@ public class PayNowActivity extends AppCompatActivity  {
 
             }
             if (skyLightPackage != null) {
-                packageDaysRem = skyLightPackage.getRemainingDays();
-                amountRemaining = skyLightPackage.getAmountRemaining();
-                packageTotal = skyLightPackage.getGrandTotal();
-                amountSoFar = skyLightPackage.getAmount_collected();
+                packageDaysRem = skyLightPackage.getRecordRemainingDays();
+                amountRemaining = skyLightPackage.getRecordAmountRemaining();
+                packageTotal = skyLightPackage.getPackageTotalAmount();
+                amountSoFar = skyLightPackage.getPackageAmount_collected();
 
             }
         }
@@ -953,7 +954,7 @@ public class PayNowActivity extends AppCompatActivity  {
     }
 
     private void saveTransaction(Account account,SkyLightPackage skyLightPackage,String customerPhoneNo,Customer customer,int selectedNumberOfDays ) {
-        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
@@ -983,14 +984,14 @@ public class PayNowActivity extends AppCompatActivity  {
         try {
             //selectedNumberOfDays = Integer.parseInt(spnNo_of_days.getSelectedItem().toString());
             if(skyLightPackage !=null){
-                packageID=skyLightPackage.getPackageId();
+                packageID=skyLightPackage.getRecordPackageId();
                 accountBalanceNow=skyLightPackage.getAccount().getAccountBalance();
                 savingsCount=skyLightPackage.getTotalPSavingsCount(packageID);
-                numberOfDaysRemaining=skyLightPackage.getRemainingDays();
-                amountSoFar =skyLightPackage.getAmount_collected();
-                packageTotal=skyLightPackage.getGrandTotal();
-                packageAmount=skyLightPackage.getDailyAmount();
-                amountRemaining=skyLightPackage.getAmountRemaining();
+                numberOfDaysRemaining=skyLightPackage.getRecordRemainingDays();
+                amountSoFar =skyLightPackage.getPackageAmount_collected();
+                packageTotal=skyLightPackage.getPackageTotalAmount();
+                packageAmount=skyLightPackage.getPackageDailyAmount();
+                amountRemaining=skyLightPackage.getRecordAmountRemaining();
 
             }
 
@@ -1003,7 +1004,7 @@ public class PayNowActivity extends AppCompatActivity  {
 
         transaction.setTransactionId(transactionID);
 
-        transaction.setAmount(totalToday);
+        transaction.setRecordAmount(totalToday);
         //long profileID =userProfile.getuID();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         String currentDateAndTime = sdf.format(new Date());
@@ -1051,8 +1052,22 @@ public class PayNowActivity extends AppCompatActivity  {
         if (skyLightPackage != null) {
             skyLightPackage.addSavings(profileID,customerId8,0,packageAmount,selectedNumberOfDays,totalToday,numberOfDaysRemaining,amountRemaining,currentDateAndTime,"paid");
         }
-        applicationDb.insertTimeLine(tittle,details,currentDateAndTime,mCurrentLocation);
-        applicationDb.saveNewTransaction(profileID, customerId8,Skylightransaction, AccountID, "Skylight", customerName,transaction_type,totalToday, transactionID, officeBranch, currentDateAndTime);
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            applicationDb.insertTimeLine(tittle,details,currentDateAndTime,mCurrentLocation);
+
+
+        }
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            applicationDb.saveNewTransaction(profileID, customerId8,Skylightransaction, AccountID, "Skylight", customerName,transaction_type,totalToday, transactionID, officeBranch, currentDateAndTime);
+
+
+        }
 
 
         startActivity(new Intent(PayNowActivity.this, LoginDirAct.class));

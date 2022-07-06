@@ -241,8 +241,8 @@ public class ManualPaymentAct extends AppCompatActivity {
 
             }
             if (skyLightPackage != null) {
-                packageAmount=skyLightPackage.getDailyAmount();
-                packageBalance=skyLightPackage.getBalance();
+                packageAmount=skyLightPackage.getPackageDailyAmount();
+                packageBalance=skyLightPackage.getPackageBalance();
             }
 
 
@@ -321,7 +321,7 @@ public class ManualPaymentAct extends AppCompatActivity {
         paymentArrayList=applicationDb.getALLPaymentsTellerToday(tellerProfileID,todayDate);
         status="";
         if(skyLightPackage !=null){
-            amountContributedSoFar=skyLightPackage.getAmount_collected();
+            amountContributedSoFar=skyLightPackage.getPackageAmount_collected();
 
         }
 
@@ -375,9 +375,9 @@ public class ManualPaymentAct extends AppCompatActivity {
                                             }
 
                                             ManualPaymentAct.this.payment = new Payment(tellerProfileID,customerID,type, totalToWithdraw, date,"",paymentCode,acctType,office,"");
-                                            skyLightPackage.setBalance(newBalance);
+                                            skyLightPackage.setPackageBalance(newBalance);
                                             finalAccount.setAccountBalance(newBalance);
-                                            skyLightPackage.setAmount_collected(newAmountContributedSoFar);
+                                            skyLightPackage.setPackageAmount_collected(newAmountContributedSoFar);
 
                                             try {
 
@@ -438,8 +438,8 @@ public class ManualPaymentAct extends AppCompatActivity {
                                             }
 
                                             ManualPaymentAct.this.payment = new Payment(tellerProfileID,customerID,type, totalToWithdraw, date,"",paymentCode,acctType,office,"");
-                                            skyLightPackage.setBalance(newBalance);
-                                            skyLightPackage.setAmount_collected(newAmountContributedSoFar);
+                                            skyLightPackage.setPackageBalance(newBalance);
+                                            skyLightPackage.setPackageAmount_collected(newAmountContributedSoFar);
 
                                             try {
 

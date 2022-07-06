@@ -14,10 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -74,7 +71,7 @@ public class TxAdapterCus extends ArrayAdapter<Transaction> {
 
         Transaction transaction = getItem(position);
         CustomerDailyReport customerDailyReport = getItem(position);
-        int reportID = customerDailyReport.getRecordNo();
+        int reportID = customerDailyReport.getRecordID();
 
         ImageView imgTransactionIcon = convertView.findViewById(R.id.thumbnail_tx);
         TextView txtPackageID = convertView.findViewById(R.id.package_Id2);
@@ -90,13 +87,13 @@ public class TxAdapterCus extends ArrayAdapter<Transaction> {
 
         AppCompatImageView docImage = convertView.findViewById(R.id.doc_pic);
 
-        txtPackageID.setText(MessageFormat.format("{0} - {1}", "Package ID:", customerDailyReport.getPackageId()));
+        txtPackageID.setText(MessageFormat.format("{0} - {1}", "Package ID:", customerDailyReport.getRecordPackageId()));
         txtType.setText(MessageFormat.format("{0} - {1}", "Tx Type:", transaction.getTransactionType()));
-        txtSavingsID.setText(MessageFormat.format("{0} - {1}", "Report ID:", customerDailyReport.getRecordNo()));
+        txtSavingsID.setText(MessageFormat.format("{0} - {1}", "Report ID:", customerDailyReport.getRecordID()));
         txtTx_Ewallet.setText(MessageFormat.format("{0} - {1}", "Acct No:", transaction.getAccountId()));
         txtTransactionInfo.setText(MessageFormat.format("{0} - {1}", "More Info:", transaction.getPayee()));
         txtTransactionTimestamp.setText(MessageFormat.format("Date{0}", transaction.getTimestamp()));
-        txtTransactionAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", transaction.getAmount())));
+        txtTransactionAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", transaction.getRecordAmount())));
 
         if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.PAYMENT) {
             imgTransactionIcon.setImageResource(R.drawable.transaction);

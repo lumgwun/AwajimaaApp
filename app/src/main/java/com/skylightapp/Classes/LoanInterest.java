@@ -6,7 +6,7 @@ import java.io.Serializable;
 public class LoanInterest implements Serializable {
 
     public static final String INTEREST_ID = "int_id";
-    public static final String INTEREST_RATE = "rate";
+    public static final String INTEREST_RATE = "i_rate";
     public static final String INTEREST_TABLE = "interest_table";
     public static final String CREATE_INTEREST_TABLE = "CREATE TABLE " + INTEREST_TABLE + " (" + INTEREST_ID + " INTEGER PRIMARY KEY , " + INTEREST_RATE + " DOUBLE)";
 

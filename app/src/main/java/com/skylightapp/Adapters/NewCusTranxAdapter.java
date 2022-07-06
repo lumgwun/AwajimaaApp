@@ -175,20 +175,20 @@ public class NewCusTranxAdapter extends RecyclerView.Adapter<NewCusTranxAdapter.
         holder.mItem = transactions.get(position);
         final Transaction transaction = transactions.get(position);
         CustomerDailyReport customerDailyReport = (CustomerDailyReport) getItem(position);
-        int reportID = customerDailyReport.getRecordNo();
+        int reportID = customerDailyReport.getRecordID();
         //final CustomerDailyReport customerDailyReport = new CustomerDailyReport();
         final SkyLightPackage skyLightPackage = new SkyLightPackage();
         final Customer customer = new Customer();
         final Payment payee = new Payment();
         holder.txtTransactionTitle.setText(MessageFormat.format("Type: {0}{1}", transaction.getTransactionType(), transaction.getTransactionID()));
-        holder.txtTransactionAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", transaction.getAmount())));
+        holder.txtTransactionAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", transaction.getRecordAmount())));
         holder.destinationAccount.setText(MessageFormat.format("Destination Acct: {0}", transaction.getDestinationAccount()));
         holder.txtTransactionTimestamp.setText(MessageFormat.format("Date: {0}", transaction.getDate()));
         holder.tx_ApprovalDate.setText(MessageFormat.format("Ref ID: {0}", transaction.getTxApprovalDate()));
         //holder.pictureOfCelebrant.setImageURI(profile.getProfilePicture());
         holder.payee.setText(MessageFormat.format("Payee: {0}", transaction.getPayee()));
         holder.savingsID.setText(MessageFormat.format("Savings ID: {0}", customerDailyReport.getUID()));
-        holder.noOfDays.setText(MessageFormat.format("No. of Days: {0}", customerDailyReport.getNumberOfDays()));
+        holder.noOfDays.setText(MessageFormat.format("No. of Days: {0}", customerDailyReport.getRecordNumberOfDays()));
         holder.status.setText(MessageFormat.format("Status: {0}", transaction.getTransactionStatus()));
 
         holder.txtTransactionTitle.setText(MessageFormat.format("{0} - {1}", transaction.getTransactionType().toString(), transaction.getTransactionID()));

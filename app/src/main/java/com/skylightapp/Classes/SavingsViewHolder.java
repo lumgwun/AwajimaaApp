@@ -56,10 +56,10 @@ public class SavingsViewHolder extends RecyclerView.ViewHolder {
         return new OnTellerReportChangeListener<CustomerDailyReport>() {
             //@Override
             public void onObjectChanged(CustomerDailyReport obj) {
-                long savingsID = obj.getRecordNo();
+                long savingsID = obj.getRecordID();
                 //fillSavings(savingsID, comment, expandableTextView, dateTextView);
-                if (obj.getSavingsDoc() != null) {
-                    Utils.loadImage(Glide.with(context), obj.getSavingsDoc(), avatarImageView);
+                if (obj.getRecordSavingsDoc() != null) {
+                    Utils.loadImage(Glide.with(context), obj.getRecordSavingsDoc(), avatarImageView);
                 }
             }
 

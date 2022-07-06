@@ -112,10 +112,10 @@ public class SuperSavingsAdapter extends RecyclerView.Adapter<SuperSavingsAdapte
         return new OnTellerReportChangeListener<CustomerDailyReport>() {
             @Override
             public void onSavingsChanged(CustomerDailyReport obj) {
-                long savingsID = obj.getRecordNo();
+                long savingsID = obj.getRecordID();
                 //fillSavings(savingsID, comment, expandableTextView, dateTextView);
 
-                if (obj.getImage_id()>0) {
+                if (obj.getPackageImage()>0) {
 
                     //ImageUtil.loadImage(GlideApp.with(context), obj.getSavingsDoc(), avatarImageView);
                 }
@@ -149,34 +149,34 @@ public class SuperSavingsAdapter extends RecyclerView.Adapter<SuperSavingsAdapte
         PaymentCode savingsCode = (PaymentCode) this.savings.get(position);
         dbHelper = new DBHelper(mcontext.getApplicationContext());
         if(savings1 !=null){
-            Bitmap docId=dbHelper.getDocPicture(savings1.getRecordNo());
+            Bitmap docId=dbHelper.getDocPicture(savings1.getRecordID());
             holder.paymentDoc.setImageBitmap( docId);
 
         }
 
         if (savings != null) {
-            holder.amountRemaining.setText(MessageFormat.format("Rem Amount: NGN{0}", String.format("%.2f", savings1.getAmountRemaining())));
+            holder.amountRemaining.setText(MessageFormat.format("Rem Amount: NGN{0}", String.format("%.2f", savings1.getRecordAmountRemaining())));
             holder.totalAmount.setText(MessageFormat.format("Total: NGN{0}", String.format("%.2f", savings1.getTotal())));
-            holder.savingsAmount.setText(MessageFormat.format("Package Amount: NGN{0}", String.format("%.2f", savings1.getAmount())));
+            holder.savingsAmount.setText(MessageFormat.format("Package Amount: NGN{0}", String.format("%.2f", savings1.getRecordAmount())));
             //holder.packageID.setText(MessageFormat.format("Package ID:{0}", String.valueOf(savings.getPackageId())));
-            holder.status.setText(MessageFormat.format("Status:{0}", savings1.getStatus()));
-            holder.savingsID.setText(MessageFormat.format("Start Date:{0}", savings1.getRecordNo()));
+            holder.status.setText(MessageFormat.format("Status:{0}", savings1.getDocStatus()));
+            holder.savingsID.setText(MessageFormat.format("Start Date:{0}", savings1.getRecordID()));
             holder.date.setText(MessageFormat.format("Savings date:{0}", savings1.getRecordDate()));
-            holder.daysRemaining.setText(MessageFormat.format("Days Rem:{0}", String.valueOf(savings1.getRemainingDays())));
-            holder.days.setText(MessageFormat.format("Number of Days:{0}", String.valueOf(savings1.getNumberOfDays())));
+            holder.daysRemaining.setText(MessageFormat.format("Days Rem:{0}", String.valueOf(savings1.getRecordRemainingDays())));
+            holder.days.setText(MessageFormat.format("Number of Days:{0}", String.valueOf(savings1.getRecordNumberOfDays())));
             holder.savingsCount.setText(MessageFormat.format("Number of Saving:{0}", String.valueOf(savings1.getCount())));
             holder.paymentMethod.setText(MessageFormat.format("Method:{0}", document.getPaymentMethod()));
             holder.savingsCode.setText(MessageFormat.format("Savings Code:{0}", String.valueOf(savingsCode.getCode())));
-            holder.savingsID.setText(MessageFormat.format("Savings ID:{0}", String.valueOf(savings1.getRecordNo())));
+            holder.savingsID.setText(MessageFormat.format("Savings ID:{0}", String.valueOf(savings1.getRecordID())));
 
-            holder.days.setText(MessageFormat.format("Number of Days:{0}", String.valueOf(savings1.getNumberOfDays())));
-            if (savings1.getStatus().equalsIgnoreCase("verified")) {
+            holder.days.setText(MessageFormat.format("Number of Days:{0}", String.valueOf(savings1.getRecordNumberOfDays())));
+            if (savings1.getDocStatus().equalsIgnoreCase("verified")) {
                 holder.icon.setImageResource(R.drawable.verified_savings);
                 holder.savingsID.setTextColor(Color.MAGENTA);
-            } else if (savings1.getStatus().equalsIgnoreCase(""))  {
+            } else if (savings1.getDocStatus().equalsIgnoreCase(""))  {
                 holder.icon.setImageResource(R.drawable.unverified);
                 holder.savingsID.setTextColor(Color.RED);
-            } else if (savings1.getStatus().equalsIgnoreCase("Unverified"))  {
+            } else if (savings1.getDocStatus().equalsIgnoreCase("Unverified"))  {
                 holder.icon.setImageResource(R.drawable.unverified);
                 holder.savingsID.setTextColor(Color.RED);
             }
@@ -235,7 +235,7 @@ public class SuperSavingsAdapter extends RecyclerView.Adapter<SuperSavingsAdapte
         builder.setTitle("Update Savings Status");
         savings1 = this.savings.get(position);
         if(savings1 !=null){
-            savingsID=savings1.getRecordNo();
+            savingsID=savings1.getRecordID();
         }
         final EditText input = new EditText(mcontext.getApplicationContext());
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -270,7 +270,7 @@ public class SuperSavingsAdapter extends RecyclerView.Adapter<SuperSavingsAdapte
         builder.setTitle("Confirmation Actions before Deleting Savings");
         savings1 = this.savings.get(position);
         if(savings1 !=null){
-            savingsID=savings1.getRecordNo();
+            savingsID=savings1.getRecordID();
         }
         builder.setIcon(R.drawable.marker_);
         builder.setItems(new CharSequence[]

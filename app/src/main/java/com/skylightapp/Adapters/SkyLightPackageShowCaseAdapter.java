@@ -53,12 +53,12 @@ public class SkyLightPackageShowCaseAdapter extends RecyclerView.Adapter<SkyLigh
         final SkyLightPackage model = packageList.get(position);
         final SkyLightPackModel model2= packageList.get(position);
         ViewHolder mainHolder = (ViewHolder) holder;
-        mainHolder.description.setText(MessageFormat.format("Desc.{0}", model2.getDescription()));
-        mainHolder.itemName.setText(MessageFormat.format("Item Name:{0}", model2.getItemName()));
-        mainHolder.price.setText(MessageFormat.format("Price N{0}", model2.getPrice()));
-        mainHolder.duration1.setText(MessageFormat.format("Duration:{0}", model2.getDuration()));
-        mainHolder.itemImage.setImageResource(model2.getItemImage());
-        holder.setData(skyLightPackage_2List.get(position).getItemImage(),skyLightPackage_2List.get(position).getItemName(),skyLightPackage_2List.get(position).getPrice(),skyLightPackage_2List.get(position).getDuration(),skyLightPackage_2List.get(position).getDescription());
+        mainHolder.description.setText(MessageFormat.format("Desc.{0}", model2.getpMdesc()));
+        mainHolder.itemName.setText(MessageFormat.format("Item Name:{0}", model2.getpMItemName()));
+        mainHolder.price.setText(MessageFormat.format("Price N{0}", model2.getpMPrice()));
+        mainHolder.duration1.setText(MessageFormat.format("Duration:{0}", model2.getpMDuration()));
+        mainHolder.itemImage.setImageResource(model2.getpMItemImage());
+        holder.setData(skyLightPackage_2List.get(position).getpMItemImage(),skyLightPackage_2List.get(position).getpMItemName(),skyLightPackage_2List.get(position).getpMPrice(),skyLightPackage_2List.get(position).getpMDuration(),skyLightPackage_2List.get(position).getpMdesc());
     }
     public  class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 

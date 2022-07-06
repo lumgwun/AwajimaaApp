@@ -481,7 +481,7 @@ public class SkyLightPackageActivity extends AppCompatActivity implements  NewSk
     @Override
     public void onItemClick(SkyLightPackModel lightPackage) {
         paymentBundle.putParcelable("Package1",lightPackage);
-        paymentBundle.putDouble("Total",lightPackage.getPrice());
+        paymentBundle.putDouble("Total",lightPackage.getpMPrice());
         paymentBundle.putLong("Package Id",lightPackage.getPackageID());
         Intent intent8 = new Intent(this, PayNowActivity.class);
         intent8.putExtras(paymentBundle);

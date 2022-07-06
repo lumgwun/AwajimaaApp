@@ -175,13 +175,13 @@ public class TranxSimpleAdapter extends RecyclerView.Adapter<TranxSimpleAdapter.
         long customerID = customer.getCusUID();
         final Payment payee = new Payment();
         holder.txtTransactionID.setText(MessageFormat.format("TX ID: {0}{1}", transaction.getTransactionID()));
-        holder.txtTransactionAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", transaction.getAmount())));
+        holder.txtTransactionAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", transaction.getRecordAmount())));
         holder.officeBranch.setText(MessageFormat.format("Office Branch: {0}", transaction.getTransactionOfficeBranch()));
         holder.txtTransactionTimestamp.setText(MessageFormat.format("Date: {0}", transaction.getDate()));
         holder.method.setText(MessageFormat.format("TX Method: {0}", transaction.getMethodOfPay()));
         holder.payee.setText(MessageFormat.format("Payee: {0}", transaction.getPayee()));
         holder.payer.setText(MessageFormat.format("Payer: {0}-{1}-{2}", transaction.getPayer()));
-        holder.status.setText(MessageFormat.format("Status: {0}", customerDailyReport.getStatus()));
+        holder.status.setText(MessageFormat.format("Status: {0}", customerDailyReport.getDocStatus()));
 
         holder.txtTransactionID.setText(MessageFormat.format("{0} - {1}", transaction.getTransactionType().toString(), transaction.getTransactionID()));
         if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.PAYMENT) {

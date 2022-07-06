@@ -200,29 +200,29 @@ public class SavingsListFragment extends Fragment {
         @Override
         public void onBindViewHolder(MyViewHolder holder, final int position) {
             final CustomerDailyReport customerDailyReport = dailyReports.get(position);
-            long savingsId= customerDailyReport.getRecordNo();
+            long savingsId= customerDailyReport.getRecordID();
             PaymentDoc paymentDoc = (PaymentDoc) dailyReports.get(position);
             DBHelper dbHelper=new DBHelper(context.getApplicationContext());
 
             SkyLightPackage skyLightPackage = (SkyLightPackage) dailyReports.get(position);
-            long packageID=skyLightPackage.getPackageId();
+            long packageID=skyLightPackage.getRecordPackageId();
             holder.package_id.setText(MessageFormat.format("Pack ID: {0}", customerDailyReport.getPackageID()));
-            holder.savings_customer.setText(MessageFormat.format("Customer: {0}", customerDailyReport.getCustomerName()));
-            holder.record_amount3.setText(MessageFormat.format("Amount:{0}", valueOf(customerDailyReport.getAmount())));
+            holder.savings_customer.setText(MessageFormat.format("Customer: {0}", customerDailyReport.getPackageCustomerName()));
+            holder.record_amount3.setText(MessageFormat.format("Amount:{0}", valueOf(customerDailyReport.getRecordAmount())));
             holder.total.setText(valueOf("Total:"+ customerDailyReport.getTotal()));
-            holder.numberOfSavings.setText(valueOf("Days:"+customerDailyReport.getNumberOfDays()));
+            holder.numberOfSavings.setText(valueOf("Days:"+customerDailyReport.getRecordNumberOfDays()));
             holder.savings_date.setText(MessageFormat.format("Date:{0}", customerDailyReport.getRecordDate()));
-            holder.amount_remaining.setText(String.valueOf("Amount Rem:"+customerDailyReport.getAmountRemaining()));
+            holder.amount_remaining.setText(String.valueOf("Amount Rem:"+customerDailyReport.getRecordAmountRemaining()));
             holder.packageCount.setText(MessageFormat.format("Count:{0}", paymentDoc.getTotalPSavingsCount(packageID)));
-            holder.paymentCode.setText(MessageFormat.format("Code:{0}", customerDailyReport.getSavingsCode()));
+            holder.paymentCode.setText(MessageFormat.format("Code:{0}", customerDailyReport.getRecordSavingsCode()));
             holder.paymentMethod.setText(MessageFormat.format("Payment method:{0}", paymentDoc.getPaymentMethod()));
             //Bitmap savingsDoc=dbHelper.getDocPicture(savingsId);
-            holder.savings_id12.setText(MessageFormat.format("Savings ID:{0}", customerDailyReport.getRecordNo()));
-            holder.status11.setText(customerDailyReport.getStatus());
+            holder.savings_id12.setText(MessageFormat.format("Savings ID:{0}", customerDailyReport.getRecordID()));
+            holder.status11.setText(customerDailyReport.getDocStatus());
 
 
             Glide.with(context)
-                    .load(customerDailyReport.getImage_id())
+                    .load(customerDailyReport.getPackageImage())
                     .into(holder.image_report);
 
 

@@ -14,7 +14,6 @@ import com.mikepenz.materialdrawer.view.BezelImageView;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.GrpProfileTraxs;
-import com.skylightapp.MyGrpSavingsUsers;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
@@ -52,8 +51,8 @@ public class GrpTranxAdapter extends RecyclerView.Adapter<GrpTranxAdapter.Recycl
         holder.sendingAcct.setText("Sending Acct:"+transaction.getSendingAccount());
         holder.transID.setText("ID:"+transaction.getTransactionID());
         holder.tranMethod.setText("Method:"+transaction.getMethodOfPay());
-        holder.status.setText("Status:"+transaction.getStatus());
-        holder.amount.setText("Amount:"+transaction.getAmount());
+        holder.status.setText("Status:"+transaction.getDocStatus());
+        holder.amount.setText("Amount:"+transaction.getRecordAmount());
     }
 
     @Override

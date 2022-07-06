@@ -311,7 +311,7 @@ public class MyCustOldPackAct extends AppCompatActivity implements View.OnClickL
     public void addSavings() {
         try {
             if(selectedPackage !=null){
-                packageID=selectedPackage.getPackageId();
+                packageID=selectedPackage.getRecordPackageId();
             }
         } catch (NumberFormatException e) {
             System.out.println("Oops!");
@@ -370,7 +370,7 @@ public class MyCustOldPackAct extends AppCompatActivity implements View.OnClickL
         String timelineDetails2 = "NGN" + newTotal + "was saved for" + lastNameOfCustomer + "," + firstNameOfCustomer + "on" + reportDate;
         if(selectedPackage !=null){
             try {
-                savingsAmount=selectedPackage.getDailyAmount();
+                savingsAmount=selectedPackage.getPackageDailyAmount();
                 totalAmountSum = savingsAmount * numberOfDays;
                 if(customer !=null){
                     customerDailyReports=customer.getCusDailyReports();
@@ -391,8 +391,8 @@ public class MyCustOldPackAct extends AppCompatActivity implements View.OnClickL
             }
             try {
                 for (int i = 0; i < customerDailyReports.size(); i++) {
-                    if (String.valueOf(savingsAmount).equals(String.valueOf(customerDailyReports.get(i).getAmount())) &&
-                            String.valueOf(numberOfDays).equals(String.valueOf(customerDailyReports.get(i).getNumberOfDays())) &&
+                    if (String.valueOf(savingsAmount).equals(String.valueOf(customerDailyReports.get(i).getRecordAmount())) &&
+                            String.valueOf(numberOfDays).equals(String.valueOf(customerDailyReports.get(i).getRecordNumberOfDays())) &&
                             String.valueOf(reportDate).equals(String.valueOf(customerDailyReports.get(i).getRecordDate()))) {
                         Toast.makeText(MyCustOldPackAct.this, "a very similar Report already exist!", Toast.LENGTH_LONG).show();
 
@@ -421,10 +421,10 @@ public class MyCustOldPackAct extends AppCompatActivity implements View.OnClickL
 
 
                             customerDailyReport = new CustomerDailyReport(reportID, savingsAmount, numberOfDays, newTotal, newDaysRemaining, newAmountRemaining, reportDate, "in progress");
-                            selectedPackage.setBalance(newBalance);
+                            selectedPackage.setPackageBalance(newBalance);
                             selectedPackage.addProfileManager(userProfile);
                             account.setAccountBalance(newBalance);
-                            selectedPackage.setAmount_collected(newAmountContributedSoFar);
+                            selectedPackage.setPackageAmount_collected(newAmountContributedSoFar);
 
                             try {
 

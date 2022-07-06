@@ -165,13 +165,13 @@ public class AdminTransListFrag extends Fragment {
             final Transaction transaction = transactions.get(position);
             final Customer customer = new Customer();
             holder.transactionId.setText(transaction.getTransactionID());
-            holder.amount.setText(valueOf(transaction.getAmount()));
+            holder.amount.setText(valueOf(transaction.getRecordAmount()));
             holder.type.setText(valueOf(transaction.getTransactionType()));
             holder.destinationAccount.setText(transaction.getDestinationAccount());
             holder.name.setText(String.format("%s%s", customer.getCusSurname().substring(1, 0), customer.getCusFirstName()));
             holder.clientId.setText(valueOf(customer.getCusUID()));
             holder.payee.setText(transaction.getPayee());
-            holder.savingsID.setText(Math.toIntExact(transaction.getRecordNo()));
+            holder.savingsID.setText(Math.toIntExact(transaction.getRecordID()));
             holder.payingAccount.setText(transaction.getSendingAccount());
             holder.dateOfTransaction.setText(transaction.getDate());
 

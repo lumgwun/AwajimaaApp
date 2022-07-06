@@ -105,7 +105,7 @@ public class Transaction extends CustomerDailyReport implements Parcelable, Seri
 
     public Transaction(int transactionID, int profileID, int customerID, int accountNo, String timestamp, int sendingAccount, int destinationAccount, String payee, String payer, double amount, TRANSACTION_TYPE transactionType, String methodOfPay,String officeBranch, String approver, String approvalDate, String status) {
         this.transactionID = transactionID;
-        this.profileId = profileID;
+        this.recordProfileId = profileID;
         this.customerID = customerID;
         this.accountId = accountNo;
         this.timestamp = timestamp;
@@ -422,12 +422,12 @@ public class Transaction extends CustomerDailyReport implements Parcelable, Seri
         this.accountId = accountId;
     }
 
-    public Double getAmount() {
+    public Double getRecordAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public void setRecordAmount(double recordAmount) {
+        this.amount = recordAmount;
     }
 
     public String getDate() {

@@ -140,9 +140,9 @@ public class TranxApprovalAct extends AppCompatActivity {
             fromType=loan.getAcctType();
             loanID=loan.getLoanId();
             standingOrderAcct=loan.getSOAcct();
-            account=loan.getAccount();
+            account=loan.getLoan_account();
             loanCode=loan.getLoanCode();
-            loanProfile=loan.getProfile();
+            loanProfile=loan.getLoan_profile();
             acctNo=loan.getSkyLightAcctNo();
             dbLoanCode=dbHelper.getLoanCode(loanID);
         }
@@ -370,7 +370,7 @@ public class TranxApprovalAct extends AppCompatActivity {
             try {
                 for (int i = 0; i < transactionArrayList.size(); i++) {
                     try {
-                        if (transactionArrayList.get(i).getDate().equalsIgnoreCase(todayDate) && transactionArrayList.get(i).getTransactionApprover().equalsIgnoreCase(txApprover) && transactionArrayList.get(i).getCustomerId()==customerID) {
+                        if (transactionArrayList.get(i).getDate().equalsIgnoreCase(todayDate) && transactionArrayList.get(i).getTransactionApprover().equalsIgnoreCase(txApprover) && transactionArrayList.get(i).getPackageCustomerId()==customerID) {
                             Toast.makeText(TranxApprovalAct.this, "A Similar Transaction  was already executed" , Toast.LENGTH_LONG).show();
                             return;
 

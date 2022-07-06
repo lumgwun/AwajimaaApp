@@ -193,9 +193,9 @@ public class CustomerSmsActivity extends AppCompatActivity {
             userProfile= extras.getParcelable("Profile");
             customer= extras.getParcelable("Customer");
             skyLightPackage= extras.getParcelable("Package");
-            packageBalance=skyLightPackage.getBalance();
+            packageBalance=skyLightPackage.getPackageBalance();
         }
-        packageBalance=skyLightPackage.getBalance();
+        packageBalance=skyLightPackage.getPackageBalance();
 
         for (int i = 0; i < paymentCodeArrayList.size(); i++) {
             if (paymentCodeArrayList.get(i).getCodeDate().equalsIgnoreCase(date) && paymentCodeArrayList.get(i).getCodeStatus().equalsIgnoreCase("Completed")) {

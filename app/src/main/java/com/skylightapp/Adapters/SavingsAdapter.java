@@ -97,10 +97,10 @@ public class SavingsAdapter extends RecyclerView.Adapter<SavingsAdapter.Recycler
         return new OnTellerReportChangeListener<CustomerDailyReport>() {
             @Override
             public void onSavingsChanged(CustomerDailyReport obj) {
-                long savingsID = obj.getRecordNo();
+                long savingsID = obj.getRecordID();
                 //fillSavings(savingsID, comment, expandableTextView, dateTextView);
 
-                if (obj.getImage_id()>0) {
+                if (obj.getPackageImage()>0) {
 
                     //ImageUtil.loadImage(GlideApp.with(context), obj.getSavingsDoc(), avatarImageView);
                 }
@@ -155,30 +155,30 @@ public class SavingsAdapter extends RecyclerView.Adapter<SavingsAdapter.Recycler
         PaymentDoc document = (PaymentDoc) this.savings.get(position);
         PaymentCode savingsCode = (PaymentCode) this.savings.get(position);
         DBHelper dbHelper = new DBHelper(mcontext.getApplicationContext());
-        Bitmap docId=dbHelper.getDocPicture(savings.getRecordNo());
-        holder.amountRemaining.setText(MessageFormat.format("Rem Amount: NGN{0}", String.format("%.2f", savings.getAmountRemaining())));
+        Bitmap docId=dbHelper.getDocPicture(savings.getRecordID());
+        holder.amountRemaining.setText(MessageFormat.format("Rem Amount: NGN{0}", String.format("%.2f", savings.getRecordAmountRemaining())));
         holder.totalAmount.setText(MessageFormat.format("Total: NGN{0}", String.format("%.2f", savings.getTotal())));
-        holder.savingsAmount.setText(MessageFormat.format("Package Amount: NGN{0}", String.format("%.2f", savings.getAmount())));
-        holder.packageID.setText(MessageFormat.format("Package ID:{0}", String.valueOf(savings.getPackageId())));
-        holder.status.setText(MessageFormat.format("Status:{0}", savings.getStatus()));
-        holder.savingsID.setText(MessageFormat.format("Start Date:{0}", savings.getRecordNo()));
+        holder.savingsAmount.setText(MessageFormat.format("Package Amount: NGN{0}", String.format("%.2f", savings.getRecordAmount())));
+        holder.packageID.setText(MessageFormat.format("Package ID:{0}", String.valueOf(savings.getRecordPackageId())));
+        holder.status.setText(MessageFormat.format("Status:{0}", savings.getDocStatus()));
+        holder.savingsID.setText(MessageFormat.format("Start Date:{0}", savings.getRecordID()));
         holder.date.setText(MessageFormat.format("Savings date:{0}", savings.getRecordDate()));
-        holder.daysRemaining.setText(MessageFormat.format("Days Rem:{0}", String.valueOf(savings.getRemainingDays())));
-        holder.days.setText(MessageFormat.format("Number of Days:{0}", String.valueOf(savings.getNumberOfDays())));
+        holder.daysRemaining.setText(MessageFormat.format("Days Rem:{0}", String.valueOf(savings.getRecordRemainingDays())));
+        holder.days.setText(MessageFormat.format("Number of Days:{0}", String.valueOf(savings.getRecordNumberOfDays())));
         holder.savingsCount.setText(MessageFormat.format("Number of Saving:{0}", String.valueOf(savings.getCount())));
         holder.paymentMethod.setText(MessageFormat.format("Method:{0}", document.getPaymentMethod()));
         holder.savingsCode.setText(MessageFormat.format("Savings Code:{0}", String.valueOf(savingsCode.getCode())));
-        holder.savingsID.setText(MessageFormat.format("Savings ID:{0}", String.valueOf(savings.getRecordNo())));
+        holder.savingsID.setText(MessageFormat.format("Savings ID:{0}", String.valueOf(savings.getRecordID())));
         holder.paymentDoc.setImageBitmap( docId);
-        holder.days.setText(MessageFormat.format("Number of Days:{0}", String.valueOf(savings.getNumberOfDays())));
+        holder.days.setText(MessageFormat.format("Number of Days:{0}", String.valueOf(savings.getRecordNumberOfDays())));
 
-        if (savings.getStatus().equalsIgnoreCase("confirmed")) {
+        if (savings.getDocStatus().equalsIgnoreCase("confirmed")) {
             holder.icon.setImageResource(R.drawable.verified_savings);
             holder.savingsID.setTextColor(Color.MAGENTA);
-        } else if (savings.getStatus().equalsIgnoreCase(""))  {
+        } else if (savings.getDocStatus().equalsIgnoreCase(""))  {
             holder.icon.setImageResource(R.drawable.unverified);
             holder.savingsID.setTextColor(Color.RED);
-        } else if (savings.getStatus().equalsIgnoreCase("unconfirmed"))  {
+        } else if (savings.getDocStatus().equalsIgnoreCase("unconfirmed"))  {
             holder.icon.setImageResource(R.drawable.unverified);
             holder.savingsID.setTextColor(Color.RED);
         }
@@ -205,7 +205,7 @@ public class SavingsAdapter extends RecyclerView.Adapter<SavingsAdapter.Recycler
                 } else {
                     List<CustomerDailyReport> filteredList = new ArrayList<>();
                     for (CustomerDailyReport customerDailyReport : customerDailyReports) {
-                        if (customerDailyReport.getOfficeBranch().toLowerCase().contains(charString.toLowerCase())) {
+                        if (customerDailyReport.getPackageOfficeBranch().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(customerDailyReport);
                         }
                     }

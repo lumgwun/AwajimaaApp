@@ -62,14 +62,14 @@ public class NewSkylightPackageSlider extends PagerAdapter implements Filterable
 
         sliderLayout.setOnClickListener(this);
 
-        description.setText(theSlideItemsModelClassList.get(position).getDescription());
-        itemName.setText(theSlideItemsModelClassList.get(position).getItemName());
-        price.setText(MessageFormat.format("N{0}", theSlideItemsModelClassList.get(position).getPrice()));
-        duration.setText(theSlideItemsModelClassList.get(position).getDuration());
+        description.setText(theSlideItemsModelClassList.get(position).getpMdesc());
+        itemName.setText(theSlideItemsModelClassList.get(position).getpMItemName());
+        price.setText(MessageFormat.format("N{0}", theSlideItemsModelClassList.get(position).getpMPrice()));
+        duration.setText(theSlideItemsModelClassList.get(position).getpMDuration());
         //featured_image.setImageResource(theSlideItemsModelClassList.get(position).getItemImage());
         try {
             Glide.with(context)
-                    .load(theSlideItemsModelClassList.get(position).getItemImage())
+                    .load(theSlideItemsModelClassList.get(position).getpMItemImage())
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .error(R.drawable.ic_alert)
                     .listener(imageListener)
@@ -128,7 +128,7 @@ public class NewSkylightPackageSlider extends PagerAdapter implements Filterable
 
                 for (SkyLightPackModel dataNames : itemsListFilter) {
                     // filter by title
-                    if (dataNames.getItemName().toLowerCase().trim().contains(searchText)) {
+                    if (dataNames.getpMItemName().toLowerCase().trim().contains(searchText)) {
                         filteredList.add(dataNames);
                     }
                 }
@@ -149,7 +149,7 @@ public class NewSkylightPackageSlider extends PagerAdapter implements Filterable
         } else {
             for (SkyLightPackModel ls : packageList) {
 
-                if (ls.getItemName().contains(pack)) {
+                if (ls.getpMItemName().contains(pack)) {
 
                     itemsListFilter.add(ls);
 

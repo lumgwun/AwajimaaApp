@@ -185,17 +185,17 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         long customerID = customer.getCusUID();
         final Payment payee = new Payment();
         holder.txtTransactionTitle.setText(MessageFormat.format("Type: {0}{1}", transaction.getTransactionType(), transaction.getTransactionID()));
-        holder.txtTransactionAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", transaction.getAmount())));
+        holder.txtTransactionAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", transaction.getRecordAmount())));
         holder.destinationAccount.setText(MessageFormat.format("Destination Acct: {0}", transaction.getDestinationAccount()));
         holder.txtTransactionTimestamp.setText(MessageFormat.format("Date: {0}", transaction.getDate()));
         holder.sendingAccount.setText(MessageFormat.format("Sending Acct: {0}", transaction.getSendingAccount()));
-        holder.package_startDate.setText(MessageFormat.format("Ref ID: {0}", skyLightPackage.getDateStarted()));
+        holder.package_startDate.setText(MessageFormat.format("Ref ID: {0}", skyLightPackage.getPackageDateStarted()));
         //holder.pictureOfCelebrant.setImageURI(profile.getProfilePicture());
         holder.payee.setText(MessageFormat.format("Payee: {0}", transaction.getPayee()));
-        holder.packageID.setText(MessageFormat.format("Package ID: {0}-{1}-{2}", skyLightPackage.getPackageId(), skyLightPackage.getPackageDuration(), skyLightPackage.getDateStarted()));
+        holder.packageID.setText(MessageFormat.format("Package ID: {0}-{1}-{2}", skyLightPackage.getRecordPackageId(), skyLightPackage.getPackageDuration(), skyLightPackage.getPackageDateStarted()));
         holder.savingsID.setText(MessageFormat.format("Savings ID: {0}", customerDailyReport.getUID()));
-        holder.noOfDays.setText(MessageFormat.format("No. of Days: {0}", customerDailyReport.getNumberOfDays()));
-        holder.status.setText(MessageFormat.format("Status: {0}", customerDailyReport.getStatus()));
+        holder.noOfDays.setText(MessageFormat.format("No. of Days: {0}", customerDailyReport.getRecordNumberOfDays()));
+        holder.status.setText(MessageFormat.format("Status: {0}", customerDailyReport.getDocStatus()));
 
         holder.txtTransactionTitle.setText(MessageFormat.format("{0} - {1}", transaction.getTransactionType().toString(), transaction.getTransactionID()));
         if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.PAYMENT) {
@@ -214,7 +214,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         holder.switchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 holder.status.setText("Approved");
-                applicationDb.updateTransactionStatus((customerDailyReport.getStatus()),transaction);
+                applicationDb.updateTransactionStatus((customerDailyReport.getDocStatus()),transaction);
 
             } else {
                 holder.status.setText("Not approved");

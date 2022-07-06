@@ -54,10 +54,10 @@ public class BorrowingAdapter extends RecyclerView.Adapter<BorrowingAdapter.Recy
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         Loan recyclerData = loanArrayList.get(position);
         holder.amount.setText(String.valueOf(recyclerData.getAmount1()));
-        holder.date.setText(recyclerData.getDate());
+        holder.date.setText(recyclerData.getLoan_date());
         holder.bank.setText(String.valueOf(recyclerData.getBankName()));
         holder.name.setText(String.valueOf(recyclerData.getAccountName()));
-        holder.status.setText(String.valueOf(recyclerData.getStatus()));
+        holder.status.setText(String.valueOf(recyclerData.getLoan_status()));
         holder.acctNo.setText(String.valueOf(recyclerData.getSkyLightAcctNo()));
         holder.acctBalance.setText(String.valueOf(recyclerData.getAccountBalance()));
 

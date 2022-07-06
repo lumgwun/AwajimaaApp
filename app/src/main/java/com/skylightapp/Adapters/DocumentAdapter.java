@@ -62,9 +62,9 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
         ScaleGestureDetector gestureDetector = new ScaleGestureDetector(context.getApplicationContext(), new ScaleListener());
         final PaymentDoc paymentDoc = mValues.get(position);
         holder.customerID.setText(valueOf(customer.getCusUID()));
-        holder.tittle.setText(paymentDoc.getTittle());
-        holder.savingsID.setText(valueOf(customerDailyReport.getRecordNo()));
-        holder.documentStatus.setText(paymentDoc.getStatus());
+        holder.tittle.setText(paymentDoc.getDocTittle());
+        holder.savingsID.setText(valueOf(customerDailyReport.getRecordID()));
+        holder.documentStatus.setText(paymentDoc.getDocStatus());
         //holder.paymentDocument.setImageURI(Uri.parse(paymentDocument.getDocumentLink()));
         if (holder.view != null) {
             Glide.with(holder.view)

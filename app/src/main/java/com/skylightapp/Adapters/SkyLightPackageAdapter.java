@@ -20,6 +20,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.skylightapp.Admins.AdminCusActionView;
 import com.skylightapp.Admins.AdminPackageActivity;
 import com.skylightapp.Admins.CusPackHistoryAct;
@@ -27,7 +28,6 @@ import com.skylightapp.Admins.ImportDateTab;
 import com.skylightapp.Admins.SODueDateListAct;
 import com.skylightapp.Admins.ProfilePackHistoryAct;
 import com.skylightapp.Classes.Customer;
-import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.SkyLightPackModel;
 import com.skylightapp.Database.DBHelper;
@@ -51,6 +51,7 @@ public class SkyLightPackageAdapter extends RecyclerView.Adapter<SkyLightPackage
     private ArrayList<SkyLightPackModel> skyLightPackage_2s;
     private OnItemsClickListener listener;
     SkylightPackageListener mListener;
+    private Customer customer;
 
 
     public SkyLightPackageAdapter(Context applicationContext) {
@@ -62,12 +63,6 @@ public class SkyLightPackageAdapter extends RecyclerView.Adapter<SkyLightPackage
         this.packageList = recyclerDataArrayList;
 
     }
-
-    /*public SkyLightPackageAdapter(Context context, ArrayList<SkyLightPackage> skyLightPackages) {
-        this.context = context;
-        this.packageList = skyLightPackages;
-    }*/
-
 
     public SkyLightPackageAdapter(Context context, ArrayList<SkyLightPackModel> skyLightPackage_2s) {
         this.skyLightPackage_2s = skyLightPackage_2s;
@@ -174,52 +169,50 @@ public class SkyLightPackageAdapter extends RecyclerView.Adapter<SkyLightPackage
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        final SkyLightPackage modelItems = packageList.get(position);
-        Customer customer= modelItems.getCustomer();
-        Profile userProfile= modelItems.getProfile();
+        final SkyLightPackModel skyLightPackModel = skyLightPackage_2s.get(position);
+        String tittle=skyLightPackModel.getpMItemName();
+        String type=skyLightPackModel.getpMType();
+        int duration=skyLightPackModel.getpMDuration();
+        double amount=skyLightPackModel.getpMPrice();
+        double grandTotal=duration*amount;
+        int id=skyLightPackModel.getpModeID();
+        holder.itemName.setText(MessageFormat.format("Item Name.:{0}", skyLightPackModel.getpMItemName()));
+        holder.description.setText(MessageFormat.format("Desc.:{0}", skyLightPackModel.getpMdesc()));
+        holder.price.setText(MessageFormat.format("Price.:N{0}", skyLightPackModel.getpMPrice()));
+        holder.duration1.setText(MessageFormat.format("Duration.:{0}", skyLightPackModel.getpMDuration()));
+        Glide.with(holder.itemImage).load(skyLightPackModel.getpMItemImage()).fitCenter().into(holder.itemImage);
 
-        holder.itemName.setText(MessageFormat.format("Tittle:{0}", modelItems.getPackageName()));
-       // holder.description.setText(MessageFormat.format("Desc:{0}", modelItems.getSo_Acct_No()));
-        //holder.price.setText(MessageFormat.format("Price:{0}", modelItems.getSoDailyAmount()));
-        //holder.duration1.setText(MessageFormat.format("Duration:{0}", valueOf(standingOrder.getSoStartDate())));
-        holder.itemImage.setImageResource(R.drawable.savings);
+        //holder.itemImage.setImageResource(R.drawable.savings);
+        final SkyLightPackage skyLightPackage = new SkyLightPackage(id,0,tittle,amount,grandTotal,type,duration);
+
 
         holder.singleItemCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(listener != null){
-                    listener.onItemClick(modelItems);
+                    listener.onItemClick(skyLightPackage);
                 }
             }
         });
-        /*holder.singleItemTextView.setText(packageList.get(position).getName());
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+        holder.btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (!SkyLightPackageActivity.mTwoPane) {
-                    Context context = v.getContext();
-                    Intent intent = new Intent(context, PayNowActivity.class);
-                    //intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, holder.mItem.id);
-                    context.startActivity(intent);
-                } else {
-                    Bundle arguments = new Bundle();
-                    //arguments.putString(ItemDetailFragment.ARG_ITEM_ID, holder.mItem.id);
-                    ItemDetailFragment fragment = new ItemDetailFragment();
-                    fragment.setArguments(arguments);
-                    ((LoanCollectionPage) context).getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragment).commit();
+            public void onClick(View view) {
+                Bundle paymentBundle = new Bundle();
+                if(skyLightPackage !=null){
+                    customer=skyLightPackage.getPackageCustomer();
                 }
+                if(listener != null){
+                    listener.onItemClick(skyLightPackage);
+                }
+
             }
-        });*/
+        });
+
     }
     @Override
     public int getItemCount() {
         return (null != packageList ? packageList.size() : 0);
     }
-
-    /*@Override
-    public int getItemCount() {
-        return packageList.size();
-    }*/
 
     @Override
     public boolean areAllItemsEnabled() {
@@ -262,104 +255,7 @@ public class SkyLightPackageAdapter extends RecyclerView.Adapter<SkyLightPackage
             description = itemView.findViewById(R.id.packageDescription);
             itemImage = itemView.findViewById(R.id.ItemImg);
             dbHelper = new DBHelper(itemView.getContext());
-            btnSubmit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Bundle paymentBundle = new Bundle();
-                    if(noOfDays.getText().toString().isEmpty()){
-                        return;
 
-                    }else {
-                        Customer customer=skyLightPackage.getCustomer();
-                        String packageName =skyLightPackage.getPackageName();
-                        String paymentDate =skyLightPackage.getDate();
-                        double paymentAmount =skyLightPackage.getAmount();
-                        double totalAmount =skyLightPackage.getTotalAmount();
-                        int numberOfDailyPayments =skyLightPackage.getNumberOfDays();
-                        String packageId = String.valueOf(skyLightPackage.getPackageId());
-                        totalAmount = paymentAmount* numberOfDailyPayments;
-
-                        String surName = customer.getCusSurname();
-                        String firstName = customer.getCusFirstName();
-                        String email = customer.getCusEmailAddress();
-                        String address = String.valueOf(customer.getCusAddress());
-                        String phoneNumber = customer.getCusPhoneNumber();
-                        String status = skyLightPackage.getStatus();
-                        String userNames =surName +""+ firstName;
-                        paymentBundle.putString("Package Name",packageName);
-                        paymentBundle.putString("Package Id",packageId);
-                        paymentBundle.putDouble("Amount",paymentAmount);
-                        paymentBundle.putString("Date",paymentDate);
-                        paymentBundle.putString("Names",userNames);
-                        paymentBundle.putString("Phone Number",phoneNumber);
-                        paymentBundle.putString("Email Address",email);
-                        paymentBundle.putString("Address",address);
-
-                        AlertDialog.Builder builder = new AlertDialog.Builder(btnSubmit.getContext());
-                        builder.setTitle("Choose a Payment Option");
-                        builder.setIcon(R.drawable.ic_icon2);
-                        builder.setItems(new CharSequence[]
-                                        {"Pay Now", "Pay Later"},
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        switch (which) {
-                                            case 0:
-                                                Toast.makeText(builder.getContext(), "packageType Package, selected", Toast.LENGTH_SHORT).show();
-                                                Intent savingsIntent = new Intent(builder.getContext(), PayNowActivity.class);
-                                                savingsIntent.putExtras(paymentBundle);
-                                                savingsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                break;
-                                            case 1:
-
-
-                                                Toast.makeText(builder.getContext(), "Pay later,selected", Toast.LENGTH_SHORT).show();
-                                                //dbHelper.insertDailyReport(packageId,);
-                                                break;
-
-                                        }
-                                    }
-                                })
-                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int id) {
-
-                                    }
-                                })
-                                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int id) {
-                                    }
-                                });
-
-                        builder.create().show();
-
-
-                    }
-
-
-
-                /*Bundle paymentBundle = new Bundle();
-                paymentBundle.putString("Package Id", String.valueOf(packageId));
-                paymentBundle.putString("PACKAGE_KEY", packageName);
-                paymentBundle.putString("Date", paymentDate);
-                paymentBundle.putString("Report ID", String.valueOf(KEY_EXTRA_CONTACT_ID));
-                paymentBundle.putString("Number of Days", String.valueOf(numberOfDailyPayments));
-                paymentBundle.putString(PACKAGE_DURATION, String.valueOf(durationInDays));
-                paymentBundle.putString("Grand Total", String.valueOf(grandTotal));
-                paymentBundle.putString(PACKAGE_TYPE, String.valueOf(packageType));
-                paymentBundle.putString("Amount", String.valueOf(savingsAmount));
-                paymentBundle.putString("Amount So Far", String.valueOf(totalAmountSum));
-                paymentBundle.putString("Package Count", "1");
-                paymentBundle.putString("Customer Name", customerNames);
-                paymentBundle.putString("Customer Email", emailAddress);
-                paymentBundle.putString("Customer Phone Number", phoneNumber1);
-                paymentBundle.putString("Day Remaining", String.valueOf(daysRemaining));
-                paymentBundle.putString("Amount Remaining", String.valueOf(amountRemaining));
-                paymentBundle.putString("Account ID", String.valueOf(acctID));
-                paymentBundle.putString("Total", String.valueOf(totalAmountSum));*/
-
-                }
-            });
         }
         public void setData(int itemImage, String itemName, double price, String description, String duration){
             this.itemName.setText(itemName);

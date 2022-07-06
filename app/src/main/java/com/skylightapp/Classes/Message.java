@@ -23,13 +23,13 @@ public class Message implements Serializable, Parcelable {
     public static final String MESSAGE_DETAILS = "_message_Details";
     public static final String VIEWED = "viewed";
     public static final String MESSAGE_TIME = "message_time";
-    public static final String MESSAGE_SENDER = "sender";
-    public static final String MESSAGE_SENDEE = "sendee";
-    public static final String MESSAGE_PURPOSE = "purpose";
-    public static final String MESSAGE_ADMIN_NAME = "admin_name";
-    public static final String MESSAGE_ADMIN_ID = "admin_id";
-    public static final String MESSAGE_CUS_ID = "admin_Cus_id";
-    public static final String MESSAGE_PROF_ID = "admin_Prof_id";
+    public static final String MESSAGE_SENDER = "message_sender";
+    public static final String MESSAGE_SENDEE = "message_sendee";
+    public static final String MESSAGE_PURPOSE = "message_purpose";
+    public static final String MESSAGE_ADMIN_NAME = "message_admin_name";
+    public static final String MESSAGE_ADMIN_ID = "message_admin_id";
+    public static final String MESSAGE_CUS_ID = "message_Cus_id";
+    public static final String MESSAGE_PROF_ID = "message__Prof_id";
     public static final String MESSAGE_BRANCH_OFFICE = "message_office";
 
 

@@ -126,20 +126,20 @@ public class PackageRecyclerAdapter extends RecyclerView.Adapter<PackageRecycler
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         SkyLightPackage skyLightPackage = skyLightPackages.get(position);
         Customer customer = new Customer();
-        holder.packageType.setText(MessageFormat.format("Type:{0}", skyLightPackage.getPackageType() +"-"+skyLightPackage.getPackageId()));
-        holder.amountRemaining.setText(MessageFormat.format("Rem Amount: NGN{0}", String.format("%.2f", skyLightPackage.getAmountRemaining())));
+        holder.packageType.setText(MessageFormat.format("Type:{0}", skyLightPackage.getPackageType() +"-"+skyLightPackage.getRecordPackageId()));
+        holder.amountRemaining.setText(MessageFormat.format("Rem Amount: NGN{0}", String.format("%.2f", skyLightPackage.getRecordAmountRemaining())));
         holder.grandTotalAmount.setText(MessageFormat.format("Exp Amount: NGN{0}", String.format("%.2f", skyLightPackage.getGrandTotal())));
-        holder.packageAmount.setText(MessageFormat.format("Package Amount: NGN{0}", String.format("%.2f", skyLightPackage.getAmount())));
+        holder.packageAmount.setText(MessageFormat.format("Package Amount: NGN{0}", String.format("%.2f", skyLightPackage.getRecordAmount())));
         //holder.packageID.setText(MessageFormat.format("ID:{0}", String.valueOf(skyLightPackage.getPackageId())));
         holder.status.setText(MessageFormat.format("Status:{0}", skyLightPackage.getPackageStatus()));
         holder.customerName.setText(MessageFormat.format("Customer''s Name:{0},{1}", customer.getCusSurname(), customer.getCusFirstName()));
         holder.customerID.setText(MessageFormat.format("Customer''s ID:{0}", String.valueOf(customer.getCusUID())));
-        holder.startDate.setText(MessageFormat.format("Start Date:{0}", skyLightPackage.getDateStarted()));
-        holder.savedAmount.setText(MessageFormat.format("Saved Amount: NGN{0}", String.format("%.2f", skyLightPackage.getAmount_collected())));
-        holder.endDate.setText(MessageFormat.format("End date:{0}", skyLightPackage.getDateEnded()));
-        holder.daysRemaining.setText(MessageFormat.format("Days Rem:{0}", String.valueOf(skyLightPackage.getRemainingDays())));
+        holder.startDate.setText(MessageFormat.format("Start Date:{0}", skyLightPackage.getPackageDateStarted()));
+        holder.savedAmount.setText(MessageFormat.format("Saved Amount: NGN{0}", String.format("%.2f", skyLightPackage.getPackageAmount_collected())));
+        holder.endDate.setText(MessageFormat.format("End date:{0}", skyLightPackage.getPackageDateEnded()));
+        holder.daysRemaining.setText(MessageFormat.format("Days Rem:{0}", String.valueOf(skyLightPackage.getRecordRemainingDays())));
         holder.duration.setText(MessageFormat.format("Duration:{0}", String.valueOf(skyLightPackage.getPackageDuration())));
-        holder.profileManager.setText(MessageFormat.format("Manager:{0}", String.valueOf(skyLightPackage.getProfile())));
+        holder.profileManager.setText(MessageFormat.format("Manager:{0}", String.valueOf(skyLightPackage.getRecordProfile())));
 
 
         if (skyLightPackage.getSkylightPackage() == SkyLightPackage.SkylightPackage_Type.SAVINGS) {
@@ -148,7 +148,7 @@ public class PackageRecyclerAdapter extends RecyclerView.Adapter<PackageRecycler
             holder.packageAmount.setTextColor(Color.RED);
         } else if (skyLightPackage.getSkylightPackage() == SkyLightPackage.SkylightPackage_Type.ITEM_PURCHASE) {
             holder.ImageIcon.setImageResource(R.drawable.shape_rect_4);
-            holder.packageType.setText(MessageFormat.format("Item Purchase: {0}", skyLightPackage.getItem_purchases()));
+            holder.packageType.setText(MessageFormat.format("Item Purchase: {0}", skyLightPackage.getPackageName()));
             holder.packageAmount.setTextColor(Color.BLUE);
         } else if (skyLightPackage.getSkylightPackage() == SkyLightPackage.SkylightPackage_Type.BORROWING) {
             holder.ImageIcon.setImageResource(R.drawable.shape_rect_7);

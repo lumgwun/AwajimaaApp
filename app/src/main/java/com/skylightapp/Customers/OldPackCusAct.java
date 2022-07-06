@@ -259,7 +259,7 @@ public class OldPackCusAct extends AppCompatActivity {
 
                             try {
                                 selectedPackage = (SkyLightPackage) parent.getItemAtPosition(position);
-                                savingsAmount = selectedPackage.getDailyAmount();
+                                savingsAmount = selectedPackage.getPackageDailyAmount();
                                 txtAmountPerDay.setText(MessageFormat.format("Amount per day:{0}", savingsAmount));
                             } catch (NullPointerException e) {
                                 System.out.println("Oops!");
@@ -367,7 +367,7 @@ public class OldPackCusAct extends AppCompatActivity {
 
                 try {
                     selectedPackage = (SkyLightPackage) parent.getItemAtPosition(position);
-                    savingsAmount=selectedPackage.getDailyAmount();
+                    savingsAmount=selectedPackage.getPackageDailyAmount();
                 } catch (NullPointerException e) {
                     System.out.println("Oops!");
                 }
@@ -404,13 +404,13 @@ public class OldPackCusAct extends AppCompatActivity {
         if (selectedPackage != null){
             try {
                 try {
-                    oldPackageId=selectedPackage.getPackageId();
+                    oldPackageId=selectedPackage.getRecordPackageId();
                     packageDuration = selectedPackage.getPackageDuration();
                     grandTotal = selectedPackage.getGrandTotal();
                     packageCount = customerDailyReport.getPackageCount(oldPackageId);
-                    savingsAmount = selectedPackage.getDailyAmount();
-                    daysRemaining = selectedPackage.getRemainingDays();
-                    amountContributedSoFar = selectedPackage.getAmount_collected();
+                    savingsAmount = selectedPackage.getPackageDailyAmount();
+                    daysRemaining = selectedPackage.getRecordRemainingDays();
+                    amountContributedSoFar = selectedPackage.getPackageAmount_collected();
                     newAmountContributedSoFar = amountContributedSoFar + totalAmountSum;
                     newAmountRemaining = grandTotal - newAmountContributedSoFar;
                     newDaysRemaining = packageDuration - daysRemaining - numberOfDays;
@@ -446,8 +446,8 @@ public class OldPackCusAct extends AppCompatActivity {
 
                 try {
                     for (int i = 0; i < customerDailyReports.size(); i++) {
-                        if (String.valueOf(savingsAmount).equals(String.valueOf(customerDailyReports.get(i).getAmount())) &&
-                                String.valueOf(numberOfDays).equals(String.valueOf(customerDailyReports.get(i).getNumberOfDays())) &&
+                        if (String.valueOf(savingsAmount).equals(String.valueOf(customerDailyReports.get(i).getRecordAmount())) &&
+                                String.valueOf(numberOfDays).equals(String.valueOf(customerDailyReports.get(i).getRecordNumberOfDays())) &&
                                 reportDate.equals(customerDailyReports.get(i).getRecordDate())) {
                             Toast.makeText(OldPackCusAct.this, "a very similar Report already exist!", Toast.LENGTH_LONG).show();
 
@@ -466,11 +466,11 @@ public class OldPackCusAct extends AppCompatActivity {
                                 userProfile.addSavings(profileID, customerId, reportID, savingsAmount, numberOfDays, newTotal, newDaysRemaining, newAmountRemaining, reportDate, "In progress");
 
                                 customer.getCusAccount().setAccountBalance(newBalance);
-                                skyLightPackage.setBalance(newAmountContributedSoFar);
+                                skyLightPackage.setPackageBalance(newAmountContributedSoFar);
                                 skyLightPackage.addProfileManager(userProfile);
                                 account1.setAccountBalance(newBalance);
-                                skyLightPackage.setAmount_collected(newAmountContributedSoFar);
-                                skyLightPackage.setStatus("inComplete");
+                                skyLightPackage.setPackageAmount_collected(newAmountContributedSoFar);
+                                skyLightPackage.setDocStatus("inComplete");
 
                                 /*try {
 

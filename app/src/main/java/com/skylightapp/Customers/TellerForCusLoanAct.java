@@ -38,7 +38,6 @@ import com.skylightapp.Adapters.CusSpinnerAdapter;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Loan;
-import com.skylightapp.Classes.Payee;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
@@ -1093,7 +1092,7 @@ public class TellerForCusLoanAct extends AppCompatActivity {
                 ArrayList<Loan> loans = applicationDb.getLoansFromCurrentCustomer(customerID);
                 boolean loanTaken = false;
                 for (int iLoan = 0; iLoan < loans.size(); iLoan++) {
-                    if (String.valueOf(amountToBorrow).equals(String.valueOf((loans.get(iLoan).getAmount1()))) && borrowingDate.equals(loans.get(iLoan).getDate())) {
+                    if (String.valueOf(amountToBorrow).equals(String.valueOf((loans.get(iLoan).getAmount1()))) && borrowingDate.equals(loans.get(iLoan).getLoan_date())) {
                         loanTaken = true;
                         Toast.makeText(this, "a very similar Borrowing with same date already exist!", Toast.LENGTH_LONG).show();
                     }

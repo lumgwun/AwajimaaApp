@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Business extends Profile {
     public static final String BIZ_TABLE = "BizTable";
-    public static final String BIZ_ID = "id";
+    public static final String BIZ_ID = "biz_id";
     public static final String BIZ_NAME = "BizName";
     public static final String BIZ_REG_NO = "BizRegNo";
     public static final String BIZ_PHONE_NO = "BizPhoneNo";
@@ -24,10 +24,11 @@ public class Business extends Profile {
     public static final String BIZ_STATE = "BizState";
     public static final String BIZ_PIX = "BizPix";
     public static final String BIZ_STATUS = "BizStatus";
+    public static final String BIZ_PROF_ID = "Biz_Prof_ID";
 
-    public static final String CREATE_BIZ_TABLE = "CREATE TABLE IF NOT EXISTS " + BIZ_TABLE + " (" + PROFILE_ID + " INTEGER , " +
+    public static final String CREATE_BIZ_TABLE = "CREATE TABLE IF NOT EXISTS " + BIZ_TABLE + " (" + BIZ_PROF_ID + " INTEGER , " +
             BIZ_ID + " INTEGER , " + BIZ_NAME + " TEXT , " +BIZ_BRANDNAME + " TEXT , " + BIZ_TYPE + " TEXT , " + BIZ_REG_NO + " TEXT , " + BIZ_EMAIL + " TEXT , " + BIZ_PHONE_NO + " TEXT , " + BIZ_ADDRESS + " TEXT , " + BIZ_STATE + " TEXT , " + BIZ_PIX + " BLOB , " + BIZ_STATUS + " TEXT , " +  "PRIMARY KEY(" + BIZ_ID  + "), " +
-            "FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+            "FOREIGN KEY(" + BIZ_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
 
 

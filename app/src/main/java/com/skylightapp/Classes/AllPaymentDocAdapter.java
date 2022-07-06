@@ -118,9 +118,9 @@ public class AllPaymentDocAdapter extends RecyclerView.Adapter<AllPaymentDocAdap
         ScaleGestureDetector gestureDetector = new ScaleGestureDetector(context.getApplicationContext(), new ScaleListener());
         final PaymentDoc paymentDoc = mValues.get(position);
         holder.customerID.setText(valueOf(customer.getCusUID()));
-        holder.tittle.setText(paymentDoc.getTittle());
+        holder.tittle.setText(paymentDoc.getDocTittle());
 
-        holder.savingsID.setText(valueOf(customerDailyReport.getRecordNo()));
+        holder.savingsID.setText(valueOf(customerDailyReport.getRecordID()));
 
 
         //holder.paymentDocument.setImageURI(Uri.parse(paymentDocument.getDocumentLink()));

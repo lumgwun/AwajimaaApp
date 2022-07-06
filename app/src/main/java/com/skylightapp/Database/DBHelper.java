@@ -588,7 +588,6 @@ import static com.skylightapp.Classes.Transaction.CREATE_TRANSACTIONS_TABLE;
 import static com.skylightapp.Classes.Transaction.TRANSACTION_DEST_ACCT;
 import static com.skylightapp.Classes.Transaction.GRP_TRANX_TABLE;
 import static com.skylightapp.Classes.Transaction.TRANSACTION_SENDING_ACCT;
-import static com.skylightapp.Classes.Transaction.TIMESTAMP;
 import static com.skylightapp.Classes.Transaction.TRANSACTIONS_TABLE;
 import static com.skylightapp.Classes.Transaction.TRANSACTIONS_TYPE;
 import static com.skylightapp.Classes.Transaction.TRANSACTION_AMOUNT;
@@ -7346,7 +7345,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues savingsUpdateValues = new ContentValues();
         CustomerDailyReport customerDailyReport = new CustomerDailyReport();
-        reportId = customerDailyReport.getRecordNo();
+        reportId = customerDailyReport.getRecordID();
         savingsUpdateValues.put(PACKAGE_BALANCE, packageBalance);
         savingsUpdateValues.put(REPORT_STATUS, status);
         db.update(DAILY_REPORT_TABLE, savingsUpdateValues, REPORT_ID + " = ?", new String[]{valueOf(reportId)});
@@ -10243,8 +10242,8 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
-            contentValues.put(CODE_CUS_ID, paymentCode.getCustomer_ID());
-            contentValues.put(CODE_REPORT_NO, paymentCode.getSavingsID());
+            contentValues.put(CODE_CUS_ID, paymentCode.getCod_customer_ID());
+            contentValues.put(CODE_REPORT_NO, paymentCode.getCode_savingsID());
             contentValues.put(CODE_PIN, paymentCode.getCode());
             contentValues.put(CODE_DATE, paymentCode.getCodeDate());
             contentValues.put(CODE_STATUS, paymentCode.getCodeStatus());
@@ -10598,7 +10597,7 @@ public class DBHelper extends SQLiteOpenHelper {
         CustomerDailyReport customerDailyReport= new CustomerDailyReport();
         //customerDailyReport=paymentCode.getCustomerDailyReport();
         int codeID= paymentCode.getCodeID();
-        codeValues.put(CODE_REPORT_NO, paymentCode.getRecordNo());
+        codeValues.put(CODE_REPORT_NO, paymentCode.getRecordID());
         codeValues.put(CODE_CUS_ID, valueOf(customer.getCusUID()));
         codeValues.put(CODE_ID, codeID);
         codeValues.put(CODE_PIN, paymentCode.getCode());
@@ -10844,19 +10843,19 @@ public class DBHelper extends SQLiteOpenHelper {
     public int insertDailyReport4(Profile profile, Customer customer, SkyLightPackage skyLightPackage, CustomerDailyReport customerDailyReport, Account account) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues packageSavingsValue = new ContentValues();
-        int reportNo = customerDailyReport.getNumberOfDays();
-        long reportCode =customerDailyReport.getSavingsCode();
+        int reportNo = customerDailyReport.getRecordNumberOfDays();
+        long reportCode =customerDailyReport.getRecordSavingsCode();
         packageSavingsValue.put(REPORT_PROF_ID_FK, profile.getPID());
-        packageSavingsValue.put(REPORT_PACK_ID_FK, skyLightPackage.getPackageId());
+        packageSavingsValue.put(REPORT_PACK_ID_FK, skyLightPackage.getRecordPackageId());
         packageSavingsValue.put(REPORT_CUS_ID_FK, customer.getCusUID());
         packageSavingsValue.put(REPORT_ACCOUNT_NO_FK, account.getSkyLightAcctNo());
-        packageSavingsValue.put(REPORT_AMOUNT, valueOf(customerDailyReport.getAmount()));
-        packageSavingsValue.put(REPORT_NUMBER_OF_DAYS, customerDailyReport.getNumberOfDays());
+        packageSavingsValue.put(REPORT_AMOUNT, valueOf(customerDailyReport.getRecordAmount()));
+        packageSavingsValue.put(REPORT_NUMBER_OF_DAYS, customerDailyReport.getRecordNumberOfDays());
         packageSavingsValue.put(REPORT_TOTAL, customerDailyReport.getTotal());
         packageSavingsValue.put(REPORT_DATE, customerDailyReport.getRecordDate());
-        packageSavingsValue.put(REPORT_DAYS_REMAINING, customerDailyReport.getRemainingDays());
-        packageSavingsValue.put(REPORT_AMOUNT_REMAINING, customerDailyReport.getAmountRemaining());
-        packageSavingsValue.put(REPORT_STATUS, customerDailyReport.getStatus());
+        packageSavingsValue.put(REPORT_DAYS_REMAINING, customerDailyReport.getRecordRemainingDays());
+        packageSavingsValue.put(REPORT_AMOUNT_REMAINING, customerDailyReport.getRecordAmountRemaining());
+        packageSavingsValue.put(REPORT_STATUS, customerDailyReport.getDocStatus());
         packageSavingsValue.put(REPORT_CODE, reportCode);
         sqLiteDatabase.insert(DAILY_REPORT_TABLE, null, packageSavingsValue);
 
@@ -11759,16 +11758,16 @@ public class DBHelper extends SQLiteOpenHelper {
                 if (cursor.moveToFirst()) {
                     do {
                         SkyLightPackage skyLightPackage = new SkyLightPackage();
-                        skyLightPackage.setPackageId(Integer.parseInt(cursor.getString(0)));
-                        skyLightPackage.setCustomerName(cursor.getString(1));
+                        skyLightPackage.setRecordPackageId(Integer.parseInt(cursor.getString(0)));
+                        skyLightPackage.setPackageCustomerName(cursor.getString(1));
                         skyLightPackage.setGrandTotal(Double.valueOf(cursor.getString(2)));
-                        skyLightPackage.setAmount(Double.parseDouble(cursor.getString(3)));
-                        skyLightPackage.setBalance(Double.parseDouble(cursor.getString(4)));
-                        skyLightPackage.setDateStarted(cursor.getString(5));
+                        skyLightPackage.setRecordAmount(Double.parseDouble(cursor.getString(3)));
+                        skyLightPackage.setPackageBalance(Double.parseDouble(cursor.getString(4)));
+                        skyLightPackage.setPackageDateStarted(cursor.getString(5));
                         skyLightPackage.setDateEnded(cursor.getString(6));
                         skyLightPackage.setPackageDuration(Integer.parseInt(cursor.getString(7)));
                         skyLightPackage.setPackageStatus(cursor.getString(8));
-                        skyLightPackage.setCustomerId(Integer.parseInt(cursor.getString(9)));
+                        skyLightPackage.setPackageCustomerId(Integer.parseInt(cursor.getString(9)));
 
 
                         // Adding Reminders to list
@@ -12003,10 +12002,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
         ContentValues cv = new ContentValues();
         cv.put(PACKAGE_CUSTOMER_ID_FOREIGN, customer.getCusUID());
-        cv.put(PACKAGE_REPORT_ID, customerDailyReport.getPackageId());
-        cv.put(PACKAGE_BALANCE, valueOf(skyLightPackage.getBalance()));
-        cv.put(PACKAGE_STATUS, skyLightPackage.getStatus());
-        cv.put(PACKAGE_END_DATE, skyLightPackage.getDateEnded());
+        cv.put(PACKAGE_REPORT_ID, customerDailyReport.getRecordPackageId());
+        cv.put(PACKAGE_BALANCE, valueOf(skyLightPackage.getPackageBalance()));
+        cv.put(PACKAGE_STATUS, skyLightPackage.getDocStatus());
+        cv.put(PACKAGE_END_DATE, skyLightPackage.getPackageDateEnded());
         String selection = PACKAGE_CUSTOMER_ID_FOREIGN + "=?AND " + PACKAGE_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(customer.getCusUID()), valueOf(skyLightPackage.getPackID())};
         db.update(PACKAGE_TABLE, cv, selection, selectionArgs);
@@ -12763,16 +12762,16 @@ public class DBHelper extends SQLiteOpenHelper {
             ContentValues packageValues = new ContentValues();
             packageValues.put(PACKAGE_PROFILE_ID_FOREIGN, profile.getPID());
             packageValues.put(PACKAGE_CUSTOMER_ID_FOREIGN, customer.getCusUID());
-            packageValues.put(PACKAGE_ID, skyLightPackage.getPackageId());
+            packageValues.put(PACKAGE_ID, skyLightPackage.getRecordPackageId());
             packageValues.put(PACKAGE_NAME, skyLightPackage.getPackageName());
             packageValues.put(PACKAGE_TYPE, skyLightPackage.getType());
-            packageValues.put(PACKAGE_VALUE, skyLightPackage.getAmount());
+            packageValues.put(PACKAGE_VALUE, skyLightPackage.getRecordAmount());
             packageValues.put(PACKAGE_DURATION, skyLightPackage.getPackageDuration());
-            packageValues.put(PACKAGE_START_DATE, skyLightPackage.getDateStarted());
-            packageValues.put(PACKAGE_END_DATE, skyLightPackage.getDateEnded());
-            packageValues.put(PACKAGE_BALANCE, skyLightPackage.getBalance());
-            packageValues.put(REPORT_DAYS_REMAINING, skyLightPackage.getRemainingDays());
-            packageValues.put(PACKAGE_STATUS, skyLightPackage.getStatus());
+            packageValues.put(PACKAGE_START_DATE, skyLightPackage.getPackageDateStarted());
+            packageValues.put(PACKAGE_END_DATE, skyLightPackage.getPackageDateEnded());
+            packageValues.put(PACKAGE_BALANCE, skyLightPackage.getPackageBalance());
+            packageValues.put(REPORT_DAYS_REMAINING, skyLightPackage.getRecordRemainingDays());
+            packageValues.put(PACKAGE_STATUS, skyLightPackage.getDocStatus());
             sqLiteDatabase.insert(PACKAGE_TABLE, null, packageValues);
 
             sqLiteDatabase.close();
@@ -12976,8 +12975,8 @@ public class DBHelper extends SQLiteOpenHelper {
             //values.put(ACCOUNT_BALANCE, account.getAccountBalance());
             //values.put(PACKAGE_VALUE, skyLightPackage.getDailyAmount());
             //values.put(PACKAGE_START_DATE, skyLightPackage.getDateStarted());
-            values.put(PACKAGE_BALANCE, skyLightPackage.getBalance());
-            values.put(PACKAGE_END_DATE, skyLightPackage.getDateEnded());
+            values.put(PACKAGE_BALANCE, skyLightPackage.getPackageBalance());
+            values.put(PACKAGE_END_DATE, skyLightPackage.getPackageDateEnded());
             values.put(PACKAGE_STATUS, skyLightPackage.getPackageStatus());
             //values.put(PACKAGE_DURATION, skyLightPackage.getPackageDuration());
             values.put("ReportCount", "");
@@ -13910,7 +13909,7 @@ public class DBHelper extends SQLiteOpenHelper {
             cv.put(TRANSACTION_PAYEE, payee);
             cv.put(TRANSACTION_PAYER, payer);
             cv.put(TRANSACTION_OFFICE_BRANCH, officeBranch);
-            cv.put(TIMESTAMP, date);
+            cv.put(TRANSACTION_DATE, date);
 
             if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.MANUAL_WITHDRAWAL) {
                 cv.put(TRANSACTION_SENDING_ACCT, "Skylight");
@@ -13936,7 +13935,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 //cv.putNull(DESTINATION_ACCOUNT);
                 //cv.putNull(TRANSACTION_PAYEE);
             }
-            cv.put(TRANSACTION_AMOUNT, transaction.getAmount());
+            cv.put(TRANSACTION_AMOUNT, transaction.getRecordAmount());
             cv.put(TRANS_TYPE, transaction.getTransactionType().toString());
 
             db.insert(TRANSACTIONS_TABLE, null, cv);
@@ -14645,10 +14644,10 @@ public class DBHelper extends SQLiteOpenHelper {
             cv.put(LOAN_FIXED_PAYMENT, valueOf(loan.getFixedPayment()));
             cv.put(LOAN_TOTAL_INTEREST, valueOf(loan.getTotalInterests()));
             cv.put(LOAN_DOWN_PAYMENT, valueOf(loan.getDownPayment()));
-            cv.put(LOAN_DATE, loan.getDate());
-            cv.put(LOAN_START_DATE, loan.getStartDate());
-            cv.put(LOAN_END_DATE, loan.getEndDate());
-            cv.put(LOAN_STATUS, loan.getStatus());
+            cv.put(LOAN_DATE, loan.getLoan_date());
+            cv.put(LOAN_START_DATE, loan.getLoan_startDate());
+            cv.put(LOAN_END_DATE, loan.getLoan_endDate());
+            cv.put(LOAN_STATUS, loan.getLoan_status());
             sqLiteDatabase.insert(LOAN_TABLE, null, cv);
         }catch (SQLException e)
         {
@@ -14839,11 +14838,11 @@ public class DBHelper extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues documentValues = new ContentValues();
             documentValues.put(DOCUMENT_ID, valueOf(paymentDoc.getDocumentId()));
-            documentValues.put(DOCUMENT_REPORT_NO, valueOf(paymentDoc.getRecordNo()));
+            documentValues.put(DOCUMENT_REPORT_NO, valueOf(paymentDoc.getRecordID()));
             documentValues.put(DOCUMENT_CUS_ID, valueOf(paymentDoc.getDocCusID()));
-            documentValues.put(DOCUMENT_TITLE, valueOf(paymentDoc.getTittle()));
+            documentValues.put(DOCUMENT_TITLE, valueOf(paymentDoc.getDocTittle()));
             documentValues.put(DOCUMENT_URI, valueOf(paymentDoc.getDocumentLink()));
-            documentValues.put(DOCUMENT_STATUS, valueOf(paymentDoc.getStatus()));
+            documentValues.put(DOCUMENT_STATUS, valueOf(paymentDoc.getDocStatus()));
             db.insert(DOCUMENT_TABLE, null, documentValues);
             //db.close();
 
@@ -15935,10 +15934,10 @@ public class DBHelper extends SQLiteOpenHelper {
             cv.put(LOAN_DOWN_PAYMENT, valueOf(loan.getDownPayment()));
             cv.put(LOAN_DISPOSABLE_COM, valueOf(loan.getDisposableCommission()));
             cv.put(LOAN_BALANCE, valueOf(loan.getResiduePayment()));
-            cv.put(LOAN_DATE, loan.getDate());
-            cv.put(LOAN_START_DATE, loan.getStartDate());
-            cv.put(LOAN_END_DATE, loan.getEndDate());
-            cv.put(LOAN_STATUS, loan.getStatus());
+            cv.put(LOAN_DATE, loan.getLoan_date());
+            cv.put(LOAN_START_DATE, loan.getLoan_startDate());
+            cv.put(LOAN_END_DATE, loan.getLoan_endDate());
+            cv.put(LOAN_STATUS, loan.getLoan_status());
             String selection = LOAN_CUS_ID + "=? AND " + LOAN_ID + "=?";
             String[] selectionArgs = new String[]{valueOf(customer.getCusUID()), valueOf(loan.getLoanId())};
 

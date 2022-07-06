@@ -32,14 +32,16 @@ public class Bookings {
     public static final String BOOKING_CLIENT_NAME = "booking_name";
     public static final String BOOKING_DATE = "booking_date";
     public static final String BOOKING_LOCATION = "booking_location";
+    public static final String BOOKING_PROF_ID = "booking_Prof_ID";
+    public static final String BOOKING_CUS_ID = "booking_Cus_ID";
     public static final String BOOKING_OCCURENCE_NO = "booking_occuring_No";
     public static final Boolean ITISRECCURRING = false;
 
 
-    public static final String CREATE_BOOKING_TABLE = "CREATE TABLE IF NOT EXISTS " + BOOKING_TABLE + " (" + PROFILE_ID + " INTEGER NOT NULL, " + CUSTOMER_ID + " INTEGER   , " + BOOKING_ID + " INTEGER    , " +
+    public static final String CREATE_BOOKING_TABLE = "CREATE TABLE IF NOT EXISTS " + BOOKING_TABLE + " (" + BOOKING_PROF_ID + " INTEGER NOT NULL, " + BOOKING_CUS_ID + " INTEGER   , " + BOOKING_ID + " INTEGER    , " +
             BOOKING_TITTLE + " TEXT, " + BOOKING_CLIENT_NAME + " TEXT, " + BOOKING_DATE + " DATE, " + BOOKING_LOCATION + " TEXT, " +
             BOOKING_OCCURENCE_NO + " INTEGER, " + BOOKING_STATUS + " TEXT, " + ITISRECCURRING + " BOOLEAN, " +
-            "PRIMARY KEY(" + BOOKING_ID  + "), " + "FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+            "PRIMARY KEY(" + BOOKING_ID  + "), " + "FOREIGN KEY(" + BOOKING_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
 
 

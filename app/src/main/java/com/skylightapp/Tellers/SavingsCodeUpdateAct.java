@@ -64,9 +64,9 @@ public class SavingsCodeUpdateAct extends AppCompatActivity {
 
         }
         if(customerDailyReport !=null){
-            customerID=customerDailyReport.getCustomerId();
+            customerID=customerDailyReport.getPackageCustomerId();
             packageID=customerDailyReport.getPackageID();
-            cusProfile=customerDailyReport.getProfile();
+            cusProfile=customerDailyReport.getRecordProfile();
         }
         SharedPrefUserName=sharedpreferences.getString("USER_NAME", "");
         SharedPrefUserPassword=sharedpreferences.getString("USER_PASSWORD", "");
@@ -109,9 +109,9 @@ public class SavingsCodeUpdateAct extends AppCompatActivity {
 
         }
         if(customerDailyReport !=null){
-            customerID=customerDailyReport.getCustomerId();
+            customerID=customerDailyReport.getPackageCustomerId();
             packageID=customerDailyReport.getPackageID();
-            cusProfile=customerDailyReport.getProfile();
+            cusProfile=customerDailyReport.getRecordProfile();
         }
 
         try {

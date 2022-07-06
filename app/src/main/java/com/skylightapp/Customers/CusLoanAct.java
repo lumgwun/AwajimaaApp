@@ -447,7 +447,7 @@ public class CusLoanAct extends AppCompatActivity {
                         userProfile.addTimeLine(timelineTittle2,userTimelineText);
                         if(loanType.equals("EWallet")){
                             loan.setAcctType(loanType);
-                            loan.setAccount(account);
+                            loan.setLoan_account(account);
                             standingOrderAcct=null;
 
                         }else {
@@ -466,7 +466,7 @@ public class CusLoanAct extends AppCompatActivity {
                         loan.setBankAcctNo("");
                         loan.setInterest(0.05);
                         loan.setLoanCode(loanCode);
-                        loan.setProfile(userProfile);
+                        loan.setLoan_profile(userProfile);
                         loan.setLoanOfficeBranch(loanOffice);
                         granting= new TransactionGranting(loanNumber,profileID,customerID,customerName,selectedBank,acctName,bankAccountNo,amountDouble1,"",loanDate,"","","inProgress");
 
@@ -493,7 +493,7 @@ public class CusLoanAct extends AppCompatActivity {
 
                         granting.setTe_Type("Loan");
                         granting.setLoan(loan);
-                        loan.setGranting(granting);
+                        loan.setLoan_granting(granting);
                         customer.addLoans(loanNumber,amountDouble,loanDate,"inProgress","",0.00);
                         userProfile.addLoans(loanNumber,amountDouble,loanDate,"inProgress","",0.00);
 
@@ -620,7 +620,7 @@ public class CusLoanAct extends AppCompatActivity {
                 userProfile.addTimeLine(timelineTittle2,userTimelineText);
                 if(loanType.equals("EWallet")){
                     loan.setAcctType(loanType);
-                    loan.setAccount(account);
+                    loan.setLoan_account(account);
 
                 }else {
                     if(loanType.equals("StandingOrderAcct")){
@@ -646,7 +646,7 @@ public class CusLoanAct extends AppCompatActivity {
                 }
 
                 granting.setTe_Type("Loan");
-                loan.setGranting(granting);
+                loan.setLoan_granting(granting);
                 customer.addLoans(loanNumber,amountDouble,loanDate,"inProgress","",0.00);
                 userProfile.addLoans(loanNumber,amountDouble,loanDate,"inProgress","",0.00);
                 if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {

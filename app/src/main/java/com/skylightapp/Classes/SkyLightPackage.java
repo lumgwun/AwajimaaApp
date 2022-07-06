@@ -15,7 +15,6 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,51 +58,52 @@ public class SkyLightPackage extends CustomerDailyReport implements Parcelable, 
 
 
     boolean complete =false;
-    private String officeBranch;
-    private int numberOfDays;
+    private String packageOfficeBranch;
+    //private int numberOfDays;
     @PrimaryKey(autoGenerate = true)
     private int packageId=1042;
-    private int profileId;
-    private int customerId;
-    private String total;
-    private String customerName;
-    private String status;
+    private int packageProfileId;
+    private int packageCustomerId;
+    //private String total;
+    private String packageCustomerName;
+    private String packageStatus;
     private String packageItem;
     private int num;
     int packageDuration;
     private String packageName;
-    protected ArrayList<CustomerDailyReport> reports;
-    protected CustomerDailyReport report;
+    protected ArrayList<CustomerDailyReport> packageSavings;
+    protected CustomerDailyReport packageReport;
     SkyLightPackage skyLightPackage;
     protected ArrayList<SkyLightPackage>skyLightPackages;
-    private ArrayList<Loan> loans;
-    private ArrayList<Account> accounts;
-    private ArrayList<Promo> promos;
-    protected Promo promo;
-    protected String packageType;
-    protected String c;
-    int custId;
-    int accNo;
-    double totalAmount;
+    protected ArrayList<Profile>packageProfiles;
+
+    protected Promo packagePromo;
+    private String packageType;
+    int packageAccNo;
     double packageTotalAmount;
-    Double rate_of_interest;
-    double dailyAmount;
-    double interest_amount_to_be_collected;
-    double balance;
-    double amount_collected;
-    Long due;
+    double packageDailyAmount;
+    double packageBalance;
+    double packageAmount_collected;
     Long packageCode;
-    String date;
-    String bank;
-    Profile userProfile ;
-    Account account;
-    private Item_Purchase item_purchase;
-    private  Loan loan;
-    protected ArrayList<Profile>profiles;
-    protected ArrayList<Item_Purchase>item_purchases;
-    private Long subscriptionDays ;
-    private Long subscribedDays ;
-    public static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy - hh:mm a");
+    //String date;
+    private Profile packageProfile ;
+    private Account packageAccount;
+    private Item_Purchase packageItem_purchase;
+    private  Loan packageLoan;
+
+    //private Long subscriptionDays ;
+    private int packageDaysSub;
+    private Uri packageImage;
+    private String packageDateStarted;
+    private String packageDateEnded;
+    private Customer packageCustomer;
+    boolean packageCompleted;
+
+    {
+        Boolean.parseBoolean("false");
+        packageCompleted = false;
+    }
+    public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     public SkyLightPackage(long id, String packageId, String packageType, String packageValue, String packageStatus, String status) {
 
@@ -118,13 +118,13 @@ public class SkyLightPackage extends CustomerDailyReport implements Parcelable, 
         this.packageId = packageId;
         this.packageName = packageName;
         this.packageType = packageType;
-        this.dailyAmount = packageValue;
+        this.packageDailyAmount = packageValue;
         this.packageTotalAmount = expectedValue;
         this.packageDuration = packageDuration;
-        this.dateStarted = startDate;
-        this.dateEnded = endDate;
+        this.packageDateStarted = startDate;
+        this.packageDateEnded = endDate;
         this.packageCode = code;
-        this.status = packageStatus;
+        this.packageStatus = packageStatus;
 
     }
 
@@ -134,37 +134,28 @@ public class SkyLightPackage extends CustomerDailyReport implements Parcelable, 
         super();
     }
 
-    public SkyLightPackage(String custID, String lendInfoID, long l, Long totalAmount, Long number_of_days,String startDate, Double rate_of_interest, Long dailyAmount, Long interest_amount_to_be_collected, Long totalAmount1, long l1, String unpaid, long l2, String s) {
+    public SkyLightPackage(String custID, String lendInfoID, long l, Long totalAmount, Long number_of_days, String startDate, Double rate_of_interest, Long packageDailyAmount, Long interest_amount_to_be_collected, Long totalAmount1, long l1, String unpaid, long l2, String s) {
         super();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             this.packageId = Math.toIntExact(l);
         }
-        this.type = type;
-        this.dateStarted = startDate;
-        this.dateEnded = s;
-        this.totalAmount = totalAmount;
-        this.status = status;
-        this.date = date;
-        this.custId = custId;
-        this.accNo = accNo;
-        this.amount_collected = amount_collected;
-        this.rate_of_interest = rate_of_interest;
-        this.interest_amount_to_be_collected = interest_amount_to_be_collected;
-        this.balance = balance;
-        this.due = due;
+        this.packageDateStarted = startDate;
+        this.packageDateEnded = s;
+        this.packageStatus = packageStatus;
+
     }
     public SkyLightPackage(int packageId, String packageType, double packageValue,double expectedAmount,String startDate, int duration,String endDate, double amountContributed,String packageStatus) {
         super();
         this.packageId = packageId;
         this.packageType=packageType;
-        this.dailyAmount = packageValue;
-        this.dateStarted = startDate;
-        this.dateEnded = endDate;
+        this.packageDailyAmount = packageValue;
+        this.packageDateStarted = startDate;
+        this.packageDateEnded = endDate;
         this.packageTotalAmount = expectedAmount;
-        this.dateEnded = endDate;
-        this.numberOfDays = duration;
-        this.amount_collected = amountContributed;
-        this.status = packageStatus;
+        this.packageDateEnded = endDate;
+        this.packageDuration = duration;
+        this.packageAmount_collected = amountContributed;
+        this.packageStatus = packageStatus;
     }
 
 
@@ -175,20 +166,11 @@ public class SkyLightPackage extends CustomerDailyReport implements Parcelable, 
         this.packageType=packageType;
     }
 
-    public SkyLightPackage(String custID, String lendInfoID, long l, Long totalAmount, Long number_of_days, double rate_of_interest, long dailyAmount, long interest_amount_to_be_collected, Long totalAmount1, long l1, String unpaid, long l2, String s) {
+    public SkyLightPackage(String custID, String lendInfoID, long l, Long totalAmount, Long number_of_days, double rate_of_interest, long packageDailyAmount, long interest_amount_to_be_collected, Long totalAmount1, long l1, String unpaid, long l2, String s) {
         super();
-        this.type = type;
-        this.dateEnded = s;
-        this.totalAmount = totalAmount;
-        this.status = unpaid;
-        this.date = date;
-        this.custId = custId;
-        this.accNo = accNo;
-        this.amount_collected = amount_collected;
-        this.rate_of_interest = rate_of_interest;
-        this.interest_amount_to_be_collected = interest_amount_to_be_collected;
-        this.balance = balance;
-        this.due = due;
+        this.packageDateEnded = s;
+        this.packageStatus = unpaid;
+
     }
 
     /*public SkyLightPackage(int profileID, int customerID, int packageID, String finalItemType, String packageType, double savingsAmount, int packageDuration, String reportDate, double grandTotal, String officeBranch, String packageEndDate, String fresh) {
@@ -198,54 +180,53 @@ public class SkyLightPackage extends CustomerDailyReport implements Parcelable, 
     public SkyLightPackage(int packageID, int profileID, int customerID, String finalItemType, String packageType, double savingsAmount, int packageDuration, String reportDate, double grandTotal, String officeBranch, String packageEndDate, String fresh) {
 
     }*/
-    public SkyLightPackage(int packageId, String packageType, double balance) {
+    public SkyLightPackage(int packageId, String packageType, double packageBalance) {
         this.packageId = packageId;
         this.packageType = packageType;
-        this.balance = balance;
+        this.packageBalance = packageBalance;
     }
 
 
 
 
-    public SkyLightPackage(int profileID, int customerID, int packageID, String packageType, String finalItemType, double savingsAmount, int packageDuration, String reportDate, double grandTotal, String dateEnded, String fresh) {
-        this.profileId = profileID;
-        this.customerId = customerID;
+    public SkyLightPackage(int profileID, int customerID, int packageID, String packageType, String finalItemType, double savingsAmount, int packageDuration, String reportDate, double grandTotal, String packageDateEnded, String fresh) {
+        this.packageProfileId = profileID;
+        this.packageCustomerId = customerID;
         this.packageId = packageID;
         this.packageType = packageType;
         this.packageItem = finalItemType;
-        this.dailyAmount = savingsAmount;
+        this.packageDailyAmount = savingsAmount;
         this.packageDuration = packageDuration;
-        this.date = reportDate;
         this.packageTotalAmount = grandTotal;
-        this.dateEnded = dateEnded;
-        this.status = fresh;
+        this.packageDateEnded = packageDateEnded;
+        this.packageStatus = fresh;
 
     }
-    public SkyLightPackage(int packageID, String name, String type, double amount, String startDate, int duration, double total, double balance, String endDate, String status) {
-        this.dateStarted = startDate;
+    public SkyLightPackage(int packageID, String name, String type, double amount, String startDate, int duration, double total, double packageBalance, String endDate, String packageStatus) {
+        this.packageDateStarted = startDate;
         this.packageName = name;
         this.packageId = packageID;
         this.packageType = type;
-        this.dailyAmount = amount;
+        this.packageDailyAmount = amount;
         this.packageDuration = duration;
-        this.balance = balance;
+        this.packageBalance = packageBalance;
         this.packageTotalAmount = total;
-        this.dateEnded = endDate;
-        this.status = status;
+        this.packageDateEnded = endDate;
+        this.packageStatus = packageStatus;
     }
-    public SkyLightPackage(int profileID, int customerID, int packageID, String packageName, String packageType, double savingsAmount, int packageDuration, String reportDate, double grandTotal, String officeBranch, String packageEndDate, String fresh) {
-        this.dateStarted = reportDate;
-        this.profileId = profileID;
-        this.customerId = customerID;
+    public SkyLightPackage(int profileID, int customerID, int packageID, String packageName, String packageType, double savingsAmount, int packageDuration, String reportDate, double grandTotal, String packageOfficeBranch, String packageEndDate, String fresh) {
+        this.packageDateStarted = reportDate;
+        this.packageProfileId = profileID;
+        this.packageCustomerId = customerID;
         this.packageName = packageName;
         this.packageId = packageID;
         this.packageType = packageType;
-        this.dailyAmount = savingsAmount;
+        this.packageDailyAmount = savingsAmount;
         this.packageDuration = packageDuration;
-        this.officeBranch = officeBranch;
+        this.packageOfficeBranch = packageOfficeBranch;
         this.packageTotalAmount = grandTotal;
-        this.dateEnded = packageEndDate;
-        this.status = fresh;
+        this.packageDateEnded = packageEndDate;
+        this.packageStatus = fresh;
     }
 
 
@@ -256,6 +237,17 @@ public class SkyLightPackage extends CustomerDailyReport implements Parcelable, 
 
     public SkyLightPackage() {
 
+    }
+
+    public SkyLightPackage(int packageID, int cusID, String tittle, double amount, double grandTotal, String type, int duration) {
+
+        this.packageId = packageID;
+        this.packageCustomerId = cusID;
+        this.packageType = type;
+        this.packageDailyAmount = amount;
+        this.packageDuration = duration;
+        this.packageTotalAmount = grandTotal;
+        this.packageName = tittle;
     }
 
 
@@ -277,12 +269,12 @@ public class SkyLightPackage extends CustomerDailyReport implements Parcelable, 
         return null;
     }
 
-    public void setOfficeBranch(String officeBranch) {
-        this.officeBranch = officeBranch;
+    public void setPackageOfficeBranch(String packageOfficeBranch) {
+        this.packageOfficeBranch = packageOfficeBranch;
     }
 
-    public String getOfficeBranch() {
-        return officeBranch;
+    public String getPackageOfficeBranch() {
+        return packageOfficeBranch;
     }
 
     public String getPackageItem() {
@@ -294,10 +286,42 @@ public class SkyLightPackage extends CustomerDailyReport implements Parcelable, 
     }
 
     public void addProfileManager(Profile userProfile) {
-        String accNo = "A" + (profiles.size() + 1);
+        String accNo = "A" + (packageProfiles.size() + 1);
         Profile profile = new Profile(userProfile);
-        profiles.add(profile);
+        packageProfiles.add(profile);
 
+    }
+
+    public Profile getPackageProfile() {
+        return packageProfile;
+    }
+
+    public void setPackageProfile(Profile packageProfile) {
+        this.packageProfile = packageProfile;
+    }
+
+    public Account getPackageAccount() {
+        return packageAccount;
+    }
+
+    public void setPackageAccount(Account packageAccount) {
+        this.packageAccount = packageAccount;
+    }
+
+    public Customer getPackageCustomer() {
+        return packageCustomer;
+    }
+
+    public void setPackageCustomer(Customer packageCustomer) {
+        this.packageCustomer = packageCustomer;
+    }
+
+    public String getPackageType() {
+        return packageType;
+    }
+
+    public void setPackageType(String packageType) {
+        this.packageType = packageType;
     }
 
 
@@ -321,7 +345,7 @@ public class SkyLightPackage extends CustomerDailyReport implements Parcelable, 
     }
 
         public void addReportCount(long packageID,int savingsCount) {
-            CustomerDailyReport customerDailyReport = new CustomerDailyReport("Reports" + (reports.size() + 1) + "Package" +  packageId);
+            CustomerDailyReport customerDailyReport = new CustomerDailyReport("Reports" + (packageSavings.size() + 1) + "Package" +  packageId);
 
     }
     /*public void addSavings1(long  profileId, long  customerId, long id, long packageId, double amount, double numberOfDay, double total, int daysRemaining, double amountRemaining, String date, String status) {
@@ -341,58 +365,45 @@ public class SkyLightPackage extends CustomerDailyReport implements Parcelable, 
         CustomerDailyReport customerDailyReport = new CustomerDailyReport(profileId,customerId, id, amount,numberOfDay,total,daysRemaining,amountRemaining,date,status);
         reports.add(customerDailyReport);
     }*/
-    private int image_id;
-    private String dateStarted;
-    private String dateEnded;
-    boolean completed;
-
-    {
-        Boolean.parseBoolean("false");
-        completed = false;
-    }
 
 
-    public SkyLightPackage(int profileID, int customerID, int packageID, SkylightPackage_Type type,double packageAmount, int packageDuration,String startDate, double expectedTotalAmount, String dateEnded,  String status) {
+
+    public SkyLightPackage(int profileID, int customerID, int packageID, SkylightPackage_Type type, double packageAmount, int packageDuration, String startDate, double expectedTotalAmount, String packageDateEnded, String packageStatus) {
         super();
-        this.profileId = profileID;
+        this.packageProfileId = profileID;
         this.packageId = packageID;
         this.packageType = valueOf(type);
-        this.dateStarted = startDate;
-        this.dateEnded = dateEnded;
-        this.dailyAmount = totalAmount;
-        this.status = status;
-        this.dateStarted = startDate;
-        this.custId = customerID;
+        this.packageDateStarted = startDate;
+        this.packageDateEnded = packageDateEnded;
+        this.packageDailyAmount = packageAmount;
+        this.packageStatus = packageStatus;
+        this.packageDateStarted = startDate;
+        this.packageCustomerId = customerID;
 
     }
 
-    public SkyLightPackage(int id, String type, double amount,String startDate,int duration,double total,double balance,String endDate,String status) {
+    public SkyLightPackage(int id, String type, double amount, String startDate, int duration, double total, double packageBalance, String endDate, String packageStatus) {
         super();
         this.packageId = id;
         this.packageType=type;
-        this.dailyAmount=amount;
-        this.dateStarted=startDate;
+        this.packageDailyAmount =amount;
+        this.packageDateStarted =startDate;
         this.packageDuration=duration;
         this.packageTotalAmount=total;
-        this.balance=balance;
-        this.dateEnded=endDate;
-        this.status=status;
-    }
-    public void addAccount(int virtualAccountID, String customerBank, String customerNames, long accountNo, double accountBalance, AccountTypes accountTypes) {
-        String accNo = "A" + (accounts.size() + 1);
-        Account account = new Account(virtualAccountID,customerBank,customerNames, valueOf(accountNo), accountBalance,accountTypes);
-        accounts.add(account);
+        this.packageBalance = packageBalance;
+        this.packageDateEnded =endDate;
+        this.packageStatus = packageStatus;
     }
 
-    public void addSavings(int  profileId,int  customerId,int id, double amount, int numberOfDay, double total, int daysRemaining, double amountRemaining,String date, String status) {
-        String savingCount = "C" + (reports.size() + 1);
+    /*public void addSavings(int  profileId,int  customerId,int id, double amount, int numberOfDay, double total, int daysRemaining, double amountRemaining,String date, String status) {
+        String savingCount = "C" + (packageSavings.size() + 1);
         CustomerDailyReport customerSavings = new CustomerDailyReport();
-        reports.add(customerSavings);
-    }
+        packageSavings.add(customerSavings);
+    }*/
     public void addSavings(Profile userProfile, Customer customer, SkyLightPackage skyLightPackage) {
-        String savingCount = "C" + (reports.size() + 1);
+        String savingCount = "C" + (packageSavings.size() + 1);
         CustomerDailyReport customerSavings = new CustomerDailyReport();
-        reports.add(customerSavings);
+        packageSavings.add(customerSavings);
     }
    /* public void addProfileManagers() {
         String profileCounts = "P" + (profiles.size() + 1);
@@ -406,22 +417,18 @@ public class SkyLightPackage extends CustomerDailyReport implements Parcelable, 
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public SkyLightPackage(int id, int custId, int accNo, String type, double packageAmount, String startDate, String date, double amount_collected, Double rate_of_interest, double interest_amount_to_be_collected, double totalAmount, double balance, String endDate, Long due, String status) {
+    public SkyLightPackage(int id, int custId, int packageAccNo, String type, double packageAmount, String startDate, String date, double packageAmount_collected, Double rate_of_interest, double interest_amount_to_be_collected, double totalAmount, double packageBalance, String endDate, Long due, String packageStatus) {
         super();
         this.packageId = Math.toIntExact(id);
-        this.type = type;
-        this.dateStarted = startDate;
-        this.dateEnded = endDate;
-        this.dailyAmount = packageAmount;
-        this.status = status;
-        this.date = date;
-        this.custId = custId;
-        this.accNo = accNo;
-        this.amount_collected = amount_collected;
-        this.rate_of_interest = rate_of_interest;
-        this.interest_amount_to_be_collected = interest_amount_to_be_collected;
-        this.balance = balance;
-        this.due = due;
+        this.packageType = type;
+        this.packageDateStarted = startDate;
+        this.packageDateEnded = endDate;
+        this.packageDailyAmount = packageAmount;
+        this.packageStatus = packageStatus;
+        this.packageCustomerId = custId;
+        this.packageAccNo = packageAccNo;
+        this.packageAmount_collected = packageAmount_collected;
+        this.packageBalance = packageBalance;
 
     }
 
@@ -429,13 +436,13 @@ public class SkyLightPackage extends CustomerDailyReport implements Parcelable, 
 
     public SkyLightPackage(Parcel in) {
         super();
-        image_id = in.readInt();
-        completed = in.readByte() != 0;
-        numberOfDays = in.readInt();
+        //packageImage = in.readInt();
+        packageCompleted = in.readByte() != 0;
+        packageDuration = in.readInt();
         packageId = in.readInt();
-        total = in.readString();
-        customerName = in.readString();
-        status = in.readString();
+        packageTotalAmount = in.readDouble();
+        packageCustomerName = in.readString();
+        packageStatus = in.readString();
     }
 
     public static final Creator<SkyLightPackage> CREATOR = new Creator<SkyLightPackage>() {
@@ -449,59 +456,44 @@ public class SkyLightPackage extends CustomerDailyReport implements Parcelable, 
             return new SkyLightPackage[size];
         }
     };
-    public String getBank() {
-        return bank;
-    }
 
-    public void setLoan(Loan loan1) {
-        this.loan = loan1;
+    public void setPackageLoan(Loan loan1) {
+        this.packageLoan = loan1;
     }
 
     public void setAccount(Account account) {
-        this.account = account;
+        this.packageAccount = account;
     }
     public Account getAccount() {
-        return account;
+        return packageAccount;
     }
-    public void setPromo(Promo promo1) {
-        this.promo = promo1;
+    public void setPackagePromo(Promo promo1) {
+        this.packagePromo = promo1;
     }
-    public Promo getPromo() {
-        return promo;
+    public Promo getPackagePromo() {
+        return packagePromo;
     }
-    public void setItem_purchase(Item_Purchase item_purchase) {
-        this.item_purchase = item_purchase;
+    public void setPackageItem_purchase(Item_Purchase packageItem_purchase) {
+        this.packageItem_purchase = packageItem_purchase;
     }
-    public Item_Purchase getItem_purchase() {
-        return item_purchase;
+    public Item_Purchase getPackageItem_purchase() {
+        return packageItem_purchase;
     }
-    public void setBank(String bank) {
-        this.bank = bank;
+    public Loan getPackageLoan() {
+        return packageLoan;
     }
-    public Loan getLoan() {
-        return loan;
-    }
-    public void addSavings(int  profileId, int  customerId, int id, double amount, double numberOfDay, double total, int daysRemaining, double amountRemaining, String date, String status) {
-        String savingsCount = "C" + (reports.size() + 1);
+    public void addSavings(int  profileId, int  customerId, int id, double amount, int numberOfDay, double total, int daysRemaining, double amountRemaining, String date, String status) {
+        String savingsCount = "C" + (packageSavings.size() + 1);
         CustomerDailyReport customerDailyReport = new CustomerDailyReport(profileId,customerId, id, amount,numberOfDay,total,daysRemaining,amountRemaining,date,status);
-        reports.add(customerDailyReport);
-    }
-    public void addLoans(BigDecimal amount, String loanStartDate, String status) {
-        int loanNumber = Integer.parseInt("Loan" + (loans.size() + 1));
-        Loan loan = new Loan(loanNumber, amount,loanStartDate,status);
-        loans.add(loan);
-    }
-    public void addLoans(int loanId,double amount, String loanStartDate, String status,String loanEndDate,double interest1) {
-        int loanNumber = Integer.parseInt(("Loan" + (loans.size() + 1)));
-        Loan loan = new Loan(loanNumber, amount,loanStartDate,status,loanEndDate,interest1);
-        loans.add(loan);
-    }
-    public int getAccNo() {
-        return accNo;
+        packageSavings.add(customerDailyReport);
     }
 
-    public void setAccNo(int accNo) {
-        this.accNo = accNo;
+    public int getPackageAccNo() {
+        return packageAccNo;
+    }
+
+    public void setPackageAccNo(int packageAccNo) {
+        this.packageAccNo = packageAccNo;
     }
     public long getPackageCode() {
         return packageCode;
@@ -510,77 +502,48 @@ public class SkyLightPackage extends CustomerDailyReport implements Parcelable, 
         this.packageCode = packageCode;
     }
 
-    public int getProfileId() {
-        return profileId;
+    public int getPackageProfileId() {
+        return packageProfileId;
     }
-    public void setProfileId(int profileId) {
-        this.profileId = profileId;
-    }
-
-    public int getCustomerId() {
-        return customerId;
-    }
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setPackageProfileId(int packageProfileId) {
+        this.packageProfileId = packageProfileId;
     }
 
-
-
-    public Long getSubscribedDays() {
-        return subscribedDays;
+    public int getPackageCustomerId() {
+        return packageCustomerId;
+    }
+    public void setPackageCustomerId(int packageCustomerId) {
+        this.packageCustomerId = packageCustomerId;
     }
 
-    public void setSubscribedDays(Long subscribedDays) {
-        this.subscribedDays = subscribedDays;
-    }
-    public Long getSubscriptionDays() {
-        return subscriptionDays;
+
+
+    public int getPackageDaysSub() {
+        return packageDaysSub;
     }
 
-    public void setSubscriptionDays(Long subscriptionDays) {
-        this.subscriptionDays = subscriptionDays;
+    public void setPackageDaysSub(int packageDaysSub) {
+        this.packageDaysSub = packageDaysSub;
     }
+
 
     public void setAccount1(Account account1) {
-        this.account = account1;
+        this.packageAccount = account1;
     }
     public ArrayList<CustomerDailyReport> getSavings() {
-        return reports;
+        return packageSavings;
     }
-    public ArrayList<Promo> getPromos() {
-        return promos;
-    }
-    public ArrayList<Item_Purchase> getItem_purchases() {
-        return item_purchases;
-    }
-
 
     public void setCustomerDailyReport(CustomerDailyReport report) {
-        this.report = report;
+        this.packageReport = report;
     }
 
-    public String getDate() {
-        return date;
+    public double getPackageBalance() {
+        return packageBalance;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public int getCustId() {
-        return custId;
-    }
-
-    public void setCustId(int custId) {
-        this.custId = custId;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
+    public void setPackageBalance(double packageBalance) {
+        this.packageBalance = packageBalance;
     }
     public double getPackageTotalAmount() {
         return packageTotalAmount;
@@ -591,66 +554,21 @@ public class SkyLightPackage extends CustomerDailyReport implements Parcelable, 
     }
 
 
-    public double getAmount_collected() {
-        return amount_collected;
+    public double getPackageAmount_collected() {
+        return packageAmount_collected;
     }
 
-    public void setAmount_collected(double amount_collected) {
-        this.amount_collected = amount_collected;
+    public void setPackageAmount_collected(double packageAmount_collected) {
+        this.packageAmount_collected = packageAmount_collected;
     }
 
-    public String getStatus() {
-        return status;
+    public String getDocStatus() {
+        return packageStatus;
 
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Long getDue() {
-        return due;
-    }
-
-    public void setDue(Long due) {
-        this.due = due;
-    }
-
-
-    public double getInterest_amount_to_be_collected() {
-        return interest_amount_to_be_collected;
-    }
-
-    public void setInterest_amount_to_be_collected(Long interest_amount_to_be_collected) {
-        this.interest_amount_to_be_collected = interest_amount_to_be_collected;
-    }
-
-    public void setLendInfoID(int packageId) {
-        this.packageId = packageId;
-    }
-
-    public double getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(double totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public int getNumber_of_days() {
-        return numberOfDays;
-    }
-
-    public void setNumber_of_days(int number_of_days) {
-        this.numberOfDays = number_of_days;
-    }
-
-    public Double getRate_of_interest() {
-        return rate_of_interest;
-    }
-
-    public void setRate_of_interest(Double rate_of_interest) {
-        this.rate_of_interest = rate_of_interest;
+    public void setDocStatus(String docStatus) {
+        this.packageStatus = docStatus;
     }
 
     public int getPackageDuration() {
@@ -661,22 +579,22 @@ public class SkyLightPackage extends CustomerDailyReport implements Parcelable, 
         this.packageDuration = packageDuration;
     }
 
-    public double getDailyAmount() {
-        return dailyAmount;
+    public double getPackageDailyAmount() {
+        return packageDailyAmount;
     }
 
-    public void setDailyAmount(Long dailyAmount) {
-        this.dailyAmount = dailyAmount;
+    public void setPackageDailyAmount(Long packageDailyAmount) {
+        this.packageDailyAmount = packageDailyAmount;
     }
 
-    public String getDateEnded()
+    public String getPackageDateEnded()
     {
-        return dateEnded;
+        return packageDateEnded;
     }
 
-    public void setDateEnded(Date dateEnded)
+    public void setPackageDateEnded(Date packageDateEnded)
     {
-        this.dateEnded = valueOf(dateEnded);
+        this.packageDateEnded = valueOf(packageDateEnded);
     }
 
     public SkyLightPackage(String packageName, int num) {
@@ -692,84 +610,60 @@ public class SkyLightPackage extends CustomerDailyReport implements Parcelable, 
         this.packageName = packageName;
     }
 
-    public int getNum() {
+    public int getPackNo() {
         return num;
     }
 
     public String getPackageStatus()
     {
-        return status;
+        return packageStatus;
     }
 
     public void setPackageStatus(String status)
     {
-        this.status = status;
+        this.packageStatus = status;
     }
 
 
-    public String getCustomerName()
+    public String getPackageCustomerName()
     {
-        return customerName;
+        return packageCustomerName;
     }
 
-    public void setCustomerName(String customerName)
+    public void setPackageCustomerName(String packageCustomerName)
     {
-        this.customerName = customerName;
+        this.packageCustomerName = packageCustomerName;
     }
-    public String getDateStarted()
+    public String getPackageDateStarted()
     {
-        return dateStarted;
-    }
-
-    public void setDateStarted(String dateStarted)
-    {
-        this.dateStarted = valueOf(dateStarted);
+        return packageDateStarted;
     }
 
-    public int getNumberOfDays()
+    public void setPackageDateStarted(String packageDateStarted)
     {
-        return numberOfDays;
+        this.packageDateStarted = valueOf(packageDateStarted);
     }
 
-    public void setNumberOfDays(int numberOfDays)
-    {
-        this.numberOfDays = numberOfDays;
-    }
+
     public int getPackID()
     {
         return packageId;
     }
 
-    public void setPackageId(int packageId)
+    public void setRecordPackageId(int recordPackageId)
     {
-        this.packageId = packageId;
+        this.packageId = recordPackageId;
     }
-    public int getImage_id()
+    public Uri getPackageImage()
     {
-        return image_id;
-    }
-
-    public void setImage_id(int image_id)
-    {
-        this.image_id = image_id;
+        return packageImage;
     }
 
-    public double getTotal()
+    public void setPackageImage(Uri packageImage)
     {
-        return totalAmount;
+        this.packageImage = packageImage;
     }
 
-    public void setTotal(double totalAmount)
-    {
-        this.totalAmount = totalAmount;
-    }
-
-    SkyLightPackage(String img, String text)
-    {
-        super();
-        image_id = Integer.parseInt(img);
-        this.total = text;
-    }
 
     @Override
     public int describeContents() {
@@ -778,12 +672,12 @@ public class SkyLightPackage extends CustomerDailyReport implements Parcelable, 
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(image_id);
-        parcel.writeByte((byte) (completed ? 1 : 0));
-        parcel.writeInt(numberOfDays);
+        //parcel.writeInt(packageImage);
+        parcel.writeByte((byte) (packageCompleted ? 1 : 0));
+        parcel.writeInt(packageDuration);
         parcel.writeLong(packageId);
-        parcel.writeString(total);
-        parcel.writeString(customerName);
-        parcel.writeString(status);
+        parcel.writeDouble(packageTotalAmount);
+        parcel.writeString(packageCustomerName);
+        parcel.writeString(packageStatus);
     }
 }

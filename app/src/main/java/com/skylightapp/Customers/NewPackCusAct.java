@@ -75,7 +75,6 @@ import java.util.Random;
 import java.util.TimeZone;
 
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
-import static com.skylightapp.Classes.Profile.PROFILE_OFFICE;
 import static com.skylightapp.Classes.Profile.PROFILE_PHONE;
 import static com.skylightapp.Transactions.OurConfig.TWILIO_ACCOUNT_SID;
 import static com.skylightapp.Transactions.OurConfig.TWILIO_AUTH_TOKEN;
@@ -896,7 +895,7 @@ public class NewPackCusAct extends AppCompatActivity {
         }
 
         //skyLightPackage1.addProfileManager(userProfile);
-        skyLightPackage1.setAmount_collected(newAmountContributedSoFar);
+        skyLightPackage1.setPackageAmount_collected(newAmountContributedSoFar);
         skyLightPackage1.addReportCount(packageID, 1);
         if(userProfile !=null){
             userProfile.addNewSkylightPackage(profileID, customerID, packageID, packageType, savingsAmount, this.packageDuration, reportDate, grandTotal, "","just stated");

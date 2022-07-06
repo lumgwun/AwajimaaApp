@@ -77,8 +77,8 @@ public class UpdatePackageAct extends AppCompatActivity {
             newItemCount=itemRemCount-1;
         }
         if(skyLightPackage !=null){
-            reportProfileID=skyLightPackage.getProfile().getPID();
-            customerID=skyLightPackage.getCustomerId();
+            reportProfileID=skyLightPackage.getRecordProfile().getPID();
+            customerID=skyLightPackage.getPackageCustomerId();
             packageID=skyLightPackage.getPackageID();
         }
         SharedPrefUserName=sharedpreferences.getString("USER_NAME", "");
@@ -103,8 +103,8 @@ public class UpdatePackageAct extends AppCompatActivity {
 
         }
         if(skyLightPackage !=null){
-            reportProfileID=skyLightPackage.getProfile().getPID();
-            customerID=skyLightPackage.getCustomerId();
+            reportProfileID=skyLightPackage.getRecordProfile().getPID();
+            customerID=skyLightPackage.getPackageCustomerId();
             packageID=skyLightPackage.getPackageID();
             packageCode =skyLightPackage.getPackageCode();
         }

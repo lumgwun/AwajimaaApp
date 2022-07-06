@@ -54,9 +54,9 @@ public class PackageInteractor {
 
     public void createOrUpdatePackages(SkyLightPackage skyLightPackage) {
         try {
-            Map<String, Object> savingsValues = (Map<String, Object>) skyLightPackage.getSavingsDoc();
+            Map<String, Object> savingsValues = (Map<String, Object>) skyLightPackage.getRecordSavingsDoc();
             Map<String, Object> childUpdates = new HashMap<>();
-            childUpdates.put("/" + DatabaseHelper.PACKAGE_DB_KEY + "/" + skyLightPackage.getRecordNo(), savingsValues);
+            childUpdates.put("/" + DatabaseHelper.PACKAGE_DB_KEY + "/" + skyLightPackage.getRecordID(), savingsValues);
 
             //databaseHelper.getDatabaseReference().updateChildren(childUpdates);
         } catch (Exception e) {
@@ -128,11 +128,11 @@ public class PackageInteractor {
 
                     if (!hasComplain) {
                         SkyLightPackage lightPackage = new SkyLightPackage();
-                        lightPackage.setPackageId(Integer.parseInt(key));
-                        lightPackage.setAmount(Double.parseDouble((String) mapObj.get("Amount")));
+                        lightPackage.setRecordPackageId(Integer.parseInt(key));
+                        lightPackage.setRecordAmount(Double.parseDouble((String) mapObj.get("Amount")));
                         lightPackage.setPackageDuration(Integer.parseInt((String) mapObj.get("Duration")));
-                        lightPackage.setAmount_collected(Double.parseDouble((String) mapObj.get("Amount collected")));
-                        lightPackage.setDateStarted(String.valueOf(createdDate));
+                        lightPackage.setPackageAmount_collected(Double.parseDouble((String) mapObj.get("Amount collected")));
+                        lightPackage.setPackageDateStarted(String.valueOf(createdDate));
                         if (mapObj.containsKey("packageCount")) {
                             //lightPackage.setCommentsCount((long) mapObj.get("commentsCount"));
                         }
@@ -147,7 +147,7 @@ public class PackageInteractor {
                 }
             }
 
-            Collections.sort(list, (lhs, rhs) ->  rhs.getDateStarted().compareTo(lhs.getDateStarted()));
+            Collections.sort(list, (lhs, rhs) ->  rhs.getPackageDateStarted().compareTo(lhs.getPackageDateStarted()));
 
             result.setSkyLightPackageList(list);
             result.setLastItemCreatedDate(lastItemCreatedDate);

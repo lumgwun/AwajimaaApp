@@ -112,7 +112,7 @@ public class TellerSMSAct extends AppCompatActivity {
             bundle.putString("to",cusEmail);
             bundle.putString("subject",subject);
             dbHelper.saveNewSavingsCode(paymentCode);
-            dailyReport.setSavingsCode(savingsCode);
+            dailyReport.setRecordSavingsCode(savingsCode);
             builder.setItems(new CharSequence[]
                             {"Phone sms", "Email"},
                     new DialogInterface.OnClickListener() {

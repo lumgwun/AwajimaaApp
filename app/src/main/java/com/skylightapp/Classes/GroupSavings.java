@@ -29,44 +29,41 @@ public class GroupSavings implements Parcelable, Serializable {
     public static final String GS_END_DATE = "GS_End_Date";
     public static final String GS_AMOUNT_CONTRIBUTED = "GS_Amount_So_Far";
 
-    public static final String GS_FINE = "Fine";
-    public static final String GS_DOC = "Inv_Doc";
+    public static final String GS_GRPA_ID = "gs_gaID";
+    public static final String GS_PROF_ID = "gs_prof_id";
 
 
-    public static final String CREATE_GROUP_SAVINGS_TABLE = "CREATE TABLE IF NOT EXISTS " + GROUP_SAVINGS_TABLE + " (" + PROFILE_ID + " INTEGER ," + GRPA_ID + " INTEGER ,"+
+    public static final String CREATE_GROUP_SAVINGS_TABLE = "CREATE TABLE IF NOT EXISTS " + GROUP_SAVINGS_TABLE + " (" + GS_PROF_ID + " INTEGER ," + GS_GRPA_ID + " INTEGER ,"+
             GS_ID + " INTEGER , " + GROUP_NAME + " TEXT, " + GROUP_PURPOSE + " TEXT, " + GROUP_AMOUNT + " NUMERIC, " + GROUP_DATE +" TEXT, "+ GS_STATUS + " TEXT, "  +
-            "PRIMARY KEY(" + GS_ID + "), " +"FOREIGN KEY(" + GRPA_ID  + ") REFERENCES " + GRP_ACCT_TABLE + "(" + GRPA_ID + ")," +"FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+            "PRIMARY KEY(" + GS_ID + "), " +"FOREIGN KEY(" + GS_GRPA_ID  + ") REFERENCES " + GRP_ACCT_TABLE + "(" + GRPA_ID + ")," +"FOREIGN KEY(" + GS_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
     private Date savingsDate;
-    private long profileID;
-    private Profile profile;
-    private Account account;
-    private String status;
-    private double amount;
+    private long gProfileID;
+    private Profile gProfile;
+    private Account gAccount;
+    private String gStatus;
+    private double gAmount;
     private int grpSavingsID;
     String groupName;
     private ArrayList<Transaction> transactions;
 
     public GroupSavings (int grpSavingsID, long profileID, double amount, Date savingsDate, String status) {
         this.grpSavingsID = grpSavingsID;
-        this.profileID = profileID;
-        this.amount = amount;
+        this.gProfileID = profileID;
+        this.gAmount = amount;
         this.savingsDate = savingsDate;
-        this.status = status;
-        this.amount = amount;
-        account = new Account();
-        profile = new Profile();
+        this.gStatus = status;
+        gAccount = new Account();
+        gProfile = new Profile();
 
     }
     public GroupSavings (int grpSavingsID,String groupName,double amount, Date savingsDate, String status) {
         this.grpSavingsID = grpSavingsID;
-        this.profileID = profileID;
-        this.amount = amount;
+        this.gAmount = amount;
         this.savingsDate = savingsDate;
-        this.status = status;
-        this.amount = amount;
-        account = new Account();
-        profile = new Profile();
+        this.gStatus = status;
+        gAccount = new Account();
+        gProfile = new Profile();
 
     }
 
@@ -75,20 +72,20 @@ public class GroupSavings implements Parcelable, Serializable {
     }
 
     public GroupSavings(long profileID, int savingsID, double totalAmount, Date dateOfSavings,  String status) {
-        this.profileID = profileID;
+        this.gProfileID = profileID;
         this.grpSavingsID = savingsID;
-        this.amount = totalAmount;
+        this.gAmount = totalAmount;
         this.savingsDate = dateOfSavings;
-        this.status = status;
+        this.gStatus = status;
 
     }
 
     protected GroupSavings(Parcel in) {
-        profileID = in.readLong();
-        profile = in.readParcelable(Profile.class.getClassLoader());
-        account = in.readParcelable(Account.class.getClassLoader());
-        status = in.readString();
-        amount = in.readDouble();
+        gProfileID = in.readLong();
+        gProfile = in.readParcelable(Profile.class.getClassLoader());
+        gAccount = in.readParcelable(Account.class.getClassLoader());
+        gStatus = in.readString();
+        gAmount = in.readDouble();
         grpSavingsID = in.readInt();
         transactions = in.createTypedArrayList(Transaction.CREATOR);
     }
@@ -110,17 +107,17 @@ public class GroupSavings implements Parcelable, Serializable {
     }
 
     public Profile getProfile() {
-        return profile;
+        return gProfile;
     }
     public void setProfile(Profile profile1) {
-        this.profile = profile1;
+        this.gProfile = profile1;
     }
     public void setAccount(Account account) {
-        this.account = account;
+        this.gAccount = account;
     }
 
     public Account getAccount() {
-        return account;
+        return gAccount;
     }
 
 
@@ -134,13 +131,13 @@ public class GroupSavings implements Parcelable, Serializable {
     public void setGrpSavingsID(int grpSavingsID) { this.grpSavingsID = grpSavingsID; }
 
     public String getStatus() {
-        return status;
+        return gStatus;
     }
-    public void seStatus(String status) { this.status = status; }
+    public void seStatus(String status) { this.gStatus = status; }
     public double getGrpSavingsAmount() {
-        return amount;
+        return gAmount;
     }
-    public void setGrpSavingsAmount(double amount) { this.amount = amount; }
+    public void setGrpSavingsAmount(double amount) { this.gAmount = amount; }
 
     @Override
     public int describeContents() {
@@ -149,11 +146,11 @@ public class GroupSavings implements Parcelable, Serializable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeLong(profileID);
-        parcel.writeParcelable(profile, i);
-        parcel.writeParcelable(account, i);
-        parcel.writeString(status);
-        parcel.writeDouble(amount);
+        parcel.writeLong(gProfileID);
+        parcel.writeParcelable(gProfile, i);
+        parcel.writeParcelable(gAccount, i);
+        parcel.writeString(gStatus);
+        parcel.writeDouble(gAmount);
         parcel.writeInt(grpSavingsID);
         parcel.writeTypedList(transactions);
     }

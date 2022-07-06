@@ -10,10 +10,8 @@ import com.skylightapp.Interfaces.OnTellerReportChangeListener;
 import com.skylightapp.Interfaces.OnSavingsExistListener;
 import com.skylightapp.Interfaces.OnTaskCompleteListener;
 import com.skylightapp.Interfaces.UploadImagePrefix;
-import com.skylightapp.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,9 +55,9 @@ public class SavingsInteractor {
 
     public void createOrUpdateSavings(CustomerDailyReport dailyReport) {
         try {
-            Map<String, Object> savingsValues = (Map<String, Object>) dailyReport.getSavingsDoc();
+            Map<String, Object> savingsValues = (Map<String, Object>) dailyReport.getRecordSavingsDoc();
             Map<String, Object> childUpdates = new HashMap<>();
-            childUpdates.put("/" + DatabaseHelper.SAVINGS_KEY + "/" + dailyReport.getRecordNo(), savingsValues);
+            childUpdates.put("/" + DatabaseHelper.SAVINGS_KEY + "/" + dailyReport.getRecordID(), savingsValues);
 
             //databaseHelper.getDatabaseReference().updateChildren(childUpdates);
         } catch (Exception e) {
@@ -230,13 +228,13 @@ public class SavingsInteractor {
 
                     if (!hasComplain) {
                         CustomerDailyReport dailyReport = new CustomerDailyReport();
-                        dailyReport.setRecordNo(Integer.parseInt(key));
-                        dailyReport.setAmount(Double.parseDouble((String) mapObj.get("amount")));
-                        dailyReport.setNumberOfDays(Integer.parseInt((String) mapObj.get("numberOfDays")));
-                        dailyReport.setSavingsDoc(Uri.parse((String) mapObj.get("imagePath")));
+                        dailyReport.setRecordID(Integer.parseInt(key));
+                        dailyReport.setRecordAmount(Double.parseDouble((String) mapObj.get("amount")));
+                        dailyReport.setRecordNumberOfDays(Integer.parseInt((String) mapObj.get("numberOfDays")));
+                        dailyReport.setRecordSavingsDoc(Uri.parse((String) mapObj.get("imagePath")));
                         dailyReport.setTotal(Double.parseDouble((String) mapObj.get("total")));
                         dailyReport.setRecordDate(String.valueOf(createdDate));
-                        dailyReport.setAmountRemaining(Double.parseDouble((String) mapObj.get("amountRemaining")));
+                        dailyReport.setRecordAmountRemaining(Double.parseDouble((String) mapObj.get("amountRemaining")));
                         /*if (mapObj.containsKey("commentsCount")) {
                             dailyReport.setCommentsCount((long) mapObj.get("commentsCount"));
                         }
@@ -303,11 +301,11 @@ public class SavingsInteractor {
 
     public void createOrUpdateSavingsWithImage(Uri imageUri, final com.skylightapp.Interfaces.OnCreatedListener onPostCreatedListener, final CustomerDailyReport dailyReport) {
         DatabaseHelper databaseHelper = AppController.getDatabaseHelper();
-        if (dailyReport.getRecordNo()==0) {
-            dailyReport.getRecordNo();
+        if (dailyReport.getRecordID()==0) {
+            dailyReport.getRecordID();
         }
 
-        final String amount = ImageUtil.generateImageTitle(UploadImagePrefix.SAVINGS, dailyReport.getRecordNo());
+        final String amount = ImageUtil.generateImageTitle(UploadImagePrefix.SAVINGS, dailyReport.getRecordID());
         /*UploadTask uploadTask = databaseHelper.uploadImage(imageUri, amount);
 
         if (uploadTask != null) {

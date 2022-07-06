@@ -23,7 +23,6 @@ import com.google.gson.Gson;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Loan;
-import com.skylightapp.Classes.Payee;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
@@ -275,7 +274,7 @@ public class MobileMoneyTransfer extends AppCompatActivity {
                 ArrayList<Transaction> transactions = applicationDb.getAllTransactionAdmin();
                 boolean loanTaken = false;
                 for (int iTransaction = 0; iTransaction < transactions.size(); iTransaction++) {
-                    if (valueOf(amountRequested).equals(valueOf((transactions.get(iTransaction).getAmount()))) && momoTransferDate.equals(transactions.get(iTransaction).getDate())) {
+                    if (valueOf(amountRequested).equals(valueOf((transactions.get(iTransaction).getRecordAmount()))) && momoTransferDate.equals(transactions.get(iTransaction).getDate())) {
 
                         Toast.makeText(this, "a very similar Transfer with same date already exist!", Toast.LENGTH_LONG).show();
                     }

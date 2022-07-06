@@ -43,29 +43,24 @@ import static java.lang.String.valueOf;
 @SuppressWarnings("deprecation")
 @Entity(tableName = CustomerDailyReport.DAILY_REPORT_TABLE)
 public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
-    public static final String REPORT_NUMBER_OF_DAYS_SO_FAR = "no_of_days_so_far";
-    public static final String REPORT_AMOUNT_COLLECTED_SO_FAR = "amount_so_far";
-    //public static final String RECORD_REPORT_ID = "r_id";
+    public static final String REPORT_NUMBER_OF_DAYS_SO_FAR = "report_no_of_days_so_far";
+    public static final String REPORT_AMOUNT_COLLECTED_SO_FAR = "report_amount_so_far";
 
-
-    public static final String DAILY_REPORT_TABLE = "daily_reports";
-    public static final String REPORT_PACKAGE = "package";
-    public static final String REPORT_ID = "serial_number";
-    public static final String REPORT_AMOUNT = "amount";
-    public static final String REPORT_NUMBER_OF_DAYS = "days";
-    public static final String REPORT_DATE = "date";
-    public static final String REPORT_TOTAL = "total";
-    public static final String REPORT_DAYS_REMAINING = "days_remaining";
-    public static final String REPORT_AMOUNT_REMAINING = "amount_remaining";
+    public static final String DAILY_REPORT_TABLE = "report_Cdaily_reports";
+    public static final String REPORT_PACKAGE = "report_Ppackage";
+    public static final String REPORT_ID = "report_serial_number";
+    public static final String REPORT_AMOUNT = "report_Aamount";
+    public static final String REPORT_NUMBER_OF_DAYS = "report_Ddays";
+    public static final String REPORT_DATE = "report_Ddate";
+    public static final String REPORT_TOTAL = "report_Ttotal";
+    public static final String REPORT_DAYS_REMAINING = "report_Ddays_remaining";
+    public static final String REPORT_AMOUNT_REMAINING = "report_Aamount_remaining";
     public static final String REPORT_COUNT = "report_count";
     public static final String REPORT_OFFICE_BRANCH = "report_Office_Branch";
-
-    public static final String REPORT_PACKAGE_ID = "report_package_Id";
-
-    public static final String REPORT_STATUS = "status";
-    public static final String REPORT_CODE = "savingsCode";
-    public static final String REPORT_PROF_ID_FK = "profile_ID_Fk";
-    public static final String REPORT_CUS_ID_FK = "cus_ID_FK";
+    public static final String REPORT_STATUS = "report_Sstatus";
+    public static final String REPORT_CODE = "report_SsavingsCode";
+    public static final String REPORT_PROF_ID_FK = "report_Pprofile_ID_Fk";
+    public static final String REPORT_CUS_ID_FK = "report_Ccus_ID_FK";
     public static final String REPORT_PACK_ID_FK = "report_ID_FK";
     public static final String REPORT_ACCOUNT_NO_FK = "report_AcctNo_FK";
     //public static final String TABLE_CUSTOMER_RECORD = "customer_record";
@@ -78,53 +73,49 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
 
 
 
-    private int image_id;
+    private Uri recordimage;
     private String recordDate;
-    private int numberOfDays;
-    private String serialNumber;
-    private int remainingDays =0;
-    private int customerId;
-    private double amount;
-    private double total;
-    private String CustomerName;
-    private String status;
-    private String officeBranch;
-    protected String type;
-    private double grandTotal;
+    private int recordNumberOfDays;
+    private String recordSerialNumber;
+    private int recordRemainingDays =0;
+    private int recordCustomerID;
+    private double recordAmount;
+    //private double total;
+    private String recordCustomerName;
+    private String recordStatus;
+    private String recordOfficeBranch;
+    //private String type;
+    //private double grandTotal;
     boolean completed = true;
-    private int count;
-    int  profileId;
-    int  packageId;
+    private int recordCount;
+    int recordProfileId;
+    int recordPackageId;
     @PrimaryKey(autoGenerate = true)
-    private int recordNo=142;
-    double amountRemaining;
-    private boolean remind;
-    SkyLightPackage skyLightPackage;
-    Customer customer;
-    AdminUser adminUser;
-    Account account;
-    Profile profile;
-    long savingsCode;
+    private int recordID =142;
+    double recordAmountRemaining;
+    private boolean recordRemind;
+    private SkyLightPackage recordPackage;
+    private Customer recordCustomer;
+    private AdminUser recordAdminUser;
+    private Account recordAccount;
+    private Profile recordProfile;
+    private long recordSavingsCode;
     DBHelper dbHelper;
-    Uri savingsDoc;
-    private CustomerManager customerManager;
+    private Uri recordSavingsDoc;
+    private CustomerManager recordCustomerManager;
     private static final String JSON_NAME = "name";
     private static final String JSON_DATE = "recordDate";
     private static final String JSON_NUMBER_OF_DAYS = "days";
     private static final String JSON_REMIND = "remind";
     private static final String JSON_UID = "serialNumber";
-    private static final String JSON_SHOW_YEAR = "show_year";
     private static final String JSON_AMOUNT = "amount";
     private static final String JSON_TOTAL = "total";
-    private static final String JSON_CUSTOMER_ID = "customer_id";
-    private static final String JSON_STATUS = "status";
     private static final String JSON_DAYS_REMAINING = "days_remaining";
-    private static final String JSON_COUNT = "count";
     private static final String JSON_GRAND_TOTAL = "grandTotal";
 
 
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-            "dd.MM.yyyy", Locale.getDefault());
+            "yyyy-MM-dd", Locale.getDefault());
 
     private static final int DAY_IN_MILLIS = 86400000;
     private String aPackage;
@@ -132,11 +123,11 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
     public CustomerDailyReport(JSONObject json) throws JSONException {
 
         if (json.has(JSON_NAME)) {
-            CustomerName = json.getString(JSON_NAME);
+            recordCustomerName = json.getString(JSON_NAME);
         }
 
         // Check whether user wants to be reminded for this birthday.
-        remind = !json.has(JSON_REMIND) || json.getBoolean(JSON_REMIND );
+        recordRemind = !json.has(JSON_REMIND) || json.getBoolean(JSON_REMIND );
         // Default to true if not found, log message.
 
         // Date of birthday in millis.
@@ -146,55 +137,54 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
         }
         // year
         if (json.has(JSON_REMIND)) {
-            remind = json.getBoolean(JSON_REMIND);
+            recordRemind = json.getBoolean(JSON_REMIND);
 
         }
 
         // UID
         if (json.has(JSON_UID)) {
-            serialNumber = String.valueOf(Integer.parseInt(json.getString(JSON_UID)));
+            recordSerialNumber = String.valueOf(Integer.parseInt(json.getString(JSON_UID)));
         }
 
     }
 
-    public CustomerDailyReport(int packageID, int reportID, double savingsAmount, int numberOfDays, double totalAmountSum, int daysRemaining, double amountRemaining, String reportDate, String status) {
-        this.packageId =packageID;
-        this.recordNo =reportID;
-        this.amount =savingsAmount;
-        this.numberOfDays =numberOfDays;
-        this.total = totalAmountSum;
+    public CustomerDailyReport(int packageID, int reportID, double savingsAmount, int recordNumberOfDays, double totalAmountSum, int daysRemaining, double recordAmountRemaining, String reportDate, String recordStatus) {
+        this.recordPackageId =packageID;
+        this.recordID =reportID;
+        //this.recordAmount =savingsAmount;
+        this.recordNumberOfDays = recordNumberOfDays;
+        this.recordAmount = totalAmountSum;
         this.recordDate =reportDate;
-        this.amountRemaining =amountRemaining;
-        this.status =status;
-        this.remainingDays =daysRemaining;
+        this.recordAmountRemaining = recordAmountRemaining;
+        this.recordStatus = recordStatus;
+        this.recordRemainingDays =daysRemaining;
     }
 
-    public CustomerDailyReport(String count,int packageID, int reportID, double savingsAmount, int numberOfDays, double totalAmountSum, int daysRemaining, double amountRemaining, String reportDate, String status) {
-        this.serialNumber = count;
-        this.packageId =packageID;
-        this.recordNo =reportID;
-        this.amount =savingsAmount;
-        this.numberOfDays =numberOfDays;
-        this.total = totalAmountSum;
+    public CustomerDailyReport(String recordCount, int packageID, int reportID, double savingsAmount, int recordNumberOfDays, double totalAmountSum, int daysRemaining, double recordAmountRemaining, String reportDate, String recordStatus) {
+        this.recordSerialNumber = recordCount;
+        this.recordPackageId =packageID;
+        this.recordID =reportID;
+        this.recordNumberOfDays = recordNumberOfDays;
+        this.recordAmount = totalAmountSum;
         this.recordDate =reportDate;
-        this.amountRemaining =amountRemaining;
-        this.status =status;
-        this.remainingDays =daysRemaining;
+        this.recordAmountRemaining = recordAmountRemaining;
+        this.recordStatus = recordStatus;
+        this.recordRemainingDays =daysRemaining;
     }
 
-    public CustomerDailyReport(int count, int customerID, String customerName, int packageID, int reportID, double savingsAmount, int numberOfDays, double totalAmountSum, int daysRemaining, double amountRemaining, String reportDate, String status) {
-        this.serialNumber = String.valueOf(count);
-        this.customerId =customerID;
-        this.packageId =packageID;
-        this.recordNo =reportID;
-        this.CustomerName =customerName;
-        this.amount =savingsAmount;
-        this.numberOfDays =numberOfDays;
-        this.total = totalAmountSum;
+    public CustomerDailyReport(int recordCount, int customerID, String recordCustomerName, int packageID, int reportID, double savingsAmount, int recordNumberOfDays, double totalAmountSum, int daysRemaining, double recordAmountRemaining, String reportDate, String recordStatus) {
+        this.recordSerialNumber = String.valueOf(recordCount);
+        this.recordCustomerID =customerID;
+        this.recordPackageId =packageID;
+        this.recordID =reportID;
+        this.recordCustomerName = recordCustomerName;
+        //this.recordAmount =savingsAmount;
+        this.recordNumberOfDays = recordNumberOfDays;
+        this.recordAmount = totalAmountSum;
         this.recordDate =reportDate;
-        this.amountRemaining =amountRemaining;
-        this.status =status;
-        this.remainingDays =daysRemaining;
+        this.recordAmountRemaining = recordAmountRemaining;
+        this.recordStatus = recordStatus;
+        this.recordRemainingDays =daysRemaining;
     }
 
 
@@ -312,57 +302,57 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
     }
 
     public void setSkylightPackage(SkyLightPackage skyLightPackage) {
-        this.skyLightPackage=skyLightPackage;
+        this.recordPackage =skyLightPackage;
 
     }
 
-    public AdminUser getAdminUser()
+    public AdminUser getRecordAdminUser()
     {
-        return adminUser;
+        return recordAdminUser;
     }
     public void setSkylightPackage(AdminUser adminUser) {
-        this.adminUser=adminUser;
+        this.recordAdminUser =adminUser;
 
     }
 
-    public SkyLightPackage getSkyLightPackage()
+    public SkyLightPackage getRecordPackage()
     {
-        return skyLightPackage;
+        return recordPackage;
     }
 
-    public CustomerDailyReport(Profile profile, Customer customer, Account account, SkyLightPackage skyLightPackage) {
-        this.profile = profile;
-        this.customer = customer;
-        this.account = account;
-        this.skyLightPackage = skyLightPackage;
+    public CustomerDailyReport(Profile recordProfile, Customer recordCustomer, Account account, SkyLightPackage recordPackage) {
+        this.recordProfile = recordProfile;
+        this.recordCustomer = recordCustomer;
+        this.recordAccount = account;
+        this.recordPackage = recordPackage;
 
     }
 
 
-    public CustomerDailyReport(int Package_ID,int reportID,int  profileId, int  customerId,String date, double amount, int numberOfDay, double total, double amount_collected_so_far, double amountRemaining, int daysRemaining, String status) {
-        this.serialNumber = String.valueOf(reportID);
-        this.amount = amount;
-        this.packageId = Package_ID;
-        this.numberOfDays = Integer.parseInt(String.valueOf(numberOfDay));
-        this.total = total;
-        this.customerId = customerId;
-        this.profileId = profileId;
-        this.remainingDays = Integer.parseInt(String.valueOf(daysRemaining));
+    public CustomerDailyReport(int Package_ID, int reportID, int recordProfileId, int recordCustomerID, String date, double recordAmount, int numberOfDay, double total, double amount_collected_so_far, double recordAmountRemaining, int daysRemaining, String recordStatus) {
+        this.recordSerialNumber = String.valueOf(reportID);
+        //this.recordAmount = recordAmount;
+        this.recordPackageId = Package_ID;
+        this.recordNumberOfDays = numberOfDay;
+        this.recordAmount = total;
+        this.recordCustomerID = recordCustomerID;
+        this.recordProfileId = recordProfileId;
+        this.recordRemainingDays = daysRemaining;
         this.recordDate =date;
-        this.status =status;
-        this.amountRemaining =amountRemaining;
+        this.recordStatus = recordStatus;
+        this.recordAmountRemaining = recordAmountRemaining;
     }
-    public CustomerDailyReport(int  profileId, int  customerId, int id, double amount, double numberOfDay, double total, int daysRemaining, double amountRemaining, String date, String status) {
-        this.serialNumber = String.valueOf(id);
-        this.amount = amount;
-        this.numberOfDays = Integer.parseInt(String.valueOf(numberOfDay));
-        this.total = total;
-        this.customerId = customerId;
-        this.profileId = profileId;
-        this.remainingDays = Integer.parseInt(String.valueOf(daysRemaining));
+    public CustomerDailyReport(int recordProfileId, int recordCustomerID, int id, double recordAmount, int numberOfDay, double total, int daysRemaining, double recordAmountRemaining, String date, String recordStatus) {
+        this.recordSerialNumber = String.valueOf(id);
+        //this.recordAmount = recordAmount;
+        this.recordNumberOfDays = numberOfDay;
+        this.recordAmount = total;
+        this.recordCustomerID = recordCustomerID;
+        this.recordProfileId = recordProfileId;
+        this.recordRemainingDays = daysRemaining;
         this.recordDate =date;
-        this.status =status;
-        this.amountRemaining =amountRemaining;
+        this.recordStatus = recordStatus;
+        this.recordAmountRemaining = recordAmountRemaining;
     }
 
 
@@ -371,25 +361,25 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
 
     }
 
-    public CustomerDailyReport(int profileId, int customerId, int packageId, int reportId,double amount, int numberOfDays, double total,String reportDate,int remainingDays, double amountRemaining, String status) {
-        this.serialNumber = String.valueOf(packageId);
-        this.amount = amount;
-        this.packageId = packageId;
-        this.numberOfDays = Integer.parseInt(String.valueOf(numberOfDays));
-        this.total = total;
-        this.customerId = customerId;
-        this.profileId = profileId;
-        this.remainingDays = Integer.parseInt(String.valueOf(remainingDays));
+    public CustomerDailyReport(int recordProfileId, int recordCustomerID, int recordPackageId, int reportId, double recordAmount, int recordNumberOfDays, double total, String reportDate, int recordRemainingDays, double recordAmountRemaining, String recordStatus) {
+        this.recordSerialNumber = String.valueOf(recordPackageId);
+        //this.recordAmount = recordAmount;
+        this.recordPackageId = recordPackageId;
+        this.recordNumberOfDays = recordNumberOfDays;
+        this.recordAmount = total;
+        this.recordCustomerID = recordCustomerID;
+        this.recordProfileId = recordProfileId;
+        this.recordRemainingDays = recordRemainingDays;
         this.recordDate =reportDate;
-        this.status =status;
-        this.amountRemaining =amountRemaining;
+        this.recordStatus = recordStatus;
+        this.recordAmountRemaining = recordAmountRemaining;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = Integer.parseInt(prime * result + serialNumber);
+        result = Integer.parseInt(prime * result + recordSerialNumber);
         return result;
     }
 
@@ -402,15 +392,15 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
         if (getClass() != obj.getClass())
             return false;
         CustomerDailyReport other = (CustomerDailyReport) obj;
-        return serialNumber.equals(other.serialNumber);
+        return recordSerialNumber.equals(other.recordSerialNumber);
     }
 
-    public boolean getRemind() {
-        return remind;
+    public boolean getRecordRemind() {
+        return recordRemind;
     }
     @SuppressLint("UseCompatLoadingForDrawables")
     public Object getRemindAlarmDrawable() {
-        if (remind) {
+        if (recordRemind) {
             return AppController.getInstance().getResources().getDrawable(R.drawable.ic_alert);
         } else {
             return AppController.getInstance().getResources().getDrawable(R.drawable.ic_alert);
@@ -420,28 +410,25 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
 
     public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
-        json.put(JSON_NAME, this.getCustomerName());
-        json.put(JSON_AMOUNT, this.getAmount());
-        json.put(JSON_NUMBER_OF_DAYS, this.getNumberOfDays());
-        json.put(JSON_REMIND, this.getRemind());
+        json.put(JSON_AMOUNT, this.getRecordAmount());
+        json.put(JSON_NUMBER_OF_DAYS, this.getRecordNumberOfDays());
+        json.put(JSON_REMIND, this.getRecordRemind());
         json.put(JSON_UID, this.getUID());
-        json.put(JSON_TOTAL, this.getTotal());
-        json.put(JSON_GRAND_TOTAL, this.getGrandTotal());
-        json.put(JSON_DAYS_REMAINING, this.getRemainingDays());
+        json.put(JSON_DAYS_REMAINING, this.getRecordRemainingDays());
         return json;
     }
 
     public String getUID() {
-        String uid = String.valueOf(this.serialNumber);
+        String uid = String.valueOf(this.recordSerialNumber);
         if (uid.isEmpty()) {
             uid = UUID.randomUUID().toString();
             setUID(uid);
         }
-        return String.valueOf(serialNumber);
+        return String.valueOf(recordSerialNumber);
     }
 
     public void setUID(String uID) {
-        this.serialNumber = uID;
+        this.recordSerialNumber = uID;
     }
 
     public String getFormattedDaysRemainingString(int profileID, int skyLightPackageID, int reportID) {
@@ -450,13 +437,13 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
         CustomerDailyReport customerDailyReport = new CustomerDailyReport();
         int reportNumber = customerDailyReport.getColumnCount();
         SkyLightPackage skyLightPackage1;
-        long packageId = skyLightPackage.getPackageId();
-        long profileId = profile.getPID();
+        long packageId = recordPackage.getRecordPackageId();
+        long profileId = recordProfile.getPID();
         int j = customerDailyReport.getCount();
         Context context = AppController.getInstance();
         //StringBuilder sb = new StringBuilder("column: ");
 
-        for (int k = 0; i < count; i++) {
+        for (int k = 0; i < recordCount; i++) {
 
             if (i == 0 && i == j) {
                 return (context.getString(R.string.days_31) + "!");
@@ -556,43 +543,36 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
 
 
     protected CustomerDailyReport(Parcel in) {
-        image_id = in.readInt();
-        numberOfDays = in.readInt();
-        serialNumber = in.readString();
-        customerId = in.readInt();
-        amount = in.readDouble();
-        total = in.readDouble();
-        status = in.readString();
-        grandTotal = in.readDouble();
+        recordNumberOfDays = in.readInt();
+        recordSerialNumber = in.readString();
+        recordCustomerID = in.readInt();
+        recordAmount = in.readDouble();
+        recordStatus = in.readString();
         completed = in.readByte() != 0;
     }
 
-    public CustomerDailyReport(int count, int customerId, boolean b, double amount, int numberOfDays, String total, String status, int remainingDays) {
-        this.count = this.getCount();
-        this.customerId =customerId;
+    public CustomerDailyReport(int recordCount, int recordCustomerID, boolean b, double recordAmount, int recordNumberOfDays, String total, String recordStatus, int recordRemainingDays) {
+        this.recordCount = this.getCount();
+        this.recordCustomerID = recordCustomerID;
         this.completed =b;
-        this.amount =amount;
-        this.numberOfDays =numberOfDays;
-        this.total = Double.parseDouble(total);
-        this.status =status;
-        this.remainingDays =remainingDays;
+        this.recordAmount = recordAmount;
+        this.recordNumberOfDays = recordNumberOfDays;
+        this.recordStatus = recordStatus;
+        this.recordRemainingDays = recordRemainingDays;
 
     }
 
-    public CustomerDailyReport(long id, double amount, long numberOfDays, double total, long daysRemaining, double amountRemaining, String date, String status) {
+    public CustomerDailyReport(int id, double recordAmount, long recordNumberOfDays, double total, long daysRemaining, double recordAmountRemaining, String date, String recordStatus) {
 
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(image_id);
-        dest.writeInt(numberOfDays);
-        dest.writeString(serialNumber);
-        dest.writeLong(customerId);
-        dest.writeDouble(amount);
-        dest.writeDouble(total);
-        dest.writeString(status);
-        dest.writeDouble(grandTotal);
+        dest.writeInt(recordNumberOfDays);
+        dest.writeString(recordSerialNumber);
+        dest.writeLong(recordCustomerID);
+        dest.writeDouble(recordAmount);
+        dest.writeString(recordStatus);
         dest.writeByte((byte) (completed ? 1 : 0));
     }
 
@@ -616,95 +596,58 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
 
 
 
-    public int getRemainingDays()
+    public int getRecordRemainingDays()
     {
-        return remainingDays;
+        return recordRemainingDays;
     }
-    public void setRecordNo(int recordNo) {
-        this.recordNo = recordNo;
+    public void setRecordID(int recordID) {
+        this.recordID = recordID;
     }
-    public int getRecordNo()
+    public int getRecordID()
     {
-        return recordNo;
+        return recordID;
     }
-    public void setSerialNo(String serialNumber) {
 
-        this.serialNumber = serialNumber;
-    }
-    public void setOfficeBranch(String officeBranch) {
-
-        this.officeBranch = officeBranch;
-    }
-    public String getOfficeBranch()
+    public String getRecordSerialNumber()
     {
-        return officeBranch;
-    }
-    public String getSerialNumber()
-    {
-        return serialNumber;
+        return recordSerialNumber;
     }
 
 
     public String setReportCount(String serialNumber) {
-        this.serialNumber = serialNumber;
+        this.recordSerialNumber = serialNumber;
         return serialNumber;
     }
 
 
-    public void setSavingsDoc(Uri savingsDoc) {
-        this.savingsDoc = savingsDoc;
+    public void setRecordSavingsDoc(Uri recordSavingsDoc) {
+        this.recordSavingsDoc = recordSavingsDoc;
     }
 
-    public Uri getSavingsDoc()
+    public Uri getRecordSavingsDoc()
     {
-        return savingsDoc;
-    }
-
-    public CustomerManager getCustomerManager() {
-        return customerManager;
-    }
-
-    public void setCustomerManager(CustomerManager customerManager) {
-        this.customerManager = customerManager;
+        return recordSavingsDoc;
     }
 
 
-    public void setRemainingDays(int remainingDays)
+    public void setRecordRemainingDays(int recordRemainingDays)
     {
-        this.remainingDays = remainingDays;
+        this.recordRemainingDays = recordRemainingDays;
     }
-    public double getAmountRemaining()
+    public double getRecordAmountRemaining()
     {
-        return amountRemaining;
+        return recordAmountRemaining;
     }
 
-    public void setAmountRemaining(double amountRemaining)
+    public void setRecordAmountRemaining(double recordAmountRemaining)
     {
-        this.amountRemaining = amountRemaining;
+        this.recordAmountRemaining = recordAmountRemaining;
     }
 
-
-    public int getImage_id()
-    {
-        return this.image_id;
-    }
-
-    public void setImage_id(int image_id)
-    {
-        this.image_id = image_id;
-    }
 
     public String getRecordDate()
     {
         return recordDate;
-    }
-    public SkyLightPackage.SkylightPackage_Type getPackageType()
-    {
-        return SkyLightPackage.SkylightPackage_Type.valueOf(type);
-    }
-    public void setPackageType(int type)
-    {
-        this.type = String.valueOf(type);
     }
 
     public void setRecordDate(Date recordDate)
@@ -712,129 +655,59 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
         this.recordDate = String.valueOf(recordDate);
     }
 
-    public Double getAmount()
+    public Double getRecordAmount()
     {
-        return amount;
+        return recordAmount;
     }
 
-    public void setAmount(double amount)
+    public void setRecordAmount(double recordAmount)
     {
-        this.amount = amount;
-    }
-    public void setCompleted(boolean completed)
-    {
-        this.completed = completed;
+        this.recordAmount = recordAmount;
     }
 
-    public boolean getCompleted()
+    public Profile getRecordProfile()
     {
-        return completed;
+        return recordProfile;
     }
-    public void setCustomerName(String customerName)
+    public void setRecordProfile(Profile recordProfile)
     {
-        this.CustomerName = customerName;
-    }
-
-    public Customer getCustomer()
-    {
-        return customer;
-    }
-    public void setCustomer(Customer customer)
-    {
-        this.customer = customer;
-    }
-    public Profile getProfile()
-    {
-        return profile;
-    }
-    public void setProfile(Profile profile)
-    {
-        this.profile = profile;
+        this.recordProfile = recordProfile;
     }
 
-    public String getCustomerName()
-    {
-        return CustomerName;
+    public int getRecordNumberOfDays() {
+        return recordNumberOfDays;
     }
-    public void setStatus(String status)
+    public void setRecordSavingsCode(long recordSavingsCode)
     {
-        this.status = status;
-    }
-
-    public String getStatus()
-    {
-        return status;
+        this.recordSavingsCode = recordSavingsCode;
     }
 
-    public int getCustomerId()
+    public long getRecordSavingsCode()
     {
-        return customerId;
+        return recordSavingsCode;
     }
 
-    public void setCustomerId(int customerId)
+    public void setRecordNumberOfDays(int recordNumberOfDays)
     {
-        this.customerId = customerId;
+        this.recordNumberOfDays = recordNumberOfDays;
     }
-    public int getPackageID()
+    public int getRecordPackageId()
     {
-        return packageId;
+        return recordPackageId;
     }
-
-
-    public int getNumberOfDays() {
-        return numberOfDays;
-    }
-    public void setSavingsCode(long savingsCode)
+    public void setRecordPackageId(int recordPackageId)
     {
-        this.savingsCode = savingsCode;
+        this.recordPackageId = recordPackageId;
     }
 
-    public long getSavingsCode()
+    public void setRecordSerialNumber(String recordSerialNumber)
     {
-        return savingsCode;
-    }
-
-    public void setNumberOfDays(int numberOfDays)
-    {
-        this.numberOfDays = numberOfDays;
-    }
-    public int getPackageId()
-    {
-        return packageId;
-    }
-    public void setPackageId(int packageId)
-    {
-        this.packageId = packageId;
-    }
-
-    public void setSerialNumber(String serialNumber)
-    {
-        this.serialNumber = serialNumber;
-    }
-    public double getGrandTotal()
-    {
-        return grandTotal;
-    }
-
-    public void setGrandTotal(Double grandTotal)
-    {
-        this.grandTotal = grandTotal;
-    }
-
-    public double getTotal()
-    {
-        return total;
-    }
-
-    public void setTotal(double total)
-    {
-        this.total = total;
+        this.recordSerialNumber = recordSerialNumber;
     }
 
     public CustomerDailyReport(String img, String text)
     {
-        image_id = Integer.parseInt(img);
-        this.total = Double.parseDouble(text);
+        this.recordAmount = Double.parseDouble(text);
     }
 
     @Override
@@ -964,7 +837,8 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
 
     @Override
     public int getType(int i) {
-        return Integer.parseInt(type);
+        //return Integer.parseInt(type);
+        return i;
     }
 
     public int getType() {
@@ -1046,16 +920,48 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
         return null;
     }
 
-    public SkyLightPackage.SkylightPackage_Type getSkylightPackage() {
-        return SkyLightPackage.SkylightPackage_Type.valueOf(type);
-    }
-
-    public void setSkylightPackage(SkyLightPackage.SkylightPackage_Type aPackage) {
-        this.type = String.valueOf(aPackage);
-    }
-
 
     public void setRecordDate(String createdDate) {
 
+    }
+
+    public Account getRecordAccount() {
+        return recordAccount;
+    }
+
+    public void setRecordAccount(Account recordAccount) {
+        this.recordAccount = recordAccount;
+    }
+
+    public CustomerManager getRecordCustomerManager() {
+        return recordCustomerManager;
+    }
+
+    public void setRecordCustomerManager(CustomerManager recordCustomerManager) {
+        this.recordCustomerManager = recordCustomerManager;
+    }
+
+    public Customer getRecordCustomer() {
+        return recordCustomer;
+    }
+
+    public void setRecordCustomer(Customer recordCustomer) {
+        this.recordCustomer = recordCustomer;
+    }
+
+    public String getRecordCustomerName() {
+        return recordCustomerName;
+    }
+
+    public void setRecordCustomerName(String recordCustomerName) {
+        this.recordCustomerName = recordCustomerName;
+    }
+
+    public String getRecordOfficeBranch() {
+        return recordOfficeBranch;
+    }
+
+    public void setRecordOfficeBranch(String recordOfficeBranch) {
+        this.recordOfficeBranch = recordOfficeBranch;
     }
 }

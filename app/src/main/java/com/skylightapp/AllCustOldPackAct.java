@@ -475,7 +475,7 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
         String timelineDetails2 = "NGN" + newTotal + "was saved for" + lastNameOfCustomer + "," + firstNameOfCustomer + "on" + reportDate;
         if(selectedPackage !=null){
             try {
-                savingsAmount=selectedPackage.getDailyAmount();
+                savingsAmount=selectedPackage.getPackageDailyAmount();
                 totalAmountSum = savingsAmount * numberOfDays;
                 packageType= String.valueOf(selectedPackage.getPackageType());
                 if(customer !=null){
@@ -497,8 +497,8 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
             }
             try {
                 for (int i = 0; i < customerDailyReports.size(); i++) {
-                    if (String.valueOf(savingsAmount).equals(String.valueOf(customerDailyReports.get(i).getAmount())) &&
-                            String.valueOf(numberOfDays).equals(String.valueOf(customerDailyReports.get(i).getNumberOfDays())) &&
+                    if (String.valueOf(savingsAmount).equals(String.valueOf(customerDailyReports.get(i).getRecordAmount())) &&
+                            String.valueOf(numberOfDays).equals(String.valueOf(customerDailyReports.get(i).getRecordNumberOfDays())) &&
                             String.valueOf(reportDate).equals(String.valueOf(customerDailyReports.get(i).getRecordDate()))) {
                         Toast.makeText(AllCustOldPackAct.this, "a very similar Report already exist!", Toast.LENGTH_LONG).show();
 
@@ -527,10 +527,10 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
 
 
                             customerDailyReport = new CustomerDailyReport(reportID, savingsAmount, numberOfDays, newTotal, newDaysRemaining, newAmountRemaining, reportDate, "in progress");
-                            selectedPackage.setBalance(newBalance);
+                            selectedPackage.setPackageBalance(newBalance);
                             selectedPackage.addProfileManager(userProfile);
                             account1.setAccountBalance(newBalance);
-                            selectedPackage.setAmount_collected(newAmountContributedSoFar);
+                            selectedPackage.setPackageAmount_collected(newAmountContributedSoFar);
 
                             try {
 

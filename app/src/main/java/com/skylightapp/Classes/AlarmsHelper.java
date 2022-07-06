@@ -18,7 +18,7 @@ public class AlarmsHelper {
 
     public static void cancelAllReportAlarm(Context context, ArrayList<CustomerDailyReport> dailyReports) {
         for (CustomerDailyReport b: dailyReports) {
-            cancelAlarm(context, b.getCustomerName().hashCode());
+            cancelAlarm(context, b.getPackageCustomerName().hashCode());
         }
     }
     /*public static void cancelAllLoanAlarm(Context context, ArrayList<Loan> loans) {

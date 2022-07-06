@@ -115,16 +115,16 @@ public class CustomerPackageListAct extends AppCompatActivity implements  SuperS
                 Bundle packBundle = new Bundle();
                 packBundle.putInt("id", id_To_Search);
                 if(skyLightPackage !=null){
-                    packageID = skyLightPackage.getPackageId();
-                    amountContributedSoFar = skyLightPackage.getAmount_collected();
+                    packageID = skyLightPackage.getRecordPackageId();
+                    amountContributedSoFar = skyLightPackage.getPackageAmount_collected();
                     grandTotal = skyLightPackage.getGrandTotal();
-                    packageAmount=skyLightPackage.getDailyAmount();
+                    packageAmount=skyLightPackage.getPackageDailyAmount();
                     account = skyLightPackage.getAccount();
                     long acctID=account.getSkyLightAcctNo();
                     String status=skyLightPackage.getPackageStatus();
                     customerID=customer.getCusUID();
-                    double amtRem = skyLightPackage.getAmountRemaining();
-                    int daysRem = skyLightPackage.getRemainingDays();
+                    double amtRem = skyLightPackage.getRecordAmountRemaining();
+                    int daysRem = skyLightPackage.getRecordRemainingDays();
 
                     if(amountContributedSoFar==grandTotal && status.equalsIgnoreCase("unpaid")){
                         transactionType = Transaction.TRANSACTION_TYPE.WITHDRAWALTX;

@@ -230,7 +230,7 @@ public class MyCusLoanRepayment extends AppCompatActivity {
                     loanIndex = spn_loan.getSelectedItemPosition();
                     loan = (Loan) spn_loan.getItemAtPosition(loanIndex);
                     loanID=loan.getLoanId();
-                    customerName=loan.getCustomer().getCusSurname()+","+loan.getCustomer().getCusFirstName();
+                    customerName=loan.getLoan_customer().getCusSurname()+","+loan.getLoan_customer().getCusFirstName();
 
 
                     spn_loan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -248,7 +248,7 @@ public class MyCusLoanRepayment extends AppCompatActivity {
                         unpaidLoanBalance=loan.getAccountBalance();
                         loanID=loan.getLoanId();
                         loanBalance.setText("Loan Balance:N"+loan.getAccountBalance());
-                        customerName=loan.getCustomer().getCusSurname()+","+loan.getCustomer().getCusFirstName();
+                        customerName=loan.getLoan_customer().getCusSurname()+","+loan.getLoan_customer().getCusFirstName();
                         Toast.makeText(context, "Customer's Amount: " + loan.getResidue()  , Toast.LENGTH_SHORT).show();
 
                     }
@@ -312,12 +312,12 @@ public class MyCusLoanRepayment extends AppCompatActivity {
                 loanIndex = spn_loan.getSelectedItemPosition();
                 loan = (Loan) spn_loan.getItemAtPosition(loanIndex);
                 loanID=loan.getLoanId();
-                customerName=loan.getCustomer().getCusSurname()+","+loan.getCustomer().getCusFirstName();
+                customerName=loan.getLoan_customer().getCusSurname()+","+loan.getLoan_customer().getCusFirstName();
                 loanBundle.putParcelable("Loan", loan);
                 loanBundle.putDouble("Total", loanAmount);
                 loanBundle.putInt("LoanID", loanID);
                 loanBundle.putParcelable("Profile", userProfile);
-                loanBundle.putParcelable("Customer", loan.getCustomer());
+                loanBundle.putParcelable("Customer", loan.getLoan_customer());
                 loanBundle.putString("Name", customerName);
 
                 String[] Options = {"Pay with Bank", "Pay with card"};

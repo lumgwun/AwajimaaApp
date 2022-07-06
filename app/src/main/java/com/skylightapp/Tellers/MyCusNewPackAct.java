@@ -59,7 +59,6 @@ import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.PaymentCode;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
-import com.skylightapp.UserLocTrackingAct;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.R;
 
@@ -916,11 +915,11 @@ public class MyCusNewPackAct extends AppCompatActivity implements View.OnClickLi
                 paymentCode=new PaymentCode(customerID,reportID,skylightCode,reportDate);
                 if(skyLightPackage1 !=null){
                     skyLightPackage1.addProfileManager(userProfile);
-                    skyLightPackage1.setAmount_collected(newAmountContributedSoFar);
+                    skyLightPackage1.setPackageAmount_collected(newAmountContributedSoFar);
                     skyLightPackage1.addReportCount(packageID, numberOfDays);
-                    skyLightPackage1.setCustomer(customer);
+                    skyLightPackage1.setDocCustomer(customer);
                     skyLightPackage1.setPackageCode(skylightCode);
-                    skyLightPackage1.setOfficeBranch(userProfile.getProfileOffice());
+                    skyLightPackage1.setPackageOfficeBranch(userProfile.getProfileOffice());
                     skyLightPackage1.addSavings(profileID, customerID, reportID, savingsAmount, numberOfDays, initialDeposit, daysRemaining, amountRemaining, reportDate, "first");
 
 

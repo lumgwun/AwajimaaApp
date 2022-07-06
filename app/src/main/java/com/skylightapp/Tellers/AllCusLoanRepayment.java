@@ -246,7 +246,7 @@ public class AllCusLoanRepayment extends AppCompatActivity {
                     loan = (Loan) spn_loan.getItemAtPosition(loanIndex);
                     if(loan !=null){
                         loanID=loan.getLoanId();
-                        customerName=loan.getCustomer().getCusSurname()+","+loan.getCustomer().getCusFirstName();
+                        customerName=loan.getLoan_customer().getCusSurname()+","+loan.getLoan_customer().getCusFirstName();
                         unpaidLoanBalance=loan.getAccountBalance();
 
                     }
@@ -296,9 +296,9 @@ public class AllCusLoanRepayment extends AppCompatActivity {
                 customer = (Customer) parent.getSelectedItem();
                 Toast.makeText(AllCusLoanRepayment.this, "Customer's ID: " + customer.getCusUID() + ",  Customer's Name : " + customer.getCusFirstName(), Toast.LENGTH_SHORT).show();
 
-                customerName=loan.getCustomer().getCusSurname()+","+loan.getCustomer().getCusFirstName();
+                customerName=loan.getLoan_customer().getCusSurname()+","+loan.getLoan_customer().getCusFirstName();
 
-                customerName=loan.getCustomer().getCusSurname()+","+loan.getCustomer().getCusFirstName();
+                customerName=loan.getLoan_customer().getCusSurname()+","+loan.getLoan_customer().getCusFirstName();
                 userPhoneNumber=customer.getCusPhoneNumber();
                 String welcomeMessage = "Skylight appreciates your efforts in repaying  your loan";
                 phone_number = findViewById(R.id.phone_number);
@@ -352,12 +352,12 @@ public class AllCusLoanRepayment extends AppCompatActivity {
 
                 }
 
-                customerName= this.loan.getCustomer().getCusSurname()+","+ this.loan.getCustomer().getCusFirstName();
+                customerName= this.loan.getLoan_customer().getCusSurname()+","+ this.loan.getLoan_customer().getCusFirstName();
                 loanBundle.putParcelable("Loan", this.loan);
                 loanBundle.putDouble("Total", loanAmount);
                 loanBundle.putDouble("LoanID", loanID);
                 loanBundle.putParcelable("Profile", userProfile);
-                loanBundle.putParcelable("Customer", this.loan.getCustomer());
+                loanBundle.putParcelable("Customer", this.loan.getLoan_customer());
                 loanBundle.putString("Name", customerName);
 
                 String[] Options = {"Submit as a Teller", "Pay with Bank","Pay with card"};

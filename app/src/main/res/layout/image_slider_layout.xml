@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_gravity="top"
+        android:id="@+id/productLayout"
         android:background="@drawable/shape_rect14"
         android:layout_height="wrap_content">
         <ImageView

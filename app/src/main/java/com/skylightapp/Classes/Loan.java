@@ -22,18 +22,18 @@ import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_TABLE;
 public class Loan extends Account implements Serializable, Parcelable {
     public static final String LOAN_ID = "loan_id";
     public static final String LOAN_TYPE = "loanType";
-    public static final String LOAN_AMOUNT = "amount";
-    public static final String LOAN_INTEREST = "interest";
+    public static final String LOAN_AMOUNT = "l_amount";
+    public static final String LOAN_INTEREST = "l_interest";
     public static final String LOAN_FIXED_PAYMENT = "fixed_payment";
-    public static final String LOAN_TOTAL_INTEREST = "total_interests";
+    public static final String LOAN_TOTAL_INTEREST = "l_total_interests";
     public static final String LOAN_DOWN_PAYMENT = "down_payment";
     public static final String LOAN_DISPOSABLE_COM = "disposable_commission";
     public static final String LOAN_MONTHLY_COM = "monthly_commission";
     public static final String LOAN_BALANCE = "residue_payment";
-    public static final String LOAN_DATE = "date";
-    public static final String LOAN_START_DATE = "start_date";
-    public static final String LOAN_END_DATE = "end_date";
-    public static final String LOAN_STATUS = "status";
+    public static final String LOAN_DATE = "l_date";
+    public static final String LOAN_START_DATE = "loan_start_date";
+    public static final String LOAN_END_DATE = "loan_end_date";
+    public static final String LOAN_STATUS = "loan_status";
     public static final String LOAN_DURATION = "loan_duration";
     public static final String LOAN_CUSTOMER = "loan_cus";
     public static final String LOAN_CODE = "loan_code";
@@ -47,7 +47,7 @@ public class Loan extends Account implements Serializable, Parcelable {
             LOAN_CUS_ID + " INTEGER , " +LOAN_PROF_ID + " INTEGER  , " + LOAN_ACCT_NO + " INTEGER , " + LOAN_TYPE + " TEXT, " + LOAN_AMOUNT + " FLOAT, " + LOAN_DURATION + " TEXT, " +
             LOAN_INTEREST + " TEXT, " + LOAN_FIXED_PAYMENT + " TEXT, " + LOAN_TOTAL_INTEREST + " TEXT, " + LOAN_DOWN_PAYMENT + " TEXT, " + LOAN_DISPOSABLE_COM + " TEXT, " +
             LOAN_MONTHLY_COM + " TEXT, " + LOAN_BALANCE + " TEXT, " + LOAN_DATE + " TEXT, " + LOAN_START_DATE + " TEXT, " + LOAN_END_DATE + " TEXT, " +
-            LOAN_STATUS + " TEXT, " + LOAN_CUSTOMER + " TEXT, " + LOAN_CODE + " LONG, "  + LOAN_PACK_ID + " LONG, " + "FOREIGN KEY(" + LOAN_PACK_ID + ") REFERENCES " + PACKAGE_TABLE + "(" + PACKAGE_ID + ")," + "FOREIGN KEY(" + LOAN_ACCT_NO + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + "),"+ "FOREIGN KEY(" + LOAN_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "PRIMARY KEY(" + LOAN_ID  + "), " +
+            LOAN_STATUS + " TEXT, " + LOAN_CUSTOMER + " TEXT, " + LOAN_CODE + " LONG, "  + LOAN_PACK_ID + " INTEGER, " + "FOREIGN KEY(" + LOAN_PACK_ID + ") REFERENCES " + PACKAGE_TABLE + "(" + PACKAGE_ID + ")," + "FOREIGN KEY(" + LOAN_ACCT_NO + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + "),"+ "FOREIGN KEY(" + LOAN_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "PRIMARY KEY(" + LOAN_ID  + "), " +
             "FOREIGN KEY(" + LOAN_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
     private static final long serialVersionUID = 1L;
@@ -55,16 +55,16 @@ public class Loan extends Account implements Serializable, Parcelable {
     public static final int PERCENT = 0;
     public static final int VALUE = 1;
     private boolean calculated;
-    private String date;
-    private String startDate;
-    private String endDate;
-    private String status;
+    private String loan_date;
+    private String loan_startDate;
+    private String loan_endDate;
+    private String loan_status;
     private String loanOfficeBranch;
-    Profile profile;
-    Customer customer;
-    Payment payment;
-    Account account;
-    private TransactionGranting granting;
+    Profile loan_profile;
+    Customer loan_customer;
+    Payment loan_payment;
+    Account loan_account;
+    private TransactionGranting loan_granting;
     //private int loanType = 0;
     private BigDecimal amount = BigDecimal.ZERO;
     private BigDecimal interest = BigDecimal.ZERO;
@@ -120,10 +120,10 @@ public class Loan extends Account implements Serializable, Parcelable {
         this.disposableCommission = disposableCommission;
         this.monthlyCommission = monthlyCommission;
         this.residuePayment = residuePayment;
-        this.date = loanDate;
-        this.startDate = loanStartDate;
-        this.endDate = loanEndDate;
-        this.status = loanStatus;
+        this.loan_date = loanDate;
+        this.loan_startDate = loanStartDate;
+        this.loan_endDate = loanEndDate;
+        this.loan_status = loanStatus;
     }
     public Loan(long profileID, long customerID, int loanId, int loanType, BigDecimal amount, BigDecimal interest, BigDecimal fixedPayment, BigDecimal totalInterests, BigDecimal downPayment, BigDecimal disposableCommission, BigDecimal monthlyCommission, BigDecimal residuePayment, String loanDate, String loanStartDate, String loanEndDate, String loanStatus) {
         this.payments = payments;
@@ -137,28 +137,28 @@ public class Loan extends Account implements Serializable, Parcelable {
         this.disposableCommission = disposableCommission;
         this.monthlyCommission = monthlyCommission;
         this.residuePayment = residuePayment;
-        this.date = loanDate;
-        this.startDate = loanStartDate;
-        this.endDate = loanEndDate;
-        this.status = loanStatus;
+        this.loan_date = loanDate;
+        this.loan_startDate = loanStartDate;
+        this.loan_endDate = loanEndDate;
+        this.loan_status = loanStatus;
     }
     public Loan(Profile profile1, Customer customer1, Payment payment1) {
-        this.payment = payment1;
-        this.profile = profile1;
-        this.customer = customer1;
+        this.loan_payment = payment1;
+        this.loan_profile = profile1;
+        this.loan_customer = customer1;
     }
     public Loan(Profile profile1, Customer customer1, Account account1, Payment payment1) {
-        this.payment = payment1;
-        this.profile = profile1;
-        this.account = account1;
-        this.customer = customer1;
+        this.loan_payment = payment1;
+        this.loan_profile = profile1;
+        this.loan_account = account1;
+        this.loan_customer = customer1;
     }
 
     public Loan() {
 
     }
 
-    public Loan(int loanNumber,BigDecimal amount,String date,String status) {
+    public Loan(int loanNumber, BigDecimal amount, String loan_date, String loan_status) {
         this.payments = payments;
         this.loanId = loanNumber;
         //this.loanType = loanType;
@@ -173,7 +173,7 @@ public class Loan extends Account implements Serializable, Parcelable {
 
 
     }
-    public Loan(int loanId,double amount, String loanStartDate, String status,String loanEndDate,double mInterest) {
+    public Loan(int loanId, double amount, String loanStartDate, String loan_status, String loanEndDate, double mInterest) {
         this.payments = payments;
         this.loanId = loanId;
         //this.loanType = loanType;
@@ -188,25 +188,25 @@ public class Loan extends Account implements Serializable, Parcelable {
 
 
     }
-    public Loan(double amount, String loanStartDate, String status,String loanEndDate,double interest) {
+    public Loan(double amount, String loanStartDate, String loan_status, String loanEndDate, double interest) {
         this.loanId = loanId;
         this.amount1 = amount;
         this.mInterest = interest;
-        this.endDate = loanEndDate;
+        this.loan_endDate = loanEndDate;
         this.mInterest = interest;
-        this.startDate = loanStartDate;
-        this.status = status;
+        this.loan_startDate = loanStartDate;
+        this.loan_status = loan_status;
 
 
     }
 
-    public Loan(int profileID, int customerID, int loanID, double loanAmount, String loanDate, String startDate, String endDate, String status) {
+    public Loan(int profileID, int customerID, int loanID, double loanAmount, String loanDate, String loan_startDate, String loan_endDate, String loan_status) {
         this.loanId = loanID;
         this.amount1 = loanAmount;
-        this.date = loanDate;
-        this.endDate = endDate;
-        this.startDate = startDate;
-        this.status = status;
+        this.loan_date = loanDate;
+        this.loan_endDate = loan_endDate;
+        this.loan_startDate = loan_startDate;
+        this.loan_status = loan_status;
     }
 
 
@@ -327,30 +327,30 @@ public class Loan extends Account implements Serializable, Parcelable {
         this.fixedPayment = fixedPayment;
     }
 
-    public String getDate() {
-        return date;
+    public String getLoan_date() {
+        return loan_date;
     }
-    public String getStartDate() {
-        return startDate;
+    public String getLoan_startDate() {
+        return loan_startDate;
     }
-    public String getEndDate() {
-        return endDate;
+    public String getLoan_endDate() {
+        return loan_endDate;
     }
-    public String getStatus() {
-        return status;
+    public String getLoan_status() {
+        return loan_status;
     }
-    public void setStatus(String status) {
-        this.status = status;
+    public void setLoan_status(String loan_status) {
+        this.loan_status = loan_status;
     }
 
     public void setLoanType(String date) {
-        this.date = date;
+        this.loan_date = date;
     }
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
+    public void setLoan_startDate(String loan_startDate) {
+        this.loan_startDate = loan_startDate;
     }
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
+    public void setLoan_endDate(String loan_endDate) {
+        this.loan_endDate = loan_endDate;
     }
 
     public BigDecimal getMonthlyCommission() {
@@ -369,28 +369,28 @@ public class Loan extends Account implements Serializable, Parcelable {
         this.disposableCommission = disposableCommission;
     }
 
-    public void setCustomer(Customer customer1) {
-        this.customer = customer1;
+    public void setLoan_customer(Customer customer1) {
+        this.loan_customer = customer1;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Customer getLoan_customer() {
+        return loan_customer;
     }
 
-    public void setProfile(Profile profile1) {
-        this.profile = profile1;
+    public void setLoan_profile(Profile profile1) {
+        this.loan_profile = profile1;
     }
 
-    public Profile getProfile() {
-        return profile;
+    public Profile getLoan_profile() {
+        return loan_profile;
     }
 
-    public void setAccount(Account account1) {
-        this.account = account1;
+    public void setLoan_account(Account account1) {
+        this.loan_account = account1;
     }
 
-    public Account getAccount() {
-        return account;
+    public Account getLoan_account() {
+        return loan_account;
     }
 
     public BigDecimal getDownPayment() {
@@ -516,12 +516,12 @@ public class Loan extends Account implements Serializable, Parcelable {
         this.calculated = calculated;
     }
 
-    public TransactionGranting getGranting() {
-        return granting;
+    public TransactionGranting getLoan_granting() {
+        return loan_granting;
     }
 
-    public void setGranting(TransactionGranting granting) {
-        this.granting = granting;
+    public void setLoan_granting(TransactionGranting loan_granting) {
+        this.loan_granting = loan_granting;
     }
 
     public String getAcctType() {

@@ -88,7 +88,7 @@ public class UpdateTellerCashAct extends AppCompatActivity {
             tellerCashID = skylightCash.getSkylightCashID();
             officeBranch= skylightCash.getSCPayee();
             tellerCashCode= skylightCash.getSkylightCashCode();
-            tellerCashProfileID= skylightCash.getTellerCash_ProfileID();
+            tellerCashProfileID= skylightCash.getSCash_ProfileID();
         }
 
         txtDepositID.setText("Teller Cash ID:"+ tellerCashID);

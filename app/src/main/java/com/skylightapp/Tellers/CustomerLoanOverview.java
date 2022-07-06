@@ -203,16 +203,16 @@ public class CustomerLoanOverview extends Fragment {
         @Override
         public void onBindViewHolder(MyViewHolder holder, final int position) {
             final Loan loan = loans.get(position);
-            final Profile profile = loan.getProfile();
-            final Account account = loan.getAccount();
-            final Customer customer = loan.getCustomer();
+            final Profile profile = loan.getLoan_profile();
+            final Account account = loan.getLoan_account();
+            final Customer customer = loan.getLoan_customer();
             holder.profileName.setText(MessageFormat.format("{0},{1}", profile.getProfileLastName(), profile.getProfileFirstName()));
             holder.customerName.setText(MessageFormat.format("Customer Name:{0}{1}", customer.getCusSurname(), customer.getCusFirstName()));
             holder.loan_request_amount.setText(MessageFormat.format("NGN{0}", loan.getAmount()));
-            holder.requestDate_of_customer.setText(loan.getDate());
-            holder.status.setText(loan.getStatus());
-            holder.startDate.setText(MessageFormat.format("Start Date:{0}", loan.getStartDate()));
-            holder.endDate.setText(("End Date"+loan.getEndDate()));
+            holder.requestDate_of_customer.setText(loan.getLoan_date());
+            holder.status.setText(loan.getLoan_status());
+            holder.startDate.setText(MessageFormat.format("Start Date:{0}", loan.getLoan_startDate()));
+            holder.endDate.setText(("End Date"+loan.getLoan_endDate()));
             holder.loanBalance.setText(MessageFormat.format("NGN{0}", loan.getBalanceInBigDecimal()));
 
 
