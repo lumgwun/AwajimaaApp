@@ -96,7 +96,7 @@ public class RequestItemAct extends AppCompatActivity {
             System.out.println("Oops!");
         }
         if(selectedPackage !=null){
-            packageID=selectedPackage.getPackageID();
+            packageID=selectedPackage.getPackID();
         }
         message="I am requesting for my "+packageName+"/"+packageID;
         btnRequest.setOnClickListener(new View.OnClickListener() {

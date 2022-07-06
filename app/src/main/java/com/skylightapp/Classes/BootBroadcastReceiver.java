@@ -106,7 +106,7 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
                 mPackageTotal = skyLightPackage.getPackageTotalAmount();
                 mDateStarted = skyLightPackage.getPackageDateStarted();
                 mDateEnded = skyLightPackage.getPackageDateEnded();
-                mCustomer = skyLightPackage.getDocCustomer();
+                mCustomer = skyLightPackage.getPackageCustomer();
 
                 mDateSplit = mDate.split("/");
                 mTimeSplit = mTime.split(":");

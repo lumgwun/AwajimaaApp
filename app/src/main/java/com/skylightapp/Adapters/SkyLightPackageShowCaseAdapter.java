@@ -58,7 +58,7 @@ public class SkyLightPackageShowCaseAdapter extends RecyclerView.Adapter<SkyLigh
         mainHolder.price.setText(MessageFormat.format("Price N{0}", model2.getpMPrice()));
         mainHolder.duration1.setText(MessageFormat.format("Duration:{0}", model2.getpMDuration()));
         mainHolder.itemImage.setImageResource(model2.getpMItemImage());
-        holder.setData(skyLightPackage_2List.get(position).getpMItemImage(),skyLightPackage_2List.get(position).getpMItemName(),skyLightPackage_2List.get(position).getpMPrice(),skyLightPackage_2List.get(position).getpMDuration(),skyLightPackage_2List.get(position).getpMdesc());
+        holder.setData(skyLightPackage_2List.get(position).getpMItemImage(),skyLightPackage_2List.get(position).getpMItemName(),skyLightPackage_2List.get(position).getpMPrice(),skyLightPackage_2List.get(position).getpMdesc(),skyLightPackage_2List.get(position).getpMdesc());
     }
     public  class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 

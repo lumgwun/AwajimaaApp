@@ -44,6 +44,7 @@ public class UpdatePackageAct extends AppCompatActivity {
     private String json,json1;
     String code;
     int itemRemCount,newItemCount;
+    private static final String PREF_NAME = "skylight";
     String SharedPrefUserPassword,noOfDays,officeBranch, itemName,status,stringNoOfSavings,office, customerPhoneNo,dateOfReport,nameOfCustomer, cmFirstName,cmLastName,cmName,SharedPrefUserMachine,phoneNo,SharedPrefUserName,SharedPrefProfileID,adminName;
 
 
@@ -52,6 +53,7 @@ public class UpdatePackageAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_update_package);
+        sharedpreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         sharedpreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
         gson = new Gson();
         userProfile= new Profile();
@@ -61,7 +63,7 @@ public class UpdatePackageAct extends AppCompatActivity {
         json = sharedpreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         //calendar.add(Calendar.DAY_OF_YEAR, 31);
         Date newDate = calendar.getTime();
         String todayDate = sdf.format(newDate);
@@ -79,10 +81,10 @@ public class UpdatePackageAct extends AppCompatActivity {
         if(skyLightPackage !=null){
             reportProfileID=skyLightPackage.getRecordProfile().getPID();
             customerID=skyLightPackage.getPackageCustomerId();
-            packageID=skyLightPackage.getPackageID();
+            packageID=skyLightPackage.getPackID();
         }
-        SharedPrefUserName=sharedpreferences.getString("USER_NAME", "");
-        SharedPrefUserPassword=sharedpreferences.getString("USER_PASSWORD", "");
+        SharedPrefUserName=sharedpreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserPassword=sharedpreferences.getString("PROFILE_PASSWORD", "");
         SharedPrefUserMachine=sharedpreferences.getString("machine", "");
         SharedPrefProfileID=sharedpreferences.getString("PROFILE_ID", "");
         dbHelper = new DBHelper(this);
@@ -105,7 +107,7 @@ public class UpdatePackageAct extends AppCompatActivity {
         if(skyLightPackage !=null){
             reportProfileID=skyLightPackage.getRecordProfile().getPID();
             customerID=skyLightPackage.getPackageCustomerId();
-            packageID=skyLightPackage.getPackageID();
+            packageID=skyLightPackage.getPackID();
             packageCode =skyLightPackage.getPackageCode();
         }
 

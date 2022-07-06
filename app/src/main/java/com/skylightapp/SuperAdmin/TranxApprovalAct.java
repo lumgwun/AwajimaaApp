@@ -370,7 +370,7 @@ public class TranxApprovalAct extends AppCompatActivity {
             try {
                 for (int i = 0; i < transactionArrayList.size(); i++) {
                     try {
-                        if (transactionArrayList.get(i).getDate().equalsIgnoreCase(todayDate) && transactionArrayList.get(i).getTransactionApprover().equalsIgnoreCase(txApprover) && transactionArrayList.get(i).getPackageCustomerId()==customerID) {
+                        if (transactionArrayList.get(i).getDate().equalsIgnoreCase(todayDate) && transactionArrayList.get(i).getTransactionApprover().equalsIgnoreCase(txApprover) && transactionArrayList.get(i).getCustomerID()==customerID) {
                             Toast.makeText(TranxApprovalAct.this, "A Similar Transaction  was already executed" , Toast.LENGTH_LONG).show();
                             return;
 

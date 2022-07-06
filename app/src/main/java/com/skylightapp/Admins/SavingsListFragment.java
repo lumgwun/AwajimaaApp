@@ -206,10 +206,10 @@ public class SavingsListFragment extends Fragment {
 
             SkyLightPackage skyLightPackage = (SkyLightPackage) dailyReports.get(position);
             long packageID=skyLightPackage.getRecordPackageId();
-            holder.package_id.setText(MessageFormat.format("Pack ID: {0}", customerDailyReport.getPackageID()));
-            holder.savings_customer.setText(MessageFormat.format("Customer: {0}", customerDailyReport.getPackageCustomerName()));
+            holder.package_id.setText(MessageFormat.format("Pack ID: {0}", customerDailyReport.getRecordPackageId()));
+            holder.savings_customer.setText(MessageFormat.format("Customer: {0}", customerDailyReport.getRecordCustomerName()));
             holder.record_amount3.setText(MessageFormat.format("Amount:{0}", valueOf(customerDailyReport.getRecordAmount())));
-            holder.total.setText(valueOf("Total:"+ customerDailyReport.getTotal()));
+            holder.total.setText(valueOf("Total:"+ customerDailyReport.getRecordAmount()));
             holder.numberOfSavings.setText(valueOf("Days:"+customerDailyReport.getRecordNumberOfDays()));
             holder.savings_date.setText(MessageFormat.format("Date:{0}", customerDailyReport.getRecordDate()));
             holder.amount_remaining.setText(String.valueOf("Amount Rem:"+customerDailyReport.getRecordAmountRemaining()));
@@ -218,11 +218,11 @@ public class SavingsListFragment extends Fragment {
             holder.paymentMethod.setText(MessageFormat.format("Payment method:{0}", paymentDoc.getPaymentMethod()));
             //Bitmap savingsDoc=dbHelper.getDocPicture(savingsId);
             holder.savings_id12.setText(MessageFormat.format("Savings ID:{0}", customerDailyReport.getRecordID()));
-            holder.status11.setText(customerDailyReport.getDocStatus());
+            holder.status11.setText(customerDailyReport.getRecordStatus());
 
 
             Glide.with(context)
-                    .load(customerDailyReport.getPackageImage())
+                    .load(customerDailyReport.getRecordSavingsDoc())
                     .into(holder.image_report);
 
 

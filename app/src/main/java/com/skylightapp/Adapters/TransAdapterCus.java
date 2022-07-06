@@ -71,9 +71,9 @@ public class TransAdapterCus extends ArrayAdapter<Transaction> {
         ImageView addDoc = convertView.findViewById(R.id.tx_img);
 
         txtID.setText(MessageFormat.format("{0} - {1}", "Package ID:", customerDailyReport.getRecordPackageId()));
-        txtType.setText(MessageFormat.format("{0} - {1}", "Package Type:", customerDailyReport.getPackageType()));
+        txtType.setText(MessageFormat.format("{0} - {1}", "Package Type:", customerDailyReport.getRecordPackage().getPackageType()));
         txtSavingsID.setText(MessageFormat.format("{0} - {1}", "Report ID:", customerDailyReport.getRecordID()));
-        txtTx_Ewallet.setText(MessageFormat.format("{0} - {1}", "Account ID:", customerDailyReport.getDocCustomer().getCusAccount().getSkyLightAcctNo()));
+        txtTx_Ewallet.setText(MessageFormat.format("{0} - {1}", "Account ID:", customerDailyReport.getRecordCustomer().getCusAccount().getSkyLightAcctNo()));
         txtTransactionTimestamp.setText(MessageFormat.format("Date{0}", transaction.getTimestamp()));
         txtTransactionAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", transaction.getRecordAmount())));
 

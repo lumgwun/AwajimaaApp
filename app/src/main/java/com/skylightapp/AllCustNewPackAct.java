@@ -874,7 +874,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
                         skyLightPackage1.addProfileManager(userProfile);
                         skyLightPackage1.setPackageAmount_collected(newAmountContributedSoFar);
                         skyLightPackage1.addReportCount(packageID, numberOfDays);
-                        skyLightPackage1.setDocCustomer(customer);
+                        skyLightPackage1.setPackageCustomer(customer);
                         skyLightPackage1.setPackageOfficeBranch(officeBranch);
                         skyLightPackage1.setPackageCode(skylightCode);
                         skyLightPackage1.addSavings(profileID, customerID, reportID, savingsAmount, numberOfDays, initialDeposit, daysRemaining, amountRemaining, reportDate, "first");

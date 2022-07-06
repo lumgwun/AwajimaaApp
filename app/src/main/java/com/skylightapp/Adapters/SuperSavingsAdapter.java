@@ -115,7 +115,7 @@ public class SuperSavingsAdapter extends RecyclerView.Adapter<SuperSavingsAdapte
                 long savingsID = obj.getRecordID();
                 //fillSavings(savingsID, comment, expandableTextView, dateTextView);
 
-                if (obj.getPackageImage()>0) {
+                if (obj.getRecordID()>0) {
 
                     //ImageUtil.loadImage(GlideApp.with(context), obj.getSavingsDoc(), avatarImageView);
                 }
@@ -156,10 +156,10 @@ public class SuperSavingsAdapter extends RecyclerView.Adapter<SuperSavingsAdapte
 
         if (savings != null) {
             holder.amountRemaining.setText(MessageFormat.format("Rem Amount: NGN{0}", String.format("%.2f", savings1.getRecordAmountRemaining())));
-            holder.totalAmount.setText(MessageFormat.format("Total: NGN{0}", String.format("%.2f", savings1.getTotal())));
+            holder.totalAmount.setText(MessageFormat.format("Total: NGN{0}", String.format("%.2f", savings1.getRecordAmount())));
             holder.savingsAmount.setText(MessageFormat.format("Package Amount: NGN{0}", String.format("%.2f", savings1.getRecordAmount())));
             //holder.packageID.setText(MessageFormat.format("Package ID:{0}", String.valueOf(savings.getPackageId())));
-            holder.status.setText(MessageFormat.format("Status:{0}", savings1.getDocStatus()));
+            holder.status.setText(MessageFormat.format("Status:{0}", savings1.getRecordStatus()));
             holder.savingsID.setText(MessageFormat.format("Start Date:{0}", savings1.getRecordID()));
             holder.date.setText(MessageFormat.format("Savings date:{0}", savings1.getRecordDate()));
             holder.daysRemaining.setText(MessageFormat.format("Days Rem:{0}", String.valueOf(savings1.getRecordRemainingDays())));
@@ -170,13 +170,13 @@ public class SuperSavingsAdapter extends RecyclerView.Adapter<SuperSavingsAdapte
             holder.savingsID.setText(MessageFormat.format("Savings ID:{0}", String.valueOf(savings1.getRecordID())));
 
             holder.days.setText(MessageFormat.format("Number of Days:{0}", String.valueOf(savings1.getRecordNumberOfDays())));
-            if (savings1.getDocStatus().equalsIgnoreCase("verified")) {
+            if (savings1.getRecordStatus().equalsIgnoreCase("verified")) {
                 holder.icon.setImageResource(R.drawable.verified_savings);
                 holder.savingsID.setTextColor(Color.MAGENTA);
-            } else if (savings1.getDocStatus().equalsIgnoreCase(""))  {
+            } else if (savings1.getRecordStatus().equalsIgnoreCase(""))  {
                 holder.icon.setImageResource(R.drawable.unverified);
                 holder.savingsID.setTextColor(Color.RED);
-            } else if (savings1.getDocStatus().equalsIgnoreCase("Unverified"))  {
+            } else if (savings1.getRecordStatus().equalsIgnoreCase("Unverified"))  {
                 holder.icon.setImageResource(R.drawable.unverified);
                 holder.savingsID.setTextColor(Color.RED);
             }

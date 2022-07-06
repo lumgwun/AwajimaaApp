@@ -51,7 +51,7 @@ public class GrpTranxAdapter extends RecyclerView.Adapter<GrpTranxAdapter.Recycl
         holder.sendingAcct.setText("Sending Acct:"+transaction.getSendingAccount());
         holder.transID.setText("ID:"+transaction.getTransactionID());
         holder.tranMethod.setText("Method:"+transaction.getMethodOfPay());
-        holder.status.setText("Status:"+transaction.getDocStatus());
+        holder.status.setText("Status:"+transaction.getTransactionStatus());
         holder.amount.setText("Amount:"+transaction.getRecordAmount());
     }
 

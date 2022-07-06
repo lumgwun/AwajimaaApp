@@ -94,7 +94,7 @@ public class BranchItemCollection extends AppCompatActivity {
         }
         if(skylightPackage !=null){
             packageName=skylightPackage.getPackageName();
-            packageID=skylightPackage.getPackageID();
+            packageID=skylightPackage.getPackID();
         }
 
         if(customer !=null){

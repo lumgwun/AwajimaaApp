@@ -181,7 +181,7 @@ public class TranxSimpleAdapter extends RecyclerView.Adapter<TranxSimpleAdapter.
         holder.method.setText(MessageFormat.format("TX Method: {0}", transaction.getMethodOfPay()));
         holder.payee.setText(MessageFormat.format("Payee: {0}", transaction.getPayee()));
         holder.payer.setText(MessageFormat.format("Payer: {0}-{1}-{2}", transaction.getPayer()));
-        holder.status.setText(MessageFormat.format("Status: {0}", customerDailyReport.getDocStatus()));
+        holder.status.setText(MessageFormat.format("Status: {0}", customerDailyReport.getRecordStatus()));
 
         holder.txtTransactionID.setText(MessageFormat.format("{0} - {1}", transaction.getTransactionType().toString(), transaction.getTransactionID()));
         if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.PAYMENT) {

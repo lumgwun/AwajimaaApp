@@ -10851,11 +10851,11 @@ public class DBHelper extends SQLiteOpenHelper {
         packageSavingsValue.put(REPORT_ACCOUNT_NO_FK, account.getSkyLightAcctNo());
         packageSavingsValue.put(REPORT_AMOUNT, valueOf(customerDailyReport.getRecordAmount()));
         packageSavingsValue.put(REPORT_NUMBER_OF_DAYS, customerDailyReport.getRecordNumberOfDays());
-        packageSavingsValue.put(REPORT_TOTAL, customerDailyReport.getTotal());
+        packageSavingsValue.put(REPORT_TOTAL, customerDailyReport.getRecordAmount());
         packageSavingsValue.put(REPORT_DATE, customerDailyReport.getRecordDate());
         packageSavingsValue.put(REPORT_DAYS_REMAINING, customerDailyReport.getRecordRemainingDays());
         packageSavingsValue.put(REPORT_AMOUNT_REMAINING, customerDailyReport.getRecordAmountRemaining());
-        packageSavingsValue.put(REPORT_STATUS, customerDailyReport.getDocStatus());
+        packageSavingsValue.put(REPORT_STATUS, customerDailyReport.getRecordStatus());
         packageSavingsValue.put(REPORT_CODE, reportCode);
         sqLiteDatabase.insert(DAILY_REPORT_TABLE, null, packageSavingsValue);
 
@@ -11760,7 +11760,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         SkyLightPackage skyLightPackage = new SkyLightPackage();
                         skyLightPackage.setRecordPackageId(Integer.parseInt(cursor.getString(0)));
                         skyLightPackage.setPackageCustomerName(cursor.getString(1));
-                        skyLightPackage.setGrandTotal(Double.valueOf(cursor.getString(2)));
+                        skyLightPackage.setPackageTotalAmount(Double.valueOf(cursor.getString(2)));
                         skyLightPackage.setRecordAmount(Double.parseDouble(cursor.getString(3)));
                         skyLightPackage.setPackageBalance(Double.parseDouble(cursor.getString(4)));
                         skyLightPackage.setPackageDateStarted(cursor.getString(5));

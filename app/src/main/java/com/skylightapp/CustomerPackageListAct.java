@@ -117,7 +117,7 @@ public class CustomerPackageListAct extends AppCompatActivity implements  SuperS
                 if(skyLightPackage !=null){
                     packageID = skyLightPackage.getRecordPackageId();
                     amountContributedSoFar = skyLightPackage.getPackageAmount_collected();
-                    grandTotal = skyLightPackage.getGrandTotal();
+                    grandTotal = skyLightPackage.getPackageTotalAmount();
                     packageAmount=skyLightPackage.getPackageDailyAmount();
                     account = skyLightPackage.getAccount();
                     long acctID=account.getSkyLightAcctNo();

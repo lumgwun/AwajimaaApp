@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.google.gson.Gson;
+import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
@@ -37,6 +38,7 @@ public class SavingsCodeUpdateAct extends AppCompatActivity {
     private String json,json1;
     String code;
     private static final String PREF_NAME = "skylight";
+    private Customer customer;
     String SharedPrefUserPassword,noOfDays, status,stringNoOfSavings,office, customerPhoneNo,officeBranch,dateOfReport,nameOfCustomer, cmFirstName,cmLastName,cmName,SharedPrefUserMachine,phoneNo,SharedPrefUserName,SharedPrefProfileID,adminName;
 
 
@@ -49,6 +51,7 @@ public class SavingsCodeUpdateAct extends AppCompatActivity {
         userProfile= new Profile();
         cusProfile= new Profile();
         bundle= new Bundle();
+        customer= new Customer();
         dbHelper= new DBHelper(this);
         customerDailyReport=new CustomerDailyReport();
         json = sharedpreferences.getString("LastProfileUsed", "");
@@ -64,12 +67,15 @@ public class SavingsCodeUpdateAct extends AppCompatActivity {
 
         }
         if(customerDailyReport !=null){
-            customerID=customerDailyReport.getPackageCustomerId();
-            packageID=customerDailyReport.getPackageID();
+            packageID=customerDailyReport.getRecordPackageId();
             cusProfile=customerDailyReport.getRecordProfile();
+            customer=customerDailyReport.getRecordCustomer();
         }
-        SharedPrefUserName=sharedpreferences.getString("USER_NAME", "");
-        SharedPrefUserPassword=sharedpreferences.getString("USER_PASSWORD", "");
+        if(customer !=null){
+            customerID=customer.getCusUID();
+        }
+        SharedPrefUserName=sharedpreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserPassword=sharedpreferences.getString("PROFILE_PASSWORD", "");
         SharedPrefUserMachine=sharedpreferences.getString("machine", "");
         SharedPrefProfileID=sharedpreferences.getString("PROFILE_ID", "");
         dbHelper = new DBHelper(this);
@@ -109,9 +115,12 @@ public class SavingsCodeUpdateAct extends AppCompatActivity {
 
         }
         if(customerDailyReport !=null){
-            customerID=customerDailyReport.getPackageCustomerId();
-            packageID=customerDailyReport.getPackageID();
+            packageID=customerDailyReport.getRecordPackageId();
             cusProfile=customerDailyReport.getRecordProfile();
+            customer=customerDailyReport.getRecordCustomer();
+        }
+        if(customer !=null){
+            customerID=customer.getCusUID();
         }
 
         try {

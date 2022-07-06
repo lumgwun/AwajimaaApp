@@ -270,7 +270,7 @@ public class CustomerPayAct extends AppCompatActivity {
                     try {
 
                         skyLightPackage = (SkyLightPackage) spn_customer_packages.getItemAtPosition(packageIndex);
-                        packageID=skyLightPackage.getPackageID();
+                        packageID=skyLightPackage.getRecordPackageId();
                         account=skyLightPackage.getAccount();
                         if(account !=null){
                             accountBalance=account.getAccountBalance();
@@ -293,13 +293,13 @@ public class CustomerPayAct extends AppCompatActivity {
 
         try {
             if(skyLightPackage !=null){
-                packageID=skyLightPackage.getPackageID();
+                packageID=skyLightPackage.getPackID();
                 account=skyLightPackage.getAccount();
                 //packageID=skyLightPackage.getPackageId();
                 savingsCount=skyLightPackage.getTotalPSavingsCount(packageID);
                 numberOfDaysRemaining=skyLightPackage.getRecordRemainingDays();
                 amountSoFar =skyLightPackage.getPackageAmount_collected();
-                packageTotal=skyLightPackage.getGrandTotal();
+                packageTotal=skyLightPackage.getPackageTotalAmount();
                 packageAmount=skyLightPackage.getPackageDailyAmount();
                 amountRemaining=skyLightPackage.getRecordAmountRemaining();
                 if(account !=null){
@@ -508,7 +508,7 @@ public class CustomerPayAct extends AppCompatActivity {
                 try {
 
                     skyLightPackage = (SkyLightPackage) spn_customer_packages.getItemAtPosition(packageIndex);
-                    packageID=skyLightPackage.getPackageID();
+                    packageID=skyLightPackage.getPackID();
                     account=skyLightPackage.getAccount();
                     packageAmount=skyLightPackage.getPackageDailyAmount();
                     accountBalance=account.getAccountBalance();

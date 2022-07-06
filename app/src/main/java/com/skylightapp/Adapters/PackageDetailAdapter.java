@@ -93,7 +93,7 @@ public class PackageDetailAdapter extends RecyclerView.Adapter<PackageDetailAdap
         Customer customer = new Customer();
         holder.packageType.setText(MessageFormat.format("Type:{0}", skyLightPackage.getPackageType() +"-"+skyLightPackage.getRecordPackageId()));
         holder.amountRemaining.setText(MessageFormat.format("Rem Amount: NGN{0}", String.format("%.2f", skyLightPackage.getRecordAmountRemaining())));
-        holder.grandTotalAmount.setText(MessageFormat.format("Exp Amount: NGN{0}", String.format("%.2f", skyLightPackage.getGrandTotal())));
+        holder.grandTotalAmount.setText(MessageFormat.format("Exp Amount: NGN{0}", String.format("%.2f", skyLightPackage.getPackageTotalAmount())));
         holder.packageAmount.setText(MessageFormat.format("Package Amount: NGN{0}", String.format("%.2f", skyLightPackage.getRecordAmount())));
         //holder.packageID.setText(MessageFormat.format("ID:{0}", String.valueOf(skyLightPackage.getPackageId())));
         holder.status.setText(MessageFormat.format("Status:{0}", skyLightPackage.getPackageStatus()));
@@ -107,19 +107,19 @@ public class PackageDetailAdapter extends RecyclerView.Adapter<PackageDetailAdap
         holder.profileManager.setText(MessageFormat.format("Manager:{0}", String.valueOf(skyLightPackage.getRecordProfile())));
 
 
-        if (skyLightPackage.getSkylightPackage() == SkyLightPackage.SkylightPackage_Type.SAVINGS) {
+        if (skyLightPackage.getPackageType().equalsIgnoreCase("Savings")) {
             holder.ImageIcon.setImageResource(R.drawable.shape_rect_1);
             holder.packageType.setText(MessageFormat.format("Savings: {0}", skyLightPackage.getSavings()));
             holder.packageAmount.setTextColor(Color.RED);
-        } else if (skyLightPackage.getSkylightPackage() == SkyLightPackage.SkylightPackage_Type.ITEM_PURCHASE) {
+        } else if (skyLightPackage.getPackageType().equalsIgnoreCase("Item Purchase")) {
             holder.ImageIcon.setImageResource(R.drawable.shape_rect_4);
             holder.packageType.setText(MessageFormat.format("Item Purchase: {0}", skyLightPackage.getPackageName()));
             holder.packageAmount.setTextColor(Color.BLUE);
-        } else if (skyLightPackage.getSkylightPackage() == SkyLightPackage.SkylightPackage_Type.BORROWING) {
+        } else if (skyLightPackage.getPackageType().equalsIgnoreCase("Investment")) {
             holder.ImageIcon.setImageResource(R.drawable.shape_rect_7);
             holder.packageType.setVisibility(View.GONE);
             holder.packageAmount.setTextColor(android.R.color.holo_green_dark);
-        }else if (skyLightPackage.getSkylightPackage() == SkyLightPackage.SkylightPackage_Type.PROMO) {
+        }else if (skyLightPackage.getPackageType().equalsIgnoreCase("Promo")) {
             holder.ImageIcon.setImageResource(R.drawable.shape_layer_3);
             holder.packageType.setVisibility(View.GONE);
             holder.packageAmount.setTextColor(android.R.color.holo_red_dark);

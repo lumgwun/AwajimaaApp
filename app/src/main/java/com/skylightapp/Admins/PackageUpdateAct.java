@@ -218,7 +218,7 @@ public class PackageUpdateAct extends AppCompatActivity {
         }
         if(skyLightPackage !=null){
             packageId=skyLightPackage.getRecordPackageId();
-            customerID=skyLightPackage.getDocCustomer().getCusUID();
+            customerID=skyLightPackage.getPackageCustomer().getCusUID();
         }
     }
     public void deletePackage(){

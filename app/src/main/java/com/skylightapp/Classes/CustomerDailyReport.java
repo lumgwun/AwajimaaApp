@@ -132,7 +132,7 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
 
         // Date of birthday in millis.
         if (json.has(JSON_DATE)) {
-            recordDate = String.valueOf(new Date());
+            recordDate = valueOf(new Date());
             recordDate =json.getString(JSON_DATE);
         }
         // year
@@ -143,7 +143,7 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
 
         // UID
         if (json.has(JSON_UID)) {
-            recordSerialNumber = String.valueOf(Integer.parseInt(json.getString(JSON_UID)));
+            recordSerialNumber = valueOf(Integer.parseInt(json.getString(JSON_UID)));
         }
 
     }
@@ -173,7 +173,7 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
     }
 
     public CustomerDailyReport(int recordCount, int customerID, String recordCustomerName, int packageID, int reportID, double savingsAmount, int recordNumberOfDays, double totalAmountSum, int daysRemaining, double recordAmountRemaining, String reportDate, String recordStatus) {
-        this.recordSerialNumber = String.valueOf(recordCount);
+        this.recordSerialNumber = valueOf(recordCount);
         this.recordCustomerID =customerID;
         this.recordPackageId =packageID;
         this.recordID =reportID;
@@ -192,10 +192,10 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
         //String[] whereArgs = new String[]{String.valueOf(packageID)};
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        try (Cursor cursor = db.rawQuery("SELECT SUM(" + REPORT_AMOUNT + ") as Total FROM " + DAILY_REPORT_TABLE, new String[]{" WHERE PACKAGE_ID=?",String.valueOf(packageID)})) {
+        try (Cursor cursor = db.rawQuery("SELECT SUM(" + REPORT_AMOUNT + ") as Total FROM " + DAILY_REPORT_TABLE, new String[]{" WHERE PACKAGE_ID=?", valueOf(packageID)})) {
 
             if (cursor.moveToFirst()) {
-                return Double.parseDouble(String.valueOf(cursor.getCount()));
+                return Double.parseDouble(valueOf(cursor.getCount()));
 
 
             }
@@ -211,7 +211,7 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
                 new String[]{valueOf(packageID)})) {
 
             if (cursor.moveToFirst()) {
-                return Integer.parseInt(String.valueOf(cursor.getCount()));
+                return Integer.parseInt(valueOf(cursor.getCount()));
 
 
             }
@@ -232,7 +232,7 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
                 new String[]{valueOf(packageID)})) {
 
             if (cursor.moveToFirst()) {
-                return Integer.parseInt(String.valueOf(cursor.getCount()));
+                return Integer.parseInt(valueOf(cursor.getCount()));
 
 
             }
@@ -258,7 +258,7 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
                 new String[]{valueOf(customerID)})) {
 
             if (cursor.moveToFirst()) {
-                return Integer.parseInt(String.valueOf(cursor.getCount()));
+                return Integer.parseInt(valueOf(cursor.getCount()));
 
 
             }
@@ -283,7 +283,7 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
                 new String[]{valueOf(customerID)})) {
 
             if (cursor.moveToFirst()) {
-                return Double.parseDouble(String.valueOf(cursor.getCount()));
+                return Double.parseDouble(valueOf(cursor.getCount()));
 
 
             }
@@ -330,7 +330,7 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
 
 
     public CustomerDailyReport(int Package_ID, int reportID, int recordProfileId, int recordCustomerID, String date, double recordAmount, int numberOfDay, double total, double amount_collected_so_far, double recordAmountRemaining, int daysRemaining, String recordStatus) {
-        this.recordSerialNumber = String.valueOf(reportID);
+        this.recordSerialNumber = valueOf(reportID);
         //this.recordAmount = recordAmount;
         this.recordPackageId = Package_ID;
         this.recordNumberOfDays = numberOfDay;
@@ -343,7 +343,7 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
         this.recordAmountRemaining = recordAmountRemaining;
     }
     public CustomerDailyReport(int recordProfileId, int recordCustomerID, int id, double recordAmount, int numberOfDay, double total, int daysRemaining, double recordAmountRemaining, String date, String recordStatus) {
-        this.recordSerialNumber = String.valueOf(id);
+        this.recordSerialNumber = valueOf(id);
         //this.recordAmount = recordAmount;
         this.recordNumberOfDays = numberOfDay;
         this.recordAmount = total;
@@ -362,7 +362,7 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
     }
 
     public CustomerDailyReport(int recordProfileId, int recordCustomerID, int recordPackageId, int reportId, double recordAmount, int recordNumberOfDays, double total, String reportDate, int recordRemainingDays, double recordAmountRemaining, String recordStatus) {
-        this.recordSerialNumber = String.valueOf(recordPackageId);
+        this.recordSerialNumber = valueOf(recordPackageId);
         //this.recordAmount = recordAmount;
         this.recordPackageId = recordPackageId;
         this.recordNumberOfDays = recordNumberOfDays;
@@ -419,12 +419,12 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
     }
 
     public String getUID() {
-        String uid = String.valueOf(this.recordSerialNumber);
+        String uid = valueOf(this.recordSerialNumber);
         if (uid.isEmpty()) {
             uid = UUID.randomUUID().toString();
             setUID(uid);
         }
-        return String.valueOf(recordSerialNumber);
+        return valueOf(recordSerialNumber);
     }
 
     public void setUID(String uID) {
@@ -652,7 +652,7 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
 
     public void setRecordDate(Date recordDate)
     {
-        this.recordDate = String.valueOf(recordDate);
+        this.recordDate = valueOf(recordDate);
     }
 
     public Double getRecordAmount()
@@ -963,5 +963,13 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
 
     public void setRecordOfficeBranch(String recordOfficeBranch) {
         this.recordOfficeBranch = recordOfficeBranch;
+    }
+
+    public String getRecordStatus() {
+        return recordStatus;
+    }
+
+    public void setRecordStatus(String recordStatus) {
+        this.recordStatus = recordStatus;
     }
 }

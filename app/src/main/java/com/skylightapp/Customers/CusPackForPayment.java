@@ -75,7 +75,7 @@ public class CusPackForPayment extends AppCompatActivity implements PackageRecyc
                                 skyLightPackage=paymentBundle.getParcelable("SkyLightPackage");
                                 amountSoFar=paymentBundle.getDouble("REPORT_AMOUNT_COLLECTED_SO_FAR");
                                 amountRem=paymentBundle.getDouble("REPORT_AMOUNT_REMAINING");
-                                grandTotal=skyLightPackage.getGrandTotal();
+                                grandTotal=skyLightPackage.getPackageTotalAmount();
                                 packageID=paymentBundle.getInt(PACKAGE_ID);
                             }
                             if(amountSoFar==grandTotal){
@@ -289,12 +289,12 @@ public class CusPackForPayment extends AppCompatActivity implements PackageRecyc
         if(skyLightPackage !=null){
             packageID = skyLightPackage.getRecordPackageId();
             double amountContributedSoFar = skyLightPackage.getPackageAmount_collected();
-            grandTotal = skyLightPackage.getGrandTotal();
+            grandTotal = skyLightPackage.getPackageTotalAmount();
             double packageAmount=skyLightPackage.getPackageDailyAmount();
             account = skyLightPackage.getAccount();
             long acctID=account.getSkyLightAcctNo();
             String status=skyLightPackage.getPackageStatus();
-            customer = skyLightPackage.getDocCustomer();
+            customer = skyLightPackage.getPackageCustomer();
             long customerID=customer.getCusUID();
             double amtRem = skyLightPackage.getRecordAmountRemaining();
             int daysRem = skyLightPackage.getRecordRemainingDays();

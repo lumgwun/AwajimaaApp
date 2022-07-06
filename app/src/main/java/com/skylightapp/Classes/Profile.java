@@ -1364,13 +1364,7 @@ public class Profile extends User implements Parcelable, Serializable, BaseColum
 
 
     }
-    @Ignore
-    public void addSavings(int  profileId, int  customerId, int id, double amount, int numberOfDay, double total, int daysRemaining, double amountRemaining, String date, String status) {
-        dailyReports= new ArrayList<>();
-        String savingsCount = "C" + (dailyReports.size() + 1);
-        CustomerDailyReport customerDailyReport = new CustomerDailyReport(profileId,customerId, id, amount,numberOfDay,total,daysRemaining,amountRemaining,date,status);
-        dailyReports.add(customerDailyReport);
-    }
+
     @Ignore
     public void addSavings(int profileId, int customerId, int newRecordID, double packageAmount, int numberOfDaysConverted, double totalForTheDay, int newNumberOfDaysRem, double newAmountRemaining, String reportDate, String status) {
         dailyReports= new ArrayList<>();

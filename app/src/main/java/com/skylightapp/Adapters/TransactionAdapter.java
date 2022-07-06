@@ -195,7 +195,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         holder.packageID.setText(MessageFormat.format("Package ID: {0}-{1}-{2}", skyLightPackage.getRecordPackageId(), skyLightPackage.getPackageDuration(), skyLightPackage.getPackageDateStarted()));
         holder.savingsID.setText(MessageFormat.format("Savings ID: {0}", customerDailyReport.getUID()));
         holder.noOfDays.setText(MessageFormat.format("No. of Days: {0}", customerDailyReport.getRecordNumberOfDays()));
-        holder.status.setText(MessageFormat.format("Status: {0}", customerDailyReport.getDocStatus()));
+        holder.status.setText(MessageFormat.format("Status: {0}", customerDailyReport.getRecordStatus()));
 
         holder.txtTransactionTitle.setText(MessageFormat.format("{0} - {1}", transaction.getTransactionType().toString(), transaction.getTransactionID()));
         if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.PAYMENT) {
@@ -214,7 +214,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         holder.switchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 holder.status.setText("Approved");
-                applicationDb.updateTransactionStatus((customerDailyReport.getDocStatus()),transaction);
+                applicationDb.updateTransactionStatus((customerDailyReport.getRecordStatus()),transaction);
 
             } else {
                 holder.status.setText("Not approved");

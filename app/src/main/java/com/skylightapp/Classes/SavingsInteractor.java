@@ -232,7 +232,7 @@ public class SavingsInteractor {
                         dailyReport.setRecordAmount(Double.parseDouble((String) mapObj.get("amount")));
                         dailyReport.setRecordNumberOfDays(Integer.parseInt((String) mapObj.get("numberOfDays")));
                         dailyReport.setRecordSavingsDoc(Uri.parse((String) mapObj.get("imagePath")));
-                        dailyReport.setTotal(Double.parseDouble((String) mapObj.get("total")));
+                        dailyReport.setRecordAmount(Double.parseDouble((String) mapObj.get("total")));
                         dailyReport.setRecordDate(String.valueOf(createdDate));
                         dailyReport.setRecordAmountRemaining(Double.parseDouble((String) mapObj.get("amountRemaining")));
                         /*if (mapObj.containsKey("commentsCount")) {

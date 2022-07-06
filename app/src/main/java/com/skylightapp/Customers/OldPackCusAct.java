@@ -406,7 +406,7 @@ public class OldPackCusAct extends AppCompatActivity {
                 try {
                     oldPackageId=selectedPackage.getRecordPackageId();
                     packageDuration = selectedPackage.getPackageDuration();
-                    grandTotal = selectedPackage.getGrandTotal();
+                    grandTotal = selectedPackage.getPackageTotalAmount();
                     packageCount = customerDailyReport.getPackageCount(oldPackageId);
                     savingsAmount = selectedPackage.getPackageDailyAmount();
                     daysRemaining = selectedPackage.getRecordRemainingDays();
