@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:theme="@style/NoActionBarTheme"
+    android:background="@drawable/rect_their_message"
+    tools:context="com.skylightapp.Customers.CusLoanRepaymentAct">
+    <com.github.florent37.shapeofview.shapes.ArcView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:elevation="5.0dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="15dp"
+        app:shape_arc_cropDirection="inside"
+        app:shape_arc_height="15dp"
+        app:shape_arc_position="bottom">
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:background="@drawable/rect6g"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:textStyle="bold"
+                app:titleMarginStart="100dp"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal"
+                app:title="Skylight Loan Repayment"
+                android:textAlignment="center"
+                app:titleTextColor="@color/colorPrimaryDark"
+                android:layout_height="100dp"/>
+        </com.google.android.material.appbar.AppBarLayout>
+
+    </com.github.florent37.shapeofview.shapes.ArcView>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_marginStart="10dp"
+                android:gravity="center_horizontal"
+                android:text="Select the Loan to repay"
+                android:layout_height="wrap_content"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spn_loan"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:padding="20dp"
+                android:drawableStart="@drawable/ic_icon_foreground"
+                android:textColorHint="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:layout_gravity="center_vertical|start"
+                android:gravity="center_vertical|start"
+                android:clickable="false" />
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/loanBalance"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:paddingLeft="2dp"
+                android:focusable="true"
+                android:textSize="15sp"
+                android:drawableStart="@drawable/ic_icon_foreground"
+                android:hint="Loan Balance"
+                android:textStyle="bold"
+                android:textColorHint="@color/colorPrimaryDark"
+                android:gravity="center_vertical|start"
+                android:clickable="false"
+                android:layout_gravity="center_vertical|start"
+                android:background="@null" />
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/amountToRepay"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:paddingLeft="2dp"
+                android:focusable="true"
+                android:textSize="15sp"
+                android:drawableStart="@drawable/ic_icon_foreground"
+                android:hint="Amount to repay"
+                android:textStyle="bold"
+                android:textColorHint="@color/colorPrimaryDark"
+                android:gravity="center_vertical|start"
+                android:clickable="false"
+                android:layout_gravity="center_vertical|left"
+                android:background="@null" />
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:gravity="end"
+            android:layout_gravity="end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:weightSum="1"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:text="Pay Now"
+                    android:textSize="20sp"
+                    android:padding="20dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:textStyle="bold"
+                    android:id="@+id/loanPayNow"
+                    android:textColor="@color/black"
+                    android:background="@drawable/shape_rect12"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="2dp"
+        android:gravity="end"
+        android:layout_gravity="end"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        app:cardPreventCornerOverlap="false"
+        app:contentPadding="0dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:text="Powered By Lumgwun Solutions"
+            android:textSize="20sp"
+            android:padding="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textStyle="italic"
+            android:id="@+id/poweredBy"
+            android:textColor="@color/black"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"/>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

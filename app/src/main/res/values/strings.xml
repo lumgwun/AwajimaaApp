@@ -1,0 +1,1220 @@
+<resources>
+    <string name="app_name">Our Coop. App</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <string name="messages_header">Messages</string>
+
+    <string name="sync_header">Sync</string>
+
+    <string name="signature_title">Your signature</string>
+    <string name="google_api_key33">AIzaSyD-wXTX8DBPhyESIeVjaGTLCclr8eculzM</string>
+
+    <string name="reply_title">Default reply action</string>
+
+    <string name="title_home">Home</string>
+    <string name="duration_minutes_shortest">%1$d m</string>
+    <string name="duration_hours_shortest">%1$d h</string>
+    <string name="duration_days_shortest">%1$d d</string>
+    <string name="duration_week_shortest">%1$d w</string>
+    <string name="add_geofences">Add geofences</string>
+    <string name="remove_geofences">Remove geofences</string>
+
+    <string name="geofences_added">Geofences added</string>
+    <string name="geofences_removed">Geofences removed</string>
+
+    <!-- Error strings -->
+    <string name="geofence_not_available">Geofence service is not available now</string>
+    <string name="geofence_too_many_geofences">Your app has registered too many geofences</string>
+    <string name="geofence_too_many_pending_intents">
+        You have provided too many PendingIntents to the addGeofences() call
+    </string>
+    <string name="unknown_geofence_error">
+        Unknown error: the Geofence service is not available now
+    </string>
+    <string name="geofence_transition_invalid_type">
+        Geofence transition error: invalid transition type %1$d
+    </string>
+
+    <!-- Transition type strings -->
+    <string name="geofence_transition_entered">Entered</string>
+    <string name="geofence_transition_exited">Exited</string>
+    <string name="unknown_geofence_transition">Unknown Transition</string>
+
+    <string name="geofence_transition_notification_text">
+        Click notification to return to app
+    </string>
+
+    <string name="insufficient_permissions">Insufficient permissions.</string>
+    <string name="permission_rationale">Location permission is needed for core functionality</string>
+    <string name="permission_denied_explanation">Permission was denied, but is needed for core
+        functionality.</string>
+    <string name="settings">Settings</string>
+    <string name="ok">OK</string>
+
+    <string name="request_updates">Request updates</string>
+    <string name="remove_updates">Remove updates</string>
+    <string name="unknown_location">Unknown location</string>
+
+    <string name="batched_location_updates">Batched location updates</string>
+
+    <plurals name="num_locations_reported">
+        <item quantity="zero">No location reported</item>
+        <item quantity="one">One location reported</item>
+        <item quantity="other">%d locations reported</item>
+    </plurals>
+
+    <string name="title_dashboard">Dashboard</string>
+
+    <string name="title_notifications">Notifications</string>
+
+    <string name="title_activity_drawer_menu">DrawerMenuActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="nav_header_title">Pay small, small</string>
+
+    <string name="nav_header_subtitle">to achieve Big things</string>
+
+    <string name="nav_header_desc">Navigation header</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="accountAdded">The account has been added</string>
+
+    <string name="back">Go back</string>
+
+    <string name="not_available">Not available</string>
+
+    <string name="user">User</string>
+
+    <string name="profile_desc">Ezekiel, Gwun-orene Rufus, a Lead Creator, Investment Consultant, and the Group CEO of the Lumgwun Solutions</string>
+
+    <string name="profile_title">Mr Bean</string>
+
+    <string name="posts">posts</string>
+
+    <string name="followers">followers</string>
+
+    <string name="following">following</string>
+
+    <string name="msg_error_unable_select_profile_pic">Unable to set profile image. Please try again!</string>
+
+    <string name="lbl_set_profile_photo">Set profile image</string>
+
+    <string name="lbl_take_camera_picture">Take a picture</string>
+
+    <string name="lbl_choose_from_gallery">Choose from gallery</string>
+
+    <string name="toast_image_intent_null">Image picker option is missing!</string>
+
+    <!-- font families -->
+
+
+    <string name="font_family_light">sans-serif-light</string>
+
+    <string name="font_family_medium">sans-serif-medium</string>
+
+    <string name="font_family_regular">sans-serif</string>
+
+    <string name="font_family_condensed">sans-serif-condensed</string>
+
+    <string name="font_family_black">sans-serif-black</string>
+
+    <string name="font_family_thin">sans-serif-thin</string>
+
+    <string name="dialog_permission_title">Grant Permissions</string>
+
+    <string name="dialog_permission_message">This app needs permission to use this feature. You can grant them in app settings.</string>
+
+    <string name="go_to_settings">GOTO SETTINGS</string>
+
+    <string name="reminder_set">Date reminder set</string>
+
+    <string name="reminder_canceled">Date reminder cancelled</string>
+
+    <string name="date_today">Date today</string>
+
+    <string name="date_tomorrow">Date tomorrow</string>
+
+    <string name="date_yesterday">Date yesterday</string>
+
+    <string name="date_week">Date is a week from now</string>
+
+    <string name="date_2_week">Date is a 2 weeks from now</string>
+
+    <string name="date_days">Date days </string>
+
+    <string name="loading1">Loading... </string>
+
+    <string name="date">Date </string>
+
+    <string name="accountSid">SK0bf25b7e113908fb03287c9736f41922 </string>
+
+    <string name="authToken">Date </string>
+
+    <string name="decline">decline</string>
+
+    <string name="promptPhoneNo">Enter Phone Number</string>
+
+    <string name="phoneUpdated"> Phone Number updated</string>
+
+    <string name="invalidPhoneNo">Invalid Phone Number</string>
+
+    <string name="invalidAddress">Invalid Address</string>
+
+    <string name="addressUpdated">Address Updated</string>
+
+    <string name="passwordUpdated">password Updated</string>
+
+    <string name="passwordinvalid">Password Invalid</string>
+
+    <string name="transferCompleted">Transfer Completed</string>
+
+    <string name="transferFailed">Transfer Failed</string>
+
+    <string name="promptUserId">User ID</string>
+
+    <string name="check">Check</string>
+
+    <string name="totalBalance">Total Balance</string>
+
+    <string name="seeSpecificMessage">See specific message</string>
+
+    <string name="inputMessageId">Input user ID</string>
+
+    <string name="noAccess">No Access</string>
+
+    <string name="userID">User ID</string>
+
+    <string name="userName">User Name</string>
+
+    <string name="interestUpdated">Interest Updated</string>
+
+    <string name="interestNotUpdated">Interest not updated</string>
+
+    <string name="tellerPromoted">Teller Promoted</string>
+
+    <string name="tellerNotPromoted">Teller Not Promoted</string>
+
+    <string name="notTeller">Not Teller</string>
+
+    <string name="UserAddress">User Address</string>
+
+    <string name="cantLeaveMessage">Can not leave a message</string>
+
+    <string name="messageLeft">Message sent</string>
+
+    <string name="userAddress">User Address</string>
+
+    <string name="userPhone">User Phone</string>
+
+    <string name="noCurrentUser">No current User</string>
+
+    <string name="noPaymentDocument">No payment Document</string>
+
+    <string name="transactionFailed">Transaction failed</string>
+
+    <string name="withdrawWithWorker">Withdraw with a Teller</string>
+
+    <string name="menu_settings">Settings</string>
+
+    <string name="invalidName">invalid Name</string>
+
+    <string name="nameUpdated">Name updated</string>
+
+    <string name="accountType">Account Type</string>
+
+    <string name="interestAdded">Interest added</string>
+
+    <string name="idPrefix">Message Id:</string>
+
+    <string name="interestNotAdded">Interest not added</string>
+
+    <string name="accountBalance">Account Balance</string>
+
+    <string name="no_accounts">No accounts</string>
+
+    <string name="accountName">No Name</string>
+
+    <string name="balance">Balance</string>
+
+    <string name="accountId">Account ID</string>
+
+    <string name="acct_no">Account No:</string>
+
+    <string name="bank">Account ID</string>
+
+    <string name="customerSet">Set Customer</string>
+
+    <string name="insufficientFunds">Settings</string>
+
+    <string name="loan_amount_prompt">Loan amount: </string>
+
+    <string name="interest_rate_prompt">Interest rate: </string>
+
+    <string name="loan_period_prompt">Months: </string>
+
+    <string name="loan_button_text">Calculate Payments</string>
+
+    <string name="monthly_payment_prompt">Monthly payment: </string>
+
+    <string name="total_payments_prompt">Total payments: </string>
+
+    <string name="next">NEXT</string>
+
+    <string name="skip">SKIP</string>
+
+    <string name="start">GOT IT</string>
+
+    <string name="now_playing">Now Playing</string>
+
+    <string name="upcoming">Upcoming</string>
+
+    <string name="dummy_card">0000 0000 0000</string>
+
+    <string name="card_expiry">Card Expiry</string>
+
+    <string name="card_cvv">CVV</string>
+
+    <string name="payment_prompt">Enter your card details to complete the payment</string>
+
+    <string name="make_payment">Make Payment</string>
+
+    <string name="payment_successful">Payment Successful!</string>
+
+    <string name="payment_successful_icon">Payment Successful Icon</string>
+
+    <string name="continue_prompt">Continue</string>
+
+    <string name="slide_1_title">Our Cooperative  welcomes you to Our Business App!</string>
+
+    <string name="slide_1_desc">With Our Coop App , your save small, small to achieve big things for your life.</string>
+
+    <string name="slide_2_title">Our plans</string>
+
+    <string name="slide_2_desc">We have savings plan,Item purchase,Promo packages,Investment and Lending Services.</string>
+
+    <string name="Add_New">Add New</string>
+
+    <string name="edit">Edit Contact</string>
+
+    <string name="delete">Delete Contact</string>
+
+    <string name="title_activity_display_contact">DisplayContact</string>
+
+    <string name="name">Name</string>
+
+    <string name="phone">Phone</string>
+
+    <string name="email">Email</string>
+
+    <string name="street">Street</string>
+
+    <string name="country">City/State/Zip</string>
+
+    <string name="save">Save Contact</string>
+
+    <string name="deleteContact">Are you sure, you want to delete it.</string>
+
+    <string name="yes">Yes</string>
+
+    <string name="no">No</string>
+
+    <string name="menu_home">Home</string>
+
+    <string name="menu_gallery">Gallery</string>
+
+    <string name="menu_slideshow">Slideshow</string>
+
+    <string name="title_item_list">Items</string>
+
+    <string name="title_item_detail">Item Detail</string>
+
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+
+    <string name="incorrect_login">Incorrect Username or Password</string>
+
+    <string name="account_success">Account Successfully Created</string>
+
+    <string name="account_cancelled">Account Creation Cancelled</string>
+
+    <string name="welcome">Welcome,</string>
+
+    <string name="username">Username</string>
+
+    <string name="password">Password</string>
+
+    <string name="login">Login</string>
+
+    <string name="no_account">Don\'t have a profile?</string>
+
+    <string name="create_acc">Create a Profile</string>
+
+    <string name="help">Need help?</string>
+
+    <string name="create_account">Create Profile</string>
+
+    <string name="cancel">Cancel</string>
+
+    <string name="first_name">First Name</string>
+
+    <string name="last_name">Last Name</string>
+
+    <string name="password_confirm">Confirm Password</string>
+
+    <string name="remember">Remember Credentials</string>
+
+    <string name="fields_blank">You have left one or more fields blank</string>
+
+    <string name="password_mismatch">You did not confirm your password properly</string>
+
+    <string name="accounts">Accounts</string>
+
+    <string name="happy">Happy</string>
+
+    <string name="good_evening">Good evening</string>
+
+    <string name="good_afternoon">Good afternoon</string>
+
+    <string name="good_morning">Good morning</string>
+
+    <string name="dashboard">BANKING DASHBOARD</string>
+
+    <string name="account_overview">Account Overview</string>
+
+    <string name="create_initial_account">Create Initial Account</string>
+
+    <string name="account_name">Account name</string>
+
+    <string name="account_amount">Initial Account Deposit</string>
+
+    <string name="make_a_transfer">Make a Transfer</string>
+
+    <string name="make_a_payment">Make a Payment</string>
+
+    <string name="about">About</string>
+
+    <string name="account_no">Account no:</string>
+
+    <string name="acc_overview">ACCOUNTS OVERVIEW</string>
+
+    <string name="view_account_details">View Account Details</string>
+
+    <string name="add_new_acc">Open new Account</string>
+
+    <string name="acc_saved_successfully">Account successfully added</string>
+
+    <string name="account_name_error">You already have an account with that name</string>
+
+    <string name="account_page_title">ACCOUNT</string>
+
+    <string name="transactions_title">TRANSACTIONS</string>
+
+    <string name="no_transaction_msg">You havn\'t made any transactions with this account yet</string>
+
+    <string name="payments">Payments</string>
+
+    <string name="transfers">Transfers</string>
+
+    <string name="payments_title">PAYMENTS</string>
+
+    <string name="select_acc_pay_from">Select an Account to Pay from</string>
+
+    <string name="txt_no_payees_msg">You do not have any Payees. Add one below</string>
+
+    <string name="select_payee_msg">Select a Payee</string>
+
+    <string name="add_payee_btn_txt">Add a Payee</string>
+
+    <string name="amount_for_payee">Amount</string>
+
+    <string name="add_payee_name">Payee Name</string>
+
+    <string name="confirm_payee_addition">Confirm Payee Addition</string>
+
+    <string name="make_payment_btn_msg">Make Payment</string>
+
+    <string name="account_name_exceeds_char">Account names must not exceed 10 characters</string>
+
+    <string name="balance_less_than_ten">The deposit must be more than $10</string>
+
+    <string name="acc_fields_incomplete">You have not completed the account fields</string>
+
+    <string name="str_transfers_title">TRANSFERS</string>
+
+    <string name="str_from_acc_msg">Select Sending Account</string>
+
+    <string name="str_to_acc_msg">Select Receiving Account</string>
+
+    <string name="str_transfer_amount">Transfer Amount</string>
+
+    <string name="str_confirm_transfer">Confirm Transfer</string>
+
+    <string name="no_second_acc_msg">You do not have another account to transfer to. Create another account to make a transfer</string>
+
+    <string name="str_no_payments_msg">You have not made any payments with this account yet</string>
+
+    <string name="str_no_transfers">You have not made any transfers with this account yet</string>
+
+    <string name="str_deposit_amount">Deposit Amount</string>
+
+    <string name="str_make_deposit_btn_text">Make Deposit</string>
+
+    <string name="str_make_deposit_btn">Make a Deposit</string>
+
+    <string name="logout">Logout</string>
+
+    <string name="about_str_title">ABOUT</string>
+
+    <string name="str_profile_info_title">PROFILE INFORMATION</string>
+
+    <string name="str_save_to_file">Save Profile to File</string>
+
+    <string name="str_developer_info_title">DEVELOPER INFO</string>
+
+    <string name="str_dev_name">Developer Name: Mike Banks</string>
+
+    <string name="str_view_portfolio">View Developer Portfolio</string>
+    -
+
+    -
+    <string-array name="days">
+
+        <item>Sunday</item>
+
+        <item>Monday</item>
+
+        <item>Tuesday</item>
+
+        <item>Wednesday</item>
+
+        <item>Thursday</item>
+
+        <item>Friday</item>
+
+        <item>Saturday</item>
+
+    </string-array>
+
+    <string name="NGN100">PLN_7a68u87sf82tequ</string>
+
+    <string name="NGN200">PLN_bidgljk0jkttcun</string>
+
+    <string name="NGN300">PLN_we9uamjg2cou61f</string>
+
+    <string name="NGN400">PLN_5nwocouerl5wr4c</string>
+
+    <string name="NGN500">PLN_8kwxhsbh4uzuop7</string>
+
+    <string name="NGN600">PLN_lgnrdm52af1yxju</string>
+
+    <string name="NGN700">PLN_gk1nuhkl35ydc78</string>
+
+    <string name="NGN800">PLN_uza5ybhbfd6hd16</string>
+
+    <string name="NGN900">PLN_nfqhf85fsrkjsk7</string>
+
+    <string name="NGN1000">PLN_ajzjootxd8n0cyq</string>
+
+    <string name="NGN2000">PLN_465h8pgoasfqtpb</string>
+
+    <string name="NGN3000">PLN_cxb3ga5tafenblj</string>
+
+    <string name="NGN4000">PLN_i27n2n8nm9j9wq3</string>
+
+    <string name="NGN5000">PLN_3h4hh1br0cq379q</string>
+
+    <string name="NGN6000">PLN_4oercyvxp5pqz6j</string>
+
+    <string name="NGN7000">PLN_rvcq5fklkq139nv</string>
+
+    <string name="NGN8000">PLN_lsxji4v5vu48nid</string>
+
+    <string name="NGN9000">PLN_t5flz7glflan6xl</string>
+
+    <string name="NGN10000">PLN_7bagsr340d07lfo</string>
+
+    <string name="NGN20000">PLN_d4iqpj6gig9t794</string>
+
+    <string name="NGN30000">PLN_le1o0yjn81phtj3</string>
+
+    <string name="NGN40000">PLN_pee8gg5qxnn6b4o</string>
+
+    <string name="NGN50000">PLN_5eb1jin32gtyd3j</string>
+
+    <string name="NGN60000">PLN_uv5rr2nrbrnehjm </string>
+
+    <string name="NGN70000">PLN_x3to9thvzcoken9</string>
+
+    <string name="NGN80000">PLN_y48hzpu0defas04 </string>
+
+    <string name="NGN90000">PLN_kbx89x7e1xhid1x </string>
+
+    <string name="NGN100000">PLN_nzquar3etkqj1z0</string>
+
+    <string name="NGN200000">PLN_cikv8tejkbcong5</string>
+
+    <string name="NGN300000">PLN_fgi2nbk8sb3lxq8</string>
+
+    <string name="NGN400000">PLN_91jgxff5h776sz5</string>
+
+    <string name="NGN500000">PLN_anqxrlbz9vycvp8</string>
+
+    <string name="NGN600000">PLN_2fg2148qsnfkkb7</string>
+
+    <string name="NGN700000">PLN_3l6xta3oyp81hs4</string>
+
+    <string name="NGN800000">PLN_ar5qwhftlsj30gu</string>
+
+    <string name="NGN900000">PLN_jb0dlurogwenvy2</string>
+
+    <string name="NGN1000000">PLN_gl1rznlctd8pws9</string>
+
+    <string name="NGN10000000">PLN_ea9f0pa5j3ujxxk</string>
+    -
+
+    -
+    <string-array name="transaction_filters">
+
+        <item>All</item>
+
+        <item>Payments</item>
+
+        <item>Transfers</item>
+
+        <item>Deposits</item>
+
+    </string-array>
+    -
+
+    -
+    <string-array name="date_filters">
+
+        <item>Old - New</item>
+
+        <item>New - Old</item>
+
+    </string-array>
+
+    <string name="title_activity_store_manager">FullscreenActivity</string>
+
+    <string name="dummy_button">Dummy Button</string>
+
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="crash_toast_text">Crash report</string>
+
+    <string name="email_developer_">Lumgwunsolutions@gmail.com</string>
+
+    <string name="title_changelog">Title changing</string>
+
+    <string name="changelog_close">Change log closed</string>
+
+    <string name="contact_us">Contact Us</string>
+
+    <string name="marketer">Marketer</string>
+
+    <string name="admin">Admin</string>
+
+    <string name="title_dashboarditem_list">Items</string>
+
+    <string name="title_dashboarditem_detail">DashboardItem Detail</string>
+
+    <string name="internet_connection_failed">Please, check your internet connection</string>
+
+    <string name="button_ok">OK</string>
+
+    <string name="loading">result loading</string>
+
+    <string name="title_activity_sign_up_in_tab">SignUpInTabActivity</string>
+
+    <string name="tab_text_1">Tab 1</string>
+
+    <string name="tab_text_2">Tab 2</string>
+
+    <string name="or">or</string>
+
+    <string name="google">Google</string>
+
+    <string name="facebook">Facebook</string>
+
+    <string name="or_sign_up_with">or Sign up with;</string>
+
+    <string name="error_invalid_email">Check point, invalid email address!</string>
+
+    <string name="error_field_required">Error! one or more field required!</string>
+
+    <string name="error_invalid_password">invalid Skylight passcode</string>
+
+    <string name="skylight_packages">SkyLight Packages</string>
+
+    <string name="pref_theme_key_elelenwo">Elelenwo</string>
+
+    <string name="pref_theme_key_unyeada">Unyeada</string>
+
+    <string name="pref_theme_key_okoroete">Okoroete</string>
+
+    <string name="customer_already_added">Customer has been registered before</string>
+
+    <string name="added">Customer has been added</string>
+
+    <string name="deleted">Deleted</string>
+
+    <string name="notification_title">Notification title</string>
+
+    <string name="notification_title1">Skylight Date Notifier</string>
+
+    <string name="pref_vibrate_key">Vibrate for Skylight</string>
+
+    <string name="pref_vibrate_key1">Vibrate to Remind Skylight</string>
+
+    <string name="pref_sound_key">Allow sound</string>
+
+    <string name="pref_sort_by_key">Customer sorting method</string>
+
+    <string name="reports">Reports</string>
+
+    <string name="pref_theme_key">Prefered theme</string>
+
+    <string name="reminder_for">reminder for</string>
+
+    <string name="days_31">31 Savings day, remaining</string>
+
+    <string name="days_30">30 days remaing</string>
+
+    <string name="days_28">28 days remaining</string>
+
+    <string name="days_29">29 days remaining</string>
+
+    <string name="days_27">27 days remaining</string>
+
+    <string name="days_26">26 days remaining</string>
+
+    <string name="days_25">25 savings days remaining</string>
+
+    <string name="days_24">24 savings days remaining</string>
+
+    <string name="days_23">23 savings days remaining</string>
+
+    <string name="days_22">22 savings days remaining</string>
+
+    <string name="days_21">21 savings days remaining</string>
+
+    <string name="days_20">20 savings days remaining</string>
+
+    <string name="days_19">19 savings days remaining</string>
+
+    <string name="days_18">18 savings days remaining</string>
+
+    <string name="days_17">17 savings days remaining</string>
+
+    <string name="days_16">16 savings days remaining</string>
+
+    <string name="days_15">15 savings days remaining</string>
+
+    <string name="days_14">14 savings days remaining</string>
+
+    <string name="days_13">13 savings days remaining</string>
+
+    <string name="days_12">12 savings days remaining</string>
+
+    <string name="days_11">11 savings days remaining</string>
+
+    <string name="days_10">10 savings days remaining</string>
+
+    <string name="days_9">9 savings days remaining</string>
+
+    <string name="days_8">8 savings days remaining</string>
+
+    <string name="days_7">7 savings days remaining</string>
+
+    <string name="days_6">6 savings days remaining</string>
+
+    <string name="days_5">5 savings days remaining</string>
+
+    <string name="days_4">4 savings days remaining</string>
+
+    <string name="days_3">3 savings days remaining</string>
+
+    <string name="days_2">2 savings days remaining</string>
+
+    <string name="days_1">1 savings day remaining</string>
+
+    <string name="days_0">Savings for this package has been completed</string>
+
+    <string name="error_no_json_dates">Error fetching the item</string>
+
+    <string name="dialog_sign_out_title">Skylight Signout</string>
+
+    <string name="Sign_out_from_skylight">Sign out from your Skylight Account</string>
+
+    <string name="customer">Customer</string>
+
+    <string name="super_admin">Super Admin</string>
+
+    <string name="prompt_password">User Password</string>
+
+    <string name="action_sign_in_short">sign in</string>
+
+    <string name="setCustomer">Set Customer</string>
+
+    <string name="load">Load</string>
+
+    <string name="backup">Back up</string>
+
+    <string name="verifyCheque">Verify Check</string>
+
+    <string name="updateInterest">Update Interest</string>
+
+    <string name="bankBalance">Bank Balance</string>
+
+    <string name="customerBalance">Customer Balance</string>
+
+    <string name="promoteTeller">Promote Customer Manager</string>
+
+    <string name="makeCustomer">Make Customer</string>
+
+    <string name="makeTeller">Make Customer Manager</string>
+
+    <string name="makeAdmin">Make Admin</string>
+
+    <string name="viewCustomers">View Customers</string>
+
+    <string name="viewTellers">View Customer Managers</string>
+
+    <string name="viewAdmins">View Admins</string>
+
+    <string name="seeMessage">See Message</string>
+
+    <string name="userMessages">User Message</string>
+
+    <string name="customerMessages">Customer Messages</string>
+
+    <string name="leaveMessage">Leave a Message</string>
+
+    <string name="closeCustomer">Close Customer</string>
+
+    <string name="updatePassword">Update Password</string>
+
+    <string name="updateAddress">Update Address</string>
+
+    <string name="updateName">Update User Name</string>
+
+    <string name="transferFunds">Transfer Funds</string>
+
+    <string name="updateAge">Update Phone Number</string>
+
+    <string name="updatePhone">Update Phone Number</string>
+
+    <string name="checkBalance">Check Balance</string>
+
+    <string name="makeWithdrawal">Make Withdrawal</string>
+
+    <string name="makeDeposit">Make deposit</string>
+
+    <string name="giveInterest">Give Interest</string>
+
+    <string name="makeAccount">Make Account</string>
+
+    <string name="listAccounts">List Accounts</string>
+
+    <string name="confirm">Confirm</string>
+
+    <string name="promptConfirmPassword">Re-enter password</string>
+
+    <string name="promptPassword">Password</string>
+
+    <string name="promptAddress">Address</string>
+
+    <string name="promptAge">Phone Number</string>
+
+    <string name="firstName">First Name</string>
+
+    <string name="makeUser">Make User</string>
+
+    <string name="promptMarketerId">Customer Managers\' Id</string>
+
+    <string name="messageIds">Message Id</string>
+
+    <string name="promptMessage">Message</string>
+
+    <string name="promptAccountInterest">1.5</string>
+
+    <string name="update">Update</string>
+
+    <string name="promo">Promo</string>
+
+    <string name="Items">Item Purchase</string>
+
+    <string name="savings">Savings</string>
+
+    <string name="restrictedSaving">Restricted Saving</string>
+
+    <string name="tfsa">Investment</string>
+
+    <string name="select_account_to_view_transactions">Select an Account to view Transactions</string>
+
+    <string name="ngn1000">NGN1000</string>
+
+    <string name="setCustomerFirst">Set Customer first!</string>
+
+    <string name="noAccountAccess">no account access</string>
+
+    <string name="invalidId">invalid item</string>
+
+    <string name="closeCustomerSession">close customer\'s session</string>
+
+    <string name="databaseBackedUp">Skylight database backed up</string>
+
+    <string name="databaseBackUpFailed">Skylight database back up failed!</string>
+
+    <string name="databaseLoaded">database loaded</string>
+
+    <string name="databaseNotLoaded">database not loaded</string>
+
+    <string name="totalBankBalance">Total Skylight balance</string>
+
+    <string name="title_activity_admin_tab">AdminTabActivity</string>
+
+    <string name="notAdmin">Not Correct for Admin details</string>
+
+    <string name="notCustomerManager">Not correct for Customer Manager</string>
+
+    <string name="notCustomer">Not correct for a Customer</string>
+
+    <string name="incorrectPassword">Incorrect Password</string>
+
+    <string name="customerManager">Customer Manager</string>
+
+    <string name="open">Open</string>
+
+    <string name="close">Close</string>
+
+    <string name="create_one">Create one</string>
+
+    <string name="cvv">CVV</string>
+
+    <string name="yy">YY</string>
+
+    <string name="expiry_month">Expiry Month</string>
+
+    <string name="expiry">Expiry</string>
+
+    <string name="card_number">Card Number</string>
+
+    <string name="home">Home</string>
+
+    <string name="profile">Profile</string>
+
+    <string name="notifications">Notifications</string>
+
+    <string name="support">Support</string>
+
+    <string name="title_activity_customer_help">CustomerHelpActivity</string>
+
+    <string name="user_notifications">User Notifications</string>
+
+    <string name="user_profile_pixture">User profile pixture</string>
+
+    <string name="my_web">My Web</string>
+
+    <string name="my_accounts">My Accounts</string>
+
+    <string name="borrow_money">Borrow Money</string>
+
+    <string name="my_subscriptions">My Subscriptions</string>
+
+    <string name="my_transactions">My Transactions</string>
+
+    <string name="skylight_shop">Skylight Shop</string>
+
+    <string name="select_an_account">Select an Account to view Transactions</string>
+
+    <string name="add_an_account">Add an Account with the button below</string>
+
+    <string name="account_name_exceeds_12char">Account name exceeded 12 characters</string>
+
+    <string name="title_activity_admin_package_list">AdminPackageListActivity</string>
+
+    <!-- Strings used for fragments for navigation -->
+
+
+    <string name="first_fragment_label">First Fragment</string>
+
+    <string name="second_fragment_label">Second Fragment</string>
+
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string name="off">Off</string>
+
+    <string name="on">On</string>
+
+    <string name="approve">Approve</string>
+
+    <string name="_12_05_2021">12/05/2021</string>
+
+    <string name="john_o">John O.</string>
+
+    <string name="_1006000001">1006000001</string>
+
+    <string name="zenith_bank_plc">Zenith Bank PLC</string>
+
+    <string name="john_o_gmail_com">john.o@gmail.com</string>
+
+    <string name="_070390000000">070390000000</string>
+
+    <string name="ngn10_000">NGN10,000</string>
+
+    <string name="loan_amount">Loan Amount</string>
+
+    <string name="_12_02_2021">12/02/2021</string>
+
+    <string name="date_joined">Date Joined</string>
+
+    <string name="john_onaye">John Onaye</string>
+
+    <string name="loan_application_list">Loan Application List</string>
+
+    <string name="add_a_user">Add a User</string>
+
+    <string name="approve_payment">Approve Payment</string>
+
+    <string name="list_of_customers">List of Customers</string>
+
+    <string name="savings_list">Savings List</string>
+
+    <string name="borrowing_list">Borrowing List</string>
+
+    <string name="send_a_customer_message">Send a Customer message</string>
+
+    <string name="on_coming_birthdays">On Coming Birthdays</string>
+
+    <string name="more_admin_functions">More Admin Functions</string>
+
+    <string name="skylight_ledger_balance">Skylight Ledger Balance</string>
+
+    <string name="title_activity_update_details">UpdateDetailsActivity</string>
+
+    <string name="search_packages">Search Packages</string>
+
+    <string name="swipe_right_for_login">Swipe right to login</string>
+
+    <string name="title_activity_sign_up_in_main">SignUpInMainActivity</string>
+
+    <string name="swipe_left_to_sign_up">swipe left to sign up</string>
+
+    <string name="title_activity_customer_manager_home">CustomerManagerHome</string>
+
+    <string name="title_activity_collect_customer_payment_page">CollectCustomerPaymentPage</string>
+
+    <string name="title_activity_payees_collection_page">PayeesCollectionPage</string>
+
+    <string name="select_an_user">select a Customer to View</string>
+
+    <string name="title_activity_customer_manager_drawer">CustomerManagerDrawerActivity</string>
+
+    <string name="user_name_error">There is an error with what you inputted</string>
+
+    <string name="account_number_exceeds_no">The account number that you entered is more than 11 digits</string>
+
+    <string name="account_number_is_less">The account number is not complete</string>
+
+    <string name="title_activity_birthday">BirthdayActivity</string>
+
+    <string name="title_activity_password_recovery">PasswordRecoveryActivity</string>
+
+    <string name="title_activity_employee_page">EmployeePage</string>
+
+    <string name="title_activity_savings_package_main">SavingsPackageMainActivity</string>
+
+    <string name="add_package">Add a Package</string>
+
+    <string name="empty_list_title">No Birthday on the list yet</string>
+
+    <string name="empty_list_message">Birthdays will show up at refresh</string>
+
+    <string name="title_activity_marketer_drawer">MarketerDrawerActivity</string>
+
+    <string name="title_activity_user_display">UserDisplayActivity</string>
+
+    <string name="title_activity_user_list">UserListActivity</string>
+
+    <string name="title_activity_store_manager_web">StoreManagerWeb</string>
+
+    <string name="title_activity_customer_detail">CustomerDetailActivity</string>
+
+    <string name="document">payment document</string>
+
+    <string name="invalidAmount">invalid amount</string>
+
+    <string name="StatusChecked">Checked</string>
+
+    <string name="documentStatusUnchecked">Not checked yet</string>
+
+    <string name="accountNotAdded">Account could not be Added</string>
+
+    <string name="transactionCompleted">Transaction has been submitted</string>
+
+    <string name="noMessages">No messages</string>
+
+    <string name="promptName">Enter Name</string>
+
+    <string name="documentVerified">Document verified</string>
+
+    <string name="error_no_json_birthdays">no known Birhdays</string>
+
+    <string name="documentChecked">document checked</string>
+
+    <string name="title_activity_sign_tab_main">SignTabMainActivity</string>
+
+    <string name="pref_time_12">12</string>
+
+    <string name="pref_enable_notifications_key">Enable notification</string>
+
+    <string name="pref_time_before_key">time before</string>
+
+    <string name="pref_days_before_key">days before</string>
+
+    <string name="importantday">Important day</string>
+
+    <string name="date_is">is</string>
+
+    <string name="title_activity_user_location">Map</string>
+
+    <string name="title_activity_savings_standing_order_web">SavingsStandingOrderWeb</string>
+
+    <string name="title_activity_customer_compact">CustomerCompactActivity</string>
+
+    <string name="title_activity_admin_grid_dashboard">AdminGridDashboardActivity</string>
+
+    <string name="title_activity_reminder">ReminderActivity</string>
+
+    <string name="teller_dashboard_taking">Taking You to the Teller Dashboard</string>
+
+    <string name="title_activity_bottom_main">BottomMainActivity</string>
+
+    <string name="title_activity_my_package_history">MyPackageHistory</string>
+
+    <!-- Messages Preferences -->
+
+
+    <string name="title_activity_user_pref">UserPrefActivity</string>
+
+    <string name="title_activity_user_log_sign">UserLogSignActivity</string>
+
+    <string name="testing">hgj</string>
+
+    <string name="completed">Completed</string>
+
+    <!-- Sync Preferences -->
+
+
+    <string name="sync_title">Sync email periodically</string>
+
+    <string name="attachment_title">Download incoming attachments</string>
+
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails </string>
+
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <string name="title_activity_payment_method_detail_host">PaymentMethodDetailHostActivity </string>
+
+    <string name="title_paymentmethod_list">PaymentMethods</string>
+
+    <string name="title_paymentmethod_detail">PaymentMethod Detail</string>
+
+    <string name="title_activity_teller_drawer">TellerDrawerActivity</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="title_activity_test2">TestActivity2</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="google_web_client_id" />
+    <string name="title_edit_savings">Update Savings</string>
+    <string name="storage_link" />
+    <string name="now">Now</string>
+    <string name="button_follow_back">follow back</string>
+    <string name="button_follow">follow</string>
+    <string name="button_following">following</string>
+    <string name="savings_was_removed">savings was removed</string>
+    <string name="marketer_channel_name">Marketer\'s ID</string>
+    <string name="customer_channel_name">Customer ID</string>
+    <string name="savings_channel_name">Savings channel</string>
+    <string name="package_channel_name">Package Channel</string>
+    <string name="cashout_channel_name">Cashout</string>
+    <string name="standing_order">Standing Order ID</string>
+    <string name="Loan_channel_name">Loan channel</string>
+    <string name="messagechannel_name">Message Channel</string>
+    <string name="Plan_channel_name">Plan channel</string>
+    <string name="dstv_channel_name">DSTV Channel</string>
+    <string name="gotv_channel_name">GOTV Channel</string>
+    <string name="data_channel_name">Data Subscription</string>
+    <string name="startTimes_channel_name">Start Times</string>
+    <string name="Nepa_channel_name">Light Bill Sub.</string>
+    <string name="money_tx_channel_name">Money Transfer</string>
+    <string name="new_comment_channel_name">New Comments</string>
+    <string name="wait_for_map_load">wait for map to load</string>
+    <string name="snapshot_take_button">take snap shot</string>
+    <string name="snapshot_clear_button">clear snap shot</string>
+    <string name="residential">Residential</string>
+    <string name="residential_description">This is a property for Humans to live in</string>
+    <string name="Estate">Estate Property</string>
+    <string name="estate_descript">This is a Property in an Estate</string>
+    <string name="eventCenter">Event Center</string>
+    <string name="eventCenter_description">This is an Event Center, for Weddings, shows, and other events</string>
+    <string name="officeProp">Office Property</string>
+    <string name="officeProp_description">For those that want to lease, rent, or buy a property for office use</string>
+    <string name="hall">Multi-purpose Hall</string>
+    <string name="hall_description">This is an open Hall for many purposes</string>
+    <string name="no_properties">No properties</string>
+    <string name="close_menu">Close Menu</string>
+    <string name="save_listings">save property</string>
+    <string name="google_map">map</string>
+    <string name="map_settings">map_setting</string>
+    <string name="listing_filters">Property filter</string>
+    <string name="prop_map_menu">Property Map Menu</string>
+    <string name="title_activity_google_map">Property Map</string>
+    <string name="map_menu">Map Menu</string>
+    <string name="property_search_label">Property search parameter</string>
+    <string name="title_activity_voice">Voice Search for Property</string>
+    <string name="google_voice_menu">Voice Menu</string>
+    <string name="google_map_menu">Map Menu</string>
+    <string name="title_activity_property_admin">MainActivity</string>
+    <string name="U">U</string>
+    <string name="B">B</string>
+    <string name="AT">AT</string>
+    <string name="SC">SC</string>
+    <string name="P">P</string>
+    <string name="S">S</string>
+    <string name="T">T</string>
+    <string name="L">L</string>
+    <string name="C">C</string>
+    <string name="D">D</string>
+    <string name="SM">SM</string>
+    <string name="file_path_name">/sdcard/skylightApp.pdf</string>
+    <string name="channel_description">skylight message</string>
+    <string name="savings_alert">new  Savings Alert</string>
+    <string name="savings_msg">Super Admin, please be informed of a new Savings</string>
+    <string name="package_msg">Super Admin, please be informed of a new Package</string>
+    <string name="new_package">New package alert!</string>
+    <string name="newCus">New customer Alert!</string>
+    <string name="cus_msg">Super Admin, please be informed of a new Customer</string>
+    <string name="teller_Alert">New Tellert Sign Up Alert</string>
+    <string name="teller_msg">Super Admin, please be informed of a new Teller</string>
+    <string name="admin_signup">Super Admin, please be informed of a new Admin onboard</string>
+    <string name="admin_msg">Super Admin, please be informed of a new Admin onboard</string>
+    <string name="tellerReport">Super Admin, please be ware of a Newly submitted Report by a Skylight Teller</string>
+    <string name="tellerReportAlert">Teller Report Submission Alert</string>
+    <string name="loanAlert">Loan application Alert</string>
+    <string name="loanAlertDetails">Please be informed of a new Loan application</string>
+
+</resources>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/grpSavings_rl1"
+    android:layout_height="wrap_content">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view_code1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="2dp"
+        android:clickable="true"
+        android:focusable="true"
+        card_view:cardElevation="10dp"
+        card_view:cardBackgroundColor="#f1f5f7"
+        android:foreground="?attr/selectableItemBackground"
+        card_view:cardCornerRadius="20dp">
+
+        <com.google.android.material.circularreveal.CircularRevealRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/code_l1"
+                android:paddingStart="12dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="50dp"
+                        android:src="@drawable/skylight"
+                        android:id="@+id/grpS09"
+                        android:contentDescription="@string/app_name"
+                        android:layout_height="50dp"/>
+                    <TextView
+                        android:id="@+id/grp_savings_ID"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lines="1"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:textStyle="bold"
+                        android:text="Grp. Savings ID"
+                        android:paddingTop="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="18sp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:id="@+id/doc_l3_a"
+                    android:weightSum="1"
+                    android:layout_below="@id/doc_l3"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/grp_savingsAmt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:lines="1"
+                        android:layout_weight="1"
+                        android:paddingLeft="2dp"
+                        android:paddingRight="6dp"
+                        android:paddingTop="16dp"
+                        android:textStyle="bold"
+                        android:text="Group Savings Amount"
+                        android:gravity="start"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="15sp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/grp_savings_Date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:lines="1"
+                        android:layout_weight="1"
+                        android:paddingLeft="2dp"
+                        android:gravity="start"
+                        android:paddingRight="6dp"
+                        android:textStyle="bold"
+                        android:text="Group Savings Date:"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="15sp" />
+
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/code_l2"
+                android:weightSum="1"
+                android:layout_marginStart="12dp"
+                android:layout_below="@id/code_l1"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="Group Savings Status"
+                    android:id="@+id/grpSavingsStatus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:layout_weight="1"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="6dp"
+                    android:paddingTop="16dp"
+                    android:textStyle="bold"
+                    android:gravity="start"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</androidx.appcompat.widget.LinearLayoutCompat>

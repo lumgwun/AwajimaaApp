@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="navigation_view">
+    <item android:title="My Back Office">
+        <menu>
+            <item
+                android:id="@+id/nav_teller_timeline"
+                android:icon="@drawable/ic_home_black_24dp"
+                android:title="Timeline" />
+            <item
+                android:id="@+id/nav_teller_p"
+                android:icon="@drawable/web_hosting"
+                android:onClick=""
+                android:title="Package Overview" />
+
+            <item
+                android:id="@+id/cm_savings"
+                android:icon="@drawable/notification"
+                android:title="Savings" />
+            <item
+                android:id="@+id/cm_savings_add"
+                android:icon="@drawable/notification"
+                android:title="Add Savings" />
+            <item
+                android:id="@+id/cm_loan_teller"
+                android:icon="@drawable/notification"
+                android:title="Loan Overview" />
+        </menu>
+    </item>
+    <item android:title="Transactions">
+        <menu>
+            <item
+                android:id="@+id/teller_transactions"
+                android:icon="@drawable/ic_users"
+                android:title="My Transactions" />
+
+            <item
+                android:id="@+id/my_pay_doc"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="All Documents" />
+
+
+        </menu>
+    </item>
+    <item android:title="Others">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/birthdays_teller"
+                    android:icon="@drawable/birthday"
+                    android:title="Birthdays" />
+
+                <item
+                    android:id="@+id/teller_c"
+                    android:icon="@android:drawable/ic_menu_info_details"
+                    android:title="Create Customer"/>
+                <item
+                    android:id="@+id/teller_doc"
+                    android:icon="@android:drawable/ic_menu_info_details"
+                    android:title="Documents"/>
+                <item
+                    android:id="@+id/teller_message"
+                    android:icon="@android:drawable/ic_menu_info_details"
+                    android:title="My Message"/>
+            </group>
+
+        </menu>
+
+    </item>
+
+
+
+    <item android:title="Login/Out">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/log1"
+                    android:icon="@android:drawable/ic_menu_info_details"
+                    android:title="Logout"/>
+            </group>
+
+        </menu>
+
+    </item>
+
+</menu>

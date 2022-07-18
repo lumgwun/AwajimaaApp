@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:theme="@style/NoActionBarTheme"
+    android:background="@drawable/rect_their_message"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="0dp"
+                android:text="ResultText"
+                android:visibility="gone"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp"
+                android:id="@+id/result_t"
+                android:padding="20dp"
+                android:textStyle="bold"
+                android:background="@drawable/shape_rect14"
+                android:layout_height="wrap_content"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginStart="2dp"
+                android:id="@+id/payNow_l1"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="2dp"
+                android:weightSum="2"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="Select My Customers"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:layout_weight="1"
+                    android:padding="20dp"
+                    android:layout_marginEnd="1dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/rect6g"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:id="@+id/cm_cus_Mselect"
+                    android:layout_marginStart="5dp"
+                    android:background="@drawable/rect6g"
+                    android:padding="30dp"
+                    android:layout_weight="1"
+                    android:spinnerMode="dropdown"
+                    android:pointerIcon="arrow"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <View
+                android:id="@+id/divider_last3"
+                android:layout_width="match_parent"
+                android:background="@drawable/shape_rect_7"
+                android:layout_height="4dp" />
+            <View
+                android:id="@+id/divider_last4"
+                android:layout_width="match_parent"
+                android:background="@drawable/shape_rect_7"
+                android:layout_height="4dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:id="@+id/payNow_l3"
+                android:weightSum="2"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="Packages"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:padding="20dp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="1dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rect6g"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spn_cust_packages"
+                    android:layout_width="0dp"
+                    android:padding="30dp"
+                    android:background="@drawable/rect6g"
+                    android:layout_weight="1"
+                    android:spinnerMode="dropdown"
+                    android:layout_marginStart="5dp"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider_last5"
+                android:layout_width="match_parent"
+                android:background="@drawable/shape_rect_7"
+                android:layout_height="4dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/shape_rect_7"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/numberOfDay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:background="@drawable/rect6g"
+                        android:padding="30dp"
+                        android:textSize="15sp"
+                        android:textColorHint="@color/colorPrimaryDark"
+                        android:autofillHints="533******"
+                        android:hint="Number of Days"
+                        android:maxLines="1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/pack_saving_ID3"
+                android:layout_width="match_parent"
+                android:layout_marginEnd="1dp"
+                android:layout_marginStart="1dp"
+                android:layout_height="wrap_content"
+                android:text="Package-Savings ID"
+                android:gravity="center"
+                android:background="@drawable/shape_layer"
+                android:textStyle="bold"
+                android:textSize="17sp"
+                android:padding="20dp"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/total_info3"
+                android:layout_width="match_parent"
+                android:layout_marginEnd="1dp"
+                android:layout_marginStart="1dp"
+                android:layout_height="wrap_content"
+                android:text="Total for Today"
+                android:gravity="center"
+                android:background="@drawable/shape_layer"
+                android:textStyle="bold"
+                android:textSize="17sp"
+                android:layout_marginTop="20dp"
+                android:padding="20dp"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/card_info"
+                android:layout_width="match_parent"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_height="wrap_content"
+                android:text="Card Input Details"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:visibility="gone"
+                android:textSize="17sp"
+                android:padding="14dp"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimaryDark" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginTop="12dp"
+                android:visibility="gone"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/shape_rect_7"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/edit_card_number3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:background="@drawable/rect6g"
+                        android:padding="30dp"
+                        android:textSize="15sp"
+                        android:textColorHint="@color/colorPrimaryDark"
+                        android:autofillHints="533******"
+                        android:hint="533******"
+                        android:maxLines="1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginTop="12dp"
+                android:visibility="gone"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/shape_rect_7"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/edit_expiry_month3"
+                        android:autofillHints="Expiry Month"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:gravity="center"
+                        android:background="@drawable/rect6g"
+                        android:padding="30dp"
+                        android:hint="12"
+                        android:textSize="15sp"
+                        android:textColorHint="@color/colorPrimary"
+                        android:maxLines="1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="15dp"
+                android:visibility="gone"
+                android:background="@drawable/shape_rect_7"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/edit_card_year3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:background="@drawable/rect6g"
+                        android:padding="30dp"
+                        android:textSize="15sp"
+                        android:textColorHint="@color/colorPrimaryDark"
+                        android:autofillHints="22"
+                        android:hint="27"
+                        android:maxLines="1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="15dp"
+                android:visibility="gone"
+                android:background="@drawable/shape_rect_7"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/edit_cvv3"
+                        android:hint="@string/cvv"
+                        android:autofillHints="@string/cvv"
+                        android:maxLength="3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:background="@drawable/rect6g"
+                        android:padding="30dp"
+                        android:textSize="15sp"
+                        android:textColorHint="@color/colorPrimary"
+                        android:maxLines="1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content">
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="PAY NOW"
+                    android:padding="20dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="20dp"
+                    android:textAllCaps="true"
+                    android:background="@drawable/shape_rect_6"
+                    android:textColor="#fff"
+                    android:layout_gravity="center"
+                    android:id="@+id/pay_now3" />
+
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Home"
+                    android:padding="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="20dp"
+                    android:textAllCaps="true"
+                    android:background="@drawable/shape_rect_6"
+                    android:textColor="#fff"
+                    android:layout_gravity="center"
+                    android:id="@+id/home_from_payment3" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Home"
+                    android:padding="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:textAllCaps="true"
+                    android:background="@drawable/shape_rect_6"
+                    android:textColor="#fff"
+                    android:layout_gravity="center"
+                    android:id="@+id/home_from_3" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </ScrollView>
+
+
+
+</LinearLayout>
+

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/homeT_eller"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:enabled="true"
+            android:title="Home" />
+        <item
+            android:id="@+id/Mycus_overview"
+            android:enabled="true"
+            android:icon="@drawable/ic_code"
+            android:title="My" />
+
+        <item
+            android:id="@+id/teller_allCus"
+            android:icon="@drawable/ic_icon2"
+            android:enabled="true"
+            android:title="All" />
+
+    </group>
+</menu>

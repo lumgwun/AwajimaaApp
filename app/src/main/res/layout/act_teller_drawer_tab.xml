@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/sky11"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.skylightapp.Tellers.TellerDrawerTab">
+
+    <com.github.mzule.fantasyslide.FantasyDrawerLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/drawerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/shape_rect13" />
+
+        <com.github.mzule.fantasyslide.SideBar
+            android:id="@+id/leftSideBar"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@color/colorPrimary"
+            android:gravity="center_vertical"
+            app:maxTranslationX="66dp">
+
+            <LinearLayout
+                android:id="@+id/userInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:gravity="center_horizontal"
+                android:onClick="onClick"
+                android:orientation="vertical">
+
+                <com.skylightapp.Classes.CircularImageView
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/user_red"
+                    app:civ_border_color="@color/colorPrimaryDark"
+                    app:civ_border_width="2dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chike Obi Nnamen"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/MenuText"
+                android:onClick="SkylightPacks"
+                android:drawableLeft="@drawable/ic_icon2"
+                android:text="Skylight Packages" />
+
+            <TextView
+                style="@style/MenuText"
+                android:onClick="cusPTab"
+                android:drawableLeft="@drawable/rect6c"
+                android:text="MY Cus Pack Tab" />
+
+
+
+            <TextView
+                style="@style/MenuText"
+                android:onClick="AllCusTab"
+                android:drawableLeft="@drawable/ic_sa"
+                android:text="All Cus Tab" />
+
+            <TextView
+                style="@style/MenuText"
+                android:onClick="PayNow"
+                android:drawableLeft="@drawable/ic_tx"
+                android:text="Pay Now " />
+
+            <TextView
+                style="@style/MenuText"
+                android:onClick="goSO"
+                android:drawableLeft="@drawable/settings"
+                android:text="Standing Order Tab" />
+            <TextView
+                style="@style/MenuText"
+                android:onClick="goLoanTab"
+                android:drawableLeft="@drawable/settings"
+                android:text="Loan Tab" />
+        </com.github.mzule.fantasyslide.SideBar>
+
+        <com.github.mzule.fantasyslide.SideBar
+            android:id="@+id/rightSideBar"
+            android:layout_width="133dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@drawable/shape_rect14"
+            android:gravity="center_vertical|right"
+            app:maxTranslationX="-33dp">
+
+            <TextView
+                style="@style/MenuText"
+                android:onClick="regNewCus"
+                android:text="Register New Customer" />
+
+            <TextView
+                style="@style/MenuText"
+                android:onClick="tellerWeb"
+                android:text="Teller Webs" />
+
+            <TextView
+                style="@style/MenuText"
+                android:onClick="grpSavings"
+                android:text="Group Savings" />
+
+            <TextView
+                style="@style/MenuText"
+                android:onClick="myPrefTeller"
+                android:text="My Preferences" />
+
+            <TextView
+                style="@style/MenuText"
+                android:onClick="skylightPrivacyPolicy"
+                android:text="Our Privacy Policy" />
+
+            <TextView
+                style="@style/MenuText"
+                android:text="Teller Timeline" />
+
+            <TextView
+                style="@style/MenuText"
+                android:text="Teller Preferences" />
+        </com.github.mzule.fantasyslide.SideBar>
+    </com.github.mzule.fantasyslide.FantasyDrawerLayout>
+
+    <TextView
+        android:id="@+id/tipView"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:padding="20dp"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        android:visibility="invisible" />
+</RelativeLayout>

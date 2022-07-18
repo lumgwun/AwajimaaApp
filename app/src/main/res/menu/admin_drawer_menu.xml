@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="navigation_view">
+    <item android:title="Home Elelenwo">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_app_home_admin2"
+                    android:icon="@drawable/ic_icon2"
+                    android:iconTint="@android:color/holo_orange_dark"
+                    android:iconTintMode="src_in"
+                    android:title="Admin Home " />
+
+                <item
+                    android:id="@+id/nav_act_package"
+                    android:icon="@drawable/add_user_foreground"
+                    android:title="Package History" />
+
+                <item
+                    android:id="@+id/transactions_admin2"
+                    android:icon="@drawable/add_user_foreground"
+                    android:title="Transactions" />
+                <item
+                    android:id="@+id/admin_support3"
+                    android:icon="@drawable/abc_vector_test"
+                    android:title="Support Messages"
+                    app:showAsAction="always" />
+                <item
+                    android:id="@+id/admin_timeLines"
+                    android:icon="@drawable/abc_vector_test"
+                    android:title="Timelines"
+                    app:showAsAction="always" />
+
+                <item
+                    android:id="@+id/grp_saving_nav"
+                    android:icon="@drawable/ic_dashboard_black_24dp"
+                    android:title="Group Savings" />
+
+            </group>
+
+        </menu>
+
+    </item>
+
+    <item android:title="Home Wempey">
+        <menu>
+            <group android:checkableBehavior="single">
+
+                <item
+                    android:id="@+id/nav_birthDay"
+                    android:enabled="true"
+                    android:icon="@drawable/ic_send"
+                    android:title="Birthdays" />
+
+                <item
+                    android:id="@+id/nav_send_message2"
+                    android:enabled="true"
+                    android:icon="@drawable/ic_dashboard_black_24dp"
+                    android:title="Send Message" />
+
+
+
+            </group>
+
+        </menu>
+
+    </item>
+
+    <item android:title="MY Web Access">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/all_web"
+                    android:icon="@drawable/ic_menu_gallery"
+                    android:title="Web App Home" />
+            </group>
+
+        </menu>
+
+    </item>
+
+
+    <item android:title="Login/Out">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/log_admin3"
+                    android:icon="@android:drawable/ic_menu_info_details"
+                    android:title="Login or Logout"/>
+            </group>
+
+        </menu>
+
+    </item>
+
+
+</menu>

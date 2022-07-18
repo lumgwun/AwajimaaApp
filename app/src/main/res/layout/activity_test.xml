@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_marginBottom="30dp"
+    android:background="@drawable/rect6e"
+    android:layout_height="match_parent"
+    tools:context=".TestAct">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/button3"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:padding="10dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/sky4"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:text="Super Admin"
+            android:onClick="goSuperAdmin"
+            android:textSize="20sp"
+            android:padding="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/shape_rect_6"
+            android:layout_marginEnd="2dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/getSuperAdmin"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:text="Admin"
+            android:onClick="goAdmin"
+            android:textSize="20sp"
+            android:padding="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/shape_rect_6"
+            android:layout_marginEnd="2dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/getAdmin"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:text="Accountant"
+            android:onClick="goAccountant"
+            android:textSize="20sp"
+            android:padding="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/shape_rect_6"
+            android:layout_marginEnd="2dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/getAccountant"
+            android:layout_height="wrap_content"/>
+
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:text="Customer"
+            android:textSize="20sp"
+            android:padding="20dp"
+            android:onClick="goCustomer"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_rect_6"
+            android:layout_marginEnd="2dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/getCustomer"
+            android:layout_height="wrap_content"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:text="Teller"
+            android:textSize="20sp"
+            android:padding="20dp"
+            android:onClick="goTeller"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/shape_rect_6"
+            android:layout_marginEnd="2dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/GetTeller"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:text="Reception Area"
+            android:textSize="20sp"
+            android:padding="20dp"
+            android:onClick="goSignTab"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_rect_6"
+            android:layout_marginEnd="2dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/GetSign"
+            android:layout_height="wrap_content"/>
+
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/shape_rect12"
+    android:layout_height="match_parent"
+    tools:context="com.skylightapp.CustomerSmsActivity">
+    <include layout="@layout/tool_bar_11c"/>
+    <com.melnykov.fab.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:id="@+id/HomeSMS"
+        android:layout_margin="10dp"
+        android:layout_gravity="end"
+        android:src="@drawable/ic_arrow_left"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="12dp"
+        android:textSize="20sp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:padding="20dp"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:background="@drawable/rect_their_message"
+        android:textColor="@color/black"
+        android:text="Customer Savings Confirmation"
+        android:layout_height="wrap_content"/>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:text="Customer Name"
+                android:textSize="20sp"
+                android:id="@+id/nameCus"
+                android:layout_marginStart="2dp"
+                android:textStyle="bold"
+                android:textColor="@android:color/holo_orange_dark"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:text="Package ID:"
+                android:textSize="20sp"
+                android:textColor="@android:color/holo_orange_dark"
+                android:id="@+id/IDPackage"
+                android:layout_marginStart="2dp"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:text="Savings ID"
+                android:id="@+id/IDSavings"
+                android:textSize="20sp"
+                android:textColor="@android:color/holo_orange_dark"
+                android:layout_marginStart="2dp"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:text="Total Amount"
+                android:textSize="20sp"
+                android:id="@+id/TotalAmt"
+                android:textColor="@android:color/holo_orange_dark"
+                android:layout_marginStart="2dp"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:text="Date of Savings"
+                android:textSize="20sp"
+                android:textColor="@android:color/holo_orange_dark"
+                android:id="@+id/DateSavings"
+                android:layout_marginStart="2dp"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:hint="Enter Skylight SMS Code"
+                android:padding="30dp"
+                android:textSize="15sp"
+                android:textColorHighlight="@color/colorPrimaryDark"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                android:id="@+id/add_skySMS"
+                android:background="@drawable/shape_layer"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginTop="20dp"
+                android:textColorHint="@android:color/holo_orange_dark"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:padding="20dp"
+                android:id="@+id/confirm_customer0"
+                android:layout_marginBottom="2dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="2dp"
+                android:textAlignment="center"
+                android:text="Confirm Savings"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:background="@drawable/shape_layer"
+                android:layout_height="wrap_content"/>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

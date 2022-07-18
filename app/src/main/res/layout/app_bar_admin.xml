@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    style="@style/TextAppearance.AppCompat">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_admin2"
+                android:layout_width="match_parent"
+                app:title="Branch Info. System"
+                app:titleTextColor="@color/white_good"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/Theme.AppCompat.Light.DarkActionBar" />
+
+            <FrameLayout
+                android:layout_height="match_parent"
+                android:id="@+id/frameContainer_A"
+                android:layout_width="match_parent">
+
+                <LinearLayout
+                    android:layout_height="300dp"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/shape_rect14"
+                    android:layout_gravity="top">
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/greetingsA"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:src="@drawable/good_afternoon1"
+                        android:layout_marginTop="5dp"
+                        android:layout_gravity="center"
+                        android:padding="5dp"
+                        android:stateListAnimator="@animator/nav_default_pop_enter_anim"
+                        app:civ_border_width="1dp"
+                        app:civ_border_color="#ffffff"/>
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profilePAdmin"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/ic_admin_user"
+                        android:layout_gravity="center"
+                        android:padding="5dp"
+                        android:stateListAnimator="@animator/nav_default_pop_enter_anim"
+                        app:civ_border_width="1dp"
+                        app:civ_border_color="#ffffff"/>
+
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp"
+                        android:weightSum="2"
+                        android:layout_height="wrap_content">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/nameAdmin"
+                            android:layout_weight="1"
+                            android:textAllCaps="true"
+                            android:gravity="center_horizontal"
+                            android:layout_marginEnd="2dp"
+                            android:textAlignment="center"
+                            android:textSize="15sp"
+                            android:textColor="@color/white"
+                            android:text="Admin: Emma Dede"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/userNAdmin"
+                            android:layout_weight="1"
+                            android:textAllCaps="true"
+                            android:layout_marginEnd="2dp"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:textSize="15sp"
+                            android:textColor="@color/white"
+                            android:text="UserName:Emmalex"/>
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="2dp"
+                        android:layout_marginTop="5dp"
+                        app:cardPreventCornerOverlap="false"
+                        app:contentPadding="2dp">
+
+                        <com.balysv.materialripple.MaterialRippleLayout
+                            android:id="@+id/acct2_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:mrl_rippleAlpha="0.2"
+                            app:mrl_rippleColor="@color/blue1"
+                            app:mrl_rippleHover="true"
+                            app:mrl_rippleOverlay="false">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="2"
+                                android:clickable="false">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/paymentNO"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Branch Payments:129"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    android:padding="10dp"
+                                    android:textSize="15sp"
+                                    android:layout_gravity="center_vertical|start"
+                                    android:gravity="center_vertical|start"
+                                    android:clickable="false"
+                                    />
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/adminTotalPayment"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:paddingLeft="10dp"
+                                    android:text="Payments: N456,000000"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    android:padding="10dp"
+                                    android:textSize="15sp"
+                                    android:layout_gravity="center_vertical|end"
+                                    android:gravity="center_vertical|end"
+                                    android:clickable="false"
+                                    />
+
+                            </LinearLayout>
+
+                        </com.balysv.materialripple.MaterialRippleLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+
+                </LinearLayout>
+
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="2dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="5dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="2dp">
+
+                    <com.balysv.materialripple.MaterialRippleLayout
+                        android:id="@+id/profile_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:mrl_rippleAlpha="0.2"
+                        app:mrl_rippleColor="@color/blue1"
+                        app:mrl_rippleHover="true"
+                        app:mrl_rippleOverlay="false">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2"
+                            android:clickable="false">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/reportsAdminToday"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:text="Reports: 79"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:padding="10dp"
+                                android:textSize="15sp"
+                                android:layout_gravity="center_vertical|start"
+                                android:gravity="center_vertical|start"
+                                android:clickable="false"
+                                />
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/grandBalanceAdmin"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:text="Grand Balance:N14,000"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:padding="10dp"
+                                android:textSize="15sp"
+                                android:layout_gravity="center_vertical|start"
+                                android:gravity="center_vertical|end"
+                                android:clickable="false"
+                                />
+
+                        </LinearLayout>
+
+                    </com.balysv.materialripple.MaterialRippleLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </FrameLayout>
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/AContent_admin"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:layout_width="match_parent"
+                android:background="@drawable/shape_layer_1a"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+        <include layout="@layout/content_final_admin" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</ScrollView>

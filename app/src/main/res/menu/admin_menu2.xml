@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="navigation_view">
+    <item android:title="Home">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_contact_us1"
+                    android:icon="@drawable/ic_admin_user"
+                    android:title="Contact us" />
+                <item
+                    android:id="@+id/nav_my_timelineAA"
+                    android:icon="@drawable/ic_admin_user"
+                    android:title="My Timeline" />
+
+                <item
+                    android:id="@+id/nav_my_customers"
+                    android:icon="@drawable/add_user_foreground"
+                    android:title="My Customers" />
+                <item
+                    android:id="@+id/my_package_list"
+                    android:icon="@drawable/abc_vector_test"
+                    android:title="My Packages"
+                    app:showAsAction="always" />
+                <item
+                    android:id="@+id/my_documents"
+                    android:icon="@drawable/abc_vector_test"
+                    android:title="All Documents"
+                    app:showAsAction="always" />
+
+            </group>
+
+        </menu>
+
+    </item>
+
+    <item android:title="Lists">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_birthdays_listA"
+                    android:icon="@drawable/ic_menu_gallery"
+                    android:title="Birthday List" />
+
+                <item
+                    android:id="@+id/nav_Admin_loan"
+                    android:icon="@drawable/ic_menu_gallery"
+                    android:title="Loan Applications" />
+                <item
+                    android:id="@+id/nav_savings_listA"
+                    android:icon="@drawable/ic_menu_gallery"
+                    android:title="Savings List" />
+
+                <item
+                    android:id="@+id/nav_user_listA"
+                    android:icon="@drawable/ic_menu_gallery"
+                    android:title="User List" />
+
+                <item
+                    android:id="@+id/nav_documentsA"
+                    android:icon="@drawable/ic_menu_gallery"
+                    android:title="Documents" />
+                <item
+                    android:id="@+id/nav_customer_listA"
+                    android:icon="@drawable/ic_menu_gallery"
+                    android:title="Customers" />
+                <item
+                    android:id="@+id/nav_transactionA"
+                    android:icon="@drawable/ic_menu_gallery"
+                    android:title="Payments Transactions" />
+
+                <item
+                    android:id="@+id/nav_Add_Savings"
+                    android:icon="@drawable/ic_menu_gallery"
+                    android:title="Add Savings" />
+                <item
+
+                    android:id="@+id/nav_borrowing_list"
+                    android:icon="@drawable/ic_menu_gallery"
+                    android:title="Loan List" />
+
+
+
+                <item
+                    android:id="@+id/nav_support_list"
+                    android:icon="@drawable/ic_menu_gallery"
+                    android:title="Help Messages" />
+
+            </group>
+
+        </menu>
+
+    </item>
+    <item android:title="MY Web Access">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_web_home_admin"
+                    android:icon="@drawable/ic_menu_gallery"
+                    android:title="Web App Home" />
+                <item
+                    android:id="@+id/nav_email_admin"
+                    android:icon="@drawable/ic_menu_camera"
+                    android:title="Official Email" />
+                <item
+                    android:id="@+id/nav_cpanel"
+                    android:icon="@drawable/ic_menu_gallery"
+                    android:title="C Panel" />
+
+                <item
+                    android:id="@+id/nav_wp_admin"
+                    android:icon="@drawable/ic_menu_gallery"
+                    android:title="Web App Admin" />
+                <item
+                    android:id="@+id/nav_e_shop_admin"
+                    android:icon="@drawable/ic_menu_gallery"
+                    android:title="Web App E-shop" />
+            </group>
+
+        </menu>
+
+    </item>
+    <item android:title="MY Read">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/terms_admin"
+                    android:icon="@android:drawable/ic_menu_info_details"
+                    android:title="Terms &amp; Cond."/>
+                <item
+                    android:id="@+id/privacy_policy_admin"
+                    android:icon="@android:drawable/ic_menu_info_details"
+                    android:title="Our Privacy Policy"/>
+            </group>
+
+        </menu>
+
+    </item>
+
+    <item android:title="MY Web Access">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_email"
+                    android:icon="@drawable/ic_dashboard_black_24dp"
+                    android:title="My official Email" />
+                <item
+                    android:id="@+id/nav_web_shop"
+                    android:icon="@drawable/ic_dashboard_black_24dp"
+                    android:title="Web Shop" />
+                <item
+                    android:id="@+id/nav_web_my_admin"
+                    android:icon="@drawable/ic_dashboard_black_24dp"
+                    android:title="Web Backoffice" />
+            </group>
+
+        </menu>
+
+    </item>
+    <item android:title="Login/Out">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/log_admin3"
+                    android:icon="@android:drawable/ic_menu_info_details"
+                    android:title="Login or Logout"/>
+            </group>
+
+        </menu>
+
+    </item>
+
+
+</menu>

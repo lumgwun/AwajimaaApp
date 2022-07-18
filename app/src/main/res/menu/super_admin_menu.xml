@@ -1,0 +1,241 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<menu xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:tools = "http://schemas.android.com/tools"
+    tools:showIn = "navigation_view">
+    <group android:checkableBehavior="single">
+        <item android:title="Home">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/homeSuperA"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Dashboard" />
+
+                    <item
+                        android:id="@+id/tabTimelines"
+                        android:icon="@drawable/ic_icon2"
+                        android:title="Timelines" />
+                    <item
+                        android:id="@+id/SAdmin_supportTT"
+                        android:icon="@drawable/ic_icon2"
+                        android:title="Support Messages" />
+
+                    <item
+                        android:id="@+id/tabBiz"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Businesses" />
+                    <item
+                        android:id="@+id/tab_imp_date"
+                        android:icon="@drawable/ic_icon2"
+                        android:iconTint="#c3193b"
+                        android:title="Important Dates" />
+                    <item
+                        android:id="@+id/UsersTab"
+                        android:icon="@drawable/ic_icon2"
+                        android:title="Users" />
+
+                    <item
+                        android:id="@+id/TabAcct"
+                        android:icon="@drawable/ic_icon2"
+                        android:title="Accounts" />
+                    <item
+                        android:id="@+id/cusTab"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Customer List" />
+
+                    <item
+                        android:id="@+id/responseTab"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Reports and Response" />
+
+
+                </group>
+
+            </menu>
+
+        </item>
+        <item android:title="New">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/all_newT"
+                        android:icon="@drawable/ic_icon2"
+                        android:title="All New" />
+
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="Wep App">
+            <menu>
+                <group android:checkableBehavior="single">
+
+                    <item
+                        android:id="@+id/officialEmailTab"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Our Email" />
+                    <item
+                        android:id="@+id/qTeller"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Our QuickTeller" />
+                    <item
+                        android:id="@+id/paystack"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="PayStack" />
+
+                    <item
+                        android:id="@+id/Flutterwave"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="FlutterWave" />
+
+
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="Transaction">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/payNowT"
+                        android:icon="@drawable/ic_icon2"
+                        android:title="Pay Now " />
+                    <item
+                        android:id="@+id/admin_moneyT"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Money Transfer" />
+                    <item
+                        android:id="@+id/admin_soT"
+                        android:icon="@drawable/ic_icon2"
+                        android:title="Standing orders" />
+                    <item
+                        android:id="@+id/admin_DocT"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Payment Docs" />
+                    <item
+                        android:id="@+id/transactions_adminT"
+                        android:icon="@drawable/ic_icon2"
+                        android:title="All Transactions" />
+
+
+                </group>
+
+            </menu>
+
+        </item>
+
+
+
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item android:title="Utils">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/utilAdminT"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Utility" />
+
+                    <item
+                        android:id="@+id/otherUtilT"
+                        android:icon="@drawable/ic_icon2"
+                        android:title="Other Utility" />
+
+                    <item
+                        android:id="@+id/propertyAdminT"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Properties" />
+
+
+                    <item
+                        android:id="@+id/admin_awardT"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Award Voting" />
+
+                    <item
+                        android:id="@+id/artesianT"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Artesians" />
+
+                    <item
+                        android:id="@+id/DElT"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Deliveries" />
+
+                    <item
+                        android:id="@+id/tradersT"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Traders" />
+
+                    <item
+                        android:id="@+id/invT"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Investors" />
+
+                    <item
+                        android:id="@+id/GsavingsT"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Group Savings" />
+
+
+
+
+
+
+                </group>
+
+            </menu>
+
+        </item>
+
+
+
+    </group>
+    <group android:checkableBehavior = "single">
+        <item android:title="Support">
+            <menu>
+                <group android:checkableBehavior="single">
+
+                    <item
+                        android:id="@+id/MessageTab"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Send Message" />
+                    <item
+                        android:id="@+id/chatTab"
+                        android:icon="@drawable/ic_icon2"
+                        android:title="Chats" />
+
+                    <item
+                        android:id="@+id/admin_prefTab"
+                        android:icon="@drawable/ic_icon2"
+                        android:title="Admin Settings" />
+
+                </group>
+            </menu>
+        </item>
+    </group>
+    <item android:title="Profile">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/addRoleUserTab"
+                    android:icon="@drawable/ic_admin_user"
+                    android:title="Add more Roles to User" />
+
+                <item
+                    android:id="@+id/admin_pswdTab"
+                    android:icon="@drawable/ic_admin_user"
+                    android:title="Admin Password" />
+
+                <item
+                    android:id="@+id/sa_out_Tab"
+                    android:icon="@drawable/ic_dashboard_black_24dp"
+                    android:title="Logout from Profile" />
+
+
+            </group>
+        </menu>
+    </item>
+
+</menu>

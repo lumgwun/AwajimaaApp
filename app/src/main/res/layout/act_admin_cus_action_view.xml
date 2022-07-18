@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    style="@style/NoActionBarTheme"
+    android:theme="@style/NoActionBar"
+    android:layout_height="match_parent"
+    tools:context="com.skylightapp.Admins.AdminCusActionView">
+    <include layout="@layout/tool_bar_11c"/>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:weightSum="8"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/ic_pc"
+            android:onClick="icpc"
+            android:src="@drawable/ic_pc"
+            android:layout_height="wrap_content"/>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/ic_sa"
+            android:onClick="icsa"
+            android:src="@drawable/ic_sa"
+            android:layout_height="wrap_content"/>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_width="0dp"
+            android:id="@+id/ic_code"
+            android:layout_weight="1"
+            android:onClick="iccode"
+            android:src="@drawable/ic_code"
+            android:layout_height="wrap_content"/>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/ic_tx"
+            android:onClick="ictx"
+            android:src="@drawable/ic_tx"
+            android:layout_height="wrap_content"/>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/ic_doc"
+            android:onClick="icdoc"
+            android:src="@drawable/ic_doc"
+            android:layout_height="wrap_content"/>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/ic_so"
+            android:onClick="icso"
+            android:src="@drawable/ic_so"
+            android:layout_height="wrap_content"/>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/ic_loan"
+            android:onClick="icloan"
+            android:src="@drawable/ic_loan"
+            android:layout_height="wrap_content"/>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:onClick="icmessage"
+            android:id="@+id/ic_message"
+            android:src="@drawable/ic_mes"
+            android:layout_height="wrap_content"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Customer Overviews"
+                android:textAlignment="center"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:text="Customer's Name"
+            android:id="@+id/INameCus"
+            android:layout_height="wrap_content"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:text="Customer's ID:"
+            android:id="@+id/IDCus"
+            android:layout_height="wrap_content"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerPackages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:clipToPadding="false"
+                    android:foregroundGravity="center"
+                    android:orientation="horizontal" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerSavings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:clipToPadding="false"
+                    android:foregroundGravity="center" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerCodes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:clipToPadding="false"
+                    android:foregroundGravity="center" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerTx"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:clipToPadding="false"
+                    android:foregroundGravity="center" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerDocs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:clipToPadding="false"
+                    android:foregroundGravity="center" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerSO"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:clipToPadding="false"
+                    android:foregroundGravity="center" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerLoans"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:clipToPadding="false"
+                    android:foregroundGravity="center" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerMessages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:clipToPadding="false"
+                    android:foregroundGravity="center" />
+
+                <com.melnykov.fab.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/add_loc_"
+                    android:id="@+id/locCus"
+                    android:layout_gravity="right"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </ScrollView>
+
+
+    </LinearLayout>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

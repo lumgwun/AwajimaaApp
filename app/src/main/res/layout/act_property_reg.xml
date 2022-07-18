@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".RealEstate.PropertyRegAct">
+    <include layout="@layout/tool_bar10"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:id="@+id/propertyLayout"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="2dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/layout_Bus_Ind"
+                android:layout_marginBottom="10dp"
+                android:weightSum="2"
+                android:background="@drawable/shape_rect13"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="0dp"
+                    android:text="Register as a Business"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:padding="20dp"
+                    android:background="@drawable/rect_their2a"
+                    android:id="@+id/corporate"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="0dp"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:padding="20dp"
+                    android:background="@drawable/rect_their2"
+                    android:text="Register as an Individual"
+                    android:layout_marginEnd="2dp"
+                    android:textColor="@color/black"
+                    android:id="@+id/individual"
+                    android:layout_height="wrap_content">
+
+                </androidx.appcompat.widget.AppCompatButton>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/layour_PropertyType"
+                android:layout_marginBottom="10dp"
+                android:weightSum="2"
+                android:background="@drawable/shape_rect13"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="Select Property Type"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:padding="20dp"
+                    android:textSize="17sp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:padding="20dp"
+                    android:layout_marginEnd="2dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:id="@+id/propertyType"
+                    android:entries="@array/property_type"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                </androidx.appcompat.widget.AppCompatSpinner>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/layour_mode"
+                android:layout_marginBottom="10dp"
+                android:weightSum="2"
+                android:background="@drawable/shape_rect13"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="Select Mode"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:padding="20dp"
+                    android:textSize="17sp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:padding="20dp"
+                    android:layout_marginEnd="2dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:id="@+id/propMode"
+                    android:entries="@array/property_mode"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                </androidx.appcompat.widget.AppCompatSpinner>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:hint="Property Tittle"
+                android:padding="20dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_horizontal"
+                android:textColorHint="@color/black"
+                android:background="@drawable/rect_their3"
+                android:id="@+id/tittle_prop"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:hint="Property Description"
+                android:padding="20dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_horizontal"
+                android:textColorHint="@color/black"
+                android:background="@drawable/rect_their3"
+                android:id="@+id/descriptionProp"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:hint="Property Capacity"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_horizontal"
+                android:padding="20dp"
+                android:textColorHint="@color/black"
+                android:background="@drawable/rect_their3"
+                android:id="@+id/capacityProp"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/sub_status_layout4"
+                android:layout_marginBottom="10dp"
+                android:weightSum="2"
+                android:background="@drawable/shape_rect13"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="Select LGA"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:padding="20dp"
+                    android:textSize="17sp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:padding="20dp"
+                    android:layout_marginEnd="2dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:entries="@array/RV_LGA"
+                    android:id="@+id/LGA"
+                    android:layout_height="wrap_content">
+
+                </androidx.appcompat.widget.AppCompatSpinner>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:hint="Price"
+                android:inputType="number"
+                android:padding="20dp"
+                android:id="@+id/prop_price"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/layour_PriceDuration"
+                android:layout_marginBottom="10dp"
+                android:weightSum="2"
+                android:background="@drawable/shape_rect13"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="Select Price Duration"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:padding="20dp"
+                    android:textSize="17sp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:padding="20dp"
+                    android:layout_marginEnd="2dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:id="@+id/durationPrice"
+                    android:entries="@array/duration_Of_Price"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                </androidx.appcompat.widget.AppCompatSpinner>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <Button
+                android:layout_width="match_parent"
+                android:text="Select Photos"
+                android:textSize="20sp"
+                android:padding="20dp"
+                android:gravity="center"
+                android:onClick="doSelectPropPhoto"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="10dp"
+                android:textColor="@color/black"
+                android:background="@drawable/shape_rect13"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/proprops"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/propImageLayout"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <ImageSwitcher
+                    android:id="@+id/propImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@color/colorPrimaryD"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp" />
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:weightSum="2"
+                    android:background="@drawable/shape_rect13"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/buttonPrevious"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="150dp"
+                        android:layout_gravity="center"
+                        android:background="#050"
+                        android:layout_weight="1"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold"
+                        android:text="PREVIOUS" />
+                    <Button
+                        android:id="@+id/buttonNext"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="150dp"
+                        android:layout_gravity="center"
+                        android:background="#050"
+                        android:layout_weight="1"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold"
+                        android:text="NEXT" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <Button
+                android:layout_width="match_parent"
+                android:text="Map Location"
+                android:textSize="20sp"
+                android:padding="20dp"
+                android:gravity="center"
+                android:onClick="doMapLocation"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="10dp"
+                android:textColor="@color/black"
+                android:background="@drawable/shape_rect13"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/location2"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:text="Register Property"
+                android:textSize="20sp"
+                android:padding="20dp"
+                android:gravity="center"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="10dp"
+                android:textColor="@color/black"
+                android:background="@drawable/shape_rect13"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/BtnRegProp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Powered by Lumgwun Soln."
+                android:layout_marginTop="10dp"
+                android:gravity="bottom"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/shape_rect13"
+                android:textColor="@android:color/holo_red_dark"
+                android:padding="20dp"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </ScrollView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

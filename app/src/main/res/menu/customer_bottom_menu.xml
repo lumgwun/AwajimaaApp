@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:checkableBehavior="single">
+        <item android:title="My Home Dashboard">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/action_home_customer"
+                        android:enabled="true"
+                        android:icon="@drawable/home"
+                        android:title="@string/home"
+                        app:showAsAction="ifRoom" />
+                    <item
+                        android:id="@+id/action_profile_customer"
+                        android:enabled="true"
+                        android:icon="@drawable/dashboard1"
+                        android:title="@string/profile"
+                        app:showAsAction="ifRoom" />
+                    <item
+                        android:id="@+id/action_notification_customer"
+                        android:enabled="true"
+                        android:icon="@drawable/notification"
+                        android:title="@string/notifications"
+                        app:showAsAction="ifRoom" />
+
+                </group>
+            </menu>
+        </item>
+
+
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item android:title="My Packages">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/my_subscriptions"
+                        android:enabled="true"
+                        android:icon="@drawable/notification"
+                        android:title="My Subscriptions"
+                        app:showAsAction="ifRoom" />
+
+                    <item
+                        android:id="@+id/my_packs"
+                        android:enabled="true"
+                        android:icon="@drawable/transaction2"
+                        android:title="My Packs"
+                        app:showAsAction="ifRoom" />
+
+                    <item
+                        android:id="@+id/so_menu"
+                        android:enabled="true"
+                        android:icon="@drawable/transaction2"
+                        android:title="My Standing Orders"
+                        app:showAsAction="ifRoom" />
+
+
+                    <item
+                        android:id="@+id/orderTab"
+                        android:enabled="true"
+                        android:icon="@drawable/transaction2"
+                        android:title="Order Tab"
+                        app:showAsAction="ifRoom" />
+
+                </group>
+            </menu>
+        </item>
+
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item android:title="Transaction">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/my_transaction_customer"
+                        android:enabled="true"
+                        android:icon="@drawable/transaction2"
+                        android:title="My Transactions"
+                        app:showAsAction="ifRoom" />
+
+                    <item
+                        android:id="@+id/loanTab"
+                        android:enabled="true"
+                        android:icon="@drawable/transaction2"
+                        android:title="Loan Tab"
+                        app:showAsAction="ifRoom" />
+
+                </group>
+            </menu>
+        </item>
+
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item android:title="Utility">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/utility"
+                        android:enabled="true"
+                        android:icon="@drawable/transaction2"
+                        android:title="Utility"
+                        app:showAsAction="ifRoom" />
+
+
+                </group>
+            </menu>
+        </item>
+
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:title="Support">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/action_help_customer"
+                        android:enabled="true"
+                        android:icon="@drawable/notification"
+                        android:title="My Support"
+                        app:showAsAction="ifRoom" />
+
+                    <item
+                        android:id="@+id/privacy_policy_customer"
+                        android:enabled="true"
+                        android:icon="@drawable/notification"
+                        android:title="Skylight Privacy Policy"
+                        app:showAsAction="ifRoom" />
+
+
+                    <item
+                        android:id="@+id/action_customer_logout"
+                        android:enabled="true"
+                        android:icon="@drawable/notification"
+                        android:title="@string/Sign_out_from_skylight"
+                        app:showAsAction="ifRoom" />
+
+                </group>
+            </menu>
+        </item>
+
+    </group>
+
+</menu>

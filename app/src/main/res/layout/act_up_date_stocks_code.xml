@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/rect6h"
+    tools:context="com.skylightapp.Inventory.UpDateStocksCode">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:id="@+id/title22"
+            android:gravity="center_horizontal"
+            android:text="Update Stock Code"
+            android:padding="20dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp"
+            android:layout_marginBottom="@dimen/button_margin_bottom"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:id="@+id/txtStockID"
+            android:gravity="center_horizontal"
+            android:text="Stocks ID:"
+            android:padding="20dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
+            android:layout_marginBottom="@dimen/button_margin_bottom"/>
+
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/adminEdtAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Code here"
+            android:padding="20dp"
+            android:layout_marginStart="5dp"
+            android:textAlignment="center"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/shape_rect14"
+            android:inputType="number"
+            android:layout_below="@id/layoutMessage"/>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/confirmStocksUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:padding="15dp"
+            android:onClick="updateStocksCode"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:background="@null"
+            android:layout_centerHorizontal="true"
+            android:text="@string/confirm" />
+        <TextView
+            android:id="@+id/notification3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/inputMessage2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/button_margin_bottom"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</ScrollView>

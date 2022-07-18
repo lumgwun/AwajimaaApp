@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory android:title="User Profile" >
+        <EditTextPreference
+            android:title="User Name"
+            app:icon="@drawable/ic_icon2"
+            android:summary=" App User Name"
+            android:key="USERNAME"/>
+        <ListPreference
+            android:title="Location"
+            android:summary="State of Residence"
+            android:key="USER_STATE"
+            app:icon="@drawable/ic_icon2"
+            android:defaultValue="1"
+            android:entries="@array/state"
+            android:entryValues="@array/stateValues" />
+        <ListPreference
+            android:title="Our App Office Branch"
+            android:summary="Select Your Nearest Office Branch"
+            android:key="USER_OFFICE"
+            app:icon="@drawable/ic_icon2"
+            android:defaultValue="1"
+            android:entries="@array/officeBranch33"
+            android:entryValues="@array/officeBranch33" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Bank Payment" >
+        <DropDownPreference
+            android:title="Bank"
+            android:summary="Select Your Bank"
+            android:key="Bank"
+            app:icon="@drawable/ic_icon2"
+            android:defaultValue="1"
+            android:entries="@array/Banks"
+            android:entryValues="@array/Banks" />
+        <EditTextPreference
+            android:title="Account Number"
+            app:icon="@drawable/ic_icon2"
+            android:summary="Account Number"
+            android:key="Bank_Account_Number"/>
+        <EditTextPreference
+            android:title="Bank Account Name"
+            android:summary="Account Name"
+            app:icon="@drawable/ic_icon2"
+            android:key="Bank_Acct_Name"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

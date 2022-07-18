@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="1dp"
+    app:cardBackgroundColor="#f1f5f7"
+    app:cardPreventCornerOverlap="true"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="100dp"
+    android:background="@drawable/shape_rect14c"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context="com.skylightapp.Customers.TellerForCusLoanAct">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/shape_rect14c"
+        android:layout_height="100dp">
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            app:titleMarginStart="80dp"
+            android:layout_gravity="center_horizontal"
+            app:title="Skylight Borrowing Zone"
+            android:textAlignment="center"
+            app:titleTextColor="@color/colorPrimaryDark"
+            android:layout_height="100dp"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+    <com.melnykov.fab.ObservableScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/cust_layout"
+                android:weightSum="2"
+                android:background="@drawable/rect_their_message"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="Select from My Customer"
+                    android:layout_marginEnd="2dp"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:layout_marginTop="10dp"
+                    android:paddingTop="10dp"
+                    android:layout_marginEnd="2dp"
+                    android:paddingBottom="10dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:id="@+id/selected_customer"
+                    android:background="@drawable/shape_rect_5"
+                    android:padding="30dp"
+                    android:layout_height="wrap_content">
+
+                </androidx.appcompat.widget.AppCompatSpinner>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/cust_layout_all"
+                android:weightSum="2"
+                android:background="@drawable/rect_their_message"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="Select from All Customer"
+                    android:layout_marginEnd="2dp"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:layout_marginTop="10dp"
+                    android:paddingTop="10dp"
+                    android:layout_marginEnd="2dp"
+                    android:paddingBottom="10dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:id="@+id/spnBorrowingCustomerAll"
+                    android:background="@drawable/shape_rect_5"
+                    android:padding="30dp"
+                    android:layout_height="wrap_content">
+
+                </androidx.appcompat.widget.AppCompatSpinner>
+
+            </LinearLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/gOfLoan"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="17sp"
+                android:focusable="false"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/black"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:background="@null"
+                android:text="Select Skylight Account Type" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="2dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                app:cardPreventCornerOverlap="false"
+                app:contentPadding="0dp">
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/loanAcctType"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="10dp"
+                    android:hint="Skylight Account Type"
+                    android:background="@drawable/rect6g"
+                    style="@style/Widget.AppCompat.Spinner.DropDown"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:entries="@array/fromAcctType"
+                    android:padding="30dp"
+                    android:textColorHint="@android:color/holo_red_dark"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="20sp"
+                    android:layout_gravity="center_vertical|start"
+                    android:gravity="center_vertical|start"
+                    android:clickable="false"
+                    />
+
+            </androidx.cardview.widget.CardView>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/bank2_layout"
+                android:weightSum="2"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rect_their_message"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="Choose Bank"
+                    android:layout_marginEnd="2dp"
+                    android:textStyle="bold"
+                    android:padding="10dp"
+                    android:textSize="20sp"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="2dp"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:entries="@array/Banks"
+                    android:id="@+id/bank_borrow"
+                    android:background="@drawable/shape_rect_5"
+                    android:padding="20dp"
+                    android:layout_height="wrap_content">
+
+                </androidx.appcompat.widget.AppCompatSpinner>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/customer_bank_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rect_their_message"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp"
+                android:padding="5dp">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:layout_width="match_parent"
+                        android:hint="Account Receipient Name"
+                        android:id="@+id/receiver"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:maxLines="1"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rect6g"
+                        android:padding="30dp"
+                        android:autofillHints="Skylight Customer's Name"
+                        android:textColorHint="@color/colorPrimaryDark"
+                        android:soundEffectsEnabled="true"
+                        android:inputType="number"
+                        android:layout_height="wrap_content">
+
+                    </androidx.appcompat.widget.AppCompatEditText>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/accountNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rect_their_message"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:padding="5dp">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:layout_width="match_parent"
+                        android:hint="Input Bank Account Number"
+                        android:id="@+id/account_no1"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:maxLines="1"
+                        android:background="@drawable/rect6g"
+                        android:padding="30dp"
+                        android:autofillHints="NGN10000"
+                        android:textColorHint="@color/colorPrimaryDark"
+                        android:soundEffectsEnabled="true"
+                        android:inputType="number"
+                        android:layout_height="wrap_content">
+
+                    </androidx.appcompat.widget.AppCompatEditText>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:text="Verify Name"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginStart="2dp"
+                        android:textStyle="bold"
+                        android:gravity="start"
+                        android:padding="15dp"
+                        android:visibility="gone"
+                        android:id="@+id/verifyTxt"
+                        android:textSize="15sp"
+                        android:layout_weight="1"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:layout_height="wrap_content"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/amount2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_rect_7"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:padding="5dp">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:layout_width="match_parent"
+                        android:hint="Input the Amount to borrow"
+                        android:id="@+id/amount6"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:maxLines="1"
+                        android:background="@drawable/rect6g"
+                        android:padding="30dp"
+                        android:autofillHints="NGN10000"
+                        android:textColorHint="@color/colorPrimaryDark"
+                        android:soundEffectsEnabled="true"
+                        android:inputType="number"
+                        android:layout_height="wrap_content">
+
+                    </androidx.appcompat.widget.AppCompatEditText>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:text="Click on Borrow Now"
+                android:padding="20dp"
+                android:layout_marginTop="20dp"
+                android:textSize="17sp"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/borrow_now"
+                android:background="@drawable/shape_rect12"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_height="wrap_content"/>
+
+
+            <View
+                android:id="@+id/divider_last4"
+                android:layout_width="match_parent"
+                android:layout_height="4dp" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </com.melnykov.fab.ObservableScrollView>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:text="Result"
+        android:layout_marginEnd="2dp"
+        android:layout_marginStart="2dp"
+        android:textStyle="bold"
+        android:gravity="start"
+        android:padding="15dp"
+        android:visibility="gone"
+        android:id="@+id/resultTxt"
+        android:textSize="15sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_height="wrap_content"/>
+
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_light"
+        android:icon="@drawable/icon8"
+        android:title="Light Bill" />
+
+    <item
+        android:id="@+id/navigation_airTime"
+        android:icon="@drawable/icon8"
+        android:title="Airtime" />
+
+    <item
+        android:id="@+id/navigation_gotv"
+        android:icon="@drawable/icon8"
+        android:title="GOTV" />
+
+    <item
+        android:id="@+id/navigation_dstv"
+        android:icon="@drawable/icon8"
+        android:title="DSTV" />
+
+    <item
+        android:id="@+id/nav_create_cus"
+        android:icon="@drawable/icon8"
+        android:title="Create Customer" />
+    <item
+        android:id="@+id/nav_add_s"
+        android:icon="@drawable/icon8"
+        android:title="Add Savings" />
+
+</menu>

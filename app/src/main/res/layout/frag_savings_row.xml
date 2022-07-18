@@ -1,0 +1,258 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/savings2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="2dp"
+    android:orientation="vertical"
+    android:background="@drawable/shape_rect13">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardBackgroundColor="@color/cardview_shadow_end_color"
+        android:background="@drawable/shape_rect_7"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="70dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/savings"
+                android:layout_height="70dp"/>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="(0098) Emeke Ubong's Report"
+                        android:layout_gravity="start"
+                        android:textStyle="bold"
+                        android:id="@+id/savings_customer"
+                        android:textSize="15sp"
+                        android:layout_height="wrap_content"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:text="Amount: N12,000"
+                        android:textSize="15sp"
+                        android:layout_weight="1"
+                        android:id="@+id/defaultAmount3"
+                        android:textStyle="bold"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/package_count"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text=" (50)"
+                        android:textSize="15sp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="1"
+                        android:textStyle="bold"
+                        android:textColor="@color/black" />
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/package_id"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Package :1005"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:layout_marginStart="5dp"
+                android:textSize="15sp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/savings_id12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text=" savings-0091"
+                android:textStyle="bold"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="0dp"
+                android:text="No. of Days: 5"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginStart="5dp"
+                android:textSize="15sp"
+                android:id="@+id/number_day12"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="0dp"
+                android:text="Total : NGN 15,000"
+                android:textAlignment="textStart"
+                android:textStyle="bold"
+                android:layout_marginEnd="5dp"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_weight="1"
+                android:id="@+id/totalsavings"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:padding="1dp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="0dp"
+                android:text="@string/_12_05_2021"
+                android:id="@+id/savings_date"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:text="Status"
+                android:textColor="@color/black"
+                android:id="@+id/status11"
+                android:layout_gravity="start"
+                android:textSize="15sp"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:id="@+id/goneRem"
+            android:visibility="gone"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="0dp"
+                android:text="Amount Rem : NGN20,000"
+                android:layout_marginEnd="2dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:id="@+id/amount_rem2"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginEnd="5dp"
+                android:text="Days Rem: 5"
+                android:id="@+id/daysRem"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:id="@+id/gonePaymentMethod"
+            android:visibility="gone"
+            android:layout_marginBottom="10dp"
+            android:padding="1dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="0dp"
+                android:text="Payment Method"
+                android:layout_marginEnd="2dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:textSize="15sp"
+                android:id="@+id/paymentMethod"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="0dp"
+                android:text="Payment Code: SKY982074"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:id="@+id/paymentCode"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:id="@+id/savings_more11"
+                android:text="More Details"
+                android:padding="20dp"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginStart="12dp"
+                android:background="@drawable/rect6e"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/cardview_dark_background" />
+
+
+</LinearLayout>
