@@ -100,13 +100,9 @@ public class TellerReportActSuper extends AppCompatActivity implements TellerRep
     }
 
     @Override
-    public void onItemClick(TellerReport tellerReport, CustomerManager customerManager, AdminUser adminUser, Profile profile,String officeBranch) {
+    public void onItemClick(TellerReport tellerReport) {
         Bundle extras = new Bundle();
         extras.putParcelable("TellerReport",tellerReport);
-        extras.putParcelable("CustomerManager",customerManager);
-        extras.putParcelable("AdminUser",adminUser);
-        extras.putParcelable("Profile",profile);
-        extras.putString("USER_OFFICE",officeBranch);
         Intent intent = new Intent(this, TellerReportUpdateAct.class);
         intent.putExtras(extras);
         startActivity(intent);

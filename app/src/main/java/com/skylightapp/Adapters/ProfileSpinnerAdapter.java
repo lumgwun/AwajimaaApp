@@ -50,11 +50,11 @@ public class ProfileSpinnerAdapter extends BaseAdapter implements View.OnClickLi
     public View getView(int position, View view, ViewGroup viewGroup) {
         view = inflter.inflate(R.layout.teller_spn_row, null);
         final String depositor = stringArrayList.get(position);
-        ImageView icon = (ImageView) view.findViewById(R.id.imageView);
-        TextView names = (TextView) view.findViewById(R.id.textView);
+        ImageView icon = (ImageView) view.findViewById(R.id.imageView33);
+        TextView names = (TextView) view.findViewById(R.id.textView61);
         icon.setImageResource(R.drawable.user3);
         //view.setOnClickListener(this);
-        names.setText(MessageFormat.format("Teller:{0}{1}", depositor));
+        names.setText(MessageFormat.format("Depositor:{0}{1}", depositor));
         return view;
     }
 

@@ -1,9 +1,6 @@
 package com.skylightapp.Adapters;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,31 +9,34 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AlertDialog;
 
 import com.bumptech.glide.Glide;
 
 import com.skylightapp.Classes.SkyLightPackModel;
 import com.skylightapp.Classes.SkyLightPackage;
-import com.skylightapp.PayNowActivity;
 import com.skylightapp.R;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPackageSliderAdapter.SliderAdapterVH> implements View.OnClickListener, Filterable {
 
     private Context context;
 
-    private List<SkyLightPackModel> mSliderItems = new ArrayList<>();
+    private ArrayList<SkyLightPackModel> mSliderItems = new ArrayList<>();
     private Context Mcontext;
     private  SkyLightPackModel skyLightPackModel;
     private  SkyLightPackage skyLightPackage;
+    private String tittle;
+    private String type;
+    private double durationPrice;
+    private double grandTotal;
+    private int id,imageLink,duration;
+
 
     private List<SkyLightPackModel> theSlideItemsModelClassList = new ArrayList<>();
     private List<SkyLightPackModel> itemsListFilter = new ArrayList<>();
@@ -54,7 +54,7 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
 
     }
 
-    public void renewItems(List<SkyLightPackModel> sliderItems) {
+    public void renewItems(ArrayList<SkyLightPackModel> sliderItems) {
         this.mSliderItems = sliderItems;
         notifyDataSetChanged();
     }
@@ -82,20 +82,26 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
     public void onBindViewHolder(SliderAdapterVH viewHolder, final int position) {
 
         SkyLightPackModel sliderItem = mSliderItems.get(position);
-        String tittle=sliderItem.getpMItemName();
-        String type=sliderItem.getpMType();
-        int duration=sliderItem.getpMDuration();
-        double amount=sliderItem.getpMPrice();
-        double grandTotal=duration*amount;
-        int id=sliderItem.getpModeID();
+        if(sliderItem !=null){
+            tittle=sliderItem.getpMItemName();
+            type=sliderItem.getpMType();
+            duration=sliderItem.getpMDuration();
+            durationPrice=sliderItem.getpMPrice();
+            grandTotal=duration*durationPrice;
+            id=sliderItem.getpModeID();
+            imageLink=sliderItem.getpMItemImage();
+
+        }
+        context = viewHolder.itemView.getContext();
+        //context = viewHolder.imageItem.getContext();
 
         viewHolder.tittle.setText(MessageFormat.format("Item Name.:{0}", sliderItem.getpMItemName()));
         viewHolder.textViewDescription.setText(MessageFormat.format("Desc.:{0}", sliderItem.getpMdesc()));
         viewHolder.price.setText(MessageFormat.format("Price.:N{0}", sliderItem.getpMPrice()));
         viewHolder.duration.setText(MessageFormat.format("Duration.:{0}", sliderItem.getpMDuration()));
-        Glide.with(viewHolder.imageItem).load(sliderItem.getpMItemImage()).fitCenter().into(viewHolder.imageItem);
+        Glide.with(context).load(imageLink).fitCenter().into(viewHolder.imageItem);
 
-        final SkyLightPackage skyLightPackage = new SkyLightPackage(id,0,tittle,amount,grandTotal,type,duration);
+        final SkyLightPackage skyLightPackage = new SkyLightPackage(id,0,tittle,durationPrice,grandTotal,type,duration);
         sliderItem.setSkyLightPackage(skyLightPackage);
         viewHolder.motherLayoutView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,6 +153,22 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
     public int getCount() {
         return (null != mSliderItems ? mSliderItems.size() : 0);
     }
+
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        itemsListFilter.clear();
+        if (charText.length() == 0) {
+            itemsListFilter.addAll(mSliderItems);
+        } else {
+            for (SkyLightPackModel wp : mSliderItems) {
+                if (wp.getpMItemName().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    itemsListFilter.add(wp);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
     @Override
     public Filter getFilter() {
         return new Filter() {

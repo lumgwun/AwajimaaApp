@@ -14,6 +14,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
@@ -45,7 +49,6 @@ public class SkyLightPackageActivity extends AppCompatActivity implements  NewSk
     private TabLayout tabLayout;
     private List<SkyLightPackModel> itemsListFilter = new ArrayList<>();
     private SkyLightPackage skyLightPackage;
-    private SearchView iSearchView;
 
     private SearchManager manager;
     private Customer customer,customer1;
@@ -60,6 +63,8 @@ public class SkyLightPackageActivity extends AppCompatActivity implements  NewSk
     private Profile managerProfile;
     private CustomerManager customerManager;
     private SharedPreferences userPreferences;
+    private NewSkylightPackageSlider.OnItemsClickListener listener;
+    MenuItem searchItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +90,7 @@ public class SkyLightPackageActivity extends AppCompatActivity implements  NewSk
         managerProfile = gson1.fromJson(json1, Profile.class);
         json2 = userPreferences.getString("LastTellerProfileUsed", "");
         customerManager = gson2.fromJson(json2, CustomerManager.class);
-        adapter = new NewSkylightPackageSlider(this, skyLightPackage_2s);
+        adapter = new NewSkylightPackageSlider(this, skyLightPackage_2s,listener);
         page.setAdapter(adapter);
         java.util.Timer timer = new java.util.Timer();
         timer.scheduleAtFixedRate(new The_slide_timer(),1000,2000);
@@ -551,5 +556,34 @@ public class SkyLightPackageActivity extends AppCompatActivity implements  NewSk
 
 
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.packs_menu, menu);
+        searchItem = menu.findItem(R.id.actionPacks);
+        try {
+            if(searchItem !=null){
+                searchView = (SearchView) searchItem.getActionView();
+                searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
+                    }
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        adapter.getFilter().filter(newText);
+                        return false;
+                    }
+                });
+
+            }
+        } catch (NullPointerException e) {
+            System.out.println("Oops!");
+        }
+
+
+        return true;
     }
 }

@@ -2,7 +2,6 @@ package com.skylightapp;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -15,6 +14,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class SkylightSliderAct extends AppCompatActivity implements SkylightPackageSliderAdapter.OnItemsClickListener {
+public class SkylightSliderAct extends AppCompatActivity implements SkylightPackageSliderAdapter.OnItemsClickListener, SearchView.OnQueryTextListener {
     private ArrayList<SkyLightPackModel> skyLightPackage_2s;
     private List<SkyLightPackModel> itemsListFilter = new ArrayList<>();
     SkylightPackageSliderAdapter adapter;
@@ -53,7 +53,11 @@ public class SkylightSliderAct extends AppCompatActivity implements SkylightPack
     private Profile managerProfile;
     private CustomerManager customerManager;
     private SharedPreferences userPreferences;
+    private String type,tittle;
+    private int duration,id;
+    private double amount,grandTotal;
     private  SkylightPackageSliderAdapter.OnItemsClickListener onItemsClickListener;
+    SearchView editsearch;
 
 
     @Override
@@ -86,14 +90,18 @@ public class SkylightSliderAct extends AppCompatActivity implements SkylightPack
 
         sliderView.setSliderAdapter(adapter);
         adapter.setCallback(onItemsClickListener);
+        editsearch = (SearchView) findViewById(R.id.search);
+        editsearch.setOnQueryTextListener(this);
 
         sliderView.setScrollTimeInSec(3);
 
         sliderView.setAutoCycle(true);
-
         sliderView.startAutoCycle();
         adapter.notifyDataSetChanged();
-        //adapter.filterall(s.tostring());
+        editsearch.setActivated(true);
+        editsearch.setQueryHint("Type your keyword here");
+        editsearch.onActionViewExpanded();
+        editsearch.setIconified(false);
 
     }
     private void fillPackageList() {
@@ -436,6 +444,18 @@ public class SkylightSliderAct extends AppCompatActivity implements SkylightPack
 
     }
     @Override
+    public boolean onQueryTextSubmit(String query) {
+
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        String text = newText;
+        adapter.filter(text);
+        return false;
+    }
+    @Override
     public void onItemClick(SkyLightPackModel lightPackage) {
         Bundle bundle = new Bundle();
         customer= new Customer();
@@ -445,12 +465,16 @@ public class SkylightSliderAct extends AppCompatActivity implements SkylightPack
         if(managerProfile !=null){
             profileID=managerProfile.getPID();
         }
-        String tittle=lightPackage.getpMItemName();
-        String type=lightPackage.getpMType();
-        int duration=lightPackage.getpMDuration();
-        double amount=lightPackage.getpMPrice();
-        double grandTotal=duration*amount;
-        int id=lightPackage.getpModeID();
+        if(lightPackage !=null){
+            type=lightPackage.getpMType();
+            duration=lightPackage.getpMDuration();
+            amount=lightPackage.getpMPrice();
+            grandTotal=duration*amount;
+            id=lightPackage.getpModeID();
+            tittle=lightPackage.getpMItemName();
+        }
+
+
         skyLightPackage = new SkyLightPackage(id,customerID,tittle,amount,grandTotal,type,duration);
         bundle.putParcelable("SkyLightPackage", skyLightPackage);
         Intent payIntent = new Intent(SkylightSliderAct.this, PayNowActivity.class);

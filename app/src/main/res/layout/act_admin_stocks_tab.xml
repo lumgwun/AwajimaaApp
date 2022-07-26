@@ -21,7 +21,7 @@
             android:layout_height="150dp">
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
-                app:title="Branch Inventory Area"
+                app:title="Admin Inventory Area"
                 android:id="@+id/web_toolbar"
                 app:titleTextColor="#f00"
                 android:layout_height="wrap_content"/>

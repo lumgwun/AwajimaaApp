@@ -37,12 +37,14 @@ public class NewSkylightPackageSlider extends PagerAdapter implements Filterable
     private ArrayList<SkyLightPackModel> packageList;
     private ArrayList<SkyLightPackage> skyLightPackages;
     private OnItemsClickListener listener;
+    private SkyLightPackModel skyLightPackModel;
     Bundle bundle;
     RequestListener<Drawable> imageListener;
 
-    public NewSkylightPackageSlider(Context Mcontext, List<SkyLightPackModel> theSlideItemsModelClassList) {
+    public NewSkylightPackageSlider(Context Mcontext, List<SkyLightPackModel> theSlideItemsModelClassList,OnItemsClickListener listener) {
         this.Mcontext = Mcontext;
         this.theSlideItemsModelClassList = theSlideItemsModelClassList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -61,15 +63,63 @@ public class NewSkylightPackageSlider extends PagerAdapter implements Filterable
         bundle=new Bundle();
 
         sliderLayout.setOnClickListener(this);
+        itemName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(listener != null){
+                    listener.onItemClick(skyLightPackModel);
+                }
+            }
+        });
+        description.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(listener != null){
+                    listener.onItemClick(skyLightPackModel);
+                }
+            }
+        });
+        price.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(listener != null){
+                    listener.onItemClick(skyLightPackModel);
+                }
+            }
+        });
+        duration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(listener != null){
+                    listener.onItemClick(skyLightPackModel);
+                }
+            }
+        });
+        sliderLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(listener != null){
+                    listener.onItemClick(skyLightPackModel);
+                }
+            }
+        });
+        featured_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(listener != null){
+                    listener.onItemClick(skyLightPackModel);
+                }
+            }
+        });
 
-        description.setText(theSlideItemsModelClassList.get(position).getpMdesc());
-        itemName.setText(theSlideItemsModelClassList.get(position).getpMItemName());
-        price.setText(MessageFormat.format("N{0}", theSlideItemsModelClassList.get(position).getpMPrice()));
-        duration.setText(theSlideItemsModelClassList.get(position).getpMDuration());
+        description.setText(listModel.getpMdesc());
+        itemName.setText(listModel.getpMItemName());
+        price.setText(MessageFormat.format("N{0}", listModel.getpMPrice()));
+        duration.setText(listModel.getpMDuration());
         //featured_image.setImageResource(theSlideItemsModelClassList.get(position).getItemImage());
         try {
             Glide.with(context)
-                    .load(theSlideItemsModelClassList.get(position).getpMItemImage())
+                    .load(listModel.getpMItemImage())
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .error(R.drawable.ic_alert)
                     .listener(imageListener)

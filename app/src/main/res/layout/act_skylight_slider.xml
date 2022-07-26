@@ -8,12 +8,22 @@
     android:layout_height="match_parent"
     android:layout_marginBottom="10dp"
     tools:context="com.skylightapp.SkylightSliderAct">
+    <SearchView
+        android:id="@+id/search"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false">
+        <requestFocus />
+    </SearchView>
+
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:gravity="center_horizontal"
         android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/search"
         android:layout_marginBottom="10dp"
         android:text="The duration below is in Months"
         android:layout_height="wrap_content"/>

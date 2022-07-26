@@ -17,10 +17,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
@@ -47,6 +50,8 @@ import com.skylightapp.SuperAdmin.SuperAdminOffice;
 import com.skylightapp.Tellers.TellerDrawerAct;
 import com.skylightapp.Tellers.TellerHomeChoices;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
@@ -164,6 +169,7 @@ public class LoginActivity extends AppCompatActivity {
                     + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
                     + "([a-zA-Z]+[w-]+.)+[a-zA-Z]{2,4})$";
     private FirebaseAuth mAuth;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1275,6 +1281,58 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
+    }
+    public void myanimation(EditText edtanimasi) {
+        Animation animation = AnimationUtils.loadAnimation(context, R.anim.nav_default_pop_enter_anim);
+        edtanimasi.setAnimation(animation);
+    }
+
+    public void myIntent(Class newClass) {
+        startActivity(new Intent(context, newClass));
+    }
+
+
+    public void myToast(String isipesan) {
+        Toast.makeText(context, isipesan, Toast.LENGTH_SHORT).show();
+    }
+
+    public void showProgressDialog(String tittle) {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle(tittle);
+            progressDialog.setMessage(getString(R.string.loading));
+            progressDialog.setIndeterminate(true);
+        }
+
+        progressDialog.show();
+    }
+
+
+    public static boolean isOnline(ConnectivityManager cm) {
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }
+        return false;
+    }
+
+    // md5 encrypt function
+    public static String md5(String s) {
+        try {
+            MessageDigest digest = MessageDigest
+                    .getInstance("MD5");
+            digest.update(s.getBytes());
+            byte[] messageDigest = digest.digest();
+
+            StringBuilder hexString = new StringBuilder();
+            for (int i = 0; i < messageDigest.length; i++)
+                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+            return hexString.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
     protected void sendSMSMessage() {
         userProfile= new Profile();

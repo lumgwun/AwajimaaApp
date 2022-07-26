@@ -8,6 +8,6 @@
     android:theme="@style/NoActionBar"
     android:orientation="vertical"
     tools:context=".CameraActivity">
-    <include layout="@layout/tool_bar11e"/>
+    <include layout="@layout/tool_bar11f"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

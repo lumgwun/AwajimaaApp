@@ -25,6 +25,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
@@ -66,6 +67,11 @@ import com.skylightapp.R;
 import com.skylightapp.Transactions.Pay_load;
 import com.skylightapp.Transactions.SubAccounts;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.security.KeyFactory;
@@ -76,6 +82,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Formatter;
 import java.util.HashMap;
@@ -92,7 +99,7 @@ import javax.crypto.Cipher;
 import static android.content.ContentValues.TAG;
 
 
-@SuppressWarnings("deprecation")
+@SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored"})
 public class Utils {
     public static final String ATTRIBUTE_TTF_KEY = "ttf_name";
 
@@ -156,6 +163,83 @@ public class Utils {
     }
     public static String concat(String s1, String s2) {
         return s1.concat(s2);
+    }
+    public static Date dateAdd(Date in, int daysToAdd) {
+        if (in == null) {
+            return null;
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(in);
+        cal.add(Calendar.DAY_OF_MONTH, daysToAdd);
+        return cal.getTime();
+
+    }
+    public static Date dateAddYear(Date in, int tahun) {
+        if (in == null) {
+            return null;
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(in);
+        cal.add(Calendar.YEAR, tahun);
+        return cal.getTime();
+
+    }
+    public static OutputStream writeFile(String fileName) {
+        OutputStream fileOut = null;
+        try {
+            File file = new File(Environment
+                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
+
+            if (file.exists()) {
+                fileOut = new FileOutputStream(file);
+            } else {
+                file.createNewFile();
+                fileOut = new FileOutputStream(file);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+
+        return fileOut;
+    }
+
+    public static File getFile(String fileName) {
+        File file = new File(Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
+
+        return file;
+    }
+    public static Bitmap base64ToBitmap(String b64) {
+        byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+    }
+
+    public static String bitmapToBase64(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+    public static double distance(double lat1, double lng1, double lat2, double lng2, String unit){
+        double earthRadius = 6371.0;
+        if (unit.equalsIgnoreCase("M")){
+            earthRadius = 6371 * 1000;
+        }else if(unit.equalsIgnoreCase("N")){
+            earthRadius=6371.75;
+        }
+        double dLat = Math.toRadians(lat2-lat1);
+        double dLng = Math.toRadians(lng2-lng1);
+        double sindLat = Math.sin(dLat / 2);
+        double sindLng = Math.sin(dLng / 2);
+
+        double a = Math.pow(sindLat,2)+ Math.pow(sindLng,2) * Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2));
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double dist = earthRadius * c;
+        return dist;
+
     }
 
 

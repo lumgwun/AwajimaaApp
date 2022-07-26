@@ -62,7 +62,7 @@ public class ConfirmationActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
                             prefManager.setFirstTimeLaunch(false);
-                                Intent loginRIntent = new Intent(ConfirmationActivity.this, SuperAdminOffice.class);
+                                Intent loginRIntent = new Intent(ConfirmationActivity.this, AdminDrawerActivity.class);
                             loginRIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(loginRIntent);
                         }
@@ -77,7 +77,7 @@ public class ConfirmationActivity extends AppCompatActivity {
     }
     private void launchHomeScreen() {
         prefManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(ConfirmationActivity.this, SuperAdminOffice.class));
+        startActivity(new Intent(ConfirmationActivity.this, AdminDrawerActivity.class));
         finish();
     }
 }

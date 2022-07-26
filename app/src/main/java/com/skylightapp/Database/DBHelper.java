@@ -6761,15 +6761,13 @@ public class DBHelper extends SQLiteOpenHelper {
         return 0;*/
     }
     public double getTotalPaymentToday1(String today) {
-
         SQLiteDatabase db = this.getReadableDatabase();
         double count = 0.00;
         String selection = PAYMENT_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(today)};
-        Cursor cursor = db.rawQuery(
-                "select sum ("+ PAYMENT_AMOUNT +") from " + PAYMENTS_TABLE + selection,
-                selectionArgs
-        );
+        @SuppressLint("Recycle") Cursor cursor = db.query(true, PAYMENTS_TABLE, null, PAYMENT_DATE+"="+ today, null, null, null, null, null);
+
+
         if(cursor!=null && cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
                 do {

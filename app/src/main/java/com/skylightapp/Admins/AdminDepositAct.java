@@ -184,6 +184,21 @@ public class AdminDepositAct extends AppCompatActivity {
                 if(officeBranch.equalsIgnoreCase("Wimpey")){
                     officeBranchID=202;
                 }
+                if(officeBranch.equalsIgnoreCase("Ozuoba")){
+                    officeBranchID=203;
+                }
+                if(officeBranch.equalsIgnoreCase("Eleme")){
+                    officeBranchID=204;
+                }
+                if(officeBranch.equalsIgnoreCase("Iriebe")){
+                    officeBranchID=205;
+                }
+                if(officeBranch.equalsIgnoreCase("Onne")){
+                    officeBranchID=206;
+                }
+                if(officeBranch.equalsIgnoreCase("Rumuomasi")){
+                    officeBranchID=207;
+                }
                 Toast.makeText(AdminDepositAct.this, "Office Branch: "  + officeBranch, Toast.LENGTH_SHORT).show();
             }
 

@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content">
                 <ImageView
                     android:layout_width="70dp"
-                    android:contentDescription="@string/name"
+                    android:contentDescription="Name"
                     android:src="@drawable/ic_admin_user"
                     android:layout_gravity="start"
                     android:layout_marginEnd="10dp"
@@ -48,22 +48,25 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:orientation="horizontal"
+                        android:weightSum="3"
                         android:layout_height="wrap_content">
                         <TextView
-                            android:layout_width="70dp"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="User Names"
+                            android:layout_weight="1"
                             android:id="@+id/user_surname"
                             android:textColor="@android:color/black"
                             android:textSize="15sp"
                             android:layout_marginBottom="15dp"
                             android:textStyle="bold" />
                         <TextView
-                            android:layout_width="150dp"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="Ibrahim Okafor Udo"
                             android:id="@+id/user_allNames"
                             android:gravity="start"
+                            android:layout_weight="2"
                             android:layout_gravity="end"
                             android:layout_marginEnd="20dp"
                             android:textColor="@android:color/black"
@@ -75,20 +78,23 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:orientation="horizontal"
+                        android:weightSum="3"
                         android:layout_height="wrap_content">
                         <TextView
-                            android:layout_width="70dp"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="Phone Number"
+                            android:layout_weight="1"
                             android:id="@+id/user_tel"
                             android:textColor="@android:color/black"
                             android:textSize="15sp"
                             android:layout_marginBottom="15dp"
                             android:textStyle="bold" />
                         <TextView
-                            android:layout_width="210dp"
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
                             android:layout_height="wrap_content"
-                            android:text="@string/_070390000000"
+                            android:text="070390000000"
                             android:id="@+id/user_tel1"
                             android:gravity="start"
                             android:layout_gravity="end"
@@ -102,18 +108,21 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:orientation="horizontal"
+                        android:weightSum="3"
                         android:layout_height="wrap_content">
                         <TextView
-                            android:layout_width="70dp"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="NIN Names"
+                            android:text="NIN Name"
+                            android:layout_weight="1"
                             android:id="@+id/user_NINName"
                             android:textColor="@android:color/black"
                             android:textSize="15sp"
                             android:layout_marginBottom="15dp"
                             android:textStyle="bold" />
                         <TextView
-                            android:layout_width="150dp"
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
                             android:layout_height="wrap_content"
                             android:text="Ibrahim Okafor Udo"
                             android:id="@+id/user_NINName1"
@@ -137,21 +146,24 @@
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:visibility="gone"
+                android:weightSum="3"
                 android:id="@+id/layerDateJ"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:layout_width="70dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Date Joined:"
+                    android:layout_weight="1"
                     android:id="@+id/user_joined_date2"
                     android:textColor="@android:color/black"
                     android:textSize="15sp"
                     android:layout_marginBottom="15dp"
                     android:textStyle="bold" />
                 <TextView
-                    android:layout_width="280dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="10/03/2021"
+                    android:layout_weight="2"
                     android:id="@+id/user_joined_date3"
                     android:gravity="start"
                     android:layout_gravity="end"
@@ -166,10 +178,12 @@
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:visibility="gone"
+                android:weightSum="3"
                 android:id="@+id/layerEmail"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:layout_width="70dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="Email Address:"
                     android:id="@+id/user_email"
@@ -178,7 +192,8 @@
                     android:layout_marginBottom="15dp"
                     android:textStyle="bold" />
                 <TextView
-                    android:layout_width="280dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
                     android:layout_height="wrap_content"
                     android:text="ourcoopappuser@gmail.com"
                     android:id="@+id/user_email1"
@@ -195,21 +210,24 @@
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:visibility="gone"
+                android:weightSum="3"
                 android:id="@+id/layerDOB"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:layout_width="70dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Date of Birth:"
+                    android:layout_weight="1"
                     android:id="@+id/user_dob2"
                     android:textColor="@android:color/black"
                     android:textSize="15sp"
                     android:layout_marginBottom="15dp"
                     android:textStyle="bold" />
                 <TextView
-                    android:layout_width="95dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="23/04/1981"
+                    android:layout_weight="2"
                     android:id="@+id/user_dob3"
                     android:gravity="start"
                     android:layout_gravity="end"
@@ -220,12 +238,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
+                    android:weightSum="3"
                     android:id="@+id/linear_userName"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:layout_width="75dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="UserName:"
+                        android:layout_weight="1"
                         android:layout_marginEnd="20dp"
                         android:id="@+id/user_username2"
                         android:textColor="@android:color/black"
@@ -233,7 +253,8 @@
                         android:layout_marginBottom="15dp"
                         android:textStyle="bold" />
                     <TextView
-                        android:layout_width="70dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:text="abasioma22"
                         android:id="@+id/user_username3"
@@ -253,21 +274,24 @@
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:visibility="gone"
+                android:weightSum="3"
                 android:id="@+id/layerGender"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:layout_width="70dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Gender:"
+                    android:layout_weight="1"
                     android:id="@+id/user_gender2"
                     android:textColor="@android:color/black"
                     android:textSize="15sp"
                     android:layout_marginBottom="15dp"
                     android:textStyle="bold" />
                 <TextView
-                    android:layout_width="95dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Female"
+                    android:layout_weight="2"
                     android:id="@+id/user_gender3"
                     android:gravity="start"
                     android:layout_gravity="end"
@@ -279,9 +303,11 @@
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:id="@+id/savings_layout"
+                    android:weightSum="3"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:layout_width="75dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="Customer"
                         android:layout_marginEnd="20dp"
@@ -291,7 +317,8 @@
                         android:layout_marginBottom="15dp"
                         android:textStyle="bold" />
                     <TextView
-                        android:layout_width="70dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:text="Approved profile"
                         android:id="@+id/user_status2"
@@ -311,10 +338,12 @@
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:visibility="gone"
+                android:weightSum="3"
                 android:id="@+id/layerAddress"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:layout_width="70dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="Address:"
                     android:id="@+id/user_address2"
@@ -323,7 +352,8 @@
                     android:layout_marginBottom="15dp"
                     android:textStyle="bold" />
                 <TextView
-                    android:layout_width="280dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
                     android:layout_height="wrap_content"
                     android:text="State"
                     android:id="@+id/user_addressState"

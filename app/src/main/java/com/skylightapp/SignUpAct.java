@@ -48,11 +48,13 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -132,6 +134,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.SecureRandom;
+import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -141,7 +144,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -202,10 +208,11 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     private Bundle bundle;
     AppCompatTextView dobText;
     String uPhoneNumber, accountName, skylightMFb;
-    private ProgressDialog progressDialog;
+
     int profileID, birthdayID, messageID;
 
     private ProgressBar loadingPB;
+    private ProgressDialog progressDialog;
     String ManagerSurname;
     String managerFirstName, uPassword;
     String managerPhoneNumber1;
@@ -471,7 +478,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
                     street.append(localityString).append("");
 
-                    locTxt.setText(MessageFormat.format("Where you are:  {0},{1}/{2}",latitude, longitude, street));
+                    locTxt.setText(MessageFormat.format("Where you are:  {0},{1}/{2}", latitude, longitude, street));
                     Toast.makeText(SignUpAct.this, street,
                             Toast.LENGTH_SHORT).show();
 
@@ -499,7 +506,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         setTitle("OnBoarding Arena");
         createLocationRequest();
         referrerClient = InstallReferrerClient.newBuilder(this).build();
-        locationManager =(LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
         criteria.setAltitudeRequired(false);
@@ -533,8 +540,8 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                             Toast.makeText(SignUpAct.this, "Network Provider update", Toast.LENGTH_SHORT).show();
                         }
                     });
-                    userLocation = new LatLng(latitude,longitude );
-                    cusLatLng=userLocation;
+                    userLocation = new LatLng(latitude, longitude);
+                    cusLatLng = userLocation;
 
 
                     try {
@@ -551,7 +558,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
                             street.append(localityString).append("");
 
-                            locTxt.setText(MessageFormat.format("Where you are:  {0},{1}/{2}",latitude, ""+longitude, street));
+                            locTxt.setText(MessageFormat.format("Where you are:  {0},{1}/{2}", latitude, "" + longitude, street));
                             Toast.makeText(SignUpAct.this, street,
                                     Toast.LENGTH_SHORT).show();
 
@@ -569,8 +576,6 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                 }
             }
         };
-
-
 
 
         getSkylightRefferer(referrerClient);
@@ -718,7 +723,6 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         birthday = new Birthday();
 
 
-
         if (managerProfile != null) {
             ManagerSurname = managerProfile.getProfileLastName();
             managerFirstName = managerProfile.getProfileFirstName();
@@ -734,7 +738,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
             profileID = 0;
 
         }
-        edtSponsorID.setText("Your Sponsor's ID:"+profileID);
+        edtSponsorID.setText("Your Sponsor's ID:" + profileID);
 
         profiles = new ArrayList<>();
         customers = new ArrayList<>();
@@ -1082,7 +1086,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                 otpPhoneNumber = "+234" + uPhoneNumber;
                 code = pinEntryView.getText().toString().trim();
 
-                if(code !=null){
+                if (code != null) {
                     if (code.equals(String.valueOf(otpDigit))) {
                         Toast.makeText(SignUpAct.this, "OTP verification, a Success", Toast.LENGTH_SHORT).show();
                         startProfileActivity(sponsorID, cusLatLng, account, standingOrderAcct, joinedDate, uFirstName, uSurname, uPhoneNumber, uAddress, uUserName, uPassword, customer, customerProfile, nIN, managerProfile, dateOfBirth, selectedGender, selectedOffice, selectedState, birthday, customerManager, dateOfBirth, profileID1, virtualAccountNumber, soAccountNumber, customerID, birthdayID, investmentAcctID, itemPurchaseAcctID, promoAcctID, packageAcctID, customers);
@@ -1102,6 +1106,65 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
 
     }
+
+    public String currentDate() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd 'at' HH:mm:ss");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+    public static String getDeviceId(Context context) {
+        @SuppressLint("HardwareIds") final String deviceId = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+        if (deviceId != null) {
+            return deviceId;
+        } else {
+            return Build.SERIAL;
+        }
+    }
+
+
+    @SuppressLint("HardwareIds")
+    public String getDeviceUUID(Context context) {
+        final TelephonyManager tm = (TelephonyManager) context
+                .getSystemService(Context.TELEPHONY_SERVICE);
+
+        final String tmDevice, tmSerial, androidId;
+        tmDevice = MessageFormat.format("{0}", tm.getDeviceId());
+        tmSerial = "" + tm.getSimSerialNumber();
+        androidId = MessageFormat.format("{0}", Settings.Secure.getString(context.getContentResolver(),
+                Settings.Secure.ANDROID_ID));
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+
+        }
+        String deviceMobileNo = tm.getLine1Number();
+
+        UUID deviceUuid = new UUID(androidId.hashCode(),
+                ((long) tmDevice.hashCode() << 32) | tmSerial.hashCode());
+        return deviceUuid.toString();
+
+    }
+    public static boolean isEmailValid(EditText email) {
+        boolean isValid = false;
+
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        CharSequence inputStr = email.getText().toString();
+
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(inputStr);
+        if (matcher.matches()) {
+            isValid = true;
+        }
+        return isValid;
+    }
+    public static boolean isOnline(ConnectivityManager cm) {
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }
+        return false;
+    }
+
+
     public void loadProfiles(DBHelper dbHelper) {
 
         userProfile1 = new Profile(10000, "Emmanuel", "Becky", "08069524599", "urskylight@gmail.com", "1980-04-19", "female", "Skylight", "", "Rivers", "Elelenwo", "2022-04-19", "SuperAdmin", "Skylight4ever", "@Awajima2", "Confirmed", "");

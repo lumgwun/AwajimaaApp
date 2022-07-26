@@ -13,6 +13,8 @@ import android.util.Base64;
 import android.widget.Toast;
 
 import com.skylightapp.Classes.AppConstants;
+import com.skylightapp.Classes.TwilloMessage;
+import com.skylightapp.Classes.TwilloMessageSenderService;
 import com.twilio.Twilio;
 import com.twilio.http.TwilioRestClient;
 import com.twilio.rest.api.v2010.account.Message;
@@ -68,11 +70,15 @@ public class SMSAct extends AppCompatActivity {
     final String user="bdm@skylightciacs.com";
     final String password= AppConstants.emailPassword;
     TwilioRestClient client;
+    TwilloMessage twilloMessage;
+    private TwilloMessageSenderService twilloMessageSenderService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_smsact);
+        twilloMessage= new TwilloMessage(phoneNumber,smsMessage);
+        twilloMessageSenderService= new TwilloMessageSenderService();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         Properties properties=new Properties();
@@ -132,6 +138,7 @@ public class SMSAct extends AppCompatActivity {
             subject=smsBundle.getString("subject");
 
         }
+        twilloMessageSenderService.sendMessage(twilloMessage);
         sendEmail(smsMessage,cusEmail,subject,mimeMessage);
         sendTextMessage(phoneNumber,smsMessage,from,to);
         base64EncodedCredentials = "Basic" + Base64.encodeToString ((ACCOUNT_SID + ":" + AUTH_TOKEN) .getBytes (), Base64.NO_WRAP);

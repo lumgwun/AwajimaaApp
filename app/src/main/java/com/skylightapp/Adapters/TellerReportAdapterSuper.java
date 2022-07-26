@@ -17,10 +17,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.skylightapp.Classes.AdminUser;
-import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.ExpandableTextView;
-import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.ProfileManager;
 import com.skylightapp.Classes.TellerReport;
 import com.skylightapp.R;
@@ -32,7 +29,7 @@ import java.util.List;
 public class TellerReportAdapterSuper extends RecyclerView.Adapter<TellerReportAdapterSuper.RecyclerViewHolder> implements Filterable {
 
 
-    private ArrayList<TellerReport> savings;
+    private ArrayList<TellerReport> tellerReportArrayList1;
     private Context mcontext;
     int resources;
     private List<TellerReport> list = new ArrayList<>();
@@ -48,7 +45,7 @@ public class TellerReportAdapterSuper extends RecyclerView.Adapter<TellerReportA
     private List<TellerReport> itemsListFilter = new ArrayList<>();
 
     public TellerReportAdapterSuper(ArrayList<TellerReport> reports, Context mcontext) {
-        this.savings = reports;
+        this.tellerReportArrayList1 = reports;
         this.mcontext = mcontext;
     }
     public TellerReportAdapterSuper(View itemView, final Callback callback) {
@@ -73,14 +70,14 @@ public class TellerReportAdapterSuper extends RecyclerView.Adapter<TellerReportA
     }
 
     public TellerReportAdapterSuper(Context context, int resources, ArrayList<TellerReport> tellerReports) {
-        this.savings = tellerReports;
+        this.tellerReportArrayList1 = tellerReports;
         this.mcontext = context;
         this.resources = resources;
 
     }
 
     public TellerReportAdapterSuper(Context context, ArrayList<TellerReport> tellerReports) {
-        this.savings = tellerReports;
+        this.tellerReportArrayList1 = tellerReports;
         this.mcontext = context;
 
     }
@@ -99,7 +96,7 @@ public class TellerReportAdapterSuper extends RecyclerView.Adapter<TellerReportA
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         holder.itemView.setLongClickable(true);
         //SavingsAdapter.bindData(getItemByPosition(position));
-        TellerReport tellerReport = this.savings.get(position);
+        TellerReport tellerReport = this.tellerReportArrayList1.get(position);
         holder.admin.setText(MessageFormat.format("Report Admin:{0}", String.valueOf(tellerReport.getTr_AdminName())));
         holder.tellerReportDate.setText(MessageFormat.format("Report date:{0}", tellerReport.getTellerReportDate()));
         holder.reportAmountTendered.setText(MessageFormat.format("Report Cash Amount: NGN{0}", String.format("%.2f", tellerReport.getTr_AmtSubmitted())));
@@ -207,7 +204,7 @@ public class TellerReportAdapterSuper extends RecyclerView.Adapter<TellerReportA
 
     @Override
     public int getItemCount() {
-        return (null != savings ? savings.size() : 0);
+        return (null != tellerReportArrayList1 ? tellerReportArrayList1.size() : 0);
     }
 
     public interface Callback {
@@ -231,7 +228,7 @@ public class TellerReportAdapterSuper extends RecyclerView.Adapter<TellerReportA
         notifyDataSetChanged();
     }
     public interface OnItemsClickListener{
-        void onItemClick(TellerReport tellerReport, CustomerManager customerManager, AdminUser adminUser, Profile profile, String officeBranch);
+        void onItemClick(TellerReport tellerReport);
     }
 
 }
