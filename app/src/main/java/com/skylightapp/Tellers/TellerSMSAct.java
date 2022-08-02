@@ -15,6 +15,7 @@ import android.telephony.SmsManager;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.skylightapp.BuildConfig;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.PaymentCode;
@@ -27,8 +28,10 @@ import com.twilio.rest.api.v2010.account.Message;
 
 import java.util.Random;
 
-import static com.skylightapp.Classes.AppConstants.ACCOUNT_SID;
-import static com.skylightapp.Classes.AppConstants.AUTH_TOKEN;
+
+import static com.skylightapp.BuildConfig.TWILLO_NO;
+import static com.skylightapp.BuildConfig.T_ACCT_SID;
+import static com.skylightapp.BuildConfig.T_AUTH_TOKEN;
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.CustomerDailyReport.REPORT_DATE;
 import static com.skylightapp.Classes.CustomerDailyReport.REPORT_ID;
@@ -38,6 +41,11 @@ import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ID;
 
 public class TellerSMSAct extends AppCompatActivity {
     int customerID,packageID, savingsID;
+    private String TWILLO_ACCOUNT_SID= T_ACCT_SID;
+    private String TWILLO_AUTH_TOKEN= T_AUTH_TOKEN;
+    private String TWILLO_PHONE_NO= TWILLO_NO;
+    String from = TWILLO_NO;
+    String password= BuildConfig.SKYLIGHT_EMAIL_PASSWORD;
     double totalAmount;
     String date,smsCustomer,smsToC,subject;
     String phoneNo;
@@ -95,7 +103,7 @@ public class TellerSMSAct extends AppCompatActivity {
                 customerPhoneN=customer.getCusPhoneNumber();
 
             }
-            Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+            Twilio.init(TWILLO_ACCOUNT_SID, TWILLO_AUTH_TOKEN);
             smsCustomer="Skylight"+ random.nextInt((int) (Math.random() * 2) + 1039);
             savingsCode=random.nextInt((int) (Math.random() * 2) + 1039);
             smsToC = "This"+""+savingsCode + ", is your Skylight savings code for Savings:"+ ""+ savingsID;
@@ -119,7 +127,7 @@ public class TellerSMSAct extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which) {
                                 case 0:
-                                    Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+                                    Twilio.init(TWILLO_ACCOUNT_SID, TWILLO_AUTH_TOKEN);
                                     Message message = Message.creator(
                                             new com.twilio.type.PhoneNumber(customerPhoneN),
                                             new com.twilio.type.PhoneNumber("+234"+customerPhoneN),

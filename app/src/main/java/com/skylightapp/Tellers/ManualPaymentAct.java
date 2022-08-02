@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.skylightapp.BuildConfig;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerManager;
@@ -52,13 +53,19 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
-import static com.skylightapp.Classes.AppConstants.ACCOUNT_SID;
-import static com.skylightapp.Classes.AppConstants.AUTH_TOKEN;
+import static com.skylightapp.BuildConfig.TWILLO_NO;
+import static com.skylightapp.BuildConfig.T_ACCT_SID;
+import static com.skylightapp.BuildConfig.T_AUTH_TOKEN;
 
 
 public class ManualPaymentAct extends AppCompatActivity {
     private static final String TAG = ManualPaymentAct.class.getSimpleName();
     public final static int KEY_EXTRA_REPORT_ID = 124;
+    private String TWILLO_ACCOUNT_SID= T_ACCT_SID;
+    private String TWILLO_AUTH_TOKEN= T_AUTH_TOKEN;
+    private String TWILLO_PHONE_NO= TWILLO_NO;
+    String from = TWILLO_NO;
+    String password= BuildConfig.SKYLIGHT_EMAIL_PASSWORD;
     Date currentDate;
 
     private Profile tellerProfile;
@@ -390,7 +397,7 @@ public class ManualPaymentAct extends AppCompatActivity {
                                             startNotification();
 
                                             String paymentMessage = "Skylight! your manual withdrawal :" + "was successful";
-                                            Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+                                            Twilio.init(TWILLO_ACCOUNT_SID, TWILLO_AUTH_TOKEN);
                                             Message message = Message.creator(
                                                     new com.twilio.type.PhoneNumber(customerPhoneNo),
                                                     new com.twilio.type.PhoneNumber("234" + customerPhoneNo),
@@ -452,7 +459,7 @@ public class ManualPaymentAct extends AppCompatActivity {
                                             startNotification();
 
                                             String paymentMessage = "Skylight! your manual withdrawal :" + "was successful";
-                                            Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+                                            Twilio.init(TWILLO_ACCOUNT_SID, TWILLO_AUTH_TOKEN);
                                             Message message = Message.creator(
                                                     new com.twilio.type.PhoneNumber(customerPhoneNo),
                                                     new com.twilio.type.PhoneNumber("234" + customerPhoneNo),

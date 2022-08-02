@@ -37,7 +37,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
@@ -119,11 +118,9 @@ import com.skylightapp.Classes.StandingOrderAcct;
 import com.skylightapp.Classes.TimeLine;
 import com.skylightapp.Classes.User;
 import com.skylightapp.Classes.UserSuperAdmin;
-import com.skylightapp.Customers.NewBankAcctAct;
 import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Interfaces.ProfileDao;
-import com.twilio.Twilio;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -178,8 +175,6 @@ import static com.skylightapp.Classes.Profile.PROFILE_SURNAME;
 import static com.skylightapp.Database.DBHelper.DATABASE_NAME;
 import static com.skylightapp.Database.DBHelper.DATABASE_NEW_VERSION;
 import static com.skylightapp.Database.DBHelper.DATABASE_VERSION;
-import static com.skylightapp.Transactions.OurConfig.TWILIO_ACCOUNT_SID;
-import static com.skylightapp.Transactions.OurConfig.TWILIO_AUTH_TOKEN;
 
 public class SignUpAct extends AppCompatActivity implements LocationListener {
     public static final int PICTURE_REQUEST_CODE = 505;
@@ -1089,7 +1084,10 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                 if (code != null) {
                     if (code.equals(String.valueOf(otpDigit))) {
                         Toast.makeText(SignUpAct.this, "OTP verification, a Success", Toast.LENGTH_SHORT).show();
-                        startProfileActivity(sponsorID, cusLatLng, account, standingOrderAcct, joinedDate, uFirstName, uSurname, uPhoneNumber, uAddress, uUserName, uPassword, customer, customerProfile, nIN, managerProfile, dateOfBirth, selectedGender, selectedOffice, selectedState, birthday, customerManager, dateOfBirth, profileID1, virtualAccountNumber, soAccountNumber, customerID, birthdayID, investmentAcctID, itemPurchaseAcctID, promoAcctID, packageAcctID, customers);
+
+                        saveMyPreferences(sponsorID, cusLatLng, account, standingOrderAcct, joinedDate, uFirstName, uSurname, uPhoneNumber, uAddress, uUserName, uPassword,  customer, customerProfile, nIN, managerProfile, dateOfBirth, selectedGender,  selectedOffice, selectedState, birthday,  customerManager, dateOfBirth, profileID1, virtualAccountNumber, soAccountNumber, customerID, birthdayID, investmentAcctID, itemPurchaseAcctID,promoAcctID, packageAcctID,  customers);
+                        saveInDatabase(sponsorID, cusLatLng, account, standingOrderAcct, joinedDate, uFirstName, uSurname, uPhoneNumber, uAddress, uUserName, uPassword, customer, customerProfile, nIN, managerProfile, dateOfBirth, selectedGender, selectedOffice, selectedState, birthday, customerManager, dateOfBirth, profileID1, virtualAccountNumber, soAccountNumber, customerID, birthdayID, investmentAcctID, itemPurchaseAcctID, promoAcctID, packageAcctID, customers);
+                        saveNewCustomer(sponsorID, cusLatLng, account, standingOrderAcct, joinedDate, uFirstName, uSurname, uPhoneNumber, uAddress, uUserName, uPassword,  customer, customerProfile, nIN, managerProfile, dateOfBirth, selectedGender,  selectedOffice, selectedState, birthday,  customerManager, dateOfBirth, profileID1, virtualAccountNumber, soAccountNumber, customerID, birthdayID, investmentAcctID, itemPurchaseAcctID,promoAcctID, packageAcctID,  customers);
 
                     } else {
                         Toast.makeText(SignUpAct.this, "Incorrect OTP", Toast.LENGTH_SHORT).show();
@@ -1105,6 +1103,407 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         });
 
 
+    }
+
+    private void saveNewCustomer(int sponsorID, LatLng cusLatLng, Account account, StandingOrderAcct standingOrderAcct, String joinedDate, String uFirstName, String uSurname, String uPhoneNumber, String uAddress, String uUserName, String uPassword, Customer customer, Profile customerProfile, String nIN, Profile managerProfile, String dateOfBirth, String selectedGender, String selectedOffice, String selectedState, Birthday birthday, CustomerManager customerManager, String dateOfBirth1, int profileID1, int virtualAccountNumber, int soAccountNumber, int customerID, int birthdayID, int investmentAcctID, int itemPurchaseAcctID, int promoAcctID, int packageAcctID, ArrayList<Customer> customers) {
+        customerProfile = new Profile(profileID1, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, "", selectedState, selectedOffice, joinedDate, "Customer", uUserName, uPassword, "pending", "");
+        if(customer !=null){
+            customer.setCusProfile(customerProfile);
+            customer.setCusFirstName(uFirstName);
+            customer.setCusSurname(uSurname);
+            customer.setCusAddress(uAddress);
+            customer.setCusDob(dateOfBirth);
+            customer.setCusUID(customerID);
+            customer.setCusDateJoined(joinedDate);
+            customer.setCusEmail(uEmail);
+            customer.setCusRole("customer");
+            customer.setCusPhoneNumber(uPhoneNumber);
+            customer.setCusGender(selectedGender);
+            customer.setCustomerLocation(cusLatLng);
+            customer.setCusUserName(uUserName);
+            customer.setCusState(selectedState);
+            customer.setCusSponsorID(sponsorID);
+            customer.setCusOffice(selectedOffice);
+            customer.setCusAccount(account);
+            customer.setCusStandingOrderAcct(standingOrderAcct);
+            customer.setCusProfilePicture(String.valueOf(mImageUri));
+
+            customerProfile.setProfileFirstName(uFirstName);
+            customerProfile.setProfileLastName(uSurname);
+            customerProfile.setProfileAddress(uAddress);
+            customerProfile.setProfileDob(dateOfBirth);
+            customerProfile.setProfileDateJoined(joinedDate);
+            customerProfile.setProfileEmail(uEmail);
+            customerProfile.setProfileRole("customer");
+            customerProfile.setProfilePhoneNumber(uPhoneNumber);
+            customerProfile.setProfileGender(selectedGender);
+            customerProfile.setProfileIdentity(null);
+            customerProfile.setProfileLastKnownLocation(this.cusLatLng);
+            customerProfile.setProfileMachine("customer");
+            customerProfile.setProfileUserName(uUserName);
+            customerProfile.setProfileState(selectedState);
+            customerProfile.setProfileSponsorID(profileID);
+            customerProfile.setProfileOffice(selectedOffice);
+            customerProfile.setProfile_CustomerManager(customerManager);
+            customerProfile.setProfilePicture(mImageUri);
+            int countC=0;
+            String name =uSurname+","+uFirstName;
+
+            if (customerManager != null) {
+                ManagerSurname = customerManager.getTSurname();
+                managerFirstName = customerManager.getTFirstName();
+                profileID = customerManager.getTellerProfileID();
+                managerPhoneNumber1 = customerManager.getTPhoneNumber();
+                managerEmail = customerManager.getTEmailAddress();
+                managerUserName = customerManager.getTUserName();
+                officePref = customerManager.getTOffice();
+                managerAddress = customerManager.getTAddress();
+                managerGender = customerManager.getTGender();
+                customerManager.addCustomer(countC,customerID, name, uPhoneNumber,  joinedDate,"New");
+
+            }
+
+
+            try {
+
+                customer.setCusAccount(account);
+                customer.setCusStandingOrderAcct(standingOrderAcct);
+                customer.addCusAccountManager(managerProfileID, ManagerSurname, managerFirstName, managerGender, officePref);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+    }
+
+    public void saveInDatabase(int sponsorID, LatLng cusLatLng, Account account, StandingOrderAcct standingOrderAcct, String joinedDate, String uFirstName, String uSurname, String uPhoneNumber, String uAddress, String uUserName, String uPassword, Customer customer, Profile customerProfile, String nIN, Profile managerProfile, String dateOfBirth, String selectedGender, String selectedOffice, String selectedState, Birthday birthday, CustomerManager customerManager, String ofBirth, int profileID1, int virtualAccountNumber, int soAccountNumber, int customerID, int birthdayID, int investmentAcctID, int itemPurchaseAcctID, int promoAcctID, int packageAcctID, ArrayList<Customer> customers) {
+        saveMyPreferences(sponsorID,cusLatLng,account,standingOrderAcct,joinedDate,uFirstName,uSurname,uPhoneNumber,uAddress,uUserName,uPassword,customer,customerProfile,nIN,managerProfile, dateOfBirth, selectedGender, selectedOffice, selectedState, birthday,  customerManager, ofBirth, profileID1,  virtualAccountNumber, soAccountNumber,  customerID, birthdayID, investmentAcctID,itemPurchaseAcctID,  promoAcctID, packageAcctID,  customers);
+        Toast.makeText(SignUpAct.this, "Gender: " + selectedGender + "," + "Office:" + selectedOffice + "" + "State:" + selectedState, Toast.LENGTH_SHORT).show();
+        showProgressDialog();
+        dbHelper = new DBHelper(this);
+        ran = new Random();
+        SQLiteDataBaseBuild();
+        calendar = Calendar.getInstance();
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        //startBankAcctCreationForResult.launch(new Intent(SignUpAct.this, NewBankAcctAct.class));
+
+
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        timeLineTime = mdformat.format(calendar.getTime());
+
+
+
+        //customers = dbHelper.getAllCustomers();
+
+        String names = uSurname + uFirstName;
+        //long customerId = customer.getId();
+        //Customer c = new Customer();
+        String name = uSurname + "," + uFirstName;
+        String managerFullNamesT = ManagerSurname + "," + managerFirstName;
+        String namesT = uSurname + "," + uFirstName;
+
+        String timelineDetailsTD = uSurname + "," + uFirstName + "was added as a Customer" + "by" + managerFullNamesT + "@" + timeLineTime;
+        String tittleT1 = "Customer Sign Up Alert!";
+        String timelineDetailsT11 = "You added" + uSurname + "," + uFirstName + "as a Customer" + "on" + timeLineTime;
+
+        random = new SecureRandom();
+        String accountName = uSurname + "," + uFirstName;
+
+
+        birthdayID = random.nextInt((int) (Math.random() * 1001) + 1010);
+        String skylightMFb = "E-Wallet";
+        double accountBalance = 0.00;
+        accountTypeStr = AccountTypes.EWALLET;
+        String interestRate = "0.0";
+
+        if (managerProfile != null) {
+            ManagerSurname = managerProfile.getProfileLastName();
+            managerFirstName = managerProfile.getProfileFirstName();
+            profileID = managerProfile.getPID();
+            managerPhoneNumber1 = managerProfile.getProfilePhoneNumber();
+            managerEmail = managerProfile.getProfileEmail();
+            managerUserName = managerProfile.getProfileUserName();
+            officePref = managerProfile.getProfileOffice();
+            customerManager = managerProfile.getProfile_CustomerManager();
+            managerAddress = managerProfile.getProfileAddress();
+            managerGender = managerProfile.getProfileGender();
+            managerProfile.addPTimeLine(tittleT1, timelineDetailsT11);
+            managerProfile.addPCustomer(customerID, uSurname, uFirstName, uPhoneNumber, uEmail, uAddress, selectedGender, selectedOffice, selectedState, mImageUri, joinedDate, uUserName, uPassword);
+
+        }
+        int finalProfileID = profileID1;
+
+        account = new Account(virtualAccountNumber,"", accountName,bankAcctNumber, accountBalance, accountTypeStr);
+        standingOrderAcct = new StandingOrderAcct(virtualAccountNumber + 12, accountName, 0.00);
+        customer = new Customer(customerID, uSurname, uFirstName, uPhoneNumber, uEmail, nIN, dateOfBirth, selectedGender, uAddress, uUserName, uPassword, selectedOffice, joinedDate);
+        birthday = new Birthday(birthdayID, profileID1, uSurname + "," + uFirstName, uPhoneNumber, uEmail, selectedGender, uAddress, dateOfBirth, 0, "", "Not celebrated");
+        customerProfile = new Profile(profileID1, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, "", selectedState, selectedOffice, joinedDate, "Customer", uUserName, uPassword, "pending", "");
+
+        lastProfileUsed = customerProfile;
+
+
+
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+
+            dbHelper.insertAccount(profileID1, customerID, skylightMFb, accountName, virtualAccountNumber, accountBalance, accountTypeStr);
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.insertRole(profileID1, "Customer",  uPhoneNumber);
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.insertCustomer11(profileID1, customerID, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedState, "", joinedDate, uUserName, uPassword, mImageUri, "Customer");
+
+        }
+
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.insertBirthDay3(birthday, dateOfBirth);
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.saveNewProfile(customerProfile);
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.insertTimeLine(tittleT1, timelineDetailsTD, timeLineTime, mCurrentLocation);
+        }
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.insertStandingOrderAcct(profileID1, customerID, virtualAccountNumber, accountName, 0.00);
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.insertStandingOrderAcct(profileID1, customerID, virtualAccountNumber, accountName, 0.00);
+        }
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            //dbHelper = new DBHelper(this);
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            if (cusLatLng != null) {
+                try {
+                    dbHelper.openDataBase();
+                    dbHelper.insertCustomerLocation(customerID, this.cusLatLng);
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            EmptyEditTextAfterDataInsert();
+
+
+        }
+
+
+    }
+
+
+    private void saveMyPreferences(int sponsorID, LatLng cusLatLng, Account account, StandingOrderAcct standingOrderAcct, String joinedDate, String uFirstName, String uSurname, String uPhoneNumber, String uAddress, String uUserName, String uPassword, Customer customer, Profile customerProfile, String nIN, Profile managerProfile, String dateOfBirth, String selectedGender, String selectedOffice, String selectedState, Birthday birthday, CustomerManager customerManager, String ofBirth, int profileID1, int virtualAccountNumber, int soAccountNumber, int customerID, int birthdayID, int investmentAcctID, int itemPurchaseAcctID, int promoAcctID, int packageAcctID, ArrayList<Customer> customers) {
+        Bundle userBundle = new Bundle();
+        smsMessage = "Welcome to the Skylight  App, may you have the best experience";
+        gson = new Gson();
+        lastProfileUsed = customerProfile;
+        Customer lastCustomerUsed= customer;
+        json = gson.toJson(lastProfileUsed);
+        json1 = gson1.toJson(lastCustomerUsed);
+        sendSMSMessage22(uPhoneNumber, smsMessage);
+        userBundle.putString(PROFILE_DOB, dateOfBirth);
+        userBundle.putString(BANK_ACCT_NO, bankAcctNumber);
+        userBundle.putString("BANK_ACCT_NO", bankAcctNumber);
+        userBundle.putString(PROFILE_EMAIL, uEmail);
+        userBundle.putString(PROFILE_OFFICE, selectedOffice);
+        userBundle.putString(PROFILE_FIRSTNAME, uFirstName);
+        userBundle.putString(PROFILE_GENDER, selectedGender);
+        userBundle.putString(PROFILE_COUNTRY, "");
+        userBundle.putString(PROFILE_NEXT_OF_KIN, "");
+        userBundle.putString(PROFILE_PHONE, uPhoneNumber);
+        userBundle.putString(PROFILE_SURNAME, uSurname);
+        userBundle.putString(PICTURE_URI, String.valueOf(mImageUri));
+        userBundle.putString(CUSTOMER_LATLONG, String.valueOf(cusLatLng));
+        userBundle.putString(PROFILE_PASSWORD, uPassword);
+        userBundle.putString(PROFILE_NIN, nIN);
+        userBundle.putString(PROFILE_STATE, selectedState);
+        userBundle.putString(PROFILE_ROLE, "Customer");
+        userBundle.putString(PROFILE_STATUS, "Pending Approval");
+        userBundle.putString(PROFILE_USERNAME, uUserName);
+        userBundle.putInt(PROFILE_ID, profileID1);
+        userBundle.putString(PROFILE_DATE_JOINED, joinedDate);
+        userBundle.putString("machine", "Customer");
+
+        userBundle.putString("USER_DOB", dateOfBirth);
+        userBundle.putString("USER_EMAIL", uEmail);
+        userBundle.putString("USER_OFFICE", selectedOffice);
+        userBundle.putString("USER_FIRSTNAME", uFirstName);
+        userBundle.putString("USER_GENDER", selectedGender);
+        userBundle.putString("USER_COUNTRY", "");
+        userBundle.putString("USER_NEXT_OF_KIN", "");
+        userBundle.putString("USER_PHONE", uPhoneNumber);
+        userBundle.putString("USER_SURNAME", "");
+        userBundle.putString("PICTURE_URI", String.valueOf(mImageUri));
+        userBundle.putString("USER_DATE_JOINED", "");
+        userBundle.putString("PROFILE_NIN", nIN);
+        userBundle.putString("USER_STATE", selectedState);
+        userBundle.putString("USER_ROLE", "Customer");
+        userBundle.putString("USER_STATUS", "Pending Approval");
+        userBundle.putString("USERNAME", uUserName);
+        userBundle.putLong("PROFILE_ID", profileID1);
+        userBundle.putString("USER_PASSWORD", uPassword);
+        userBundle.putString("USER_LOCATION", String.valueOf(cusLatLng));
+        userBundle.putString("EMAIL_ADDRESS", uEmail);
+        userBundle.putString("CHOSEN_OFFICE", selectedOffice);
+        userBundle.putString("USER_NAME", uUserName);
+        userBundle.putString("USER_DATE_JOINED", joinedDate);
+
+        userBundle.putInt("CUSTOMER_ID", customerID);
+        userBundle.putString("PROFILE_NIN", nIN);
+        userBundle.putString("EMAIL_ADDRESS", uEmail);
+        userBundle.putString("DATE_OF_BIRTH_KEY", dateOfBirth);
+        userBundle.putString("GENDER_KEY", selectedGender);
+        userBundle.putString("USER_NEXT_OF_KIN", "");
+        userBundle.putString(CUSTOMER_LATLONG, "");
+        userBundle.putString("machine", "Customer");
+        userBundle.putInt(PROFILE_SPONSOR_ID, sponsorID);
+        userBundle.putInt("USER_SPONSOR_ID", sponsorID);
+        sendTextMessage(uPhoneNumber, smsMessage);
+
+        if (userPreferences == null)
+            userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = userPreferences.edit();
+        editor.putString("PROFILE_DOB", dateOfBirth);
+        editor.putString("PROFILE_EMAIL", uEmail);
+        editor.putString("PROFILE_OFFICE", selectedOffice);
+        editor.putString("PROFILE_FIRSTNAME", uFirstName);
+        editor.putString("PROFILE_GENDER", selectedGender);
+        editor.putString("PROFILE_COUNTRY", "");
+        editor.putString("PROFILE_NEXT_OF_KIN", "");
+        editor.putString("PROFILE_PHONE", uPhoneNumber);
+        editor.putString("PROFILE_SURNAME", uSurname);
+        editor.putString("PICTURE_URI", String.valueOf(mImageUri));
+        editor.putString("CUSTOMER_LATLONG", String.valueOf(cusLatLng));
+        editor.putString("PROFILE_PASSWORD", uPassword);
+        editor.putString("PROFILE_NIN", nIN);
+        editor.putString("PROFILE_STATE", selectedState);
+        editor.putString("PROFILE_ROLE", "Customer");
+        editor.putString("PROFILE_STATUS", "Pending Approval");
+        editor.putInt("PROFILE_ID", profileID1);
+        editor.putString("PROFILE_DATE_JOINED", joinedDate);
+
+        editor.putString("PROFILE_USERNAME", uUserName);
+        editor.putString("PROFILE_PASSWORD", uPassword);
+        editor.putInt("CUSTOMER_ID", customerID);
+        editor.putString("PROFILE_SURNAME", uSurname);
+        editor.putString("PROFILE_FIRSTNAME", uFirstName);
+        editor.putString("PROFILE_PHONE", uPhoneNumber);
+        editor.putString("PROFILE_EMAIL", uEmail);
+        editor.putString("PROFILE_DOB", dateOfBirth);
+        editor.putString("PROFILE_ADDRESS", uAddress);
+        editor.putString("PROFILE_GENDER", selectedGender);
+        editor.putString("PROFILE_STATE", selectedState);
+        editor.putString(PROFILE_DOB, dateOfBirth);
+        editor.putString(PROFILE_EMAIL, uEmail);
+        editor.putString(PROFILE_OFFICE, selectedOffice);
+        editor.putString(PROFILE_FIRSTNAME, uFirstName);
+        editor.putString(PROFILE_GENDER, selectedGender);
+        editor.putString(PROFILE_COUNTRY, "");
+        editor.putString(PROFILE_NEXT_OF_KIN, "");
+        editor.putString(PROFILE_PHONE, uPhoneNumber);
+        editor.putString(PROFILE_SURNAME, uSurname);
+        editor.putString("PICTURE_URI", String.valueOf(mImageUri));
+        editor.putString(PICTURE_URI, String.valueOf(mImageUri));
+        editor.putString(CUSTOMER_LATLONG, String.valueOf(cusLatLng));
+        editor.putString(PROFILE_PASSWORD, uPassword);
+        editor.putString(PROFILE_NIN, nIN);
+        editor.putString(PROFILE_STATE, selectedState);
+        editor.putString(PROFILE_ROLE, "Customer");
+        editor.putString(PROFILE_STATUS, "Pending Approval");
+        editor.putInt(PROFILE_ID, profileID1);
+        editor.putString(PROFILE_DATE_JOINED, joinedDate);
+
+        editor.putString(PROFILE_USERNAME, uUserName);
+        editor.putString(PROFILE_PASSWORD, uPassword);
+        editor.putInt(CUSTOMER_ID, customerID);
+        editor.putString(PROFILE_SURNAME, uSurname);
+        editor.putString(PROFILE_FIRSTNAME, uFirstName);
+        editor.putString(PROFILE_PHONE, uPhoneNumber);
+        editor.putString(PROFILE_EMAIL, uEmail);
+        editor.putString(PROFILE_DOB, dateOfBirth);
+        editor.putString(PROFILE_ADDRESS, uAddress);
+        editor.putString(PROFILE_GENDER, selectedGender);
+        editor.putString(PROFILE_STATE, selectedState);
+        editor.putString("machine", "Customer");
+        editor.putString("Machine", "Customer");
+        editor.putLong("EWalletID", virtualAccountNumber);
+        editor.putLong("StandingOrderAcct", soAccountNumber);
+        //editor.putLong("TransactionAcctID", transactionAcctID);
+        editor.putInt("InvestmentAcctID", investmentAcctID);
+        editor.putInt("PromoAcctID", promoAcctID);
+        editor.putInt("ItemsPurchaseAcctID", itemPurchaseAcctID);
+        editor.putInt("SavingsAcctID", savingsAcctID);
+        //editor.putLong("MessageAcctID", finalProfileID1);
+
+        editor.putString("USER_DOB", dateOfBirth);
+        editor.putString("USER_EMAIL", uEmail);
+        editor.putString("USER_OFFICE", selectedOffice);
+        editor.putString("USER_FIRSTNAME", uFirstName);
+        editor.putString("USER_GENDER", selectedGender);
+        editor.putString("USER_COUNTRY", "");
+        editor.putString("USER_NEXT_OF_KIN", "");
+        editor.putString("USER_PHONE", uPhoneNumber);
+        editor.putString("USER_SURNAME", uSurname);
+        editor.putString("PICTURE_URI", String.valueOf(mImageUri));
+        editor.putString("USER_LOCATION", "");
+        editor.putString("USER_DATE_JOINED", "");
+        editor.putString("USER_PASSWORD", uPassword);
+        editor.putString("PROFILE_NIN", nIN);
+        editor.putString("USER_STATE", selectedState);
+        editor.putString("USER_ROLE", "Customer");
+        editor.putString("USER_STATUS", "Pending Approval");
+        editor.putString("USERNAME", uUserName);
+        editor.putInt("PROFILE_ID", profileID1);
+        editor.putString("USER_PASSWORD", uPassword);
+        editor.putString("EMAIL_ADDRESS", uEmail);
+        editor.putString("CHOSEN_OFFICE", selectedOffice);
+        editor.putString("USER_NAME", uUserName);
+        editor.putString("USER_DATE_JOINED", joinedDate);
+        editor.putString("Machine", "Customer");
+        editor.putString(PROFILE_ROLE, "Customer");
+        editor.putString("LastCustomerUsed", json1);
+        editor.putString("LastProfileUsed", json).apply();
+
+
+
+        Intent intent = new Intent(SignUpAct.this, NewCustomerDrawer.class);
+        intent.putExtras(userBundle);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+
+        Toast.makeText(SignUpAct.this, "Thank you" + "" +
+                "for Signing up " + "" + uFirstName + "" + "on the Skylight. App", Toast.LENGTH_LONG).show();
+        setResult(Activity.RESULT_OK, new Intent());
+        finish();
     }
 
     public String currentDate() {
@@ -1299,376 +1698,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         super.onDestroy();
     }
 
-    public void startProfileActivity(int sponsorID, LatLng cusLatLng, Account account, StandingOrderAcct standingOrderAcct, String joinedDate, String uFirstName, String uSurname, String uPhoneNumber, String uAddress, String uUserName, String uPassword, Customer customer, Profile customerProfile, String nIN, Profile managerProfile, String dateOfBirth, String selectedGender, String selectedOffice, String selectedState, Birthday birthday, CustomerManager customerManager, String ofBirth, int profileID1, int virtualAccountNumber, int soAccountNumber, int customerID, int birthdayID, int investmentAcctID, int itemPurchaseAcctID, int promoAcctID, int packageAcctID, ArrayList<Customer> customers) {
-        saveMyPreferences(sponsorID,cusLatLng,account,standingOrderAcct,joinedDate,uFirstName,uSurname,uPhoneNumber,uAddress,uUserName,uPassword,customer,customerProfile,nIN,managerProfile, dateOfBirth, selectedGender, selectedOffice, selectedState, birthday,  customerManager, ofBirth, profileID1,  virtualAccountNumber, soAccountNumber,  customerID, birthdayID, investmentAcctID,itemPurchaseAcctID,  promoAcctID, packageAcctID,  customers);
-        Toast.makeText(SignUpAct.this, "Gender: " + selectedGender + "," + "Office:" + selectedOffice + "" + "State:" + selectedState, Toast.LENGTH_SHORT).show();
-        showProgressDialog();
-        dbHelper = new DBHelper(this);
-        ran = new Random();
-        SQLiteDataBaseBuild();
-        calendar = Calendar.getInstance();
-        sqLiteDatabase = dbHelper.getWritableDatabase();
-        //startBankAcctCreationForResult.launch(new Intent(SignUpAct.this, NewBankAcctAct.class));
 
-
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        timeLineTime = mdformat.format(calendar.getTime());
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            profiles = dbHelper.getAllProfiles();
-        }
-
-
-        //customers = dbHelper.getAllCustomers();
-
-        String names = uSurname + uFirstName;
-        //long customerId = customer.getId();
-        //Customer c = new Customer();
-        String name = uSurname + "," + uFirstName;
-        String managerFullNamesT = ManagerSurname + "," + managerFirstName;
-        String namesT = uSurname + "," + uFirstName;
-
-        String timelineDetailsTD = uSurname + "," + uFirstName + "was added as a Customer" + "by" + managerFullNamesT + "@" + timeLineTime;
-        String tittleT1 = "Customer Sign Up Alert!";
-        String timelineDetailsT11 = "You added" + uSurname + "," + uFirstName + "as a Customer" + "on" + timeLineTime;
-
-        random = new SecureRandom();
-        String accountName = uSurname + "," + uFirstName;
-
-
-        birthdayID = random.nextInt((int) (Math.random() * 1001) + 1010);
-        String skylightMFb = "E-Wallet";
-        double accountBalance = 0.00;
-        accountTypeStr = AccountTypes.EWALLET;
-        String interestRate = "0.0";
-
-        if (managerProfile != null) {
-            ManagerSurname = managerProfile.getProfileLastName();
-            managerFirstName = managerProfile.getProfileFirstName();
-            profileID = managerProfile.getPID();
-            managerPhoneNumber1 = managerProfile.getProfilePhoneNumber();
-            managerEmail = managerProfile.getProfileEmail();
-            managerUserName = managerProfile.getProfileUserName();
-            officePref = managerProfile.getProfileOffice();
-            customerManager = managerProfile.getProfile_CustomerManager();
-            managerAddress = managerProfile.getProfileAddress();
-            managerGender = managerProfile.getProfileGender();
-            managerProfile.addPTimeLine(tittleT1, timelineDetailsT11);
-            managerProfile.addPCustomer(customerID, uSurname, uFirstName, uPhoneNumber, uEmail, uAddress, selectedGender, selectedOffice, selectedState, mImageUri, joinedDate, uUserName, uPassword);
-
-        }
-        int finalProfileID = profileID1;
-
-        account = new Account(virtualAccountNumber,"", accountName,bankAcctNumber, accountBalance, accountTypeStr);
-        standingOrderAcct = new StandingOrderAcct(virtualAccountNumber + 12, accountName, 0.00);
-        customer = new Customer(customerID, uSurname, uFirstName, uPhoneNumber, uEmail, nIN, dateOfBirth, selectedGender, uAddress, uUserName, uPassword, selectedOffice, joinedDate);
-        birthday = new Birthday(birthdayID, profileID1, uSurname + "," + uFirstName, uPhoneNumber, uEmail, selectedGender, uAddress, dateOfBirth, 0, "", "Not celebrated");
-        customerProfile = new Profile(profileID1, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, "", selectedState, selectedOffice, joinedDate, "Customer", uUserName, uPassword, "pending", "");
-
-        lastProfileUsed = customerProfile;
-
-
-
-        sqLiteDatabase = dbHelper.getWritableDatabase();
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-
-            dbHelper.insertAccount(profileID1, customerID, skylightMFb, accountName, virtualAccountNumber, accountBalance, accountTypeStr);
-        }
-
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.insertRole(profileID1, "Customer",  uPhoneNumber);
-        }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.insertCustomer11(profileID1, customerID, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedState, "", joinedDate, uUserName, uPassword, mImageUri, "Customer");
-
-        }
-
-
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.insertBirthDay3(birthday, dateOfBirth);
-        }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.saveNewProfile(customerProfile);
-        }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.insertTimeLine(tittleT1, timelineDetailsTD, timeLineTime, mCurrentLocation);
-        }
-
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.insertStandingOrderAcct(profileID1, customerID, virtualAccountNumber, accountName, 0.00);
-        }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.insertStandingOrderAcct(profileID1, customerID, virtualAccountNumber, accountName, 0.00);
-        }
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            //dbHelper = new DBHelper(this);
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            if (cusLatLng != null) {
-                try {
-                    dbHelper.openDataBase();
-                    dbHelper.insertCustomerLocation(customerID, this.cusLatLng);
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-
-            EmptyEditTextAfterDataInsert();
-
-
-        }
-
-
-    }
-    private void saveMyPreferences(int sponsorID, LatLng cusLatLng, Account account, StandingOrderAcct standingOrderAcct, String joinedDate, String uFirstName, String uSurname, String uPhoneNumber, String uAddress, String uUserName, String uPassword, Customer customer, Profile customerProfile, String nIN, Profile managerProfile, String dateOfBirth, String selectedGender, String selectedOffice, String selectedState, Birthday birthday, CustomerManager customerManager, String ofBirth, int profileID1, int virtualAccountNumber, int soAccountNumber, int customerID, int birthdayID, int investmentAcctID, int itemPurchaseAcctID, int promoAcctID, int packageAcctID, ArrayList<Customer> customers) {
-        Bundle userBundle = new Bundle();
-        smsMessage = "Welcome to the Skylight  App, may you have the best experience";
-        gson = new Gson();
-        lastProfileUsed = customerProfile;
-        Customer lastCustomerUsed= customer;
-        json = gson.toJson(lastProfileUsed);
-        json1 = gson1.toJson(lastCustomerUsed);
-        sendSMSMessage22(uPhoneNumber, smsMessage);
-        userBundle.putString(PROFILE_DOB, dateOfBirth);
-        userBundle.putString(BANK_ACCT_NO, bankAcctNumber);
-        userBundle.putString("BANK_ACCT_NO", bankAcctNumber);
-        userBundle.putString(PROFILE_EMAIL, uEmail);
-        userBundle.putString(PROFILE_OFFICE, selectedOffice);
-        userBundle.putString(PROFILE_FIRSTNAME, uFirstName);
-        userBundle.putString(PROFILE_GENDER, selectedGender);
-        userBundle.putString(PROFILE_COUNTRY, "");
-        userBundle.putString(PROFILE_NEXT_OF_KIN, "");
-        userBundle.putString(PROFILE_PHONE, uPhoneNumber);
-        userBundle.putString(PROFILE_SURNAME, uSurname);
-        userBundle.putString(PICTURE_URI, String.valueOf(mImageUri));
-        userBundle.putString(CUSTOMER_LATLONG, String.valueOf(cusLatLng));
-        userBundle.putString(PROFILE_PASSWORD, uPassword);
-        userBundle.putString(PROFILE_NIN, nIN);
-        userBundle.putString(PROFILE_STATE, selectedState);
-        userBundle.putString(PROFILE_ROLE, "Customer");
-        userBundle.putString(PROFILE_STATUS, "Pending Approval");
-        userBundle.putString(PROFILE_USERNAME, uUserName);
-        userBundle.putInt(PROFILE_ID, profileID1);
-        userBundle.putString(PROFILE_DATE_JOINED, joinedDate);
-        userBundle.putString("machine", "Customer");
-
-        userBundle.putString("USER_DOB", dateOfBirth);
-        userBundle.putString("USER_EMAIL", uEmail);
-        userBundle.putString("USER_OFFICE", selectedOffice);
-        userBundle.putString("USER_FIRSTNAME", uFirstName);
-        userBundle.putString("USER_GENDER", selectedGender);
-        userBundle.putString("USER_COUNTRY", "");
-        userBundle.putString("USER_NEXT_OF_KIN", "");
-        userBundle.putString("USER_PHONE", uPhoneNumber);
-        userBundle.putString("USER_SURNAME", "");
-        userBundle.putString("PICTURE_URI", String.valueOf(mImageUri));
-        userBundle.putString("USER_DATE_JOINED", "");
-        userBundle.putString("PROFILE_NIN", nIN);
-        userBundle.putString("USER_STATE", selectedState);
-        userBundle.putString("USER_ROLE", "Customer");
-        userBundle.putString("USER_STATUS", "Pending Approval");
-        userBundle.putString("USERNAME", uUserName);
-        userBundle.putLong("PROFILE_ID", profileID1);
-        userBundle.putString("USER_PASSWORD", uPassword);
-        userBundle.putString("USER_LOCATION", String.valueOf(cusLatLng));
-        userBundle.putString("EMAIL_ADDRESS", uEmail);
-        userBundle.putString("CHOSEN_OFFICE", selectedOffice);
-        userBundle.putString("USER_NAME", uUserName);
-        userBundle.putString("USER_DATE_JOINED", joinedDate);
-
-        userBundle.putInt("CUSTOMER_ID", customerID);
-        userBundle.putString("PROFILE_NIN", nIN);
-        userBundle.putString("EMAIL_ADDRESS", uEmail);
-        userBundle.putString("DATE_OF_BIRTH_KEY", dateOfBirth);
-        userBundle.putString("GENDER_KEY", selectedGender);
-        userBundle.putString("USER_NEXT_OF_KIN", "");
-        userBundle.putString(CUSTOMER_LATLONG, "");
-        userBundle.putString("machine", "Customer");
-        userBundle.putInt(PROFILE_SPONSOR_ID, sponsorID);
-        userBundle.putInt("USER_SPONSOR_ID", sponsorID);
-        sendTextMessage(uPhoneNumber, smsMessage);
-        Intent intent = new Intent(SignUpAct.this, NewCustomerDrawer.class);
-        intent.putExtras(userBundle);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-
-        Toast.makeText(SignUpAct.this, "Thank you" + "" +
-                "for Signing up " + "" + uFirstName + "" + "on the Skylight. App", Toast.LENGTH_LONG).show();
-        setResult(Activity.RESULT_OK, new Intent());
-
-        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = userPreferences.edit();
-        editor.putString("PROFILE_DOB", dateOfBirth);
-        editor.putString("PROFILE_EMAIL", uEmail);
-        editor.putString("PROFILE_OFFICE", selectedOffice);
-        editor.putString("PROFILE_FIRSTNAME", uFirstName);
-        editor.putString("PROFILE_GENDER", selectedGender);
-        editor.putString("PROFILE_COUNTRY", "");
-        editor.putString("PROFILE_NEXT_OF_KIN", "");
-        editor.putString("PROFILE_PHONE", uPhoneNumber);
-        editor.putString("PROFILE_SURNAME", uSurname);
-        editor.putString("PICTURE_URI", String.valueOf(mImageUri));
-        editor.putString("CUSTOMER_LATLONG", String.valueOf(cusLatLng));
-        editor.putString("PROFILE_PASSWORD", uPassword);
-        editor.putString("PROFILE_NIN", nIN);
-        editor.putString("PROFILE_STATE", selectedState);
-        editor.putString("PROFILE_ROLE", "Customer");
-        editor.putString("PROFILE_STATUS", "Pending Approval");
-        editor.putInt("PROFILE_ID", profileID1);
-        editor.putString("PROFILE_DATE_JOINED", joinedDate);
-
-        editor.putString("PROFILE_USERNAME", uUserName);
-        editor.putString("PROFILE_PASSWORD", uPassword);
-        editor.putInt("CUSTOMER_ID", customerID);
-        editor.putString("PROFILE_SURNAME", uSurname);
-        editor.putString("PROFILE_FIRSTNAME", uFirstName);
-        editor.putString("PROFILE_PHONE", uPhoneNumber);
-        editor.putString("PROFILE_EMAIL", uEmail);
-        editor.putString("PROFILE_DOB", dateOfBirth);
-        editor.putString("PROFILE_ADDRESS", uAddress);
-        editor.putString("PROFILE_GENDER", selectedGender);
-        editor.putString("PROFILE_STATE", selectedState);
-        editor.putString(PROFILE_DOB, dateOfBirth);
-        editor.putString(PROFILE_EMAIL, uEmail);
-        editor.putString(PROFILE_OFFICE, selectedOffice);
-        editor.putString(PROFILE_FIRSTNAME, uFirstName);
-        editor.putString(PROFILE_GENDER, selectedGender);
-        editor.putString(PROFILE_COUNTRY, "");
-        editor.putString(PROFILE_NEXT_OF_KIN, "");
-        editor.putString(PROFILE_PHONE, uPhoneNumber);
-        editor.putString(PROFILE_SURNAME, uSurname);
-        editor.putString("PICTURE_URI", String.valueOf(mImageUri));
-        editor.putString(PICTURE_URI, String.valueOf(mImageUri));
-        editor.putString(CUSTOMER_LATLONG, String.valueOf(cusLatLng));
-        editor.putString(PROFILE_PASSWORD, uPassword);
-        editor.putString(PROFILE_NIN, nIN);
-        editor.putString(PROFILE_STATE, selectedState);
-        editor.putString(PROFILE_ROLE, "Customer");
-        editor.putString(PROFILE_STATUS, "Pending Approval");
-        editor.putInt(PROFILE_ID, profileID1);
-        editor.putString(PROFILE_DATE_JOINED, joinedDate);
-
-        editor.putString(PROFILE_USERNAME, uUserName);
-        editor.putString(PROFILE_PASSWORD, uPassword);
-        editor.putInt(CUSTOMER_ID, customerID);
-        editor.putString(PROFILE_SURNAME, uSurname);
-        editor.putString(PROFILE_FIRSTNAME, uFirstName);
-        editor.putString(PROFILE_PHONE, uPhoneNumber);
-        editor.putString(PROFILE_EMAIL, uEmail);
-        editor.putString(PROFILE_DOB, dateOfBirth);
-        editor.putString(PROFILE_ADDRESS, uAddress);
-        editor.putString(PROFILE_GENDER, selectedGender);
-        editor.putString(PROFILE_STATE, selectedState);
-        editor.putString("machine", "Customer");
-        editor.putString("Machine", "Customer");
-        editor.putLong("EWalletID", virtualAccountNumber);
-        editor.putLong("StandingOrderAcct", soAccountNumber);
-        //editor.putLong("TransactionAcctID", transactionAcctID);
-        editor.putInt("InvestmentAcctID", investmentAcctID);
-        editor.putInt("PromoAcctID", promoAcctID);
-        editor.putInt("ItemsPurchaseAcctID", itemPurchaseAcctID);
-        editor.putInt("SavingsAcctID", savingsAcctID);
-        //editor.putLong("MessageAcctID", finalProfileID1);
-
-        editor.putString("USER_DOB", dateOfBirth);
-        editor.putString("USER_EMAIL", uEmail);
-        editor.putString("USER_OFFICE", selectedOffice);
-        editor.putString("USER_FIRSTNAME", uFirstName);
-        editor.putString("USER_GENDER", selectedGender);
-        editor.putString("USER_COUNTRY", "");
-        editor.putString("USER_NEXT_OF_KIN", "");
-        editor.putString("USER_PHONE", uPhoneNumber);
-        editor.putString("USER_SURNAME", uSurname);
-        editor.putString("PICTURE_URI", String.valueOf(mImageUri));
-        editor.putString("USER_LOCATION", "");
-        editor.putString("USER_DATE_JOINED", "");
-        editor.putString("USER_PASSWORD", uPassword);
-        editor.putString("PROFILE_NIN", nIN);
-        editor.putString("USER_STATE", selectedState);
-        editor.putString("USER_ROLE", "Customer");
-        editor.putString("USER_STATUS", "Pending Approval");
-        editor.putString("USERNAME", uUserName);
-        editor.putInt("PROFILE_ID", profileID1);
-        editor.putString("USER_PASSWORD", uPassword);
-        editor.putString("EMAIL_ADDRESS", uEmail);
-        editor.putString("CHOSEN_OFFICE", selectedOffice);
-        editor.putString("USER_NAME", uUserName);
-        editor.putString("USER_DATE_JOINED", joinedDate);
-        editor.putString("Machine", "Customer");
-        editor.putString(PROFILE_ROLE, "Customer");
-        editor.putString("LastCustomerUsed", json1);
-        editor.putString("LastProfileUsed", json).apply();
-
-        customer.setCusFirstName(uFirstName);
-        customer.setCusSurname(uSurname);
-        customer.setCusAddress(uAddress);
-        customer.setCusDob(dateOfBirth);
-        customer.setCusUID(customerID);
-        customer.setCusDateJoined(joinedDate);
-        customer.setCusEmail(uEmail);
-        customer.setCusRole("customer");
-        customer.setCusPhoneNumber(uPhoneNumber);
-        customer.setCusGender(selectedGender);
-        customer.setCustomerLocation(this.cusLatLng);
-        customer.setCusUserName(uUserName);
-        customer.setCusState(selectedState);
-        customer.setCusSponsorID(sponsorID);
-        customer.setCusOffice(selectedOffice);
-        customer.setCusAccount(account);
-        customer.setCusStandingOrderAcct(standingOrderAcct);
-        customer.setCusProfilePicture(String.valueOf(mImageUri));
-
-        customerProfile.setProfileFirstName(uFirstName);
-        customerProfile.setProfileLastName(uSurname);
-        customerProfile.setProfileAddress(uAddress);
-        customerProfile.setProfileDob(dateOfBirth);
-        customerProfile.setProfileDateJoined(joinedDate);
-        customerProfile.setProfileEmail(uEmail);
-        customerProfile.setProfileRole("customer");
-        customerProfile.setProfilePhoneNumber(uPhoneNumber);
-        customerProfile.setProfileGender(selectedGender);
-        customerProfile.setProfileIdentity(null);
-        customerProfile.setProfileLastKnownLocation(this.cusLatLng);
-        customerProfile.setProfileMachine("customer");
-        customerProfile.setProfileUserName(uUserName);
-        customerProfile.setProfileState(selectedState);
-        customerProfile.setProfileSponsorID(profileID);
-        customerProfile.setProfileOffice(selectedOffice);
-        customerProfile.setProfile_CustomerManager(customerManager);
-        customerProfile.setProfilePicture(mImageUri);
-
-
-        try {
-
-            customer.setCusAccount(account);
-            customer.setCusStandingOrderAcct(standingOrderAcct);
-            customer.addCusAccountManager(managerProfileID, ManagerSurname, managerFirstName, managerGender, officePref);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
     private void PrePopulateDB() {
         dbHelper = new DBHelper(this);
         userProfile1 = new Profile(234, "Emmanuel", "Becky", "08069524599", "urskylight@gmail.com", "1980-04-19", "female", "Skylight", "", "Rivers", "Elelenwo", "2022-04-19", "SuperAdmin", "Skylight4ever", "@Awajima2", "Confirmed", "");
@@ -2339,7 +2369,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
 
     public void verifyOTP(View view) {
-        startProfileActivity(sponsorID, cusLatLng, account, standingOrderAcct, joinedDate, uFirstName, uSurname, uPhoneNumber, uAddress, uUserName, uPassword, customer, customerProfile, nIN, managerProfile, dateOfBirth, selectedGender, selectedOffice, selectedState, birthday, customerManager, dateOfBirth, profileID1, virtualAccountNumber, soAccountNumber, customerID, birthdayID, investmentAcctID, itemPurchaseAcctID, promoAcctID, packageAcctID, customers);
+        saveInDatabase(sponsorID, cusLatLng, account, standingOrderAcct, joinedDate, uFirstName, uSurname, uPhoneNumber, uAddress, uUserName, uPassword, customer, customerProfile, nIN, managerProfile, dateOfBirth, selectedGender, selectedOffice, selectedState, birthday, customerManager, dateOfBirth, profileID1, virtualAccountNumber, soAccountNumber, customerID, birthdayID, investmentAcctID, itemPurchaseAcctID, promoAcctID, packageAcctID, customers);
 
     }
 

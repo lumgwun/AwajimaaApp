@@ -2,6 +2,7 @@ package com.skylightapp.Adapters;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,13 +31,18 @@ public class SkyLightPackageShowCaseAdapter extends RecyclerView.Adapter<SkyLigh
     Context context;
     private ArrayList<SkyLightPackModel> packageList;
     private ArrayList<SkyLightPackage> skyLightPackages;
+    private GestureDetector gestureDetector;
 
     public SkyLightPackageShowCaseAdapter(Context context, List<SkyLightPackModel> skyLightPackage_2List) {
+        this.context = context;
         this.skyLightPackage_2List = skyLightPackage_2List;
         this.context = context;
+
     }
     public SkyLightPackageShowCaseAdapter(SkyLightPackageActivity skyLightPackageActivity, List<SkyLightPackModel> skyLightPackage_2List) {
+        this.context = skyLightPackageActivity;
         this.skyLightPackage_2List = skyLightPackage_2List;
+
     }
 
 

@@ -133,6 +133,8 @@ public class CustomerManager  implements Parcelable, Serializable , BaseColumns 
     @TypeConverters
     @ColumnInfo(name = CUSTOMER_TELLER_PIX)
     private Uri tPhoto;
+    private int tellerProfileID;
+    private String TGender;
 
     public void setTOffice(String tOffice) {
         this.tOffice = tOffice;
@@ -564,6 +566,26 @@ public class CustomerManager  implements Parcelable, Serializable , BaseColumns 
 
     }
 
+    public int getTellerProfileID() {
+        return tellerProfileID;
+    }
+
+    public void setTellerProfileID(int tellerProfileID) {
+        this.tellerProfileID = tellerProfileID;
+    }
+
+    public String getTAddress() {
+        return tAddress;
+    }
+
+    public String getTGender() {
+        return TGender;
+    }
+
+    public void setTGender(String tGender) {
+        this.TGender = tGender;
+    }
+
 
     public static class CustomerItem {
         public final String id;
@@ -616,7 +638,7 @@ public class CustomerManager  implements Parcelable, Serializable , BaseColumns 
         this.dailyReports = dailyReports;
     }
     @Ignore
-    public List<Address> gettAddress() {
+    public List<Address> getTAddresses() {
         return addresses;
     }
     @Ignore

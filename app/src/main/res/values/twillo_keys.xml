@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="THE_INTERSWITCH_API_TOKEN">XXXXX</string>
+    <string name="TWILLO_ACCT_SID">XXXXX</string>
+    <string name="TWILLO_AUTH_TOKEN">XXXXX</string>
+    <string name="FLUTTERWAVE_ID">XXXXX</string>
+    <string name="FLUTTERWAVE_KEY">XXXXX</string>
+
+</resources>

@@ -18,8 +18,6 @@ import com.skylightapp.Classes.TwilloMessageSenderService;
 import com.twilio.Twilio;
 import com.twilio.http.TwilioRestClient;
 import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.rest.api.v2010.account.MessageCreator;
-import com.twilio.type.PhoneNumber;
 
 
 import org.jetbrains.annotations.NotNull;
@@ -45,9 +43,9 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import retrofit2.Retrofit;
 
-import static com.skylightapp.Classes.AppConstants.ACCOUNT_SID;
-import static com.skylightapp.Classes.AppConstants.AUTH_TOKEN;
-import static com.skylightapp.Classes.AppConstants.FROM;
+import static com.skylightapp.BuildConfig.TWILLO_NO;
+import static com.skylightapp.BuildConfig.T_ACCT_SID;
+import static com.skylightapp.BuildConfig.T_AUTH_TOKEN;
 import static com.skylightapp.Classes.Profile.PROFILE_PHONE;
 import static spark.Spark.post;
 
@@ -57,7 +55,8 @@ public class SMSAct extends AppCompatActivity {
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 340;
     String phoneNumber;
     String smsMessage, cusEmail;
-    String from = "Skylight Coop.";
+
+
     String to;
     Message message;
     private String subject,body;
@@ -68,7 +67,12 @@ public class SMSAct extends AppCompatActivity {
     String host = "https://skylightciacs.com:2096/";
     Integer port;
     final String user="bdm@skylightciacs.com";
-    final String password= AppConstants.emailPassword;
+    private String TWILLO_ACCOUNT_SID= T_ACCT_SID;
+    private String TWILLO_AUTH_TOKEN= T_AUTH_TOKEN;
+    private String TWILLO_PHONE_NO= TWILLO_NO;
+    String from = TWILLO_NO;
+    String password= BuildConfig.SKYLIGHT_EMAIL_PASSWORD;
+
     TwilioRestClient client;
     TwilloMessage twilloMessage;
     private TwilloMessageSenderService twilloMessageSenderService;
@@ -83,9 +87,9 @@ public class SMSAct extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
         Properties properties=new Properties();
         ProcessBuilder process = new ProcessBuilder();
-        if (ACCOUNT_SID != null) {
-            if (AUTH_TOKEN != null) {
-                client = new TwilioRestClient.Builder(ACCOUNT_SID, AUTH_TOKEN).build();
+        if (TWILLO_ACCOUNT_SID != null) {
+            if (TWILLO_AUTH_TOKEN != null) {
+                client = new TwilioRestClient.Builder(TWILLO_ACCOUNT_SID, TWILLO_AUTH_TOKEN).build();
             }
         }
         //client = new TwilioRestClient.Builder(ACCOUNT_SID, AUTH_TOKEN).build();
@@ -101,7 +105,6 @@ public class SMSAct extends AppCompatActivity {
         properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         properties.put("mail.smtp.socketFactory.fallback", "false");
         properties.setProperty("mail.smtp.quitwait", "false");
-        from=FROM;
         /*try {
 
 
@@ -141,7 +144,7 @@ public class SMSAct extends AppCompatActivity {
         twilloMessageSenderService.sendMessage(twilloMessage);
         sendEmail(smsMessage,cusEmail,subject,mimeMessage);
         sendTextMessage(phoneNumber,smsMessage,from,to);
-        base64EncodedCredentials = "Basic" + Base64.encodeToString ((ACCOUNT_SID + ":" + AUTH_TOKEN) .getBytes (), Base64.NO_WRAP);
+        base64EncodedCredentials = "Basic" + Base64.encodeToString ((TWILLO_ACCOUNT_SID + ":" + TWILLO_AUTH_TOKEN) .getBytes (), Base64.NO_WRAP);
         data = new HashMap<>();
         data.put ("From", from);
         data.put ("To", phoneNumber);
@@ -205,7 +208,6 @@ public class SMSAct extends AppCompatActivity {
                     to=smsBundle.getString("to");
 
                 }
-                from=FROM;
                 SmsManager smsManager = SmsManager.getDefault();
                 smsManager.sendTextMessage(phoneNumber, null, smsMessage, null, null);
                 Toast.makeText(this, "SMS sent.", Toast.LENGTH_LONG).show();
@@ -221,7 +223,6 @@ public class SMSAct extends AppCompatActivity {
     protected void sendSMSMessage(String phoneNumber, String smsMessage, String from, String to, String base64EncodedCredentials, Map<String, String> data) {
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");
-        from=FROM;
         RequestBody body= RequestBody.Companion.create("{ \"body\": smsMessage,\"to\":phoneNumber,\"from\": from}", MediaType.parse("image/*"));
         //RequestBody body = RequestBody.create(mediaType, "{ \"body\": \"smsMessage\",\"to\" : \"+phoneNumber\",\"from\": \"Skylight\"}");
         Request request = new Request.Builder()
@@ -238,7 +239,7 @@ public class SMSAct extends AppCompatActivity {
         }
 
 
-        base64EncodedCredentials = "Basic" + Base64.encodeToString ((ACCOUNT_SID + ":" + AUTH_TOKEN) .getBytes (), Base64.NO_WRAP);
+        base64EncodedCredentials = "Basic" + Base64.encodeToString ((TWILLO_ACCOUNT_SID + ":" + TWILLO_AUTH_TOKEN) .getBytes (), Base64.NO_WRAP);
         data = new HashMap<>();
         data.put ("From", from);
         data.put ("To", phoneNumber);

@@ -530,96 +530,112 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
         switch (item.getItemId()) {
             case R.id.home10:
                 Intent mainIntent = new Intent(this, AdminDrawerActivity.class);
-                mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(mainIntent);
                 return true;
             case R.id.AdminTimeline:
                 Intent timelineIntent = new Intent(this, UserTimeLineAct.class);
-                timelineIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                timelineIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(timelineIntent);
                 return true;
 
             case R.id.branchReport:
                 Intent bIntent = new Intent(this, BranchReportTab.class);
-                bIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                bIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(bIntent);
                 return true;
 
             case R.id.history20:
                 Intent pIntent = new Intent(this, ProfilePackHistoryAct.class);
-                pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(pIntent);
                 return true;
 
             case R.id.package_slider:
                 Intent tIntent = new Intent(this, SkylightSliderAct.class);
-                tIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                tIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(tIntent);
                 return true;
 
             case R.id.cus_list1:
                 Intent cIntent = new Intent(this, MyCusList.class);
-                cIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                cIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(cIntent);
                 return true;
 
             case R.id.nav_so:
                 Intent standingOIntent = new Intent(this, SOTab.class);
-                standingOIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                standingOIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(standingOIntent);
                 return true;
             case R.id.transactions_money:
                 Intent transactionIntent = new Intent(this, AdminTransActivity.class);
-                transactionIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                transactionIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(transactionIntent);
                 return true;
 
 
             case R.id.admin_money:
                 Intent loanIntent = new Intent(this, AllCusLoanRepayment.class);
-                loanIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                loanIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(loanIntent);
                 return true;
 
             case R.id.nav_now:
                 Intent payNowIntent = new Intent(this, PayNowActivity.class);
-                payNowIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                payNowIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(payNowIntent);
                 return true;
 
             case R.id.all_new:
                 Intent wIntent = new Intent(this, AllNewAct.class);
-                wIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                wIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(wIntent);
                 return true;
 
             case R.id.nav_birthday_date:
                 Intent bdIntent = new Intent(this, BirthdayTab.class);
-                bdIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                bdIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(bdIntent);
                 return true;
 
 
             case R.id.web_allApp:
                 Intent w1Intent = new Intent(this, TellerWebTab.class);
-                w1Intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                w1Intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(w1Intent);
                 return true;
 
             case R.id.admin_support:
                 Intent sIntent = new Intent(this, AdminSupportAct.class);
-                sIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                sIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(sIntent);
                 return true;
             case R.id.admin_pswd2:
                 Intent impIntent = new Intent(this, PasswordRecovAct.class);
-                impIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                impIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(impIntent);
                 return true;
 
             case R.id.myAdminPref:
                 Intent prefIntent = new Intent(this, UserPrefActivity.class);
-                prefIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                prefIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(prefIntent);
                 return true;
 

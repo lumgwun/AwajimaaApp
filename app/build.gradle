@@ -12,12 +12,15 @@ plugins {
     //id 'org.gretty' version '3.0.1'
 
 }
+def localPropertiesFile = rootProject.file("local.properties")
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(localPropertiesFile))
 
 android {
+
     compileSdkVersion 31
     buildToolsVersion "30.0.3"
     useLibrary 'org.apache.http.legacy'
-
     defaultConfig {
         applicationId "com.skylightapp"
         minSdkVersion 24
@@ -34,8 +37,11 @@ android {
         }
 
 
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+
 
     buildTypes {
         release {
@@ -46,8 +52,29 @@ android {
                 resValue("string", "DB_PASSWORD_DATABASE_NAME", "password")
             }
 
+            //buildConfigField "String", "CLIENT_ID", localProperties['client_id']
+            //buildConfigField "String", "SECRET", localProperties['secret']
+            //buildConfigField "String", "CLIENT_ID", localProperties.getProperty("client_id")
+
+
+
+        }
+        buildTypes.each {
+
+            it.buildConfigField 'String', 'TWILLO_NO', TWILLO_PHONE_NO1
+            //it.buildConfigField 'String', 'Sky_EMAIL1', Sky_EMAIL
+            //it.buildConfigField 'String', 'GOOGLE_MAP_KEY1', GOOGLE_MAP_K
+            it.buildConfigField 'String', 'T_ACCT_SID', TWILLO_ACCOUNT_SID1
+            it.buildConfigField 'String', 'T_AUTH_TOKEN', TWILLO_AUTH_TOKEN1
+            it.buildConfigField 'String', 'SKYLIGHT_EMAIL_PASSWORD', Sky_EMAIL_PASSWORD1
+
+            /*it.buildConfigField "String", "T_ACCT_SID", localProperties.getProperty("TWILLO_ACCOUNT_SID")
+            it.buildConfigField "String", "TWILLO_NO", localProperties.getProperty("TWILLO_PHONE_NO")
+            it.buildConfigField "String", "T_AUTH_TOKEN", localProperties.getProperty("TWILLO_AUTH_TOKEN")
+            it.buildConfigField "String", "SKYLIGHT_EMAIL_PASSWORD", localProperties.getProperty("Sky_EMAIL_PASSWORD")*/
         }
     }
+
     /*lintOptions {
         checkReleaseBuilds false
         abortOnError false

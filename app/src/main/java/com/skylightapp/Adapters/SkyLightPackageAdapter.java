@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,7 @@ public class SkyLightPackageAdapter extends RecyclerView.Adapter<SkyLightPackage
     private OnItemsClickListener listener;
     SkylightPackageListener mListener;
     private Customer customer;
+    private GestureDetector gestureDetector;
 
 
     public SkyLightPackageAdapter(Context applicationContext) {
@@ -59,7 +61,6 @@ public class SkyLightPackageAdapter extends RecyclerView.Adapter<SkyLightPackage
     }
 
     public SkyLightPackageAdapter(ArrayList<SkyLightPackage> recyclerDataArrayList, SkyLightPackageActivity skyLightPackageActivity) {
-
         this.packageList = recyclerDataArrayList;
 
     }
@@ -67,51 +68,61 @@ public class SkyLightPackageAdapter extends RecyclerView.Adapter<SkyLightPackage
     public SkyLightPackageAdapter(Context context, ArrayList<SkyLightPackModel> skyLightPackage_2s) {
         this.skyLightPackage_2s = skyLightPackage_2s;
         this.context=context;
+
     }
 
     public SkyLightPackageAdapter(SODueDateListAct SODueDateListAct, ArrayList<SkyLightPackage> skyLightPackageArrayList) {
         this.context= SODueDateListAct;
         this.packageList=skyLightPackageArrayList;
+
     }
 
     public SkyLightPackageAdapter(AdminCusActionView adminCusActionView, ArrayList<SkyLightPackage> skyLightPackages) {
         this.context=adminCusActionView;
         this.packageList=skyLightPackages;
+
     }
 
     public SkyLightPackageAdapter(AdminPackageActivity adminPackageActivity, ArrayList<SkyLightPackage> skyLightPackages) {
         this.context=adminPackageActivity;
         this.packageList=skyLightPackages;
+
     }
 
     public SkyLightPackageAdapter(CusPackHistoryAct cusPackHistoryAct, ArrayList<SkyLightPackage> skyLightPackages) {
         this.context=cusPackHistoryAct;
         this.packageList=skyLightPackages;
+
     }
 
     public SkyLightPackageAdapter(ProfilePackHistoryAct profilePackHistoryAct, ArrayList<SkyLightPackage> skyLightPackages) {
         this.context=profilePackHistoryAct;
         this.packageList=skyLightPackages;
+
     }
 
     public SkyLightPackageAdapter(MyProfilePackList myProfilePackList, ArrayList<SkyLightPackage> skyLightPackages) {
         this.context=myProfilePackList;
         this.packageList=skyLightPackages;
+
     }
 
     public SkyLightPackageAdapter(CustomerDetailAct customerDetailAct, ArrayList<SkyLightPackage> skyLightPackageArrayList) {
         this.context=customerDetailAct;
         this.packageList=skyLightPackageArrayList;
+
     }
 
     public SkyLightPackageAdapter(ImportDateTab importDateTab, ArrayList<SkyLightPackage> skyLightPackages) {
         this.context=importDateTab;
         this.packageList=skyLightPackages;
+
     }
 
     public SkyLightPackageAdapter(SuperAdminCountAct superAdminCountAct, ArrayList<SkyLightPackage> skyLightPackages) {
         this.context=superAdminCountAct;
         this.packageList=skyLightPackages;
+
     }
 
 

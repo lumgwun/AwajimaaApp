@@ -1,20 +1,17 @@
 package com.skylightapp.Classes;
 
 
-import java.math.BigDecimal;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
+import com.skylightapp.BuildConfig;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.rest.api.v2010.account.Message.Status;
 import com.twilio.rest.api.v2010.account.MessageCreator;
 import com.twilio.type.PhoneNumber;
 
-import static com.skylightapp.Classes.AppConstants.FROM;
 
 public class TwilloMessageSenderService {
     private static final Logger logger = LoggerFactory.getLogger(TwilloMessageSenderService.class);
@@ -26,7 +23,7 @@ public class TwilloMessageSenderService {
     private String accountAuthToken="39410e8b813c131da386f3d7bb7f94f7";
 
     @Value("${twilloSenderNumber}")
-    private String twilloSenderNumber=FROM;
+    private String twilloSenderNumber= BuildConfig.TWILLO_NO;
 
     public String sendMessage(TwilloMessage messageRequest) {
         try {

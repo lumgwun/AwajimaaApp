@@ -9,6 +9,33 @@
     android:theme="@style/Theme.SkylightApp3"
     android:background="@drawable/rect_their_message"
     tools:context="com.skylightapp.Tellers.LoanRepaymentTab">
+    <com.github.florent37.shapeofview.shapes.ArcView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:elevation="5.0dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="15dp"
+        app:shape_arc_cropDirection="inside"
+        app:shape_arc_height="15dp"
+        app:shape_arc_position="bottom">
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:background="@drawable/rect6g"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:textStyle="bold"
+                app:titleMarginStart="120dp"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal"
+                app:title="Skylight Loan Area"
+                android:textAlignment="center"
+                app:titleTextColor="@color/colorPrimaryDark"
+                android:layout_height="100dp"/>
+        </com.google.android.material.appbar.AppBarLayout>
+
+    </com.github.florent37.shapeofview.shapes.ArcView>
+
 
     <LinearLayout
         android:orientation="vertical"

@@ -35,8 +35,7 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.TimeZone;
 
-import static com.skylightapp.Classes.AppConstants.ACCOUNT_SID;
-import static com.skylightapp.Classes.AppConstants.AUTH_TOKEN;
+
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 
@@ -61,6 +60,9 @@ public class MyNewGrpSavings extends AppCompatActivity {
     AppCompatSpinner spnFrequency;
     AppCompatButton btnCreateGroup;
     Bundle userBundle;
+    private String TWILLO_ACCOUNT_SID= BuildConfig.T_ACCT_SID;
+    private String TWILLO_AUTH_TOKEN= BuildConfig.T_AUTH_TOKEN;
+
 
 
     @Override
@@ -220,7 +222,7 @@ public class MyNewGrpSavings extends AppCompatActivity {
 
                         String paymentMessage = "Congratulations" + surname+","+ firstName + " a new Group Savings on the Skylight App,is for You";
 
-                        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+                        Twilio.init(TWILLO_ACCOUNT_SID, TWILLO_AUTH_TOKEN);
                         Message message = Message.creator(
                                 new com.twilio.type.PhoneNumber(phoneNo),
                                 new com.twilio.type.PhoneNumber("234"+phoneNo),

@@ -1,7 +1,9 @@
 package com.skylightapp.Adapters;
 
 import android.content.Context;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -36,6 +38,7 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
     private double durationPrice;
     private double grandTotal;
     private int id,imageLink,duration;
+    private GestureDetector gestureDetector;
 
 
     private List<SkyLightPackModel> theSlideItemsModelClassList = new ArrayList<>();
@@ -51,6 +54,7 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
         this.context = context;
         this.mSliderItems = sliderDataArrayList;
         this.callback = callback;
+
 
     }
 
@@ -117,12 +121,14 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
                 int id = v.getId();
                 if (id == R.id.iv_auto_image_slider) {
                     if (callback != null) {
+
                         callback.onItemClick(sliderItem);
                     }
                     if (callback != null) {
                         callback.onItemClick(sliderItem);
                     }
                 }
+
                 if (id == R.id.tittle4) {
                     if (callback != null) {
                         callback.onItemClick(sliderItem);
@@ -211,12 +217,11 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
 
     }
 
-    static class SliderAdapterVH extends SliderViewAdapter.ViewHolder implements View.OnClickListener {
+    static class SliderAdapterVH extends SliderViewAdapter.ViewHolder implements View.OnClickListener,View.OnContextClickListener,View.OnLongClickListener,View.OnTouchListener {
 
         View itemView;
         TextView tittle;
         ImageView imageItem;
-        ImageView imageGifContainer;
         TextView textViewDescription;
         TextView price;
         TextView duration;
@@ -234,6 +239,7 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
             duration = itemView.findViewById(R.id.duration_image_slider);
             textViewDescription = itemView.findViewById(R.id.tv_auto_image_slider);
             this.itemView = itemView;
+            itemView.setOnClickListener(this);
         }
 
         @Override
@@ -242,6 +248,34 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
                 listener.onItemClick(skyLightPackModel);
             }
 
+        }
+        SliderAdapterVH(View itemView, OnItemsClickListener listener) {
+            super(itemView);
+            itemView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            if (listener != null) {
+                listener.onItemClick(skyLightPackModel);
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onContextClick(View view) {
+            if (listener != null) {
+                listener.onItemClick(skyLightPackModel);
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            if (listener != null) {
+                listener.onItemClick(skyLightPackModel);
+            }
+            return false;
         }
     }
 
