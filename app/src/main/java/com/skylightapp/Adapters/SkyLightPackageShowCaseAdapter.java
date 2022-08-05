@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.SkyLightPackModel;
 import com.skylightapp.R;
@@ -32,6 +33,7 @@ public class SkyLightPackageShowCaseAdapter extends RecyclerView.Adapter<SkyLigh
     private ArrayList<SkyLightPackModel> packageList;
     private ArrayList<SkyLightPackage> skyLightPackages;
     private GestureDetector gestureDetector;
+    private int position;
 
     public SkyLightPackageShowCaseAdapter(Context context, List<SkyLightPackModel> skyLightPackage_2List) {
         this.context = context;
@@ -59,12 +61,23 @@ public class SkyLightPackageShowCaseAdapter extends RecyclerView.Adapter<SkyLigh
         final SkyLightPackage model = packageList.get(position);
         final SkyLightPackModel model2= packageList.get(position);
         ViewHolder mainHolder = (ViewHolder) holder;
+        context = mainHolder.itemView.getContext();
         mainHolder.description.setText(MessageFormat.format("Desc.{0}", model2.getpMdesc()));
         mainHolder.itemName.setText(MessageFormat.format("Item Name:{0}", model2.getpMItemName()));
         mainHolder.price.setText(MessageFormat.format("Price N{0}", model2.getpMPrice()));
         mainHolder.duration1.setText(MessageFormat.format("Duration:{0}", model2.getpMDuration()));
-        mainHolder.itemImage.setImageResource(model2.getpMItemImage());
+        //mainHolder.itemImage.setImageResource(model2.getpMItemImage());
+        Glide.with(context).load(model2.getpMItemImage()).fitCenter().into(mainHolder.itemImage);
         holder.setData(skyLightPackage_2List.get(position).getpMItemImage(),skyLightPackage_2List.get(position).getpMItemName(),skyLightPackage_2List.get(position).getpMPrice(),skyLightPackage_2List.get(position).getpMdesc(),skyLightPackage_2List.get(position).getpMdesc());
+
+        holder.itemImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(listener != null){
+                    listener.onItemClick(position);
+                }
+            }
+        });
     }
     public  class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
@@ -73,6 +86,7 @@ public class SkyLightPackageShowCaseAdapter extends RecyclerView.Adapter<SkyLigh
         public TextView price;
         public TextView duration1;
         public ImageView itemImage;
+        private View itemView1;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -81,6 +95,8 @@ public class SkyLightPackageShowCaseAdapter extends RecyclerView.Adapter<SkyLigh
             duration1 = itemView.findViewById(R.id.duration1);
             description = itemView.findViewById(R.id.item_description);
             itemImage = itemView.findViewById(R.id.item_image);
+            itemView = itemView1;
+            itemView.setOnClickListener(this);
         }
 
         public void setData(int itemImage, String itemName, double price, String description, String duration){
@@ -93,6 +109,9 @@ public class SkyLightPackageShowCaseAdapter extends RecyclerView.Adapter<SkyLigh
 
         @Override
         public void onClick(View view) {
+            if (listener != null) {
+                listener.onItemClick(position);
+            }
 
         }
     }
@@ -152,7 +171,8 @@ public class SkyLightPackageShowCaseAdapter extends RecyclerView.Adapter<SkyLigh
 
 
     public interface OnItemsClickListener{
-        void onItemClick(SkyLightPackModel lightPackage);
+        void onItemClick(int position);
+        void onItemClick(View view, int position);
     }
     public void setWhenClickListener(OnItemsClickListener listener){
         this.listener = listener;

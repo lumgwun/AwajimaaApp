@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackModel;
 import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.Classes.SkylightPackageModel;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.SuperAdmin.Skylight;
 import com.smarteist.autoimageslider.SliderView;
@@ -58,6 +60,7 @@ public class SkylightSliderAct extends AppCompatActivity implements SkylightPack
     private double amount,grandTotal;
     private  SkylightPackageSliderAdapter.OnItemsClickListener onItemsClickListener;
     SearchView editsearch;
+    private SkyLightPackModel lightPackage;
 
 
     @Override
@@ -455,34 +458,7 @@ public class SkylightSliderAct extends AppCompatActivity implements SkylightPack
         adapter.filter(text);
         return false;
     }
-    @Override
-    public void onItemClick(SkyLightPackModel lightPackage) {
-        Bundle bundle = new Bundle();
-        customer= new Customer();
-        if(customer !=null){
-            customerID=customer.getCusUID();
-        }
-        if(managerProfile !=null){
-            profileID=managerProfile.getPID();
-        }
-        if(lightPackage !=null){
-            type=lightPackage.getpMType();
-            duration=lightPackage.getpMDuration();
-            amount=lightPackage.getpMPrice();
-            grandTotal=duration*amount;
-            id=lightPackage.getpModeID();
-            tittle=lightPackage.getpMItemName();
-        }
 
-
-        skyLightPackage = new SkyLightPackage(id,customerID,tittle,amount,grandTotal,type,duration);
-        bundle.putParcelable("SkyLightPackage", skyLightPackage);
-        Intent payIntent = new Intent(SkylightSliderAct.this, PayNowActivity.class);
-        payIntent.putExtras(bundle);
-        payIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(payIntent);
-        //doOptions(bundle);
-    }
     /*private void doOptions(Bundle bundle){
         dbHelper= new DBHelper(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(SkylightSliderAct.this);
@@ -567,5 +543,45 @@ public class SkylightSliderAct extends AppCompatActivity implements SkylightPack
             return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Bundle bundle = new Bundle();
+        customer= new Customer();
+
+        if(skyLightPackage_2s.size() >0){
+            lightPackage = skyLightPackage_2s.get(position);
+
+        }
+
+        if(customer !=null){
+            customerID=customer.getCusUID();
+        }
+        if(managerProfile !=null){
+            profileID=managerProfile.getPID();
+        }
+        if(lightPackage !=null){
+            type=lightPackage.getpMType();
+            duration=lightPackage.getpMDuration();
+            amount=lightPackage.getpMPrice();
+            grandTotal=duration*amount;
+            id=lightPackage.getpModeID();
+            tittle=lightPackage.getpMItemName();
+        }
+
+
+        skyLightPackage = new SkyLightPackage(id,customerID,tittle,amount,grandTotal,type,duration);
+        bundle.putParcelable("SkyLightPackage", skyLightPackage);
+        Intent payIntent = new Intent(SkylightSliderAct.this, PayNowActivity.class);
+        payIntent.putExtras(bundle);
+        payIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(payIntent);
+
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+
     }
 }

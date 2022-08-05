@@ -37,10 +37,8 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
     private String type;
     private double durationPrice;
     private double grandTotal;
-    private int id,imageLink,duration;
+    private int id,imageLink,duration,position;
     private GestureDetector gestureDetector;
-
-
     private List<SkyLightPackModel> theSlideItemsModelClassList = new ArrayList<>();
     private List<SkyLightPackModel> itemsListFilter = new ArrayList<>();
     private OnItemsClickListener callback;
@@ -111,7 +109,7 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
             @Override
             public void onClick(View v) {
                 if(callback != null){
-                    callback.onItemClick(sliderItem);
+                    callback.onItemClick(position);
                 }
             }
         });
@@ -122,32 +120,32 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
                 if (id == R.id.iv_auto_image_slider) {
                     if (callback != null) {
 
-                        callback.onItemClick(sliderItem);
+                        callback.onItemClick(position);
                     }
                     if (callback != null) {
-                        callback.onItemClick(sliderItem);
+                        callback.onItemClick(position);
                     }
                 }
 
                 if (id == R.id.tittle4) {
                     if (callback != null) {
-                        callback.onItemClick(sliderItem);
+                        callback.onItemClick(position);
                     }
                 }
 
                 if (id == R.id.image_slider_price) {
                     if (callback != null) {
-                        callback.onItemClick(sliderItem);
+                        callback.onItemClick(position);
                     }
                 }
                 if (id == R.id.duration_image_slider) {
                     if (callback != null) {
-                        callback.onItemClick(sliderItem);
+                        callback.onItemClick(position);
                     }
                 }
                 if (id == R.id.tv_auto_image_slider) {
                     if (callback != null) {
-                        callback.onItemClick(sliderItem);
+                        callback.onItemClick(position);
                     }
                 }
             }
@@ -212,12 +210,13 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
     @Override
     public void onClick(View view) {
         if (callback != null) {
-            callback.onItemClick(skyLightPackModel);
+            //callback.onItemClick(itemsListFilter.get(getAdapterPosition()));
+            callback.onItemClick(position);
         }
 
     }
 
-    static class SliderAdapterVH extends SliderViewAdapter.ViewHolder implements View.OnClickListener,View.OnContextClickListener,View.OnLongClickListener,View.OnTouchListener {
+     class SliderAdapterVH extends SliderViewAdapter.ViewHolder implements View.OnClickListener,View.OnContextClickListener,View.OnLongClickListener,View.OnTouchListener {
 
         View itemView;
         TextView tittle;
@@ -245,7 +244,8 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
         @Override
         public void onClick(View view) {
             if (listener != null) {
-                listener.onItemClick(skyLightPackModel);
+                //listener.onItemClick(itemsListFilter.get(getAdapterPosition()));
+                listener.onItemClick(position);
             }
 
         }
@@ -257,7 +257,7 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
         @Override
         public boolean onLongClick(View view) {
             if (listener != null) {
-                listener.onItemClick(skyLightPackModel);
+                listener.onItemClick(position);
             }
             return true;
         }
@@ -265,7 +265,7 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
         @Override
         public boolean onContextClick(View view) {
             if (listener != null) {
-                listener.onItemClick(skyLightPackModel);
+                listener.onItemClick(position);
             }
             return true;
         }
@@ -273,13 +273,15 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
             if (listener != null) {
-                listener.onItemClick(skyLightPackModel);
+                listener.onItemClick(position);
             }
             return false;
         }
     }
 
     public interface OnItemsClickListener{
-        void onItemClick(SkyLightPackModel skyLightPackModel);
+        void onItemClick(int position);
+        void onItemClick(View view, int position);
     }
+
 }
