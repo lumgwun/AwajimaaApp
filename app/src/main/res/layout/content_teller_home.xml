@@ -14,13 +14,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:id="@+id/linearGrid"
-        android:weightSum="29">
+        android:weightSum="35">
 
         <GridLayout
             android:id="@+id/ViewTeller333"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="25"
+            android:layout_weight="33"
             android:alignmentMode="alignMargins"
             android:columnCount="2"
             android:columnOrderPreserved="false"

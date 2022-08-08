@@ -13,31 +13,85 @@
 
         <item
             android:id="@+id/timeline_Super"
-            android:icon="@drawable/skylight"
+            android:icon="@drawable/ic_admin_panel"
             android:title="My Timeline" />
 
         <item
-            android:id="@+id/nav_SignupSuper"
-            android:icon="@drawable/skylight"
-            android:title="All Users Creator" />
-        <item
-            android:id="@+id/nav_my_packageSuper"
-            android:icon="@drawable/skylight"
-            android:title="Packages" />
-        <item
             android:id="@+id/nav_TellerReportsSuper"
-            android:icon="@drawable/skylight"
+            android:icon="@drawable/ic_admin_panel"
             android:title="Teller Reports" />
         <item
             android:id="@+id/nav_ImpDateSuper"
-            android:icon="@drawable/skylight"
+            android:icon="@drawable/calendar_foreground"
             android:title="Important Dates" />
 
 
         <item
             android:id="@+id/nav_UsersSuper"
-            android:icon="@drawable/skylight"
+            android:icon="@drawable/ic_all_cus"
             android:title="Users Activity" />
+
+        <item android:title="Packages">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_my_packageSuper"
+                        android:icon="@drawable/ic__category"
+                        android:title="Packages" />
+
+                    <item
+                        android:id="@+id/nav_Slider"
+                        android:icon="@drawable/ic_admin_panel"
+                        android:title="Package Shop" />
+
+                    <item
+                        android:id="@+id/nav_Tab"
+                        android:icon="@drawable/ic_admin_panel"
+                        android:title="Package Tab" />
+                </group>
+            </menu>
+        </item>
+        <item android:title="Messaging">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_User_Messages"
+                        android:icon="@drawable/ic_announcement"
+                        android:title="Send Message" />
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="Account Department">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_Accts"
+                        android:icon="@drawable/ic_add_business"
+                        android:title="Accountant Dashboard" />
+                </group>
+            </menu>
+        </item>
+        <item android:title="Emergencies">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_Emergencies"
+                        android:icon="@drawable/ic_announcement"
+                        android:title="Emergencies" />
+                </group>
+            </menu>
+        </item>
+        <item android:title="Reposting">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_Reposting"
+                        android:icon="@drawable/ic_alert"
+                        android:title="Repost Workers" />
+                </group>
+            </menu>
+        </item>
 
 
 
@@ -46,20 +100,20 @@
                 <group android:checkableBehavior="single">
                     <item
                         android:id="@+id/my_SuperTrans"
-                        android:icon="@drawable/skylight"
+                        android:icon="@drawable/transfer3"
                         android:title="Transactions" />
 
                     <item
                         android:id="@+id/nav_soSuper"
-                        android:icon="@drawable/skylight"
+                        android:icon="@drawable/transfer3"
                         android:title="Standing Order" />
                     <item
                         android:id="@+id/nav_superLoans"
-                        android:icon="@drawable/skylight"
+                        android:icon="@drawable/transfer3"
                         android:title="Loans" />
                     <item
                         android:id="@+id/nav_payClientSuper"
-                        android:icon="@drawable/skylight"
+                        android:icon="@drawable/transfer3"
                         android:title="Pay Clients" />
 
 
@@ -68,24 +122,63 @@
 
         </item>
 
+        <item android:title="New">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_SignupSuper"
+                        android:icon="@drawable/user_red1"
+                        android:title="All Users Creator" />
+
+                    <item
+                        android:id="@+id/nav_All_New"
+                        android:icon="@drawable/ic_create_new"
+                        android:title="All New Tab" />
+                </group>
+            </menu>
+        </item>
+
         <item android:title="Support">
             <menu>
                 <group android:checkableBehavior="single">
                     <item
                         android:id="@+id/navsupportSuper"
-                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:icon="@drawable/ic_announcement"
                         android:title="Support Tab" />
                 </group>
             </menu>
         </item>
 
+
+        <item android:title="BirthDays">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_bDays"
+                        android:icon="@drawable/ic__category"
+                        android:title="Birthdays" />
+
+                </group>
+            </menu>
+        </item>
+        <item android:title="All Webs Access">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_Web"
+                        android:icon="@drawable/ic__category"
+                        android:title="Web Apps" />
+
+                </group>
+            </menu>
+        </item>
         <item android:title="Loan">
             <menu>
                 <group android:checkableBehavior="single">
                     <item
                         android:id="@+id/nav_loan6"
-                        android:icon="@drawable/ic_dashboard_black_24dp"
-                        android:title="My Settings" />
+                        android:icon="@drawable/ic__category"
+                        android:title="Loans" />
 
                 </group>
             </menu>
@@ -97,7 +190,7 @@
 
                     <item
                         android:id="@+id/nav_logoutSuper"
-                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:icon="@drawable/logout1"
                         android:title="Logout" />
                 </group>
             </menu>

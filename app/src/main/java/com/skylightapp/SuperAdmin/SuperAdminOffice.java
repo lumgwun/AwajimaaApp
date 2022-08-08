@@ -519,50 +519,59 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
                             myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(myIntent);
                             break;
+
+
                         case 1:
-                            Intent myIntent1 = new Intent(SuperAdminOffice.this, AdminTabActivity.class);
-                            myIntent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(myIntent1);
-                            break;
-                        case 2:
-                            Intent myIntent2 = new Intent(SuperAdminOffice.this, AdminSupportAct.class);
-                            myIntent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(myIntent2);
-                            break;
-                        case 3:
-                            Intent myIntent3 = new Intent(SuperAdminOffice.this, BirthdayTab.class);
-                            myIntent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(myIntent3);
-                            break;
-                        case 4:
                             Intent myIntent4 = new Intent(SuperAdminOffice.this, CustomerListActivity.class);
                             myIntent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(myIntent4);
                             break;
-                        case 5:
-                            Intent myIntent5 = new Intent(SuperAdminOffice.this, SendUserMessageAct.class);
-                            myIntent5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(myIntent5);
-                            break;
-                        case 6:
-                            Intent myWeb = new Intent(SuperAdminOffice.this, SkylightAllWeb.class);
-                            myWeb.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(myWeb);
-                            break;
-                        case 7:
-                            Intent myIntentTeller = new Intent(SuperAdminOffice.this, CreationTab.class);
-                            myIntentTeller.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(myIntentTeller);
-                            break;
-                        case 8:
+
+                        case 2:
                             Intent myIntentTeller4 = new Intent(SuperAdminOffice.this, TellerReportActSuper.class);
                             myIntentTeller4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(myIntentTeller4);
                             break;
+
+                        case 3:
+                            Intent listIntentSper = new Intent(SuperAdminOffice.this, SuperMPaymentListA.class);
+                            listIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(listIntentSper);
+                            break;
+
+                        case 4:
+                            Intent unConfirmedIntentSper = new Intent(SuperAdminOffice.this, SuperUnconfirmedSavings.class);
+                            unConfirmedIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(unConfirmedIntentSper);
+                            break;
+
+                        case 5:
+                            Intent dueIntentSper = new Intent(SuperAdminOffice.this, DuePackagesAct.class);
+                            dueIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(dueIntentSper);
+                            break;
+
+                        case 6:
+                            Intent depositIntent = new Intent(SuperAdminOffice.this, ADepositList.class);
+                            depositIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(depositIntent);
+                            break;
+
+                        case 7:
+                            Intent officeIntent = new Intent(SuperAdminOffice.this, StocksTab.class);
+                            officeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(officeIntent);
+                            break;
+
+                        case 8:
+                            Intent cusIntent = new Intent(SuperAdminOffice.this, CusByPackAct.class);
+                            cusIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(cusIntent);
+                            break;
                         case 9:
-                            Intent myIntentTeller7 = new Intent(SuperAdminOffice.this, SkylightSliderAct.class);
-                            myIntentTeller7.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(myIntentTeller7);
+                            Intent payoutIntent = new Intent(SuperAdminOffice.this, PayOutRequestList.class);
+                            payoutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(payoutIntent);
                             break;
 
                         case 10:
@@ -572,74 +581,24 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
                             break;
 
                         case 11:
-                            Intent listIntentSper = new Intent(SuperAdminOffice.this, SuperMPaymentListA.class);
-                            listIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(listIntentSper);
-                            break;
-
-                        case 12:
-                            Intent unConfirmedIntentSper = new Intent(SuperAdminOffice.this, SuperUnconfirmedSavings.class);
-                            unConfirmedIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(unConfirmedIntentSper);
-                            break;
-
-                        case 13:
-                            Intent emergencyIntentSper = new Intent(SuperAdminOffice.this, SuperEmergList.class);
-                            emergencyIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(emergencyIntentSper);
-                            break;
-                        case 14:
-                            Intent dueIntentSper = new Intent(SuperAdminOffice.this, DuePackagesAct.class);
-                            dueIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(dueIntentSper);
-                            break;
-                        case 15:
-                            Intent acctantIntentSper = new Intent(SuperAdminOffice.this, AcctantBackOffice.class);
-                            acctantIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(acctantIntentSper);
-                            break;
-
-                        case 16:
-                            Intent updateIntent = new Intent(SuperAdminOffice.this, AdminRepostingAct.class);
-                            updateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(updateIntent);
-                            break;
-                        case 17:
                             Intent stockIntent = new Intent(SuperAdminOffice.this, SuperInvTab.class);
                             stockIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(stockIntent);
                             break;
 
-                        case 18:
-                            Intent depositIntent = new Intent(SuperAdminOffice.this, ADepositList.class);
-                            depositIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(depositIntent);
+                        case 12:
+                            Intent myIntent2 = new Intent(SuperAdminOffice.this, AdminSupportAct.class);
+                            myIntent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(myIntent2);
                             break;
 
-                        case 19:
-                            Intent officeIntent = new Intent(SuperAdminOffice.this, StocksTab.class);
-                            officeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(officeIntent);
-                            break;
 
-                        case 20:
-                            Intent cusIntent = new Intent(SuperAdminOffice.this, CusByPackAct.class);
-                            cusIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(cusIntent);
-                            break;
-                        case 21:
-                            Intent payoutIntent = new Intent(SuperAdminOffice.this, PayOutRequestList.class);
-                            payoutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(payoutIntent);
-                            break;
 
-                        case 22:
+                        case 13:
                             Intent chartIntent = new Intent(SuperAdminOffice.this, ChartData.class);
                             chartIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(chartIntent);
                             break;
-
-
 
                         default:
                     }
@@ -773,10 +732,66 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
                 startActivity(sIntent);
                 break;
 
+
             case R.id.nav_UsersSuper:
                 Intent uIntent = new Intent(this, SkylightUsersActivity.class);
                 uIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(uIntent);
+                break;
+
+            case R.id.nav_bDays:
+                Intent myIntent3 = new Intent(SuperAdminOffice.this, BirthdayTab.class);
+                myIntent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(myIntent3);
+                break;
+
+            case R.id.nav_Web:
+                Intent myWeb = new Intent(SuperAdminOffice.this, SkylightAllWeb.class);
+                myWeb.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(myWeb);
+                break;
+
+
+            case R.id.nav_All_New:
+                Intent myIntentTeller = new Intent(SuperAdminOffice.this, CreationTab.class);
+                myIntentTeller.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(myIntentTeller);
+                break;
+
+            case R.id.nav_Reposting:
+                Intent updateIntent = new Intent(SuperAdminOffice.this, AdminRepostingAct.class);
+                updateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(updateIntent);
+                break;
+
+            case R.id.nav_Slider:
+                Intent myIntentTeller7 = new Intent(SuperAdminOffice.this, SkylightSliderAct.class);
+                myIntentTeller7.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(myIntentTeller7);
+                break;
+                
+            case R.id.nav_Accts:
+                Intent acctantIntentSper = new Intent(SuperAdminOffice.this, AcctantBackOffice.class);
+                acctantIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(acctantIntentSper);
+                break;
+
+            case R.id.nav_Emergencies:
+                Intent emergencyIntentSper = new Intent(SuperAdminOffice.this, SuperEmergList.class);
+                emergencyIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(emergencyIntentSper);
+                break;
+
+
+            case R.id.nav_User_Messages:
+                Intent myIntent5 = new Intent(SuperAdminOffice.this, SendUserMessageAct.class);
+                myIntent5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(myIntent5);
+                break;
+            case R.id.nav_Tab:
+                Intent myIntent1 = new Intent(SuperAdminOffice.this, AdminTabActivity.class);
+                myIntent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(myIntent1);
                 break;
 
 
