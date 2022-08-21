@@ -17,6 +17,7 @@ public class SkyLightPackModel extends SkyLightPackage implements Parcelable, Se
     private int pMDuration;
     private int pMItemImage;
     private  SkyLightPackage skyLightPackage;
+    private SkyLightPackModel skyLightPackModel;
 
     public SkyLightPackModel() {
         super();
@@ -42,7 +43,7 @@ public class SkyLightPackModel extends SkyLightPackage implements Parcelable, Se
         this.pMItemImage = pMItemImage;
     }
 
-    protected SkyLightPackModel(Parcel in) {
+    public SkyLightPackModel(Parcel in) {
         super();
         pMItemName = in.readString();
         pMdesc = in.readString();
@@ -60,6 +61,11 @@ public class SkyLightPackModel extends SkyLightPackage implements Parcelable, Se
             return new SkyLightPackModel[size];
         }
     };
+
+    public SkyLightPackModel(SkyLightPackModel skyLightPackModel) {
+        this.skyLightPackModel = skyLightPackModel;
+
+    }
 
     public String getpMItemName() {
         return pMItemName;

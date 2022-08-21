@@ -173,8 +173,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-runtime:2.4.1'
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    implementation 'androidx.navigation:navigation-fragment:2.4.1'
-    implementation 'androidx.navigation:navigation-ui:2.4.1'
+    implementation 'androidx.navigation:navigation-fragment:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     //implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
@@ -192,7 +191,7 @@ dependencies {
 
     //implementation 'com.google.firebase:firebase-messaging:23.0.0'
 
-    implementation 'androidx.navigation:navigation-ui:2.5.0-rc01'
+    implementation 'androidx.navigation:navigation-ui:2.5.1'
     implementation 'androidx.preference:preference:1.2.0'
     //implementation 'cn.zhouchaoyuan:excelpanel:1.0.5'
     //implementation 'com.github.florent37:awesomebar:1.0.3'
@@ -217,7 +216,7 @@ dependencies {
 
     //implementation "com.google.firebase:firebase-config"
 
-    implementation 'com.google.firebase:firebase-crashlytics:18.2.10'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.12'
 
     //implementation 'com.google.android.gms:play-services-maps:17.0.1'
     //implementation 'com.google.android.gms:play-services-analytics:17.0.0'
@@ -281,7 +280,7 @@ dependencies {
     implementation 'com.google.maps.android:android-maps-utils:2.2.3'
     //implementation 'com.google.android.material:material:1.5.0'
     implementation 'com.google.android.libraries.places:places:2.6.0'
-    implementation 'com.google.android.gms:play-services-location:19.0.1'
+    implementation 'com.google.android.gms:play-services-location:20.0.0'
     //implementation 'com.firebase:geofire-android:3.1.0'
     //implementation 'com.firebase:geofire-android-common:3.1.0'
     //implementation 'com.github.aabhasr1:OtpView:v1.1.2'
@@ -516,6 +515,14 @@ dependencies {
     //implementation group: 'org.springframework', name: 'spring-beans', version: '4.3.0.RELEASE'
     //implementation group: 'org.springframework', name: 'spring-context', version: '5.1.6.RELEASE'
     implementation group: 'org.springframework', name: 'spring-webmvc', version: '5.3.22'
+    implementation 'com.wang.avi:library:1.0.5'
+    implementation 'com.nineoldandroids:library:2.4.0'
+    implementation 'com.flaviofaria:kenburnsview:1.0.7'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+    implementation 'androidx.palette:palette:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'ch.acra:acra:4.8.5'
+
     //implementation group: 'org.springframework', name: 'spring-core', version: '5.3.22'
 
 

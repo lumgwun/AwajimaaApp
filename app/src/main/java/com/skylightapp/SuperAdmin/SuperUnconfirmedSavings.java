@@ -116,10 +116,22 @@ public class SuperUnconfirmedSavings extends AppCompatActivity implements Saving
         try {
 
             selectedTellerIndex = spnSelectTeller.getSelectedItemPosition();
-            teller = profileArrayList.get(selectedTellerIndex);
+
         } catch (NullPointerException e) {
             System.out.println("Oops!");
         }
+
+        try {
+
+            if(profileArrayList.size()>0){
+                teller = profileArrayList.get(selectedTellerIndex);
+            }
+
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Oops!");
+        }
+
+
         if(teller !=null){
             tellerID=teller.getPID();
         }

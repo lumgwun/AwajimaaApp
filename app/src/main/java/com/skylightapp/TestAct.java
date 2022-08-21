@@ -32,7 +32,7 @@ public class TestAct extends AppCompatActivity {
     double amountContributedSoFar,newAmountContributedSoFar;
     double packageGrantTotal,amountRemaining,moneySaved;
     long profileID, oldPackageId;
-    private AppCompatButton btn_Customer,btnAdmin,btnTeller,btnSuperAdmin,btnSign,btnAccountant;
+    private AppCompatButton btn_Customer,btnAdmin,btnShop,btnTeller,btnSuperAdmin,btnSign,btnAccountant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +47,10 @@ public class TestAct extends AppCompatActivity {
         btn_Customer = findViewById(R.id.getCustomer);
         btnSign = findViewById(R.id.GetSign);
         btnAdmin = findViewById(R.id.getAdmin);
+        btnShop = findViewById(R.id.getEShopping);
         btnAccountant = findViewById(R.id.getAccountant);
         btnSign.setOnClickListener(this::goSignTab);
+        btnShop.setOnClickListener(this::goECommerce);
         btnAdmin.setOnClickListener(this::goAdmin);
         btnTeller = findViewById(R.id.GetTeller);
         btnSuperAdmin = findViewById(R.id.getSuperAdmin);
@@ -109,6 +111,17 @@ public class TestAct extends AppCompatActivity {
         startActivity(intent);
 
     }
+    public void goShop(View view) {
+        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String machine = userPreferences.getString("machine","");
+        Bundle bundle = new Bundle();
+        bundle.putLong("ProfileID", profileID);
+        bundle.putString(machine, machine);
+        Intent intent = new Intent(this, ProductsAct.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
+
+    }
     public void goSignTab(View view) {
         userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String machine = userPreferences.getString("machine","");
@@ -135,5 +148,16 @@ public class TestAct extends AppCompatActivity {
         intent.putExtras(bundle);
         startActivity(intent);
 
+    }
+
+    public void goECommerce(View view) {
+        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String machine = userPreferences.getString("machine","");
+        Bundle bundle = new Bundle();
+        bundle.putLong("ProfileID", profileID);
+        bundle.putString(machine, machine);
+        Intent intent = new Intent(this, ProductsAct.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

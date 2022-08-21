@@ -15,10 +15,16 @@
         android:layout_marginBottom="10dp"
         android:layout_height="match_parent" />
 
+    <include
+        layout="@layout/bottom_nav_super"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content" />
+
     <com.rom4ek.arcnavigationview.ArcNavigationView
         android:id="@+id/nav_view_super"
         android:layout_width="match_parent"
-        android:background="@drawable/rect_their_message"
+        android:background="@drawable/shape_layer_3b"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:arc_cropDirection="cropOutside"
@@ -27,13 +33,13 @@
         android:layout_marginStart="5dp"
         android:fitsSystemWindows="true"
         android:layout_marginEnd="5dp"
-        app:itemShapeInsetStart="10dp"
+        app:itemShapeInsetStart="20dp"
         android:paddingVertical="20dp"
         app:itemHorizontalPadding="40dp"
         app:itemIconTint="@color/colorPrimary"
-        app:itemTextColor="@color/colorPrimaryDark"
+        app:itemTextColor="@color/black"
         android:layout_marginBottom="10dp"
-        app:itemBackground="@drawable/drawer_background"
+        app:itemBackground="@drawable/shape_rect13b"
         app:itemTextAppearance="?android:attr/textAppearanceSmallInverse"
         app:headerLayout="@layout/supera_header"
         android:stateListAnimator="@anim/raise"

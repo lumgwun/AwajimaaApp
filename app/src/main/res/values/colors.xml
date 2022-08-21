@@ -122,6 +122,11 @@
     <color name="C">#b8b9ac</color>
 
     <color name="D">#cfb0d5</color>
+    <color name="btnRed">#CE0000</color>
+    <color name="successGreen">#11A10C</color>
+    <color name="txtBlack">#000000</color>
+    <color name="recyclerviewBackground">#d6d6d6</color>
+    <color name="RecyclerViewsBackground">#d6d6d6</color>
 
     <color name="E">#FF0AE9AA</color>
 

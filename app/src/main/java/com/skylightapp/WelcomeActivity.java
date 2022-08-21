@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -51,26 +53,16 @@ public class WelcomeActivity extends AppCompatActivity {
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
         btnSkip = (Button) findViewById(R.id.btn_skip);
         btnNext = (Button) findViewById(R.id.btn_next);
-        /*textSwitcher2 = (TextSwitcher) findViewById(R.id.switcher2);
-        buttonSwitchNext = findViewById(R.id.buttonSwitchNext);
-
-        textSwitcher2.setFactory(() -> {
-
-            TextView t = new TextView(WelcomeActivity.this);
-            t.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
-            t.setTextSize(20);
-            return t;
-        });
 
         Animation in = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
         Animation out = AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right);
 
-        textSwitcher2.setInAnimation(in);
-        textSwitcher2.setOutAnimation(out);
+        btnNext.setAnimation(in);
+        btnSkip.setAnimation(out);
 
-        textSwitcher2.setCurrentText("click on next button to switch text");
+        //textSwitcher2.setCurrentText("click on next button to switch text");
 
-        btnNext.setOnClickListener(new View.OnClickListener() {
+        /*btnNext.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
                 currentIndex[0]++;

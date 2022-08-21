@@ -100,6 +100,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:hint="Surname"
+                        android:drawableEnd="@drawable/ic_icon_foreground"
                         android:contextClickable="true"
                         android:background="@drawable/rect6h"
                         android:focusable="true"
@@ -107,8 +108,8 @@
                         android:textStyle="bold"
                         android:textColorHint="@color/black"
                         android:textSize="15sp"
-                        android:layout_gravity="center_vertical|start"
-                        android:gravity="center_vertical|start"
+                        android:layout_gravity="center_horizontal|center"
+                        android:gravity="center_horizontal|center"
                         android:clickable="false"
                         />
 
@@ -128,15 +129,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:focusable="true"
+                        android:drawableEnd="@drawable/ic_icon_foreground"
                         android:drawableStart="@drawable/ic_icon_foreground"
                         android:hint="First Name"
                         android:background="@drawable/rect6h"
                         android:textStyle="bold"
                         android:textColorHint="@color/black"
                         android:textSize="15sp"
-                        android:gravity="center_vertical|start"
                         android:clickable="false"
-                        android:layout_gravity="center_vertical|left"
+                        android:layout_gravity="center_horizontal|center"
+                        android:gravity="center_horizontal|center"
                         />
 
                 </androidx.cardview.widget.CardView>
@@ -160,14 +162,15 @@
                         android:focusable="true"
                         android:inputType="textEmailAddress"
                         android:textSize="15sp"
+                        android:drawableEnd="@drawable/ic_icon_foreground"
                         android:background="@drawable/rect6h"
                         android:drawableStart="@drawable/ic_icon_foreground"
                         android:hint="Email Address"
                         android:textStyle="bold"
                         android:textColorHint="@color/black"
-                        android:gravity="center_vertical|start"
                         android:clickable="false"
-                        android:layout_gravity="center_vertical|left" />
+                        android:layout_gravity="center_horizontal|center"
+                        android:gravity="center_horizontal|center" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -234,6 +237,7 @@
                         android:focusable="true"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:drawableEnd="@drawable/ic_icon_foreground"
                         android:background="@drawable/rect6h"
                         android:textSize="15sp"
                         android:textColorHint="@color/black"
@@ -241,8 +245,8 @@
                         android:clickable="false"
                         android:drawableStart="@drawable/ic_icon_foreground"
                         android:textColor="@color/colorPrimaryDark"
-                        android:layout_gravity="center_vertical|start"
-                        android:gravity="center_vertical|start"
+                        android:layout_gravity="center_horizontal|center"
+                        android:gravity="center_horizontal|center"
                         />
 
                 </androidx.cardview.widget.CardView>
@@ -298,11 +302,12 @@
                         android:focusable="true"
                         android:drawableStart="@drawable/ic_icon_foreground"
                         android:layout_height="match_parent"
+                        android:drawableEnd="@drawable/ic_icon_foreground"
                         android:layout_weight="1"
                         android:textColor="@color/black"
                         android:clickable="false"
-                        android:layout_gravity="center_vertical|left"
-                        android:gravity="center_vertical|left"
+                        android:layout_gravity="center_horizontal|center"
+                        android:gravity="center_horizontal|center"
                         android:background="@drawable/rect_their4"
                         android:textColorHint="@android:color/holo_red_dark"
                         android:hint="UserName"
@@ -472,6 +477,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:focusable="true"
+                            android:drawableEnd="@drawable/ic_icon_foreground"
                             android:textColor="@color/colorPrimaryDark"
                             android:drawableStart="@drawable/ic_icon_foreground"
                             android:textSize="15sp"
@@ -507,10 +513,11 @@
                         android:drawableStart="@drawable/ic_icon_foreground"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:drawableEnd="@drawable/ic_icon_foreground"
                         android:textColor="@color/black"
                         android:clickable="false"
-                        android:layout_gravity="center_vertical|left"
-                        android:gravity="center_vertical|left"
+                        android:layout_gravity="center_horizontal|center"
+                        android:gravity="center_horizontal|center"
                         android:background="@drawable/rect_their4"
                         android:textColorHint="@android:color/holo_red_dark"
                         android:hint="Sponsor's ID"
@@ -600,19 +607,46 @@
 
             </androidx.cardview.widget.CardView>
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/idBtnVerify"
+
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:padding="20dp"
-                android:textSize="20sp"
-                android:onClick="verifyOTP"
-                android:layout_marginBottom="20dp"
-                android:textColor="@android:color/holo_red_dark"
-                android:background="@drawable/rect6g"
-                android:text="Verify OTP"
-                android:textAllCaps="false" />
+                android:orientation="vertical"
+                android:id="@+id/layoutBtn"
+                android:padding="30dp"
+                android:layout_height="wrap_content">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/idBtnVerify"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:padding="20dp"
+                        android:textSize="20sp"
+                        android:onClick="verifyOTP"
+                        android:layout_marginBottom="20dp"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:background="@drawable/rect6g"
+                        android:text="Verify OTP"
+                        android:textAllCaps="false" />
+
+
+                </androidx.cardview.widget.CardView>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

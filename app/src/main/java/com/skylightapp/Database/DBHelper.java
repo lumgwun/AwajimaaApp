@@ -1047,6 +1047,19 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
     }
+    public void closeDB() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        if (db != null && db.isOpen())
+            db.close();
+    }
+    /*public void openDB() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        if (db != null && (db.close(){
+            db.beginTransaction();
+
+        }
+
+    }*/
 
 
     @SuppressLint("StaticFieldLeak")
@@ -17695,11 +17708,7 @@ public class DBHelper extends SQLiteOpenHelper {
     protected long insertUserAccount(String name, BigDecimal balance, int typeId) {
         return 0;
     }
-    public void closeDB() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        if (db != null && db.isOpen())
-            db.close();
-    }
+
 
 
 

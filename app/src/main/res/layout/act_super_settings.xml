@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.circularreveal.CircularRevealRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".SuperAdmin.SuperSettingsAct">
+    <ToggleButton
+        android:id="@+id/tb1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="ToggleButton 1"
+        android:textOff="Off"
+        android:textOn="On" />
+
+    <ToggleButton
+        android:id="@+id/tb2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tb1"
+        android:layout_alignBottom="@+id/tb1"
+        android:layout_toRightOf="@+id/tb1"
+        android:text="ToggleButton 2"
+        android:textOff="Off"
+        android:textOn="On" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switchButton"
+        android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:checked="false"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="General Shop Switch"
+        />
+
+</com.google.android.material.circularreveal.CircularRevealRelativeLayout>

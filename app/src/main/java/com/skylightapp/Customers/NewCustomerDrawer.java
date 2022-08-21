@@ -37,7 +37,9 @@ import android.widget.Toast;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
+import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.rom4ek.arcnavigationview.ArcNavigationView;
+import com.skylightapp.Admins.AdminSupportAct;
 import com.skylightapp.CameraActivity;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
@@ -45,13 +47,19 @@ import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.StandingOrderAcct;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Inventory.SuperInvTab;
 import com.skylightapp.LoginActivity;
 import com.skylightapp.MyTimelineAct;
 import com.skylightapp.PasswordRecovAct;
 import com.skylightapp.PrivacyPolicy_Web;
+import com.skylightapp.ProductsAct;
 import com.skylightapp.R;
 import com.skylightapp.SignTabMainActivity;
 import com.skylightapp.SkylightSliderAct;
+import com.skylightapp.SuperAdmin.ADepositList;
+import com.skylightapp.SuperAdmin.PayOutRequestList;
+import com.skylightapp.SuperAdmin.SuperAdminOffice;
+import com.skylightapp.SuperAdmin.TellerReportActSuper;
 import com.skylightapp.UserPrefActivity;
 import com.skylightapp.UserTimeLineAct;
 import com.squareup.picasso.Picasso;
@@ -109,6 +117,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
     private StandingOrderAcct standingOrderAcct;
     private static final String PREF_NAME = "skylight";
     AppCompatButton btnToPacks;
+    ChipNavigationBar chipNavigationBar;
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
     ActivityResultLauncher<Intent> startCusPictureActivityForResult = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -199,16 +208,69 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
         customer = gson1.fromJson(json1, Customer.class);
         txtUserName = findViewById(R.id.cus_username);
 
-        /*btnToPacks.setOnClickListener(this::getMyPacks);
-        btnToPacks.setOnClickListener(new View.OnClickListener() {
+        chipNavigationBar = findViewById(R.id.bottom_nav_barC);
+        chipNavigationBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent so1Intent = new Intent(NewCustomerDrawer.this, PackageTab.class);
-                so1Intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(so1Intent);
 
             }
-        });*/
+        });
+        chipNavigationBar.setOnItemSelectedListener
+                (new ChipNavigationBar.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(int i) {
+                        //Fragment fragment = null;
+                        switch (i){
+                            case R.id.cHome:
+                                Intent myIntent = new Intent(NewCustomerDrawer.this, NewCustomerDrawer.class);
+                                overridePendingTransition(R.anim.slide_in_right,
+                                        R.anim.slide_out_left);
+                                myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(myIntent);
+
+                            case R.id.cTimeLine:
+
+                                Intent chat = new Intent(NewCustomerDrawer.this, MyTimelineAct.class);
+                                startActivity(chat);
+                                overridePendingTransition(R.anim.slide_in_right,
+                                        R.anim.slide_out_left);
+                                chat.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                chat.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+
+                            case R.id.cGeneralShop:
+
+                                Intent shop = new Intent(NewCustomerDrawer.this, ProductsAct.class);
+                                startActivity(shop);
+                                overridePendingTransition(R.anim.slide_in_right,
+                                        R.anim.slide_out_left);
+                                shop.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                shop.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                            case R.id.cPackageT:
+
+                                Intent pIntent = new Intent(NewCustomerDrawer.this, PackListTab.class);                          
+                                startActivity(pIntent);
+                                overridePendingTransition(R.anim.slide_in_right,
+                                        R.anim.slide_out_left);
+                                pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                pIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+
+                            case R.id.cSupport:
+                                Intent helpIntent = new Intent(NewCustomerDrawer.this, CustomerHelpActTab.class);
+                                overridePendingTransition(R.anim.slide_in_right,
+                                        R.anim.slide_out_left);
+                                helpIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                helpIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(helpIntent);
+                        }
+                        /*getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_container,
+                                        fragment).commit();*/
+                    }
+                });
 
         txtSO = findViewById(R.id.savingsToday);
         extName = findViewById(R.id.cus_name3);

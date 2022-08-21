@@ -9,6 +9,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 import com.bumptech.glide.Glide;
 import com.skylightapp.Classes.SliderData;
+import com.skylightapp.Classes.SliderModel;
 import com.skylightapp.R;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
@@ -17,12 +18,13 @@ import java.util.List;
 
 public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapterViewHolder> {
 
-    private final List<SliderData> mSliderItems;
+    private  List<SliderData> mSliderItems;
 
     // Constructor
     public SliderAdapter(Context context, ArrayList<SliderData> sliderDataArrayList) {
         this.mSliderItems = sliderDataArrayList;
     }
+
 
 
     @Override

@@ -39,6 +39,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -66,7 +68,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -180,16 +181,16 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     public static final int PICTURE_REQUEST_CODE = 505;
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     SharedPreferences userPreferences;
-    AppCompatEditText phone_number;
+    AppCompatEditText edtPhone_number;
     AppCompatEditText email_address;
     AppCompatEditText edtNIN;
     String stringNIN, timeLineTime;
     GoogleMap googleMap, mMap;
-    AppCompatEditText firstName;
-    AppCompatEditText surname1;
+    AppCompatEditText edtFirstName;
+    AppCompatEditText edtSurname;
     AppCompatEditText userName;
-    AppCompatEditText password, edtSponsorID;
-    AppCompatEditText address_2;
+    AppCompatEditText edtPassword, edtSponsorID;
+    AppCompatEditText edtAddress_2;
     Bitmap thumbnail;
     //private GoogleApiClient googleApiClient;
     protected DatePickerDialog datePickerDialog;
@@ -206,7 +207,6 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
     int profileID, birthdayID, messageID;
 
-    private ProgressBar loadingPB;
     private ProgressDialog progressDialog;
     String ManagerSurname;
     String managerFirstName, uPassword;
@@ -350,7 +350,6 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     ProfileDao roomTableDao;
     private String bankAcctNumber;
     SupportSQLiteDatabase supportSQLiteDatabase;
-
 
     private static final String PREF_NAME = "skylight";
     private LocationManager locationManager;
@@ -592,7 +591,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         sqLiteDatabase = dbHelper.getWritableDatabase();
 
         getDeviceLocation();
-        getUserLocation();
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         layoutPreOTP = findViewById(R.id.layoutSign);
@@ -837,19 +836,116 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        phone_number = findViewById(R.id.phone_number);
+        edtPhone_number = findViewById(R.id.phone_number);
         email_address = findViewById(R.id.email_address);
-        address_2 = findViewById(R.id.address_all);
-        firstName = findViewById(R.id.first_Name_00);
+        edtAddress_2 = findViewById(R.id.address_all);
+        edtFirstName = findViewById(R.id.first_Name_00);
         userName = findViewById(R.id.user_name_1);
-        surname1 = findViewById(R.id.surname1);
-        password = findViewById(R.id.user_password_sig);
+        edtSurname = findViewById(R.id.surname1);
+        edtPassword = findViewById(R.id.user_password_sig);
         edtNIN = findViewById(R.id.NIN);
         ccp = (CountryCodePicker) findViewById(R.id.ccp);
+        edtPhone_number.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkInputs();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        edtAddress_2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkInputs();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        edtFirstName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkInputs();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        edtSurname.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkInputs();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        edtPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkInputs();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        edtNIN.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkInputs();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         String email = email_address.getText().toString().trim();
 
-        ccp.registerCarrierNumberEditText(phone_number);
-        ccp.getFullNumberWithPlus();
+        ccp.registerCarrierNumberEditText(edtPhone_number);
+
 
         ccp.setPhoneNumberValidityChangeListener(new CountryCodePicker.PhoneNumberValidityChangeListener() {
             @Override
@@ -916,24 +1012,6 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
             }
 
-            protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-                if ((data != null) && requestCode == RESULT_CAMERA_CODE) {
-                    mImageUri = data.getData();
-                    //dbHelper= new DBHelper(SignUpAct.this);
-                    //dbHelper.insertProfilePicture(profileID1,customerID,photoUri);
-
-
-                }
-                if ((data != null) && requestCode == RESULT_LOAD_IMAGE) {
-                    mImageUri = data.getData();
-                    //dbHelper= new DBHelper(SignUpAct.this);
-                    //dbHelper.insertProfilePicture(profileID1,customerID,photoUri);
-
-
-                }
-
-            }
         });
 
         if (managerProfile != null) {
@@ -987,13 +1065,14 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
             @Override
             public void onClick(View view) {
                 view.startAnimation(translater);
-                uFirstName = firstName.getText().toString().trim();
-                uSurname = surname1.getText().toString().trim();
+                uFirstName = edtFirstName.getText().toString().trim();
+                uSurname = edtSurname.getText().toString().trim();
                 uEmail = email_address.getText().toString();
                 sponsorIDString = edtSponsorID.getText().toString().trim();
-                uAddress = Objects.requireNonNull(address_2.getText()).toString();
-                uPassword = password.getText().toString().trim();
-                uPhoneNumber = Objects.requireNonNull(phone_number.getText()).toString();
+                uAddress = Objects.requireNonNull(edtAddress_2.getText()).toString();
+                uPassword = edtPassword.getText().toString().trim();
+                uPhoneNumber=ccp.getFullNumberWithPlus();
+                //uPhoneNumber = Objects.requireNonNull(phone_number.getText()).toString();
                 uUserName = userName.getText().toString();
                 boolean usernameTaken = false;
                 nIN = null;
@@ -1008,18 +1087,18 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                 try {
 
                     if (TextUtils.isEmpty(uFirstName)) {
-                        firstName.setError("Please enter Your First Name");
+                        edtFirstName.setError("Please enter Your First Name");
                     } else if (TextUtils.isEmpty(uSurname)) {
-                        surname1.setError("Please enter your Last/SurName");
+                        edtSurname.setError("Please enter your Last/SurName");
                     } else if (TextUtils.isEmpty(uPassword)) {
-                        password.setError("Please enter your Password");
+                        edtPassword.setError("Please enter your Password");
                     } else if (uPhoneNumber.isEmpty() || uPhoneNumber.length() < 11) {
-                        phone_number.setError("Enter a valid mobile Number");
-                        phone_number.requestFocus();
+                        edtPhone_number.setError("Enter a valid mobile Number");
+                        edtPhone_number.requestFocus();
                     } else if (TextUtils.isEmpty(uUserName)) {
                         userName.setError("Please enter your userName");
                     } else if (TextUtils.isEmpty(uAddress)) {
-                        address_2.setError("Please enter Address");
+                        edtAddress_2.setError("Please enter Address");
                     } else {
 
                         layoutOTP.setVisibility(View.VISIBLE);
@@ -1102,6 +1181,34 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
             }
         });
 
+
+    }
+    private void checkInputs() {
+        Drawable customErrorIcon = getResources().getDrawable(R.drawable.ic_error_black_24dp);
+        customErrorIcon.setBounds(0, 0, customErrorIcon.getIntrinsicWidth(), customErrorIcon.getIntrinsicHeight());
+        if (!TextUtils.isEmpty(edtFirstName.getText())) {
+            if (!TextUtils.isEmpty(edtSurname.getText())) {
+                if (!TextUtils.isEmpty(edtPassword.getText()) && edtPassword.length() >= 4) {
+                    if (!TextUtils.isEmpty(edtPassword.getText())) {
+                        btnVerifyOTPAndSignUp.setEnabled(true);
+                        btnVerifyOTPAndSignUp.setTextColor(Color.rgb(0, 0, 0));
+                    } else {
+                        btnVerifyOTPAndSignUp.setEnabled(false);
+                        btnVerifyOTPAndSignUp.setTextColor(Color.argb(50, 0, 0, 0));
+                    }
+                } else {
+                    edtPassword.setError("Password must be 4 characters", customErrorIcon);
+                    btnVerifyOTPAndSignUp.setEnabled(false);
+                    btnVerifyOTPAndSignUp.setTextColor(Color.argb(50, 0, 0, 0));
+                }
+            } else {
+                btnVerifyOTPAndSignUp.setEnabled(false);
+                btnVerifyOTPAndSignUp.setTextColor(Color.argb(50, 0, 0, 0));
+            }
+        } else {
+            btnVerifyOTPAndSignUp.setEnabled(false);
+            btnVerifyOTPAndSignUp.setTextColor(Color.argb(50, 0, 0, 0));
+        }
 
     }
 
@@ -1318,78 +1425,56 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
 
     }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if ((data != null) && requestCode == RESULT_CAMERA_CODE) {
+            mImageUri = data.getData();
+            Glide.with(SignUpAct.this)
+                    .asBitmap()
+                    .load(mImageUri)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .error(R.drawable.ic_alert)
+                    //.listener(listener)
+                    .skipMemoryCache(true)
+                    .fitCenter()
+                    .centerCrop()
+                    .into(profilePix);
+
+
+        }
+        if ((data != null) && requestCode == RESULT_LOAD_IMAGE) {
+            mImageUri = data.getData();
+            Glide.with(SignUpAct.this)
+                    .asBitmap()
+                    .load(mImageUri)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .error(R.drawable.ic_alert)
+                    //.listener(listener)
+                    .skipMemoryCache(true)
+                    .fitCenter()
+                    .centerCrop()
+                    .into(profilePix);
+
+
+        }
+
+    }
 
 
     private void saveMyPreferences(int sponsorID, LatLng cusLatLng, Account account, StandingOrderAcct standingOrderAcct, String joinedDate, String uFirstName, String uSurname, String uPhoneNumber, String uAddress, String uUserName, String uPassword, Customer customer, Profile customerProfile, String nIN, Profile managerProfile, String dateOfBirth, String selectedGender, String selectedOffice, String selectedState, Birthday birthday, CustomerManager customerManager, String ofBirth, int profileID1, int virtualAccountNumber, int soAccountNumber, int customerID, int birthdayID, int investmentAcctID, int itemPurchaseAcctID, int promoAcctID, int packageAcctID, ArrayList<Customer> customers) {
         Bundle userBundle = new Bundle();
         smsMessage = "Welcome to the Skylight  App, may you have the best experience";
+
+        sendSMSMessage22(uPhoneNumber, smsMessage);
+        sendTextMessage(uPhoneNumber, smsMessage);
+
+        if (userPreferences == null)
+            userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         lastProfileUsed = customerProfile;
         Customer lastCustomerUsed= customer;
         json = gson.toJson(lastProfileUsed);
         json1 = gson1.toJson(lastCustomerUsed);
-        sendSMSMessage22(uPhoneNumber, smsMessage);
-        userBundle.putString(PROFILE_DOB, dateOfBirth);
-        userBundle.putString(BANK_ACCT_NO, bankAcctNumber);
-        userBundle.putString("BANK_ACCT_NO", bankAcctNumber);
-        userBundle.putString(PROFILE_EMAIL, uEmail);
-        userBundle.putString(PROFILE_OFFICE, selectedOffice);
-        userBundle.putString(PROFILE_FIRSTNAME, uFirstName);
-        userBundle.putString(PROFILE_GENDER, selectedGender);
-        userBundle.putString(PROFILE_COUNTRY, "");
-        userBundle.putString(PROFILE_NEXT_OF_KIN, "");
-        userBundle.putString(PROFILE_PHONE, uPhoneNumber);
-        userBundle.putString(PROFILE_SURNAME, uSurname);
-        userBundle.putString(PICTURE_URI, String.valueOf(mImageUri));
-        userBundle.putString(CUSTOMER_LATLONG, String.valueOf(cusLatLng));
-        userBundle.putString(PROFILE_PASSWORD, uPassword);
-        userBundle.putString(PROFILE_NIN, nIN);
-        userBundle.putString(PROFILE_STATE, selectedState);
-        userBundle.putString(PROFILE_ROLE, "Customer");
-        userBundle.putString(PROFILE_STATUS, "Pending Approval");
-        userBundle.putString(PROFILE_USERNAME, uUserName);
-        userBundle.putInt(PROFILE_ID, profileID1);
-        userBundle.putString(PROFILE_DATE_JOINED, joinedDate);
-        userBundle.putString("machine", "Customer");
-
-        userBundle.putString("USER_DOB", dateOfBirth);
-        userBundle.putString("USER_EMAIL", uEmail);
-        userBundle.putString("USER_OFFICE", selectedOffice);
-        userBundle.putString("USER_FIRSTNAME", uFirstName);
-        userBundle.putString("USER_GENDER", selectedGender);
-        userBundle.putString("USER_COUNTRY", "");
-        userBundle.putString("USER_NEXT_OF_KIN", "");
-        userBundle.putString("USER_PHONE", uPhoneNumber);
-        userBundle.putString("USER_SURNAME", "");
-        userBundle.putString("PICTURE_URI", String.valueOf(mImageUri));
-        userBundle.putString("USER_DATE_JOINED", "");
-        userBundle.putString("PROFILE_NIN", nIN);
-        userBundle.putString("USER_STATE", selectedState);
-        userBundle.putString("USER_ROLE", "Customer");
-        userBundle.putString("USER_STATUS", "Pending Approval");
-        userBundle.putString("USERNAME", uUserName);
-        userBundle.putLong("PROFILE_ID", profileID1);
-        userBundle.putString("USER_PASSWORD", uPassword);
-        userBundle.putString("USER_LOCATION", String.valueOf(cusLatLng));
-        userBundle.putString("EMAIL_ADDRESS", uEmail);
-        userBundle.putString("CHOSEN_OFFICE", selectedOffice);
-        userBundle.putString("USER_NAME", uUserName);
-        userBundle.putString("USER_DATE_JOINED", joinedDate);
-
-        userBundle.putInt("CUSTOMER_ID", customerID);
-        userBundle.putString("PROFILE_NIN", nIN);
-        userBundle.putString("EMAIL_ADDRESS", uEmail);
-        userBundle.putString("DATE_OF_BIRTH_KEY", dateOfBirth);
-        userBundle.putString("GENDER_KEY", selectedGender);
-        userBundle.putString("USER_NEXT_OF_KIN", "");
-        userBundle.putString(CUSTOMER_LATLONG, "");
-        userBundle.putString("machine", "Customer");
-        userBundle.putInt(PROFILE_SPONSOR_ID, sponsorID);
-        userBundle.putInt("USER_SPONSOR_ID", sponsorID);
-        sendTextMessage(uPhoneNumber, smsMessage);
-
-        if (userPreferences == null)
-            userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
         SharedPreferences.Editor editor = userPreferences.edit();
         editor.putString("PROFILE_DOB", dateOfBirth);
@@ -1495,10 +1580,69 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
 
 
+        userBundle.putString(PROFILE_DOB, dateOfBirth);
+        userBundle.putString(BANK_ACCT_NO, bankAcctNumber);
+        userBundle.putString("BANK_ACCT_NO", bankAcctNumber);
+        userBundle.putString(PROFILE_EMAIL, uEmail);
+        userBundle.putString(PROFILE_OFFICE, selectedOffice);
+        userBundle.putString(PROFILE_FIRSTNAME, uFirstName);
+        userBundle.putString(PROFILE_GENDER, selectedGender);
+        userBundle.putString(PROFILE_COUNTRY, "");
+        userBundle.putString(PROFILE_NEXT_OF_KIN, "");
+        userBundle.putString(PROFILE_PHONE, uPhoneNumber);
+        userBundle.putString(PROFILE_SURNAME, uSurname);
+        userBundle.putString(PICTURE_URI, String.valueOf(mImageUri));
+        userBundle.putString(CUSTOMER_LATLONG, String.valueOf(cusLatLng));
+        userBundle.putString(PROFILE_PASSWORD, uPassword);
+        userBundle.putString(PROFILE_NIN, nIN);
+        userBundle.putString(PROFILE_STATE, selectedState);
+        userBundle.putString(PROFILE_ROLE, "Customer");
+        userBundle.putString(PROFILE_STATUS, "Pending Approval");
+        userBundle.putString(PROFILE_USERNAME, uUserName);
+        userBundle.putInt(PROFILE_ID, profileID1);
+        userBundle.putString(PROFILE_DATE_JOINED, joinedDate);
+        userBundle.putString("machine", "Customer");
+
+        userBundle.putString("USER_DOB", dateOfBirth);
+        userBundle.putString("USER_EMAIL", uEmail);
+        userBundle.putString("USER_OFFICE", selectedOffice);
+        userBundle.putString("USER_FIRSTNAME", uFirstName);
+        userBundle.putString("USER_GENDER", selectedGender);
+        userBundle.putString("USER_COUNTRY", "");
+        userBundle.putString("USER_NEXT_OF_KIN", "");
+        userBundle.putString("USER_PHONE", uPhoneNumber);
+        userBundle.putString("USER_SURNAME", "");
+        userBundle.putString("PICTURE_URI", String.valueOf(mImageUri));
+        userBundle.putString("USER_DATE_JOINED", "");
+        userBundle.putString("PROFILE_NIN", nIN);
+        userBundle.putString("USER_STATE", selectedState);
+        userBundle.putString("USER_ROLE", "Customer");
+        userBundle.putString("USER_STATUS", "Pending Approval");
+        userBundle.putString("USERNAME", uUserName);
+        userBundle.putLong("PROFILE_ID", profileID1);
+        userBundle.putString("USER_PASSWORD", uPassword);
+        userBundle.putString("USER_LOCATION", String.valueOf(cusLatLng));
+        userBundle.putString("EMAIL_ADDRESS", uEmail);
+        userBundle.putString("CHOSEN_OFFICE", selectedOffice);
+        userBundle.putString("USER_NAME", uUserName);
+        userBundle.putString("USER_DATE_JOINED", joinedDate);
+
+        userBundle.putInt("CUSTOMER_ID", customerID);
+        userBundle.putString("PROFILE_NIN", nIN);
+        userBundle.putString("EMAIL_ADDRESS", uEmail);
+        userBundle.putString("DATE_OF_BIRTH_KEY", dateOfBirth);
+        userBundle.putString("GENDER_KEY", selectedGender);
+        userBundle.putString("USER_NEXT_OF_KIN", "");
+        userBundle.putString(CUSTOMER_LATLONG, "");
+        userBundle.putString("machine", "Customer");
+        userBundle.putInt(PROFILE_SPONSOR_ID, sponsorID);
+        userBundle.putInt("USER_SPONSOR_ID", sponsorID);
         Intent intent = new Intent(SignUpAct.this, NewCustomerDrawer.class);
         intent.putExtras(userBundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
 
         Toast.makeText(SignUpAct.this, "Thank you" + "" +
                 "for Signing up " + "" + uFirstName + "" + "on the Skylight. App", Toast.LENGTH_LONG).show();
@@ -1753,17 +1897,17 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
     public void EmptyEditTextAfterDataInsert() {
 
-        phone_number.getText().clear();
+        edtPhone_number.getText().clear();
 
         email_address.getText().clear();
 
-        address_2.getText().clear();
-        firstName.getText().clear();
+        edtAddress_2.getText().clear();
+        edtFirstName.getText().clear();
 
         userName.getText().clear();
 
-        surname1.getText().clear();
-        password.getText().clear();
+        edtSurname.getText().clear();
+        edtPassword.getText().clear();
 
     }
 
@@ -1816,6 +1960,8 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         otpIntent.putExtras(smsBundle);
         otpIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         setResult(RESULT_OK, otpIntent);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
         //startActivity(itemPurchaseIntent);
 
     }
@@ -1830,6 +1976,8 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         otpIntent.putExtras(smsBundle);
         otpIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         setResult(RESULT_OK, otpIntent);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
         //startActivity(itemPurchaseIntent);
 
     }
@@ -1971,155 +2119,8 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
             Log.e("tag", e.getMessage());
         }
 
-
-        /*LocationServices.FusedLocationApi.requestLocationUpdates( googleApiClient, request, new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-
-
-                //double lat=location.getLatitude();
-                //double lng=location.getLongitude();
-
-                lat = location.getLatitude()/1E6;
-                lng = location.getLongitude()/1E6;
-                //locationPoint = new GeoPoint(latitude.intValue(),longitude.intValue());
-
-                SignUpAct.this.latitude=lat;
-                SignUpAct.this.longitude=lng;
-
-                try {
-                    if(now !=null){
-                        now.remove();
-                    }
-
-                    userLocation = new LatLng( SignUpAct.this.latitude,SignUpAct.this.longitude );
-                    cusLatLng=userLocation;
-
-
-                } catch (Exception ex) {
-
-                    ex.printStackTrace();
-                    Log.e( "MapException", ex.getMessage() );
-
-                }
-
-                try {
-                    geocoder = new Geocoder(SignUpAct.this, Locale.ENGLISH);
-                    addresses = geocoder.getFromLocation(latitude, longitude, 1);
-                    StringBuilder str = new StringBuilder();
-                    if (Geocoder.isPresent()) {
-                        txtLoc.setVisibility(View.VISIBLE);
-
-                        android.location.Address returnAddress = addresses.get(0);
-
-                        String localityString = returnAddress.getAddressLine (0);
-
-                        str.append( localityString ).append( "" );
-
-                        txtLoc.setText(MessageFormat.format("Your are here:  {0},{1}/{2}", latitude, longitude , str));
-                        Toast.makeText(SignUpAct.this, str,
-                                Toast.LENGTH_SHORT).show();
-
-                    } else {
-                          //go
-                    }
-
-
-                } catch (IndexOutOfBoundsException | IOException e) {
-
-                    Log.e("tag", e.getMessage());
-                }
-
-
-
-            }
-
-        } );*/
     }
 
-    private void getUserLocation() {
-        txtLoc = findViewById(R.id.hereYou333);
-
-        /*if (ActivityCompat.checkSelfPermission(SignUpAct.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(SignUpAct.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            return;
-        }
-        try {
-
-            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, request, new LocationListener() {
-                @Override
-                public void onLocationChanged(Location location) {
-
-
-                    //double lat=location.getLatitude();
-                    //double lng=location.getLongitude();
-
-                    lat = location.getLatitude() / 1E6;
-                    lng = location.getLongitude() / 1E6;
-                    //locationPoint = new GeoPoint(latitude.intValue(),longitude.intValue());
-
-                    SignUpAct.this.latitude = lat;
-                    SignUpAct.this.longitude = lng;
-
-                    try {
-                        if (now != null) {
-                            now.remove();
-                        }
-
-                        userLocation = new LatLng(SignUpAct.this.latitude, SignUpAct.this.longitude);
-                        cusLatLng = userLocation;
-
-
-                    } catch (Exception ex) {
-
-                        ex.printStackTrace();
-                        Log.e("MapException", ex.getMessage());
-
-                    }
-
-                    try {
-                        geocoder = new Geocoder(SignUpAct.this, Locale.ENGLISH);
-                        addresses = geocoder.getFromLocation(latitude, longitude, 1);
-                        StringBuilder str = new StringBuilder();
-                        if (Geocoder.isPresent()) {
-                            //txtLoc.setVisibility(View.VISIBLE);
-
-                            android.location.Address returnAddress = addresses.get(0);
-
-                            String localityString = returnAddress.getAddressLine(0);
-
-                            str.append(localityString).append("");
-                            //txtLoc.setText(MessageFormat.format("Your are here:  {0},{1}/{2}", latitude, longitude, str));
-
-
-                            Toast.makeText(SignUpAct.this, str,
-                                    Toast.LENGTH_SHORT).show();
-
-                        } else {
-                            //go
-                        }
-
-
-                    } catch (IllegalStateException | IOException e) {
-
-                        Log.e("tag", e.getMessage());
-                    }
-
-
-                }
-
-            });
-
-
-
-        } catch (Exception ex) {
-
-            ex.printStackTrace();
-            Log.e( "MapException", ex.getMessage() );
-
-        }*/
-
-    }
 
     @Override
     protected void onStart() {
@@ -2461,6 +2462,8 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         Intent itemPurchaseIntent = new Intent(SignUpAct.this, SMSAct.class);
         itemPurchaseIntent.putExtras(smsBundle);
         itemPurchaseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
         //System.out.println(message2.getSid());;
 
     }
@@ -2491,6 +2494,8 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     private void openImagesActivity() {
         Intent intent = new Intent(this, NewCustomerDrawer.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
 
     }
 

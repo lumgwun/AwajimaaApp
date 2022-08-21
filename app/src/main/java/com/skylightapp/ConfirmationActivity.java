@@ -11,6 +11,7 @@ import android.widget.CompoundButton;
 
 import com.skylightapp.Accountant.BranchMPayments;
 import com.skylightapp.Admins.AdminDrawerActivity;
+import com.skylightapp.Classes.ChartData;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Customers.CusLoanTab;
 import com.skylightapp.Customers.CustomerPayAct;
@@ -24,6 +25,7 @@ import com.skylightapp.SuperAdmin.SuperAdminCountAct;
 import com.skylightapp.SuperAdmin.SuperAdminOffice;
 import com.skylightapp.SuperAdmin.SuperAnyDayCount;
 import com.skylightapp.SuperAdmin.SuperStockTrAct;
+import com.skylightapp.SuperAdmin.SuperUnconfirmedSavings;
 import com.skylightapp.SuperAdmin.SuperUserCreator;
 import com.skylightapp.SuperAdmin.TellerWorkAct;
 import com.skylightapp.SuperAdmin.TranxApprovalAct;
@@ -62,9 +64,11 @@ public class ConfirmationActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
                             prefManager.setFirstTimeLaunch(false);
-                                Intent loginRIntent = new Intent(ConfirmationActivity.this, TestAct.class);
+                                Intent loginRIntent = new Intent(ConfirmationActivity.this, ProductsAct.class);
                             loginRIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(loginRIntent);
+                            overridePendingTransition(R.anim.slide_in_right,
+                                    R.anim.slide_out_left);
                         }
                     });
 
@@ -77,7 +81,9 @@ public class ConfirmationActivity extends AppCompatActivity {
     }
     private void launchHomeScreen() {
         prefManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(ConfirmationActivity.this, TestAct.class));
+        startActivity(new Intent(ConfirmationActivity.this, ProductsAct.class));
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
         finish();
     }
 }

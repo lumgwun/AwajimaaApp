@@ -36,6 +36,7 @@ import android.widget.Toast;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
+import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.rom4ek.arcnavigationview.ArcNavigationView;
 import com.skylightapp.Accountant.AcctantBackOffice;
 import com.skylightapp.Admins.AdminLoanList;
@@ -137,6 +138,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
     double totalAdminBalance;
     private Uri pictureLink;
     private static final String PREF_NAME = "skylight";
+    ChipNavigationBar chipNavigationBar;
     String machineUser, office,state,role,dbRole,joinedDate,password, email,phoneNO, dob,gender,address;
 
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
@@ -187,7 +189,6 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
                             } catch (FileNotFoundException e) {
                                 e.printStackTrace();
                             }
-
 
                             //Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
 
@@ -339,6 +340,79 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setTitle("Super Admin BackOffice");
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic__category);
+
+        chipNavigationBar = findViewById(R.id.bottom_nav_bar);
+        chipNavigationBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        chipNavigationBar.setOnItemSelectedListener
+                (new ChipNavigationBar.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(int i) {
+                        //Fragment fragment = null;
+                        switch (i){
+                            case R.id.userHome:
+                                Intent myIntent = new Intent(SuperAdminOffice.this, SuperAdminOffice.class);
+                                overridePendingTransition(R.anim.slide_in_right,
+                                        R.anim.slide_out_left);
+                                myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(myIntent);
+
+                            case R.id.teller_reports_super:
+
+                                Intent myIntentTeller4 = new Intent(SuperAdminOffice.this, TellerReportActSuper.class);
+                                myIntentTeller4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(myIntentTeller4);
+                                overridePendingTransition(R.anim.slide_in_right,
+                                        R.anim.slide_out_left);
+                                myIntentTeller4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                myIntentTeller4.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                            case R.id.admin_deposit_menu:
+
+                                Intent depositIntent = new Intent(SuperAdminOffice.this, ADepositList.class);
+                                depositIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                overridePendingTransition(R.anim.slide_in_right,
+                                        R.anim.slide_out_left);
+                                depositIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                depositIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(depositIntent);
+
+                            case R.id.payout_req_menu:
+                                Intent payoutIntent = new Intent(SuperAdminOffice.this, PayOutRequestList.class);
+                                payoutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                overridePendingTransition(R.anim.slide_in_right,
+                                        R.anim.slide_out_left);
+                                payoutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(payoutIntent);
+
+                            case R.id.super_inv_menu:
+                                Intent invIntent = new Intent(SuperAdminOffice.this, SuperInvTab.class);
+                                invIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                invIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                overridePendingTransition(R.anim.slide_in_right,
+                                        R.anim.slide_out_left);
+                                startActivity(invIntent);
+
+                            case R.id.super_support_menu:
+                                Intent myIntent2 = new Intent(SuperAdminOffice.this, AdminSupportAct.class);
+                                myIntent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                overridePendingTransition(R.anim.slide_in_right,
+                                        R.anim.slide_out_left);
+                                myIntent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                myIntent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(myIntent2);
+                        }
+                        /*getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_container,
+                                        fragment).commit();*/
+                    }
+                });
+
 
         btnSOSuper =findViewById(R.id.standingOrder3);
 
@@ -527,74 +601,46 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
                             startActivity(myIntent4);
                             break;
 
-                        case 2:
-                            Intent myIntentTeller4 = new Intent(SuperAdminOffice.this, TellerReportActSuper.class);
-                            myIntentTeller4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(myIntentTeller4);
-                            break;
 
-                        case 3:
+                        case 2:
                             Intent listIntentSper = new Intent(SuperAdminOffice.this, SuperMPaymentListA.class);
                             listIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(listIntentSper);
                             break;
 
-                        case 4:
+                        case 3:
                             Intent unConfirmedIntentSper = new Intent(SuperAdminOffice.this, SuperUnconfirmedSavings.class);
                             unConfirmedIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(unConfirmedIntentSper);
                             break;
 
-                        case 5:
+                        case 4:
                             Intent dueIntentSper = new Intent(SuperAdminOffice.this, DuePackagesAct.class);
                             dueIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(dueIntentSper);
                             break;
 
-                        case 6:
-                            Intent depositIntent = new Intent(SuperAdminOffice.this, ADepositList.class);
-                            depositIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(depositIntent);
-                            break;
-
-                        case 7:
+                        case 5:
                             Intent officeIntent = new Intent(SuperAdminOffice.this, StocksTab.class);
                             officeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(officeIntent);
                             break;
 
-                        case 8:
+                        case 6:
                             Intent cusIntent = new Intent(SuperAdminOffice.this, CusByPackAct.class);
                             cusIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(cusIntent);
                             break;
-                        case 9:
-                            Intent payoutIntent = new Intent(SuperAdminOffice.this, PayOutRequestList.class);
-                            payoutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(payoutIntent);
-                            break;
 
-                        case 10:
+                        case 7:
                             Intent myIntentSper = new Intent(SuperAdminOffice.this, SuperAdminCountAct.class);
                             myIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(myIntentSper);
                             break;
 
-                        case 11:
-                            Intent stockIntent = new Intent(SuperAdminOffice.this, SuperInvTab.class);
-                            stockIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(stockIntent);
-                            break;
-
-                        case 12:
-                            Intent myIntent2 = new Intent(SuperAdminOffice.this, AdminSupportAct.class);
-                            myIntent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(myIntent2);
-                            break;
 
 
-
-                        case 13:
+                        case 8:
                             Intent chartIntent = new Intent(SuperAdminOffice.this, ChartData.class);
                             chartIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(chartIntent);
@@ -655,7 +701,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
 
             case R.id.nav_logoutSuper:
                 Toast.makeText(this, "Logging out", Toast.LENGTH_SHORT).show();
-                SharedPreferences preferences = getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
+                SharedPreferences preferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.clear();
                 editor.apply();

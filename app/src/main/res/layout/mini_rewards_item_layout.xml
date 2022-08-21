@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:padding="30dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginEnd="8dp"
+    android:elevation="5dp"
+    android:background="@drawable/rect6e">
+
+    <ImageView
+        android:id="@+id/coupon_icon"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:tint="@color/colorPrimaryDark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_admin_panel" />
+
+    <TextView
+        android:id="@+id/coupon_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Discount Coupon"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/coupon_icon"
+        app:layout_constraintStart_toEndOf="@+id/coupon_icon"
+        app:layout_constraintTop_toTopOf="@+id/coupon_icon" />
+
+    <TextView
+        android:id="@+id/coupon_validity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/colorPrimary"
+        android:padding="6dp"
+        android:layout_marginBottom="10dp"
+        android:text=" till 13th,August 2023 "
+        android:textColor="@color/white_good"
+        android:textStyle="bold"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/coupon_body"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="GET 20% OFF on any product above  NGN 500/- and below NGN 2500/-."
+        android:textColor="#000000"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coupon_title" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

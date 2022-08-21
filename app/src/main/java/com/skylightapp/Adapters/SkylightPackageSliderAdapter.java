@@ -56,6 +56,10 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
 
     }
 
+    public SkylightPackageSliderAdapter(List<SkyLightPackModel> horizontalProductScrollModelList) {
+        this.itemsListFilter = horizontalProductScrollModelList;
+    }
+
     public void renewItems(ArrayList<SkyLightPackModel> sliderItems) {
         this.mSliderItems = sliderItems;
         notifyDataSetChanged();

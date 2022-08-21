@@ -66,9 +66,14 @@ public class StandingOrderAdapterC extends RecyclerView.Adapter<StandingOrderAda
         final StandingOrder standingOrder = standingOrders.get(position);
         long uid =standingOrder.getUID();
         String status ="Completed";
-        customerID=customer.getCusUID();
-        firstName=customer.getCusFirstName();
-        email=customer.getCusEmailAddress();
+        customer=standingOrder.getSo_Customer();
+        if(customer !=null){
+            customerID=customer.getCusUID();
+            firstName=customer.getCusFirstName();
+            email=customer.getCusEmailAddress();
+
+        }
+
         double expectedAmount =standingOrder.getSo_ExpectedAmount();
         double amountReceived =standingOrder.getSo_ReceivedAmount();
         double dailyAmount =standingOrder.getSoDailyAmount();

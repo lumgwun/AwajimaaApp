@@ -73,7 +73,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:4.2.2'
         classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
         //classpath 'com.google.gms:google-services:4.3.0'
-        classpath 'com.google.gms:google-services:4.3.10'
+        classpath 'com.google.gms:google-services:4.3.13'
         classpath 'io.fabric.tools:gradle:1.31.0'
         classpath 'io.fabric.tools:gradle:1.28.0'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
@@ -81,7 +81,7 @@ buildscript {
         classpath 'org.jetbrains.dokka:dokka-gradle-plugin:1.4.10.2'
         classpath 'com.github.matthiasrobbers:shortbread-gradle-plugin:1.4.0'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.1'
         classpath 'com.google.firebase:perf-plugin:1.4.1'
         classpath ('com.google.firebase:perf-plugin:1.4.1') {
             exclude group: 'com.google.guava', module: 'guava-jdk5'
@@ -99,6 +99,8 @@ allprojects {
         maven { url 'https://jitpack.io' }
         google()
         mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url 'http://dl.bintray.com/amulyakhare/maven' }
         //noinspection JcenterRepositoryObsolete
         jcenter() // Warning: this repository is going to shut down soon
     }

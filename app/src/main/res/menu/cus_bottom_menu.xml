@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/cHome"
+        android:title="Home"
+        app:cnb_backgroundColor="@color/dark_and_red"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#2196F3"
+        android:icon="@drawable/ic_admin_panel"/>
+
+    <item
+        android:id="@+id/cGeneralShop"
+        android:title="General Shop"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#F44336"
+        android:icon="@drawable/ic_home_black_24dp"/>
+
+    <item
+        android:id="@+id/cTimeLine"
+        android:title="My TimeLine"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#F44336"
+        android:icon="@drawable/material_drawer_ico_account"/>
+
+    <item
+        android:id="@+id/cPackageT"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#4CAF50"
+        android:title="Package Tab" />
+    <item
+        android:id="@+id/cSupport"
+        android:title="Messenger"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#FF9800"
+        android:icon="@drawable/ic_admin_panel"/>
+
+    <item
+        android:id="@+id/super_inv_menu"
+        android:title="Investments"
+        app:cnb_backgroundColor="@color/colorPrimaryDark"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#2196F3"
+        android:icon="@drawable/ic_add_business"/>
+
+    <item
+        android:id="@+id/super_support_menu"
+        android:title="Support"
+        app:cnb_backgroundColor="@color/colorPrimaryDark"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#2196F3"
+        android:icon="@drawable/ic_alert"/>
+
+
+</menu>
