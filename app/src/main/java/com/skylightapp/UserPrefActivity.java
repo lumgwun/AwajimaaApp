@@ -10,6 +10,8 @@ import androidx.preference.PreferenceFragmentCompat;
 import android.os.Bundle;
 import android.view.Window;
 
+import java.util.Objects;
+
 public class UserPrefActivity extends AppCompatActivity {
     private static final String TITLE_TAG = "UserPrefActivity Title";
 
@@ -17,21 +19,27 @@ public class UserPrefActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_user_pref);
+        try {
+            if (savedInstanceState == null) {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.settings, new HeaderFragment())
+                        .commit();
+            } else {
+                setTitle(savedInstanceState.getCharSequence(TITLE_TAG));
+            }
+            getSupportFragmentManager().addOnBackStackChangedListener(
+                    () -> {
+                        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                            setTitle(R.string.title_activity_settings);
+                        }
+                    });
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.settings, new HeaderFragment())
-                    .commit();
-        } else {
-            setTitle(savedInstanceState.getCharSequence(TITLE_TAG));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
         }
-        getSupportFragmentManager().addOnBackStackChangedListener(
-                () -> {
-                    if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-                        setTitle(R.string.title_activity_settings);
-                    }
-                });
+
+
 
     }
     @Override
@@ -53,13 +61,21 @@ public class UserPrefActivity extends AppCompatActivity {
         final Bundle args = pref.getExtras();
         final Fragment fragment = getSupportFragmentManager().getFragmentFactory().instantiate(
                 getClassLoader(),
-                pref.getFragment());
+                Objects.requireNonNull(pref.getFragment()));
         fragment.setArguments(args);
         fragment.setTargetFragment(caller, 0);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.settings, fragment)
-                .addToBackStack(null)
-                .commit();
+        try {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.settings, fragment)
+                    .addToBackStack(null)
+                    .commit();
+
+        } catch (ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+
+
+
         setTitle(pref.getTitle());
         return true;
     }
@@ -68,14 +84,26 @@ public class UserPrefActivity extends AppCompatActivity {
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.header_preferences, rootKey);
+            try {
+                setPreferencesFromResource(R.xml.header_preferences, rootKey);
+
+            } catch (ArrayIndexOutOfBoundsException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.user_pref, rootKey);
+            try {
+                setPreferencesFromResource(R.xml.user_pref, rootKey);
+
+            } catch (ArrayIndexOutOfBoundsException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -83,14 +111,28 @@ public class UserPrefActivity extends AppCompatActivity {
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.country_pref, rootKey);
+            try {
+                setPreferencesFromResource(R.xml.country_pref, rootKey);
+
+            } catch (ArrayIndexOutOfBoundsException e) {
+                e.printStackTrace();
+            }
+
         }
     }
     public static class OtherCountryFragment extends PreferenceFragmentCompat {
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.other_country_pref, rootKey);
+            try {
+                setPreferencesFromResource(R.xml.other_country_pref, rootKey);
+
+            } catch (ArrayIndexOutOfBoundsException e) {
+                e.printStackTrace();
+            }
+
+
+
         }
 
     }

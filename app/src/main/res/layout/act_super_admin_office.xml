@@ -8,6 +8,12 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start"
     tools:context="com.skylightapp.SuperAdmin.SuperAdminOffice">
+    <include
+        layout="@layout/tool_bar10b"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"
+        android:layout_height="wrap_content" />
 
     <include
         layout="@layout/app_bar_super"

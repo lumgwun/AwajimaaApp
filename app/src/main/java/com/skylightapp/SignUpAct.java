@@ -642,7 +642,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         json = userPreferences.getString("LastProfileUsed", "");
         managerProfile = gson.fromJson(json, Profile.class);
         json1 = userPreferences.getString("LastTellerProfileUsed", "");
-        customerManager = gson1.fromJson(json, CustomerManager.class);
+        customerManager = gson1.fromJson(json1, CustomerManager.class);
         loadProfiles(dbHelper);
         otpDigit = ThreadLocalRandom.current().nextInt(122, 1631);
         messageID = ThreadLocalRandom.current().nextInt(1125, 10400);

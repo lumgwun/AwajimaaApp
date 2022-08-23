@@ -64,7 +64,7 @@ public class ConfirmationActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
                             prefManager.setFirstTimeLaunch(false);
-                                Intent loginRIntent = new Intent(ConfirmationActivity.this, ProductsAct.class);
+                                Intent loginRIntent = new Intent(ConfirmationActivity.this, TestAct.class);
                             loginRIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(loginRIntent);
                             overridePendingTransition(R.anim.slide_in_right,
@@ -81,7 +81,7 @@ public class ConfirmationActivity extends AppCompatActivity {
     }
     private void launchHomeScreen() {
         prefManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(ConfirmationActivity.this, ProductsAct.class));
+        startActivity(new Intent(ConfirmationActivity.this, TestAct.class));
         overridePendingTransition(R.anim.slide_in_right,
                 R.anim.slide_out_left);
         finish();
