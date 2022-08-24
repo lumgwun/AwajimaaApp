@@ -20,86 +20,72 @@
             android:id="@+id/id_l1"
             android:padding="20dp"
             android:orientation="vertical"
-            android:background="@drawable/shape_rect_7"
+            android:background="@drawable/rect_their_black"
             android:layout_height="wrap_content">
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_height="wrap_content">
-                <com.mikepenz.materialdrawer.view.BezelImageView
-                    android:id="@+id/img_account4"
+                <ImageView
+                    android:id="@+id/img_market"
                     android:layout_width="58dp"
                     android:layout_height="55dp"
+                    android:layout_gravity="center_horizontal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/user3"
+                    app:srcCompat="@drawable/transfer3"
                     android:contentDescription="Account Image" />
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:text=" ID"
-                    android:id="@+id/account_id4"
+                    android:text=" Creek Road Market"
+                    android:id="@+id/marketName"
                     android:layout_marginEnd="20dp"
                     android:padding="15dp"
+                    android:typeface="serif"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:gravity="center_horizontal"
                     android:layout_marginStart="8dp"
                     android:layout_marginBottom="20dp"
-                    android:background="@drawable/shape_rect_7"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/black"
                     android:layout_height="wrap_content"/>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <TextView
                 android:layout_width="match_parent"
-                android:text=" Bank Name"
-                android:id="@+id/account_bank4"
+                android:text=" Port Harcourt"
+                android:id="@+id/lga_m"
                 android:layout_marginEnd="20dp"
                 android:textStyle="bold"
+                android:gravity="center_horizontal"
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="20dp"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/red_brown_dark"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:layout_width="match_parent"
-                android:text=" AccountName"
-                android:id="@+id/account_name4"
+                android:text=" Rivers State"
+                android:id="@+id/market_State"
                 android:layout_marginEnd="20dp"
                 android:textStyle="bold"
+                android:gravity="center_horizontal"
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="20dp"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/red_brown_dark"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:layout_width="match_parent"
-                android:text=" Account No."
-                android:id="@+id/account_no4"
+                android:text=" Commodity Market , 200 "
+                android:id="@+id/type_market"
                 android:textStyle="bold"
+                android:textSize="17sp"
+                android:gravity="center_horizontal"
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="20dp"
                 android:layout_marginEnd="20dp"
-                android:textColor="@color/colorPrimary"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/txt_account_type4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="20dp"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                tools:text="ACCOUNT TYPE:" />
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:text=" Balance."
-                android:id="@+id/account_balance4"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="8dp"
-                android:textStyle="italic"
-                android:textSize="30sp"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/red_brown_dark"
                 android:layout_height="wrap_content"/>
 
 

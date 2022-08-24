@@ -357,6 +357,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Standn Ord"
+                            android:textSize="10dp"
                             android:onClick="standingOrdersSuper"
                             android:background="#42C0FB"
                             android:textColor="#ffff"/>
@@ -367,6 +368,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Import. Dates"
+                            android:textSize="10dp"
                             android:onClick="importantDateSuper"
                             android:background="#42C0FB"
                             android:textColor="#ffff"/>
@@ -377,6 +379,7 @@
                             android:layout_height="wrap_content"
                             android:background="#42C0FB"
                             android:layout_weight="1"
+                            android:textSize="10dp"
                             android:onClick="TimelinesSuper"
                             android:text="Timelines"
                             android:textColor="#ffff"/>

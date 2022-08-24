@@ -1,6 +1,4 @@
-package com.skylightapp;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.skylightapp.Markets;
 
 import android.annotation.SuppressLint;
 import android.app.TabActivity;
@@ -17,6 +15,10 @@ import com.google.gson.Gson;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.LoginDirAct;
+import com.skylightapp.LogisticParkAct;
+import com.skylightapp.ProductsAct;
+import com.skylightapp.R;
 
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 

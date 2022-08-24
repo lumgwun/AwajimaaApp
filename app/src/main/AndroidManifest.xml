@@ -85,8 +85,8 @@
         tools:node="replace">
         <activity android:name=".LogisticParkAct">
         </activity>
-        <activity android:name=".MarketHub" />
-        <activity android:name=".MarketTab" />
+        <activity android:name=".Markets.MarketHub" />
+        <activity android:name=".Markets.MarketTab" />
         <activity android:name=".Customers.OrderDetailsAct" />
         <activity android:name=".Customers.AddAddressAct" />
         <activity android:name=".SuperAdmin.SuperSettingsAct" />

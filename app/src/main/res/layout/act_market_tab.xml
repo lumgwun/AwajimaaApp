@@ -9,7 +9,7 @@
     tools:actionBarNavMode="standard"
     android:theme="@style/Theme.SkylightAppTab"
     android:background="@drawable/rect_their_message"
-    tools:context="com.skylightapp.MarketTab">
+    tools:context="com.skylightapp.Markets.MarketTab">
     <include layout="@layout/tool_bar11f"/>
 
     <LinearLayout

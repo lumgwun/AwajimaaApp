@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#f1f3f5"
     android:layout_height="match_parent"
     tools:context=".LogisticParkAct">
+    <TextView
+        android:layout_width="match_parent"
+        android:text=" Market Logistics ,Coming Soon"
+        android:id="@+id/marketName"
+        android:layout_marginEnd="20dp"
+        android:padding="15dp"
+        android:typeface="serif"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/red_brown_dark"
+        android:layout_height="match_parent"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

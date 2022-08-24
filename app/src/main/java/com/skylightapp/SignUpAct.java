@@ -926,22 +926,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
             }
         });
-        edtNIN.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                checkInputs();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
         String email = email_address.getText().toString().trim();
 
         ccp.registerCarrierNumberEditText(edtPhone_number);

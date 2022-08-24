@@ -45,6 +45,7 @@ import com.skylightapp.Classes.WishlistModel;
 import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Inventory.SuperInvTab;
+import com.skylightapp.Markets.MarketTab;
 import com.skylightapp.SuperAdmin.ADepositList;
 import com.skylightapp.SuperAdmin.PayOutRequestList;
 import com.skylightapp.SuperAdmin.SuperAdminOffice;
@@ -96,6 +97,7 @@ public class ProductsAct extends AppCompatActivity implements NavigationView.OnN
     private FloatingActionButton floatingActionButton;
     private Toolbar toolbar;
     ChipNavigationBar chipNavigationBar;
+    private String title;
     com.google.android.material.floatingactionbutton.FloatingActionButton fabHome;
     //public static List<String> loadCategoriesNames = new ArrayList<>();
 
@@ -150,7 +152,7 @@ public class ProductsAct extends AppCompatActivity implements NavigationView.OnN
         sliderModelList = new ArrayList<>();
         skyLightPackage_2s = new ArrayList<>();
         viewAllProductList = new ArrayList<>();
-        String title = getIntent().getStringExtra("CategoryName");
+        title = getIntent().getStringExtra("CategoryName");
         categoryModelList = new ArrayList<>();
         lists = new ArrayList<>();
         if(index >=0){
@@ -199,7 +201,7 @@ public class ProductsAct extends AppCompatActivity implements NavigationView.OnN
 
                             case R.id.shop_skylight:
 
-                                Intent myIntentTeller4 = new Intent(ProductsAct.this, SkyLightPackageActivity.class);
+                                Intent myIntentTeller4 = new Intent(ProductsAct.this, MarketTab.class);
                                 myIntentTeller4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(myIntentTeller4);
                                 overridePendingTransition(R.anim.slide_in_right,
@@ -422,9 +424,6 @@ public class ProductsAct extends AppCompatActivity implements NavigationView.OnN
 
 
 
-
-
-
         homePageModelFakeList.add(new ProductPageModel(0, sliderModelFakeList ));
         homePageModelFakeList.add(new ProductPageModel(1, "","#FFFFFF"));
         homePageModelFakeList.add(new ProductPageModel(2, "","#FFFFFF",skyLightPackage_2s,new ArrayList<WishlistModel>()));
@@ -471,7 +470,6 @@ public class ProductsAct extends AppCompatActivity implements NavigationView.OnN
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-
 
 
         categoryRecyclerView.setAdapter(adapter);

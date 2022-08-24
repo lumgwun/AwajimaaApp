@@ -476,6 +476,7 @@
                             android:text="My Cus. Packs"
                             android:onClick="standingOrders"
                             android:background="#42C0FB"
+                            android:textSize="10dp"
                             android:textColor="#ffff"/>
 
                         <Button
@@ -484,6 +485,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Dates"
+                            android:textSize="10dp"
                             android:onClick="importantDate"
                             android:background="#42C0FB"
                             android:textColor="#ffff"/>
@@ -493,6 +495,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="#42C0FB"
+                            android:textSize="10dp"
                             android:layout_weight="1"
                             android:onClick="signUpNewUser"
                             android:text="New User"
