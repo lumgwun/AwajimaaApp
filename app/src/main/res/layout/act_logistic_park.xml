@@ -8,12 +8,12 @@
     tools:context=".LogisticParkAct">
     <TextView
         android:layout_width="match_parent"
-        android:text=" Market Logistics ,Coming Soon"
+        android:text=" Market Multivendor Logistics ,Coming Soon"
         android:id="@+id/marketName"
         android:layout_marginEnd="20dp"
         android:padding="15dp"
         android:typeface="serif"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:gravity="center"
         android:layout_marginStart="8dp"

@@ -97,7 +97,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="match_parent"
-            android:text="E-Commerce Shop"
+            android:text="E-Commerce and Market Hub"
             android:onClick="goECommerce"
             android:textSize="20sp"
             android:padding="20dp"

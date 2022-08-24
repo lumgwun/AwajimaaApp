@@ -16,6 +16,8 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.StandingOrderAcct;
 import com.skylightapp.Customers.NewCustomerDrawer;
+import com.skylightapp.Markets.MarketHub;
+import com.skylightapp.Markets.MarketTab;
 import com.skylightapp.SuperAdmin.SuperAdminOffice;
 import com.skylightapp.Tellers.TellerHomeChoices;
 
@@ -117,7 +119,7 @@ public class TestAct extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putLong("ProfileID", profileID);
         bundle.putString(machine, machine);
-        Intent intent = new Intent(this, ProductsAct.class);
+        Intent intent = new Intent(this, MarketTab.class);
         intent.putExtras(bundle);
         startActivity(intent);
 
@@ -156,7 +158,7 @@ public class TestAct extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putLong("ProfileID", profileID);
         bundle.putString(machine, machine);
-        Intent intent = new Intent(this, ProductsAct.class);
+        Intent intent = new Intent(this, MarketTab.class);
         intent.putExtras(bundle);
         startActivity(intent);
     }

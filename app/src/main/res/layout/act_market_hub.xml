@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Markets Across Nigeria"
+        android:text="Markets For Wholesale"
         android:padding="16dp"
         android:gravity="center_horizontal"
         android:layout_marginBottom="20dp"
