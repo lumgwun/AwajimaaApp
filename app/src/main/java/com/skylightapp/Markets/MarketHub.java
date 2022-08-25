@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
-import com.skylightapp.Classes.Market;
 import com.skylightapp.R;
 
 import java.util.ArrayList;

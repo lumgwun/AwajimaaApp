@@ -7,7 +7,7 @@
     android:id="@+id/shop_DLayout"
     android:fitsSystemWindows="true"
     tools:openDrawer="start"
-    tools:context=".ProductsAct">
+    tools:context=".Markets.ProductsAct">
 
     <include
         layout="@layout/app_bar_shop"

@@ -1,7 +1,6 @@
 package com.skylightapp.Markets;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mikepenz.materialdrawer.view.BezelImageView;
-import com.skylightapp.Classes.Market;
 import com.skylightapp.R;
 
 import java.util.ArrayList;

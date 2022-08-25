@@ -8,7 +8,7 @@ import com.skylightapp.Classes.Profile;
 import java.io.Serializable;
 
 import static com.skylightapp.Awards.Award.AWARD_ID;
-import static com.skylightapp.Classes.Business.BIZ_ID;
+import static com.skylightapp.Classes.OtherBusiness.BIZ_ID;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 import static com.skylightapp.Classes.Profile.PROFILE_PHONE;

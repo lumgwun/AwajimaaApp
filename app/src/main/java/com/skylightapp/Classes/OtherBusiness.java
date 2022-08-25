@@ -11,7 +11,7 @@ import java.util.List;
 
 
 
-public class Business extends Profile {
+public class OtherBusiness extends Profile {
     public static final String BIZ_TABLE = "BizTable";
     public static final String BIZ_ID = "biz_id";
     public static final String BIZ_NAME = "BizName";
@@ -61,7 +61,7 @@ public class Business extends Profile {
     private ArrayList<Address> addresses;
     private ArrayList<Payee> payees;
     private ArrayList<Customer> customers;
-    private ArrayList<Business> businesses;
+    private ArrayList<OtherBusiness> otherBusinesses;
     private ArrayList<TimeLine> timeLines;
     private ArrayList<CustomerDailyReport> dailyReports;
     private ArrayList<SkyLightPackage> skyLightPackages;
@@ -69,7 +69,7 @@ public class Business extends Profile {
     private Transaction transaction;
     private Loan loan;
     private Birthday birthday;
-    private Business business;
+    private OtherBusiness otherBusiness;
     private GroupAccount groupAccount;
     private ArrayList<Transaction> transactions;
     private long dbId;
@@ -87,13 +87,13 @@ public class Business extends Profile {
     private ArrayList<StandingOrder> standingOrders;
     private StandingOrder standingOrder;
 
-    public Business(long businessID) {
+    public OtherBusiness(long businessID) {
         super();
         this.businessID=businessID;
 
     }
 
-    public Business(long biZID, long profileID, String name, String brandName, String typeBiz, String bizEmail, String bizAddress, String ph_no, String state, String regNo) {
+    public OtherBusiness(long biZID, long profileID, String name, String brandName, String typeBiz, String bizEmail, String bizAddress, String ph_no, String state, String regNo) {
         super();
         this.businessID = biZID;
         this.profileID = profileID;
@@ -107,7 +107,7 @@ public class Business extends Profile {
         this.bizRegNo = bizRegNo;
     }
 
-    public Business(long bizID, String name, String brandName, String type, String regNo, String email, String phoneNo, String address, String state, String status, Uri logo) {
+    public OtherBusiness(long bizID, String name, String brandName, String type, String regNo, String email, String phoneNo, String address, String state, String status, Uri logo) {
         super();
         this.businessID = bizID;
         this.businessBrandName = brandName;
@@ -150,7 +150,7 @@ public class Business extends Profile {
         savingsGroups.add(savingsGroup);
     }
 
-    public Business(long id, String name, List nominations, boolean isAwardOrganization, int numberOfNominations) {
+    public OtherBusiness(long id, String name, List nominations, boolean isAwardOrganization, int numberOfNominations) {
 
         super();
         this.businessName = name;
@@ -160,7 +160,7 @@ public class Business extends Profile {
         this.numberOfNominations = numberOfNominations;
     }
 
-    public Business (long businessID,long profileID, String businessName, String brandName,String bizEmail, String bizAddress, String bizPhoneNo, String bizType, String bizRegNo,String dateOfJoin,String status) {
+    public OtherBusiness(long businessID, long profileID, String businessName, String brandName, String bizEmail, String bizAddress, String bizPhoneNo, String bizType, String bizRegNo, String dateOfJoin, String status) {
         super();
         this.businessID = businessID;
         this.profileID = profileID;
@@ -179,7 +179,7 @@ public class Business extends Profile {
 
     }
 
-    public Business() {
+    public OtherBusiness() {
 
         super();
     }

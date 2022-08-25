@@ -1,6 +1,5 @@
-package com.skylightapp;
+package com.skylightapp.Markets;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
@@ -21,17 +20,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.skylightapp.Adapters.MyRewardsAdapter;
-import com.skylightapp.Adapters.ProductDetailsAdapter;
-import com.skylightapp.Adapters.ProductImagesAdapter;
 import com.skylightapp.Classes.ProductSpecModel;
 import com.skylightapp.Classes.RewardModel;
+import com.skylightapp.DeliveryAct;
+import com.skylightapp.MainActivity;
+import com.skylightapp.R;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -36,7 +36,7 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.google.gson.Gson;
-import com.skylightapp.Classes.Business;
+import com.skylightapp.Classes.OtherBusiness;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.MapAndLoc.ProfileLocSourceAct;
@@ -79,7 +79,7 @@ public class PropertyRegAct extends AppCompatActivity {
     DBHelper dbHelper;
     SecureRandom random;
     long propertyID,businessID,bizAcctID;
-    Business business;
+    OtherBusiness otherBusiness;
     private String selectedPropMode,selectedPropertyType,profileSurname,profileFirstName,profilePhoneNO,profileEmail,profileUserName,profilePassword;
 
     ActivityResultLauncher<Intent> mGetContent = registerForActivityResult(
@@ -162,9 +162,9 @@ public class PropertyRegAct extends AppCompatActivity {
                             userPreferences = PreferenceManager.getDefaultSharedPreferences(PropertyRegAct.this);
                             gson = new Gson();
                             json = userPreferences.getString("LastBusinessUsed", "");
-                            business = gson.fromJson(json, Business.class);
-                            if(business !=null){
-                                businessID=business.getBusinessID();
+                            otherBusiness = gson.fromJson(json, OtherBusiness.class);
+                            if(otherBusiness !=null){
+                                businessID= otherBusiness.getBusinessID();
                             }
                             Toast.makeText(PropertyRegAct.this, "Business Signup was successful", Toast.LENGTH_SHORT).show();
                             //doProcessing();
@@ -264,7 +264,7 @@ public class PropertyRegAct extends AppCompatActivity {
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         random= new SecureRandom();
-        business = new Business();
+        otherBusiness = new OtherBusiness();
 
         layoutImageSwitcher = findViewById(R.id.propImageLayout);
 

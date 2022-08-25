@@ -35,7 +35,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.AccountTypes;
-import com.skylightapp.Classes.Business;
+import com.skylightapp.Classes.OtherBusiness;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.MapAndLoc.ProfileLocSourceAct;
@@ -72,7 +72,7 @@ public class OrgRegActivity extends AppCompatActivity {
     boolean GpsStatus ;
     Context context;
     AppCompatSpinner  spnState;
-    Business business;
+    OtherBusiness otherBusiness;
     Account account;
     SharedPreferences.Editor editor ;
     //DatabaseReference fireBaseBizDBRef;
@@ -173,7 +173,7 @@ public class OrgRegActivity extends AppCompatActivity {
         userPreferences = PreferenceManager.getDefaultSharedPreferences(OrgRegActivity.this);
         gson = new Gson();
         random= new SecureRandom();
-        business= new Business();
+        otherBusiness = new OtherBusiness();
         account= new Account();
         orgAddress =  findViewById(R.id.corpAddress);
         orgEmail =  findViewById(R.id.corporateEmail);
@@ -205,8 +205,8 @@ public class OrgRegActivity extends AppCompatActivity {
         }
     }
     private void doBizReg(){
-        if(business !=null){
-            businessID=business.getBusinessID();
+        if(otherBusiness !=null){
+            businessID= otherBusiness.getBusinessID();
 
         }
         propertyID = random.nextInt((int) (Math.random() * 900000) + 100000);
@@ -290,7 +290,7 @@ public class OrgRegActivity extends AppCompatActivity {
             @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy");
             joinedDate = mdformat.format(calendar.getTime());
             userProfile.addPBusiness(businessID, profileID, ComName,comEmail,comAddress,comPhoneNo, selectedOrgType, comRegNo,joinedDate,"Pending");
-            business= new Business(businessID, profileID, ComName,brandName,comEmail,comAddress,comPhoneNo, selectedOrgType, comRegNo,joinedDate,"New");
+            otherBusiness = new OtherBusiness(businessID, profileID, ComName,brandName,comEmail,comAddress,comPhoneNo, selectedOrgType, comRegNo,joinedDate,"New");
             SharedPreferences.Editor editor = userPreferences.edit();
             gson = new Gson();
             /*try {
@@ -312,10 +312,10 @@ public class OrgRegActivity extends AppCompatActivity {
             }*/
             if(account !=null){
                 AccountTypes accountTypes= AccountTypes.EWALLET;
-                business.addPAccount("Biz Account",brandName,bizAcctID,0.00,accountTypes);
+                otherBusiness.addPAccount("Biz Account",brandName,bizAcctID,0.00,accountTypes);
 
             }
-            String json = gson.toJson(business);
+            String json = gson.toJson(otherBusiness);
             editor.putString("LastBusinessUsed", json);
             editor.apply();
 
@@ -341,7 +341,7 @@ public class OrgRegActivity extends AppCompatActivity {
 
                 String name = brandName;
 
-                dbHelper.saveBiz(business);
+                dbHelper.saveBiz(otherBusiness);
                 userProfile.addPTimeLine(tittleT,timelineDetailsT1);
                 dbHelper.insertTimeLine(tittle, timelineDetails, currentDate, mCurrentLocation);
 

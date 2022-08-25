@@ -43,7 +43,7 @@ import com.skylightapp.Classes.AccountTypes;
 import com.skylightapp.Classes.AdminUser;
 import com.skylightapp.Classes.Birthday;
 import com.skylightapp.Classes.Bookings;
-import com.skylightapp.Classes.Business;
+import com.skylightapp.Classes.OtherBusiness;
 import com.skylightapp.Classes.ConnectionFailedException;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerDailyReport;
@@ -359,18 +359,18 @@ import static com.skylightapp.Classes.Bookings.BOOKING_TABLE;
 import static com.skylightapp.Classes.Bookings.BOOKING_TITTLE;
 import static com.skylightapp.Classes.Bookings.CREATE_BOOKING_TABLE;
 import static com.skylightapp.Classes.Bookings.ITISRECCURRING;
-import static com.skylightapp.Classes.Business.BIZ_ADDRESS;
-import static com.skylightapp.Classes.Business.BIZ_BRANDNAME;
-import static com.skylightapp.Classes.Business.BIZ_EMAIL;
-import static com.skylightapp.Classes.Business.BIZ_ID;
-import static com.skylightapp.Classes.Business.BIZ_NAME;
-import static com.skylightapp.Classes.Business.BIZ_PHONE_NO;
-import static com.skylightapp.Classes.Business.BIZ_PIX;
-import static com.skylightapp.Classes.Business.BIZ_REG_NO;
-import static com.skylightapp.Classes.Business.BIZ_STATE;
-import static com.skylightapp.Classes.Business.BIZ_STATUS;
-import static com.skylightapp.Classes.Business.BIZ_TABLE;
-import static com.skylightapp.Classes.Business.BIZ_TYPE;
+import static com.skylightapp.Classes.OtherBusiness.BIZ_ADDRESS;
+import static com.skylightapp.Classes.OtherBusiness.BIZ_BRANDNAME;
+import static com.skylightapp.Classes.OtherBusiness.BIZ_EMAIL;
+import static com.skylightapp.Classes.OtherBusiness.BIZ_ID;
+import static com.skylightapp.Classes.OtherBusiness.BIZ_NAME;
+import static com.skylightapp.Classes.OtherBusiness.BIZ_PHONE_NO;
+import static com.skylightapp.Classes.OtherBusiness.BIZ_PIX;
+import static com.skylightapp.Classes.OtherBusiness.BIZ_REG_NO;
+import static com.skylightapp.Classes.OtherBusiness.BIZ_STATE;
+import static com.skylightapp.Classes.OtherBusiness.BIZ_STATUS;
+import static com.skylightapp.Classes.OtherBusiness.BIZ_TABLE;
+import static com.skylightapp.Classes.OtherBusiness.BIZ_TYPE;
 import static com.skylightapp.Classes.Customer.CREATE_CUSTOMERS_TABLE;
 import static com.skylightapp.Classes.Customer.CREATE_CUSTOMER_LOCATION_TABLE;
 import static com.skylightapp.Classes.Customer.CUSTOMER_ADDRESS;
@@ -6291,24 +6291,24 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public long saveBiz(Business business) {
+    public long saveBiz(OtherBusiness otherBusiness) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues Values = new ContentValues();
-            business = new Business();
+            otherBusiness = new OtherBusiness();
             Profile profile = new Profile();
-            Values.put(BIZ_ID, business.getBusinessID());
+            Values.put(BIZ_ID, otherBusiness.getBusinessID());
             Values.put(PROFILE_ID, profile.getPID());
-            Values.put(BIZ_NAME, valueOf(business.getProfileBusinessName()));
-            Values.put(BIZ_BRANDNAME, business.getBizBrandname());
-            Values.put(BIZ_TYPE, business.getBizType());
-            Values.put(BIZ_REG_NO, business.getBizRegNo());
-            Values.put(BIZ_EMAIL, business.getBizEmail());
-            Values.put(BIZ_PHONE_NO, business.getBizPhoneNo());
-            Values.put(BIZ_ADDRESS, business.getBizAddress());
-            Values.put(BIZ_STATE, business.getBizState());
-            Values.put(BIZ_PIX, String.valueOf(business.getBizPicture()));
-            Values.put(BIZ_STATUS, business.getBizStatus());
+            Values.put(BIZ_NAME, valueOf(otherBusiness.getProfileBusinessName()));
+            Values.put(BIZ_BRANDNAME, otherBusiness.getBizBrandname());
+            Values.put(BIZ_TYPE, otherBusiness.getBizType());
+            Values.put(BIZ_REG_NO, otherBusiness.getBizRegNo());
+            Values.put(BIZ_EMAIL, otherBusiness.getBizEmail());
+            Values.put(BIZ_PHONE_NO, otherBusiness.getBizPhoneNo());
+            Values.put(BIZ_ADDRESS, otherBusiness.getBizAddress());
+            Values.put(BIZ_STATE, otherBusiness.getBizState());
+            Values.put(BIZ_PIX, String.valueOf(otherBusiness.getBizPicture()));
+            Values.put(BIZ_STATUS, otherBusiness.getBizStatus());
             db.insert(BIZ_TABLE,null,Values);
             //long id = db.insert(BIZ_TABLE, null, codeValues);
             //paymentCode.setUID(String.valueOf(id));
@@ -6322,9 +6322,9 @@ public class DBHelper extends SQLiteOpenHelper {
         return 0;
     }
 
-    public ArrayList<Business> getBusinessesFromProfile(long profileID) {
+    public ArrayList<OtherBusiness> getBusinessesFromProfile(long profileID) {
         try {
-            ArrayList<Business> businesses = new ArrayList<>();
+            ArrayList<OtherBusiness> otherBusinesses = new ArrayList<>();
             SQLiteDatabase db = this.getWritableDatabase();
             Profile profile = new Profile();
             if(profile !=null) {
@@ -6334,13 +6334,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 Cursor cursor = db.query(BIZ_TABLE, null, PROFILE_ID + "=?",
                         new String[]{String.valueOf(profileID)}, null, null,
                         null, null);
-                getBiZsFromCursor(businesses, cursor);
+                getBiZsFromCursor(otherBusinesses, cursor);
                 cursor.close();
                 //db.close();
 
-                return businesses;
+                return otherBusinesses;
             }
-            return businesses;
+            return otherBusinesses;
 
         }catch (SQLException e)
         {
@@ -6382,9 +6382,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    public ArrayList<Business> getAllBusinesses() {
+    public ArrayList<OtherBusiness> getAllBusinesses() {
         try {
-            ArrayList<Business> businesses = new ArrayList<>();
+            ArrayList<OtherBusiness> otherBusinesses = new ArrayList<>();
             SQLiteDatabase db = this.getWritableDatabase();
             Profile profile = new Profile();
             long profileID = profile.getPID();
@@ -6393,12 +6393,12 @@ public class DBHelper extends SQLiteOpenHelper {
             Cursor cursor = db.query(BIZ_TABLE, null, null, null, BIZ_TYPE,
                     null, null);
 
-            getBiZsFromCursor( businesses, cursor);
+            getBiZsFromCursor(otherBusinesses, cursor);
 
             cursor.close();
             //db.close();
 
-            return businesses;
+            return otherBusinesses;
 
         }catch (SQLException e)
         {
@@ -6407,7 +6407,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return null;
     }
-    private void getBiZsFromCursor(ArrayList<Business> businesses, Cursor cursor) {
+    private void getBiZsFromCursor(ArrayList<OtherBusiness> otherBusinesses, Cursor cursor) {
         try {
             while (cursor.moveToNext()) {
                 long bizID = (cursor.getLong(0));
@@ -6421,7 +6421,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 String state = cursor.getString(8);
                 String status = cursor.getString(9);
                 Uri logo = Uri.parse(cursor.getString(10));
-                businesses.add(new Business(bizID, name,brandName,type, regNo, email, phoneNo,address,state,status,logo));
+                otherBusinesses.add(new OtherBusiness(bizID, name,brandName,type, regNo, email, phoneNo,address,state,status,logo));
             }
 
         }catch (SQLException e)

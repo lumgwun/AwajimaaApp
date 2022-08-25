@@ -27,7 +27,7 @@ import com.skylightapp.Classes.ProductPageModel;
 import com.skylightapp.Classes.SkyLightPackModel;
 import com.skylightapp.Classes.SliderModel;
 import com.skylightapp.Classes.WishlistModel;
-import com.skylightapp.ProductDetailsAct;
+import com.skylightapp.Markets.ProductDetailsAct;
 import com.skylightapp.R;
 import com.skylightapp.ViewAllActivity;
 

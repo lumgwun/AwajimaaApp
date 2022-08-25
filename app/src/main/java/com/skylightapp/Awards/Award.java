@@ -4,14 +4,14 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.skylightapp.Classes.Business;
+import com.skylightapp.Classes.OtherBusiness;
 import com.skylightapp.Classes.Profile;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import static com.skylightapp.Classes.Business.BIZ_ID;
-import static com.skylightapp.Classes.Business.BIZ_TABLE;
+import static com.skylightapp.Classes.OtherBusiness.BIZ_ID;
+import static com.skylightapp.Classes.OtherBusiness.BIZ_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
@@ -45,7 +45,7 @@ public class Award implements Serializable, Parcelable {
     private boolean allowOnePersonMultipleVote=false;
     private boolean allowNomineeSelfVote=false;
     private Profile profile;
-    private Business business;
+    private OtherBusiness otherBusiness;
     private ArrayList<Votes> votes;
     private ArrayList<NominationCategory> nominationCategories;
     private ArrayList<Profile> profiles;
@@ -89,7 +89,7 @@ public class Award implements Serializable, Parcelable {
         allowOnePersonMultipleVote = in.readByte() != 0;
         allowNomineeSelfVote = in.readByte() != 0;
         profile = in.readParcelable(Profile.class.getClassLoader());
-        business = in.readParcelable(Business.class.getClassLoader());
+        otherBusiness = in.readParcelable(OtherBusiness.class.getClassLoader());
         votes = in.createTypedArrayList(Votes.CREATOR);
         nominationCategories = in.createTypedArrayList(NominationCategory.CREATOR);
         //profiles = in.createTypedArrayList(Profile.CREATOR);
@@ -107,8 +107,8 @@ public class Award implements Serializable, Parcelable {
         }
     };
 
-    public Business getBusiness() { return business; }
-    public void setBusiness(Business business) { this.business = business; }
+    public OtherBusiness getBusiness() { return otherBusiness; }
+    public void setBusiness(OtherBusiness otherBusiness) { this.otherBusiness = otherBusiness; }
 
     public Profile getAwardGiverProfile() { return profile; }
     public void setAwardGiverProfile(Profile profile) { this.profile = profile; }
@@ -187,7 +187,7 @@ public class Award implements Serializable, Parcelable {
         parcel.writeByte((byte) (allowOnePersonMultipleVote ? 1 : 0));
         parcel.writeByte((byte) (allowNomineeSelfVote ? 1 : 0));
         parcel.writeParcelable(profile, i);
-        parcel.writeParcelable(business, i);
+        parcel.writeParcelable(otherBusiness, i);
         parcel.writeTypedList(votes);
         parcel.writeTypedList(nominationCategories);
         parcel.writeTypedList(profiles);

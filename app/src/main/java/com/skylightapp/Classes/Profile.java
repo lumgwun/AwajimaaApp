@@ -10,7 +10,6 @@ import android.provider.BaseColumns;
 import android.telephony.SmsMessage;
 
 import androidx.room.ColumnInfo;
-import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -365,7 +364,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     @Ignore
     private ArrayList<Customer> profile_Customers;
     @Ignore
-    private ArrayList<Business> profile_Businesses;
+    private ArrayList<OtherBusiness> profile_Other_Businesses;
     @Ignore
     private ArrayList<Properties> profile_Properties;
     @Ignore
@@ -419,7 +418,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     @Ignore
     private Birthday profile_Birthday;
     @Ignore
-    private Business profile_Biz;
+    private OtherBusiness profile_Biz;
     @Ignore
     private GroupAccount profile_GroupAcct;
     @Ignore
@@ -578,7 +577,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         profile_Tranx = in.readParcelable(Transaction.class.getClassLoader());
         profile_Loan = in.readParcelable(Loan.class.getClassLoader());
         profile_Birthday = in.readParcelable(Birthday.class.getClassLoader());
-        profile_Biz = in.readParcelable(Business.class.getClassLoader());
+        profile_Biz = in.readParcelable(OtherBusiness.class.getClassLoader());
         profile_GroupAcct = in.readParcelable(GroupAccount.class.getClassLoader());
         profile_SavingsGroup = in.readParcelable(SavingsGroup.class.getClassLoader());
         profile_SavingsGroups = in.createTypedArrayList(SavingsGroup.CREATOR);
@@ -1012,10 +1011,10 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
     }
     @Ignore
-    public Business getProfileBusiness() { return profile_Biz; }
+    public OtherBusiness getProfileBusiness() { return profile_Biz; }
     @Ignore
-    public void setProfileBusiness(Business business) {
-        this.profile_Biz = business;
+    public void setProfileBusiness(OtherBusiness otherBusiness) {
+        this.profile_Biz = otherBusiness;
 
     }
     @Ignore
@@ -1057,9 +1056,9 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public ArrayList<Customer> getProfileCustomers() { return profile_Customers;
     }
     @Ignore
-    public ArrayList<Business> getProfile_Businesses() { return profile_Businesses; }
+    public ArrayList<OtherBusiness> getProfile_Businesses() { return profile_Other_Businesses; }
     @Ignore
-    public void setProfile_Businesses(ArrayList<Business> profile_Businesses) { this.profile_Businesses = profile_Businesses; }
+    public void setProfile_Businesses(ArrayList<OtherBusiness> profile_Other_Businesses) { this.profile_Other_Businesses = profile_Other_Businesses; }
     @Ignore
 
     public ArrayList<SkyLightPackage> getProfileSkylightPackages() { return profile_SkyLightPackages; }
@@ -1240,10 +1239,10 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
 
     public void addPBusiness(long businessID, long profileID, String businessName, String bizEmail, String bizAddress, String bizPhoneNo, String bizType, String bizRegNo, String dateOfJoin, String status) {
-        profile_Businesses = new ArrayList<>();
-        String bizNo = "Biz:" + (profile_Businesses.size() + 1);
-        Business business = new Business(businessID,profileID, businessName, bizEmail, bizAddress, bizPhoneNo,  bizType,  bizRegNo,dateOfJoin,status);
-        profile_Businesses.add(business);
+        profile_Other_Businesses = new ArrayList<>();
+        String bizNo = "Biz:" + (profile_Other_Businesses.size() + 1);
+        OtherBusiness otherBusiness = new OtherBusiness(businessID,profileID, businessName, bizEmail, bizAddress, bizPhoneNo,  bizType,  bizRegNo,dateOfJoin,status);
+        profile_Other_Businesses.add(otherBusiness);
     }
     @Ignore
     public void addPSOAcct(int soNo, double expectedAmount) {
@@ -1532,7 +1531,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         parcel.writeTypedList(profile_Payees);
         parcel.writeTypedList(profile_TimeLines);
         parcel.writeTypedList(profile_Customers);
-        parcel.writeTypedList(profile_Businesses);
+        parcel.writeTypedList(profile_Other_Businesses);
         parcel.writeTypedList(profile_Properties);
         parcel.writeTypedList(profile_DailyReports);
         parcel.writeTypedList(profile_SkyLightPackages);

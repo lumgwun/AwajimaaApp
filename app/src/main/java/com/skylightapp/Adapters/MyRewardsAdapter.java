@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.skylightapp.Classes.RewardModel;
-import com.skylightapp.ProductDetailsAct;
+import com.skylightapp.Markets.ProductDetailsAct;
 import com.skylightapp.R;
 
 import java.util.List;

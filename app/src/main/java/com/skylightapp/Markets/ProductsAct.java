@@ -1,4 +1,4 @@
-package com.skylightapp;
+package com.skylightapp.Markets;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -22,16 +22,13 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
-import com.github.mzule.fantasyslide.FantasyDrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.rom4ek.arcnavigationview.ArcNavigationView;
 import com.skylightapp.Adapters.ProductPageAdapter;
-import com.skylightapp.Admins.AdminSupportAct;
 import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.HomeFragment;
 import com.skylightapp.Classes.MyAccountFragment;
@@ -44,12 +41,10 @@ import com.skylightapp.Classes.SliderModel;
 import com.skylightapp.Classes.WishlistModel;
 import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.Inventory.SuperInvTab;
-import com.skylightapp.Markets.MarketTab;
-import com.skylightapp.SuperAdmin.ADepositList;
-import com.skylightapp.SuperAdmin.PayOutRequestList;
-import com.skylightapp.SuperAdmin.SuperAdminOffice;
-import com.skylightapp.SuperAdmin.TellerReportActSuper;
+import com.skylightapp.R;
+import com.skylightapp.SkylightSliderAct;
+import com.skylightapp.UserPrefActivity;
+import com.skylightapp.UserTimeLineAct;
 
 import java.util.ArrayList;
 import java.util.List;

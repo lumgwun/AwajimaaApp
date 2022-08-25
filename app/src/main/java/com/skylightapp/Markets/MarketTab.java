@@ -17,7 +17,6 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.LoginDirAct;
 import com.skylightapp.LogisticParkAct;
-import com.skylightapp.ProductsAct;
 import com.skylightapp.R;
 
 import static com.skylightapp.Classes.Profile.PROFILE_ID;

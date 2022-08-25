@@ -9,8 +9,8 @@ import com.skylightapp.Classes.Profile;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import static com.skylightapp.Classes.Business.BIZ_ID;
-import static com.skylightapp.Classes.Business.BIZ_TABLE;
+import static com.skylightapp.Classes.OtherBusiness.BIZ_ID;
+import static com.skylightapp.Classes.OtherBusiness.BIZ_TABLE;
 
 public class Nomination implements Serializable, Parcelable {
     public static final String NOMINATION_TABLE = "NTable";

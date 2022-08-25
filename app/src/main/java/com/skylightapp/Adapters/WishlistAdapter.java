@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.skylightapp.Classes.WishlistModel;
-import com.skylightapp.ProductDetailsAct;
+import com.skylightapp.Markets.ProductDetailsAct;
 import com.skylightapp.R;
 
 import java.util.List;

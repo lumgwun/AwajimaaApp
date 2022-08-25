@@ -43,6 +43,7 @@ public class Payee implements Serializable, Parcelable {
     private int payeeID=1013;
 
     public Payee () {
+        super();
 
     }
 

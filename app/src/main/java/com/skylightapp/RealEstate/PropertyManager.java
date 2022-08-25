@@ -8,7 +8,7 @@ import android.telephony.SmsMessage;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.AdminUser;
 import com.skylightapp.Classes.Birthday;
-import com.skylightapp.Classes.Business;
+import com.skylightapp.Classes.OtherBusiness;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.GroupAccount;
@@ -50,7 +50,7 @@ public class PropertyManager extends Profile implements Parcelable, Serializable
     private ArrayList<Address> addresses;
     private ArrayList<Payee> payees;
     private ArrayList<Customer> customers;
-    private ArrayList<Business> businesses;
+    private ArrayList<OtherBusiness> otherBusinesses;
     private ArrayList<Properties> properties;
     private ArrayList<TimeLine> timeLines;
     private ArrayList<CustomerDailyReport> dailyReports;
@@ -59,7 +59,7 @@ public class PropertyManager extends Profile implements Parcelable, Serializable
     private Transaction transaction;
     private Loan loan;
     private Birthday birthday;
-    private Business business;
+    private OtherBusiness otherBusiness;
     private GroupAccount groupAccount;
 
     private SavingsGroup savingsGroup;

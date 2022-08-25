@@ -83,8 +83,11 @@
         android:value="androidx.core.app.CoreComponentFactory"
         tools:ignore="GoogleAppIndexingWarning"
         tools:node="replace">
-        <activity android:name=".LogisticParkAct">
-        </activity>
+        <activity android:name=".Markets.MyBizLocAct"></activity>
+        <activity android:name=".Markets.TranxAmtHoldAct" />
+        <activity android:name=".LogisticsMatchAct" />
+        <activity android:name=".Markets.PreHarvestOrdersAct" />
+        <activity android:name=".LogisticParkAct" />
         <activity android:name=".Markets.MarketHub" />
         <activity android:name=".Markets.MarketTab" />
         <activity android:name=".Customers.OrderDetailsAct" />
@@ -92,9 +95,9 @@
         <activity android:name=".SuperAdmin.SuperSettingsAct" />
         <activity android:name=".MyAddressesAct" />
         <activity android:name=".DeliveryAct" />
-        <activity android:name=".ProductDetailsAct" />
+        <activity android:name=".Markets.ProductDetailsAct" />
         <activity android:name=".ViewAllActivity" />
-        <activity android:name=".ProductsAct" />
+        <activity android:name=".Markets.ProductsAct" />
         <activity android:name=".NotiAct" />
         <activity android:name=".Customers.NewBankAcctAct" />
         <activity android:name=".SuperAdmin.TellerWorkAct" />
