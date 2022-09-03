@@ -30,7 +30,28 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.StandingOrder;
 import com.skylightapp.Classes.Transaction;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.AdminBalanceDAO;
+import com.skylightapp.Database.BirthdayDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.GrpProfileDAO;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.OfficeBranchDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.StockTransferDAO;
+import com.skylightapp.Database.StocksDAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TranXDAO;
+import com.skylightapp.Database.WorkersDAO;
 import com.skylightapp.R;
 import com.skylightapp.SuperAdmin.TellerCashList;
 
@@ -67,6 +88,29 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
     private TextView txtSavings, txtCodes,txtPacks,txtSO,txtTx,txtAcct;
     int soInt,txInt,savingsInt,codeInt,packageInt,acctInt;
     SQLiteDatabase sqLiteDatabase;
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
+    private PaymDocDAO paymDocDAO;
+    private CusDAO cusDAO;
+    private PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
+    private PaymentDAO paymentDAO;
+    private AdminBalanceDAO adminBalanceDAO;
+    private TimeLineClassDAO timeLineClassDAO;
+    private GrpProfileDAO grpProfileDAO;
+
+
+    private StocksDAO stocksDAO;
+    private WorkersDAO workersDAO;
+    private StockTransferDAO stockTransferDAO;
+    private OfficeBranchDAO officeBranchDAO;
+    private BirthdayDAO birthdayDAO;
 
 
     @Override
@@ -90,6 +134,31 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
         skyLightPackages=new ArrayList<SkyLightPackage>();
         customerDailyReports3=new ArrayList<CustomerDailyReport>();
         accounts=new ArrayList<Account>();
+        workersDAO= new WorkersDAO(this);
+        stocksDAO= new StocksDAO(this);
+        cusDAO= new CusDAO(this);
+        birthdayDAO= new BirthdayDAO(this);
+        officeBranchDAO= new OfficeBranchDAO(this);
+        stockTransferDAO= new StockTransferDAO(this);
+
+        paymentCodeDAO= new PaymentCodeDAO(this);
+        profileDao= new ProfDAO(this);
+        cashDAO= new TCashDAO(this);
+        paymDocDAO= new PaymDocDAO(this);
+        tReportDAO= new TReportDAO(this);
+        paymentDAO= new PaymentDAO(this);
+        adminBalanceDAO= new AdminBalanceDAO(this);
+        timeLineClassDAO= new TimeLineClassDAO(this);
+        grpProfileDAO= new GrpProfileDAO(this);
+
+        sodao= new SODAO(this);
+        tranXDAO= new TranXDAO(this);
+        sodao= new SODAO(this);
+        messageDAO= new MessageDAO(this);
+        loanDAO= new LoanDAO(this);
+
+        codeDAO= new CodeDAO(this);
+        acctDAO= new AcctDAO(this);
 
         RecyclerView recyclerPackages = findViewById(R.id.recyclerViewPackages);
         RecyclerView recyclerSavings = findViewById(R.id.recyclerViewSavings4);
@@ -102,8 +171,8 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
             //dbHelper = new DBHelper(this);
             sqLiteDatabase = dbHelper.getWritableDatabase();
             try {
-                standingOrders = dbHelper.getStandingOrdersToday(todayDate);
-                paymentCodeArrayList=dbHelper.getAllSavingsCodes();
+                standingOrders = sodao.getStandingOrdersToday(todayDate);
+                paymentCodeArrayList=codeDAO.getAllSavingsCodes();
 
                 skyLightPackages = dbHelper.getPackageEndingToday1(todayDate);
 
@@ -118,7 +187,7 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
                 e.printStackTrace();
             }
             try {
-                accounts = dbHelper.getAllAccounts();
+                accounts = acctDAO.getAllAccounts();
 
 
             } catch (NullPointerException e) {
@@ -194,7 +263,7 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
 
         LinearLayoutManager layoutManager2
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        paymentCodeArrayList = dbHelper.getAllSavingsCodes();
+        paymentCodeArrayList = codeDAO.getAllSavingsCodes();
         try {
             codeInt=paymentCodeArrayList.size();
 
@@ -230,7 +299,7 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
 
 
         try {
-            transactions2 = dbHelper.getAllTransactionAdmin();
+            transactions2 = tranXDAO.getAllTransactionAdmin();
 
 
         } catch (NullPointerException e) {

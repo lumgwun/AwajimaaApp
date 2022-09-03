@@ -23,7 +23,7 @@ import com.skylightapp.Adapters.MySkylightCashA;
 import com.skylightapp.Classes.AdminUser;
 import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkylightCash;
+import com.skylightapp.Classes.AppCash;
 import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.R;
@@ -36,7 +36,7 @@ import java.util.TimeZone;
 
 public class MyCashList extends AppCompatActivity implements MyTellerCashAdapter.OnItemClickListener{
     Bundle bundle;
-    SkylightCash skylightCash;
+    AppCash appCash;
     private AppCompatButton btnRunUpdate;
     DatePicker picker;
     String selectedStatus,dateOfApproval,superAdminName,tellerConfirmationCode, officeBranch;
@@ -63,10 +63,10 @@ public class MyCashList extends AppCompatActivity implements MyTellerCashAdapter
     private MySkylightCashA adapterToday;
     private MySkylightCashA adapterDate;
     private MySkylightCashA adapterAll;
-    private ArrayList<SkylightCash> skylightCashArrayListToday;
-    private ArrayList<SkylightCash> skylightCashArrayDate;
+    private ArrayList<AppCash> appCashArrayListToday;
+    private ArrayList<AppCash> appCashArrayDate;
     private ArrayList<TellerCash> tellerCashArrayList;
-    private ArrayList<SkylightCash> skylightCashArrayAll;
+    private ArrayList<AppCash> appCashArrayAll;
     private AppCompatButton btnByDate;
     MyTellerCashAdapter myTellerCashAdapter;
     TextView txtTotalSCForDate,txtTotalSCForToday,txtTotalSCTotal;
@@ -77,10 +77,10 @@ public class MyCashList extends AppCompatActivity implements MyTellerCashAdapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_my_cash_list);
-        skylightCash = new SkylightCash();
-        skylightCashArrayDate =new ArrayList<>();
-        skylightCashArrayListToday =new ArrayList<>();
-        skylightCashArrayAll =new ArrayList<>();
+        appCash = new AppCash();
+        appCashArrayDate =new ArrayList<>();
+        appCashArrayListToday =new ArrayList<>();
+        appCashArrayAll =new ArrayList<>();
         tellerCashArrayList =new ArrayList<>();
         gson = new Gson();
         gson1 = new Gson();
@@ -122,9 +122,9 @@ public class MyCashList extends AppCompatActivity implements MyTellerCashAdapter
         if(dateOfCash ==null){
             dateOfCash=todayDate;
         }
-        skylightCashArrayListToday =dbHelper.getSkylightCashForProfileAtDate(profileID,todayDate);
-        skylightCashArrayDate =dbHelper.getSkylightCashForProfileAtDate(profileID,dateOfCash);
-        skylightCashArrayAll =dbHelper.getAllSkylightCashForProfile(profileID);
+        appCashArrayListToday =dbHelper.getSkylightCashForProfileAtDate(profileID,todayDate);
+        appCashArrayDate =dbHelper.getSkylightCashForProfileAtDate(profileID,dateOfCash);
+        appCashArrayAll =dbHelper.getAllSkylightCashForProfile(profileID);
         totalSCForDate =dbHelper.getSkylightCashTotalForProfileAndDate(profileID,dateOfCash);
         totalSCForToday =dbHelper.getSkylightCashTotalForProfileAndDate(profileID,todayDate);
         totalSC=dbHelper.getSkylightCashTotalForProfile(profileID);
@@ -174,7 +174,7 @@ public class MyCashList extends AppCompatActivity implements MyTellerCashAdapter
         myTellerCashAdapter.setOnItemClickListener(this);
 
 
-        adapterToday = new MySkylightCashA(this, skylightCashArrayListToday);
+        adapterToday = new MySkylightCashA(this, appCashArrayListToday);
         LinearLayoutManager linearLayoutManagerT = new LinearLayoutManager(this);
         recyclerViewToday.setLayoutManager(linearLayoutManagerT);
         recyclerViewToday.setItemAnimator(new DefaultItemAnimator());
@@ -184,7 +184,7 @@ public class MyCashList extends AppCompatActivity implements MyTellerCashAdapter
 
 
 
-        adapterAll = new MySkylightCashA(this, skylightCashArrayAll);
+        adapterAll = new MySkylightCashA(this, appCashArrayAll);
         LinearLayoutManager linearLayoutManagerAll = new LinearLayoutManager(this);
         recyclerViewAll.setLayoutManager(linearLayoutManagerAll);
         recyclerViewAll.setItemAnimator(new DefaultItemAnimator());
@@ -198,7 +198,7 @@ public class MyCashList extends AppCompatActivity implements MyTellerCashAdapter
         btnByDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                adapterDate = new MySkylightCashA(MyCashList.this, skylightCashArrayDate);
+                adapterDate = new MySkylightCashA(MyCashList.this, appCashArrayDate);
                 recyclerViewCustomDate.setLayoutManager(new LinearLayoutManager(MyCashList.this, LinearLayoutManager.HORIZONTAL, false));
                 recyclerViewCustomDate.setItemAnimator(new DefaultItemAnimator());
                 recyclerViewCustomDate.setAdapter(adapterDate);

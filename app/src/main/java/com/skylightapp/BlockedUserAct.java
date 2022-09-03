@@ -13,7 +13,9 @@ import android.widget.Toast;
 
 import com.skylightapp.Admins.AdminCusActionAct;
 import com.skylightapp.Classes.Customer;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.SuperAdmin.SuperAdminOffice;
 
 public class BlockedUserAct extends AppCompatActivity {
@@ -22,6 +24,8 @@ public class BlockedUserAct extends AppCompatActivity {
     private DBHelper dbHelper;
     private String blockedUser;
     private int cusInt;
+    private CusDAO cusDAO;
+    private ProfDAO profileDao;
     //private Spinner spnPurpose;
 
     @Override
@@ -30,6 +34,8 @@ public class BlockedUserAct extends AppCompatActivity {
         setContentView(R.layout.act_blocked_user);
         dbHelper=new DBHelper(this);
         blockedUser="BlockedUser";
+        cusDAO= new CusDAO(this);
+        profileDao= new ProfDAO(this);
 
         bundle=getIntent().getExtras();
         if(bundle !=null){
@@ -49,7 +55,7 @@ public class BlockedUserAct extends AppCompatActivity {
                     .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
-                            dbHelper.blockCustomer(cusInt,blockedUser);
+                            profileDao.blockCustomer(cusInt,blockedUser);
 
 
                         }

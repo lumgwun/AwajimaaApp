@@ -47,6 +47,7 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.StandingOrderAcct;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.LoginActivity;
+import com.skylightapp.Markets.MarketTab;
 import com.skylightapp.MyTimelineAct;
 import com.skylightapp.PasswordRecovAct;
 import com.skylightapp.PrivacyPolicy_Web;
@@ -111,6 +112,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
     private StandingOrderAcct standingOrderAcct;
     private static final String PREF_NAME = "skylight";
     AppCompatButton btnToPacks;
+    private Bundle homeBundle;
     ChipNavigationBar chipNavigationBar;
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
     ActivityResultLauncher<Intent> startCusPictureActivityForResult = registerForActivityResult(
@@ -188,6 +190,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
         userProfile=new Profile();
         customer=new Customer();
         account=new Account();
+        homeBundle=getIntent().getExtras();
         standingOrderAcct= new StandingOrderAcct();
         btnToPacks = findViewById(R.id.cust_PackBtn);
         SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
@@ -198,6 +201,9 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
         SharedPrefProfileID=userPreferences.getString("PROFILE_ID", "");
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
+        if(userProfile ==null){
+            userProfile=homeBundle.getParcelable("Profile");
+        }
         json1 = userPreferences.getString("LastCustomerUsed", "");
         customer = gson1.fromJson(json1, Customer.class);
         txtUserName = findViewById(R.id.cus_username);
@@ -226,30 +232,30 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                             case R.id.cTimeLine:
 
                                 Intent chat = new Intent(NewCustomerDrawer.this, MyTimelineAct.class);
-                                startActivity(chat);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
                                 chat.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 chat.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(chat);
 
 
                             case R.id.cGeneralShop:
 
-                                Intent shop = new Intent(NewCustomerDrawer.this, ProductsAct.class);
-                                startActivity(shop);
+                                Intent shop = new Intent(NewCustomerDrawer.this, MarketTab.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
                                 shop.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 shop.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(shop);
 
                             case R.id.cPackageT:
 
-                                Intent pIntent = new Intent(NewCustomerDrawer.this, PackListTab.class);                          
-                                startActivity(pIntent);
+                                Intent pIntent = new Intent(NewCustomerDrawer.this, PackListTab.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
                                 pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 pIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(pIntent);
 
 
                             case R.id.cSupport:
@@ -443,49 +449,67 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
             case R.id.action_home_customer:
                 Intent mainIntent = new Intent(this, NewCustomerDrawer.class);
                 mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
                 startActivity(mainIntent);
                 return true;
             case R.id.action_profile_customer:
                 Intent pIntent = new Intent(this, UserPrefActivity.class);
                 pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
                 startActivity(pIntent);
                 return true;
 
             case R.id.action_notification_customer:
                 Intent p1Intent = new Intent(this, UserTimeLineAct.class);
                 p1Intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
                 startActivity(p1Intent);
                 return true;
             case R.id.my_subscriptions:
                 Intent so1Intent = new Intent(this, PackageTab.class);
                 so1Intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
                 startActivity(so1Intent);
                 return true;
             case R.id.my_packs:
                 Intent timelineIntent = new Intent(this, PackListTab.class);
                 timelineIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
                 startActivity(timelineIntent);
                 return true;
             case R.id.utility:
                 Intent cIntent = new Intent(this, CustUtilTab.class);
                 cIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
                 startActivity(cIntent);
                 return true;
 
             case R.id.orderTab:
                 Intent uIntent = new Intent(this, CusOrderTab.class);
                 uIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
                 startActivity(uIntent);
                 return true;
             case R.id.loanTab:
                 Intent loanIntent = new Intent(this, CusLoanTab.class);
                 loanIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
                 startActivity(loanIntent);
                 return true;
 
             case R.id.action_help_customer:
                 Intent payNowIntent = new Intent(this, CustomerHelpActTab.class);
                 payNowIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
                 startActivity(payNowIntent);
                 return true;
 
@@ -494,6 +518,8 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
             case R.id.so_menu:
                 Intent grpIntent = new Intent(this, SOTab.class);
                 grpIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
                 startActivity(grpIntent);
                 return true;
 
@@ -501,12 +527,16 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
             case R.id.package_slider:
                 Intent tIntent = new Intent(this, SkylightSliderAct.class);
                 tIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
                 startActivity(tIntent);
                 return true;
 
             case R.id.all_new:
                 Intent wIntent = new Intent(this, NewPackCusAct.class);
                 wIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
                 startActivity(wIntent);
                 return true;
 
@@ -514,11 +544,15 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
             case R.id.privacy_policy_customer:
                 Intent w1Intent = new Intent(this, PrivacyPolicy_Web.class);
                 w1Intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
                 startActivity(w1Intent);
                 return true;
             case R.id.admin_pswd2:
                 Intent impIntent = new Intent(this, PasswordRecovAct.class);
                 impIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
                 startActivity(impIntent);
                 return true;
 
@@ -531,6 +565,8 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                 Intent loginIntent = new Intent(this, LoginActivity.class);
                 loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                         Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
                 startActivity(loginIntent);
                 return true;
             default:
@@ -720,6 +756,10 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                         tosend="Packages";
                         Intent intent=new Intent(NewCustomerDrawer.this, SkylightSliderAct.class);
                         intent.putExtra("info",tosend);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        overridePendingTransition(R.anim.slide_in_right,
+                                R.anim.slide_out_left);
                         startActivity(intent);
                     }
                     else if(finalI==1)
@@ -727,6 +767,10 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                         tosend="History";
                         Intent intent=new Intent(NewCustomerDrawer.this, CusPacksAct.class);
                         intent.putExtra("info",tosend);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        overridePendingTransition(R.anim.slide_in_right,
+                                R.anim.slide_out_left);
                         startActivity(intent);
                     }
                     else if(finalI==2)
@@ -734,42 +778,70 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                         tosend="Customer Pay";
                         Intent intent=new Intent(NewCustomerDrawer.this, CustomerPayAct.class);
                         intent.putExtra("Customer Pay",tosend);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        overridePendingTransition(R.anim.slide_in_right,
+                                R.anim.slide_out_left);
                         startActivity(intent);
                     }
                     else if(finalI==3) {
                         tosend = "Standing Orders";
                         Intent intent=new Intent(NewCustomerDrawer.this, SOTab.class);
                         intent.putExtra("Standing Orders",tosend);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        overridePendingTransition(R.anim.slide_in_right,
+                                R.anim.slide_out_left);
                         startActivity(intent);
                     }
                     else if(finalI==4) {
                         tosend = "Orders";
                         Intent intent=new Intent(NewCustomerDrawer.this, CusOrderTab.class);
                         intent.putExtra("Orders",tosend);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        overridePendingTransition(R.anim.slide_in_right,
+                                R.anim.slide_out_left);
                         startActivity(intent);
                     }
                     else if(finalI==5) {
                         tosend = "My Package";
                         Intent intent=new Intent(NewCustomerDrawer.this, PackageTab.class);
                         intent.putExtra("Support",tosend);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        overridePendingTransition(R.anim.slide_in_right,
+                                R.anim.slide_out_left);
                         startActivity(intent);
                     }
                     else if(finalI==6) {
                         tosend = "My Sub. Packs";
                         Intent intent=new Intent(NewCustomerDrawer.this, CusSubPackTab.class);
                         intent.putExtra("My Sub. Packs",tosend);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        overridePendingTransition(R.anim.slide_in_right,
+                                R.anim.slide_out_left);
                         startActivity(intent);
                     }
                     else if(finalI==7) {
                         tosend = "Pack List";
                         Intent intent=new Intent(NewCustomerDrawer.this, PackListTab.class);
                         intent.putExtra("Pack List",tosend);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        overridePendingTransition(R.anim.slide_in_right,
+                                R.anim.slide_out_left);
                         startActivity(intent);
                     }
                     else if(finalI==8) {
                         tosend = "Items List";
                         Intent intent=new Intent(NewCustomerDrawer.this, CusStocksListAct.class);
                         intent.putExtra("Items List",tosend);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        overridePendingTransition(R.anim.slide_in_right,
+                                R.anim.slide_out_left);
                         startActivity(intent);
                     }
 
@@ -790,53 +862,101 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
             case R.id.nav_dashboard44:
 
                 Intent intent = new Intent(NewCustomerDrawer.this, NewCustomerDrawer.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 break;
             case R.id.nav_act_package44:
                 Intent profile = new Intent(NewCustomerDrawer.this, SkylightSliderAct.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                profile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                profile.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(profile);
                 break;
             case R.id.nav_my_package44:
                 Intent active = new Intent(NewCustomerDrawer.this, CusPacksAct.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                active.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                active.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(active);
                 break;
             case R.id.nav_my_package44_payment:
                 Intent history = new Intent(NewCustomerDrawer.this, CusPackForPayment.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                history.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                history.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(history);
                 break;
 
             case R.id.timeline_cus24:
                 Intent chat = new Intent(NewCustomerDrawer.this, MyTimelineAct.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                chat.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                chat.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(chat);
                 break;
 
             case R.id.navsupport:
                 Intent supportInt = new Intent(NewCustomerDrawer.this, CustomerHelpActTab.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                supportInt.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                supportInt.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(supportInt);
                 break;
             case R.id.nav_pref:
                 Intent intPref = new Intent(NewCustomerDrawer.this, UserPrefActivity.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                intPref.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intPref.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intPref);
                 break;
             case R.id.nav_so0994:
                 Intent intSO = new Intent(NewCustomerDrawer.this, SOTab.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                intSO.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intSO.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intSO);
                 break;
             case R.id.my_packageTab:
                 Intent pIntent = new Intent(NewCustomerDrawer.this, PackageTab.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                pIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(pIntent);
                 break;
 
             case R.id.nav_loan6:
                 Intent lIntent = new Intent(NewCustomerDrawer.this, CusLoanRepaymentAct.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                lIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                lIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(lIntent);
                 break;
             case R.id.my_Loan_Tab:
                 Intent loanIntent = new Intent(NewCustomerDrawer.this, CusLoanTab.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                loanIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                loanIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(loanIntent);
                 break;
             case R.id.nav_Utils:
                 Intent uIntent = new Intent(NewCustomerDrawer.this, CustUtilTab.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                uIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                uIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(uIntent);
                 break;
 
@@ -848,6 +968,8 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                 editor.clear();
                 editor.apply();
                 Intent loginIntent = new Intent(NewCustomerDrawer.this, SignTabMainActivity.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
                 loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                         Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(loginIntent);

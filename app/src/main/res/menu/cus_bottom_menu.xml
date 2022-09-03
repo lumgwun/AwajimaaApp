@@ -11,7 +11,7 @@
 
     <item
         android:id="@+id/cGeneralShop"
-        android:title="General Shop"
+        android:title="Market Area"
         app:cnb_iconTintMode="src_in"
         app:cnb_iconColor="#F44336"
         android:icon="@drawable/ic_home_black_24dp"/>

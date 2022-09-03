@@ -27,10 +27,10 @@ import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_TABLE;
 
 @SuppressWarnings("deprecation")
 public class ImportantDates implements Serializable, Parcelable {
-    public static final String KEY_ID = "id";
-    public static final String KEY_TITLE = "title";
-    public static final String KEY_DATE = "date";
-    public static final String KEY_TIME = "time";
+    public static final String KEY_ID77777 = "id";
+    public static final String KEY_TITLE_R = "title";
+    public static final String KEY_DATE_R = "date";
+    public static final String KEY_TIME_R = "time";
     public static final String KEY_REPEAT = "repeat";
     public static final String KEY_REPEAT_NO = "repeat_no";
     public static final String KEY_REPEAT_TYPE = "repeat_type";
@@ -50,7 +50,7 @@ public class ImportantDates implements Serializable, Parcelable {
     private static final String JSON_SHOW_YEAR = "show_year";
     public static final String TABLE_REMINDERS = "ReminderTable";
 
-    public static final String CREATE_REMINDER_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_REMINDERS + " (" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + PACKAGE_ID + " INTEGER,"+ KEY_TITLE + " TEXT," + KEY_DATE + " TEXT," + KEY_TIME + " INTEGER,"
+    public static final String CREATE_REMINDER_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_REMINDERS + " (" + KEY_ID77777 + " INTEGER PRIMARY KEY AUTOINCREMENT," + PACKAGE_ID + " INTEGER,"+ KEY_TITLE_R + " TEXT," + KEY_DATE_R + " TEXT," + KEY_TIME_R + " INTEGER,"
             + KEY_REPEAT + " BOOLEAN," + KEY_REPEAT_NO + " INTEGER," + KEY_REPEAT_TYPE + " TEXT," + KEY_ACTIVE + " BOOLEAN, " + "FOREIGN KEY(" + PACKAGE_ID + ") REFERENCES " + PACKAGE_TABLE + "(" + PACKAGE_ID  + "))";
 
 

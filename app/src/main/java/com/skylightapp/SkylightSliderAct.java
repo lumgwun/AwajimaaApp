@@ -2,6 +2,7 @@ package com.skylightapp;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -10,15 +11,24 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.skylightapp.Adapters.SkyLightPackageShowCaseAdapter;
 import com.skylightapp.Adapters.SkylightPackageSliderAdapter;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerManager;
@@ -34,12 +44,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class SkylightSliderAct extends AppCompatActivity implements SkylightPackageSliderAdapter.OnItemsClickListener, SearchView.OnQueryTextListener {
+public class SkylightSliderAct extends AppCompatActivity implements SkylightPackageSliderAdapter.OnItemsClickListener,SkylightPackageSliderAdapter.TouchInterface, SearchView.OnQueryTextListener {
     private ArrayList<SkyLightPackModel> skyLightPackage_2s;
     private List<SkyLightPackModel> itemsListFilter = new ArrayList<>();
     SkylightPackageSliderAdapter adapter;
+    SkylightPackageSliderAdapter searchAdapter;
     private SkyLightPackage skyLightPackage;
     private SearchView iSearchView;
+    private ArrayList<SkyLightPackModel> searchPackageList;
 
     private SearchManager manager;
     Context context = SkylightSliderAct.this;
@@ -59,8 +71,17 @@ public class SkylightSliderAct extends AppCompatActivity implements SkylightPack
     private int duration,id;
     private double amount,grandTotal;
     private  SkylightPackageSliderAdapter.OnItemsClickListener onItemsClickListener;
-    SearchView editsearch;
+    EditText editsearch;
     private SkyLightPackModel lightPackage;
+    private  View.OnTouchListener listener;
+    String keyWord;
+    private RecyclerView searchRecycler;
+    private ImageView btnClose2,btnClose1,btnSearch1;
+    private EditText etSearch;
+    private TextView tv_languages;
+    private RelativeLayout lout1,lout2;
+    SkyLightPackageShowCaseAdapter recyPackAdapter;
+    private SkyLightPackageShowCaseAdapter.OnItemsClickListener callback;
 
 
     @Override
@@ -74,6 +95,7 @@ public class SkylightSliderAct extends AppCompatActivity implements SkylightPack
         customer= new Customer();
         customerManager= new CustomerManager();
         managerProfile= new Profile();
+        searchRecycler = findViewById(R.id.rv_package);
         dbHelper= new DBHelper(this);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         customer1 = gson.fromJson(json, Customer.class);
@@ -83,18 +105,21 @@ public class SkylightSliderAct extends AppCompatActivity implements SkylightPack
         managerProfile = gson1.fromJson(json1, Profile.class);
         json2 = userPreferences.getString("LastTellerProfileUsed", "");
         customerManager = gson2.fromJson(json2, CustomerManager.class);
-        SliderView sliderView = findViewById(R.id.slider);
+
         skyLightPackage_2s = new ArrayList<>() ;
         skyLightPackage= new SkyLightPackage();
+        searchPackageList = new ArrayList<>() ;
+
         manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         fillPackageList();
+        SliderView sliderView = findViewById(R.id.sliderPAC);
         adapter = new SkylightPackageSliderAdapter(SkylightSliderAct.this, skyLightPackage_2s,onItemsClickListener);
         sliderView.setAutoCycleDirection(SliderView.LAYOUT_DIRECTION_LTR);
 
         sliderView.setSliderAdapter(adapter);
         adapter.setCallback(onItemsClickListener);
-        editsearch = (SearchView) findViewById(R.id.search);
-        editsearch.setOnQueryTextListener(this);
+        editsearch = findViewById(R.id.search);
+        //editsearch.setOnQueryTextListener(this);
 
         sliderView.setScrollTimeInSec(3);
 
@@ -102,11 +127,95 @@ public class SkylightSliderAct extends AppCompatActivity implements SkylightPack
         sliderView.startAutoCycle();
         adapter.notifyDataSetChanged();
         editsearch.setActivated(true);
-        editsearch.setQueryHint("Type your keyword here");
-        editsearch.onActionViewExpanded();
-        editsearch.setIconified(false);
+        //editsearch.setQueryHint("Type your keyword here");
+        //editsearch.onActionViewExpanded();
+        //editsearch.setIconified(false);
+
+        tv_languages = findViewById(R.id.tv_languages);
+        lout1 = findViewById(R.id.lout_1);
+        lout2 = findViewById(R.id.lout_2);
+        btnSearch1 = findViewById(R.id.btn_search1);
+        btnClose2 = findViewById(R.id.btn_close2);
+        btnClose1 = findViewById(R.id.btn_close1);
+        listeners();
 
     }
+    private void listeners() {
+        searchPackageList = new ArrayList<>() ;
+
+
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                keyWord = s.toString();
+
+                if (keyWord.isEmpty()) {
+                    recyPackAdapter.updateItems(searchPackageList);
+                } else {
+                    searchCity();
+                }
+
+
+            }
+        });
+
+        btnSearch1.setOnClickListener(v -> {
+
+
+            lout1.setVisibility(View.GONE);
+            lout2.setVisibility(View.VISIBLE);
+
+
+        });
+        btnClose2.setOnClickListener(v -> {
+            lout1.setVisibility(View.VISIBLE);
+            lout2.setVisibility(View.GONE);
+
+        });
+
+        btnClose1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        recyPackAdapter.setCallback(callback);
+
+    }
+
+    private void searchCity() {
+        searchPackageList = new ArrayList<>() ;
+        searchRecycler = findViewById(R.id.rv_package);
+        recyPackAdapter = new SkyLightPackageShowCaseAdapter(SkylightSliderAct.this, searchPackageList,callback);
+        searchRecycler.setAdapter(recyPackAdapter);
+
+        searchPackageList.clear();
+
+        for (int i = 0; i < searchPackageList.size(); i++) {
+
+            if (searchPackageList.get(i).getpMItemName().toLowerCase().contains(keyWord)) {
+                SkyLightPackModel model = new SkyLightPackModel();
+                model.setpMItemName(searchPackageList.get(i).getpMItemName());
+                model.setpModeID(searchPackageList.get(i).getpModeID());
+                searchPackageList.add(model);
+            }
+        }
+        recyPackAdapter.updateItems(searchPackageList);
+        recyPackAdapter.notifyDataSetChanged();
+        searchRecycler.setAdapter(recyPackAdapter);
+    }
+
+
     private void fillPackageList() {
         skyLightPackage_2s = new ArrayList<>();
 
@@ -582,6 +691,70 @@ public class SkylightSliderAct extends AppCompatActivity implements SkylightPack
 
     @Override
     public void onItemClick(View view, int position) {
+        lightPackage = skyLightPackage_2s.get(position);
+        Bundle bundle = new Bundle();
+        customer= new Customer();
+
+        if(skyLightPackage_2s.size() >0){
+            lightPackage = skyLightPackage_2s.get(position);
+
+        }
+
+        if(customer !=null){
+            customerID=customer.getCusUID();
+        }
+        if(managerProfile !=null){
+            profileID=managerProfile.getPID();
+        }
+        if(lightPackage !=null){
+            type=lightPackage.getpMType();
+            duration=lightPackage.getpMDuration();
+            amount=lightPackage.getpMPrice();
+            grandTotal=duration*amount;
+            id=lightPackage.getpModeID();
+            tittle=lightPackage.getpMItemName();
+        }
+
+
+        skyLightPackage = new SkyLightPackage(id,customerID,tittle,amount,grandTotal,type,duration);
+        bundle.putParcelable("SkyLightPackage", skyLightPackage);
+        Intent payIntent = new Intent(SkylightSliderAct.this, PayNowActivity.class);
+        payIntent.putExtras(bundle);
+        payIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(payIntent);
+
+
+    }
+
+    @Override
+    public void touch(View.OnTouchListener onTouchListener) {
+        this.listener = onTouchListener;
+        adapter = new SkylightPackageSliderAdapter(SkylightSliderAct.this, skyLightPackage_2s,onItemsClickListener);
+
+        listener = new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int x = (int) event.getX();
+                int y = (int) event.getY();
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        Log.i("TAG", "touched down");
+
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        Log.i("TAG", "moving: (" + x + ", " + y + ")");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        Log.i("TAG", "touched up");
+                        break;
+                }
+
+                adapter.notifyDataSetChanged();
+
+                return false;
+            }
+        };
 
     }
 }

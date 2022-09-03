@@ -27,7 +27,7 @@ import java.util.List;
 
 public class SkyLightPackageShowCaseAdapter extends RecyclerView.Adapter<SkyLightPackageShowCaseAdapter.ViewHolder> implements ListAdapter {
 
-    private final List<SkyLightPackModel> skyLightPackage_2List;
+    private List<SkyLightPackModel> skyLightPackage_2List;
     private OnItemsClickListener listener;
     Context context;
     private ArrayList<SkyLightPackModel> packageList;
@@ -38,13 +38,29 @@ public class SkyLightPackageShowCaseAdapter extends RecyclerView.Adapter<SkyLigh
     public SkyLightPackageShowCaseAdapter(Context context, List<SkyLightPackModel> skyLightPackage_2List) {
         this.context = context;
         this.skyLightPackage_2List = skyLightPackage_2List;
-        this.context = context;
 
     }
+    public SkyLightPackageShowCaseAdapter(Context context, ArrayList<SkyLightPackModel> sliderDataArrayList, OnItemsClickListener callback) {
+        this.context = context;
+        this.packageList = sliderDataArrayList;
+        this.listener = callback;
+
+
+    }
+    public void setCallback(OnItemsClickListener callback) {
+        this.listener = callback;
+    }
+
     public SkyLightPackageShowCaseAdapter(SkyLightPackageActivity skyLightPackageActivity, List<SkyLightPackModel> skyLightPackage_2List) {
         this.context = skyLightPackageActivity;
         this.skyLightPackage_2List = skyLightPackage_2List;
 
+    }
+    public void updateItems(ArrayList<SkyLightPackModel> list) {
+        this.packageList = list;
+
+
+        notifyDataSetChanged();
     }
 
 

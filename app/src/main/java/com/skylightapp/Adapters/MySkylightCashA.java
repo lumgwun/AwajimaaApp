@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.skylightapp.Classes.AdminUser;
 import com.skylightapp.Classes.ExpandableTextView;
-import com.skylightapp.Classes.SkylightCash;
+import com.skylightapp.Classes.AppCash;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -26,10 +26,10 @@ import java.util.List;
 public class MySkylightCashA extends RecyclerView.Adapter<MySkylightCashA.RecyclerViewHolder>{
 
 
-    private ArrayList<SkylightCash> skylightCashArrayList;
+    private ArrayList<AppCash> appCashArrayList;
     private Context mcontext;
     int resources;
-    private List<SkylightCash> list = new ArrayList<>();
+    private List<AppCash> list = new ArrayList<>();
     private Callback callback;
     private AppCompatImageView avatarImageView;
     private ExpandableTextView commentTextView;
@@ -40,8 +40,8 @@ public class MySkylightCashA extends RecyclerView.Adapter<MySkylightCashA.Recycl
     int position;
     private OnItemsClickListener listener;
 
-    public MySkylightCashA(ArrayList<SkylightCash> reports, Context mcontext) {
-        this.skylightCashArrayList = reports;
+    public MySkylightCashA(ArrayList<AppCash> reports, Context mcontext) {
+        this.appCashArrayList = reports;
         this.mcontext = mcontext;
     }
     public MySkylightCashA(OnItemsClickListener onItemsClickListener, Context mcontext) {
@@ -78,15 +78,15 @@ public class MySkylightCashA extends RecyclerView.Adapter<MySkylightCashA.Recycl
         }
     }
 
-    public MySkylightCashA(Context context, int resources, ArrayList<SkylightCash> skylightCashes) {
-        this.skylightCashArrayList = skylightCashes;
+    public MySkylightCashA(Context context, int resources, ArrayList<AppCash> appCashes) {
+        this.appCashArrayList = appCashes;
         this.mcontext = context;
         this.resources = resources;
 
     }
 
-    public MySkylightCashA(Context context, ArrayList<SkylightCash> deposits) {
-        this.skylightCashArrayList = deposits;
+    public MySkylightCashA(Context context, ArrayList<AppCash> deposits) {
+        this.appCashArrayList = deposits;
         this.mcontext = context;
 
     }
@@ -104,24 +104,24 @@ public class MySkylightCashA extends RecyclerView.Adapter<MySkylightCashA.Recycl
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         holder.itemView.setLongClickable(true);
-        SkylightCash skylightCash = this.skylightCashArrayList.get(position);
-        holder.skylightCashID.setText(MessageFormat.format("Skylight Cash ID:{0}", String.valueOf(skylightCash.getSkylightCashID())));
-        holder.skylightCashDate.setText(MessageFormat.format("Collection date:{0}", skylightCash.getSkylightCashDate()));
-        holder.cashAmount.setText(MessageFormat.format("Amount : NGN{0}", String.format("%.2f", skylightCash.getSkylightCashAmount())));
-        holder.status.setText(MessageFormat.format("Status:{0}", skylightCash.getSkylightCashStatus()));
-        holder.payer.setText(MessageFormat.format("Cash Collector:{0}", skylightCash.getSCPayer()));
-        holder.payee.setText(MessageFormat.format("Payee:{0}",  skylightCash.getSCPayee()));
-        holder.tc_Code.setText(MessageFormat.format("Code:{0}", skylightCash.getSkylightCashCode()));
+        AppCash appCash = this.appCashArrayList.get(position);
+        holder.skylightCashID.setText(MessageFormat.format("Skylight Cash ID:{0}", String.valueOf(appCash.getSkylightCashID())));
+        holder.skylightCashDate.setText(MessageFormat.format("Collection date:{0}", appCash.getSkylightCashDate()));
+        holder.cashAmount.setText(MessageFormat.format("Amount : NGN{0}", String.format("%.2f", appCash.getSkylightCashAmount())));
+        holder.status.setText(MessageFormat.format("Status:{0}", appCash.getSkylightCashStatus()));
+        holder.payer.setText(MessageFormat.format("Cash Collector:{0}", appCash.getSCPayer()));
+        holder.payee.setText(MessageFormat.format("Payee:{0}",  appCash.getSCPayee()));
+        holder.tc_Code.setText(MessageFormat.format("Code:{0}", appCash.getSkylightCashCode()));
         holder.from.setText(MessageFormat.format("From:{0}", "Me"));
-        holder.to.setText(MessageFormat.format("To:{0}", skylightCash.getSkylightCashTo()));
+        holder.to.setText(MessageFormat.format("To:{0}", appCash.getSkylightCashTo()));
 
-        if (skylightCash.getSkylightCashStatus().equalsIgnoreCase("Verified")) {
+        if (appCash.getSkylightCashStatus().equalsIgnoreCase("Verified")) {
             holder.icon.setImageResource(R.drawable.verified_savings);
             holder.payer.setTextColor(Color.MAGENTA);
-        } else if (skylightCash.getSkylightCashStatus().equalsIgnoreCase(""))  {
+        } else if (appCash.getSkylightCashStatus().equalsIgnoreCase(""))  {
             holder.icon.setImageResource(R.drawable.unverified);
             holder.payer.setTextColor(Color.RED);
-        } else if (skylightCash.getSkylightCashStatus().equalsIgnoreCase("Unverified"))  {
+        } else if (appCash.getSkylightCashStatus().equalsIgnoreCase("Unverified"))  {
             holder.icon.setImageResource(R.drawable.unverified);
             holder.payer.setTextColor(Color.RED);
         }
@@ -164,7 +164,7 @@ public class MySkylightCashA extends RecyclerView.Adapter<MySkylightCashA.Recycl
 
     @Override
     public int getItemCount() {
-        return (null != skylightCashArrayList ? skylightCashArrayList.size() : 0);
+        return (null != appCashArrayList ? appCashArrayList.size() : 0);
     }
 
     public interface Callback {
@@ -174,7 +174,7 @@ public class MySkylightCashA extends RecyclerView.Adapter<MySkylightCashA.Recycl
     }
 
 
-    public SkylightCash getItemByPosition(int position) {
+    public AppCash getItemByPosition(int position) {
         return list.get(position);
     }
 
@@ -182,12 +182,12 @@ public class MySkylightCashA extends RecyclerView.Adapter<MySkylightCashA.Recycl
         this.callback = callback;
     }
 
-    public void setList(List<SkylightCash> list) {
+    public void setList(List<AppCash> list) {
         this.list = list;
         notifyDataSetChanged();
     }
     public interface OnItemsClickListener{
-        void onItemClick(SkylightCash skylightCash);
+        void onItemClick(AppCash appCash);
         void onItemClick(int adapterPosition);
     }
 }

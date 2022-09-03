@@ -36,7 +36,7 @@ public class PaymentCode extends  CustomerDailyReport implements Serializable {
     public static final String CODE_PROFILE_ID = "code_Prof_ID";
     public static final String CODE_REPORT_NO = "code_Report_No";
 
-    public static final String CREATE_CODE_TABLE = "CREATE TABLE IF NOT EXISTS " + CODE_TABLE + " (" + CODE_CUS_ID + " INTEGER NOT NULL, " + CODE_REPORT_NO + " INTEGER , " + CODE_OWNER_PHONE + " TEXT , " +
+    public static final String CREATE_CODE_TABLE = "CREATE TABLE IF NOT EXISTS " + CODE_TABLE + " (" + CODE_CUS_ID + " INTEGER , " + CODE_REPORT_NO + " INTEGER , " + CODE_OWNER_PHONE + " TEXT , " +
             CODE_PIN + " REAL , " + CODE_DATE + " TEXT , " + CODE_STATUS + " TEXT , " + CODE_MANAGER + " TEXT , " + CODE_ID + " INTEGER PRIMARY KEY , "+ CODE_PROFILE_ID + " INTEGER , "+ "FOREIGN KEY(" + CODE_PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," + "FOREIGN KEY(" + CODE_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "),"+  "FOREIGN KEY(" + CODE_REPORT_NO + ") REFERENCES " + DAILY_REPORT_TABLE + "(" + REPORT_ID + "))";
 
     private CustomerDailyReport customerDailyReport;

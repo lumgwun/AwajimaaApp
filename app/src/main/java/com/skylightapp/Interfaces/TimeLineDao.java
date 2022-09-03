@@ -1,5 +1,7 @@
 package com.skylightapp.Interfaces;
 
+import android.location.Location;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -27,7 +29,7 @@ public interface TimeLineDao {
     @Query("DELETE FROM TimeLine.timelineTable")
     void deleteAllTimeLine();
 
-
     @Query("SELECT * FROM TimeLine.timelineTable")
     LiveData<List<TimeLine>> getAllTimeLine();
+
 }

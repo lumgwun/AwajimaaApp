@@ -21,7 +21,22 @@ import com.skylightapp.Classes.GroupAccount;
 import com.skylightapp.Classes.MyTouchListener;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Transaction;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.AdminBalanceDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TranXDAO;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -42,15 +57,50 @@ public class GrpProfileTraxs extends AppCompatActivity implements  GrpTranxAdapt
     Random ran ;
     AppCompatTextView txtNoGrpSavingsUsers;
     private GroupAccount groupAccount;
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
+    private PaymDocDAO paymDocDAO;
+    private CusDAO cusDAO;
+    private PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
+    private PaymentDAO paymentDAO;
+    private AdminBalanceDAO adminBalanceDAO;
+    private TimeLineClassDAO timeLineClassDAO;
+    private static final String PREF_NAME = "skylight";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_grp_profile_traxs);
-        userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+
         gson = new Gson();
         userProfile=new Profile();
         random= new SecureRandom();
+        cusDAO= new CusDAO(this);
+        paymentCodeDAO= new PaymentCodeDAO(this);
+        profileDao= new ProfDAO(this);
+        cashDAO= new TCashDAO(this);
+        paymDocDAO= new PaymDocDAO(this);
+        tReportDAO= new TReportDAO(this);
+        paymentDAO= new PaymentDAO(this);
+        adminBalanceDAO= new AdminBalanceDAO(this);
+        timeLineClassDAO= new TimeLineClassDAO(this);
+
+        sodao= new SODAO(this);
+        tranXDAO= new TranXDAO(this);
+        sodao= new SODAO(this);
+        messageDAO= new MessageDAO(this);
+        loanDAO= new LoanDAO(this);
+
+        codeDAO= new CodeDAO(this);
+        acctDAO= new AcctDAO(this);
         json = userPreferences.getString("LastProfileUsed", "");
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -59,7 +109,7 @@ public class GrpProfileTraxs extends AppCompatActivity implements  GrpTranxAdapt
         if(bundle !=null){
             groupAccount = bundle.getParcelable("GroupAccount");
             grpAcctID=groupAccount.getGrpAcctNo();
-            transactionArrayList = dbHelper.getAllGrpAcctTranxs(grpAcctID);
+            transactionArrayList = tranXDAO.getAllGrpAcctTranxs(grpAcctID);
             grpTranxAdapter = new GrpTranxAdapter(GrpProfileTraxs.this, transactionArrayList);
             final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_GrpSTx);
             txtNoGrpSavingsUsers =  findViewById(R.id.noGrpSavingsTx);

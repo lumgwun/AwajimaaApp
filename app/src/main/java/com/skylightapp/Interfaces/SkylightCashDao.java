@@ -5,27 +5,26 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Update;
 
-import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkylightCash;
+import com.skylightapp.Classes.AppCash;
 
 import java.util.List;
 
 @androidx.room.Dao
 public interface SkylightCashDao {
     @Insert
-    void insert(SkylightCash skylightCash);
+    void insert(AppCash appCash);
 
 
     @Update
-    void update(SkylightCash skylightCash);
+    void update(AppCash appCash);
 
     @Delete
-    void delete(SkylightCash skylightCash);
+    void delete(AppCash appCash);
 
     //@Query("DELETE FROM PROFILE_TABLE")
     void deleteAllSkylightCash();
 
 
     //@Query("SELECT * FROM PROFILE_TABLE ORDER BY courseName ASC")
-    LiveData<List<SkylightCash>> getAllSkylightCash();
+    LiveData<List<AppCash>> getAllSkylightCash();
 }

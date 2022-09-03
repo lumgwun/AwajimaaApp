@@ -16,7 +16,19 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.circularreveal.CircularRevealRelativeLayout;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
@@ -35,6 +47,20 @@ public class PaymentCodeAdapter extends RecyclerView.Adapter<PaymentCodeAdapter.
     DBHelper dbHelper;
     private ViewHolder holder;
     private int position,code_list_row;
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
+    private PaymDocDAO paymDocDAO;
+
+    CusDAO cusDAO;
+    PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
 
     public PaymentCodeAdapter(FragmentActivity activity, ArrayList<PaymentCode> paymentCodes) {
 
@@ -117,6 +143,11 @@ public class PaymentCodeAdapter extends RecyclerView.Adapter<PaymentCodeAdapter.
         holder.codeDate.setText(paymentCode.getCodeDate());
         holder.manager.setText(paymentCode.getCodeManager());
         holder.codeStatus.setText(paymentCode.getCodeStatus());
+
+        paymentCodeDAO= new PaymentCodeDAO(context.getApplicationContext());
+
+        codeDAO= new CodeDAO(context.getApplicationContext());
+
         holder.switchStatus.setText("");
         if (holder.switchStatus.isChecked()){
             holder.switchStatus.setText("Verified");
@@ -124,7 +155,7 @@ public class PaymentCodeAdapter extends RecyclerView.Adapter<PaymentCodeAdapter.
             dbHelper = new DBHelper(context.getApplicationContext());
             String status1 ="Verified";
             int codeId =paymentCode.getCodeID();
-            dbHelper.updateSavingsCodeStatus(codeId,status1);
+            codeDAO.updateSavingsCodeStatus(codeId,status1);
             notifyDataSetChanged();
 
         }else{
@@ -133,7 +164,7 @@ public class PaymentCodeAdapter extends RecyclerView.Adapter<PaymentCodeAdapter.
             dbHelper = new DBHelper(context.getApplicationContext());
             String status2 = "Not Verified";
             int codeId = paymentCode.getCodeID();
-            dbHelper.updateSavingsCodeStatus(codeId, status2);
+            codeDAO.updateSavingsCodeStatus(codeId, status2);
             notifyDataSetChanged();
         }
 
@@ -147,7 +178,7 @@ public class PaymentCodeAdapter extends RecyclerView.Adapter<PaymentCodeAdapter.
                             if(paymentCode !=null){
                                 int codeId = paymentCode.getCodeID();
                                 Toast.makeText(context, "You are deleting Savings Code " + codeId + "," + position, Toast.LENGTH_SHORT).show();
-                                dbHelper.deleteSavingsCode(codeId);
+                                codeDAO.deleteSavingsCode(codeId);
                                 notifyDataSetChanged();
 
                             }

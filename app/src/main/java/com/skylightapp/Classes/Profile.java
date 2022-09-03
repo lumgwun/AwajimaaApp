@@ -19,7 +19,7 @@ import com.skylightapp.Admins.AdminBankDeposit;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Inventory.StockTransfer;
 import com.skylightapp.Inventory.Stocks;
-import com.skylightapp.RealEstate.Properties;
+
 import com.skylightapp.SuperAdmin.Skylight;
 import com.skylightapp.Tellers.TellerCash;
 
@@ -32,6 +32,8 @@ import java.util.Locale;
 
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
+import static com.skylightapp.Markets.Market.MARKET_ID;
+import static com.skylightapp.Markets.Market.MARKET_TABLE;
 
 //@Entity(tableName = "RoomProfileTable")
 public class Profile implements Parcelable, Serializable, BaseColumns {
@@ -128,6 +130,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
     //@Ignore
     public static final String SPONSOR_TABLE_EMAIL = "sponsor_Table_Email";
+    public static final String PICTURE_MARKET_ID = "pic_market_ID";
 
 
 
@@ -137,7 +140,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
     //@Ignore
     public static final String CREATE_PIXTURE_TABLE = "CREATE TABLE " + PICTURE_TABLE + " (" + PROFILE_PIC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PROFID_FOREIGN_KEY_PIX + " INTEGER, " + CUS_ID_PIX_KEY + " INTEGER , " +
-            PICTURE_URI + " TEXT ,"+"FOREIGN KEY(" + PROFID_FOREIGN_KEY_PIX  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + CUS_ID_PIX_KEY + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+            PICTURE_URI + " TEXT ,"+ PICTURE_MARKET_ID + " TEXT, "+"FOREIGN KEY(" + PICTURE_MARKET_ID  + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+"FOREIGN KEY(" + PROFID_FOREIGN_KEY_PIX  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + CUS_ID_PIX_KEY + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
     //@Ignore
     public static final String CREATE_PASSWORD_TABLE = "CREATE TABLE IF NOT EXISTS " + PASSWORD_TABLE + " (" + PASSWORD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PROF_ID_FOREIGN_KEY_PASSWORD + " INTEGER, "+
             PASSWORD + " TEXT , " + CUS_ID_PASS_KEY + " INTEGER , " +"FOREIGN KEY(" + PROF_ID_FOREIGN_KEY_PASSWORD  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +
@@ -366,8 +369,6 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     @Ignore
     private ArrayList<OtherBusiness> profile_Other_Businesses;
     @Ignore
-    private ArrayList<Properties> profile_Properties;
-    @Ignore
     private ArrayList<CustomerDailyReport> profile_DailyReports;
     @Ignore
     private ArrayList<SkyLightPackage> profile_SkyLightPackages;
@@ -563,7 +564,6 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         //timeLines = in.createTypedArrayList(TimeLine.CREATOR);
         profile_Customers = in.createTypedArrayList(Customer.CREATOR);
         //businesses = in.createTypedArrayList(Business.CREATOR);
-        profile_Properties = in.createTypedArrayList(Properties.CREATOR);
         profile_DailyReports = in.createTypedArrayList(CustomerDailyReport.CREATOR);
         profile_SkyLightPackages = in.createTypedArrayList(SkyLightPackage.CREATOR);
         //loans = in.createTypedArrayList(Loan.CREATOR);
@@ -1286,13 +1286,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public void addInvAcct(int comAcctID, double v, String zero_interest, String currentDate) {
 
     }*/
-    @Ignore
-    public void addPProperty(long propertyID, long profileId, String tittleOfProperty, String description, String propertyType, String town, String lga, Double price, String priceDuration, String propertyCapacity, String typeOfLetting, Date propertyDate, Uri propertylink, String status) {
-        profile_Properties = new ArrayList<>();
-        String propertyNo = "property" + (profile_Properties.size() + 1);
-        Properties property = new Properties(propertyID,  profileId, tittleOfProperty, description,  propertyType,town, lga, price, priceDuration, propertyCapacity, typeOfLetting,propertyDate,propertylink,status);
-        profile_Properties.add(property);
-    }
+
     @Ignore
 
     public void addPTellerReport(int dbaseID, int reportID, String date, double balance, String status) {
@@ -1532,7 +1526,6 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         parcel.writeTypedList(profile_TimeLines);
         parcel.writeTypedList(profile_Customers);
         parcel.writeTypedList(profile_Other_Businesses);
-        parcel.writeTypedList(profile_Properties);
         parcel.writeTypedList(profile_DailyReports);
         parcel.writeTypedList(profile_SkyLightPackages);
         parcel.writeTypedList(profile_Loans);

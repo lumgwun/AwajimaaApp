@@ -32,10 +32,12 @@ import com.rom4ek.arcnavigationview.ArcNavigationView;
 import com.skylightapp.Admins.AdminLoanList;
 import com.skylightapp.Admins.CustomerListActivity;
 import com.skylightapp.Admins.SOCompletedList;
+import com.skylightapp.Admins.SOListAct;
 import com.skylightapp.Admins.SendUserMessageAct;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Customers.CusLoanAct;
 import com.skylightapp.Customers.CusOrderTab;
 import com.skylightapp.Customers.CustUtilTab;
 import com.skylightapp.Customers.CustomerHelpActTab;
@@ -46,7 +48,21 @@ import com.skylightapp.Customers.NewPackCusAct;
 import com.skylightapp.Customers.PackListTab;
 import com.skylightapp.Customers.PackageTab;
 import com.skylightapp.Customers.SOTab;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.AdminBalanceDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.LoginActivity;
 import com.skylightapp.MyTimelineAct;
 import com.skylightapp.PasswordRecovAct;
@@ -117,6 +133,20 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
     private Date today;
     String dateOfToday;
     private static final String PREF_NAME = "skylight";
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
+    private PaymDocDAO paymDocDAO;
+    private CusDAO cusDAO;
+    private PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
+    private PaymentDAO paymentDAO;
+    private AdminBalanceDAO adminBalanceDAO;
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
 
     @SuppressLint("SetTextI18n")
@@ -130,6 +160,23 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
         userProfile=new Profile();
         adminBalance= new AdminBalance();
         dbHelper= new DBHelper(this);
+        cusDAO= new CusDAO(this);
+        paymentCodeDAO= new PaymentCodeDAO(this);
+        profileDao= new ProfDAO(this);
+        cashDAO= new TCashDAO(this);
+        paymDocDAO= new PaymDocDAO(this);
+        tReportDAO= new TReportDAO(this);
+        paymentDAO= new PaymentDAO(this);
+        adminBalanceDAO= new AdminBalanceDAO(this);
+
+        sodao= new SODAO(this);
+        tranXDAO= new TranXDAO(this);
+        sodao= new SODAO(this);
+        messageDAO= new MessageDAO(this);
+        loanDAO= new LoanDAO(this);
+
+        codeDAO= new CodeDAO(this);
+        acctDAO= new AcctDAO(this);
         SharedPrefUserName=userPreferences.getString("USER_NAME", "");
         SharedPrefUserPassword=userPreferences.getString("USER_PASSWORD", "");
         SharedPrefCusID=userPreferences.getString("CUSTOMER_ID", "");
@@ -179,7 +226,7 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
         DBHelper applicationDb = new DBHelper(this);
         if(userProfile !=null){
             profileID=userProfile.getPID();
-            Bitmap bitmap = applicationDb.getProfilePicture(profileID);
+            Bitmap bitmap = profileDao.getProfilePicture(profileID);
             imgProfilePic.setImageBitmap(bitmap);
         }
         imgProfilePic.setOnClickListener(new View.OnClickListener() {
@@ -189,8 +236,8 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
 
             }
         });
-        accountBalance = dbHelper.getAdminReceivedBalance();
-        manualPayment=dbHelper.getTotalPaymentToday1(dateOfToday);
+        accountBalance = adminBalanceDAO.getAdminReceivedBalance();
+        manualPayment=paymentDAO.getTotalPaymentToday1(dateOfToday);
         totalSavingsToday=dbHelper.getTotalSavingsToday(dateOfToday);
         if(totalSavingsToday>0){
             textAmtOfSavings.setText(MessageFormat.format("Savings today:{0}", totalSavingsToday));
@@ -503,7 +550,7 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
         DBHelper applicationDb = new DBHelper(this);
         if(userProfile !=null){
             profileID=userProfile.getPID();
-            Bitmap bitmap = applicationDb.getProfilePicture(profileID);
+            Bitmap bitmap = profileDao.getProfilePicture(profileID);
             //CircleImageView imgProfilePic = headerView.findViewById(R.id.profile_image_Acctant);
             //imgProfilePic.setImageBitmap(bitmap);
         }
@@ -635,7 +682,7 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
                 break;
 
             case R.id.nav_Acctant_SO:
-                Intent chat = new Intent(AcctantBackOffice.this, MyTimelineAct.class);
+                Intent chat = new Intent(AcctantBackOffice.this, SOListAct.class);
                 startActivity(chat);
                 break;
 
@@ -644,7 +691,7 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
                 startActivity(supportInt);
                 break;
             case R.id.nav_loanAcctant:
-                Intent intPref = new Intent(AcctantBackOffice.this, UserPrefActivity.class);
+                Intent intPref = new Intent(AcctantBackOffice.this, CusLoanTab.class);
                 startActivity(intPref);
                 break;
             case R.id.nav_PaymentAcctant:

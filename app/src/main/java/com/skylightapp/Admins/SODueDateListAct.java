@@ -23,6 +23,7 @@ import com.skylightapp.Classes.AlarmReceiver;
 import com.skylightapp.Classes.ImportantDates;
 import com.skylightapp.Classes.StandingOrder;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.SODAO;
 import com.skylightapp.R;
 import com.skylightapp.SuperAdmin.UpDateSO;
 
@@ -62,6 +63,7 @@ public class SODueDateListAct extends AppCompatActivity implements  StandingOrde
     AppCompatSpinner spnDaysAhead;
     private AppCompatButton btnSearchDB;
     private  Bundle bundle;
+    private SODAO sodao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +75,7 @@ public class SODueDateListAct extends AppCompatActivity implements  StandingOrde
         btnSearchDB = findViewById(R.id.buttonSearchSODB);
         spnDaysAhead = findViewById(R.id.days_SOspn_);
         bundle= new Bundle();
+        sodao= new SODAO(this);
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
         spnDaysAhead.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -102,7 +105,7 @@ public class SODueDateListAct extends AppCompatActivity implements  StandingOrde
         Calendar calendar1 = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String todayDate = sdf.format(calendar1.getTime());
-        dueSOCount=dbHelper.getDueSOTodayCount(todayDate);
+        dueSOCount=sodao.getDueSOTodayCount(todayDate);
 
         if(dueSOCount >0){
             txtDueSOCount.setText("Due SO Today:"+ dueSOCount);
@@ -115,7 +118,7 @@ public class SODueDateListAct extends AppCompatActivity implements  StandingOrde
         if(standingOrder !=null){
             String soEndDate = standingOrder.getSoEndDate();
             try {
-                standingOrders = dbHelper.getAllSOEndingToday(soEndDate);
+                standingOrders = sodao.getAllSOEndingToday(soEndDate);
             } catch (SQLiteException e) {
                 System.out.println("Oops!");
             }
@@ -135,8 +138,8 @@ public class SODueDateListAct extends AppCompatActivity implements  StandingOrde
             @Override
             public void onClick(View view) {
                 recyclerViewToday.setVisibility(View.GONE);
-                standingOrderArrayList = dbHelper.getSOEndingCustomDay(dateOfCustomDays);
-                customDaySOCount =dbHelper.getDueSOCustomCount(dateOfCustomDays);
+                standingOrderArrayList = sodao.getSOEndingCustomDay(dateOfCustomDays);
+                customDaySOCount =sodao.getDueSOCustomCount(dateOfCustomDays);
                 LinearLayoutManager layoutManagerC
                         = new LinearLayoutManager(SODueDateListAct.this, LinearLayoutManager.HORIZONTAL, false);
                 RecyclerViewCustomDate.setLayoutManager(layoutManagerC);

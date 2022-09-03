@@ -7,6 +7,8 @@ import android.os.Parcelable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.skylightapp.Markets.Market;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -38,19 +40,20 @@ public class Loan implements Serializable, Parcelable {
     public static final String LOAN_END_DATE = "loan_end_date";
     public static final String LOAN_STATUS = "loan_status";
     public static final String LOAN_DURATION = "loan_duration";
-    public static final String LOAN_CUSTOMER = "loan_cus";
+    public static final String LOAN_ACCT_NAME = "loan_cus";
     public static final String LOAN_CODE = "loan_code";
     public static final String LOAN_TABLE = "loan_table";
     public static final String LOAN_CUS_ID = "loan_Cus_id";
     public static final String LOAN_PACK_ID = "loan_Package_id";
     public static final String LOAN_PROF_ID = "loan_Prof_id";
     public static final String LOAN_ACCT_NO = "loan_Acct_No";
+    public static final String LOAN_BANK_ACCT_NO = "loan_BankAcct_No";
 
     public static final String CREATE_LOAN_TABLE = "CREATE TABLE IF NOT EXISTS " + LOAN_TABLE + " (" + LOAN_ID + " INTEGER , " +
             LOAN_CUS_ID + " INTEGER , " +LOAN_PROF_ID + " INTEGER  , " + LOAN_ACCT_NO + " INTEGER , " + LOAN_TYPE + " TEXT, " + LOAN_AMOUNT + " REAL, " + LOAN_DURATION + " TEXT, " +
             LOAN_INTEREST + " REAL, " + LOAN_FIXED_PAYMENT + " REAL, " + LOAN_TOTAL_INTEREST + " REAL, " + LOAN_DOWN_PAYMENT + " REAL, " + LOAN_DISPOSABLE_COM + " REAL, " +
             LOAN_MONTHLY_COM + " REAL, " + LOAN_BALANCE + " REAL, " + LOAN_DATE + " TEXT, " + LOAN_START_DATE + " TEXT, " + LOAN_END_DATE + " TEXT, " +
-            LOAN_STATUS + " TEXT, " + LOAN_CUSTOMER + " TEXT, " + LOAN_CODE + " REAL, "  + LOAN_PACK_ID + " INTEGER, " + "FOREIGN KEY(" + LOAN_PACK_ID + ") REFERENCES " + PACKAGE_TABLE + "(" + PACKAGE_ID + ")," + "FOREIGN KEY(" + LOAN_ACCT_NO + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + "),"+ "FOREIGN KEY(" + LOAN_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "PRIMARY KEY(" + LOAN_ID  + "), " +
+            LOAN_STATUS + " TEXT, " + LOAN_ACCT_NAME + " TEXT, " + LOAN_CODE + " REAL, "  + LOAN_PACK_ID + " INTEGER, "+ LOAN_BANK_ACCT_NO + " INTEGER, " + "FOREIGN KEY(" + LOAN_PACK_ID + ") REFERENCES " + PACKAGE_TABLE + "(" + PACKAGE_ID + ")," + "FOREIGN KEY(" + LOAN_ACCT_NO + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + "),"+ "FOREIGN KEY(" + LOAN_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "PRIMARY KEY(" + LOAN_ID  + "), " +
             "FOREIGN KEY(" + LOAN_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
     private static final long serialVersionUID = 1L;
@@ -65,11 +68,15 @@ public class Loan implements Serializable, Parcelable {
     private String loanOfficeBranch;
     private  double loanBalance;
     private String loanBank;
+    private String loanType;
+    private int loanDuration;
     private String loanAcctName;
     private String loanBankAcctNo;
     private int loanAcctID;
     Profile loan_profile;
     Customer loan_customer;
+    private Market loan_Market;
+    private ArrayList<Market> loanMarkets;
     Payment loan_payment;
     Account loan_account;
     private TransactionGranting loan_granting;
@@ -114,6 +121,10 @@ public class Loan implements Serializable, Parcelable {
     private ArrayList<Profile> profiles;
     private String acctType;
     private StandingOrderAcct SOAcct;
+    public Loan() {
+        super();
+
+    }
 
 
     public Loan(int profileID, int loanId, int loanType, BigDecimal amount, BigDecimal interest, BigDecimal fixedPayment, BigDecimal totalInterests, BigDecimal downPayment, BigDecimal disposableCommission, BigDecimal monthlyCommission, BigDecimal residuePayment, String loanDate, String loanStartDate, String loanEndDate, String loanStatus) {
@@ -162,9 +173,11 @@ public class Loan implements Serializable, Parcelable {
         this.loan_customer = customer1;
     }
 
-    public Loan() {
-        super();
 
+    public void addPBusiness(Market loan_Market) {
+        loanMarkets = new ArrayList<>();
+        Market market = new Market(loan_Market);
+        loanMarkets.add(market);
     }
 
     public Loan(int loanNumber, BigDecimal amount, String loan_date, String loan_status) {
@@ -397,7 +410,7 @@ public class Loan implements Serializable, Parcelable {
         this.loan_status = loan_status;
     }
 
-    public void setLoanType(String date) {
+    public void setLoan_date(String date) {
         this.loan_date = date;
     }
     public void setLoan_startDate(String loan_startDate) {
@@ -688,6 +701,30 @@ public class Loan implements Serializable, Parcelable {
 
     public void setLoanAcctID(int loanAcctID) {
         this.loanAcctID = loanAcctID;
+    }
+
+    public String getLoanType() {
+        return loanType;
+    }
+
+    public void setLoanType(String loanType) {
+        this.loanType = loanType;
+    }
+
+    public Market getLoan_Market() {
+        return loan_Market;
+    }
+
+    public void setLoan_Market(Market loan_Market) {
+        this.loan_Market = loan_Market;
+    }
+
+    public int getLoanDuration() {
+        return loanDuration;
+    }
+
+    public void setLoanDuration(int loanDuration) {
+        this.loanDuration = loanDuration;
     }
 }
 

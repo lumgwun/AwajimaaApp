@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Markets.MyMStocksListAct">
+
+    <com.github.clans.fab.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:id="@+id/homeFabS"
+        app:fab_colorNormal="@color/red_brown_dark"
+        app:fab_colorRipple="@color/colorPrimaryDark"
+        app:fab_progress_color="@color/YELLOW_LIGHT"
+        android:layout_marginTop="10dp"
+        app:fab_type="normal"
+        app:fab_size="normal"
+        android:layout_height="wrap_content"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

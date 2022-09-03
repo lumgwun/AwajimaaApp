@@ -25,6 +25,7 @@ import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Classes.User;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -45,6 +46,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     Profile userProfile;
     Customer customer;
     User user;
+    private TranXDAO tranXDAO;
     SharedPreferences userPreferences;
     private Gson gson;
     private OnItemsClickListener listener;
@@ -184,6 +186,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         final Customer customer = new Customer();
         long customerID = customer.getCusUID();
         final Payment payee = new Payment();
+        tranXDAO= new TranXDAO(context.getApplicationContext());
         holder.txtTransactionTitle.setText(MessageFormat.format("Type: {0}{1}", transaction.getTranXType(), transaction.getTransactionID()));
         holder.txtTransactionAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", transaction.getRecordAmount())));
         holder.destinationAccount.setText(MessageFormat.format("Destination Acct: {0}", transaction.getTranxDestAcct()));
@@ -214,7 +217,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         holder.switchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 holder.status.setText("Approved");
-                applicationDb.updateTransactionStatus((customerDailyReport.getRecordStatus()),transaction);
+                tranXDAO.updateTransactionStatus((customerDailyReport.getRecordStatus()),transaction);
 
             } else {
                 holder.status.setText("Not approved");

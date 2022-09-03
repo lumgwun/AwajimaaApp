@@ -58,10 +58,10 @@ public class CusSimpleAdapter extends ArrayAdapter implements SpinnerAdapter {
     @SuppressLint("ViewHolder")
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflter.inflate(R.layout.prop_item, null);
-        BezelImageView icon = (BezelImageView) view.findViewById(R.id.user_pix11);
-        TextView names = (TextView) view.findViewById(R.id.nameOfCustomer8999);
-        TextView role = (TextView) view.findViewById(R.id.roleOCustomer);
+        view = inflter.inflate(R.layout.cus_item, null);
+        BezelImageView icon = (BezelImageView) view.findViewById(R.id.userP);
+        TextView names = (TextView) view.findViewById(R.id.UCusName);
+        TextView role = (TextView) view.findViewById(R.id.UCusRole);
         for ( i = 0; i < users.size(); i++) {
             names.setText((CharSequence) users.get(i));
 

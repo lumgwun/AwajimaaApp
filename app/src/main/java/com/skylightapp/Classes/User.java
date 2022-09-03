@@ -18,7 +18,7 @@ import com.skylightapp.Admins.AdminBankDeposit;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Inventory.StockTransfer;
 import com.skylightapp.Inventory.Stocks;
-import com.skylightapp.RealEstate.Properties;
+
 import com.skylightapp.SuperAdmin.Skylight;
 import com.skylightapp.Tellers.TellerCash;
 

@@ -49,6 +49,8 @@ import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.LoginDirAct;
 import com.skylightapp.PayNowActivity;
 import com.skylightapp.R;
@@ -177,6 +179,7 @@ public class OldPackCusAct extends AppCompatActivity {
     private static boolean isPersistenceEnabled = false;
     private  Account account;
     private static final String PREF_NAME = "skylight";
+    private TimeLineClassDAO timeLineClassDAO;
 
 
     private LinearLayoutCompat layout_month,layout_total,layout_button,layout_days,layout_amount,layout_type_package,layout_old_package,layout_select_my_cust, layout_select_customer,layout_sub_status;
@@ -496,10 +499,10 @@ public class OldPackCusAct extends AppCompatActivity {
                                     System.out.println("Oops!");
                                 }*/
 
-
+                                timeLineClassDAO= new TimeLineClassDAO(this);
                                 try {
 
-                                    dbHelper.insertTimeLine(timelineTittle1, timelineDetails1, reportDate, mCurrentLocation);
+                                    timeLineClassDAO.insertTimeLine(timelineTittle1, timelineDetails1, reportDate, mCurrentLocation);
                                     dbHelper.insertDailyReport(packageID, reportID, profileID, customerID, reportDate, savingsAmount, numberOfDays, newTotal, newAmountContributedSoFar, newAmountRemaining, newDaysRemaining, status);
 
                                 } catch (SQLiteException e) {

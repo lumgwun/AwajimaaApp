@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="8dp"
+    android:id="@+id/cardViewC"
+    card_view:cardCornerRadius="10dp"
+    card_view:cardElevation="2dp"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/id_l1"
+        android:padding="20dp"
+        android:orientation="vertical"
+        android:background="@drawable/rect_their44"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/img_acom"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:src="@drawable/transfer3"
+                android:contentDescription="Account Image" />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <TextView
+            android:layout_width="match_parent"
+            android:text=" Gorontula"
+            android:id="@+id/com_name"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/red_brown_dark"
+            android:layout_height="wrap_content"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:text="Type"
+            android:id="@+id/com_type"
+            android:layout_marginEnd="20dp"
+            android:textStyle="bold"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/red_brown_dark"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:text=" For fertility treatment"
+            android:id="@+id/com_des"
+            android:layout_marginEnd="20dp"
+            android:textStyle="bold"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/red_brown_dark"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:text=" 2378"
+            android:id="@+id/com_qty"
+            android:textStyle="bold"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="20dp"
+            android:textColor="@color/red_brown_dark"
+            android:layout_height="wrap_content"/>
+
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

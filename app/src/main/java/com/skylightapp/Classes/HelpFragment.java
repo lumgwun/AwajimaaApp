@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.R;
 
 import java.time.LocalTime;
@@ -26,6 +28,8 @@ public class HelpFragment extends Fragment {
 
     private String mParam1;
     private String mParam2;
+    private MessageDAO messageDAO;
+    private ProfDAO profileDao;
     DBHelper helper;
     Profile userProfile;
     Context context;
@@ -75,17 +79,19 @@ public class HelpFragment extends Fragment {
                 try {
                     int userId = Integer.parseInt(inputId.getText().toString());
                     String message = inputMessage.getText().toString();
+                    ProfDAO profDAO = new ProfDAO(context);
                     DBHelper selector = new DBHelper(context);
+                    MessageDAO messageDAO1 = new MessageDAO(context);
                     boolean canLeaveMessage = true;
                     Message message2= new Message();
-                    if (!(selector.getUserDetails((userId)) instanceof Customer)) {
+                    if (!(profDAO.getUserDetails((userId)) instanceof Customer)) {
                         confirmationMessage += context.getString(R.string.cantLeaveMessage);
                         canLeaveMessage = false;
                     }
                     if (canLeaveMessage) {
-                        if (selector.getUserDetails(userId) != null) {
+                        if (profDAO.getUserDetails(userId) != null) {
                             int id = userProfile.leaveMessage(message, userId);
-                            selector.saveNewMessage(userId,userProfile.getPID(),message2,today);
+                            messageDAO1.saveNewMessage(userId,userProfile.getPID(),message2,today);
                             confirmationMessage += context.getString(R.string.messageLeft) + String.valueOf(id);
                         }
                     }

@@ -1,7 +1,6 @@
 package com.skylightapp.Classes;
 
 import android.app.Application;
-import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
@@ -52,7 +51,7 @@ public class RoomRepo {
     private LiveData<List<EmergencyReport>> allEmergencyReports;
     private LiveData<List<EmergReportNext>> allEmergRepNexts;
     private LiveData<List<SkyLightPackage>> allSkylightPacks;
-    private LiveData<List<SkylightCash>> allSkylightCashes;
+    private LiveData<List<AppCash>> allSkylightCashes;
     private LiveData<List<StandingOrder>> allSOs;
     private LiveData<List<Account>> allAccounts;
     private LiveData<List<StandingOrderAcct>> allSOAccts;

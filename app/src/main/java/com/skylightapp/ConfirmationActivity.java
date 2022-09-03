@@ -17,6 +17,8 @@ import com.skylightapp.Customers.CusLoanTab;
 import com.skylightapp.Customers.CustomerPayAct;
 import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Customers.SendCustomerMessage;
+import com.skylightapp.Markets.CommodityAct;
+import com.skylightapp.Markets.MarketTab;
 import com.skylightapp.SuperAdmin.ADepositList;
 import com.skylightapp.SuperAdmin.ChartAct;
 import com.skylightapp.SuperAdmin.OfficeCreatorAct;
@@ -64,7 +66,7 @@ public class ConfirmationActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
                             prefManager.setFirstTimeLaunch(false);
-                                Intent loginRIntent = new Intent(ConfirmationActivity.this, TestAct.class);
+                                Intent loginRIntent = new Intent(ConfirmationActivity.this, MarketTab.class);
                             loginRIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(loginRIntent);
                             overridePendingTransition(R.anim.slide_in_right,
@@ -81,7 +83,7 @@ public class ConfirmationActivity extends AppCompatActivity {
     }
     private void launchHomeScreen() {
         prefManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(ConfirmationActivity.this, TestAct.class));
+        startActivity(new Intent(ConfirmationActivity.this, MarketTab.class));
         overridePendingTransition(R.anim.slide_in_right,
                 R.anim.slide_out_left);
         finish();

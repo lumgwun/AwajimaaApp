@@ -18,7 +18,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.circularreveal.CircularRevealRelativeLayout;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.AdminBalanceDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
@@ -33,6 +47,11 @@ public class AllPaymentDocAdapter extends RecyclerView.Adapter<AllPaymentDocAdap
     private ScaleGestureDetector scaleGestureDetector;
     private float mScaleFactor = 1.0f;
     DBHelper dbHelper;
+    private Customer customer;
+    private int customerDailyReportID;
+
+    private PaymDocDAO paymDocDAO;
+
 
     public AllPaymentDocAdapter(Context context, ArrayList<PaymentDoc> documents) {
         this.context = context;
@@ -103,7 +122,13 @@ public class AllPaymentDocAdapter extends RecyclerView.Adapter<AllPaymentDocAdap
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(final ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-        Customer customer = new Customer();
+        final PaymentDoc paymentDoc = mValues.get(position);
+        if(paymentDoc !=null){
+            customer = paymentDoc.getDocCustomer();
+            customerDailyReportID = paymentDoc.getDocReportID();
+
+        }
+
         class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
             @Override
             public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
@@ -114,13 +139,13 @@ public class AllPaymentDocAdapter extends RecyclerView.Adapter<AllPaymentDocAdap
                 return true;
             }
         }
-        CustomerDailyReport customerDailyReport = new CustomerDailyReport();
+
         ScaleGestureDetector gestureDetector = new ScaleGestureDetector(context.getApplicationContext(), new ScaleListener());
-        final PaymentDoc paymentDoc = mValues.get(position);
+
         holder.customerID.setText(valueOf(customer.getCusUID()));
         holder.tittle.setText(paymentDoc.getDocTittle());
 
-        holder.savingsID.setText(valueOf(customerDailyReport.getRecordID()));
+        holder.savingsID.setText(valueOf(customerDailyReportID));
 
 
         //holder.paymentDocument.setImageURI(Uri.parse(paymentDocument.getDocumentLink()));
@@ -132,6 +157,7 @@ public class AllPaymentDocAdapter extends RecyclerView.Adapter<AllPaymentDocAdap
                     .into(holder.imageView);
         }
         int docID = paymentDoc.getDocumentId();
+        paymDocDAO=new PaymDocDAO(context.getApplicationContext());
 
         if (holder.view != null) {
             holder.view.setOnClickListener(new View.OnClickListener() {
@@ -142,7 +168,7 @@ public class AllPaymentDocAdapter extends RecyclerView.Adapter<AllPaymentDocAdap
                         public void onClick(DialogInterface dialogInterface, int i) {
                             if (i == DialogInterface.BUTTON_POSITIVE) {
                                 Toast.makeText(context, "You are deleting payment Document of  " + docID + "," + position, Toast.LENGTH_SHORT).show();
-                                dbHelper.deletePaymentDoc(docID);
+                                paymDocDAO.deletePaymentDoc(docID);
 
                             }
 
@@ -163,7 +189,7 @@ public class AllPaymentDocAdapter extends RecyclerView.Adapter<AllPaymentDocAdap
             dbHelper = new DBHelper(context.getApplicationContext());
             String status1 = "Verified";
             //long docID = paymentDocument.getDocumentId();
-            dbHelper.updateDocumentStatus(docID, status1);
+            paymDocDAO.updateDocumentStatus(docID, status1);
             notifyDataSetChanged();
 
 
@@ -174,7 +200,7 @@ public class AllPaymentDocAdapter extends RecyclerView.Adapter<AllPaymentDocAdap
             dbHelper = new DBHelper(context.getApplicationContext());
             String status2 = "Not Verified";
             //long docID = paymentDocument.getDocumentId();
-            dbHelper.updateDocumentStatus(docID, status2);
+            paymDocDAO.updateDocumentStatus(docID, status2);
             notifyDataSetChanged();
         }
     }

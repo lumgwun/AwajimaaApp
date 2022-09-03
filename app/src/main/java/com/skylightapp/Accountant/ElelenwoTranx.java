@@ -21,7 +21,19 @@ import com.skylightapp.Adapters.TransactionAdapter;
 import com.skylightapp.Adapters.TranxSimpleAdapter;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Transaction;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
 import com.skylightapp.SuperAdmin.UpdateTranxAct;
 
@@ -60,6 +72,18 @@ public class ElelenwoTranx extends AppCompatActivity implements TransactionAdapt
     double transactionTotal;
     protected DatePickerDialog datePickerDialog;
     SQLiteDatabase sqLiteDatabase;
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
+    private PaymDocDAO paymDocDAO;
+    private CusDAO cusDAO;
+    private PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +98,21 @@ public class ElelenwoTranx extends AppCompatActivity implements TransactionAdapt
         txtTransactionCount4theDay =findViewById(R.id.txCountElelenwo);
         txtTransactionTotal4theDay =findViewById(R.id.txAmountElelenwo);
         dbHelper=new DBHelper(this);
+        cusDAO= new CusDAO(this);
+        paymentCodeDAO= new PaymentCodeDAO(this);
+        profileDao= new ProfDAO(this);
+        cashDAO= new TCashDAO(this);
+        paymDocDAO= new PaymDocDAO(this);
+        tReportDAO= new TReportDAO(this);
+
+        sodao= new SODAO(this);
+        tranXDAO= new TranXDAO(this);
+        sodao= new SODAO(this);
+        messageDAO= new MessageDAO(this);
+        loanDAO= new LoanDAO(this);
+
+        codeDAO= new CodeDAO(this);
+        acctDAO= new AcctDAO(this);
 
         picker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,18 +134,18 @@ public class ElelenwoTranx extends AppCompatActivity implements TransactionAdapt
             dbHelper = new DBHelper(this);
             sqLiteDatabase = dbHelper.getWritableDatabase();
             try {
-                transactionArrayList = dbHelper.getTransactionsForBranchAtDate(officeBranch,currentDate);
-                branchTranxCount =dbHelper.getTransactionCountForBranchAtDate(officeBranch,currentDate);
-                transactionTotal=dbHelper.getTotalTransactionForBranchAtDate(officeBranch,currentDate);
+                transactionArrayList = tranXDAO.getTransactionsForBranchAtDate(officeBranch,currentDate);
+                branchTranxCount =tranXDAO.getTransactionCountForBranchAtDate(officeBranch,currentDate);
+                transactionTotal=tranXDAO.getTotalTransactionForBranchAtDate(officeBranch,currentDate);
 
             }catch (NullPointerException e)
             {
                 e.printStackTrace();
             }
             try {
-                transactionArrayList = dbHelper.getTransactionsForBranchAtDate(officeBranch,dateOfTransaction);
-                transactionTotal=dbHelper.getTotalTransactionForBranchAtDate(officeBranch,dateOfTransaction);
-                branchTranxCount =dbHelper.getTransactionCountForBranchAtDate(officeBranch,dateOfTransaction);
+                transactionArrayList = tranXDAO.getTransactionsForBranchAtDate(officeBranch,dateOfTransaction);
+                transactionTotal=tranXDAO.getTotalTransactionForBranchAtDate(officeBranch,dateOfTransaction);
+                branchTranxCount =tranXDAO.getTransactionCountForBranchAtDate(officeBranch,dateOfTransaction);
             }catch (NullPointerException e)
             {
                 e.printStackTrace();

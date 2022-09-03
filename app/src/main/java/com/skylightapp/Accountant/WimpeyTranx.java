@@ -21,6 +21,7 @@ import com.skylightapp.Adapters.TranxSimpleAdapter;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
 import com.skylightapp.SuperAdmin.UpdateTranxAct;
 
@@ -56,6 +57,7 @@ public class WimpeyTranx extends AppCompatActivity implements TransactionAdapter
     DatePicker picker;
     double transactionTotal;
     protected DatePickerDialog datePickerDialog;
+    private TranXDAO tranXDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,7 @@ public class WimpeyTranx extends AppCompatActivity implements TransactionAdapter
         txtTransactionCount4theDay =findViewById(R.id.Wimpey);
         txtTransactionTotal4theDay =findViewById(R.id.txAmountWimpey);
         dbHelper=new DBHelper(this);
+        tranXDAO= new TranXDAO(this);
 
         picker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,9 +97,9 @@ public class WimpeyTranx extends AppCompatActivity implements TransactionAdapter
         } catch (ParseException ignored) {
         }
         try {
-            transactionArrayList = dbHelper.getTransactionsForBranchAtDate(officeBranch,dateOfToday);
-            branchTranxCount =dbHelper.getTransactionCountForBranchAtDate(officeBranch,dateOfToday);
-            transactionTotal=dbHelper.getTotalTransactionForBranchAtDate(officeBranch,dateOfToday);
+            transactionArrayList = tranXDAO.getTransactionsForBranchAtDate(officeBranch,dateOfToday);
+            branchTranxCount =tranXDAO.getTransactionCountForBranchAtDate(officeBranch,dateOfToday);
+            transactionTotal=tranXDAO.getTotalTransactionForBranchAtDate(officeBranch,dateOfToday);
 
         }catch (NullPointerException e)
         {
@@ -136,9 +139,9 @@ public class WimpeyTranx extends AppCompatActivity implements TransactionAdapter
                 recyclerViewTXToday.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
                 try {
-                    transactionArrayList = dbHelper.getTransactionsForBranchAtDate(officeBranch,dateOfTransaction);
-                    transactionTotal=dbHelper.getTotalTransactionForBranchAtDate(officeBranch,dateOfTransaction);
-                    branchTranxCount =dbHelper.getTransactionCountForBranchAtDate(officeBranch,dateOfTransaction);
+                    transactionArrayList = tranXDAO.getTransactionsForBranchAtDate(officeBranch,dateOfTransaction);
+                    transactionTotal=tranXDAO.getTotalTransactionForBranchAtDate(officeBranch,dateOfTransaction);
+                    branchTranxCount =tranXDAO.getTransactionCountForBranchAtDate(officeBranch,dateOfTransaction);
 
                 }catch (NullPointerException e)
                 {

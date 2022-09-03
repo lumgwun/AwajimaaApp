@@ -21,7 +21,30 @@ import com.skylightapp.Classes.Message;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Utils;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.AdminBalanceDAO;
+import com.skylightapp.Database.AwardDAO;
+import com.skylightapp.Database.BirthdayDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.GrpProfileDAO;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.OfficeBranchDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.StockTransferDAO;
+import com.skylightapp.Database.StocksDAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TranXDAO;
+import com.skylightapp.Database.TransactionGrantingDAO;
+import com.skylightapp.Database.WorkersDAO;
 import com.skylightapp.R;
 import com.twilio.Twilio;
 
@@ -53,6 +76,30 @@ public class SendCustomerMessage extends AppCompatActivity implements AdapterVie
     private TextView txtCusName,txtNotification;
     private  EditText inputMessage;
     private Button confirm;
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
+    private PaymDocDAO paymDocDAO;
+    private CusDAO cusDAO;
+    private PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
+    private PaymentDAO paymentDAO;
+    private AdminBalanceDAO adminBalanceDAO;
+    private TimeLineClassDAO timeLineClassDAO;
+    private GrpProfileDAO grpProfileDAO;
+    private StocksDAO stocksDAO;
+    private WorkersDAO workersDAO;
+    private StockTransferDAO stockTransferDAO;
+    private OfficeBranchDAO officeBranchDAO;
+    private BirthdayDAO birthdayDAO;
+    private TransactionGrantingDAO grantingDAO;
+    private AwardDAO awardDAO;
+
     private String time;
     String SharedPrefUserPassword,SharedPrefUserMachine,senderFullNames,phoneNo,SharedPrefUserName,adminName,sender;
 
@@ -66,6 +113,33 @@ public class SendCustomerMessage extends AppCompatActivity implements AdapterVie
         txtNotification = findViewById(R.id.notification);
         edtInputId = findViewById(R.id.inputId2);
         sender=null;
+        workersDAO= new WorkersDAO(this);
+        awardDAO= new AwardDAO(this);
+        grantingDAO= new TransactionGrantingDAO(this);
+        stocksDAO= new StocksDAO(this);
+        cusDAO= new CusDAO(this);
+        birthdayDAO= new BirthdayDAO(this);
+        officeBranchDAO= new OfficeBranchDAO(this);
+        stockTransferDAO= new StockTransferDAO(this);
+
+        paymentCodeDAO= new PaymentCodeDAO(this);
+        profileDao= new ProfDAO(this);
+        cashDAO= new TCashDAO(this);
+        paymDocDAO= new PaymDocDAO(this);
+        tReportDAO= new TReportDAO(this);
+        paymentDAO= new PaymentDAO(this);
+        adminBalanceDAO= new AdminBalanceDAO(this);
+        timeLineClassDAO= new TimeLineClassDAO(this);
+        grpProfileDAO= new GrpProfileDAO(this);
+
+        sodao= new SODAO(this);
+        tranXDAO= new TranXDAO(this);
+        sodao= new SODAO(this);
+        messageDAO= new MessageDAO(this);
+        loanDAO= new LoanDAO(this);
+
+        codeDAO= new CodeDAO(this);
+        acctDAO= new AcctDAO(this);
         spnPurpose = findViewById(R.id.spinnerPurpose);
         selector= new DBHelper(this);
         gson = new Gson();
@@ -113,7 +187,7 @@ public class SendCustomerMessage extends AppCompatActivity implements AdapterVie
         SharedPrefUserMachine=userPreferences.getString("machine", "");
         //SharedPrefProfileID=userPreferences.getString(PROFILE_ID, "");
         adminName=userPreferences.getString("AdminName", "");
-        skylightType=selector.getProfileRoleByUserNameAndPassword(SharedPrefUserName,SharedPrefUserPassword);
+        skylightType=profileDao.getProfileRoleByUserNameAndPassword(SharedPrefUserName,SharedPrefUserPassword);
         spnPurpose.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -153,7 +227,8 @@ public class SendCustomerMessage extends AppCompatActivity implements AdapterVie
                 }else {
                     customerID = Integer.parseInt(edtInputId.getText().toString());
                     txtCusName.setVisibility(View.GONE);
-                    sendee=selector.getCustomerNames(customerID);
+                    cusDAO= new CusDAO(SendCustomerMessage.this);
+                    sendee=cusDAO.getCustomerNames(customerID);
 
                 }
 
@@ -173,11 +248,13 @@ public class SendCustomerMessage extends AppCompatActivity implements AdapterVie
 
 
                 }
-                selector.insertNewMessage(KEY_EXTRA_MESSAGE_ID,sendeeProfileID,customerID, SharedPrefAdminID, adminName, selectedPurpose, message,"Skylight Admin",sendee, time);
+                messageDAO= new MessageDAO(SendCustomerMessage.this);
+                messageDAO.insertNewMessage(KEY_EXTRA_MESSAGE_ID,sendeeProfileID,customerID, SharedPrefAdminID, adminName, selectedPurpose, message,"Skylight Admin",sendee, time);
                 try {
 
                     selector.openDataBase();
-                    selector.insertTimeLine(tittleT1, timelineDetailsTD, time, mCurrentLocation);
+                    timeLineClassDAO= new TimeLineClassDAO(SendCustomerMessage.this);
+                    timeLineClassDAO.insertTimeLine(tittleT1, timelineDetailsTD, time, mCurrentLocation);
 
 
                 }
@@ -220,7 +297,8 @@ public class SendCustomerMessage extends AppCompatActivity implements AdapterVie
         }else {
             customerID = Integer.parseInt(edtInputId.getText().toString());
             txtCusName.setVisibility(View.GONE);
-            sendee=selector.getCustomerNames(customerID);
+            cusDAO= new CusDAO(this);
+            sendee=cusDAO.getCustomerNames(customerID);
 
         }
 
@@ -235,12 +313,14 @@ public class SendCustomerMessage extends AppCompatActivity implements AdapterVie
 
         Message message2= new Message(KEY_EXTRA_MESSAGE_ID,adminName,sendeeProfileID,customerID,selectedPurpose,message,time);
         int id = sendeeProfile.leaveMessage(message, customerID);
+        messageDAO= new MessageDAO(this);
         customer.addCusMessages(KEY_EXTRA_MESSAGE_ID,selectedPurpose,message,"Skylight"+""+senderFullNames,time);
-        selector.insertNewMessage(KEY_EXTRA_MESSAGE_ID,sendeeProfileID,customerID, SharedPrefAdminID, adminName, selectedPurpose, message,"Skylight Admin",sendee, time);
+        messageDAO.insertNewMessage(KEY_EXTRA_MESSAGE_ID,sendeeProfileID,customerID, SharedPrefAdminID, adminName, selectedPurpose, message,"Skylight Admin",sendee, time);
         try {
+            timeLineClassDAO= new TimeLineClassDAO(this);
 
             selector.openDataBase();
-            selector.insertTimeLine(tittleT1, timelineDetailsTD, time, mCurrentLocation);
+            timeLineClassDAO.insertTimeLine(tittleT1, timelineDetailsTD, time, mCurrentLocation);
 
 
         }

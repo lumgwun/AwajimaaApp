@@ -16,9 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mikepenz.materialdrawer.view.BezelImageView;
 import com.skylightapp.Classes.AppController;
+import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.StandingOrder;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Interfaces.TimeLineDao;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -36,6 +40,9 @@ public class StandingOrderAdapter extends RecyclerView.Adapter<StandingOrderAdap
     String statusSwitch1;
     Profile adminProfile;
     private OnItemsClickListener listener;
+    private int soId,cusID,profID;
+    private Profile soProfile;
+    private Customer soCustomer;
 
 
     public StandingOrderAdapter(Context context, ArrayList<StandingOrder> standingOrders) {
@@ -57,7 +64,20 @@ public class StandingOrderAdapter extends RecyclerView.Adapter<StandingOrderAdap
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final StandingOrder standingOrder = standingOrders.get(position);
-        int uid =standingOrder.getUID();
+        if(standingOrder !=null){
+            soId =standingOrder.getUID();
+            soCustomer=standingOrder.getSo_Customer();
+            soProfile=standingOrder.getSo_Profile();
+        }
+        if(soCustomer !=null){
+            cusID=soCustomer.getCusUID();
+
+        }
+        if(soProfile !=null){
+            profID=soProfile.getProfCusID();
+
+        }
+
         String status ="Completed";
         double amountReceived =standingOrder.getSo_ExpectedAmount();
         double diff =0.00;
@@ -65,7 +85,7 @@ public class StandingOrderAdapter extends RecyclerView.Adapter<StandingOrderAdap
         Location location=null;
         dateOfAction = valueOf(Calendar.getInstance().getTime());
         String adminName = adminProfile.getProfileLastName()+","+ adminProfile.getProfileLastName();
-        String tittle = "Standing Order:"+uid+","+ "was Updated";
+        String tittle = "Standing Order:"+soId+","+ "was Updated";
         String details = adminProfile.getProfileLastName()+","+ adminProfile.getProfileLastName()+"updated Standing order Status ,to Completed";
         //Message message = new Message();
 
@@ -82,9 +102,10 @@ public class StandingOrderAdapter extends RecyclerView.Adapter<StandingOrderAdap
         holder.endDate.setText(valueOf(standingOrder.getSoEndDate()));
         if (holder.updateSO.isChecked()) {
             holder.status.setText("Completed");
-            DBHelper dbHelper = new DBHelper(context.getApplicationContext());
-            dbHelper.updateStandingOrder(uid,status,amountReceived,diff);
-            dbHelper.insertTimeLine(tittle,details,dateOfAction,location);
+            SODAO dbHelper = new SODAO(context.getApplicationContext());
+            TimeLineClassDAO timeLineDao = new TimeLineClassDAO(context.getApplicationContext());
+            dbHelper.updateStandingOrder(soId,status,amountReceived,diff);
+            timeLineDao.insertTimeLineNew(tittle,profID,cusID,details,dateOfAction);
             holder.soPix.setImageResource(R.drawable.completed);
         }
         else {

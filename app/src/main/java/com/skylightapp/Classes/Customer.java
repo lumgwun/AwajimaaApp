@@ -26,7 +26,7 @@ import java.util.Map;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
-@Entity(tableName = Customer.CUSTOMER_TABLE)
+//@Entity(tableName = Customer.CUSTOMER_TABLE)
 public class Customer  implements Parcelable, Serializable {
     public static final String CUSTOMER_ID = "cus_id";
     public static final String CUSTOMER_SURNAME = "cus_surname";

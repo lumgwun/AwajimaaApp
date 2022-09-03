@@ -24,7 +24,13 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.StandingOrder;
 import com.skylightapp.Classes.Transaction;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.CodeDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
@@ -63,12 +69,24 @@ public class CustomerDetailAct extends AppCompatActivity {
     //double transactionTotal;
     protected DatePickerDialog datePickerDialog;
     TextView txtTransaction,txtSavings,txtLoan,txtPackages,txtCusName,txtSO;
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_customer_detail);
+        sodao= new SODAO(this);
+        tranXDAO= new TranXDAO(this);
+        messageDAO= new MessageDAO(this);
+        codeDAO= new CodeDAO(this);
+        loanDAO= new LoanDAO(this);
+        acctDAO= new AcctDAO(this);
         RecyclerView recyclerViewTX = findViewById(R.id.recycler_viewTX);
         RecyclerView recyclerViewPackages = findViewById(R.id.recycler_viewPacks);
         RecyclerView recyclerViewSavings = findViewById(R.id.recycler_viewSavings33);
@@ -99,15 +117,15 @@ public class CustomerDetailAct extends AppCompatActivity {
 
         }
         try {
-            loanArrayList=dbHelper.getAllLoansCustomer(customerID);
-            transactionArrayList=dbHelper.getAllTransactionCustomer(customerID);
-            standingOrderArrayList=dbHelper.getAllStandingOrdersForCustomer(customerID);
+            loanArrayList=loanDAO.getAllLoansCustomer(customerID);
+            transactionArrayList=tranXDAO.getAllTransactionCustomer(customerID);
+            standingOrderArrayList=sodao.getAllStandingOrdersForCustomer(customerID);
             customerDailyReports=dbHelper.getAllCustomerDailyReports(customerID);
             skyLightPackageArrayList=dbHelper.getAllPackagesCustomer(customerID);
-            loanCount=dbHelper.getCustomerLoanCount(customerID);
-            soCount=dbHelper.getCustomerSOCount(customerID);
+            loanCount=loanDAO.getCustomerLoanCount(customerID);
+            soCount=sodao.getCustomerSOCount(customerID);
             savingsCount=dbHelper.getCustomerTotalSavingsCount(customerID);
-            transactionCount=dbHelper.getCustomerTotalTXCount(customerID);
+            transactionCount=tranXDAO.getCustomerTotalTXCount(customerID);
             packageCount=dbHelper.getCustomerTotalPackageCount(customerID);
 
         }catch (NullPointerException e)

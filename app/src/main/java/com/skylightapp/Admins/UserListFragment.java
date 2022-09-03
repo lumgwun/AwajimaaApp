@@ -36,6 +36,7 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.User;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -60,6 +61,7 @@ public class UserListFragment extends Fragment {
 
     private List<Profile> profiles;
     private UserAdapter mAdapter;
+    private ProfDAO profileDao;
     SQLiteDatabase sqLiteDatabase;
 
 
@@ -101,6 +103,8 @@ public class UserListFragment extends Fragment {
         View view = inflater.inflate(R.layout.frag_user_list, container, false);
         profiles = new ArrayList<Profile>();
         dbHelper = new DBHelper(getContext());
+        profileDao = new ProfDAO(getContext());
+
         sqLiteDatabase = dbHelper.getWritableDatabase();
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             sqLiteDatabase = dbHelper.getWritableDatabase();
@@ -117,7 +121,7 @@ public class UserListFragment extends Fragment {
             for ( int j=5; j<profiles.size(); j++ ){
                 try {
 
-                    profiles = dbHelper.getAllProfileUsers();
+                    profiles = profileDao.getAllProfileUsers();
                     System.out.println("User: " + j + ": " + profiles.get(j) );
 
                 } catch (IndexOutOfBoundsException e) {

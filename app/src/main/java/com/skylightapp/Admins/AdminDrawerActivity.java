@@ -45,7 +45,22 @@ import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Customers.SOTab;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.AdminBalanceDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.GroupSavingsTab;
 import com.skylightapp.PasswordRecovAct;
 import com.skylightapp.PayNowActivity;
@@ -109,7 +124,8 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
     AppCompatImageView greetingImage;
     public static final int STORAGE_PERMISSION_CODE = 107;
     public static final int REQUEST_IMAGE = 100;
-    long profileId,customerID;
+    long profileId;
+    int customerID;
     DBHelper applicationDb;
     AppCompatTextView adminName,txtAdminUserName, txtNoOfPaymentsToday,txtGrpSavings,txtProfileID, txtTotalPayments, txtNoOfReports, txtgrandBalance,txtAdminUserName2;
     Account acct;
@@ -133,6 +149,21 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
     GridLayout gridLayout;
     private DBHelper dbHelper;
     private static final String PREF_NAME = "skylight";
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
+    private PaymDocDAO paymDocDAO;
+    private CusDAO cusDAO;
+    private PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
+    private PaymentDAO paymentDAO;
+    private AdminBalanceDAO adminBalanceDAO;
+    private TimeLineClassDAO timeLineClassDAO;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,6 +172,24 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
         dbHelper= new DBHelper(this);
         userProfile=new Profile();
         newDate1= new Date();
+        cusDAO= new CusDAO(this);
+        paymentCodeDAO= new PaymentCodeDAO(this);
+        profileDao= new ProfDAO(this);
+        cashDAO= new TCashDAO(this);
+        paymDocDAO= new PaymDocDAO(this);
+        tReportDAO= new TReportDAO(this);
+        paymentDAO= new PaymentDAO(this);
+        adminBalanceDAO= new AdminBalanceDAO(this);
+        timeLineClassDAO= new TimeLineClassDAO(this);
+
+        sodao= new SODAO(this);
+        tranXDAO= new TranXDAO(this);
+        sodao= new SODAO(this);
+        messageDAO= new MessageDAO(this);
+        loanDAO= new LoanDAO(this);
+
+        codeDAO= new CodeDAO(this);
+        acctDAO= new AcctDAO(this);
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPrefUserName=sharedPreferences.getString("PROFILE_USERNAME", "");
         SharedPrefUserPassword=sharedPreferences.getString("PROFILE_PASSWORD", "");
@@ -183,16 +232,16 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
         txtGrpSavings = findViewById(R.id.GrpSavingsAdmin56);
         txtNoOfPaymentsToday = findViewById(R.id.paymentNO);
         txtTotalPayments = findViewById(R.id.adminTotalPayment);
-        paymentTotal=dbHelper.getTotalPaymentTodayForBranch1(SharedPrefOffice,todayDate);
-        paymentCount=dbHelper.getPaymentCountTodayForBranch(SharedPrefOffice,todayDate);
+        paymentTotal=paymentDAO.getTotalPaymentTodayForBranch1(SharedPrefOffice,todayDate);
+        paymentCount=paymentDAO.getPaymentCountTodayForBranch(SharedPrefOffice,todayDate);
         txtNoOfPaymentsToday.setText(MessageFormat.format("Branch Payments:{0}", paymentCount));
         txtTotalPayments.setText(MessageFormat.format("Payments: N{0}", paymentTotal));
 
         txtNoOfReports = findViewById(R.id.reportsAdminToday);
-        tellerReportCount=dbHelper.getTellerReportCountTodayForBranch(SharedPrefOffice,todayDate);
+        tellerReportCount=tReportDAO.getTellerReportCountTodayForBranch(SharedPrefOffice,todayDate);
         txtNoOfReports.setText(MessageFormat.format("Reports:{0}", tellerReportCount));
         txtgrandBalance = findViewById(R.id.grandBalanceAdmin);
-        tellerReportBalance=dbHelper.getTotalTellerReportAmountSubmittedTodayForBranch(SharedPrefOffice,newDate1);
+        tellerReportBalance=tReportDAO.getTotalTellerReportAmountSubmittedTodayForBranch(SharedPrefOffice,newDate1);
         txtgrandBalance.setText(MessageFormat.format("Grand Balance: N{0}", tellerReportBalance));
 
         btnSO=findViewById(R.id.standingOrder3);
@@ -251,7 +300,7 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
             sqLiteDatabase = dbHelper.getWritableDatabase();
             //dbHelper.openDataBase();
             try {
-                bitmap= applicationDb.getProfilePicture(userID);
+                bitmap= profileDao.getProfilePicture(userID);
             } catch (CursorIndexOutOfBoundsException e) {
                 e.printStackTrace();
             }
@@ -484,7 +533,7 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
             }
             Uri pictureUri = data.getData();
             applicationDb =new DBHelper(this);
-            applicationDb.insertProfilePicture(profileID,customer.getCusUID(),pictureUri);
+            profileDao.insertProfilePicture(profileID,customerID,pictureUri);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

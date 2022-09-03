@@ -38,6 +38,7 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.ProfDAO;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -105,6 +106,7 @@ public class CameraActivity extends AppCompatActivity {
     int profileID,customerID;
     Bundle mediaFileBundle;
     private static boolean isPersistenceEnabled = false;
+    private ProfDAO profileDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -260,7 +262,9 @@ public class CameraActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 uri = data.getData();
                 DBHelper dbHelper = new DBHelper(this);
-                dbHelper.insertProfilePicture(profileID,customerID,uri);
+                profileDao = new ProfDAO(this);
+
+                profileDao.insertProfilePicture(profileID,customerID,uri);
                 Toast.makeText(this, "SUCCESS " , Toast.LENGTH_SHORT).show();
                 setResultOk(uri);
             }

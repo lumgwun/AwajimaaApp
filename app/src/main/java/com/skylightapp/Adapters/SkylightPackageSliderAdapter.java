@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -42,6 +43,10 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
     private List<SkyLightPackModel> theSlideItemsModelClassList = new ArrayList<>();
     private List<SkyLightPackModel> itemsListFilter = new ArrayList<>();
     private OnItemsClickListener callback;
+    TouchInterface touchInterface;
+    SliderAdapterVH viewHolder;
+    protected AlphaAnimation fadeOut = new AlphaAnimation( 1.0f , 0.0f );
+    protected AlphaAnimation fadeIn = new AlphaAnimation( 0.0f , 1.0f );
 
     public SkylightPackageSliderAdapter(Context context) {
         this.context = context;
@@ -64,6 +69,13 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
         this.mSliderItems = sliderItems;
         notifyDataSetChanged();
     }
+    public void updateItems(ArrayList<SkyLightPackModel> list) {
+        this.mSliderItems = list;
+
+
+        notifyDataSetChanged();
+    }
+
 
     public void deleteItem(int position) {
         this.mSliderItems.remove(position);
@@ -286,6 +298,13 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
     public interface OnItemsClickListener{
         void onItemClick(int position);
         void onItemClick(View view, int position);
+    }
+    public interface TouchInterface {
+        void touch(View.OnTouchListener onTouchListener);}
+
+    public void setOnTouchListener(View.OnTouchListener touchListener){
+        this.touchInterface = (TouchInterface) touchListener;
+        viewHolder.motherLayoutView.setOnTouchListener(touchListener);
     }
 
 }

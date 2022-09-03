@@ -14,7 +14,22 @@ import com.google.gson.Gson;
 import com.skylightapp.Classes.AdminUser;
 import com.skylightapp.Classes.PaymentCode;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.AdminBalanceDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
 import com.skylightapp.SuperAdmin.AdminBalance;
 
@@ -47,12 +62,45 @@ public class AdminCountAct extends AppCompatActivity {
     private AppCompatButton btnTellerPayment,btnCusPayment,btnBranchPayment,btnTotalTellerPayment,buttonTotalPaymentBranch,buttonTellerNewCus, btnTellerNewCus;
     private AppCompatEditText edtTellerPaymentToday, edtCustomerPaymentToday,edtPaymentTellerTotal,edtTellerNewCus;
     private double paymentForTellerToday,paymentForCusToday,paymentTotalForTeller,paymentForBranchToday,paymentForBranchTotal;
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
+    private PaymDocDAO paymDocDAO;
+    private CusDAO cusDAO;
+    private PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
+    private PaymentDAO paymentDAO;
+    private AdminBalanceDAO adminBalanceDAO;
+    private TimeLineClassDAO timeLineClassDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_admin_count);
         setTitle("Admin Counts");
+        cusDAO= new CusDAO(this);
+        paymentCodeDAO= new PaymentCodeDAO(this);
+        profileDao= new ProfDAO(this);
+        cashDAO= new TCashDAO(this);
+        paymDocDAO= new PaymDocDAO(this);
+        tReportDAO= new TReportDAO(this);
+        paymentDAO= new PaymentDAO(this);
+        adminBalanceDAO= new AdminBalanceDAO(this);
+        timeLineClassDAO= new TimeLineClassDAO(this);
+
+        sodao= new SODAO(this);
+        tranXDAO= new TranXDAO(this);
+        sodao= new SODAO(this);
+        messageDAO= new MessageDAO(this);
+        loanDAO= new LoanDAO(this);
+
+        codeDAO= new CodeDAO(this);
+        acctDAO= new AcctDAO(this);
 
         gson = new Gson();
         PaymentCode paymentCode=new PaymentCode();
@@ -110,7 +158,7 @@ public class AdminCountAct extends AppCompatActivity {
         btnTellerNewCus.setOnClickListener(this::getTellerNewCus);
 
         totalSoCountToday =  findViewById(R.id.soCounts);
-        soCount=dbHelper.getStandingOrderCountToday(todayDate);
+        soCount=sodao.getStandingOrderCountToday(todayDate);
         txtTotalSavingsToday =  findViewById(R.id.txtTotalSavingsToday);
         totalSavingsToday=dbHelper.getSavingsCountToday(todayDate);
         txtTotalSavingsToday.setText(MessageFormat.format("Savings Count{0}", totalSavingsToday));
@@ -119,12 +167,12 @@ public class AdminCountAct extends AppCompatActivity {
         txttotalSavingCs =  findViewById(R.id.totalSavingCs);
         totalSavings2Today33=dbHelper.getTotalSavingsToday(todayDate);
         txttotalSavingCs.setText(MessageFormat.format("Total Savings N{0}", totalSavings2Today33));
-        customerCountToday=dbHelper.getAllNewCusCountForToday(todayDate);
+        customerCountToday=cusDAO.getAllNewCusCountForToday(todayDate);
         txtNewCusToday.setText(MessageFormat.format("New Customers:{0}", customerCountToday));
-        countPackageToday=dbHelper.getAllTxCountForToday(todayDate);
+        countPackageToday=tranXDAO.getAllTxCountForToday(todayDate);
         txtNewPackageCountToday =  findViewById(R.id.txtNewPackageCountToday);
         txtNewPackageCountToday.setText(MessageFormat.format("New Packs:{0}", countPackageToday));
-        txCountToday=dbHelper.getAllTxCountForToday(todayDate);
+        txCountToday=tranXDAO.getAllTxCountForToday(todayDate);
         txtNewTXToday = findViewById(R.id.txtNewTXToday);
         txtNewTXToday.setText(MessageFormat.format("Transactions today N{0}", txCountToday));
 
@@ -145,7 +193,7 @@ public class AdminCountAct extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String joinedDate = mdformat.format(calendar.getTime());
-        int cusCountForOffice= dbHelper.getNewCustomersCountForTodayOffice(branchName,joinedDate);
+        int cusCountForOffice= cusDAO.getNewCustomersCountForTodayOffice(branchName,joinedDate);
         txtCustomersforBranch.setText(MessageFormat.format("Branch Customers ,Today:{0}", cusCountForOffice));
 
     }
@@ -169,7 +217,7 @@ public class AdminCountAct extends AppCompatActivity {
             System.out.println("Oops!");
         }
 
-        customersForTeller=dbHelper.getNewCustomersCountForTodayTeller(tellerID2,todayDate);
+        customersForTeller=cusDAO.getNewCustomersCountForTodayTeller(tellerID2,todayDate);
         txtTellerNewCus.setText(MessageFormat.format("Teller Cus:{0}", customersForTeller));
     }
 
@@ -194,7 +242,7 @@ public class AdminCountAct extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        paymentForBranchTotal=dbHelper.getTotalPaymentForBranch(branchName);
+        paymentForBranchTotal=paymentDAO.getTotalPaymentForBranch(branchName);
         txtBranchTotalPayment.setText(MessageFormat.format("Branch''s Total Payment: N{0}", paymentForBranchTotal));
 
     }
@@ -211,7 +259,7 @@ public class AdminCountAct extends AppCompatActivity {
         } catch (Exception e) {
             System.out.println("Oops!");
         }
-        paymentTotalForTeller=dbHelper.getTotalPaymentForTeller(tellerID);
+        paymentTotalForTeller=paymentDAO.getTotalPaymentForTeller(tellerID);
         txtTellerTotalPayment.setText(MessageFormat.format("Teller''s Total Payment: N{0}", paymentTotalForTeller));
 
     }
@@ -237,7 +285,7 @@ public class AdminCountAct extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        paymentForBranchToday=dbHelper.getTotalPaymentTodayForBranch1(branchName,todayDate);
+        paymentForBranchToday=paymentDAO.getTotalPaymentTodayForBranch1(branchName,todayDate);
         txtBranchPaymentToday.setText(MessageFormat.format("Branch''s Payment ,today : N{0}", paymentForBranchToday));
 
 
@@ -260,7 +308,7 @@ public class AdminCountAct extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        paymentForCusToday=dbHelper.getTotalPaymentTodayForCustomer(customerID,todayDate);
+        paymentForCusToday=paymentDAO.getTotalPaymentTodayForCustomer(customerID,todayDate);
         txtCustomerPaymentToday.setText(MessageFormat.format("Customer''s Payment ,today : N{0}", paymentForCusToday));
 
     }
@@ -282,7 +330,7 @@ public class AdminCountAct extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        paymentForTellerToday=dbHelper.getTotalPaymentTodayForTeller1(tellerID1,todayDate);
+        paymentForTellerToday=paymentDAO.getTotalPaymentTodayForTeller1(tellerID1,todayDate);
         txtTellerPaymentT.setText(MessageFormat.format("Teller''s Payment ,today : N{0}", paymentForTellerToday));
 
 

@@ -17,6 +17,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Database.AwardDAO;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.R;
 
@@ -36,6 +37,7 @@ public class AwardAdapter extends RecyclerView.Adapter<AwardAdapter.MyViewHolder
     private Award award;
     Profile userProfile;
     long profileID, awardGiverID;
+    private AwardDAO awardDAO;
 
     public AwardAdapter(Context context, ArrayList<Award> awardArrayList) {
         this.awardArrayList = awardArrayList;
@@ -215,11 +217,12 @@ public class AwardAdapter extends RecyclerView.Adapter<AwardAdapter.MyViewHolder
         Profile userProfile= new Profile();
         if(userProfile !=null){
             profileID=userProfile.getPID();
+            awardDAO= new AwardDAO(mContext.getApplicationContext());
             awardGiverID =award.getAwardGiverProfile().getPID();
             if(award !=null){
                 awardID=award.getAwardID();
                 if(awardGiverID ==profileID){
-                    dbHelper.deleteAward(awardID);
+                    awardDAO.deleteAward(awardID);
                 }
 
             }

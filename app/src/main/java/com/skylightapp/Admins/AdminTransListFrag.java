@@ -24,6 +24,7 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class AdminTransListFrag extends Fragment {
     Profile userProfile;
     private int resource;
     Context context;
+    private TranXDAO tranXDAO;
 
 
     public AdminTransListFrag() {
@@ -87,6 +89,8 @@ public class AdminTransListFrag extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view);
         transactionList = new ArrayList<>();
         dbHelper = new DBHelper(getContext());
+        tranXDAO = new TranXDAO(getContext());
+
         mAdapter = new TransactionAdapter(getActivity(), transactionList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -94,7 +98,7 @@ public class AdminTransListFrag extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
         recyclerView.setNestedScrollingEnabled(false);
-        transactionList = dbHelper.getAllTransactionAdmin();
+        transactionList = tranXDAO.getAllTransactionAdmin();
         mAdapter = new TransactionAdapter(getContext(),transactionList);
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);

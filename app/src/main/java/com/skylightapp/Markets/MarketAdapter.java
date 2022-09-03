@@ -19,6 +19,7 @@ import java.util.List;
 public class MarketAdapter extends RecyclerView.Adapter<MarketAdapter.RecyclerViewHolder> {
 
     private ArrayList<Market> marketArrayList;
+    private List<Market> marketList;
     private Context mcontext;
     int resources;
     AppCompatActivity activity;
@@ -39,7 +40,22 @@ public class MarketAdapter extends RecyclerView.Adapter<MarketAdapter.RecyclerVi
 
     }
     public MarketAdapter(MarketHub marketHub, List<Market> testData) {
+        this.marketList = testData;
+        this.mcontext = marketHub;
 
+    }
+    public void updateItems(List<Market> list) {
+        this.marketList = list;
+        notifyDataSetChanged();
+    }
+    public void deleteItem(int position) {
+        this.marketArrayList.remove(position);
+        notifyDataSetChanged();
+    }
+
+    public void addItem(Market sliderItem) {
+        this.marketArrayList.add(sliderItem);
+        notifyDataSetChanged();
     }
     public void setWhenClickListener(OnItemsClickListener listener){
         this.listener = listener;
@@ -89,6 +105,7 @@ public class MarketAdapter extends RecyclerView.Adapter<MarketAdapter.RecyclerVi
         // this method returns the size of recyclerview
         return (null != marketArrayList ? marketArrayList.size() : 0);
     }
+
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
 

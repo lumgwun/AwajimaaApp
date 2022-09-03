@@ -21,7 +21,30 @@ import com.skylightapp.Adapters.GrpProfileAdapter;
 import com.skylightapp.Classes.GroupAccount;
 import com.skylightapp.Classes.MyTouchListener;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.AdminBalanceDAO;
+import com.skylightapp.Database.AwardDAO;
+import com.skylightapp.Database.BirthdayDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.GrpProfileDAO;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.OfficeBranchDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.StockTransferDAO;
+import com.skylightapp.Database.StocksDAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TranXDAO;
+import com.skylightapp.Database.TransactionGrantingDAO;
+import com.skylightapp.Database.WorkersDAO;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -43,6 +66,29 @@ public class MyGrpSavingsUsers extends AppCompatActivity implements  GrpProfileA
     Random ran ;
     AppCompatTextView txtNoGrpSavingsUsers;
     private  GroupAccount groupAccount;
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
+    private PaymDocDAO paymDocDAO;
+    private CusDAO cusDAO;
+    private PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
+    private PaymentDAO paymentDAO;
+    private AdminBalanceDAO adminBalanceDAO;
+    private TimeLineClassDAO timeLineClassDAO;
+    private GrpProfileDAO grpProfileDAO;
+    private StocksDAO stocksDAO;
+    private WorkersDAO workersDAO;
+    private StockTransferDAO stockTransferDAO;
+    private OfficeBranchDAO officeBranchDAO;
+    private BirthdayDAO birthdayDAO;
+    private TransactionGrantingDAO grantingDAO;
+    private AwardDAO awardDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +98,25 @@ public class MyGrpSavingsUsers extends AppCompatActivity implements  GrpProfileA
         gson = new Gson();
         userProfile=new Profile();
         random= new SecureRandom();
+        workersDAO= new WorkersDAO(this);
+        awardDAO= new AwardDAO(this);
+        grantingDAO= new TransactionGrantingDAO(this);
+        stocksDAO= new StocksDAO(this);
+        cusDAO= new CusDAO(this);
+        birthdayDAO= new BirthdayDAO(this);
+        officeBranchDAO= new OfficeBranchDAO(this);
+        stockTransferDAO= new StockTransferDAO(this);
+
+        paymentCodeDAO= new PaymentCodeDAO(this);
+        profileDao= new ProfDAO(this);
+        cashDAO= new TCashDAO(this);
+        paymDocDAO= new PaymDocDAO(this);
+        tReportDAO= new TReportDAO(this);
+        paymentDAO= new PaymentDAO(this);
+        adminBalanceDAO= new AdminBalanceDAO(this);
+        timeLineClassDAO= new TimeLineClassDAO(this);
+        grpProfileDAO= new GrpProfileDAO(this);
+
         json = userPreferences.getString("LastProfileUsed", "");
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -61,7 +126,7 @@ public class MyGrpSavingsUsers extends AppCompatActivity implements  GrpProfileA
         if(bundle !=null){
             groupAccount = bundle.getParcelable("GroupAccount");
             grpAcctID=groupAccount.getGrpAcctNo();
-            profileArrayList = dbHelper.getAllGrpAcctProfiles(grpAcctID);
+            profileArrayList = profileDao.getAllGrpAcctProfiles(grpAcctID);
             profileArrayAdapter = new GrpProfileAdapter(MyGrpSavingsUsers.this, profileArrayList);
             final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_GrpSUsers);
             txtNoGrpSavingsUsers =  findViewById(R.id.noGrpSavingsUsers);

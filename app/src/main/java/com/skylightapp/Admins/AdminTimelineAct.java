@@ -20,7 +20,22 @@ import com.melnykov.fab.FloatingActionButton;
 import com.skylightapp.Adapters.TimeLineAdapter;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.TimeLine;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.AdminBalanceDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
@@ -41,6 +56,21 @@ public class AdminTimelineAct extends AppCompatActivity {
     private TimeLineAdapter mAdapter;
 
     DBHelper dbHelper;
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
+    private PaymDocDAO paymDocDAO;
+    private CusDAO cusDAO;
+    private PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
+    private PaymentDAO paymentDAO;
+    private TimeLineClassDAO timeLineClassDAO;
+    private AdminBalanceDAO adminBalanceDAO;
     String json;
     private static final String PREF_NAME = "skylight";
     SQLiteDatabase sqLiteDatabase;
@@ -55,6 +85,7 @@ public class AdminTimelineAct extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view_timeline25);
         timeLines = new ArrayList<TimeLine>();
         dbHelper = new DBHelper(this);
+        timeLineClassDAO= new TimeLineClassDAO(this);
 
 
         mAdapter = new TimeLineAdapter(this, R.layout.timeline_list_row_admin, timeLines);
@@ -62,7 +93,7 @@ public class AdminTimelineAct extends AppCompatActivity {
             //dbHelper = new DBHelper(this);
             sqLiteDatabase = dbHelper.getWritableDatabase();
 
-            timeLines = dbHelper.getAllTimeLinesAdmin();
+            timeLines = timeLineClassDAO.getAllTimeLinesAdmin();
 
 
         }

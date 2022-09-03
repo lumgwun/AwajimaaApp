@@ -21,11 +21,10 @@ import android.widget.TextView;
 
 import com.firebase.ui.auth.ui.phone.SpacedEditText;
 import com.google.gson.Gson;
-import com.skylightapp.Accountant.ElelenwoSavings;
 import com.skylightapp.Classes.AdminUser;
 import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkylightCash;
+import com.skylightapp.Classes.AppCash;
 import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.R;
@@ -38,7 +37,7 @@ import java.util.TimeZone;
 
 public class MyStocksList extends AppCompatActivity implements MyInventAdapter.OnItemsClickListener{
     Bundle bundle;
-    SkylightCash skylightCash;
+    AppCash appCash;
     private AppCompatButton btnRunUpdate;
     DatePicker picker;
     String selectedStatus,dateOfApproval,superAdminName,tellerConfirmationCode, officeBranch;

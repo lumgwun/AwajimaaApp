@@ -18,7 +18,7 @@ import com.firebase.ui.auth.ui.phone.SpacedEditText;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkylightCash;
+import com.skylightapp.Classes.AppCash;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.R;
 
@@ -30,7 +30,7 @@ import java.util.TimeZone;
 
 public class UpdateTellerCashAct extends AppCompatActivity {
     Bundle bundle;
-    SkylightCash skylightCash;
+    AppCash appCash;
     private AppCompatButton btnRunUpdate;
     DatePicker picker;
     String selectedStatus,dateOfApproval,superAdminName,tellerConfirmationCode, officeBranch;
@@ -57,7 +57,7 @@ public class UpdateTellerCashAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_update_teller_cash);
-        skylightCash = new SkylightCash();
+        appCash = new AppCash();
         managerProfile= new Profile();
         customerManager=new CustomerManager();
         dbHelper= new DBHelper(this);
@@ -81,14 +81,14 @@ public class UpdateTellerCashAct extends AppCompatActivity {
         }
         bundle=getIntent().getExtras();
         if(bundle !=null){
-            skylightCash =bundle.getParcelable("TellerCash");
+            appCash =bundle.getParcelable("TellerCash");
 
         }
-        if(skylightCash !=null){
-            tellerCashID = skylightCash.getSkylightCashID();
-            officeBranch= skylightCash.getSCPayee();
-            tellerCashCode= skylightCash.getSkylightCashCode();
-            tellerCashProfileID= skylightCash.getSCash_ProfileID();
+        if(appCash !=null){
+            tellerCashID = appCash.getSkylightCashID();
+            officeBranch= appCash.getSCPayee();
+            tellerCashCode= appCash.getSkylightCashCode();
+            tellerCashProfileID= appCash.getSCash_ProfileID();
         }
 
         txtDepositID.setText("Teller Cash ID:"+ tellerCashID);

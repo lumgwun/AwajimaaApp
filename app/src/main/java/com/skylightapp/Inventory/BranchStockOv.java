@@ -22,7 +22,7 @@ import com.firebase.ui.auth.ui.phone.SpacedEditText;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.OfficeBranch;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkylightCash;
+import com.skylightapp.Classes.AppCash;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.R;
 
@@ -34,7 +34,7 @@ import java.util.TimeZone;
 
 public class BranchStockOv extends AppCompatActivity implements MyInventAdapter.OnItemsClickListener{
     Bundle bundle;
-    SkylightCash skylightCash;
+    AppCash appCash;
     private AppCompatButton btnRunUpdate;
     DatePicker picker;
     String selectedStatus,dateOfApproval,superAdminName,tellerConfirmationCode, officeBranch;

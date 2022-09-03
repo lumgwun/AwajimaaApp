@@ -25,6 +25,7 @@ import com.skylightapp.Classes.Message;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
 import com.skylightapp.SuperAdmin.UpdateTranxAct;
 
@@ -69,6 +70,7 @@ public class TransAmadiTranx extends AppCompatActivity implements TransactionAda
     protected DatePickerDialog datePickerDialog;
     private  SimpleDateFormat dateFormat;
     Calendar calendar;
+    private TranXDAO tranXDAO;
 
     @SuppressLint("SimpleDateFormat")
     @Override
@@ -79,6 +81,7 @@ public class TransAmadiTranx extends AppCompatActivity implements TransactionAda
         customTransactionArrayList = new ArrayList<Transaction>();
         calendar=Calendar.getInstance();
         dbHelper=new DBHelper(this);
+        tranXDAO= new TranXDAO(this);
         RecyclerView recyclerView = findViewById(R.id.recyclerViewTXTR);
         RecyclerView recyclerViewTXToday = findViewById(R.id.recyclerViewTXToday);
         picker=(DatePicker)findViewById(R.id.TX_date_);
@@ -109,9 +112,9 @@ public class TransAmadiTranx extends AppCompatActivity implements TransactionAda
         recyclerViewTXToday.setLayoutManager(layoutManagerC);
         //recyclerViewTXToday.setHasFixedSize(true);
         try {
-            transactionArrayList = dbHelper.getTransactionsForBranchAtDate(officeBranch,currentDate);
-            branchTranxCount =dbHelper.getTransactionCountForBranchAtDate(officeBranch,currentDate);
-            transactionTotal=dbHelper.getTotalTransactionForBranchAtDate(officeBranch,currentDate);
+            transactionArrayList = tranXDAO.getTransactionsForBranchAtDate(officeBranch,currentDate);
+            branchTranxCount =tranXDAO.getTransactionCountForBranchAtDate(officeBranch,currentDate);
+            transactionTotal=tranXDAO.getTotalTransactionForBranchAtDate(officeBranch,currentDate);
 
         }catch (NullPointerException e)
         {
@@ -147,9 +150,9 @@ public class TransAmadiTranx extends AppCompatActivity implements TransactionAda
                 recyclerViewTXToday.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
                 try {
-                    transactionArrayList = dbHelper.getTransactionsForBranchAtDate(officeBranch,dateOfTransaction);
-                    transactionTotal=dbHelper.getTotalTransactionForBranchAtDate(officeBranch,dateOfTransaction);
-                    branchTranxCount =dbHelper.getTransactionCountForBranchAtDate(officeBranch,dateOfTransaction);
+                    transactionArrayList = tranXDAO.getTransactionsForBranchAtDate(officeBranch,dateOfTransaction);
+                    transactionTotal=tranXDAO.getTotalTransactionForBranchAtDate(officeBranch,dateOfTransaction);
+                    branchTranxCount =tranXDAO.getTransactionCountForBranchAtDate(officeBranch,dateOfTransaction);
 
                 }catch (NullPointerException e)
                 {

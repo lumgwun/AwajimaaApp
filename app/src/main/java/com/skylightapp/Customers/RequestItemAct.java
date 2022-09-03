@@ -18,7 +18,30 @@ import com.google.gson.Gson;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.AdminBalanceDAO;
+import com.skylightapp.Database.AwardDAO;
+import com.skylightapp.Database.BirthdayDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.GrpProfileDAO;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.OfficeBranchDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.StockTransferDAO;
+import com.skylightapp.Database.StocksDAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TranXDAO;
+import com.skylightapp.Database.TransactionGrantingDAO;
+import com.skylightapp.Database.WorkersDAO;
 import com.skylightapp.R;
 
 import java.security.SecureRandom;
@@ -50,6 +73,30 @@ public class RequestItemAct extends AppCompatActivity {
     AppCompatTextView txtCusName;
     AppCompatButton btnRequest;
     String customerName, message,dateOfRequest, customerBranch;
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
+    private PaymDocDAO paymDocDAO;
+    private CusDAO cusDAO;
+    private PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
+    private PaymentDAO paymentDAO;
+    private AdminBalanceDAO adminBalanceDAO;
+    private TimeLineClassDAO timeLineClassDAO;
+    private GrpProfileDAO grpProfileDAO;
+    private StocksDAO stocksDAO;
+    private WorkersDAO workersDAO;
+    private StockTransferDAO stockTransferDAO;
+    private OfficeBranchDAO officeBranchDAO;
+    private BirthdayDAO birthdayDAO;
+    private TransactionGrantingDAO grantingDAO;
+    private AwardDAO awardDAO;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +108,33 @@ public class RequestItemAct extends AppCompatActivity {
         customer = new Customer();
         userProfile=new Profile();
         packBundle=new Bundle();
+        workersDAO= new WorkersDAO(this);
+        awardDAO= new AwardDAO(this);
+        grantingDAO= new TransactionGrantingDAO(this);
+        stocksDAO= new StocksDAO(this);
+        cusDAO= new CusDAO(this);
+        birthdayDAO= new BirthdayDAO(this);
+        officeBranchDAO= new OfficeBranchDAO(this);
+        stockTransferDAO= new StockTransferDAO(this);
+
+        paymentCodeDAO= new PaymentCodeDAO(this);
+        profileDao= new ProfDAO(this);
+        cashDAO= new TCashDAO(this);
+        paymDocDAO= new PaymDocDAO(this);
+        tReportDAO= new TReportDAO(this);
+        paymentDAO= new PaymentDAO(this);
+        adminBalanceDAO= new AdminBalanceDAO(this);
+        timeLineClassDAO= new TimeLineClassDAO(this);
+        grpProfileDAO= new GrpProfileDAO(this);
+
+        sodao= new SODAO(this);
+        tranXDAO= new TranXDAO(this);
+        sodao= new SODAO(this);
+        messageDAO= new MessageDAO(this);
+        loanDAO= new LoanDAO(this);
+
+        codeDAO= new CodeDAO(this);
+        acctDAO= new AcctDAO(this);
         bundle=new Bundle();
         random= new SecureRandom();
         txtCusName = findViewById(R.id.cusForRequest);
@@ -99,10 +173,11 @@ public class RequestItemAct extends AppCompatActivity {
             packageID=selectedPackage.getPackID();
         }
         message="I am requesting for my "+packageName+"/"+packageID;
+        messageDAO= new MessageDAO(this);
         btnRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dbHelper.insertMessage(profileID,customerID,messageID,"Package Request",message,customerName,customerBranch,dateOfRequest);
+                messageDAO.insertMessage(profileID,customerID,messageID,"Package Request",message,customerName,customerBranch,dateOfRequest);
                 Toast.makeText(RequestItemAct.this, "Request has been sent", Toast.LENGTH_LONG).show();
             }
         });

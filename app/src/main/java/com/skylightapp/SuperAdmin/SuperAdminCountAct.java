@@ -49,7 +49,19 @@ import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.StandingOrder;
 import com.skylightapp.Classes.TellerReport;
 import com.skylightapp.Classes.Transaction;
+import com.skylightapp.Database.AppPackageDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
+import com.skylightapp.Database.Customer_TellerDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TranXDAO;
+import com.skylightapp.Interfaces.ProfileDao;
 import com.skylightapp.Inventory.StockTransfer;
 import com.skylightapp.R;
 import com.skylightapp.Tellers.TellerCash;
@@ -193,7 +205,17 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
     private int mDay = 30;
     private Calendar calendar1;
     SQLiteDatabase sqLiteDatabase;
+    private Customer_TellerDAO customer_tellerDAO;
     private String monthYearStr,monthYearStrFinal;
+    private SODAO sodao;
+    CodeDAO codeDAO;
+    CusDAO cusDAO;
+    PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+    private TranXDAO tranXDAO;
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,7 +227,18 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         gson = new Gson();
+        codeDAO= new CodeDAO(this);
+        tranXDAO= new TranXDAO(this);
+        profileDao= new ProfDAO(this);
+        cashDAO= new TCashDAO(this);
+        tReportDAO= new TReportDAO(this);
+
+        cusDAO= new CusDAO(this);
+        paymentCodeDAO= new PaymentCodeDAO(this);
+        TCashDAO tCashDAO= new TCashDAO(this);
+        sodao= new SODAO(this);
         customer= new Customer();
+        customer_tellerDAO= new Customer_TellerDAO(this);
         userProfile= new Profile();
         profileArrayList= new ArrayList<>();
         tellerCashArrayList= new ArrayList<>();
@@ -334,6 +367,7 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
         btnGetBranchDetails =  findViewById(R.id.buttonPaymentBranchT);
         dateText = findViewById(R.id.date_text_);
         dateText.setOnClickListener(this::datePicker);
+        customer_tellerDAO= new Customer_TellerDAO(this);
 
         dateText.setOnClickListener(new View.OnClickListener() {
 
@@ -384,7 +418,7 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
         sqLiteDatabase = dbHelper.getWritableDatabase();
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            profileArrayList=dbHelper.getTellersFromMachine(tellerMachine);
+            profileArrayList=profileDao.getTellersFromMachine(tellerMachine);
 
         }
 
@@ -476,10 +510,11 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        sodao= new SODAO(this);
         sqLiteDatabase = dbHelper.getWritableDatabase();
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            standingOrders = dbHelper.getAllStandingOrders11();
+            standingOrders = sodao.getAllStandingOrders11();
 
         }
 
@@ -491,11 +526,12 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
             skyLightPackages = dbHelper.getAllPackagesAdmin();
 
         }
+        PaymentDAO paymentDAO= new PaymentDAO(this);
 
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            paymentCodeArrayList = dbHelper.getAllSavingsCodes();
+            paymentCodeArrayList = codeDAO.getAllSavingsCodes();
 
         }
 
@@ -508,61 +544,61 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            allUsers = dbHelper.getAllProfileUsers();
+            allUsers = profileDao.getAllProfileUsers();
 
         }
 
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            paymentArrayListAll=dbHelper.getALLPaymentsSuper();
+            paymentArrayListAll=paymentDAO.getALLPaymentsSuper();
 
         }
 
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            tellerReportsAll=dbHelper.getTellerReportsAll();
+            tellerReportsAll=tReportDAO.getTellerReportsAll();
 
         }
 
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            paymentForTellerToday=dbHelper.getTotalPaymentTodayForTeller1(tellerID,stringDate);
+            paymentForTellerToday=paymentDAO.getTotalPaymentTodayForTeller1(tellerID,stringDate);
 
         }
 
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            paymentTotalForTeller=dbHelper.getTotalPaymentForTeller(tellerID);
+            paymentTotalForTeller=paymentDAO.getTotalPaymentForTeller(tellerID);
 
         }
 
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            customersForTeller=dbHelper.getNewCustomersCountForTodayTeller(tellerID,todayDate);
+            customersForTeller=cusDAO.getNewCustomersCountForTodayTeller(tellerID,todayDate);
 
         }
 
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            paymentForBranchTotal=dbHelper.getTotalPaymentForBranch(branchName1);
+            paymentForBranchTotal=paymentDAO.getTotalPaymentForBranch(branchName1);
 
         }
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            paymentForBranchToday=dbHelper.getTotalPaymentTodayForBranch1(branchName2,stringDate);
+            paymentForBranchToday=paymentDAO.getTotalPaymentTodayForBranch1(branchName2,stringDate);
 
         }
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            soCount=dbHelper.getStandingOrderCountToday(todayDate);
+            soCount=sodao.getStandingOrderCountToday(todayDate);
 
         }
 
@@ -583,7 +619,7 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            customerCountToday=dbHelper.getAllNewCusCountForToday(todayDate);
+            customerCountToday=cusDAO.getAllNewCusCountForToday(todayDate);
 
         }
 
@@ -597,13 +633,13 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            countToday =dbHelper.getAllTxCountForToday(todayDate);
+            countToday =tranXDAO.getAllTxCountForToday(todayDate);
 
         }
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            customersNewToday=dbHelper.getCustomersToday(todayDate);
+            customersNewToday=cusDAO.getCustomersToday(todayDate);
 
         }
 
@@ -617,14 +653,14 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            paymentCodeDate =dbHelper.getSavingsCodeForDate(stringDate);
+            paymentCodeDate =codeDAO.getSavingsCodeForDate(stringDate);
 
         }
 
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            customersTellerAll=dbHelper.getCustomersFromCurrentProfile(tellerID);
+            customersTellerAll=cusDAO.getCustomersFromCurrentProfile(tellerID);
 
         }
 
@@ -632,7 +668,7 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
         sqLiteDatabase = dbHelper.getWritableDatabase();
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            customersTellerToday=dbHelper.getCustomersFromProfileWithDate(tellerID,stringDate);
+            customersTellerToday=cusDAO.getCustomersFromProfileWithDate(tellerID,stringDate);
 
         }
 
@@ -650,31 +686,34 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
 
         }
 
+
         sqLiteDatabase = dbHelper.getWritableDatabase();
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            paymentCodeForTeller=dbHelper.getCodesFromCurrentTeller(tellerNames);
+            paymentCodeForTeller=codeDAO.getCodesFromCurrentTeller(tellerNames);
+
+        }
+
+
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            tellerCashArrayList=tCashDAO.getTellerCashForTeller(tellerID);
+
+        }
+        TReportDAO tReportDAO= new TReportDAO(this);
+
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            tellerReportsTeller=tReportDAO.getTellerReportForTeller(tellerID);
 
         }
 
         sqLiteDatabase = dbHelper.getWritableDatabase();
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            tellerCashArrayList=dbHelper.getTellerCashForTeller(tellerID);
-
-        }
-
-        sqLiteDatabase = dbHelper.getWritableDatabase();
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            tellerReportsTeller=dbHelper.getTellerReportForTeller(tellerID);
-
-        }
-
-        sqLiteDatabase = dbHelper.getWritableDatabase();
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            manualPaymentTeller=dbHelper.getALLPaymentsTeller(tellerID);
+            manualPaymentTeller=paymentDAO.getALLPaymentsTeller(tellerID);
 
         }
 
@@ -692,25 +731,27 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
             savingsToday=dbHelper.getCustomerDailyReportToday(todayDate);
 
         }
-
+        TranXDAO tranXDAO= new TranXDAO(this);
         sqLiteDatabase = dbHelper.getWritableDatabase();
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            transactionsToday=dbHelper.getTransactionsToday(todayDate);
+            transactionsToday=tranXDAO.getTransactionsToday(todayDate);
 
         }
 
 
+
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            manualPaymentToday=dbHelper.getALLPaymentsSuperToday(todayDate);
+            manualPaymentToday=paymentDAO.getALLPaymentsSuperToday(todayDate);
 
         }
+        CodeDAO codeDAO= new CodeDAO(this);
 
         sqLiteDatabase = dbHelper.getWritableDatabase();
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            paymentCodeForCus=dbHelper.getCodesFromCurrentCustomer(customerID);
+            paymentCodeForCus=codeDAO.getCodesFromCurrentCustomer(customerID);
 
         }
 
@@ -933,7 +974,7 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
                 recyclerCusUnconfirmedSavings.setVisibility(View.VISIBLE);
                 if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                     dbHelper.openDataBase();
-                    paymentForCusToday=dbHelper.getTotalPaymentTodayForCustomer(customerID,todayDate);
+                    paymentForCusToday=paymentDAO.getTotalPaymentTodayForCustomer(customerID,todayDate);
 
                 }
 
@@ -995,13 +1036,13 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
                 recyclerCusUnconfirmedSavings.setVisibility(View.GONE);
                 if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                     dbHelper.openDataBase();
-                    totalTellerCashForTheMonth = dbHelper.getTellerTotalTellerCashForTheMonth(tellerNames, monthYearStrFinal);
+                    totalTellerCashForTheMonth = cashDAO.getTellerTotalTellerCashForTheMonth(tellerNames, monthYearStrFinal);
 
 
                 }
                 if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                     dbHelper.openDataBase();
-                    totalTellerNewCusForTheMonth = dbHelper.getTellerMonthCusCountNew(tellerID,monthYearStrFinal);
+                    totalTellerNewCusForTheMonth = cusDAO.getTellerMonthCusCountNew(tellerID,monthYearStrFinal);
 
 
                 }
@@ -1127,7 +1168,7 @@ public class SuperAdminCountAct extends AppCompatActivity implements AdapterView
         btnGetBranchDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cusCountForOffice= dbHelper.getNewCustomersCountForTodayOffice(branchName,todayDate);
+                cusCountForOffice= cusDAO.getNewCustomersCountForTodayOffice(branchName,todayDate);
                 recyclerBranchAllDeposits.setVisibility(View.VISIBLE);
                 recyclerBranchAllStocks.setVisibility(View.VISIBLE);
                 recyclerBranchSuperCash.setVisibility(View.VISIBLE);

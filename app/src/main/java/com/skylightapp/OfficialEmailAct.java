@@ -15,6 +15,7 @@ public class OfficialEmailAct extends AppCompatActivity {
     String SharedPrefUserName;
     SharedPreferences sharedPreferences;
 
+
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {

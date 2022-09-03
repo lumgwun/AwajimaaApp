@@ -10,6 +10,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.firebase.FirebaseApp;
 
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Markets.MarketStock;
 import com.skylightapp.R;
 
 import org.acra.ACRA;
@@ -44,9 +45,15 @@ public class AppController extends Application {
         return null;
     }
 
-    /*public static DBHelper getSQLite() {
-        return DBHelper.getHelper(mInstance);
-    }*/
+    private MarketStock currentProd = null;
+
+    public MarketStock getCurrentProd() {
+        return currentProd;
+    }
+
+    public void setCurrentProd(MarketStock currentProd) {
+        this.currentProd = currentProd;
+    }
 
     @Override
     public void onCreate() {

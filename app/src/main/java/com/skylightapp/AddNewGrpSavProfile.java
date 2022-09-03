@@ -18,7 +18,23 @@ import android.widget.DatePicker;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.GroupAccount;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.AdminBalanceDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.GrpProfileDAO;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TranXDAO;
 
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -44,6 +60,23 @@ public class AddNewGrpSavProfile extends AppCompatActivity {
     private AppCompatEditText edtUserID,edtFirstName,edtPhone;
     AppCompatButton btnAddNewSaver;
     long grpAcctID,grpAccountProfileNo;
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
+    private PaymDocDAO paymDocDAO;
+    private CusDAO cusDAO;
+    private PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
+    private PaymentDAO paymentDAO;
+    private AdminBalanceDAO adminBalanceDAO;
+    private TimeLineClassDAO timeLineClassDAO;
+    private GrpProfileDAO grpProfileDAO;
+    private static final String PREF_NAME = "skylight";
 
 
     @Override
@@ -56,8 +89,28 @@ public class AddNewGrpSavProfile extends AppCompatActivity {
         edtUserID =  findViewById(R.id.grpAcctUserID);
         edtPhone =  findViewById(R.id.grpAcctUserPhone);
         btnAddNewSaver =  findViewById(R.id.grpAcctBtn);
+        cusDAO= new CusDAO(this);
+        paymentCodeDAO= new PaymentCodeDAO(this);
+        profileDao= new ProfDAO(this);
+        cashDAO= new TCashDAO(this);
+        paymDocDAO= new PaymDocDAO(this);
+        tReportDAO= new TReportDAO(this);
+        paymentDAO= new PaymentDAO(this);
+        grpProfileDAO= new GrpProfileDAO(this);
+
+        adminBalanceDAO= new AdminBalanceDAO(this);
+        timeLineClassDAO= new TimeLineClassDAO(this);
+
+        sodao= new SODAO(this);
+        tranXDAO= new TranXDAO(this);
+        sodao= new SODAO(this);
+        messageDAO= new MessageDAO(this);
+        loanDAO= new LoanDAO(this);
+
+        codeDAO= new CodeDAO(this);
+        acctDAO= new AcctDAO(this);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-        getActionBar().hide();
+        //getActionBar().hide();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
@@ -77,6 +130,7 @@ public class AddNewGrpSavProfile extends AppCompatActivity {
             txtPurpose.setText(MessageFormat.format("Grp Purpose:{0}", groupAccount.getGrpPurpose()));
 
         }
+        grpProfileDAO= new GrpProfileDAO(this);
         btnAddNewSaver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,7 +144,7 @@ public class AddNewGrpSavProfile extends AppCompatActivity {
                 userID= Long.parseLong(edtUserID.getText().toString());
                 phoneNo=edtPhone.getText().toString();
                 userProfile.getGroupAccount(grpAcctID).addGrpProfile((int) grpAccountProfileNo,userID,"new");
-                dbHelper.insertGroupAccountProfile(grpAcctID,grpAccountProfileNo,userID,phoneNo,joinedDate);
+                grpProfileDAO.insertGroupProfile(grpAcctID,grpAccountProfileNo,userID,phoneNo,joinedDate);
 
             }
         });

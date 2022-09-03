@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Our Coop. App</string>
+    <string name="app_name">Awajima Market App</string>
     <string name="title_activity_settings">SettingsActivity</string>
 
     <string name="messages_header">Messages</string>
@@ -1216,5 +1216,68 @@
     <string name="tellerReportAlert">Teller Report Submission Alert</string>
     <string name="loanAlert">Loan application Alert</string>
     <string name="loanAlertDetails">Please be informed of a new Loan application</string>
+
+    <string name="title_activity_product_list">Products</string>
+    <string name="action_add_product">New product</string>
+    <string name="title_activity_add_product">Add product</string>
+    <string name="product_info">Product info</string>
+    <string name="name_hint">Name</string>
+    <string name="stock_hint">Stock</string>
+    <string name="add_item_label">Add items:</string>
+
+    <string name="sell_item_btt">Sell</string>
+    <string name="sell_item_label">Sell items:</string>
+    <string name="error_product_exist">Product name already exist</string>
+    <string name="error_product_data">Error in product data</string>
+    <string name="error_name_empty">Name field can not be empty</string>
+    <string name="delete_item">Delete item</string>
+    <string name="delete_item_confrm_msg">Sure you want to delete this item?</string>
+    <string name="edit_item">Edit item</string>
+    <string name="new_item">New item</string>
+    <string name="preferences">Preferences</string>
+
+    <string name="error_there_are_not_enough">There are not enough stock.</string>
+    <string name="error_stock_out_of_bounds">Sorry, the stock goes out of bounds.</string>
+    <string name="error_invalid_stock_or_too_large">Sorry, the stock is not valid entry or is too large</string>
+    <string name="cost_hint">Cost</string>
+    <string name="price_hint">Price</string>
+    <string name="error_invalid_cost">Sorry, the cost is not valid</string>
+    <string name="error_invalid_price">Sorry, the price is not valid</string>
+    <string name="add_btt">Add</string>
+    <string name="add_new_image_descript">Add new image&#8230;</string>
+    <string name="product_image_descrip">Product image</string>
+    <string name="empty_list">Empty list</string>
+    <string name="title_activity_product_details">Product details</string>
+    <string name="defaul_add_sell_value">1</string>
+    <string name="image_product_content_description">Product image</string>
+    <string name="action_about">About</string>
+    <string name="action_stats">Stats</string>
+    <string name="benefits_hint">Benefits</string>
+    <string name="title_activity_about_mlb">About MLB</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="close_without_save">Close without saving?</string>
+    <string name="title_activity_stats">Stadistics</string>
+
+    <string-array name="pref_sort_by_list">
+        <item>Name</item>
+        <item>Benefits</item>
+        <item>Sales</item>
+    </string-array>
+
+    <string-array name="pref_sort_by_list_values">
+        <item>Name</item>
+        <item>Benefits</item>
+        <item>Sales</item>
+    </string-array>
+
+    <string name="pref_sort_by">Sort list of products</string>
+    <string name="pref_sort_by_summary">Field sorting product list</string>
+    <string name="sort_by">Sort by</string>
+
+    <string name="pref_top_list_length">TOP list length</string>
+
+    <string name="title_top_benefits_section">Top benefits</string>
+    <string name="title_top_sales_section">Top sales</string>
+    <string name="pref_top_list_length_summary">Length of the TOP list in stats</string>
 
 </resources>

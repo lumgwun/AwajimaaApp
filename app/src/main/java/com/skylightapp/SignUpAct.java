@@ -120,7 +120,23 @@ import com.skylightapp.Classes.TimeLine;
 import com.skylightapp.Classes.User;
 import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Customers.NewCustomerDrawer;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.AdminBalanceDAO;
+import com.skylightapp.Database.BirthdayDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.Interfaces.ProfileDao;
 
 import org.jetbrains.annotations.NotNull;
@@ -353,6 +369,21 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
     private static final String PREF_NAME = "skylight";
     private LocationManager locationManager;
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
+    private PaymDocDAO paymDocDAO;
+    private CusDAO cusDAO;
+    private PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
+    private PaymentDAO paymentDAO;
+    private AdminBalanceDAO adminBalanceDAO;
+    private BirthdayDAO birthdayDAO;
     String regEx =
             "^(([w-]+.)+[w-]+|([a-zA-Z]{1}|[w-]{2,}))@"
                     + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9]).([0-1]?"
@@ -364,6 +395,8 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     private FirebaseAuth.AuthStateListener mAuthListener;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     private DatePickerDialog.OnDateSetListener mDateSetListener;
+
+    private TimeLineClassDAO timeLineClassDAO;
     SupportMapFragment mapFrag;
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {
@@ -499,6 +532,26 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         dbHelper = new DBHelper(this);
         setTitle("OnBoarding Arena");
         createLocationRequest();
+        cusDAO= new CusDAO(this);
+        paymentCodeDAO= new PaymentCodeDAO(this);
+        profileDao= new ProfDAO(this);
+        cashDAO= new TCashDAO(this);
+        paymDocDAO= new PaymDocDAO(this);
+        tReportDAO= new TReportDAO(this);
+        paymentDAO= new PaymentDAO(this);
+        birthdayDAO= new BirthdayDAO(this);
+        adminBalanceDAO= new AdminBalanceDAO(this);
+        timeLineClassDAO= new TimeLineClassDAO(this);
+
+        sodao= new SODAO(this);
+        tranXDAO= new TranXDAO(this);
+        sodao= new SODAO(this);
+        messageDAO= new MessageDAO(this);
+        loanDAO= new LoanDAO(this);
+
+        codeDAO= new CodeDAO(this);
+        acctDAO= new AcctDAO(this);
+
         referrerClient = InstallReferrerClient.newBuilder(this).build();
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
@@ -1014,11 +1067,17 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
             profileID = 0;
 
         }
+        if(dbHelper !=null){
+            SQLiteDataBaseBuild();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            customers = cusDAO.getAllCustomers11();
 
+        }
 
+        //dbHelper.open();
         btnVerifyOTPAndSignUp.setOnClickListener(this::verifyOTP);
         pinEntryView = (PinEntryView) findViewById(R.id.txt_pin_entry);
-        customers = dbHelper.getAllCustomers11();
+
         Animation translater = AnimationUtils.loadAnimation(this, R.anim.bounce);
 
         btnSendOTP.setOnClickListener(this::sendOTPToCus);
@@ -1110,7 +1169,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                                     if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                         dbHelper.openDataBase();
                                         sqLiteDatabase = dbHelper.getWritableDatabase();
-                                        dbHelper.insertMessage(profileID, customerID, messageID, otpMessage, "Skylight", customerName, selectedOffice, joinedDate);
+                                        messageDAO.insertMessage(profileID, customerID, messageID, otpMessage, "Skylight", customerName, selectedOffice, joinedDate);
 
                                     }
 
@@ -1342,7 +1401,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
 
-            dbHelper.insertAccount(profileID1, customerID, skylightMFb, accountName, virtualAccountNumber, accountBalance, accountTypeStr);
+            acctDAO.insertAccount(profileID1, customerID, skylightMFb, accountName, virtualAccountNumber, accountBalance, accountTypeStr);
         }
 
 
@@ -1363,7 +1422,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.insertBirthDay3(birthday, dateOfBirth);
+            birthdayDAO.insertBirthDay3(birthday, dateOfBirth);
         }
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
@@ -1373,19 +1432,14 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.insertTimeLine(tittleT1, timelineDetailsTD, timeLineTime, mCurrentLocation);
+            timeLineClassDAO.insertTimeLine(tittleT1, timelineDetailsTD, timeLineTime, mCurrentLocation);
         }
 
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.insertStandingOrderAcct(profileID1, customerID, virtualAccountNumber, accountName, 0.00);
-        }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.insertStandingOrderAcct(profileID1, customerID, virtualAccountNumber, accountName, 0.00);
+            sodao.insertStandingOrderAcct(profileID1, customerID, virtualAccountNumber, accountName, 0.00);
         }
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
@@ -1511,7 +1565,6 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         editor.putString(PROFILE_STATUS, "Pending Approval");
         editor.putInt(PROFILE_ID, profileID1);
         editor.putString(PROFILE_DATE_JOINED, joinedDate);
-
         editor.putString(PROFILE_USERNAME, uUserName);
         editor.putString(PROFILE_PASSWORD, uPassword);
         editor.putInt(CUSTOMER_ID, customerID);
@@ -1708,7 +1761,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.insertTimeLine("Sign up", "", "2022-04-19", mCurrentLocation);
+            timeLineClassDAO.insertTimeLine("Sign up", "", "2022-04-19", mCurrentLocation);
 
         }
         Message supportMessage = new Message(uPhoneNumber,otpDigit);
@@ -1717,7 +1770,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.saveNewMessage(supportMessage);
+            messageDAO.saveNewMessage(supportMessage);
             //dbHelper.insertMessage(profileID, customerID, messageID, otpMessage, "Skylight", customerName, selectedOffice, joinedDate);
 
         }
@@ -1837,11 +1890,11 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            dbHelper.insertProfile(userProfile1);
+            profileDao.insertProfile(userProfile1);
         }
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            dbHelper.insertProfile(userProfile2);
+            profileDao.insertProfile(userProfile2);
         }
 
 
@@ -1862,7 +1915,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.insertProfile(userProfile1);
+            profileDao.insertProfile(userProfile1);
 
 
 
@@ -1870,7 +1923,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.insertProfile(userProfile2);
+            profileDao.insertProfile(userProfile2);
 
 
 
@@ -1920,12 +1973,12 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         }
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            dbHelper.insertTellerCash(109,193,193,"TestItem",500.00,"2022-05-23","Uche","Elelenwo",8903,"new");
+            cashDAO.insertTellerCash(109,193,193,"TestItem",500.00,"2022-05-23","Uche","Elelenwo",8903,"new");
 
         }
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            dbHelper.insertProfile(profile33);
+            profileDao.insertProfile(profile33);
 
 
         }

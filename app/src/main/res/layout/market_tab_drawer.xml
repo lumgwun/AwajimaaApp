@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/market_drawer"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start"
+    tools:context="com.skylightapp.Markets.MarketTab">
+
+    <include
+        layout="@layout/act_market_tab"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_height="match_parent" />
+
+    <include
+        layout="@layout/bottom_nav_market"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content" />
+
+    <com.rom4ek.arcnavigationview.ArcNavigationView
+        android:id="@+id/market_arc"
+        android:layout_width="match_parent"
+        android:background="@drawable/rect_their_message"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:arc_cropDirection="cropOutside"
+        app:arc_width="96dp"
+        app:itemIconSize="20dp"
+        android:layout_marginStart="5dp"
+        android:fitsSystemWindows="true"
+        android:layout_marginEnd="5dp"
+        app:itemShapeInsetStart="10dp"
+        android:paddingVertical="20dp"
+        app:itemHorizontalPadding="40dp"
+        app:itemIconTint="@color/red_brown"
+        app:itemTextColor="@color/black"
+        android:layout_marginBottom="10dp"
+        app:itemBackground="@drawable/shape_toolbar_dropshadow"
+        app:itemTextAppearance="?android:attr/textAppearanceSmallInverse"
+        app:headerLayout="@layout/market_header"
+        android:stateListAnimator="@anim/raise"
+        app:menu="@menu/market_drawer_menu" />
+</androidx.drawerlayout.widget.DrawerLayout>

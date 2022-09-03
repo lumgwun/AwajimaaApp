@@ -16,6 +16,7 @@ import android.os.Bundle;
 import com.skylightapp.Classes.AlarmReceiver;
 import com.skylightapp.Classes.Birthday;
 import com.skylightapp.Classes.BirthdayViewAdapter;
+import com.skylightapp.Database.BirthdayDAO;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.R;
 
@@ -42,6 +43,7 @@ public class TodayBirthDays extends AppCompatActivity {
 
     DBHelper dbHelper;
     String todayDate;
+    private BirthdayDAO birthdayDAO;
     Date newDate;
 
     @Override
@@ -50,6 +52,7 @@ public class TodayBirthDays extends AppCompatActivity {
         setContentView(R.layout.act_today_birth_days);
         recyclerView = findViewById(R.id._todayBirthDays);
         dbHelper = new DBHelper(this);
+        birthdayDAO= new BirthdayDAO(this);
         birthdayArrayList = new ArrayList<>();
         newDate= new Date();
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
@@ -58,7 +61,7 @@ public class TodayBirthDays extends AppCompatActivity {
         todayDate = sdf.format(newDate);
         try {
 
-            birthdayArrayList = dbHelper.getBirthdayFromTodayDate(todayDate);
+            birthdayArrayList = birthdayDAO.getBirthdayFromTodayDate(todayDate);
             birthdayViewAdapter = new BirthdayViewAdapter(TodayBirthDays.this, birthdayArrayList);
         } catch (NullPointerException e) {
             System.out.println("Oops!");

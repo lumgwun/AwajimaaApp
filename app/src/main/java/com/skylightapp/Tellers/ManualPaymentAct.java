@@ -36,7 +36,7 @@ import com.skylightapp.Classes.Payment;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
-import com.skylightapp.Classes.SkylightCash;
+import com.skylightapp.Classes.AppCash;
 import com.skylightapp.Classes.StandingOrderAcct;
 import com.skylightapp.Classes.TellerReport;
 import com.skylightapp.Classes.Utils;
@@ -115,7 +115,7 @@ public class ManualPaymentAct extends AppCompatActivity {
     private long paymentCode;
     private double newBalance;
     Payment.PAYMENT_TYPE payment_type;
-    SkylightCash skylightCash;
+    AppCash appCash;
     private static final String PREF_NAME = "skylight";
     String SharedPrefUserPassword;
     String noOfDays;
@@ -146,7 +146,7 @@ public class ManualPaymentAct extends AppCompatActivity {
         random = new SecureRandom();
         tellerProfile =new Profile();
         account= new Account();
-        skylightCash= new SkylightCash();
+        appCash = new AppCash();
         payment= new Payment();
         skyLightPackage= new SkyLightPackage();
         customerManager=new CustomerManager();

@@ -24,6 +24,7 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.StandingOrder;
 import com.skylightapp.Customers.StandingOrderList;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.SODAO;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ public class SOListAct extends AppCompatActivity implements StandingOrderAdapter
     SharedPreferences sharedpreferences;
     Gson gson;
     String json;
+    private SODAO sodao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,8 @@ public class SOListAct extends AppCompatActivity implements StandingOrderAdapter
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         dbHelper= new DBHelper(this);
-        standingOrders =dbHelper.getAllStandingOrders11();
+        sodao= new SODAO(this);
+        standingOrders =sodao.getAllStandingOrders11();
         final CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addOnScrollListener(new CenterScrollListener());

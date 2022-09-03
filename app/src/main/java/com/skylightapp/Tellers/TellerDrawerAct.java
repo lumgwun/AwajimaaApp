@@ -49,10 +49,23 @@ import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Payment;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkylightCash;
+import com.skylightapp.Classes.AppCash;
 import com.skylightapp.Customers.TellerForCusLoanAct;
 import com.skylightapp.Customers.CusPacksAct;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.Inventory.StocksTransferAct;
 import com.skylightapp.MyInvAct;
 import com.skylightapp.R;
@@ -159,7 +172,7 @@ public class TellerDrawerAct extends AppCompatActivity {
     private double tellerTodayBalance,tellerTotalCash,tellerTotalPayment,skylightTotalCashForToday;
     private TellerCash tellerCash;
     private Payment payment;
-    SkylightCash skylightCash;
+    AppCash appCash;
     private FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthListner;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -167,6 +180,22 @@ public class TellerDrawerAct extends AppCompatActivity {
     private Date dateToday;
     private String tellerName;
     private Account tellerAccount;
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
+    private PaymDocDAO paymDocDAO;
+
+    CusDAO cusDAO;
+    PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
+    private PaymentDAO paymentDAO;
+    private TCashDAO tCashDAO;
     private static final String PREF_NAME = "skylight";
     AppCompatTextView txtTellerTodaySavings,txtTellerSkylightCashToday,txtTellerPaymentToday,txtTellerProfileBalance;
 
@@ -247,6 +276,23 @@ public class TellerDrawerAct extends AppCompatActivity {
         gson1 = new Gson();
         userProfile= new Profile();
         tellerAccount= new Account();
+        cusDAO= new CusDAO(this);
+        paymentCodeDAO= new PaymentCodeDAO(this);
+        profileDao= new ProfDAO(this);
+        cashDAO= new TCashDAO(this);
+        paymDocDAO= new PaymDocDAO(this);
+        tReportDAO= new TReportDAO(this);
+        sodao= new SODAO(this);
+        paymentDAO= new PaymentDAO(this);
+        tCashDAO= new TCashDAO(this);
+
+        tranXDAO= new TranXDAO(this);
+        sodao= new SODAO(this);
+        messageDAO= new MessageDAO(this);
+        loanDAO= new LoanDAO(this);
+
+        codeDAO= new CodeDAO(this);
+        acctDAO= new AcctDAO(this);
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPrefUserName=sharedPreferences.getString("PROFILE_USERNAME", "");
         SharedPrefUserPassword=sharedPreferences.getString("PROFILE_PASSWORD", "");
@@ -283,7 +329,7 @@ public class TellerDrawerAct extends AppCompatActivity {
         }
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
         calendar.add(Calendar.DAY_OF_YEAR, 31);
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date newDate = calendar.getTime();
         String todayDate = sdf.format(newDate);
         try {
@@ -337,8 +383,8 @@ public class TellerDrawerAct extends AppCompatActivity {
         txtTellerProfileBalance = findViewById(R.id.teller_balancer);
 
         double totalSavingsForTellerToday=dbHelper.getTotalSavingsTodayForTeller(profileId,dateToday);
-        double totalPaymentForTellerToday=dbHelper.getTotalPaymentTodayForTeller1(profileId,todayDate);
-        tellerTotalCash=dbHelper.getTellerCashForTellerToday(tellerName,todayDate);
+        double totalPaymentForTellerToday=paymentDAO.getTotalPaymentTodayForTeller1(profileId,todayDate);
+        tellerTotalCash=tCashDAO.getTellerCashForTellerToday(tellerName,todayDate);
         //tellerTotalCash=dbHelper.getTellerCashForTellerTheMonth(tellerName,todayDate);
         skylightTotalCashForToday=dbHelper.getSkylightCashTotalForProfileAndDate(profileId,todayDate);
 
@@ -428,7 +474,7 @@ public class TellerDrawerAct extends AppCompatActivity {
         if(userProfile !=null){
             String name = userProfile.getProfileLastName();
             txtWelcomeName.setText(MessageFormat.format("Welcome{0}", name));
-            profilePix.setImageBitmap(applicationDb.getProfilePicture(SharedPrefProfileID));
+            profilePix.setImageBitmap(profileDao.getProfilePicture(SharedPrefProfileID));
             String names = userProfile.getProfileFirstName();
             txtWelcomeName.setText("Welcome"+""+names);
             try {

@@ -31,6 +31,7 @@ import com.skylightapp.Classes.PaymentCode;
 import com.skylightapp.Classes.PaymentDoc;
 import com.skylightapp.Classes.ProfileManager;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.PaymDocDAO;
 import com.skylightapp.Interfaces.OnTellerReportChangeListener;
 import com.skylightapp.R;
 
@@ -53,9 +54,10 @@ public class SuperSavingsAdapter extends RecyclerView.Adapter<SuperSavingsAdapte
     private static ProfileManager profileManager;
     private Context context;
     int position;
-    DBHelper dbHelper;
+    PaymDocDAO paymDocDAO;
     CustomerDailyReport savings1;
     int savingsID;
+    private DBHelper dbHelper;
     String savingsStatus;
     private OnItemsClickListener listener;
     TextViewCompat txtSavingsStatus;
@@ -147,9 +149,9 @@ public class SuperSavingsAdapter extends RecyclerView.Adapter<SuperSavingsAdapte
         savings1 = this.savings.get(position);
         PaymentDoc document = (PaymentDoc) this.savings.get(position);
         PaymentCode savingsCode = (PaymentCode) this.savings.get(position);
-        dbHelper = new DBHelper(mcontext.getApplicationContext());
+        paymDocDAO = new PaymDocDAO(mcontext.getApplicationContext());
         if(savings1 !=null){
-            Bitmap docId=dbHelper.getDocPicture(savings1.getRecordID());
+            Bitmap docId=paymDocDAO.getDocPicture(savings1.getRecordID());
             holder.paymentDoc.setImageBitmap( docId);
 
         }
@@ -233,6 +235,7 @@ public class SuperSavingsAdapter extends RecyclerView.Adapter<SuperSavingsAdapte
     private void updateStatus(){
         AlertDialog.Builder builder = new AlertDialog.Builder(mcontext.getApplicationContext());
         builder.setTitle("Update Savings Status");
+        dbHelper = new DBHelper(mcontext.getApplicationContext());
         savings1 = this.savings.get(position);
         if(savings1 !=null){
             savingsID=savings1.getRecordID();
@@ -266,6 +269,7 @@ public class SuperSavingsAdapter extends RecyclerView.Adapter<SuperSavingsAdapte
 
     }
     public void areYouSure(){
+        dbHelper = new DBHelper(mcontext.getApplicationContext());
         AlertDialog.Builder builder = new AlertDialog.Builder(mcontext.getApplicationContext());
         builder.setTitle("Confirmation Actions before Deleting Savings");
         savings1 = this.savings.get(position);

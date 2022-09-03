@@ -155,7 +155,7 @@ public class SuperStockTrAct extends AppCompatActivity {
         from="Skylight";
 
         @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
         transferDate = mdformat.format(calendar.getTime());
         if(skylight !=null){
             userProfile=skylight.getSkyProfile();

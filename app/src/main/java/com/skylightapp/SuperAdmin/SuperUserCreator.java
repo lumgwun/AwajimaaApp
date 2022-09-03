@@ -1674,7 +1674,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
-                                dbHelper.insertTeller(profileID2, uSurname, uFirstName, uPhoneNumber, dateOfBirth, uEmail, uAddress, selectedGender, selectedOffice, selectedState, selectedImage, joinedDate, nIN, uUserName, uPassword);
+                                dbHelper.insertTellerReport(profileID2, uSurname, uFirstName, uPhoneNumber, dateOfBirth, uEmail, uAddress, selectedGender, selectedOffice, selectedState, selectedImage, joinedDate, nIN, uUserName, uPassword);
 
                             }
 

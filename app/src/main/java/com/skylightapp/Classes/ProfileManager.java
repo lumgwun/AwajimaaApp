@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.Enums.ProfileStatus;
 import com.skylightapp.Interfaces.OnObjectChangedListener;
 import com.skylightapp.Interfaces.OnObjectExistListener;
@@ -38,6 +39,7 @@ public class ProfileManager extends FirebaseListenersManager {
 
     DBHelper dbHelper;
     Profile userProfile;
+    private ProfDAO profileDao;
     Gson gson;
     String json,user;
 
@@ -149,7 +151,8 @@ public class ProfileManager extends FirebaseListenersManager {
         }
     }
     public ProfileStatus checkProfileSQLite(String phoneNumber) {
-        userProfile = dbHelper.getUserDetailsFromPhoneNumber(phoneNumber);
+        profileDao= new ProfDAO(context.getApplicationContext());
+        userProfile = profileDao.getUserDetailsFromPhoneNumber(phoneNumber);
 
         if (userProfile == null) {
             return ProfileStatus.NOT_AUTHORIZED;

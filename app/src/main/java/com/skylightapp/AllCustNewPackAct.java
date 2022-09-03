@@ -55,6 +55,10 @@ import com.google.firebase.auth.FirebaseUser;
 
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Transaction;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.SuperAdmin.AdminBalance;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.AccountTypes;
@@ -177,6 +181,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
     double grandTotal;
     double totalAmountCalc;
     double savingsAmount;
+    private TCashDAO cashDAO;
     double newGrandTotal;
     double newAmountRemaining;
     private int newDaysRemaining,numberOfDays;
@@ -276,6 +281,9 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
                     }
                 }
             });
+    private CodeDAO codeDAO;
+    private TimeLineClassDAO timeLineClassDAO;
+    private CusDAO cusDAO;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -284,6 +292,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
         checkInternetConnection();
         dbHelper = new DBHelper(this);
         customer= new Customer();
+        codeDAO= new CodeDAO(this);
         sharedpreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         random= new SecureRandom();
@@ -311,7 +320,9 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
         totalForTheDay =  findViewById(R.id.daysTotal);
         savings_date_=(DatePicker)findViewById(R.id.savings_date_);
         btn_add_New_Savings = findViewById(R.id.submitSavings);
-        customersN = dbHelper.getAllCustomers11();
+        timeLineClassDAO= new TimeLineClassDAO(this);
+        cusDAO= new CusDAO(this);
+        customersN = cusDAO.getAllCustomers11();
         try {
             customerArrayAdapterN = new ArrayAdapter<>(AllCustNewPackAct.this, android.R.layout.simple_spinner_item, customersN);
             customerArrayAdapterN.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -792,7 +803,8 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
                     }
                     tellerCash=new TellerCash(reportID,profileID,packageID,finalItemType,savingsAmount,tellerName,officeBranch,packageStartDate,tellerCashCode,"UnConfirmed");
                     tellerCash.setTellerCashCode(tellerCashCode);
-                    dbHelper.insertTellerCash(reportID,profileID,packageID,finalItemType,savingsAmount,tellerName,officeBranch,packageStartDate,tellerCashCode,"UnConfirmed");
+                    cashDAO= new TCashDAO(this);
+                    cashDAO.insertTellerCash(reportID,profileID,packageID,finalItemType,savingsAmount,tellerName,officeBranch,packageStartDate,tellerCashCode,"UnConfirmed");
 
 
                     String tittle = "New Package Alert" + "from" + managerName;
@@ -839,15 +851,16 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
 
 
                     try {
+                        timeLineClassDAO= new TimeLineClassDAO(this);
 
                         //long profileID, long customerId,Transaction transaction, long accountId,String payee,String payer,Transaction.TRANSACTION_TYPE type, double amount, long transactionId,  String officeBranch,String date
 
                         //dbHelper.insertTimeLine(tittle, details, reportDate, mCurrentLocation);
-                        dbHelper.insertTimeLine(timelineTittle3, details, reportDate, mCurrentLocation);
+                        timeLineClassDAO.insertTimeLine(timelineTittle3, details, reportDate, mCurrentLocation);
                         //dbHelper.saveNewTransaction(profileID, customerID,Skylightransaction, acctID, "Skylight", customerNames,transaction_type, initialDeposit, reportID, officeBranch, reportDate);
                         dbHelper.insertNewPackage(this.profileID, customerID,packageID, skylightCode, finalItemType,this.packageType, this.packageDuration,savingsAmount,  reportDate, grandTotal, this.packageEndDate, "fresh");
                         //dbHelper.insertNewPackage(userProfile, customer, skyLightPackage1);
-                        dbHelper.insertSavingsCode(paymentCode);
+                        codeDAO.insertSavingsCode(paymentCode);
                         adminBalance.setAdminReceivedBalance(adminNewBalance);
                         dbHelper.insertNewDailyReport(profileID,customerID,packageID,reportID,reportCode,numberOfDays,initialDeposit,reportDate,newDaysRemaining,newAmountRemaining,"First");
 

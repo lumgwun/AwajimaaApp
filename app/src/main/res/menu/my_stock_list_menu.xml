@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    <item
+        android:id="@+id/action_add_stock"
+        android:icon="@drawable/abc_vector_test"
+        android:title="Add New Stock"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_stock_settings"
+        android:title="Stock Settings"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_stock_stats"
+        android:title="Stock Statistics"
+        app:showAsAction="never" />
+</menu>

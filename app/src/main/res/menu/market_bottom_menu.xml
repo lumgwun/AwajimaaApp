@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/mHome"
+        android:title="Market Home"
+        app:cnb_backgroundColor="@color/dark_and_red"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#2196F3"
+        android:icon="@drawable/ic_admin_panel"/>
+
+    <item
+        android:id="@+id/market_biz_deals"
+        android:title="Biz Deals"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#F44336"
+        android:icon="@drawable/ic_home_black_24dp"/>
+
+    <item
+        android:id="@+id/my_market_Book"
+        android:title="My Biz Book"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#F44336"
+        android:icon="@drawable/material_drawer_ico_account"/>
+
+    <item
+        android:id="@+id/my_market_inventory"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#4CAF50"
+        android:title="My Inventory" />
+    <item
+        android:id="@+id/my_marketFunding"
+        android:title="Funding"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#FF9800"
+        android:icon="@drawable/ic_admin_panel"/>
+    
+    <item
+        android:id="@+id/market_prod"
+        android:title="Products"
+        app:cnb_backgroundColor="@color/colorPrimaryDark"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#2196F3"
+        android:icon="@drawable/ic_alert"/>
+
+
+</menu>

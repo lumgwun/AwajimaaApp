@@ -30,7 +30,19 @@ import com.skylightapp.BlockedUserAct;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Customers.SendCustomerMessage;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
 import com.skylightapp.UnBlockUserAct;
 
@@ -85,6 +97,20 @@ public class CusByPackAct extends AppCompatActivity implements  CusAdaptSuper.Cu
     long profileID;
     private AppCompatButton btnSearch;
     private SearchView searchView;
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
+    private PaymDocDAO paymDocDAO;
+
+    CusDAO cusDAO;
+    PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +118,19 @@ public class CusByPackAct extends AppCompatActivity implements  CusAdaptSuper.Cu
         setContentView(R.layout.act_cus_by_pack);
         customer= new Customer();
         profile= new Profile();
+        cusDAO= new CusDAO(this);
+        paymentCodeDAO= new PaymentCodeDAO(this);
+        profileDao= new ProfDAO(this);
+        cashDAO= new TCashDAO(this);
+        paymDocDAO= new PaymDocDAO(this);
+        tReportDAO= new TReportDAO(this);
+        sodao= new SODAO(this);
+        tranXDAO= new TranXDAO(this);
+        sodao= new SODAO(this);
+        messageDAO= new MessageDAO(this);
+        loanDAO= new LoanDAO(this);
+        codeDAO= new CodeDAO(this);
+        acctDAO= new AcctDAO(this);
         com.github.clans.fab.FloatingActionButton home = findViewById(R.id.AllPayments);
         recyclerViewNoPacks = findViewById(R.id.recycler_cusNoPack);
         recyclerViewItemsP = findViewById(R.id.recycler_ItemsCus);
@@ -111,12 +150,12 @@ public class CusByPackAct extends AppCompatActivity implements  CusAdaptSuper.Cu
         investment="Investment";
         promo="Promo";
 
-        noPackCus = dbHelper.getCusWithoutPackage();
-        savingsCus = dbHelper.getCusForSavings(savings);
-        itemCus = dbHelper.getCusForItemsPurchase(itemPurchase);
-        invCus =dbHelper.getCusForInvestment(investment);
-        promoCus =dbHelper.getCusForPromo(promo);
-        sOCus =dbHelper.getAllCusForSo();
+        noPackCus = cusDAO.getCusWithoutPackage();
+        savingsCus = cusDAO.getCusForSavings(savings);
+        itemCus = cusDAO.getCusForItemsPurchase(itemPurchase);
+        invCus =cusDAO.getCusForInvestment(investment);
+        promoCus =cusDAO.getCusForPromo(promo);
+        sOCus =cusDAO.getAllCusForSo();
 
         cusNoPackAdapt = new CusAdaptSuper(CusByPackAct.this,noPackCus);
         cusInvAdapt = new CusAdaptSuper(CusByPackAct.this,invCus);
@@ -200,7 +239,7 @@ public class CusByPackAct extends AppCompatActivity implements  CusAdaptSuper.Cu
             profile=customer.getCusProfile();
 
         }
-        userRole=dbHelper.getProfileRoleByUserNameAndPassword(cusUserName,cusUserPassword);
+        userRole=profileDao.getProfileRoleByUserNameAndPassword(cusUserName,cusUserPassword);
 
         if(userRole !=null) {
             if (userRole.equalsIgnoreCase("BlockedUser")) {

@@ -15,7 +15,24 @@ import android.os.SystemClock;
 import androidx.core.app.NotificationCompat;
 
 import com.skylightapp.Admins.SODueDateListAct;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.AdminBalanceDAO;
+import com.skylightapp.Database.BirthdayDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.GrpProfileDAO;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
 import com.skylightapp.Tellers.PackageAllCusAct;
 
@@ -32,6 +49,23 @@ import static com.skylightapp.Classes.StandingOrder.SO_ID;
 public class AlarmReceiver extends BroadcastReceiver {
     AlarmManager mAlarmManager;
     PendingIntent mPendingIntent;
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
+    private PaymDocDAO paymDocDAO;
+    private CusDAO cusDAO;
+    private PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
+    private PaymentDAO paymentDAO;
+    private AdminBalanceDAO adminBalanceDAO;
+    private TimeLineClassDAO timeLineClassDAO;
+    private GrpProfileDAO grpProfileDAO;
+    private BirthdayDAO birthdayDAO;
 
 
     @Override
@@ -45,7 +79,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         String savingsID = intent.getStringExtra(REPORT_ID);
 
         DBHelper dbHelper = new DBHelper(context);
-        Birthday birthday = dbHelper.getBirthdayReminder(birthdayReceivedID);
+        birthdayDAO= new BirthdayDAO(context);
+        Birthday birthday = birthdayDAO.getBirthdayReminder(birthdayReceivedID);
         SkyLightPackage skyLightPackage = dbHelper.getPackageReminder(mReceivedID);
         ImportantDates reminder = dbHelper.getReminder(mReceivedID);
         String mTitle = reminder.getTitle();

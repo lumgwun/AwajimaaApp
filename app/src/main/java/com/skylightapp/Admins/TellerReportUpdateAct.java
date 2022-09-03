@@ -29,6 +29,8 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.TellerReport;
 import com.skylightapp.Classes.Utils;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.R;
 import com.skylightapp.SMSAct;
 
@@ -87,6 +89,8 @@ public class TellerReportUpdateAct extends AppCompatActivity {
     String phoneNo;
     String SharedPrefUserName;
     int SPAdminProfileID;
+    private TReportDAO tReportDAO;
+    private TimeLineClassDAO timeLineClassDAO;
     String adminName;
     Spinner.OnItemSelectedListener spnClickListener = new AdapterView.OnItemSelectedListener() {
         @Override
@@ -397,7 +401,8 @@ public class TellerReportUpdateAct extends AppCompatActivity {
         Location location=null;
         //tellerReports=null;
         applicationDb = new DBHelper(this);
-        tellerReports=applicationDb.getTellerReportsAll();
+        tReportDAO= new TReportDAO(this);
+        tellerReports=tReportDAO.getTellerReportsAll();
        if(tellerReport !=null){
            tellerReportID=tellerReport.getTellerReportID();
            tellerProfile.addPTimeLine(timelineTittle2,timelineDetailsTeller);
@@ -418,10 +423,12 @@ public class TellerReportUpdateAct extends AppCompatActivity {
         try {
             if (adminUser != null) {
                 adminUser.addTimeLine(timelineTittle3,timelineDetailAdmin);
+                tReportDAO= new TReportDAO(this);
                 adminUser.addTellerReport(tellerReportID,officeBranch,amountEntered,amountExpected, this.noOfCustomers,dateOfReport,status);
             }
-            applicationDb.updateTellerReport(tellerReportID,tellerID,adminName,this.noOfCustomers,amountExpected,amountEntered,dateOfReport,status);
-            applicationDb.insertTimeLine(timelineTittle,timelineDetails,dateOfReport,location);
+            timeLineClassDAO= new TimeLineClassDAO(this);
+            tReportDAO.updateTellerReport(tellerReportID,tellerID,adminName,this.noOfCustomers,amountExpected,amountEntered,dateOfReport,status);
+            timeLineClassDAO.insertTimeLine(timelineTittle,timelineDetails,dateOfReport,location);
             Toast.makeText(TellerReportUpdateAct.this, "Report Update was successful" , Toast.LENGTH_LONG).show();
 
         } catch (NullPointerException e) {

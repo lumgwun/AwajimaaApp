@@ -34,7 +34,27 @@ import com.skylightapp.Classes.AlarmReceiver;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.OfficeBranch;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.AdminBalanceDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.GrpProfileDAO;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.OfficeBranchDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.StockTransferDAO;
+import com.skylightapp.Database.StocksDAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TranXDAO;
+import com.skylightapp.Database.WorkersDAO;
 import com.skylightapp.Inventory.StockTransfer;
 import com.skylightapp.Inventory.StockTransferAdapter;
 import com.skylightapp.R;
@@ -117,6 +137,28 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
     private  Skylight skylight;
     PreferenceManager preferenceManager;
     SharedPreferences userPreferences;
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
+    private PaymDocDAO paymDocDAO;
+    private CusDAO cusDAO;
+    private PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
+    private PaymentDAO paymentDAO;
+    private AdminBalanceDAO adminBalanceDAO;
+    private TimeLineClassDAO timeLineClassDAO;
+    private GrpProfileDAO grpProfileDAO;
+
+    private StocksDAO stocksDAO;
+    private WorkersDAO workersDAO;
+    private StockTransferDAO stockTransferDAO;
+    private OfficeBranchDAO officeBranchDAO;
+
     LinearLayout layoutCustomDate, layoutFromTeller, layoutAllST, layoutSkylightTittle, layoutToCustomers, layoutFromBranch;
     CardView dateCard, cardTellerBtn, allTCCard, cardLayoutSkylight, cardLayoutToCus, cardBtnToCus, cardBtnSkyLayout, dateCardBtn, cardLayoutBtnBranch, cardLayoutFromBranch, cardTellerLayout;
 
@@ -129,6 +171,29 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
         skylight= new Skylight();
         gson = new Gson();
         gson2 = new Gson();
+        officeBranchDAO= new OfficeBranchDAO(this);
+        workersDAO= new WorkersDAO(this);
+        stockTransferDAO= new StockTransferDAO(this);
+        stocksDAO= new StocksDAO(this);
+        cusDAO= new CusDAO(this);
+        paymentCodeDAO= new PaymentCodeDAO(this);
+        profileDao= new ProfDAO(this);
+        cashDAO= new TCashDAO(this);
+        paymDocDAO= new PaymDocDAO(this);
+        tReportDAO= new TReportDAO(this);
+        paymentDAO= new PaymentDAO(this);
+        adminBalanceDAO= new AdminBalanceDAO(this);
+        timeLineClassDAO= new TimeLineClassDAO(this);
+        grpProfileDAO= new GrpProfileDAO(this);
+
+        sodao= new SODAO(this);
+        tranXDAO= new TranXDAO(this);
+        sodao= new SODAO(this);
+        messageDAO= new MessageDAO(this);
+        loanDAO= new LoanDAO(this);
+
+        codeDAO= new CodeDAO(this);
+        acctDAO= new AcctDAO(this);
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String todayDate = sdf.format(calendar.getTime());
@@ -162,21 +227,21 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
         toCustomerArrayList =new ArrayList<>();
 
         workersNames =new ArrayList<>();
-        customers=dbHelper.getAllCustomersNames();
+        customers=cusDAO.getAllCustomersNames();
 
         try {
 
             if (dbHelper != null) {
-                workersNames =dbHelper.getAllWorkers();
-                sTArrayListToday =dbHelper.getStocksTransferAtDate(todayDate);
-                tellerSTArrayList=dbHelper.getStocksTransferFromTeller("Teller");
-                tellerArrayListWithDate=dbHelper.getStocksTransferFromTellerWithDate("Teller",dateOfST);
-                arrayListAllST=dbHelper.getAllStocksTransfers();
+                workersNames =workersDAO.getAllWorkers();
+                sTArrayListToday =stockTransferDAO.getStocksTransferAtDate(todayDate);
+                tellerSTArrayList=stockTransferDAO.getStocksTransferFromTeller("Teller");
+                tellerArrayListWithDate=stockTransferDAO.getStocksTransferFromTellerWithDate("Teller",dateOfST);
+                arrayListAllST=stockTransferDAO.getAllStocksTransfers();
                 //arrayListAllSTWithDate=dbHelper.getStocksTransferWithDate(dateOfST);
-                branchSTArrayList=dbHelper.getStocksTransferFromBranch("Branch");
-                skylightSTArrayList=dbHelper.getStocksTransferFromSkylight("Skylight");
-                sTCustomDateArrayList=dbHelper.getStocksTransferAtDate(dateOfST);
-                toCustomerArrayList=dbHelper.getStocksToCustomer("Customer");
+                branchSTArrayList=stockTransferDAO.getStocksTransferFromBranch("Branch");
+                skylightSTArrayList=stockTransferDAO.getStocksTransferFromSkylight("Skylight");
+                sTCustomDateArrayList=stockTransferDAO.getStocksTransferAtDate(dateOfST);
+                toCustomerArrayList=stockTransferDAO.getStocksToCustomer("Customer");
                 todaySTAmount =dbHelper.getAllSkylightCashCountForDate(todayDate);
             }
 
@@ -456,11 +521,11 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
 
 
             if(dbHelper !=null){
-                workersNames =dbHelper.getAllWorkers();
+                workersNames =workersDAO.getAllWorkers();
             }
 
             if (dbHelper != null) {
-                officeBranchArrayList=dbHelper.getAllBranchOffices();
+                officeBranchArrayList=OfficeBranchDAO.getAllBranchOffices();
             }
         } catch (NullPointerException e) {
             System.out.println("Oops!");

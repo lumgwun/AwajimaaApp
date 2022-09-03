@@ -19,7 +19,21 @@ import com.google.gson.Gson;
 import com.skylightapp.Classes.AllPaymentDocAdapter;
 import com.skylightapp.Classes.PaymentDoc;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.AdminBalanceDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 
@@ -45,6 +59,20 @@ public class AllPaymentDocFragment extends Fragment {
 
     DBHelper dbHelper;
     SharedPreferences userPreferences;
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
+    private PaymDocDAO paymDocDAO;
+    private CusDAO cusDAO;
+    private PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
+    private PaymentDAO paymentDAO;
+    private AdminBalanceDAO adminBalanceDAO;
     Gson gson;
     String json;
     Profile userProfile;
@@ -82,10 +110,13 @@ public class AllPaymentDocFragment extends Fragment {
 
 
         dbHelper = new DBHelper(getContext());
+
+        paymDocDAO= new PaymDocDAO(getContext());
+
         try {
 
             documentList = new ArrayList<PaymentDoc>();
-            documentList = dbHelper.getAllDocuments();
+            documentList = paymDocDAO.getAllDocuments();
             mAdapter = new AllPaymentDocAdapter(getContext(), documentList);
 
         } catch (SQLiteException e) {

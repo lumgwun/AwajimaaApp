@@ -28,6 +28,7 @@ import com.skylightapp.Classes.AdminUser;
 import com.skylightapp.Classes.Message;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.MessageDAO;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -60,6 +61,7 @@ public class AdminSupportAct extends AppCompatActivity implements  MessageAdapte
     AppCompatButton btnSearchMessages;
     private static final String PREF_NAME = "skylight";
     SQLiteDatabase sqLiteDatabase;
+    private MessageDAO messageDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,7 @@ public class AdminSupportAct extends AppCompatActivity implements  MessageAdapte
         setTitle("Supports Messages");
         userProfile= new Profile();
         adminUser= new AdminUser();
+        messageDAO= new MessageDAO(this);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         json = userPreferences.getString("LastProfileUsed", "");
@@ -122,9 +125,9 @@ public class AdminSupportAct extends AppCompatActivity implements  MessageAdapte
                     sqLiteDatabase = dbHelper.getWritableDatabase();
                     try {
 
-                        messages = dbHelper.getAllMessagesForBranch(officeBranch);
-                        messagesToday=dbHelper.getMessagesToday(dateOfMessage);
-                        messageCount=dbHelper.getMessageCountToday(dateOfMessage);
+                        messages = messageDAO.getAllMessagesForBranch(officeBranch);
+                        messagesToday=messageDAO.getMessagesToday(dateOfMessage);
+                        messageCount=messageDAO.getMessageCountToday(dateOfMessage);
                     } catch (Exception e) {
                         System.out.println("Oops!");
                     }

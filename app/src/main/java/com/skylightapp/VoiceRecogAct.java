@@ -24,8 +24,7 @@ import com.skylightapp.Classes.ContextMenu;
 import com.skylightapp.Classes.ErrorHandler;
 import com.skylightapp.Classes.MenuObject;
 import com.skylightapp.Classes.MenuParams;
-import com.skylightapp.RealEstate.ConMenuDialFrag;
-import com.skylightapp.RealEstate.PropLocUpdate;
+
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -95,10 +94,10 @@ public class VoiceRecogAct extends AppCompatActivity implements MenuItem.OnMenuI
                     String address= (String)adapter.getItemAtPosition(position);
 
                     // goto google map screen
-                    Intent intent = new Intent(VoiceRecogAct.this, PropLocUpdate.class);
+                    /*Intent intent = new Intent(VoiceRecogAct.this, PropLocUpdate.class);
                     // erase current listing in google maps
                     intent.putExtra("GoogleVoiceCommand", address);
-                    startActivity(intent);
+                    startActivity(intent);*/
                 }
             });
 
@@ -140,7 +139,7 @@ public class VoiceRecogAct extends AppCompatActivity implements MenuItem.OnMenuI
         menuParams.setActionBarSize((int) getResources().getDimension(R.dimen.tool_bar_height));
         menuParams.setMenuObjects(getMenuObjects());
         menuParams.setClosableOutside(false);
-        mMenuDialogFragment = ConMenuDialFrag.newInstance(menuParams);
+        //mMenuDialogFragment = ConMenuDialFrag.newInstance(menuParams);
     }
 
     private void initToolbar() {

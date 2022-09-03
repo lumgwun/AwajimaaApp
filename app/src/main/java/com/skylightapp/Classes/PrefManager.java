@@ -123,6 +123,11 @@ public class PrefManager {
         user.put(PROFILE_ID, pref.getString(PROFILE_ID, null));
         return user;
     }
+    public void remove(String key) {
+        SharedPreferences.Editor mEditor = pref.edit();
+        mEditor.remove(key);
+        mEditor.apply();
+    }
 
     public void logoutUser(){
 

@@ -31,7 +31,20 @@ import com.melnykov.fab.FloatingActionButton;
 import com.skylightapp.Adapters.PaymentAdapterSuper;
 import com.skylightapp.Classes.Payment;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
 
 import java.text.SimpleDateFormat;
@@ -68,8 +81,19 @@ public class BranchMPayments extends AppCompatActivity implements  PaymentAdapte
     int branchPaymentCount;
     Spinner spnPaymentOffice;
     private SearchView searchView;
-
-
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
+    private PaymDocDAO paymDocDAO;
+    private CusDAO cusDAO;
+    private PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
+    private PaymentDAO paymentDAO;
 
     @SuppressLint("SimpleDateFormat")
     @Override
@@ -78,6 +102,21 @@ public class BranchMPayments extends AppCompatActivity implements  PaymentAdapte
         setContentView(R.layout.act_branch_m_payments);
         setTitle("Branch Manual Payment");
         calendar=Calendar.getInstance();
+        cusDAO= new CusDAO(this);
+        paymentCodeDAO= new PaymentCodeDAO(this);
+        profileDao= new ProfDAO(this);
+        cashDAO= new TCashDAO(this);
+        paymDocDAO= new PaymDocDAO(this);
+        tReportDAO= new TReportDAO(this);
+        paymentDAO= new PaymentDAO(this);
+        sodao= new SODAO(this);
+        tranXDAO= new TranXDAO(this);
+        sodao= new SODAO(this);
+        messageDAO= new MessageDAO(this);
+        loanDAO= new LoanDAO(this);
+
+        codeDAO= new CodeDAO(this);
+        acctDAO= new AcctDAO(this);
         com.github.clans.fab.FloatingActionButton home = findViewById(R.id.AllPayments);
         recyclerView = findViewById(R.id.recycler_AcctantPayment);
         recyclerViewAll = findViewById(R.id.recycler_AcctantPaymentAll);
@@ -129,8 +168,8 @@ public class BranchMPayments extends AppCompatActivity implements  PaymentAdapte
         dbHelper = new DBHelper(this);
 
         try {
-            paymentArrayList = dbHelper.getALLPaymentsBranchToday(selectedOffice,dateString);
-            paymentArrayList2 = dbHelper.getALLPaymentsSuperToday(dateString);
+            paymentArrayList = paymentDAO.getALLPaymentsBranchToday(selectedOffice,dateString);
+            paymentArrayList2 = paymentDAO.getALLPaymentsSuperToday(dateString);
         }catch (NullPointerException e)
         {
             e.printStackTrace();
@@ -159,7 +198,7 @@ public class BranchMPayments extends AppCompatActivity implements  PaymentAdapte
                 recyclerViewAll.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
                 try {
-                    paymentArrayList = dbHelper.getALLPaymentsBranchToday(selectedOffice,dateOfPayment);
+                    paymentArrayList = paymentDAO.getALLPaymentsBranchToday(selectedOffice,dateOfPayment);
                 }catch (NullPointerException e)
                 {
                     e.printStackTrace();

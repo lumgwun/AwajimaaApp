@@ -1,0 +1,50 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/shape_rect13"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:id="@+id/prop1"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content">
+        <com.mikepenz.materialdrawer.view.BezelImageView
+            android:layout_width="80dp"
+            android:id="@+id/userP"
+            android:layout_marginStart="2dp"
+            app:srcCompat="@drawable/home2"
+            android:layout_height="70dp"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/UCusName"
+            android:layout_width="wrap_content"
+            android:textSize="20sp"
+            android:layout_height="wrap_content"
+            android:text="Name : " />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="2dp"
+        android:layout_below="@id/prop1"
+        android:id="@+id/prop2"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/UCusRole"
+            android:layout_width="0dp"
+            android:textSize="15sp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="2dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Role : " />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+</RelativeLayout>

@@ -29,7 +29,13 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.StandingOrder;
 import com.skylightapp.Classes.Transaction;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.CodeDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -68,6 +74,12 @@ public class CusPackHistoryAct extends AppCompatActivity implements SkyLightPack
     private int customerID;
     private TextView txtCusName;
     SQLiteDatabase sqLiteDatabase;
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
 
 
     @Override
@@ -75,6 +87,12 @@ public class CusPackHistoryAct extends AppCompatActivity implements SkyLightPack
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_cus_pack_history);
         setTitle("Customer Package History");
+        sodao= new SODAO(this);
+        tranXDAO= new TranXDAO(this);
+        messageDAO= new MessageDAO(this);
+        codeDAO= new CodeDAO(this);
+        loanDAO= new LoanDAO(this);
+        acctDAO= new AcctDAO(this);
         RecyclerView recyclerPackages = findViewById(R.id.recyclerViewPackages2);
         RecyclerView recyclerSavings = findViewById(R.id.recyclerViewSavings42);
         RecyclerView recyclerCodes = findViewById(R.id.recyclerViewCodes2);
@@ -94,11 +112,12 @@ public class CusPackHistoryAct extends AppCompatActivity implements SkyLightPack
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            standingOrders = dbHelper.getSOFromCurrentCustomer(customerID);
+            standingOrders = sodao.getSOFromCurrentCustomer(customerID);
             skyLightPackages = dbHelper.getPacksFromCurrentCustomer(customerID);
-            paymentCodeArrayList = dbHelper.getSavingsCodesCustomer(customerID);
-            messages = dbHelper.getMessagesForCurrentCustomer(customerID);transactions2 = dbHelper.getAllTransactionCustomer(customerID);
-            accounts4 = dbHelper.getAccountsForCustomer(customerID);
+            paymentCodeArrayList = codeDAO.getSavingsCodesCustomer(customerID);
+            messages = messageDAO.getMessagesForCurrentCustomer(customerID);
+            transactions2 = tranXDAO.getAllTransactionCustomer(customerID);
+            accounts4 = acctDAO.getAccountsForCustomer(customerID);
 
 
         }

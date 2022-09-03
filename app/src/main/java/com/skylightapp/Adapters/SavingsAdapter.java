@@ -23,6 +23,7 @@ import com.skylightapp.Classes.PaymentCode;
 import com.skylightapp.Classes.PaymentDoc;
 import com.skylightapp.Classes.ProfileManager;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.PaymDocDAO;
 import com.skylightapp.Interfaces.OnTellerReportChangeListener;
 import com.skylightapp.R;
 
@@ -45,6 +46,7 @@ public class SavingsAdapter extends RecyclerView.Adapter<SavingsAdapter.Recycler
     private AppCompatTextView dateTextView;
     private static ProfileManager profileManager;
     private Context context;
+    private PaymDocDAO paymDocDAO;
     int position;
     private OnItemsClickListener listener;
     private CustomerDailyReport customerDailyReport;
@@ -151,11 +153,12 @@ public class SavingsAdapter extends RecyclerView.Adapter<SavingsAdapter.Recycler
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         holder.itemView.setLongClickable(true);
         //SavingsAdapter.bindData(getItemByPosition(position));
+        paymDocDAO= new PaymDocDAO(context.getApplicationContext());
         CustomerDailyReport savings = this.savings.get(position);
         PaymentDoc document = (PaymentDoc) this.savings.get(position);
         PaymentCode savingsCode = (PaymentCode) this.savings.get(position);
         DBHelper dbHelper = new DBHelper(mcontext.getApplicationContext());
-        Bitmap docId=dbHelper.getDocPicture(savings.getRecordID());
+        Bitmap docId=paymDocDAO.getDocPicture(savings.getRecordID());
         holder.amountRemaining.setText(MessageFormat.format("Rem Amount: NGN{0}", String.format("%.2f", savings.getRecordAmountRemaining())));
         holder.totalAmount.setText(MessageFormat.format("Total: NGN{0}", String.format("%.2f", savings.getRecordAmount())));
         holder.savingsAmount.setText(MessageFormat.format("Package Amount: NGN{0}", String.format("%.2f", savings.getRecordAmount())));

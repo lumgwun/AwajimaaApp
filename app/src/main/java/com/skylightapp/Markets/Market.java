@@ -3,12 +3,45 @@ package com.skylightapp.Markets;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.skylightapp.Classes.Commodity;
+import com.skylightapp.Classes.Account;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import static com.skylightapp.Classes.Account.ACCOUNTS_TABLE;
+import static com.skylightapp.Classes.Account.ACCOUNT_NO;
+import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
+import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
+import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
+import static com.skylightapp.Classes.Profile.PROFILE_ID;
+import static com.skylightapp.Classes.Transaction.TRANSACTIONS_TABLE;
+import static com.skylightapp.Classes.Transaction.TRANSACTION_ID;
+
 public class Market implements Serializable, Parcelable {
+
+    public static final String MARKET_TABLE = "market_table";
+    public static final String MARKET_TOWN = "market_town";
+    public static final String MARKET_LGA = "market_LGA";
+    public static final String MARKET_NAME = "market_name";
+    public static final String MARKET_STATE = "market_state";
+    public static final String MARKET_TYPE = "market_type";
+    public static final String MARKET_ID = "market_ID";
+    public static final String MARKET_COUNTRY = "market_Country";
+    public static final String MARKET_COMMODITY_COUNT = "market_com_count";
+    public static final String MARKET_USER_COUNT = "market_user_count";
+    public static final String MARKET_LOGO = "market_Logo";
+    public static final String MARKET_STATUS = "market_Status";
+    public static final String MARKET_ACCOUNT_ID = "market_Acct_ID";
+    public static final String MARKET_PROF_ID = "market_Prof_ID";
+    public static final String MARKET_REVENUE = "market_Revenue";
+
+
+    public static final String CREATE_MARKET_TABLE = "CREATE TABLE IF NOT EXISTS " + MARKET_TABLE + " (" + MARKET_ID + " INTEGER , " + MARKET_NAME + "TEXT," + MARKET_ACCOUNT_ID + " INTEGER , " +
+            MARKET_PROF_ID + " INTEGER , " + MARKET_TYPE + " TEXT , " +
+            MARKET_TOWN + " TEXT , " + MARKET_LGA + " TEXT , " + MARKET_STATE + " TEXT , " + MARKET_COUNTRY + " TEXT, " + MARKET_LOGO + " BLOB, " +
+            MARKET_COMMODITY_COUNT + " REAL, " + MARKET_USER_COUNT + " REAL, " + MARKET_STATUS + "TEXT, "+ MARKET_REVENUE + "TEXT, "+"FOREIGN KEY(" + MARKET_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"  + "FOREIGN KEY(" + MARKET_ACCOUNT_ID + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," +
+            "PRIMARY KEY(" + MARKET_ID + "))";
+   private Market marketInstance;
     private int marketID;
     private int marketProfID;
     private String marketName;
@@ -17,10 +50,15 @@ public class Market implements Serializable, Parcelable {
     private String marketState;
     private String marketLGA;
     private String marketTown;
+    private String marketCountry;
     private  double marketLng;
     private  double marketLat;
     private int commodityCount;
+    private int marketUserCount;
     private int marketLogo;
+    private double marketRevenue;
+    private String marketStatus;
+    private Account marketAccount;
     private ArrayList<Commodity> commodityArrayList;
     private ArrayList<MarketDays> marketMDaysArrayList;
     private ArrayList<Business> marketBizArrayList;
@@ -35,11 +73,15 @@ public class Market implements Serializable, Parcelable {
 
     }
 
-    public Market(int logo, String creek_road_market, String fish_and_sea_food_market, String phalga, String rivers_state) {
-
+    public Market(int logo, String name, String marketType, String marketLGA, String marketState) {
+        this.marketLogo = logo;
+        this.marketName = name;
+        this.marketType = marketType;
+        this.marketLGA = marketLGA;
+        this.marketState = marketState;
     }
 
-    protected Market(Parcel in) {
+    public Market(Parcel in) {
         marketID = in.readInt();
         marketProfID = in.readInt();
         marketName = in.readString();
@@ -68,6 +110,24 @@ public class Market implements Serializable, Parcelable {
             return new Market[size];
         }
     };
+
+    public Market(int id, String marketName, String marketType, String marketLGA, String marketState, int marketLogo, int marketUserCount, int marketComCount, double marketRevenue, String marketStatus) {
+        this.marketID=id;
+        this.marketName=marketName;
+        this.marketType=marketType;
+        this.marketLGA=marketLGA;
+        this.marketState=marketState;
+        this.marketLogo=marketLogo;
+        this.marketUserCount=marketUserCount;
+        this.commodityCount=marketComCount;
+        this.marketRevenue=marketRevenue;
+        this.marketStatus=marketStatus;
+    }
+
+    public Market(Market loan_market) {
+        this.marketInstance=loan_market;
+
+    }
 
     public ArrayList<Commodity> getCommodityArrayList() {
         return commodityArrayList;
@@ -251,5 +311,45 @@ public class Market implements Serializable, Parcelable {
         parcel.writeTypedList(marketBizArrayList);
         parcel.writeTypedList(marketBizDealList);
         parcel.writeTypedList(marketBizDealAcctList);
+    }
+
+    public double getMarketRevenue() {
+        return marketRevenue;
+    }
+
+    public void setMarketRevenue(double marketRevenue) {
+        this.marketRevenue = marketRevenue;
+    }
+
+    public String getMarketCountry() {
+        return marketCountry;
+    }
+
+    public void setMarketCountry(String marketCountry) {
+        this.marketCountry = marketCountry;
+    }
+
+    public Account getMarketAccount() {
+        return marketAccount;
+    }
+
+    public void setMarketAccount(Account marketAccount) {
+        this.marketAccount = marketAccount;
+    }
+
+    public int getMarketUserCount() {
+        return marketUserCount;
+    }
+
+    public void setMarketUserCount(int marketUserCount) {
+        this.marketUserCount = marketUserCount;
+    }
+
+    public String getMarketStatus() {
+        return marketStatus;
+    }
+
+    public void setMarketStatus(String marketStatus) {
+        this.marketStatus = marketStatus;
     }
 }

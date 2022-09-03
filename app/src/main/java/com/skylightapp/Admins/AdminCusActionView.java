@@ -39,7 +39,31 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.StandingOrder;
 import com.skylightapp.Classes.Transaction;
+import com.skylightapp.Classes.TransactionGranting;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.AdminBalanceDAO;
+import com.skylightapp.Database.AwardDAO;
+import com.skylightapp.Database.BirthdayDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.GrpProfileDAO;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.OfficeBranchDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.StockTransferDAO;
+import com.skylightapp.Database.StocksDAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TranXDAO;
+import com.skylightapp.Database.TransactionGrantingDAO;
+import com.skylightapp.Database.WorkersDAO;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -94,6 +118,29 @@ public class AdminCusActionView extends AppCompatActivity {
     String packages,loans,savings,transactions,savingsCode,doc,messages,so,grpSavings;
     com.melnykov.fab.FloatingActionButton fab;
     AppCompatImageButton btnPacks,btnSavings,btnCode,btnLoans,btnTx,btnMessage,btnSO,btnDoc;
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
+    private PaymDocDAO paymDocDAO;
+    private CusDAO cusDAO;
+    private PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
+    private PaymentDAO paymentDAO;
+    private AdminBalanceDAO adminBalanceDAO;
+    private TimeLineClassDAO timeLineClassDAO;
+    private GrpProfileDAO grpProfileDAO;
+    private StocksDAO stocksDAO;
+    private WorkersDAO workersDAO;
+    private StockTransferDAO stockTransferDAO;
+    private OfficeBranchDAO officeBranchDAO;
+    private BirthdayDAO birthdayDAO;
+    private TransactionGrantingDAO grantingDAO;
+    private AwardDAO awardDAO;
 
 
     @Override
@@ -102,6 +149,32 @@ public class AdminCusActionView extends AppCompatActivity {
         setContentView(R.layout.act_admin_cus_action_view);
         setTitle("Admin Customer Actions");
         customerBundle= getIntent().getExtras();
+        workersDAO= new WorkersDAO(this);
+        awardDAO= new AwardDAO(this);
+        grantingDAO= new TransactionGrantingDAO(this);
+        stocksDAO= new StocksDAO(this);
+        cusDAO= new CusDAO(this);
+        birthdayDAO= new BirthdayDAO(this);
+        officeBranchDAO= new OfficeBranchDAO(this);
+        stockTransferDAO= new StockTransferDAO(this);
+
+        paymentCodeDAO= new PaymentCodeDAO(this);
+        profileDao= new ProfDAO(this);
+        cashDAO= new TCashDAO(this);
+        paymDocDAO= new PaymDocDAO(this);
+        tReportDAO= new TReportDAO(this);
+        paymentDAO= new PaymentDAO(this);
+        adminBalanceDAO= new AdminBalanceDAO(this);
+        timeLineClassDAO= new TimeLineClassDAO(this);
+        grpProfileDAO= new GrpProfileDAO(this);
+
+        sodao= new SODAO(this);
+        tranXDAO= new TranXDAO(this);
+        messageDAO= new MessageDAO(this);
+        loanDAO= new LoanDAO(this);
+
+        codeDAO= new CodeDAO(this);
+        acctDAO= new AcctDAO(this);
         RecyclerView recyclerPackages = findViewById(R.id.recyclerPackages);
         RecyclerView recyclerSavings = findViewById(R.id.recyclerSavings);
         RecyclerView recyclerCodes = findViewById(R.id.recyclerCodes);
@@ -133,7 +206,7 @@ public class AdminCusActionView extends AppCompatActivity {
                     txtID.setText(MessageFormat.format("Customer''s ID:{0}", customerID));
 
 
-                    standingOrders = dbHelper.getAllStandingOrdersForCustomer(customerID);
+                    standingOrders = sodao.getAllStandingOrdersForCustomer(customerID);
                     LinearLayoutManager layoutManager
                             = new LinearLayoutManager(AdminCusActionView.this, LinearLayoutManager.HORIZONTAL, false);
                     recyclerStandingOrder.setLayoutManager(layoutManager);
@@ -253,7 +326,7 @@ public class AdminCusActionView extends AppCompatActivity {
 
                     LinearLayoutManager layoutManager2
                             = new LinearLayoutManager(AdminCusActionView.this, LinearLayoutManager.HORIZONTAL, false);
-                    paymentCodeArrayList = dbHelper.getCodesFromCurrentCustomer(customerID);
+                    paymentCodeArrayList = codeDAO.getCodesFromCurrentCustomer(customerID);
                     recyclerCodes.setLayoutManager(layoutManager2);
                     codeAdapter = new MySavingsCodeAdapter(AdminCusActionView.this, paymentCodeArrayList);
                     //recyclerCodes.setHasFixedSize(true);
@@ -294,7 +367,7 @@ public class AdminCusActionView extends AppCompatActivity {
                             = new LinearLayoutManager(AdminCusActionView.this, LinearLayoutManager.HORIZONTAL, false);
 
                     rcyclerTransactions.setLayoutManager(layoutManager3);
-                    transactions2 = dbHelper.getAllTransactionCustomer(customerID);
+                    transactions2 = tranXDAO.getAllTransactionCustomer(customerID);
                     transactionAdapter = new TransactionAdapter(AdminCusActionView.this, transactions2);
                     //rcyclerTransactions.setHasFixedSize(true);
                     rcyclerTransactions.setAdapter(transactionAdapter);
@@ -340,7 +413,7 @@ public class AdminCusActionView extends AppCompatActivity {
                             = new LinearLayoutManager(AdminCusActionView.this, LinearLayoutManager.HORIZONTAL, false);
 
                     rcyclerDocs.setLayoutManager(layoutManager);
-                    paymentDocs = dbHelper.getDocumentsFromCurrentCustomer(customerID);
+                    paymentDocs = paymDocDAO.getDocumentsFromCurrentCustomer(customerID);
                     rcyclerDocs.setItemAnimator(new DefaultItemAnimator());
                     DividerItemDecoration dividerItemDecorationD = new DividerItemDecoration(rcyclerDocs.getContext(),
                             layoutManager.getOrientation());
@@ -381,7 +454,7 @@ public class AdminCusActionView extends AppCompatActivity {
                             = new LinearLayoutManager(AdminCusActionView.this, LinearLayoutManager.HORIZONTAL, false);
 
                     recyclerLoans.setLayoutManager(layoutManager4);
-                    cusLoans = dbHelper.getAllLoansCustomer(customerID);
+                    cusLoans = loanDAO.getAllLoansCustomer(customerID);
                     loanArrayAdapter = new ArrayAdapter<Loan>(AdminCusActionView.this, android.R.layout.simple_spinner_item, cusLoans);
                     //recyclerLoans.setHasFixedSize(true);
                     recyclerLoans.setAdapter(packageAdapter);
@@ -445,7 +518,7 @@ public class AdminCusActionView extends AppCompatActivity {
 
 
             dbHelper = new DBHelper(this);
-            standingOrders = dbHelper.getAllStandingOrdersForCustomer(customerID);
+            standingOrders = sodao.getAllStandingOrdersForCustomer(customerID);
             LinearLayoutManager layoutManager
                     = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
             recyclerStandingOrder.setLayoutManager(layoutManager);
@@ -486,7 +559,7 @@ public class AdminCusActionView extends AppCompatActivity {
                     = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
             recyclerMessages.setLayoutManager(layoutManager);
-            messageArrayList = dbHelper.getMessagesForCurrentCustomer(customerID);
+            messageArrayList = messageDAO.getMessagesForCurrentCustomer(customerID);
             recyclerMessages.setItemAnimator(new DefaultItemAnimator());
             DividerItemDecoration dividerItemDecorationM = new DividerItemDecoration(recyclerMessages.getContext(),
                     layoutManager.getOrientation());

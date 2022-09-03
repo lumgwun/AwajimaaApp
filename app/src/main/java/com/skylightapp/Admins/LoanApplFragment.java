@@ -26,6 +26,7 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Loan;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -55,6 +56,7 @@ public class LoanApplFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private LoanDAO loanDAO;
 
     public LoanApplFragment() {
     }
@@ -95,13 +97,15 @@ public class LoanApplFragment extends Fragment {
         mAdapter = new LoanAdapter(getContext(), loanList);
 
         dbHelper = new DBHelper(getContext());
+        loanDAO = new LoanDAO(getContext());
+
         sqLiteDatabase = dbHelper.getWritableDatabase();
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
 
             dbHelper.openDataBase();
             try {
 
-                loanList = dbHelper.getAllLoansAdmin();
+                loanList = loanDAO.getAllLoansAdmin();
 
 
             } catch (SQLiteException e) {
@@ -166,6 +170,7 @@ public class LoanApplFragment extends Fragment {
                 if (loanStatusSwitch != null && loanStatusSwitch.contentEquals("on"))
                     status.setVisibility(View.VISIBLE);
                 simpleSwitch.setVisibility(View.INVISIBLE);
+                loanDAO = new LoanDAO(getContext());
 
                 Toast.makeText(getContext(), "Loan approval :" + loanStatusSwitch, Toast.LENGTH_LONG).show();
                 dbHelper = new DBHelper(getContext());
@@ -176,7 +181,7 @@ public class LoanApplFragment extends Fragment {
                     dbHelper.openDataBase();
                     try {
 
-                        dbHelper.overwriteLoan1(profile,customer,loan);
+                        loanDAO.overwriteLoan1(profile,customer,loan);
 
 
                     } catch (SQLiteException e) {

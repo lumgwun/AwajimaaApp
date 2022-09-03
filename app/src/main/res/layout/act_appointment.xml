@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/rect_their_black"
+    tools:context="com.skylightapp.Markets.AppointmentAct">
+
+    <com.skyhope.eventcalenderlibrary.CalenderEvent
+        android:id="@+id/calender_event"
+        android:layout_width="match_parent"
+        app:selector_color="@color/colorPrimary"
+        app:current_month_day_color="@color/colorAccent"
+        app:off_month_day_color="@color/colorPrimaryDark"
+        app:week_name_color="@color/red_brown_dark"
+        app:month_color="@color/black"
+        app:next_icon="@drawable/forward_2_fg"
+        app:previous_icon="@drawable/ic_arrow_back_black_24dp"
+        android:layout_height="match_parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

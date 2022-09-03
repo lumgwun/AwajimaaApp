@@ -34,12 +34,15 @@ public class BillModel implements Parcelable, Serializable {
     public static final String BILL_ITEM_CODE = "billerItemCode";
     public static final String BILL_CURRENCY = "billCurrency";
     public static final String BILL_STATUS = "billStatus";
+    public static final String BILL_PROF_ID = "bill_Prof_ID";
+    public static final String BILL_CUSTOMER_ID = "bill_Cus_ID";
+    public static final String BILL_ACCT_ID = "bill_Acct_ID";
 
 
-    public static final String CREATE_BILLS_TABLE = "CREATE TABLE " + BILL_TABLE + " (" + BILL_ID + " LONG NOT NULL, " + PROFILE_ID + " LONG , " +
-            CUSTOMER_ID + " LONG , " + ACCOUNT_NO + " LONG , " + BILL_NAME + " TEXT, " + BILL_AMOUNT + " DOUBLE, " +BILL_CURRENCY + " TEXT,"+
+    public static final String CREATE_BILLS_TABLE = "CREATE TABLE " + BILL_TABLE + " (" + BILL_ID + " INTEGER NOT NULL, " + BILL_PROF_ID + " INTEGER , " +
+            BILL_CUSTOMER_ID + " INTEGER , " + BILL_ACCT_ID + " INTEGER , " + BILL_NAME + " TEXT, " + BILL_AMOUNT + " FLOAT, " +BILL_CURRENCY + " TEXT,"+
             BILL_DATE + " DATE, " + BILL_COUNTRY + " TEXT, " + BILL_RECURRING_TYPE + " TEXT,"+ BILL_REF + " TEXT, " +
-            BILL_ITEM_CODE + " TEXT, " + BILLER_CODE + " TEXT, " + BILL_STATUS + " TEXT, " +"PRIMARY KEY(" +CUSTOMER_ID+"," + PROFILE_ID + "," + ACCOUNT_NO + "), " +"FOREIGN KEY(" + ACCOUNT_NO  + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," +"FOREIGN KEY(" + CUSTOMER_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+            BILL_ITEM_CODE + " TEXT, " + BILLER_CODE + " TEXT, " + BILL_STATUS + " TEXT, " +"PRIMARY KEY(" +BILL_ID+ "), " +"FOREIGN KEY(" + BILL_ACCT_ID  + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," +"FOREIGN KEY(" + BILL_CUSTOMER_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
     public BillModel(Parcel in) {
         id = in.readInt();

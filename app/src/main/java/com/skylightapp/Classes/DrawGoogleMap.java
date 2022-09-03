@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.R;
 
@@ -41,6 +42,7 @@ public class DrawGoogleMap extends GoogleApiActivity {
     private DBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
     private LatLng tmpLocation;
+    private CusDAO cusDAO;
 
     public void drawMap(Context context, final GoogleMap tmpMap, LatLng cameraLoc, float cameraZoom) {
         this.context = context;
@@ -155,8 +157,10 @@ public class DrawGoogleMap extends GoogleApiActivity {
                     address.setText(MessageFormat.format("Address: {0}", listingData.getCusAddress()));
 
                     dbHelper = new DBHelper(context);
+                    cusDAO = new CusDAO(context);
 
-                    Cursor cursor = dbHelper.getCustomerCursor(customerID);
+
+                    Cursor cursor = cusDAO.getCustomerCursor(customerID);
                     cursor.moveToFirst();
 
                     try {

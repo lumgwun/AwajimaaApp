@@ -26,7 +26,13 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.StandingOrder;
 import com.skylightapp.Classes.Transaction;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.CodeDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -61,6 +67,12 @@ public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLight
     private Customer customer;
     private TextView txtCusName;
     int customerID;
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
 
 
 
@@ -68,6 +80,12 @@ public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLight
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_profile_pack_history);
+        sodao= new SODAO(this);
+        tranXDAO= new TranXDAO(this);
+        messageDAO= new MessageDAO(this);
+        codeDAO= new CodeDAO(this);
+        loanDAO= new LoanDAO(this);
+        acctDAO= new AcctDAO(this);
         RecyclerView recyclerPackages = findViewById(R.id.recyclerViewPackages22);
         RecyclerView recyclerSavings = findViewById(R.id.recyclerViewSavings422);
         RecyclerView recyclerCodes = findViewById(R.id.recyclerViewCodes22);
@@ -87,7 +105,7 @@ public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLight
             profileID=userProfile.getPID();
             txtCusName.setText(MessageFormat.format("Cus:{0},{1}", customer.getCusSurname(), customer.getCusFirstName()));
 
-            standingOrders = dbHelper.getSOFromCurrentCustomer(customerID);
+            standingOrders = sodao.getSOFromCurrentCustomer(customerID);
             LinearLayoutManager layoutManager
                     = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
             recyclerStandingOrder.setLayoutManager(layoutManager);
@@ -104,7 +122,7 @@ public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLight
 
             LinearLayoutManager layoutManager2
                     = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-            paymentCodeArrayList = dbHelper.getSavingsCodesProfile(profileID);
+            paymentCodeArrayList = codeDAO.getSavingsCodesProfile(profileID);
             recyclerCodes.setLayoutManager(layoutManager2);
             codeAdapter = new MySavingsCodeAdapter(ProfilePackHistoryAct.this,paymentCodeArrayList);
             //recyclerCodes.setHasFixedSize(true);
@@ -119,7 +137,7 @@ public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLight
                     = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
             rcyclerTransactions.setLayoutManager(layoutManager3);
-            transactions2 = dbHelper.getAllTransactionProfile(profileID);
+            transactions2 = tranXDAO.getAllTransactionProfile(profileID);
             transactionAdapter = new TransactionAdapter(ProfilePackHistoryAct.this,transactions2);
             //rcyclerTransactions.setHasFixedSize(true);
             rcyclerTransactions.setAdapter(transactionAdapter);
@@ -150,7 +168,7 @@ public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLight
                     = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
             recyclerAccounts.setLayoutManager(layoutManager6);
-            accounts4 = dbHelper.getAccountsFromCurrentProfile(profileID);
+            accounts4 = acctDAO.getAccountsFromCurrentProfile(profileID);
             recyclerAccounts.setItemAnimator(new DefaultItemAnimator());
             DividerItemDecoration dividerItemDecorationL = new DividerItemDecoration(recyclerAccounts.getContext(),
                     layoutManager.getOrientation());
