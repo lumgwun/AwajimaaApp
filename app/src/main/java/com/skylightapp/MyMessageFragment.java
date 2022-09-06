@@ -2,6 +2,7 @@ package com.skylightapp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.skylightapp.Adapters.MessageAdapter;
@@ -25,6 +27,8 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Message;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.ProfDAO;
 
 import java.util.ArrayList;
 
@@ -64,6 +68,7 @@ public class MyMessageFragment extends Fragment{
     int customerID;
     private String mParam1;
     private String mParam2;
+    SQLiteDatabase sqLiteDatabase;
 
     public MyMessageFragment() {
     }
@@ -116,8 +121,15 @@ public class MyMessageFragment extends Fragment{
         if(customer !=null){
             customerID=customer.getCusUID();
         }
-        messageArrayList2=dbHelper.getMessagesForCurrentCustomer(customerID);
-        messageArrayList = dbHelper.getMessagesFromCurrentProfile(profileID);
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            MessageDAO messageDAO= new MessageDAO(getContext());
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            messageArrayList2=messageDAO.getMessagesForCurrentCustomer(customerID);
+            messageArrayList = messageDAO.getMessagesFromCurrentProfile(profileID);
+
+
+        }
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);

@@ -18,6 +18,7 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Loan;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -66,6 +67,7 @@ public class CustomerLoanListAct extends AppCompatActivity implements LoanAdapte
     TextView txtLoanMessage;
     private Bundle cusBundle;
     private static final String PREF_NAME = "skylight";
+    private LoanDAO loanDAO;
 
     private static final String TAG = CustomerLoanListAct.class.getSimpleName();
     private static final String URL = "https://skylightciacs.com";
@@ -96,6 +98,7 @@ public class CustomerLoanListAct extends AppCompatActivity implements LoanAdapte
         SharedPrefBank = sharedPreferences.getString("ACCOUNT_BANK", "");
         gson = new Gson();
         customer=new Customer();
+        loanDAO= new LoanDAO(this);
         json = sharedPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         cusBundle=getIntent().getExtras();
@@ -112,7 +115,7 @@ public class CustomerLoanListAct extends AppCompatActivity implements LoanAdapte
         }
         if(customer !=null){
             customerID=customer.getCusUID();
-            loanArrayList = dbHelper.getLoansFromCurrentCustomer(customerID);
+            loanArrayList = loanDAO.getLoansFromCurrentCustomer(customerID);
 
         }
 
@@ -126,7 +129,7 @@ public class CustomerLoanListAct extends AppCompatActivity implements LoanAdapte
         loanAdapter = new LoanAdapter(this, loanArrayList);
         dbHelper = new DBHelper(this);
 
-        loanArrayList = dbHelper.getLoansFromCurrentCustomer(customerID);
+        loanArrayList = loanDAO.getLoansFromCurrentCustomer(customerID);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

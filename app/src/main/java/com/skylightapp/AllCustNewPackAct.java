@@ -59,7 +59,7 @@ import com.skylightapp.Database.CodeDAO;
 import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.TCashDAO;
 import com.skylightapp.Database.TimeLineClassDAO;
-import com.skylightapp.SuperAdmin.AdminBalance;
+import com.skylightapp.SuperAdmin.AppCommission;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.AccountTypes;
 import com.skylightapp.Classes.Customer;
@@ -222,7 +222,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
     AppCompatButton btn_pay_Savings;
     PaymentCode paymentCode;
     private LatLng cusLatLng;
-    AdminBalance adminBalance;
+    AppCommission appCommission;
 
     private LinearLayoutCompat layout_month,layout_total,layout_button, layout_Amount,layout_amount,layout_type_package,layout_old_package,layout_select_my_cust, layout_select_customer,layout_sub_status;
 
@@ -298,7 +298,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
         random= new SecureRandom();
         PaymentCode paymentCode=new PaymentCode();
         selectedPackage= new SkyLightPackage(profileID, customerID, packageID, finalItemType, packageType, savingsAmount, packageDuration, reportDate, grandTotal, officeBranch, packageEndDate, "fresh");
-        adminBalance= new AdminBalance();
+        this.appCommission = new AppCommission();
         json = sharedpreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         Skylightransaction= new com.skylightapp.Classes.Transaction();
@@ -626,20 +626,20 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
 
         tellerName=ManagerSurname+","+managerFirstName;
         tellerCash= new TellerCash();
-        AdminBalance adminBalance= new AdminBalance();
+        AppCommission appCommission = new AppCommission();
         skylightCode = random.nextInt((int) (Math.random() * 10180) + 12341);
         tellerCashCode = random.nextInt((int) (Math.random() * 20089) + 12041);
 
         btn_add_New_Savings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                doProcessing(packageType,finalItemType,packageDuration,packageEndDate,dateOfSavings,totalAmountCalc,skylightCode,paymentCode,adminBalance,tellerCash,profileID,tellerName,tellerCashCode,officeBranch,customer,adminBalance);
+                doProcessing(packageType,finalItemType,packageDuration,packageEndDate,dateOfSavings,totalAmountCalc,skylightCode,paymentCode, appCommission,tellerCash,profileID,tellerName,tellerCashCode,officeBranch,customer, appCommission);
 
             }
         });
     }
 
-    protected  void doProcessing(String packageType, String finalItemType, int packageDuration, String packageEndDate, String dateOfSavings, double totalAmountCalc, long skylightCode, PaymentCode paymentCode, AdminBalance adminBalance, TellerCash tellerCash, int profileID, String tellerName, long tellerCashCode, String officeBranch, Customer customer, AdminBalance adminBalance1){
+    protected  void doProcessing(String packageType, String finalItemType, int packageDuration, String packageEndDate, String dateOfSavings, double totalAmountCalc, long skylightCode, PaymentCode paymentCode, AppCommission appCommission, TellerCash tellerCash, int profileID, String tellerName, long tellerCashCode, String officeBranch, Customer customer, AppCommission appCommission1){
         Bundle locBundle = new Bundle();
         long reportCode = random.nextInt((int) (Math.random() * 10089) + 10340);
 
@@ -782,7 +782,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
                     reportDate = mdformat.format(calendar.getTime());
                     String timelineTittle3 = "New Package alert";
                     String timelineDetails3 = "NGN" + grandTotal + " package was initiated for" + surName + "," + firstName;
-                    double adminCommission=adminBalance.getAdminReceivedBalance();
+                    double adminCommission= appCommission.getAdminReceivedBalance();
                     double skylightCommission=100;
                     double initialDeposit= totalAmountCalc -savingsAmount;
                     //double acctBalance=account1.getAccountBalance();
@@ -861,7 +861,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
                         dbHelper.insertNewPackage(this.profileID, customerID,packageID, skylightCode, finalItemType,this.packageType, this.packageDuration,savingsAmount,  reportDate, grandTotal, this.packageEndDate, "fresh");
                         //dbHelper.insertNewPackage(userProfile, customer, skyLightPackage1);
                         codeDAO.insertSavingsCode(paymentCode);
-                        adminBalance.setAdminReceivedBalance(adminNewBalance);
+                        appCommission.setAdminReceivedBalance(adminNewBalance);
                         dbHelper.insertNewDailyReport(profileID,customerID,packageID,reportID,reportCode,numberOfDays,initialDeposit,reportDate,newDaysRemaining,newAmountRemaining,"First");
 
                         //dbHelper.insertDailyReport(packageID,reportID,profileID, customerID,reportDate,savingsAmount,numberOfDays,newTotal,newAmountContributedSoFar,newAmountRemaining,newDaysRemaining,"First");

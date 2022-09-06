@@ -25,6 +25,7 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PaymentDoc;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.PaymDocDAO;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
@@ -107,13 +108,14 @@ public class MyDocumentsFragment extends Fragment {
         mAdapter = new DocumentAdapter(getContext(), paymentDocs);
 
         dbHelper = new DBHelper(getContext());
+        PaymDocDAO paymDocDAO= new PaymDocDAO(getContext());
         try {
             if(customer !=null){
                 customerID = customer.getCusUID();
 
             }
 
-            paymentDocs = dbHelper.getDocumentsFromCurrentCustomer(customerID);
+            paymentDocs = paymDocDAO.getDocumentsFromCurrentCustomer(customerID);
 
         } catch (SQLiteException e) {
             System.out.println("Oops!");

@@ -32,6 +32,8 @@ import com.skylightapp.Adapters.ADepositAdapter;
 import com.skylightapp.Adapters.ProfileSpinnerAdapter;
 import com.skylightapp.Admins.AdminBankDeposit;
 import com.skylightapp.Classes.AlarmReceiver;
+import com.skylightapp.Database.AdminBDepositDAO;
+import com.skylightapp.Database.AdminUserDAO;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.R;
 
@@ -207,7 +209,8 @@ public class ADepositList extends AppCompatActivity implements ADepositAdapter.O
             }
         });
         if(dbHelper !=null){
-            adminNames=dbHelper.getAllAdminNamesForDeposit();
+            AdminBDepositDAO adminBDepositDAO= new AdminBDepositDAO(this);
+            adminNames=adminBDepositDAO.getAllAdminNamesForDeposit();
         }
 
         try {
@@ -240,15 +243,16 @@ public class ADepositList extends AppCompatActivity implements ADepositAdapter.O
         dateOfDeposit = picker.getDayOfMonth()+"/"+ (picker.getMonth() + 1)+"/"+picker.getYear();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String todayDate = sdf.format(calendar1.getTime());
-        todayDepositCount=dbHelper.getAllAdminDepositCountDate(todayDate);
-        adminBankDepositOffice=dbHelper.getAdminDepositsForBranch(stringOfficeBranch);
-        adminBankDepositCustomDate=dbHelper.getAdminDepositsAtDate(dateOfDeposit);
-        adminBankDepositAdmin=dbHelper.getAdminDepositsByDepositor(selectedAdmin);
+        AdminBDepositDAO adminBDepositDAO= new AdminBDepositDAO(this);
+        todayDepositCount=adminBDepositDAO.getAllAdminDepositCountDate(todayDate);
+        adminBankDepositOffice=adminBDepositDAO.getAdminDepositsForBranch(stringOfficeBranch);
+        adminBankDepositCustomDate=adminBDepositDAO.getAdminDepositsAtDate(dateOfDeposit);
+        adminBankDepositAdmin=adminBDepositDAO.getAdminDepositsByDepositor(selectedAdmin);
 
-        depositCountAdmin=dbHelper.getAllAdminDepositCountForAdmin(selectedAdmin);
-        depositCountAll=dbHelper.getAllAdminDepositCount();
-        depositCountOffice=dbHelper.getAllAdminDepositCountForOffice(stringOfficeBranch);
-        adminBankDepositAll=dbHelper.getAllAdminBankDeposit();
+        depositCountAdmin=adminBDepositDAO.getAllAdminDepositCountForAdmin(selectedAdmin);
+        depositCountAll=adminBDepositDAO.getAllAdminDepositCount();
+        depositCountOffice=adminBDepositDAO.getAllAdminDepositCountForOffice(stringOfficeBranch);
+        adminBankDepositAll=adminBDepositDAO.getAllAdminBankDeposit();
 
 
         recyclerViewOffice.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));

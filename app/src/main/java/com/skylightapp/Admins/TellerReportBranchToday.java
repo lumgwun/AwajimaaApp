@@ -34,6 +34,8 @@ import com.skylightapp.Classes.MyTouchListener;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.TellerReport;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Interfaces.TellerReportDao;
 import com.skylightapp.R;
 
 import java.text.SimpleDateFormat;
@@ -107,10 +109,11 @@ public class TellerReportBranchToday extends AppCompatActivity implements Teller
 
         Calendar calendar = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
         currentDate = mdformat.format(calendar.getTime());
+        TReportDAO tellerReportDao= new TReportDAO(this);
         recyclerView = findViewById(R.id.recycler_view_tellerR);
-        dbHelper.getTellerReportsForBranch(currentDate, officeBranch);
+        tellerReportDao.getTellerReportsForBranch(currentDate, officeBranch);
         mAdapter = new TellerReportAdapter(this, R.layout.teller_report_row, tellerReportArrayList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);

@@ -37,7 +37,6 @@ import com.skylightapp.Admins.SendUserMessageAct;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Customers.CusLoanAct;
 import com.skylightapp.Customers.CusOrderTab;
 import com.skylightapp.Customers.CustUtilTab;
 import com.skylightapp.Customers.CustomerHelpActTab;
@@ -70,7 +69,7 @@ import com.skylightapp.PrivacyPolicy_Web;
 import com.skylightapp.R;
 import com.skylightapp.SignTabMainActivity;
 import com.skylightapp.SkylightSliderAct;
-import com.skylightapp.SuperAdmin.AdminBalance;
+import com.skylightapp.SuperAdmin.AppCommission;
 import com.skylightapp.SuperAdmin.AdminSOTabAct;
 import com.skylightapp.SuperAdmin.SuperMPaymentListA;
 import com.skylightapp.Tellers.TellerMessages;
@@ -127,7 +126,7 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
     CircleImageView imgProfilePic;
     private  int SOCount;
     Button btnUtils,btnLoans,btnSupport;
-    private AdminBalance adminBalance;
+    private AppCommission appCommission;
     private DBHelper dbHelper;
     double manualPayment, totalSavingsToday;
     private Date today;
@@ -158,7 +157,7 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
         gson = new Gson();
         gson1 = new Gson();
         userProfile=new Profile();
-        adminBalance= new AdminBalance();
+        appCommission = new AppCommission();
         dbHelper= new DBHelper(this);
         cusDAO= new CusDAO(this);
         paymentCodeDAO= new PaymentCodeDAO(this);
@@ -246,8 +245,8 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
             textAmtOfSavings.setText("No savings today, yet");
 
         }
-        if(adminBalance !=null){
-            accountN=adminBalance.getSkyLightAcctNo();
+        if(appCommission !=null){
+            accountN= appCommission.getAdminBalanceAcctID();
 
         }
         if(accountBalance>0){

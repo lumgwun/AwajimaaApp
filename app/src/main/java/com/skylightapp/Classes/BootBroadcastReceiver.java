@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.skylightapp.Database.BirthdayDAO;
 import com.skylightapp.Database.DBHelper;
 
 import java.util.Calendar;
@@ -48,10 +49,11 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
             DBHelper rb = new DBHelper(context);
             mCalendar = Calendar.getInstance();
             mAlarmReceiver = new AlarmReceiver();
+            BirthdayDAO birthdayDAO= new BirthdayDAO(context.getApplicationContext());
 
             List<ImportantDates> reminders = rb.getAllReminders();
             List<SkyLightPackage> skyLightPackages = rb.getAllPackagesAdmin();
-            List<Birthday> birthdays = rb.getAllBirthDays();
+            List<Birthday> birthdays = birthdayDAO.getAllBirthDays();
 
             for (Birthday birthday : birthdays) {
                 mBirthdayID = birthday.getBirthdayID();

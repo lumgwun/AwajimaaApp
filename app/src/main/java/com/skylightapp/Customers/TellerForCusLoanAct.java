@@ -40,7 +40,11 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Loan;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Transaction;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TransactionGrantingDAO;
 import com.skylightapp.R;
 import com.skylightapp.SMSAct;
 import com.skylightapp.Transactions.OurConfig;
@@ -208,10 +212,11 @@ public class TellerForCusLoanAct extends AppCompatActivity {
         else {
             if(userProfile !=null) {
                 profileID = userProfile.getPID();
+                CusDAO cusDAO= new CusDAO(this);
                 if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                     dbHelper.openDataBase();
                     sqLiteDatabase = dbHelper.getWritableDatabase();
-                    customers = dbHelper.getCustomerFromCurrentProfile(profileID);
+                    customers = cusDAO.getCustomerFromCurrentProfile(profileID);
 
                 }
 
@@ -237,10 +242,11 @@ public class TellerForCusLoanAct extends AppCompatActivity {
                     System.out.println("Oops!");
                 }
             }
+            CusDAO cusDAO= new CusDAO(this);
             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                 dbHelper.openDataBase();
                 sqLiteDatabase = dbHelper.getWritableDatabase();
-                AllCustomers=dbHelper.getAllCustomers11();
+                AllCustomers=cusDAO.getAllCustomers11();
 
             }
 
@@ -1088,8 +1094,9 @@ public class TellerForCusLoanAct extends AppCompatActivity {
 
 
             } else {
+                LoanDAO cusDAO= new LoanDAO(this);
                 DBHelper applicationDb = new DBHelper(this);
-                ArrayList<Loan> loans = applicationDb.getLoansFromCurrentCustomer(customerID);
+                ArrayList<Loan> loans = cusDAO.getLoansFromCurrentCustomer(customerID);
                 boolean loanTaken = false;
                 for (int iLoan = 0; iLoan < loans.size(); iLoan++) {
                     if (String.valueOf(amountToBorrow).equals(String.valueOf((loans.get(iLoan).getAmount1()))) && borrowingDate.equals(loans.get(iLoan).getLoan_date())) {
@@ -1114,15 +1121,17 @@ public class TellerForCusLoanAct extends AppCompatActivity {
                         userProfile.addPBorrowingTranx(acctOfCustomer, amountToBorrow);
                         mySelectedCustomer.addLoans(borrowingID, amountToBorrow, borrowingDate, status, "", 0.00);
                         mySelectedCustomer.addCusTimeLine(title, details1);
+                        TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(this);
 
                         Transaction.TRANSACTION_TYPE type = Transaction.TRANSACTION_TYPE.BORROWING;
-                        applicationDb.insertTimeLine(title,details,borrowingDate,location);
+                        timeLineClassDAO.insertTimeLine(title,details,borrowingDate,location);
                         loanOTP = ThreadLocalRandom.current().nextInt(120, 1631);
                         grantingID = ThreadLocalRandom.current().nextInt(1025, 10410);
+
                         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                             dbHelper.openDataBase();
                             sqLiteDatabase = dbHelper.getWritableDatabase();
-                            applicationDb.insertNewLoan(profileID, customerID, borrowingID, amountToBorrow, borrowingDate,
+                            cusDAO.insertNewLoan(profileID, customerID, borrowingID, amountToBorrow, borrowingDate,
                                     bankName,bankAcctNo,borrower,accountNo, loanAcctType, code,0.00,"pending");
                             //applicationDb.overwriteAccount(userProfile, acctOfCustomer);
 
@@ -1130,7 +1139,8 @@ public class TellerForCusLoanAct extends AppCompatActivity {
                         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                             dbHelper.openDataBase();
                             sqLiteDatabase = dbHelper.getWritableDatabase();
-                            applicationDb.insertTransaction_Granting(grantingID,profileID, customerID,borrower,amountToBorrow,borrowingDate,bankName, borrower,bankAcctNo, "Loan","","","Borrowing","pending");
+                            TransactionGrantingDAO grantingDAO= new TransactionGrantingDAO(this);
+                            grantingDAO.insertTransaction_Granting(grantingID,profileID, customerID,borrower,amountToBorrow,borrowingDate,bankName, borrower,bankAcctNo, "Loan","","","Borrowing","pending");
 
 
                         }

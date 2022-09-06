@@ -16,6 +16,7 @@ import com.skylightapp.Adapters.MessageAdapter;
 import com.skylightapp.Classes.Message;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.MessageDAO;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
@@ -55,8 +56,9 @@ public class TellerMessages extends AppCompatActivity {
         messageArrayList = new ArrayList<Message>();
         mAdapter = new MessageAdapter(this, messageArrayList);
         dbHelper = new DBHelper(this);
+        MessageDAO messageDAO= new MessageDAO(this);
 
-        messageArrayList = dbHelper.getMessagesFromCurrentProfile(profileID);
+        messageArrayList = messageDAO.getMessagesFromCurrentProfile(profileID);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);

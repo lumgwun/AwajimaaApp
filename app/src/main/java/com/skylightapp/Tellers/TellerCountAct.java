@@ -12,7 +12,9 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.PaymentDAO;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -73,16 +75,18 @@ public class TellerCountAct extends AppCompatActivity {
         txttotalSaving =  findViewById(R.id.TellertotalSavingAll);
         totalSavings=dbHelper.getTotalSavingsForTeller(tellerID);
         txttotalSaving.setText(MessageFormat.format("Total Savings N{0}", totalSavings));
+        CusDAO cusDAO = new CusDAO(this);
+        PaymentDAO paymentDAO = new PaymentDAO(this);
 
         txtTellerNewCus = findViewById(R.id.txtTellerNewCusToday);
-        newCusCount=dbHelper.getNewCustomersCountForTodayTeller(tellerID,todayDate);
+        newCusCount=cusDAO.getNewCustomersCountForTodayTeller(tellerID,todayDate);
         txtTellerNewCus.setText(MessageFormat.format("My New Customers,today{0}", newCusCount));
         txtNewPackageCountToday =  findViewById(R.id.txtTellerNewPackageCountToday);
         newPackCount=dbHelper.getNewPackageCountForTellerToday(tellerID,todayDate);
         txtNewPackageCountToday.setText(MessageFormat.format("New Pack Count:{0}", newPackCount));
         txtNewTXToday = findViewById(R.id.txtTellerNewTXToday);
         txtTotalManualPaymentToday =  findViewById(R.id.TotalTellerManualPayments);
-        totalManualPaymentToday=dbHelper.getTotalPaymentTodayForTeller1(tellerID,todayDate);
+        totalManualPaymentToday=paymentDAO.getTotalPaymentTodayForTeller1(tellerID,todayDate);
         txtTotalManualPaymentToday.setText(MessageFormat.format("Total Manual Payment N{0}", totalManualPaymentToday));
 
         txtCustomerPaymentToday = findViewById(R.id.TellerCustomerPaymentToday);
@@ -98,7 +102,7 @@ public class TellerCountAct extends AppCompatActivity {
                 } catch (Exception e) {
                     System.out.println("Oops!");
                 }
-                paymentTotalForCustomer =dbHelper.getTotalPaymentTodayForCustomer(customerID, todayDate);
+                paymentTotalForCustomer =paymentDAO.getTotalPaymentTodayForCustomer(customerID, todayDate);
                 txtCustomerPaymentToday.setText(MessageFormat.format("Customer Payment today{0}", paymentTotalForCustomer));
 
             }

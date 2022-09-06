@@ -50,6 +50,9 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Classes.Utils;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.StocksDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 import com.skylightapp.SMSAct;
@@ -456,17 +459,18 @@ public class InStocksAct extends AppCompatActivity {
                         if (userSuperAdmin != null) {
                             userSuperAdmin.addStocks(stocksID,selectedStockPackage,uStockType,uStockModel,uStockColor,uStockSize,uStockQuantity,selectedOfficeBranch,uStockPricePerUnit,stockDate);
                         }
+                        StocksDAO stocksDAO= new StocksDAO(this);
                         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                             dbHelper.openDataBase();
                             sqLiteDatabase = dbHelper.getWritableDatabase();
-                            dbHelper.insertStock(stocksID,superID,selectedStockPackage,uStockType,uStockModel,uStockColor,uStockSize,uStockQuantity,selectedOfficeBranch,stockDate,stockerName);
+                            stocksDAO.insertStock(stocksID,superID,selectedStockPackage,uStockType,uStockModel,uStockColor,uStockSize,uStockQuantity,selectedOfficeBranch,stockDate,stockerName);
 
                         }
-
+                        TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(this);
                         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                             dbHelper.openDataBase();
                             sqLiteDatabase = dbHelper.getWritableDatabase();
-                            dbHelper.insertTimeLine(tittle,details,stockDate,location);
+                            timeLineClassDAO.insertTimeLine(tittle,details,stockDate,location);
                         }
 
 
@@ -525,8 +529,9 @@ public class InStocksAct extends AppCompatActivity {
             selectedImage = null;
             if (resultCode == RESULT_OK) {
                 selectedImage = data.getData();
-                DBHelper dbHelper = new DBHelper(this);
-                dbHelper.insertProfilePicture(superID,customerID1,selectedImage);
+                ProfDAO profDAO= new ProfDAO(this);
+
+                profDAO.insertProfilePicture(superID,customerID1,selectedImage);
                 if (selectedImage != null) {
                     stocksPix.setImageBitmap(getScaledBitmap(selectedImage));
 

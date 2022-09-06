@@ -12,8 +12,10 @@ import com.skylightapp.Classes.GroupAccount;
 import com.skylightapp.Classes.Profile;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import static com.skylightapp.Classes.Bookings.BOOKING_ID;
 import static com.skylightapp.Classes.GroupAccount.GRPA_BALANCE;
@@ -40,6 +42,8 @@ public class GroupAccountDAO extends DBHelperDAO{
     public GroupAccountDAO(Context context) {
         super(context);
     }
+    private static final SimpleDateFormat formatter = new SimpleDateFormat(
+            "yyyy-MM-dd", Locale.ENGLISH);
 
     public void updateGrpAcct(long grpAcctID, String tittle, String purpose, String surname, String firstName, String phoneNo) {
         SQLiteDatabase db = this.getWritableDatabase();

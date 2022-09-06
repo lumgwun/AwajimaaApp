@@ -121,6 +121,7 @@ import com.skylightapp.Classes.User;
 import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.AdminBDepositDAO;
 import com.skylightapp.Database.AdminBalanceDAO;
 import com.skylightapp.Database.BirthdayDAO;
 import com.skylightapp.Database.CodeDAO;
@@ -384,6 +385,8 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     private PaymentDAO paymentDAO;
     private AdminBalanceDAO adminBalanceDAO;
     private BirthdayDAO birthdayDAO;
+    private AdminBDepositDAO depositDAO;
+    private TimeLineClassDAO timeLineClassDAO;
     String regEx =
             "^(([w-]+.)+[w-]+|([a-zA-Z]{1}|[w-]{2,}))@"
                     + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9]).([0-1]?"
@@ -396,7 +399,6 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
-    private TimeLineClassDAO timeLineClassDAO;
     SupportMapFragment mapFrag;
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {
@@ -541,6 +543,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         paymentDAO= new PaymentDAO(this);
         birthdayDAO= new BirthdayDAO(this);
         adminBalanceDAO= new AdminBalanceDAO(this);
+        depositDAO= new AdminBDepositDAO(this);
         timeLineClassDAO= new TimeLineClassDAO(this);
 
         sodao= new SODAO(this);
@@ -1394,8 +1397,6 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         customerProfile = new Profile(profileID1, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, "", selectedState, selectedOffice, joinedDate, "Customer", uUserName, uPassword, "pending", "");
 
         lastProfileUsed = customerProfile;
-
-
 
         sqLiteDatabase = dbHelper.getWritableDatabase();
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {

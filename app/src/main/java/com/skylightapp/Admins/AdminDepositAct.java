@@ -27,7 +27,24 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Utils;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.AdminBDepositDAO;
+import com.skylightapp.Database.AdminBalanceDAO;
+import com.skylightapp.Database.BirthdayDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 
@@ -74,6 +91,23 @@ public class AdminDepositAct extends AppCompatActivity {
     private static final String PREF_NAME = "skylight";
     private Calendar calendar;
     SQLiteDatabase sqLiteDatabase;
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
+    private PaymDocDAO paymDocDAO;
+    private CusDAO cusDAO;
+    private PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
+    private PaymentDAO paymentDAO;
+    private AdminBalanceDAO adminBalanceDAO;
+    private BirthdayDAO birthdayDAO;
+    private AdminBDepositDAO adminBDepositDAO;
+    private TimeLineClassDAO timeLineClassDAO;
     String SharedPrefUserPassword,dateSting, selectedBank,stringNoOfSavings, officeBranch,dateOfReport, cmFirstName,cmLastName, adminOfficer,SharedPrefUserMachine,phoneNo,SharedPrefUserName,SharedPrefProfileID,adminName;
     Spinner.OnItemSelectedListener spnClickListener = new AdapterView.OnItemSelectedListener() {
         @Override
@@ -132,6 +166,26 @@ public class AdminDepositAct extends AppCompatActivity {
         random = new SecureRandom();
         adminBankDeposits =new ArrayList<>();
         applicationDb = new DBHelper(this);
+        cusDAO= new CusDAO(this);
+        paymentCodeDAO= new PaymentCodeDAO(this);
+        profileDao= new ProfDAO(this);
+        cashDAO= new TCashDAO(this);
+        paymDocDAO= new PaymDocDAO(this);
+        tReportDAO= new TReportDAO(this);
+        paymentDAO= new PaymentDAO(this);
+        birthdayDAO= new BirthdayDAO(this);
+        adminBalanceDAO= new AdminBalanceDAO(this);
+        adminBDepositDAO= new AdminBDepositDAO(this);
+        timeLineClassDAO= new TimeLineClassDAO(this);
+
+        sodao= new SODAO(this);
+        tranXDAO= new TranXDAO(this);
+        sodao= new SODAO(this);
+        messageDAO= new MessageDAO(this);
+        loanDAO= new LoanDAO(this);
+
+        codeDAO= new CodeDAO(this);
+        acctDAO= new AcctDAO(this);
         SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
         SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
         SharedPrefUserMachine=userPreferences.getString("machine", "");
@@ -285,14 +339,14 @@ public class AdminDepositAct extends AppCompatActivity {
         }
         Location location=null;
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            //dbHelper = new DBHelper(this);
+            adminBDepositDAO= new AdminBDepositDAO(this);
+            timeLineClassDAO= new TimeLineClassDAO(this);
             sqLiteDatabase = applicationDb.getWritableDatabase();
             try {
-                adminDeposits=applicationDb.getAllAdminBankDeposit();
+                adminDeposits=adminBDepositDAO.getAllAdminBankDeposit();
             } catch (Exception e) {
                 System.out.println("Oops!");
             }
-
 
         }
 
@@ -334,10 +388,11 @@ public class AdminDepositAct extends AppCompatActivity {
                     adminBankDeposit.setProfileID(senderProfileID);
                     adminBankDeposit.setDepositAmount(amountEntered);
                     if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                        //dbHelper = new DBHelper(this);
+                        adminBDepositDAO= new AdminBDepositDAO(this);
+                        timeLineClassDAO= new TimeLineClassDAO(this);
                         sqLiteDatabase = applicationDb.getWritableDatabase();
-                        applicationDb.saveNewAdminDeposit(depositID, senderProfileID,adminName,dateOfReport,officeBranch,selectedBank,amountEntered);
-                        applicationDb.insertTimeLine(timelineTittle,timelineDetails,dateOfReport,location);
+                        adminBDepositDAO.saveNewAdminDeposit(depositID, senderProfileID,adminName,dateOfReport,officeBranch,selectedBank,amountEntered);
+                        timeLineClassDAO.insertTimeLine(timelineTittle,timelineDetails,dateOfReport,location);
 
 
                     }

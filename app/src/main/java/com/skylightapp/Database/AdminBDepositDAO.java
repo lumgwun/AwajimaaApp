@@ -25,15 +25,14 @@ import static com.skylightapp.Admins.AdminBankDeposit.DEPOSIT_PROFILE_ID;
 import static com.skylightapp.Admins.AdminBankDeposit.DEPOSIT_TABLE;
 import static com.skylightapp.Admins.AdminBankDeposit.DEPOSIT_TRANSACTION_STATUS;
 import static com.skylightapp.Classes.AdminUser.ADMIN_PROFILE_ID;
-import static com.skylightapp.Classes.StandingOrder.SO_ID;
-import static com.skylightapp.SuperAdmin.AdminBalance.ADMIN_BALANCE_CUS_ID;
-import static com.skylightapp.SuperAdmin.AdminBalance.ADMIN_BALANCE_DATE;
-import static com.skylightapp.SuperAdmin.AdminBalance.ADMIN_BALANCE_NO;
-import static com.skylightapp.SuperAdmin.AdminBalance.ADMIN_BALANCE_PACKID;
-import static com.skylightapp.SuperAdmin.AdminBalance.ADMIN_BALANCE_STATUS;
-import static com.skylightapp.SuperAdmin.AdminBalance.ADMIN_BALANCE_TABLE;
-import static com.skylightapp.SuperAdmin.AdminBalance.ADMIN_EXPECTED_BALANCE;
-import static com.skylightapp.SuperAdmin.AdminBalance.ADMIN_RECEIVED_AMOUNT;
+import static com.skylightapp.SuperAdmin.AppCommission.ADMIN_BALANCE_CUS_ID;
+import static com.skylightapp.SuperAdmin.AppCommission.ADMIN_BALANCE_DATE;
+import static com.skylightapp.SuperAdmin.AppCommission.ADMIN_BALANCE_ID;
+import static com.skylightapp.SuperAdmin.AppCommission.ADMIN_BALANCE_PACKID;
+import static com.skylightapp.SuperAdmin.AppCommission.ADMIN_BALANCE_STATUS;
+import static com.skylightapp.SuperAdmin.AppCommission.ADMIN_BALANCE_TABLE;
+import static com.skylightapp.SuperAdmin.AppCommission.ADMIN_EXPECTED_BALANCE;
+import static com.skylightapp.SuperAdmin.AppCommission.ADMIN_RECEIVED_AMOUNT;
 import static java.lang.String.valueOf;
 
 public class AdminBDepositDAO extends DBHelperDAO{
@@ -470,7 +469,7 @@ public class AdminBDepositDAO extends DBHelperDAO{
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(ADMIN_BALANCE_NO, id);
+        contentValues.put(ADMIN_BALANCE_ID, id);
         contentValues.put(ADMIN_EXPECTED_BALANCE, profileId);
         contentValues.put(ADMIN_RECEIVED_AMOUNT, amount);
         contentValues.put(ADMIN_BALANCE_DATE, date);

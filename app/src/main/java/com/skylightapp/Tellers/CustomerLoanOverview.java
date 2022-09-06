@@ -22,6 +22,7 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Loan;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -127,9 +128,10 @@ public class CustomerLoanOverview extends Fragment {
         userProfile = gson.fromJson(json, Profile.class);
 
         loanList = new ArrayList<Loan>();
+        LoanDAO loanDAO= new LoanDAO(getContext());
         mAdapter = new LoanAdapter(getContext(), loanList);
         dbHelper = new DBHelper(getContext());
-        loanList = dbHelper.getLoanFromCurrentProfile(SharedPrefProfileID);
+        loanList = loanDAO.getLoanFromCurrentProfile(SharedPrefProfileID);
         /*try {
 
 

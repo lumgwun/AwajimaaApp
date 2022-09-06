@@ -27,6 +27,7 @@ import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Classes.User;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.PaymDocDAO;
 import com.skylightapp.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -208,7 +209,7 @@ public class NewCusTranxAdapter extends RecyclerView.Adapter<NewCusTranxAdapter.
         holder.imgTransactionIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DBHelper dbHelper = new DBHelper(v.getContext());
+                PaymDocDAO dbHelper = new PaymDocDAO(v.getContext());
                 Uri paymentDoc =dbHelper.getDocPicturePath(reportID);
                 //Bitmap doc = BitmapFactory.decodeFile(String.valueOf(paymentDoc));
                 Bitmap bitmap = null;

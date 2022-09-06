@@ -40,7 +40,10 @@ import com.skylightapp.Classes.AppCash;
 import com.skylightapp.Classes.StandingOrderAcct;
 import com.skylightapp.Classes.TellerReport;
 import com.skylightapp.Classes.Utils;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.R;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
@@ -195,7 +198,8 @@ public class ManualPaymentAct extends AppCompatActivity {
         }
         else {
             if (tellerProfile != null) {
-                customersN = applicationDb.getAllCustomers11();
+                CusDAO cusDAO= new CusDAO(this);
+                customersN = cusDAO.getAllCustomers11();
                 customerArrayAdapter = new ArrayAdapter<>(ManualPaymentAct.this, android.R.layout.simple_spinner_item, customersN);
                 customerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spnCustomers.setAdapter(customerArrayAdapter);
@@ -319,13 +323,14 @@ public class ManualPaymentAct extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy");
         String todayDate = mdformat.format(calendar.getTime());
+        PaymentDAO paymentDAO= new PaymentDAO(this);
 
         try {
             date = mdformat.parse(todayDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        paymentArrayList=applicationDb.getALLPaymentsTellerToday(tellerProfileID,todayDate);
+        paymentArrayList=paymentDAO.getALLPaymentsTellerToday(tellerProfileID,todayDate);
         status="";
         if(skyLightPackage !=null){
             amountContributedSoFar=skyLightPackage.getPackageAmount_collected();
@@ -380,6 +385,8 @@ public class ManualPaymentAct extends AppCompatActivity {
                                                 tellerProfile.addPTimeLine(timelineTittle1, timelineDetails2);
                                                 tellerProfile.addPPayment(type, totalToWithdraw, date, paymentCode, acctType, office, finalStatus);
                                             }
+                                            PaymentDAO paymentDAO= new PaymentDAO(ManualPaymentAct.this);
+                                            TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(ManualPaymentAct.this);
 
                                             ManualPaymentAct.this.payment = new Payment(tellerProfileID,customerID,type, totalToWithdraw, date,"",paymentCode,acctType,office,"");
                                             skyLightPackage.setPackageBalance(newBalance);
@@ -388,8 +395,8 @@ public class ManualPaymentAct extends AppCompatActivity {
 
                                             try {
 
-                                                applicationDb.insertTimeLine(timelineTittle1, timelineDetails1, Utils.setLastSeenTime(todayDate), null);
-                                                applicationDb.insertPayment(paymentID,tellerProfileID,customerID,office,todayDate,payment_type, totalToWithdraw,paymentCode,accountID,acctType,"","","");
+                                                timeLineClassDAO.insertTimeLine(timelineTittle1, timelineDetails1, Utils.setLastSeenTime(todayDate), null);
+                                                paymentDAO.insertPayment(paymentID,tellerProfileID,customerID,office,todayDate,payment_type, totalToWithdraw,paymentCode,accountID,acctType,"","","");
 
                                             } catch (SQLiteException e) {
                                                 System.out.println("Oops!");
@@ -443,6 +450,8 @@ public class ManualPaymentAct extends AppCompatActivity {
                                                 tellerProfile.addPTimeLine(timelineTittle1, timelineDetails2);
                                                 tellerProfile.addPPayment(type, totalToWithdraw, date, paymentCode, acctType, office, finalStatus);
                                             }
+                                            PaymentDAO paymentDAO= new PaymentDAO(ManualPaymentAct.this);
+                                            TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(ManualPaymentAct.this);
 
                                             ManualPaymentAct.this.payment = new Payment(tellerProfileID,customerID,type, totalToWithdraw, date,"",paymentCode,acctType,office,"");
                                             skyLightPackage.setPackageBalance(newBalance);
@@ -450,8 +459,8 @@ public class ManualPaymentAct extends AppCompatActivity {
 
                                             try {
 
-                                                applicationDb.insertTimeLine(timelineTittle1, timelineDetails1, Utils.setLastSeenTime(todayDate), null);
-                                                applicationDb.insertPayment(paymentID,tellerProfileID,customerID,office,todayDate,payment_type, totalToWithdraw,paymentCode,accountID,acctType,"","","");
+                                                timeLineClassDAO.insertTimeLine(timelineTittle1, timelineDetails1, Utils.setLastSeenTime(todayDate), null);
+                                                paymentDAO.insertPayment(paymentID,tellerProfileID,customerID,office,todayDate,payment_type, totalToWithdraw,paymentCode,accountID,acctType,"","","");
 
                                             } catch (SQLiteException e) {
                                                 System.out.println("Oops!");

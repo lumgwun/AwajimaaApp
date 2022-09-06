@@ -19,6 +19,8 @@ import androidx.annotation.NonNull;
 import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.R;
 
 import java.io.FileNotFoundException;
@@ -93,7 +95,7 @@ public class TransAdapterCus extends ArrayAdapter<Transaction> {
         addDoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DBHelper dbHelper = new DBHelper(getContext());
+                PaymDocDAO dbHelper = new PaymDocDAO(getContext());
                 Uri paymentDoc =dbHelper.getDocPicturePath(reportID);
                 //Bitmap doc = BitmapFactory.decodeFile(String.valueOf(paymentDoc));
                 Bitmap bitmap = null;

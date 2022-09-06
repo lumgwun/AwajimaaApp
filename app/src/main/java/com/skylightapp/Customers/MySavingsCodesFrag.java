@@ -21,7 +21,9 @@ import com.google.gson.Gson;
 import com.skylightapp.Classes.PaymentCode;
 import com.skylightapp.Classes.PaymentCodeAdapter;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Database.CodeDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.PaymentCodeDAO;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
@@ -91,7 +93,13 @@ public class MySavingsCodesFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView= inflater.inflate(R.layout.frag_savings_code, container, false);
+        if(userProfile !=null){
+            int profileID =userProfile.getPID();
+            CodeDAO paymentCodeDAO= new CodeDAO(getContext());
+            String surName =userProfile.getProfileLastName();
+            paymentCodes = paymentCodeDAO.getSavingsCodesProfile(profileID);
 
+        }
 
         ArrayList<PaymentCode> savings = new ArrayList<PaymentCode>();
         mAdapter = new PaymentCodeAdapter(getContext(), this.paymentCodes);
@@ -103,14 +111,9 @@ public class MySavingsCodesFrag extends Fragment {
         String json = userPreferences.getString("LastProfileUsed", "");
         Profile userProfile = gson.fromJson(json, Profile.class);
 
-        this.paymentCodes = new ArrayList<PaymentCode>();
+        paymentCodes = new ArrayList<PaymentCode>();
         mAdapter = new PaymentCodeAdapter(getContext(), R.layout.code_list_row, this.paymentCodes);
-        if(userProfile !=null){
-            int profileID =userProfile.getPID();
-            String surName =userProfile.getProfileLastName();
-            this.paymentCodes = dbHelper.getSavingsCodesProfile(profileID);
 
-        }
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);

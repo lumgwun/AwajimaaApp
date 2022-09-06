@@ -41,6 +41,8 @@ import com.skylightapp.Classes.StandingOrderAcct;
 import com.skylightapp.Classes.TellerReport;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
 
 import java.io.File;
@@ -241,15 +243,17 @@ public class CusStatementAct extends AppCompatActivity {
 
 
         try {
+            ProfDAO profDAO= new ProfDAO(this);
+            TranXDAO tranXDAO= new TranXDAO(this);
             txtName.setText("Customer:"+cmName);
-            profilePix.setImageBitmap(dbHelper.getProfilePicture(customerID));
+            profilePix.setImageBitmap(profDAO.getProfilePicture(customerID));
             txtWalletID.setText("Wallet ID:"+accountID);
             txtWalletBalance.setText("Wallet Balance"+wBalance);
             txtSOAcctNo.setText("SO Acct ID:"+soAccountID);
             txtSOAcctBalance.setText("SO Acct Balance: N"+soBalance);
             txtDate.setText("Date:"+acctStatementDate);
             noOfSavings=dbHelper.getCustomerTotalSavingsCount(customerID);
-            txCount=dbHelper.getTxCountCustomer(customerID);
+            txCount=tranXDAO.getTxCountCustomer(customerID);
             txtBankDeposit.setText("Bank Tx:"+txCount);
             cashDeposits=dbHelper.getTotalSavingsForCustomer(customerID);
             txtCashDeposit.setText("deposits N"+cashDeposits);

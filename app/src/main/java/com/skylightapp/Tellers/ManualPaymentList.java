@@ -18,8 +18,9 @@ import com.skylightapp.Classes.PaymentAdapterTeller;
 import com.skylightapp.Classes.PaymentCode;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.PaymentDAO;
 import com.skylightapp.R;
-import com.skylightapp.SuperAdmin.AdminBalance;
+import com.skylightapp.SuperAdmin.AppCommission;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class ManualPaymentList extends AppCompatActivity implements PaymentAdapt
         gson = new Gson();
         userProfile= new Profile();
         PaymentCode paymentCode=new PaymentCode();
-        AdminBalance adminBalance= new AdminBalance();
+        AppCommission appCommission = new AppCommission();
         bundle=getIntent().getExtras();
         json = sharedpreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
@@ -67,12 +68,13 @@ public class ManualPaymentList extends AppCompatActivity implements PaymentAdapt
         com.github.clans.fab.FloatingActionButton home = findViewById(R.id.notification_teller);
         recyclerView = findViewById(R.id.recycler_TellerPayment);
         paymentArrayList = new ArrayList<Payment>();
+        PaymentDAO paymentDAO= new PaymentDAO(this);
 
         mAdapter = new PaymentAdapterTeller(this, R.layout.payment_list_row, paymentArrayList);
 
         dbHelper = new DBHelper(this);
 
-        paymentArrayList = dbHelper.getALLPaymentsTeller(profileID);
+        paymentArrayList = paymentDAO.getALLPaymentsTeller(profileID);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);

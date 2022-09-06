@@ -9,9 +9,11 @@ import android.database.sqlite.SQLiteDatabase;
 import com.skylightapp.Classes.Bookings;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static com.skylightapp.Classes.Bookings.BOOKING_CLIENT_NAME;
 import static com.skylightapp.Classes.Bookings.BOOKING_CUS_ID;
@@ -33,6 +35,8 @@ public class BookingDAO extends DBHelperDAO{
     public BookingDAO(Context context) {
         super(context);
     }
+    private static final SimpleDateFormat formatter = new SimpleDateFormat(
+            "yyyy-MM-dd", Locale.ENGLISH);
     public long insertBooking(Bookings bookings) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
@@ -43,7 +47,7 @@ public class BookingDAO extends DBHelperDAO{
             values.put(BOOKING_DATE, valueOf(bookings.getDateOfBooking()));
             values.put(BOOKING_LOCATION, bookings.getLocation());
             values.put(BOOKING_OCCURENCE_NO, bookings.getOccurrenceNo());
-            values.put("ITISRECCURRING", bookings.getIsRecurring());
+            values.put(String.valueOf(ITISRECCURRING), bookings.getIsRecurring());
             db.insert(BOOKING_TABLE, null, values);
 
         }catch (SQLException e)
@@ -64,11 +68,11 @@ public class BookingDAO extends DBHelperDAO{
                 if (cursor.moveToFirst()) {
                     do {
                         Bookings bookings1 = new Bookings();
-                        bookings1.setBookingID(BOOKING_ID_COLUMN);
+                        bookings1.setBookingID(2);
                         bookings1.setTittle(BOOKING_TITTLE);
                         bookings1.setClientName(BOOKING_CLIENT_NAME);
                         try {
-                            bookings1.setBookingDate(formatter.parse(String.valueOf(BOOKING_DATE_COLUMN)));
+                            bookings1.setBookingDate(formatter.parse(String.valueOf(5)));
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }

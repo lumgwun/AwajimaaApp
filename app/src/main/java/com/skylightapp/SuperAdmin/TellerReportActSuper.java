@@ -26,6 +26,7 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.TellerReport;
 import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.TReportDAO;
 import com.skylightapp.R;
 
 import java.text.SimpleDateFormat;
@@ -86,9 +87,10 @@ public class TellerReportActSuper extends AppCompatActivity implements TellerRep
 
         recyclerView = findViewById(R.id.recycler_view_Super);
         tellerReportArrayList = new ArrayList<TellerReport>();
+        TReportDAO tReportDAO = new TReportDAO(this);
         mAdapter = new TellerReportAdapterSuper(this, R.layout.teller_report_row_super, tellerReportArrayList);
         dbHelper = new DBHelper(this);
-        tellerReportArrayList = dbHelper.getTellerReportsAll();
+        tellerReportArrayList = tReportDAO.getTellerReportsAll();
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);

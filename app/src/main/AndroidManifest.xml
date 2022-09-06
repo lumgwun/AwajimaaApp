@@ -83,7 +83,10 @@
         android:value="androidx.core.app.CoreComponentFactory"
         tools:ignore="GoogleAppIndexingWarning"
         tools:node="replace">
-        <activity android:name=".Markets.AppointmentAct"></activity>
+        <activity android:name=".Markets.BusinessDealSub"></activity>
+        <activity android:name=".BasicPushAct" />
+        <activity android:name=".PushNotiAct" />
+        <activity android:name=".Markets.AppointmentAct" />
         <activity android:name=".Markets.MarketInvTab" />
         <activity android:name=".Markets.LogisticsTab" />
         <activity android:name=".Markets.MarketLearningAct" />
@@ -523,7 +526,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".Admins.CustomerListActivity" />
         <activity
-            android:name=".Tellers.TellerSMSAct"
+            android:name=".Tellers.BusinessSMSAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".Tellers.TellerSuccessActivity" />
         <activity android:name=".PermissionActivity" />

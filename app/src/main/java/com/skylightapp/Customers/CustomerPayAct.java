@@ -43,6 +43,9 @@ import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.SkyLightPackModel;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TranXDAO;
+import com.skylightapp.Interfaces.TimeLineDao;
 import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 import com.skylightapp.SMSAct;
@@ -786,11 +789,13 @@ public class CustomerPayAct extends AppCompatActivity {
         Skylightransaction.setTranxCurrency(Currency.getInstance("NGN"));
         Skylightransaction.setTranxMethodOfPay("Online");
         Skylightransaction.setTranxDate(currentDateAndTime);
+        TimeLineClassDAO timeLineDao = new TimeLineClassDAO(this);
+        TranXDAO tranXDAO = new TranXDAO(this);
         Skylightransaction.setTranxPayer(customerName);
 
 
-        applicationDb.insertTimeLine(tittle,details,currentDateAndTime,mCurrentLocation);
-        dbHelper.saveNewTransaction(profileID, customerID,Skylightransaction, AccountID, "Skylight", customerName,transaction_type,totalToday, reportID, officeBranch, currentDateAndTime);
+        timeLineDao.insertTimeLine(tittle,details,currentDateAndTime,mCurrentLocation);
+        tranXDAO.saveNewTransaction(profileID, customerID,Skylightransaction, AccountID, "Skylight", customerName,transaction_type,totalToday, reportID, officeBranch, currentDateAndTime);
 
     }
     private void parseResponse (String transactionReference){

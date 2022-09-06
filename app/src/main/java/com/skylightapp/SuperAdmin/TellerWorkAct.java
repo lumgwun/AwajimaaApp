@@ -3,6 +3,7 @@ package com.skylightapp.SuperAdmin;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,13 +37,17 @@ import com.skylightapp.Classes.MyTouchListener;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.TellerCountData;
+import com.skylightapp.Classes.TellerReport;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Interfaces.TellerReportDao;
 import com.skylightapp.R;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -231,11 +236,12 @@ public class TellerWorkAct extends AppCompatActivity {
             sqLiteDatabase = dbHelper.getWritableDatabase();
             tellerCountDataPromos=dbHelper.getTellerMonthPromo(tellerProfileID);
         }
+        TReportDAO tReportDAO= new TReportDAO(this);
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             //dbHelper = new DBHelper(this);
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            tellerCountTReports=dbHelper.getTellerMonthTReport(tellerProfileID);
+            tellerCountTReports=tReportDAO.getTellerMonthTReport(tellerProfileID);
 
 
         }

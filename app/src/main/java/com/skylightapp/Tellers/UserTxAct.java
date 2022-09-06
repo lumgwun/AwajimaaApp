@@ -28,6 +28,7 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Customers.TxAdapterCus;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -302,16 +303,17 @@ public class UserTxAct extends AppCompatActivity{
 
             }
         }
+        TranXDAO tranXDAO = new TranXDAO(this);
         txtCustomerName.setText(MessageFormat.format("Customer: {0}", customerName));
         txtAccountBalance.setText(MessageFormat.format("Wallet Balance: NGN{0}", String.format(Locale.getDefault(), "%.2f", acctBalance)));
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(selectedTranxType !=null){
-                    transactions=dbHelper.getAllTranxWithTypeForCustomer(customerID,selectedTranxType);
+                    transactions=tranXDAO.getAllTranxWithTypeForCustomer(customerID,selectedTranxType);
 
                 }else {
-                    transactions=dbHelper.getAllTransactionCustomer(customerID);
+                    transactions=tranXDAO.getAllTransactionCustomer(customerID);
 
                 }
 
@@ -322,9 +324,9 @@ public class UserTxAct extends AppCompatActivity{
         recyclerView.setLayoutManager(layoutManagerC);
         //recyclerView.setHasFixedSize(true);
         try {
-            transactions = dbHelper.getAllTransactionCustomer(customerID);
-            customerTranxCount =dbHelper.getTransactionCountForCustomer(customerID,dateOfTransaction);
-            transactionTotal=dbHelper.getTotalTransactionForCustomer(customerID,dateOfTransaction);
+            transactions = tranXDAO.getAllTransactionCustomer(customerID);
+            customerTranxCount =tranXDAO.getTransactionCountForCustomer(customerID,dateOfTransaction);
+            transactionTotal=tranXDAO.getTotalTransactionForCustomer(customerID,dateOfTransaction);
 
         }catch (NullPointerException e)
         {
@@ -354,7 +356,8 @@ public class UserTxAct extends AppCompatActivity{
     }
 
     public void getDBSearch(View view) {
-        transactions=dbHelper.getAllTransactionCustomer(customerID);
+        TranXDAO tranXDAO= new TranXDAO(this);
+        transactions=tranXDAO.getAllTransactionCustomer(customerID);
     }
 
     private void setupTransactionAdapter(int selectedCustomerIndex, TransactionTypeFilter transFilter) {

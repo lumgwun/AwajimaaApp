@@ -15,6 +15,11 @@ import com.skylightapp.Classes.Transaction;
 import java.util.ArrayList;
 
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
+import static com.skylightapp.Classes.CustomerDailyReport.DAILY_REPORT_TABLE;
+import static com.skylightapp.Classes.CustomerDailyReport.REPORT_CUS_ID_FK;
+import static com.skylightapp.Classes.CustomerDailyReport.REPORT_DATE;
+import static com.skylightapp.Classes.CustomerDailyReport.REPORT_ID;
+import static com.skylightapp.Classes.CustomerDailyReport.REPORT_PROF_ID_FK;
 import static com.skylightapp.Classes.GroupAccount.GRPA_ID;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 import static com.skylightapp.Classes.StandingOrder.SO_ID;
@@ -867,6 +872,30 @@ public class TranXDAO extends DBHelperDAO{
         cv.put(TRANSACTIONS_TYPE, String.valueOf(transaction.getTranXType()));
         cv.put(TRANSACTION_STATUS, response);
         return db.insert(TRANSACTIONS_TABLE, null, cv);
+    }
+    public int getCusMonthTransactionCount1(int customerID, String stringDate) {
+        int count = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sel = "substr(" + stringDate + ",4)";
+        String seler = "substr(" + TRANSACTION_DATE + ",4)";
+        String selection = TRANSACTION_CUS_ID + "=? AND " + seler + "=?";
+        String[] selectionArgs = new String[] {valueOf(customerID),valueOf(sel)};
+        Cursor cursor = db.rawQuery(
+                "SELECT COUNT (*) FROM " + TRANSACTIONS_TABLE + " WHERE " +  selection,
+                selectionArgs
+        );
+
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    count=cursor.getColumnIndex(TRANSACTION_ID);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        return count;
     }
 
 }

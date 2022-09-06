@@ -31,7 +31,7 @@ import com.skylightapp.Database.TReportDAO;
 import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
-import com.skylightapp.SuperAdmin.AdminBalance;
+import com.skylightapp.SuperAdmin.AppCommission;
 
 import java.text.MessageFormat;
 import java.text.ParseException;
@@ -104,7 +104,7 @@ public class AdminCountAct extends AppCompatActivity {
 
         gson = new Gson();
         PaymentCode paymentCode=new PaymentCode();
-        AdminBalance adminBalance= new AdminBalance();
+        AppCommission appCommission = new AppCommission();
         adminUser= new AdminUser();
         sharedpreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = sharedpreferences.getString("LastProfileUsed", "");

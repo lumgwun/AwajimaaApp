@@ -16,6 +16,9 @@ import com.skylightapp.Accountant.AcctantBackOffice;
 import com.skylightapp.Admins.AdminDrawerActivity;
 import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.GroupAccountDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Interfaces.ProfileDao;
 import com.skylightapp.SuperAdmin.SuperAdminOffice;
 import com.skylightapp.Tellers.TellerHomeChoices;
 
@@ -79,6 +82,7 @@ public class LoginDirAct extends AppCompatActivity {
         office = sharedPref.getString("USER_OFFICE", "");
         state = sharedPref.getString("USER_STATE", "");
         role = sharedPref.getString("USER_ROLE", "");
+        ProfDAO profileDao= new ProfDAO(LoginDirAct.this);
 
         joinedDate = sharedPref.getString("USER_DATE_JOINED", "");
         password = sharedPref.getString("USER_PASSWORD", "");
@@ -91,7 +95,7 @@ public class LoginDirAct extends AppCompatActivity {
         gender = sharedPref.getString("USER_GENDER", "");
         address = sharedPref.getString("USER_ADDRESS", "");
         pictureLink = Uri.parse(sharedPref.getString("PICTURE_URI", ""));
-        dbRole=dbHelper.getProfileRoleByUserNameAndPassword(userName,password);
+        dbRole=profileDao.getProfileRoleByUserNameAndPassword(userName,password);
 
         if(userExtras ==null) {
             if(dbRole !=null){

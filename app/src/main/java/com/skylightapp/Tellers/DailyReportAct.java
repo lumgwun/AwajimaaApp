@@ -29,6 +29,8 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.TellerReport;
 import com.skylightapp.Classes.Utils;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.R;
 
 import java.text.SimpleDateFormat;
@@ -320,11 +322,12 @@ public class DailyReportAct extends AppCompatActivity {
         Location location=null;
         //tellerReports=null;
         applicationDb = new DBHelper(this);
+        TReportDAO tReportDAO= new TReportDAO(this);
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             sqLiteDatabase = applicationDb.getWritableDatabase();
             try {
-                tellerReports=applicationDb.getTellerReportsAll();
+                tellerReports=tReportDAO.getTellerReportsAll();
             } catch (Exception e) {
                 System.out.println("Oops!");
             }
@@ -348,9 +351,10 @@ public class DailyReportAct extends AppCompatActivity {
                     }
                     if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                         sqLiteDatabase = applicationDb.getWritableDatabase();
+                        TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(this);
                         try {
-                            applicationDb.insertTellerReport1( officeBranchID,0,tellerID,reportDate,amountEntered, noOfSavings,0.00,0.00,0.00,officeBranch,cmName,"");
-                            applicationDb.insertTimeLine(timelineTittle,timelineDetails,dateOfReport,location);
+                            tReportDAO.insertTellerReport1( officeBranchID,0,tellerID,reportDate,amountEntered, noOfSavings,0.00,0.00,0.00,officeBranch,cmName,"");
+                            timeLineClassDAO.insertTimeLine(timelineTittle,timelineDetails,dateOfReport,location);
                             startNotification();
                             Toast.makeText(DailyReportAct.this, "Report submission was successful" , Toast.LENGTH_LONG).show();
                         } catch (Exception e) {

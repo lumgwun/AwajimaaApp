@@ -54,7 +54,23 @@ import com.skylightapp.Customers.CusLoanRepaymentAct;
 import com.skylightapp.Customers.CusPackageList;
 import com.skylightapp.Customers.CustomerLoanListAct;
 import com.skylightapp.Customers.MySavingsListAct;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.AdminBalanceDAO;
+import com.skylightapp.Database.BirthdayDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TReportDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
 import com.skylightapp.SignUpAct;
 
@@ -99,6 +115,21 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
     public final static int PICK_PHOTO_CODE = 10436;
     private static final int RESULT_LOAD_IMAGE = 1;
     private static final int RESULT_CAMERA_CODE=22;
+    private SODAO sodao;
+    private TranXDAO tranXDAO;
+    private MessageDAO messageDAO;
+    private LoanDAO loanDAO;
+    private AcctDAO acctDAO;
+    private CodeDAO codeDAO;
+    private PaymDocDAO paymDocDAO;
+    private CusDAO cusDAO;
+    private PaymentCodeDAO paymentCodeDAO;
+    private ProfDAO profileDao;
+    private TCashDAO cashDAO;
+    private TReportDAO tReportDAO;
+    private PaymentDAO paymentDAO;
+    private AdminBalanceDAO adminBalanceDAO;
+    private BirthdayDAO birthdayDAO;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,9 +139,10 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
         mCustomerList = findViewById(R.id.customerList);
         customers=new ArrayList<>();
         customersFireBase=new ArrayList<>();
+        CusDAO cusDAO = new CusDAO(this);
         recyclerView = findViewById(R.id.recycler_viewA);
 
-        customers=dbHelper.getAllCustomers11();
+        customers=cusDAO.getAllCustomers11();
         final CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addOnScrollListener(new CenterScrollListener());
@@ -155,7 +187,7 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
                 //dbHelper = new DBHelper(this);
                 sqLiteDatabase = dbHelper.getWritableDatabase();
                 try {
-                    dbHelper.insertProfilePicture(profileID,customerID,photoUri);
+                    profileDao.insertProfilePicture(profileID,customerID,photoUri);
                 } catch (Exception e) {
                     System.out.println("Oops!");
                 }
@@ -201,6 +233,27 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
         edtPassword = (AppCompatEditText) dialog.findViewById(R.id.passwordUpdate);
         profilePix = (CircleImageView) dialog.findViewById(R.id.picture_photo);
         spnStatus = (Spinner) dialog.findViewById(R.id.spnUpPix);
+        CusDAO cusDAO= new CusDAO(CustomerListActivity.this);
+        paymentCodeDAO= new PaymentCodeDAO(this);
+        profileDao= new ProfDAO(this);
+        cashDAO= new TCashDAO(this);
+        paymDocDAO= new PaymDocDAO(this);
+        tReportDAO= new TReportDAO(this);
+        paymentDAO= new PaymentDAO(this);
+        birthdayDAO= new BirthdayDAO(this);
+        adminBalanceDAO= new AdminBalanceDAO(this);
+        //timeLineClassDAO= new TimeLineClassDAO(this);
+
+        sodao= new SODAO(this);
+        tranXDAO= new TranXDAO(this);
+        sodao= new SODAO(this);
+        messageDAO= new MessageDAO(this);
+        loanDAO= new LoanDAO(this);
+
+        codeDAO= new CodeDAO(this);
+        acctDAO= new AcctDAO(this);
+        CusDAO finalCusDAO = cusDAO;
+
 
         spnStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -255,13 +308,14 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
 
                 if ((data != null) && requestCode == PICK_PHOTO_CODE) {
                     Uri photoUri = data.getData();
+
                     dbHelper= new DBHelper(CustomerListActivity.this);
 
                     if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                         //dbHelper = new DBHelper(this);
                         sqLiteDatabase = dbHelper.getWritableDatabase();
                         try {
-                            dbHelper.updateProfilePix(profileID,customerID,photoUri);
+                            profileDao.updateUserPicture(photoUri,profileID);
                         } catch (Exception e) {
                             System.out.println("Oops!");
                         }
@@ -281,7 +335,7 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
 
                         sqLiteDatabase = dbHelper.getWritableDatabase();
                         try {
-                            dbHelper.updateProfilePix(profileID,customerID,photoUri);
+                            profileDao.updateProfilePix(profileID,customerID,photoUri);
                         } catch (Exception e) {
                             System.out.println("Oops!");
                         }
@@ -313,13 +367,14 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
                     String email=edtEmailAddress.getText().toString();
                     String address=edtAddress.getText().toString();
                     String password=edtPassword.getText().toString();
+                    CusDAO cusDAO= new CusDAO(CustomerListActivity.this);
                     dbHelper= new DBHelper(CustomerListActivity.this);
 
                     if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
 
                         sqLiteDatabase = dbHelper.getWritableDatabase();
                         try {
-                            dbHelper.updateCustomer(customerID,"","",phoneNo,email,"",address,"","",password,selectedStatus);
+                            cusDAO.updateCustomer(customerID,"","",phoneNo,email,"",address,"","",password,selectedStatus);
                         } catch (Exception e) {
                             System.out.println("Oops!");
                         }
@@ -347,8 +402,9 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
 
             sqLiteDatabase = dbHelper.getWritableDatabase();
+            CusDAO cusDAO= new CusDAO(CustomerListActivity.this);
             try {
-                customers = new ArrayList<>(dbHelper.getAllCustomers11());
+                customers = new ArrayList<>(cusDAO.getAllCustomers11());
             } catch (Exception e) {
                 System.out.println("Oops!");
             }
@@ -434,6 +490,27 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
             AlertDialog.Builder builder = new AlertDialog.Builder(CustomerListActivity.this);
             builder.setTitle("Choose Action on Customer");
             Bundle finalBundle = bundle;
+            CusDAO cusDAO= new CusDAO(CustomerListActivity.this);
+            paymentCodeDAO= new PaymentCodeDAO(this);
+            profileDao= new ProfDAO(this);
+            cashDAO= new TCashDAO(this);
+            paymDocDAO= new PaymDocDAO(this);
+            tReportDAO= new TReportDAO(this);
+            paymentDAO= new PaymentDAO(this);
+            birthdayDAO= new BirthdayDAO(this);
+            adminBalanceDAO= new AdminBalanceDAO(this);
+            //timeLineClassDAO= new TimeLineClassDAO(this);
+
+            sodao= new SODAO(this);
+            tranXDAO= new TranXDAO(this);
+            sodao= new SODAO(this);
+            messageDAO= new MessageDAO(this);
+            loanDAO= new LoanDAO(this);
+
+            codeDAO= new CodeDAO(this);
+            acctDAO= new AcctDAO(this);
+            CusDAO finalCusDAO = cusDAO;
+            CusDAO finalCusDAO1 = cusDAO;
             builder.setItems(new CharSequence[]
                             {"Delete Customer", "Update Profile", "Loans", "Packages", "Savings", "Standing Orders", "Transactions", "Savings Codes", "Payment Docs", " Location", "Messages", " Send Customer message"},
                     new DialogInterface.OnClickListener() {
@@ -442,7 +519,7 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
                             switch (which) {
                                 case 0:
                                     Toast.makeText(CustomerListActivity.this, "delete option, selected ", Toast.LENGTH_SHORT).show();
-                                    dbHelper.delete_Customer_byID(customerID);
+                                    finalCusDAO.delete_Customer_byID(customerID);
                                     break;
                                 case 1:
                                     Toast.makeText(CustomerListActivity.this, "update customer, selected", Toast.LENGTH_SHORT).show();
@@ -477,7 +554,7 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
                                         //dbHelper = new DBHelper(this);
                                         sqLiteDatabase = dbHelper.getWritableDatabase();
                                         try {
-                                            dbHelper.getAllStandingOrdersForCustomer(customerID);
+                                            sodao.getAllStandingOrdersForCustomer(customerID);
                                         } catch (Exception e) {
                                             System.out.println("Oops!");
                                         }
@@ -491,7 +568,7 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
                                     if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                         sqLiteDatabase = dbHelper.getWritableDatabase();
                                         try {
-                                            dbHelper.getAllTransactionCustomer(customerID);
+                                            tranXDAO.getAllTransactionCustomer(customerID);
                                         } catch (Exception e) {
                                             System.out.println("Oops!");
                                         }
@@ -505,7 +582,7 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
                                     if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                         sqLiteDatabase = dbHelper.getWritableDatabase();
                                         try {
-                                            dbHelper.getSavingsCodesCustomer(customerID);
+                                            codeDAO.getSavingsCodesCustomer(customerID);
                                         } catch (Exception e) {
                                             System.out.println("Oops!");
                                         }
@@ -519,7 +596,7 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
                                     if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                         sqLiteDatabase = dbHelper.getWritableDatabase();
                                         try {
-                                            dbHelper.getDocumentsFromCurrentCustomer(customerID);
+                                            paymDocDAO.getDocumentsFromCurrentCustomer(customerID);
                                         } catch (Exception e) {
                                             System.out.println("Oops!");
                                         }
@@ -544,7 +621,7 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
                                     if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                         sqLiteDatabase = dbHelper.getWritableDatabase();
                                         try {
-                                            dbHelper.getMessagesForCurrentCustomer(customerID);
+                                            messageDAO.getMessagesForCurrentCustomer(customerID);
                                         } catch (Exception e) {
                                             System.out.println("Oops!");
                                         }

@@ -56,6 +56,12 @@ buildscript {
 
         maven { url 'https://repo1.maven.org/maven2' }
         maven { url 'https://plugins.gradle.org/m2/'}
+
+        maven { url 'https://repo1.maven.org/maven2' }
+        maven { url 'https://plugins.gradle.org/m2/'}
+        maven {
+            url "https://github.com/QuickBlox/quickblox-android-sdk-releases/raw/master/"
+        }
     }
     ext {
         retrofit_version = '2.5.0'
@@ -99,11 +105,34 @@ allprojects {
         maven { url 'https://jitpack.io' }
         google()
         mavenCentral()
+        maven {
+            url "https://github.com/QuickBlox/quickblox-android-sdk-releases/raw/master/"
+        }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
         maven { url 'http://dl.bintray.com/amulyakhare/maven' }
         //noinspection JcenterRepositoryObsolete
         jcenter() // Warning: this repository is going to shut down soon
     }
+}
+ext {
+    dimensionDefault = 'default'
+
+    lintAbortOnError = false
+
+    // QuickBlox SDK version
+    qbSdkVersion = '3.9.15'
+
+    //Firebase
+    firebaseCoreVersion = '21.0.0'
+
+    //Material
+    materialVersion = '1.6.0'
+
+    //RobotoTextView
+    robotoTextViewVersion = '4.0.0'
+
+    //Pull to refresh
+    pullToRefreshVersion = '3.2.3'
 }
 
 task clean(type: Delete) {

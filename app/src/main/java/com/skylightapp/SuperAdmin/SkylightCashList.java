@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.SnapHelper;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,6 +30,8 @@ import com.skylightapp.Adapters.ProfileSpinnerAdapter;
 import com.skylightapp.Classes.AlarmReceiver;
 import com.skylightapp.Classes.AppCash;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.TranXDAO;
+import com.skylightapp.Database.WorkersDAO;
 import com.skylightapp.R;
 import com.skylightapp.Tellers.UpdateTellerCashAct;
 
@@ -69,6 +72,7 @@ public class SkylightCashList extends AppCompatActivity implements SkylightCashA
     private SkylightCashAdapter adapterFroms;
     private SkylightCashAdapter adapterTos;
     private SkylightCashAdapter adapterPayees;
+    SQLiteDatabase sqLiteDatabase;
 
 
     private Toolbar mToolbar;
@@ -293,10 +297,14 @@ public class SkylightCashList extends AppCompatActivity implements SkylightCashA
 
 
         Calendar calendar1 = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
+        WorkersDAO workersDAO = new WorkersDAO(this);
 
-        if(dbHelper !=null){
-            workersNames =dbHelper.getAllWorkers();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            workersNames =workersDAO.getAllWorkers();
         }
+
 
         try {
 

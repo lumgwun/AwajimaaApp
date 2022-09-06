@@ -24,6 +24,7 @@ import com.skylightapp.Classes.GroupAccount;
 import com.skylightapp.Classes.MyTouchListener;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.GroupAccountDAO;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -57,10 +58,11 @@ public class GroupSavingsAcctList extends AppCompatActivity implements GroupAcct
         userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
         gson = new Gson();
         random= new SecureRandom();
+        GroupAccountDAO groupAccountDAO= new GroupAccountDAO(this);
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         final CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true);
-        groupAccountArrayList = dbHelper.getGrpAcctsForCurrentProfile(profileID);
+        groupAccountArrayList = groupAccountDAO.getGrpAcctsForCurrentProfile(profileID);
         groupAcctAdapter = new GroupAcctAdapter(groupAccountArrayList, R.layout.grp_acct_row, this);
         recyclerView.setAdapter(groupAcctAdapter);
         recyclerView.setLayoutManager(layoutManager);
@@ -167,6 +169,7 @@ public class GroupSavingsAcctList extends AppCompatActivity implements GroupAcct
     public  void  doConfirm(GroupAccount groupAccount){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Are you sure of deleting this Group Acct?");
+        GroupAccountDAO groupAccountDAO= new GroupAccountDAO(this);
         builder.setIcon(R.drawable.ic_icon2);
         builder.setItems(new CharSequence[]
                         {"Yes", "No"},
@@ -175,7 +178,7 @@ public class GroupSavingsAcctList extends AppCompatActivity implements GroupAcct
                         switch (which) {
                             case 0:
                                 if(groupAccount.getGrpAcctBalance()==0){
-                                    dbHelper.deleteGroupAcct(groupAccount.getGrpAcctNo());
+                                    groupAccountDAO.deleteGroupAcct(groupAccount.getGrpAcctNo());
 
                                 }else {
                                     Toast.makeText(GroupSavingsAcctList.this, "Sorry!,you can not delete an Account with funds", Toast.LENGTH_SHORT).show();
@@ -194,7 +197,7 @@ public class GroupSavingsAcctList extends AppCompatActivity implements GroupAcct
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         if(groupAccount.getGrpAcctBalance()==0){
-                            dbHelper.deleteGroupAcct(groupAccount.getGrpAcctNo());
+                            groupAccountDAO.deleteGroupAcct(groupAccount.getGrpAcctNo());
 
                         }else {
                             Toast.makeText(GroupSavingsAcctList.this, "Sorry!,you can not delete an Account with funds", Toast.LENGTH_SHORT).show();

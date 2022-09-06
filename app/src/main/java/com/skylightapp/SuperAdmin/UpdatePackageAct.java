@@ -14,6 +14,7 @@ import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.StocksDAO;
 import com.skylightapp.R;
 
 import java.text.SimpleDateFormat;
@@ -118,9 +119,10 @@ public class UpdatePackageAct extends AppCompatActivity {
             System.out.println("Oops!");
             edtCode.requestFocus();
         }
+        StocksDAO stocksDAO= new StocksDAO(this);
         if(codeLong==packageCode){
             dbHelper.updatePackageForCollection(reportProfileID,customerID,packageID,"Collected");
-            dbHelper.updateBranchStockCount(officeBranch,itemName,newItemCount);
+            stocksDAO.updateBranchStockCount(officeBranch,itemName,newItemCount);
 
         }
 

@@ -18,6 +18,7 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Customers.TxAdapterCus;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.ProfDAO;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -116,12 +117,12 @@ public class UserSearchAct extends AppCompatActivity {
     }
 
 
-
+     ProfDAO profDAO = new ProfDAO(this);
     Spinner.OnItemSelectedListener spnClickListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
             dbHelper= new DBHelper(UserSearchAct.this);
-            userProfile =(dbHelper.getAllProfiles().get(selectedProfileIndex));
+            userProfile =(profDAO.getAllProfiles().get(selectedProfileIndex));
             if (adapterView.getId() == spnUsers.getId()) {
                 selectedProfileIndex = i;
                 txtAccountName.setText(MessageFormat.format("Account: {0}", userProfile.getProfileAccount().getAccountName()));

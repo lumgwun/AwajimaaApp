@@ -368,7 +368,7 @@ public class TellerDashboardAct extends AppCompatActivity {
 
     public void sendCustomerCodeTeller(View view) {
         Intent usersIntent = new Intent(this,
-                TellerSMSAct.class);
+                BusinessSMSAct.class);
         usersIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     }
 

@@ -27,6 +27,7 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.AppCash;
 import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.StocksDAO;
 import com.skylightapp.R;
 
 import java.text.SimpleDateFormat;
@@ -118,43 +119,44 @@ public class MyStocksList extends AppCompatActivity implements MyInventAdapter.O
         if(dateOfCash ==null){
             dateOfCash=todayDate;
         }
+        StocksDAO stocksDAO= new StocksDAO(this);
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            stocksArrayListToday =dbHelper.getStocksForProfileAtDate(profileID,todayDate);
+            stocksArrayListToday =stocksDAO.getStocksForProfileAtDate(profileID,todayDate);
         }
 
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            stocksListDate =dbHelper.getStocksForProfileAtDate(profileID,dateOfCash);
+            stocksListDate =stocksDAO.getStocksForProfileAtDate(profileID,dateOfCash);
         }
 
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            stocksArrayAll =dbHelper.getAllStocksForProfile(profileID);
+            stocksArrayAll =stocksDAO.getAllStocksForProfile(profileID);
         }
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            totalSCForDate =dbHelper.getTotalStocksTodayForProfile(profileID,dateOfCash);
+            totalSCForDate =stocksDAO.getTotalStocksTodayForProfile(profileID,dateOfCash);
 
         }
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            totalSCForToday =dbHelper.getTotalStocksTodayForProfile(profileID,todayDate);
+            totalSCForToday =stocksDAO.getTotalStocksTodayForProfile(profileID,todayDate);
         }
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            totalSC=dbHelper.getStocksTotalForProfile(profileID);
+            totalSC=stocksDAO.getStocksTotalForProfile(profileID);
         }
 
 

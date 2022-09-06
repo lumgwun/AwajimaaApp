@@ -30,6 +30,7 @@ import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.TellerReport;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.TReportDAO;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
@@ -112,13 +113,14 @@ public class DailyReportListAct extends AppCompatActivity {
         itemsRecycler = (RecyclerView) findViewById(R.id.recycler_viewReport);
         Calendar calendar = Calendar.getInstance();
         currentDate = calendar.getTime();
+        TReportDAO tReportDAO= new TReportDAO(this);
 
 
         try {
-            tellerReportArrayList=dbHelper.getTellerReportsForDate(profileID,dateOfReport);
+            tellerReportArrayList=tReportDAO.getTellerReportsForDate(profileID,dateOfReport);
 
-            tellerReports = dbHelper.getTellerReportForTeller(profileID);
-            reportCountAll =dbHelper.getTellerReportCountAll(profileID);
+            tellerReports = tReportDAO.getTellerReportForTeller(profileID);
+            reportCountAll =tReportDAO.getTellerReportCountAll(profileID);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -149,7 +151,7 @@ public class DailyReportListAct extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 itemsRecycler.setVisibility(View.GONE);
-                reportCount=dbHelper.getTellerReportCountForDate(profileID,dateOfReport);
+                reportCount=tReportDAO.getTellerReportCountForDate(profileID,dateOfReport);
                 LinearLayoutManager layoutManagerC
                         = new LinearLayoutManager(DailyReportListAct.this, LinearLayoutManager.HORIZONTAL, false);
                 itemsRecyclerDate.setLayoutManager(layoutManagerC);
@@ -218,9 +220,10 @@ public class DailyReportListAct extends AppCompatActivity {
             tellerID=teller.getTID();
 
         }
+        TReportDAO tReportDAO= new TReportDAO(this);
         try {
             tellerReports.clear();
-            tellerReports.addAll(dbHelper.getTellerReportForTeller(tellerID));
+            tellerReports.addAll(tReportDAO.getTellerReportForTeller(tellerID));
         } catch (RuntimeException e) {
             System.out.println("Oops!");
         }

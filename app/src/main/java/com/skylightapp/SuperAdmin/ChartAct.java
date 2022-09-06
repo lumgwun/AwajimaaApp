@@ -35,7 +35,10 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.TellerReport;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.TranXDAO;
+import com.skylightapp.Database.TransactionGrantingDAO;
 import com.skylightapp.R;
 
 import java.lang.reflect.Field;
@@ -198,14 +201,48 @@ public class ChartAct extends AppCompatActivity {
         gson1 = new Gson();
         userProfile=new Profile();
         customer = new Customer();
-        investmentArrayList =dbHelper.getChartInvestmentAll("Investment",dateOfChart);
-        promoArrayList11 =dbHelper.getChartPromoValue("Promo",dateOfChart);
-        itemPurchaseArrayList=dbHelper.getChartItemsValue("ItemsPurchase",dateOfChart);
-        savingsArrayList =dbHelper.getChartSavingsAll("Savings",dateOfChart);
-        packageArrayList =dbHelper.getPackageChart(dateOfChart);
-        customersArrayList=dbHelper.getChartCustomers(dateOfChart);
-        transactionArrayList=dbHelper.getTranxChartAll(dateOfChart);
-        payoutArrayList=dbHelper.getChartPaymentAll(dateOfChart);
+        CusDAO cusDAO = new CusDAO(this);
+        TranXDAO tranXDAO = new TranXDAO(this);
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            investmentArrayList =dbHelper.getChartInvestmentAll("Investment",dateOfChart);
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            promoArrayList11 =dbHelper.getChartPromoValue("Promo",dateOfChart);
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            itemPurchaseArrayList=dbHelper.getChartItemsValue("ItemsPurchase",dateOfChart);
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            savingsArrayList =dbHelper.getChartSavingsAll("Savings",dateOfChart);
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            packageArrayList =dbHelper.getPackageChart(dateOfChart);
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            customersArrayList=cusDAO.getChartCustomers(dateOfChart);
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            transactionArrayList=tranXDAO.getTranxChartAll(dateOfChart);
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            payoutArrayList=dbHelper.getChartPaymentAll(dateOfChart);
+        }
 
         payoutChart = findViewById(R.id.chartPayout);
         customersCharts = findViewById(R.id.cusCharts);

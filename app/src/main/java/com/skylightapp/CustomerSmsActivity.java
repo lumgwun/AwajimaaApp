@@ -32,6 +32,7 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Settings;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.TimeLineClassDAO;
 import com.twilio.Twilio;
 
 import java.text.MessageFormat;
@@ -206,6 +207,7 @@ public class CustomerSmsActivity extends AppCompatActivity {
                 @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy/MM/dd");
                 String codeDate = mdformat.format(calendar.getTime());
                 skylightCode = Objects.requireNonNull(edtCode.getText()).toString();
+                TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(this);
                 //PaymentCode paymentCode= new PaymentCode(customerID,savingsID,savingsCode,CODE_DATE);
                 //dbHelper.saveNewSavingsCode(paymentCode);
                 //customer.addPaymentCode(profileID,customerPhoneN, String.valueOf(savingsCode),codeDate,"not complete",manager);
@@ -214,7 +216,7 @@ public class CustomerSmsActivity extends AppCompatActivity {
                         dbHelper.updateSavingsStatus(packageId,reportId,packageBalance,"Completed");
                         customer.addCusTimeLine("Savings Code Update","The savings code for"+savingsID+"was confirmed"+"@"+codeDate);
                         userProfile.addPTimeLine("Code Update","You confirmed the savings code for"+savingsID+"@"+codeDate);
-                        dbHelper.insertTimeLine("Code Update","The savings code for"+savingsID+""+"of"+cusNames+"was confirmed",codeDate,null);
+                        timeLineClassDAO.insertTimeLine("Code Update","The savings code for"+savingsID+""+"of"+cusNames+"was confirmed",codeDate,null);
                         new Intent(this,
                                 LoginDirAct.class);
                         Toast.makeText(this, "Savings status has been updated Successfully", Toast.LENGTH_SHORT).show();

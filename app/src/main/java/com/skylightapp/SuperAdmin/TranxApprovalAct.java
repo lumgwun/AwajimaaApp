@@ -19,7 +19,14 @@ import com.skylightapp.Classes.StandingOrderAcct;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Classes.TransactionGranting;
 import com.skylightapp.Classes.UserSuperAdmin;
+import com.skylightapp.Database.AcctDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TransactionGrantingDAO;
+import com.skylightapp.Interfaces.StandingOrderAcctDao;
 import com.skylightapp.R;
 import com.skylightapp.SMSAct;
 import com.skylightapp.Tellers.MyCusLoanRepayment;
@@ -148,11 +155,13 @@ public class TranxApprovalAct extends AppCompatActivity {
             loanProfile=loan.getLoan_profile();
 
 
+
         }
+        LoanDAO loanDAO = new LoanDAO(this);
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
 
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbLoanCode=dbHelper.getLoanCode(loanID);
+            dbLoanCode=loanDAO.getLoanCode(loanID);
 
         }
 
@@ -380,6 +389,8 @@ public class TranxApprovalAct extends AppCompatActivity {
         if(loanCode==dbLoanCode){
 
             todayDate = mdformat.format(calendar.getTime());
+            AcctDAO acctDAO= new AcctDAO(this);
+            SODAO sodao= new SODAO(this);
 
             try {
                 for (int i = 0; i < transactionArrayList.size(); i++) {
@@ -415,7 +426,11 @@ public class TranxApprovalAct extends AppCompatActivity {
                                 }
                                 if(e_WalletBalance>0.00){
                                     newBalance=e_WalletBalance-amountRequested;
-                                    dbHelper.updateAccBalance(eWalletID,newBalance);
+                                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                        dbHelper.openDataBase();
+                                        acctDAO.updateAccBalance(eWalletID,newBalance);
+                                    }
+
                                     account.setAccountBalance(newBalance);
 
                                 }
@@ -429,18 +444,47 @@ public class TranxApprovalAct extends AppCompatActivity {
                                 }
                                 if(sOBalance>0.00){
                                     newBalance=sOBalance-amountRequested;
-                                    dbHelper.updateSOAcctBalance(soAcctID,newBalance);
+                                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                        dbHelper.openDataBase();
+                                        sodao.updateSOAcctBalance(soAcctID,newBalance);
+                                    }
+
                                     standingOrderAcct.setSoAcctBalance(newBalance);
 
                                 }
 
 
                             }
+                            MessageDAO messageDAO= new MessageDAO(this);
+                            TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(this);
+                            TransactionGrantingDAO grantingDAO= new TransactionGrantingDAO(this);
                             transaction= new Transaction(payoutID,loanProfileID,customerID,acctNo,todayDate,"Skylight",acctNo,acctName,customerName,amountRequested,paymentType,"PayStack Transfer",officeBranch,txApprover,todayDate,response);
-                            dbHelper.updateTranxGranting(tranxPayoutID,txApprover,"PayStack Transfer",response);
-                            dbHelper.insertMessage(profileID,customerID,messageID,tittle+"/"+response,"Skylight",customerName,officeBranch,approvalTime);
-                            dbHelper.insertTimeLine(tittle,smsMessage,approvalTime,location);
-                            dbHelper.updateTranxGrantingStatus(tranxPayoutID,response);
+
+
+
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                dbHelper.openDataBase();
+                                grantingDAO.updateTranxGranting(tranxPayoutID,txApprover,"PayStack Transfer",response);
+
+                            }
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                dbHelper.openDataBase();
+                                messageDAO.insertMessage(profileID,customerID,messageID,tittle+"/"+response,"Skylight",customerName,officeBranch,approvalTime);
+
+                            }
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                dbHelper.openDataBase();
+                                timeLineClassDAO.insertTimeLine(tittle,smsMessage,approvalTime,location);
+
+                            }
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                dbHelper.openDataBase();
+                                grantingDAO.updateTranxGrantingStatus(tranxPayoutID,response);
+                            }
+
+
+
+
                             sendSMSMessage(otpPhoneNumber,smsMessage);
                         }
                     } catch (NullPointerException e) {

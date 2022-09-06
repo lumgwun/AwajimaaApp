@@ -23,6 +23,9 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.GroupAccountDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TimeLineClassDAO;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 
@@ -62,6 +65,7 @@ public class MyNewGrpSavings extends AppCompatActivity {
     Bundle userBundle;
     private String TWILLO_ACCOUNT_SID= BuildConfig.T_ACCT_SID;
     private String TWILLO_AUTH_TOKEN= BuildConfig.T_AUTH_TOKEN;
+    private SODAO sodao;
 
 
 
@@ -200,12 +204,14 @@ public class MyNewGrpSavings extends AppCompatActivity {
                         String timelineDetails1 = "A new Group savings of NGN" + amount + "was started @"+""+currentDate;
                         String timelineDetails = "A new Group savings of NGN" + amount + "was started";
                         int grpNo=0;
+                        TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(MyNewGrpSavings.this);
+                        GroupAccountDAO groupAccountDAO= new GroupAccountDAO(MyNewGrpSavings.this);
 
 
                         try {
 
-                            dbHelper.insertTimeLine(tittle, timelineDetails, grpDateDate, null);
-                            dbHelper.insertGroupAccount(grpAcctNo, profileUID, tittle, purpose,firstName,surname,phoneNo,emailAddress,currentDate,0.00,null,"new");
+                            timeLineClassDAO.insertTimeLine(tittle, timelineDetails, grpDateDate, null);
+                            groupAccountDAO.insertGroupAccount(grpAcctNo, profileUID, tittle, purpose,firstName,surname,phoneNo,emailAddress,currentDate,0.00,null,"new");
                             doNotification();
 
                         } catch (SQLiteException e) {

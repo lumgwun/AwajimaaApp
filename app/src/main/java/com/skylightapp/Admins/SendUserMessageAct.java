@@ -25,7 +25,11 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.UserSuperAdmin;
+import com.skylightapp.Database.AdminUserDAO;
+import com.skylightapp.Database.CusDAO;
+import com.skylightapp.Database.Customer_TellerDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.MessageDAO;
 import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 import com.twilio.Twilio;
@@ -147,19 +151,22 @@ public class SendUserMessageAct extends AppCompatActivity {
         json2 = sharedpreferences.getString("LastAdminUserProfileUsed", "");
         customerManager = gson2.fromJson(json2, CustomerManager.class);
         isInvisible=false;
+        CusDAO cusDAO = new CusDAO(this);
+        AdminUserDAO adminUserDAO= new AdminUserDAO(this);
+        Customer_TellerDAO customer_tellerDAO= new Customer_TellerDAO(this);
         if(machine.equalsIgnoreCase("UserSuperAdmin")){
-            customersN = dbHelper.getAllCustomerSpinner();
+            customersN = cusDAO.getAllCustomerSpinner();
             sender="Skylight";
-            customerManagerArrayList=dbHelper.getAllTellersSpinner();
-            adminUsers=dbHelper.getAllAdminSpinner();
+            customerManagerArrayList=customer_tellerDAO.getAllTellersSpinner();
+            adminUsers=adminUserDAO.getAllAdminSpinner();
             dialogSuperAdmin(customersN,customerManagerArrayList,adminUsers, sender,bundle,profileID);
 
         }
         if(machine.equalsIgnoreCase("SuperAdmin")){
-            customersN = dbHelper.getAllCustomerSpinner();
+            customersN = cusDAO.getAllCustomerSpinner();
             sender="Skylight";
-            customerManagerArrayList=dbHelper.getAllCustomersManagers();
-            adminUsers=dbHelper.getAllAdmin();
+            customerManagerArrayList=customer_tellerDAO.getAllCustomersManagers();
+            adminUsers=adminUserDAO.getAllAdmin();
             dialogSuperAdmin(customersN,customerManagerArrayList,adminUsers,sender,bundle, profileID);
 
         }
@@ -174,7 +181,7 @@ public class SendUserMessageAct extends AppCompatActivity {
             }
 
 
-            customerManagerArrayList=dbHelper.getAllTellersSpinner();
+            customerManagerArrayList=customer_tellerDAO.getAllTellersSpinner();
             sender=userProfile.getProfileLastName()+","+userProfile.getProfileFirstName();
             doTellerDialog(customersN,officeBranch,customerManagerArrayList,sender,bundle,profileID);
 
@@ -185,8 +192,8 @@ public class SendUserMessageAct extends AppCompatActivity {
 
             }
 
-            customersN = dbHelper.getAllCustomerBranchSpinner(officeBranch);
-            customerManagerArrayList=dbHelper.getAllTellerBranchSpinner(officeBranch);
+            customersN = cusDAO.getAllCustomerBranchSpinner(officeBranch);
+            customerManagerArrayList=customer_tellerDAO.getAllTellerBranchSpinner(officeBranch);
             sender=officeBranch;
             doAdminDialog(officeBranch,customersN,customerManagerArrayList,sender,bundle,profileID);
 
@@ -197,8 +204,8 @@ public class SendUserMessageAct extends AppCompatActivity {
 
             }
 
-            customersN = dbHelper.getAllCustomerBranchSpinner(officeBranch);
-            customerManagerArrayList=dbHelper.getAllTellerBranchSpinner(officeBranch);
+            customersN = cusDAO.getAllCustomerBranchSpinner(officeBranch);
+            customerManagerArrayList=customer_tellerDAO.getAllTellerBranchSpinner(officeBranch);
             sender=officeBranch;
             doAdminDialog(officeBranch, customersN, customerManagerArrayList, sender,bundle, profileID);
 
@@ -494,6 +501,7 @@ public class SendUserMessageAct extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Choose User to Send a Message");
         builder.setIcon(R.drawable.ic_icon2);
+        CusDAO cusDAO = new CusDAO(this);
         builder.setItems(new CharSequence[]
                         {"Selected User", "All Customers"},
                 new DialogInterface.OnClickListener() {
@@ -507,7 +515,7 @@ public class SendUserMessageAct extends AppCompatActivity {
 
                                 break;
                             case 1:
-                                customers=dbHelper.getAllCustomers11();
+                                customers=cusDAO.getAllCustomers11();
                                 customersAdapter = new ArrayAdapter<Customer>(SendUserMessageAct.this, android.R.layout.simple_spinner_item, customers);
                                 customersAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 spnSendCustomer.setAdapter(customersAdapter);
@@ -565,6 +573,7 @@ public class SendUserMessageAct extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Send to:");
         builder.setIcon(R.drawable.ic_icon2);
+        CusDAO cusDAO = new CusDAO(this);
         builder.setItems(new CharSequence[]
                         {"An Admin", "A Teller","A Branch Office","A Customer"},
                 new DialogInterface.OnClickListener() {
@@ -582,7 +591,7 @@ public class SendUserMessageAct extends AppCompatActivity {
                                 layoutOffice.setVisibility(View.GONE);
 
 
-                                customers=dbHelper.getAllCustomers11();
+                                customers=cusDAO.getAllCustomers11();
                                 customersAdapter = new ArrayAdapter<Customer>(SendUserMessageAct.this, android.R.layout.simple_spinner_item, customers);
                                 customersAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 spnSendCustomer.setAdapter(customersAdapter);
@@ -658,6 +667,7 @@ public class SendUserMessageAct extends AppCompatActivity {
         gson = new Gson();
         json = sharedpreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
+        MessageDAO messageDAO = new MessageDAO(this);
         if(userProfile !=null){
             userName=userProfile.getProfileLastName()+","+userProfile.getProfileFirstName();
 
@@ -667,7 +677,7 @@ public class SendUserMessageAct extends AppCompatActivity {
         String meassageDate = mdformat.format(calendar.getTime());
         messageID = random.nextInt((int) (Math.random() * 129) + 11);
         try {
-            dbHelper.insertMessage(userProfID, iD,messageID, messageDetails,sender,sendee,officeBranch,meassageDate);
+            messageDAO.insertMessage(userProfID, iD,messageID, messageDetails,sender,sendee,officeBranch,meassageDate);
 
 
         }catch (NullPointerException e)

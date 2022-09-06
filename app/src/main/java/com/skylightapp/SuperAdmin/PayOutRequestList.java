@@ -14,6 +14,7 @@ import android.app.DatePickerDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +25,8 @@ import android.widget.TextView;
 import com.skylightapp.Adapters.PaymentRequestAdap;
 import com.skylightapp.Classes.TransactionGranting;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.EmergReportDAO;
+import com.skylightapp.Database.TransactionGrantingDAO;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -54,6 +57,7 @@ public class PayOutRequestList extends AppCompatActivity implements PaymentReque
     protected DatePickerDialog datePickerDialog;
     RecyclerView recyclerView, recyclerViewCustom;
     private SearchView searchView;
+    private SQLiteDatabase sqLiteDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,20 +89,38 @@ public class PayOutRequestList extends AppCompatActivity implements PaymentReque
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd", Locale.getDefault());
         currentDate = dateFormat.format(calendar.getTime());
-        try {
-            transactionGrantings = dbHelper.getAllTransactionGranting();
-            customtranxGrantings =dbHelper.getTranxRequestAtDate(currentDate);
-            totalPayouts=dbHelper.getTotalTranxRequestAtDate(currentDate);
-            payoutTranxCount=dbHelper.getTranxRequestCountAtDate(currentDate);
 
-        }catch (NullPointerException e)
-        {
-            e.printStackTrace();
+        TransactionGrantingDAO grantingDAO = new TransactionGrantingDAO(this);
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            transactionGrantings = grantingDAO.getAllTransactionGranting();
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            customtranxGrantings =grantingDAO.getTranxRequestAtDate(currentDate);
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            totalPayouts=grantingDAO.getTotalTranxRequestAtDate(currentDate);
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            payoutTranxCount=grantingDAO.getTranxRequestCountAtDate(currentDate);
         }
 
-        try {
 
-            totalPayoutsForTheMonth=dbHelper.getTotalTranxExtraForTheMonth1(currentDate);
+        try {
+            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                dbHelper.openDataBase();
+                sqLiteDatabase = dbHelper.getReadableDatabase();
+                totalPayoutsForTheMonth=grantingDAO.getTotalTranxExtraForTheMonth1(currentDate);
+            }
+
+
 
         }catch (ArrayIndexOutOfBoundsException e)
         {

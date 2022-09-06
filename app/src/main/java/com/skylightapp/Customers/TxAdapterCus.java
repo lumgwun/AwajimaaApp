@@ -22,6 +22,8 @@ import androidx.appcompat.widget.AppCompatImageView;
 import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.PaymDocDAO;
+import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.R;
 
 import java.io.FileNotFoundException;
@@ -117,9 +119,10 @@ public class TxAdapterCus extends ArrayAdapter<Transaction> {
             @Override
             public void onClick(View v) {
                 if (docImage == null) {
+                    PaymDocDAO profDAO = new PaymDocDAO(getContext());
                     //mGetContent.launch("image/*");
                     DBHelper dbHelper = new DBHelper(getContext());
-                    Uri paymentDoc =dbHelper.getDocPicturePath(reportID);
+                    Uri paymentDoc =profDAO.getDocPicturePath(reportID);
                     //Bitmap doc = BitmapFactory.decodeFile(String.valueOf(paymentDoc));
                     Bitmap bitmap = null;
                     try {

@@ -16,6 +16,9 @@ import com.google.gson.Gson;
 import com.skylightapp.Classes.GroupAccount;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.GroupAccountDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
 
 import java.security.SecureRandom;
 import java.text.MessageFormat;
@@ -68,6 +71,8 @@ public class UpdateGrpAcct extends AppCompatActivity {
             txtPurpose.setText(MessageFormat.format("Grp Purpose:{0}", groupAccount.getGrpPurpose()));
 
         }
+        TimeLineClassDAO timeLineClassDAO = new TimeLineClassDAO(this);
+        GroupAccountDAO groupAccountDAO = new GroupAccountDAO(this);
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,8 +89,8 @@ public class UpdateGrpAcct extends AppCompatActivity {
                 surname=edtSurname.getText().toString();
                 firstName=edtFirstName.getText().toString();
                 phoneNo=edtPhone.getText().toString();
-                dbHelper.updateGrpAcct(grpAcctID,tittle,purpose,surname,firstName,phoneNo);
-                dbHelper.insertTimeLine("Group Acct updated",details,updateDate,null);
+                groupAccountDAO.updateGrpAcct(grpAcctID,tittle,purpose,surname,firstName,phoneNo);
+                timeLineClassDAO.insertTimeLine("Group Acct updated",details,updateDate,null);
 
             }
         });

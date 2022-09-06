@@ -24,6 +24,7 @@ import com.skylightapp.Classes.OfficeBranch;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.AppCash;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.StocksDAO;
 import com.skylightapp.R;
 
 import java.text.SimpleDateFormat;
@@ -113,43 +114,44 @@ public class BranchStockOv extends AppCompatActivity implements MyInventAdapter.
         if(dateOfStocks ==null){
             dateOfStocks =todayDate;
         }
+        StocksDAO stocksDAO= new StocksDAO(this);
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            stocksArrayListToday =dbHelper.getStocksForBranchAtDate(branchID,dateOfStocks);
+            stocksArrayListToday =stocksDAO.getStocksForBranchAtDate(branchID,dateOfStocks);
         }
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            stocksBranchCount =dbHelper.getStockCountAtDateForBranch(branch,dateOfStocks);
-        }
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            stocksListDate =dbHelper.getStocksForBranchAtDate(branchID, dateOfStocks);
+            stocksBranchCount =stocksDAO.getStockCountAtDateForBranch(branch,dateOfStocks);
         }
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            stocksArrayAll =dbHelper.getAllStocksForBranch(branchID);
+            stocksListDate =stocksDAO.getStocksForBranchAtDate(branchID, dateOfStocks);
         }
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            totalSCForDate =dbHelper.getTotalStocksTodayForBranch1(branchID, dateOfStocks);
+            stocksArrayAll =stocksDAO.getAllStocksForBranch(branchID);
         }
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            totalSCForToday =dbHelper.getTotalStocksTodayForBranch1(branchID,todayDate);
+            totalSCForDate =stocksDAO.getTotalStocksTodayForBranch1(branchID, dateOfStocks);
         }
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            totalSC=dbHelper.getStocksTotalForBranch(branchID);
+            totalSCForToday =stocksDAO.getTotalStocksTodayForBranch1(branchID,todayDate);
+        }
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            totalSC=stocksDAO.getStocksTotalForBranch(branchID);
         }
 
 

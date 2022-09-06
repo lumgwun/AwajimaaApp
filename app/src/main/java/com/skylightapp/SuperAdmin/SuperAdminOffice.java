@@ -58,7 +58,10 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.UserSuperAdmin;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
 import com.skylightapp.Inventory.SuperInvTab;
 import com.skylightapp.LoginActivity;
 import com.skylightapp.PayClientActivity;
@@ -104,7 +107,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
     FrameLayout frameLayout1,frameLayout2;
     CircleImageView profileImage;
     private Profile profile;
-    private  AdminBalance adminBalance;
+    private AppCommission appCommission;
 
     private AppCompatTextView txtMessage;
     private AppCompatTextView txtSuperBalance;
@@ -206,6 +209,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
                     }
                 }
             });
+    private ProfDAO profDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,9 +220,10 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
         gson = new Gson();
         gson1 = new Gson();
         userProfile=new Profile();
-        adminBalance= new AdminBalance();
+        appCommission = new AppCommission();
         superAdminProfile =new UserSuperAdmin();
         applicationDb = new DBHelper(this);
+        profDAO=new ProfDAO(this);
         SharedPrefUserName=userPreferences.getString("USER_NAME", "");
         SharedPrefUserPassword=userPreferences.getString("USER_PASSWORD", "");
         SharedPrefUserMachine=userPreferences.getString("machine", "");
@@ -231,7 +236,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
         state = userPreferences.getString("PROFILE_STATE", "");
         role = userPreferences.getString("PROFILE_ROLE", "");
         password = userPreferences.getString("PROFILE_PASSWORD", "");
-        dbRole=applicationDb.getProfileRoleByUserNameAndPassword(userName,password);
+        dbRole=profDAO.getProfileRoleByUserNameAndPassword(userName,password);
 
         joinedDate = userPreferences.getString("PROFILE_DATE_JOINED", "");
         surname = userPreferences.getString("PROFILE_SURNAME", "");
@@ -252,7 +257,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
         txtSuperBalance = findViewById(R.id.super_balance);
 
         try {
-            totalAdminBalance=adminBalance.getTotalReceivedAmount();
+            totalAdminBalance= appCommission.getTotalReceivedAmount();
 
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -293,11 +298,12 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
         textID = findViewById(R.id.super_id);
         textAllCustomers = findViewById(R.id.allCus_Super);
         //textAllCustomers.setOnClickListener(this);
+        CusDAO cusDAO= new CusDAO(this);
         try {
-            allCus=applicationDb.getCustomersCountAdmin();
+            allCus=cusDAO.getCustomersCountAdmin();
             savingsToday=applicationDb.getSavingsCountToday(dateOfToday);
-            allUsers=applicationDb.getAllProfileCount();
-            customersToday=applicationDb.getCusCountToday(dateOfToday);
+            allUsers=profDAO.getAllProfileCount();
+            customersToday=cusDAO.getCusCountToday(dateOfToday);
             activePackagesToday = applicationDb.getPackagesCountAdmin();
 
         } catch (NullPointerException e) {
@@ -316,7 +322,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
 
         if(superAdminProfile !=null){
             profileID= superAdminProfile.getSuperID();
-            Bitmap bitmap = applicationDb.getProfilePicture(profileID);
+            Bitmap bitmap = profDAO.getProfilePicture(profileID);
             imgProfilePic.setImageBitmap(bitmap);
         }
         imgProfilePic.setOnClickListener(new View.OnClickListener() {
@@ -426,13 +432,15 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
         maingrid=(GridLayout) findViewById(R.id.ViewSuper);
         imgTime = findViewById(R.id.superGreetings);
         setSingleEvent(maingrid);
+        SODAO sodao = new SODAO(this);
+
         try {
             txtAllLoans.setOnClickListener(this::goLoans);
             btnImpDates.setOnClickListener(this::importantDateSuper);
             btnTimeLines.setOnClickListener(this::TimelinesSuper);
             txtAllSubscriptions.setOnClickListener(this::gpPackages);
             btnSOSuper.setOnClickListener(this::standingOrdersSuper);
-            SOCount=applicationDb.getStandingOrderCountToday(dateOfToday);
+            SOCount=sodao.getStandingOrderCountToday(dateOfToday);
             txtAllStandingOrders.setText(MessageFormat.format("Standing Orders:{0}", SOCount));
             textCustomersToday.setText(MessageFormat.format("New Cus:{0}", customersToday));
             textAllCustomers.setText(MessageFormat.format("All Cus:{0}", allCus));
@@ -566,8 +574,9 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
 
         DBHelper applicationDb = new DBHelper(this);
         if(superAdminProfile !=null){
+            ProfDAO profDAO1 = new ProfDAO(this);
             profileID= superAdminProfile.getSuperID();
-            Bitmap bitmap = applicationDb.getProfilePicture(profileID);
+            Bitmap bitmap = profDAO1.getProfilePicture(profileID);
             CircleImageView imgProfilePic = headerView.findViewById(R.id.profile_image_cus);
             imgProfilePic.setImageBitmap(bitmap);
         }

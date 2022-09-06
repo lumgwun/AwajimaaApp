@@ -60,6 +60,7 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.EmergReportDAO;
 import com.skylightapp.LocationUpdateAct;
 import com.skylightapp.MapAndLoc.GetAddressIntentService;
 import com.skylightapp.MapAndLoc.ProfileLocSourceAct;
@@ -350,11 +351,12 @@ public class WorkersLocationAct extends FragmentActivity implements LocationList
         cancellationTokenSource = new CancellationTokenSource();
         userLocBundle.putLong("PROFILE_ID",SharedPrefProfileID);
         userLocBundle.putString("timeOfReport",timeOfReport);
+        EmergReportDAO emergReportDAO= new EmergReportDAO(this);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //dbHelper.insertUserLocation(profileID,customerID, String.valueOf(reportTime),latlong);
-                dbHelper.insertUserEmergencyReport(reportID, profileID, timeOfReport, selectedPurpose,"", stringLatLng);
+                emergReportDAO.insertUserEmergencyReport(reportID, profileID, timeOfReport, selectedPurpose,"", stringLatLng);
                 Intent intent = new Intent(WorkersLocationAct.this, LocationUpdateAct.class);
                 intent.putExtras(userLocBundle);
                 startService(intent);
@@ -643,7 +645,8 @@ public class WorkersLocationAct extends FragmentActivity implements LocationList
 
     }
     public void updateButtonOnclick(View view){
-        dbHelper.insertUserEmergencyReport(reportID,profileID, timeOfReport, selectedPurpose,"", stringLatLng);
+        EmergReportDAO emergReportDAO= new EmergReportDAO(this);
+        //EmergReportDAO.insertUserEmergencyReport(reportID,profileID, timeOfReport, selectedPurpose,"", stringLatLng);
 
     }
 }

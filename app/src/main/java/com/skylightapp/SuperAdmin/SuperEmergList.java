@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -19,6 +20,8 @@ import com.skylightapp.Admins.TrackWorkersAct;
 import com.skylightapp.Classes.EmergencyReport;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.EmergReportDAO;
+import com.skylightapp.Database.MessageDAO;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
@@ -39,6 +42,8 @@ public class SuperEmergList extends AppCompatActivity implements EmergencyReport
     String json;
     private TextView txtEmergencyCount;
     String LastLocation;
+    SQLiteDatabase sqLiteDatabase;
+    private EmergReportDAO emergReportDAO;
 
 
     @Override
@@ -51,9 +56,19 @@ public class SuperEmergList extends AppCompatActivity implements EmergencyReport
         userProfile=new Profile();
         dbHelper = new DBHelper(this);
         //txtEmergencyCount.setText("Emergency:0");
-        emergencyReports = dbHelper.getAllEmergencyReports();
+        emergReportDAO= new EmergReportDAO(this);
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            emergencyReports = emergReportDAO.getAllEmergencyReports();
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            emergencyCount =emergReportDAO.getEmergencyReportCount();
+        }
 
-        emergencyCount =dbHelper.getEmergencyReportCount();
+
         if(emergencyCount >0){
             txtEmergencyCount.setText("Emergency:"+ emergencyCount);
 

@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.skylightapp.Classes.Payment;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.PaymentDAO;
 import com.skylightapp.R;
 
 import java.text.SimpleDateFormat;
@@ -96,8 +97,9 @@ public class ManualPCodeUpdate extends AppCompatActivity {
             System.out.println("Oops!");
             edtCode.requestFocus();
         }
+        PaymentDAO paymentDAO= new PaymentDAO(this);
         if(code==paymentCode){
-            dbHelper.updatePayment(paymentID,paymentCode,"Confirmed");
+            paymentDAO.updatePayment(paymentID,paymentCode,"Confirmed");
 
         }
     }

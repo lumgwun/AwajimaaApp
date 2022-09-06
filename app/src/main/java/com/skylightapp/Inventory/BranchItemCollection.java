@@ -22,6 +22,8 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.StockTransferDAO;
+import com.skylightapp.Database.StocksDAO;
 import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 import com.skylightapp.SuperAdmin.UpdatePackageAct;
@@ -104,8 +106,9 @@ public class BranchItemCollection extends AppCompatActivity {
             customerPhoneNumber=customer.getCusPhoneNumber();
 
         }
+        StocksDAO stocksDAO= new StocksDAO(this);
         txtPackageName.setText("Package:"+itemName);
-        itemRemCount=dbHelper.getStockItemCountForBranch(packageName,officeBranch);
+        itemRemCount=stocksDAO.getStockItemCountForBranch(packageName,officeBranch);
         txtcusForCollection.setText("Customer:"+customerName);
         if(itemRemCount>0){
             txtItemCount.setText("Branch"+""+packageName+"Count:"+itemRemCount);

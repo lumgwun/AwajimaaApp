@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.EmergReportNextDAO;
+import com.skylightapp.Database.StocksDAO;
 import com.skylightapp.R;
 
 import java.text.SimpleDateFormat;
@@ -88,8 +90,9 @@ public class UpDateStocksCode extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                StocksDAO stocksDAO= new StocksDAO(UpDateStocksCode.this);
                 if(stocksCode==code){
-                    dbHelper.updateStocksWithCode(officeBranch,profileID, code,todayDate);
+                    stocksDAO.updateStocksWithCode(officeBranch,profileID, code,todayDate);
 
                 }
 

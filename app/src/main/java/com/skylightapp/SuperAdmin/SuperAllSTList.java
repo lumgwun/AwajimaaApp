@@ -525,7 +525,8 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
             }
 
             if (dbHelper != null) {
-                officeBranchArrayList=OfficeBranchDAO.getAllBranchOffices();
+                dbHelper= new DBHelper(this);
+                officeBranchArrayList=dbHelper.getAllBranchOffices();
             }
         } catch (NullPointerException e) {
             System.out.println("Oops!");

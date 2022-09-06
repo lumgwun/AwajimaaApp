@@ -1279,5 +1279,28 @@
     <string name="title_top_benefits_section">Top benefits</string>
     <string name="title_top_sales_section">Top sales</string>
     <string name="pref_top_list_length_summary">Length of the TOP list in stats</string>
+    <string name="progress_sending">Sending</string>
+    <string name="message">Incoming message</string>
+    <string name="hint_enter_your_message">Enter push message here</string>
+    <string name="send_push">Send Message</string>
+    <string name="received_messages">Received Push Notifications</string>
+    <string name="no_messages">No messages received yet</string>
+    <string name="dlg_logout">Logout…</string>
+    <string name="dlg_retry">Retry</string>
+
+    <string name="error_logout">Logout Error</string>
+    <string name="error">Error</string>
+    <string name="error_field_is_empty">Field is empty!</string>
+    <string name="error_qb_credentials_empty">Error, no server credentials</string>
+
+    <string name="enable_notification">Enable Notification</string>
+    <string name="disable_notification">Disable Notification</string>
+    <string name="subtitle_enabled">Notification enabled</string>
+    <string name="subtitle_disabled">Notification disabled</string>
+    <string name="sending_error">Sending error</string>
+    <string name="error_too_long_push">You can enter only 1000 characters!</string>
+    <string name="error_connection_failed">Connection failed. Please check your internet connection.</string>
+    <string name="error_no_responce_timeout">No response received within reply timeout.</string>
+    <string name="no_internet_connection">No internet connection</string>
 
 </resources>

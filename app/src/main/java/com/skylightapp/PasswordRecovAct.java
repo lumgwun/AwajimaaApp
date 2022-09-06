@@ -9,6 +9,7 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -20,6 +21,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 
@@ -57,6 +60,7 @@ public class PasswordRecovAct extends AppCompatActivity {
     AppCompatButton btn_Send_ACode,btn_after_send_code,btn_get,btn_create,btn_change_password;
     ArcView btn_ls;
     FloatingActionButton fab;
+    SQLiteDatabase sqLiteDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,8 +163,16 @@ public class PasswordRecovAct extends AppCompatActivity {
                 bioLayout.setVisibility(View.GONE);
                 layout_get_passwod.setVisibility(View.GONE);
                 layout_passwordIs.setVisibility(View.VISIBLE);
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    ProfDAO profDAO= new ProfDAO(PasswordRecovAct.this);
+                    dbHelper.openDataBase();
+                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    password=profDAO.getPassword(profileID);
+
+
+                }
                 btn_create.setVisibility(View.GONE);
-                password=dbHelper.getPassword1(profileID);
+
                 txt_YourPasswordIs.setText(String.format("Your password is:%s", password));
 
 
@@ -225,10 +237,18 @@ public class PasswordRecovAct extends AppCompatActivity {
 
                     else {
                         if(strNewPin1.equals(strNewPin2)){
-                            dbHelper.updateProfilePassword(strNewPin1,profileID);
-                            Toast.makeText(PasswordRecovAct.this, "Password update was successful", Toast.LENGTH_SHORT).show();
-                            savePassword();
-                            homeGo();
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                ProfDAO profDAO= new ProfDAO(PasswordRecovAct.this);
+                                dbHelper.openDataBase();
+                                sqLiteDatabase = dbHelper.getWritableDatabase();
+                                profDAO.updateProfilePassword(strNewPin1,profileID);
+                                Toast.makeText(PasswordRecovAct.this, "Password update was successful", Toast.LENGTH_SHORT).show();
+                                savePassword();
+                                homeGo();
+
+
+                            }
+
 
                         }
 

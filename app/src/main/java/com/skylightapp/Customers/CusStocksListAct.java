@@ -34,6 +34,7 @@ import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.StandingOrderAcct;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.StockTransferDAO;
 import com.skylightapp.Inventory.StockTransfer;
 import com.skylightapp.Inventory.StockTransferAdapter;
 import com.skylightapp.R;
@@ -115,6 +116,7 @@ public class CusStocksListAct extends AppCompatActivity implements StockTransfer
         userProfile = gson.fromJson(json, Profile.class);
         json1 = userPreferences.getString("LastCustomerUsed", "");
         customer = gson1.fromJson(json1, Customer.class);
+        StockTransferDAO transferDAO= new StockTransferDAO(this);
         stockTransferArrayList=new ArrayList<>();
         if(customer !=null){
             customerID=customer.getCusUID();
@@ -122,7 +124,7 @@ public class CusStocksListAct extends AppCompatActivity implements StockTransfer
         }
         recyclerViewStocks = findViewById(R.id.recyclerCusStocks);
         if(dbHelper !=null){
-            stockTransferArrayList=dbHelper.getStocksToCustomer(name);
+            stockTransferArrayList=transferDAO.getStocksToCustomer(name);
         }
         stockAdap = new StockTransferAdapter(this,stockTransferArrayList);
         LinearLayoutManager linearLayoutManagerT = new LinearLayoutManager(this);

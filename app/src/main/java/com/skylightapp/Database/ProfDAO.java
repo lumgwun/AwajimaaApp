@@ -24,9 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.skylightapp.Classes.GroupAccount.GRP_PROFILE_TABLE;
-import static com.skylightapp.Classes.PaymentDoc.DOCUMENT_REPORT_NO;
-import static com.skylightapp.Classes.PaymentDoc.DOCUMENT_TABLE;
-import static com.skylightapp.Classes.PaymentDoc.DOCUMENT_URI;
 import static com.skylightapp.Classes.Profile.CUS_ID_PIX_KEY;
 import static com.skylightapp.Classes.Profile.PASSWORD;
 import static com.skylightapp.Classes.Profile.PASSWORD_TABLE;
@@ -1000,5 +997,13 @@ public class ProfDAO extends DBHelperDAO{
     }
 
 
-
+    public boolean updateProfilePix(int profileID, int customerID, Uri photoUri) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        String selection = PROFID_FOREIGN_KEY_PIX + "=? AND " + CUS_ID_PIX_KEY + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(profileID), String.valueOf(customerID)};
+        contentValues.put(PICTURE_URI, valueOf(photoUri));
+        return sqLiteDatabase.update(PICTURE_TABLE, contentValues, selection,
+                selectionArgs) > 0;
+    }
 }

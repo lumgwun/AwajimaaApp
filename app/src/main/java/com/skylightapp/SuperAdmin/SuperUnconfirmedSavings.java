@@ -28,6 +28,7 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.R;
 import com.skylightapp.Tellers.SavingsCodeUpdateAct;
 
@@ -94,9 +95,10 @@ public class SuperUnconfirmedSavings extends AppCompatActivity implements Saving
         profileArrayList= new ArrayList<>();
         btnTellerSearch = findViewById(R.id.TellerIDButton);
         spnSelectTeller = findViewById(R.id.spnTeller);
+        ProfDAO profDAO1 = new ProfDAO(this);
 
 
-        profileArrayList=dbHelper.getTellersFromMachine(tellerMachine);
+        profileArrayList=profDAO1.getTellersFromMachine(tellerMachine);
         btnTellerSearch.setOnClickListener(this::getIDReports);
         if(bundle !=null){
             userProfile=bundle.getParcelable("Profile");

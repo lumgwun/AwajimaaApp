@@ -29,6 +29,7 @@ import com.skylightapp.Admins.AdminPackageActivity;
 import com.skylightapp.Classes.CusSimpleAdapter;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.TCashDAO;
 import com.skylightapp.R;
 import com.skylightapp.Tellers.MyTellerCashAdapter;
 import com.skylightapp.Tellers.TellerCash;
@@ -105,9 +106,10 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
 
         mProgressBar = findViewById(R.id.myDataLoaderProgressBar);
         mProgressBar.setVisibility(View.VISIBLE);
+        TCashDAO tCashDAO= new TCashDAO(this);
 
-        tellerCashStringTeller=dbHelper.getAllTellerCashTellerNames();
-        tellerCashStringBranch=dbHelper.getAllTellerCashBranchNames();
+        tellerCashStringTeller=tCashDAO.getAllTellerCashTellerNames();
+        tellerCashStringBranch=tCashDAO.getAllTellerCashBranchNames();
 
 
         try {
@@ -132,7 +134,7 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        tellerCashArrayListTeller=dbHelper.getTellerCashByTellerName(tellerByName);
+        tellerCashArrayListTeller=tCashDAO.getTellerCashByTellerName(tellerByName);
 
 
         btnSelectTeller.setOnClickListener(new View.OnClickListener() {
@@ -177,7 +179,7 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        tellerCashArrayListBranches=dbHelper.getTellerCashForBranch(branchByName);
+        tellerCashArrayListBranches=tCashDAO.getTellerCashForBranch(branchByName);
 
         btnSelectBranch.setOnClickListener(new View.OnClickListener() {
             @Override

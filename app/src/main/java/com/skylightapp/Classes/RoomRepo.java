@@ -19,7 +19,7 @@ import com.skylightapp.Interfaces.TellerCashDao;
 import com.skylightapp.Interfaces.TellerReportDao;
 import com.skylightapp.Interfaces.TimeLineDao;
 import com.skylightapp.Interfaces.TransactionDao;
-import com.skylightapp.SuperAdmin.AdminBalance;
+import com.skylightapp.SuperAdmin.AppCommission;
 import com.skylightapp.Tellers.TellerCash;
 
 import java.util.List;
@@ -62,7 +62,7 @@ public class RoomRepo {
     private LiveData<List<PaymentCode>> allPaymentCodes;
     private LiveData<List<PaymentDoc>> allPaymentDocs;
     private LiveData<List<TransactionGranting>> allTranxGrantings;
-    private LiveData<List<AdminBalance>> allAdminBalances;
+    private LiveData<List<AppCommission>> allAdminBalances;
     private LiveData<List<CustomerManager>> allTellers;
 
     public RoomRepo(Application application) {

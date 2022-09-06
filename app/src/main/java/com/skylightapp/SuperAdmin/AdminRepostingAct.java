@@ -21,7 +21,10 @@ import com.skylightapp.Classes.AdminUser;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Database.AdminUserDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.StocksDAO;
+import com.skylightapp.Inventory.UpDateStocksCode;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
@@ -83,7 +86,8 @@ public class AdminRepostingAct extends AppCompatActivity implements AdapterView.
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        adminUsers=dbHelper.getAllAdminSpinner();
+        AdminUserDAO adminUserDAO= new AdminUserDAO(this);
+        adminUsers=adminUserDAO.getAllAdminSpinner();
 
         selectedAdminIndex = spnAdminUsers.getSelectedItemPosition();
 
@@ -117,7 +121,8 @@ public class AdminRepostingAct extends AppCompatActivity implements AdapterView.
                     adminUser.setAdminOffice(selectedOffice);
 
                 }
-                dbHelper.repostAdmin(adminID,selectedOffice);
+                AdminUserDAO adminUserDAO= new AdminUserDAO(AdminRepostingAct.this);
+                adminUserDAO.repostAdmin(adminID,selectedOffice);
                 sendNotification();
 
             }
@@ -151,7 +156,8 @@ public class AdminRepostingAct extends AppCompatActivity implements AdapterView.
         int id = adapterView.getId();
         switch (id) {
             case R.id.spn_admin33:
-                adminUsers=dbHelper.getAllAdminSpinner();
+                AdminUserDAO adminUserDAO= new AdminUserDAO(AdminRepostingAct.this);
+                adminUsers=adminUserDAO.getAllAdminSpinner();
 
                 selectedAdminIndex = spnAdminUsers.getSelectedItemPosition();
 

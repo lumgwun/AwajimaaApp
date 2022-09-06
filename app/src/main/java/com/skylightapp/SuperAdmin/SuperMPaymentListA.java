@@ -12,6 +12,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +27,8 @@ import com.skylightapp.Classes.Payment;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.TimeLine;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.PaymentDAO;
+import com.skylightapp.Database.WorkersDAO;
 import com.skylightapp.R;
 import com.skylightapp.Tellers.ManualPCodeUpdate;
 import com.skylightapp.Tellers.ManualPaymentList;
@@ -46,6 +49,7 @@ public class SuperMPaymentListA extends AppCompatActivity implements PaymentAdap
 
     private ArrayList<Payment> paymentArrayList;
     private PaymentAdapterSuper mAdapter;
+    private SQLiteDatabase sqLiteDatabase;
 
     DBHelper dbHelper;
     String json;
@@ -65,8 +69,13 @@ public class SuperMPaymentListA extends AppCompatActivity implements PaymentAdap
         mAdapter = new PaymentAdapterSuper(this, R.layout.super_payment_row, paymentArrayList);
 
         dbHelper = new DBHelper(this);
+        PaymentDAO paymentDAO = new PaymentDAO(this);
 
-        paymentArrayList = dbHelper.getALLPaymentsSuper();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            paymentArrayList = paymentDAO.getALLPaymentsSuper();
+        }
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);

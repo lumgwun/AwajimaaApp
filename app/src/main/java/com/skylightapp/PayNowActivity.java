@@ -43,7 +43,10 @@ import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.SkyLightPackModel;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Customers.NewCustomerDrawer;
+import com.skylightapp.Database.AdminBDepositDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.Transactions.OurConfig;
 import com.twilio.Twilio;
 
@@ -631,16 +634,18 @@ public class PayNowActivity extends AppCompatActivity  {
         }
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             sqLiteDatabase = dbHelper.getWritableDatabase();
+            TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(this);
             dbHelper.openDataBase();
-            dbHelper.insertTimeLine(tittle,details,currentDateAndTime,mCurrentLocation);
+            timeLineClassDAO.insertTimeLine(tittle,details,currentDateAndTime,mCurrentLocation);
 
 
 
         }
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             sqLiteDatabase = dbHelper.getWritableDatabase();
+            TranXDAO tranXDAO= new TranXDAO(this);
             dbHelper.openDataBase();
-            dbHelper.saveNewTransaction(profileID, customerId8,Skylightransaction, accountID, "Skylight", customerName, Transaction.TRANSACTION_TYPE.DEPOSIT, totalToday, transactionID, officeBranch, currentDateAndTime);
+            tranXDAO.saveNewTransaction(profileID, customerId8,Skylightransaction, accountID, "Skylight", customerName, Transaction.TRANSACTION_TYPE.DEPOSIT, totalToday, transactionID, officeBranch, currentDateAndTime);
 
 
 
@@ -1053,17 +1058,19 @@ public class PayNowActivity extends AppCompatActivity  {
         }
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(this);
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            applicationDb.insertTimeLine(tittle,details,currentDateAndTime,mCurrentLocation);
+            timeLineClassDAO.insertTimeLine(tittle,details,currentDateAndTime,mCurrentLocation);
 
 
         }
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            TranXDAO tranXDAO= new TranXDAO(this);
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            applicationDb.saveNewTransaction(profileID, customerId8,Skylightransaction, AccountID, "Skylight", customerName,transaction_type,totalToday, transactionID, officeBranch, currentDateAndTime);
+            tranXDAO.saveNewTransaction(profileID, customerId8,Skylightransaction, AccountID, "Skylight", customerName,transaction_type,totalToday, transactionID, officeBranch, currentDateAndTime);
 
 
         }

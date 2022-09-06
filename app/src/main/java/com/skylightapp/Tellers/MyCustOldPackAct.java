@@ -52,6 +52,8 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.PayNowActivity;
 import com.skylightapp.R;
 import com.skylightapp.SMSAct;
@@ -427,9 +429,17 @@ public class MyCustOldPackAct extends AppCompatActivity implements View.OnClickL
                             selectedPackage.setPackageAmount_collected(newAmountContributedSoFar);
 
                             try {
+                                TimeLineClassDAO timeLineClassDAO = new TimeLineClassDAO(this);
+                                sqLiteDatabase = dbHelper.getWritableDatabase();
+                                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                    dbHelper.openDataBase();
+                                    timeLineClassDAO.insertTimeLine(timelineTittle1, timelineDetails1, reportDate, mCurrentLocation);
+                                }
+                                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                    dbHelper.openDataBase();
+                                    dbHelper.insertDailyReport(packageID, reportID, profileID, customerID, reportDate, savingsAmount, numberOfDays, newTotal, newAmountContributedSoFar, newAmountRemaining, newDaysRemaining, status);
+                                }
 
-                                dbHelper.insertTimeLine(timelineTittle1, timelineDetails1, reportDate, mCurrentLocation);
-                                dbHelper.insertDailyReport(packageID, reportID, profileID, customerID, reportDate, savingsAmount, numberOfDays, newTotal, newAmountContributedSoFar, newAmountRemaining, newDaysRemaining, status);
 
                             } catch (SQLiteException e) {
                                 System.out.println("Oops!");

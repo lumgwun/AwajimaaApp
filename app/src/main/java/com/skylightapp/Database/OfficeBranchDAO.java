@@ -51,21 +51,5 @@ public class OfficeBranchDAO extends DBHelperDAO{
             officeBranchArrayList.add(new OfficeBranch(officeID, officeName,officeStatus));
         }
     }
-    public ArrayList<OfficeBranch> getAllBranchOffices() {
-        ArrayList<OfficeBranch> officeBranchArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
-        String[] columns = {OFFICE_BRANCH_NAME};
-        Cursor cursor = db.query(OFFICE_BRANCH_TABLE, columns, OFFICE_BRANCH_NAME, null, null,
-                null, null);
 
-        if (cursor != null)
-            if (cursor.getCount() > 0) {
-                cursor.moveToFirst();
-                getOfficeBranchCursor(officeBranchArrayList, cursor);
-                cursor.close();
-            }
-
-        db.close();
-        return officeBranchArrayList;
-    }
 }

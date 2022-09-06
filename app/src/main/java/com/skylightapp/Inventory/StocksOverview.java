@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.StocksDAO;
 import com.skylightapp.R;
 
 import java.text.SimpleDateFormat;
@@ -70,43 +71,44 @@ public class StocksOverview extends AppCompatActivity {
         if(dateOfStocks ==null){
             dateOfStocks =todayDate;
         }
+        StocksDAO stocksDAO= new StocksDAO(this);
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            stocksArrayListToday =dbHelper.getAllStocksForToday(todayDate);
+            stocksArrayListToday =stocksDAO.getAllStocksForToday(todayDate);
         }
 
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            stocksListDate =dbHelper.getAllStocksForDate( dateOfStocks);
+            stocksListDate =stocksDAO.getAllStocksForDate( dateOfStocks);
         }
 
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            stocksArrayAll =dbHelper.getALLStocksSuper();
+            stocksArrayAll =stocksDAO.getALLStocksSuper();
         }
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            totalStocksForDate =dbHelper.getTotalStocksForDate( dateOfStocks);
+            totalStocksForDate =stocksDAO.getTotalStocksForDate( dateOfStocks);
 
         }
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            totalStocksForToday =dbHelper.getTotalStocksForToday(todayDate);
+            totalStocksForToday =stocksDAO.getTotalStocksForToday(todayDate);
         }
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            totalDBStocks =dbHelper.getTotalStocks();
+            totalDBStocks =stocksDAO.getTotalStocks();
         }
 
 

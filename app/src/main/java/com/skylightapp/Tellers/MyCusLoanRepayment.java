@@ -33,7 +33,10 @@ import com.klinker.android.send_message.BroadcastUtils;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Loan;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.FlutterWavePayments.FluPaywithBank;
 import com.skylightapp.PayNowActivity;
 import com.skylightapp.R;
@@ -164,15 +167,17 @@ public class MyCusLoanRepayment extends AppCompatActivity {
                         userProfile.addPTimeLine(tittle,mYtimelineDetails);
                         customer.addCusTimeLine(tittle,custimelineDetails);
                         sendSMSMessage(customer);
+                        LoanDAO loanDAO= new LoanDAO(getApplicationContext());
+                        TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(getApplicationContext());
 
                         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
 
                             sqLiteDatabase = dbHelper.getWritableDatabase();
                             Toast.makeText(MyCusLoanRepayment.this, "Re-payment returned successful", Toast.LENGTH_SHORT).show();
 
-                            dbHelper.updateLoan("paid",loanID,residueAmt);
+                            loanDAO.updateLoan("paid",loanID,residueAmt);
 
-                            dbHelper.insertTimeLine(tittle,timelineDetails,currentDate,null);
+                            timeLineClassDAO.insertTimeLine(tittle,timelineDetails,currentDate,null);
 
                         }
 
@@ -205,9 +210,10 @@ public class MyCusLoanRepayment extends AppCompatActivity {
         //mAuth=FirebaseAuth.getInstance();
         Twilio.init("AC5e05dc0a793a29dc1da2eabdebd6c28d", "39410e8b813c131da386f3d7bb7f94f7");
         dbHelper= new DBHelper(this);
+        CusDAO cusDAO= new CusDAO(this);
         if(userProfile !=null){
             profileID=userProfile.getPID();
-            customerArrayList = dbHelper.getCustomersFromCurrentProfile(profileID);
+            customerArrayList = cusDAO.getCustomersFromCurrentProfile(profileID);
             customerArrayAdapterN = new ArrayAdapter<Customer>(MyCusLoanRepayment.this, android.R.layout.simple_spinner_item, customerArrayList);
             customerArrayAdapterN.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spn_customers.setAdapter(customerArrayAdapterN);

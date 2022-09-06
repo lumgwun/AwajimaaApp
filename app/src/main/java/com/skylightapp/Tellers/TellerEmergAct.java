@@ -69,6 +69,7 @@ import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.EmergencyReport;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.EmergReportDAO;
 import com.skylightapp.LocationUpdateAct;
 import com.skylightapp.R;
 
@@ -245,8 +246,9 @@ public class TellerEmergAct extends AppCompatActivity implements LocationListene
             @Override
             public void onClick(View view) {
                 if (cusLatLng != null) {
+                    EmergReportDAO emergReportDAO= new EmergReportDAO(getApplicationContext());
                     emergencyReport = new EmergencyReport(reportID, profileID, selectedPurpose, dateOfToday, stringLatLng);
-                    dbHelper.insertUserEmergencyReport(profileID, customerID, dateOfToday, selectedPurpose, "", stringLatLng);
+                    emergReportDAO.insertUserEmergencyReport(profileID, customerID, dateOfToday, selectedPurpose, "", stringLatLng);
                 }
 
             }

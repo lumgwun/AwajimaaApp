@@ -22,6 +22,7 @@ import com.skylightapp.Classes.GroupAccount;
 import com.skylightapp.Classes.MyTouchListener;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.GroupAccountDAO;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -57,9 +58,10 @@ public class MyGrpSavings extends AppCompatActivity implements GroupAcctAdapter.
         gson = new Gson();
         userProfile=new Profile();
         random= new SecureRandom();
+        GroupAccountDAO groupAccountDAO= new GroupAccountDAO(this);
         json = userPreferences.getString("LastProfileUsed", "");
         final CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true);
-        groupAccountArrayList = dbHelper.getGrpAcctsForCurrentProfile(profileID);
+        groupAccountArrayList = groupAccountDAO.getGrpAcctsForCurrentProfile(profileID);
         groupAcctAdapter = new GroupAcctAdapter(groupAccountArrayList, R.layout.grp_acct_row, this);
         recyclerView.setAdapter(groupAcctAdapter);
         recyclerView.setLayoutManager(layoutManager);

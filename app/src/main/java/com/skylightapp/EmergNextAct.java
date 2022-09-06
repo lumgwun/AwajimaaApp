@@ -19,6 +19,8 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.skylightapp.Classes.DirectionsJSONParser;
 import com.skylightapp.Classes.EmergencyReport;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.EmergReportDAO;
+import com.skylightapp.Database.EmergReportNextDAO;
 
 import org.json.JSONObject;
 
@@ -55,6 +57,7 @@ public class EmergNextAct extends FragmentActivity implements OnMapReadyCallback
         emergencyReport=new EmergencyReport();
         mMarkerPoints = new ArrayList<>();
         bundle=getIntent().getExtras();
+        EmergReportNextDAO emergReportDAO= new EmergReportNextDAO(this);
         if(bundle !=null){
             emergencyReport=bundle.getParcelable("EmergencyReport");
 
@@ -62,7 +65,7 @@ public class EmergNextAct extends FragmentActivity implements OnMapReadyCallback
         if(emergencyReport !=null){
             emergReportID=emergencyReport.getEmergReportID();
         }
-        latlngs=dbHelper.getAllLatLngForEmergReport(emergReportID);
+        latlngs=emergReportDAO.getAllLatLngForEmergReport(emergReportID);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
 

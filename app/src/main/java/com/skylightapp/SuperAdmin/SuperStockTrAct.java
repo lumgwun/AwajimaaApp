@@ -15,6 +15,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -33,6 +34,11 @@ import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.OfficeBranch;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.OfficeBranchDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.StockTransferDAO;
+import com.skylightapp.Database.StocksDAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.Inventory.StockTransfer;
 import com.skylightapp.Inventory.StockTransferAdapter;
 import com.skylightapp.Inventory.Stocks;
@@ -102,6 +108,7 @@ public class SuperStockTrAct extends AppCompatActivity {
     private int recipientStockQty;
     private OfficeAdapter officeAdapter;
     String from,to;
+    private SQLiteDatabase sqLiteDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,7 +171,14 @@ public class SuperStockTrAct extends AppCompatActivity {
         if(itemBundle !=null){
             userProfile=itemBundle.getParcelable("Profile");
         }
-        officeBranchArrayList=dbHelper.getAllBranchOffices();
+        OfficeBranchDAO branchDAO = new OfficeBranchDAO(this);
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            dbHelper= new DBHelper(this);
+            officeBranchArrayList=dbHelper.getAllBranchOffices();
+        }
+
 
         if(userProfile !=null){
             transferer=userProfile.getProfileLastName()+","+userProfile.getProfileFirstName();
@@ -214,7 +228,13 @@ public class SuperStockTrAct extends AppCompatActivity {
         if(selectedBranch !=null){
             selectedOffice=selectedBranch.getOfficeBranchName();
         }
-        stocksArrayList =dbHelper.getAllStockForProfile(profileID);
+        StockTransferDAO stockTransferDAO= new StockTransferDAO(this);
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            stocksArrayList =stockTransferDAO.getAllStockForProfile(profileID);
+        }
+
 
         //stocksArrayListForRecipient=dbHelper.getAllStockForProfile(receiverID);
 
@@ -235,7 +255,14 @@ public class SuperStockTrAct extends AppCompatActivity {
             selectedStocksID=selectedStocks.getStockID();
             stocksName=selectedStocks.getStockName();
         }
-        recipientStock =dbHelper.getRecipientAndStock(receiverID,stocksName);
+
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            recipientStock =stockTransferDAO.getRecipientAndStock(receiverID,stocksName);
+        }
+
         if(userProfile !=null){
             customers=userProfile.getProfileCustomers();
         }
@@ -285,7 +312,12 @@ public class SuperStockTrAct extends AppCompatActivity {
                 layoutCompatTeller.setVisibility(View.VISIBLE);
                 layoutCompatBranch.setVisibility(View.GONE);
                 layoutCompatCus.setVisibility(View.GONE);
-                tellers=dbHelper.getTellersFromMachine(machine);
+                ProfDAO profDAO = new ProfDAO(SuperStockTrAct.this);
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    dbHelper.openDataBase();
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    tellers=profDAO.getTellersFromMachine(machine);
+                }
                 profileAdapter = new ProfileSimpleAdapter(SuperStockTrAct.this, android.R.layout.simple_spinner_item, tellers);
                 spnTeller.setAdapter(profileAdapter);
                 spnTeller.setSelection(0);
@@ -337,7 +369,13 @@ public class SuperStockTrAct extends AppCompatActivity {
                 layoutCompatBranch.setVisibility(View.VISIBLE);
                 layoutCompatTeller.setVisibility(View.GONE);
                 layoutCompatCus.setVisibility(View.GONE);
-                branches=dbHelper.getBranchFromMachine(machine);
+                ProfDAO officeBranchDAO = new ProfDAO(SuperStockTrAct.this);
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    dbHelper.openDataBase();
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    branches=officeBranchDAO.getBranchFromMachine(machine);
+
+                }
                 profileAdapter = new ProfileSimpleAdapter(SuperStockTrAct.this, android.R.layout.simple_spinner_item, branches);
                 spnBranch.setAdapter(profileAdapter);
                 spnBranch.setSelection(0);
@@ -509,8 +547,21 @@ public class SuperStockTrAct extends AppCompatActivity {
                             recipientProfile.addPStocks(selectedStocksID,stocksName,null,qty,transferCode,"",transferDate,"UnVerified");
 
                         }
-                        dbHelper.saveNewStocksTransfer(transferID,selectedStocksID,profileID,receiverID,stocksName,qty,transferer,transferAccepter,from,to,transferDate, this.transferCode,"UnVerified");
-                        dbHelper.updateStocksQty(selectedStocksID,newQuantity);
+                        StockTransferDAO stocksDAO = new StockTransferDAO(SuperStockTrAct.this);
+                        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                            dbHelper.openDataBase();
+                            sqLiteDatabase = dbHelper.getWritableDatabase();
+                            stocksDAO.saveNewStocksTransfer(transferID,selectedStocksID,profileID,receiverID,stocksName,qty,transferer,transferAccepter,from,to,transferDate, this.transferCode,"UnVerified");
+
+
+                        }
+                        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                            dbHelper.openDataBase();
+                            sqLiteDatabase = dbHelper.getWritableDatabase();
+                            stocksDAO.updateStocksQty(selectedStocksID,newQuantity);
+
+                        }
+
                         selectedStocks.setStockItemQty(newQuantity);
                         startTellerTransferNoti();
                     }

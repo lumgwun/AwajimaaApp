@@ -26,6 +26,8 @@ import com.skylightapp.Classes.Loan;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
 import com.twilio.Twilio;
 
@@ -270,8 +272,9 @@ public class MobileMoneyTransfer extends AppCompatActivity {
                 Toast.makeText(this, "The account," + " " + acc.toString() + " with balance" + currency+ valueOf(accountBalance) + "does not have enough balance to transfer NGN" + amountRequested, Toast.LENGTH_LONG).show();
                 startDepositDialog();
             } else {
+                TranXDAO tranXDAO = new TranXDAO(this);
                 DBHelper applicationDb = new DBHelper(this);
-                ArrayList<Transaction> transactions = applicationDb.getAllTransactionAdmin();
+                ArrayList<Transaction> transactions = tranXDAO.getAllTransactionAdmin();
                 boolean loanTaken = false;
                 for (int iTransaction = 0; iTransaction < transactions.size(); iTransaction++) {
                     if (valueOf(amountRequested).equals(valueOf((transactions.get(iTransaction).getRecordAmount()))) && momoTransferDate.equals(transactions.get(iTransaction).getTranxDate())) {
@@ -292,11 +295,12 @@ public class MobileMoneyTransfer extends AppCompatActivity {
                         acctOfCustomer.setAccountBalance(balanceAfterBorrowing);
                         userProfile.addPBorrowingTranx(acctOfCustomer, amountRequested);
                         mySelectedCustomer.addCusTransactions(amountRequested);
+                        TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(this);
                         //mySelectedCustomer.addLoans(borrowingID, amountRequested, borrowingDate, status, "", 0.00);
                         mySelectedCustomer.addCusTimeLine(title, details1);
                         Loan loan = new Loan();
                         Transaction.TRANSACTION_TYPE type = Transaction.TRANSACTION_TYPE.TRANSFER;
-                        applicationDb.insertTimeLine(title, details, momoTransferDate, location);
+                        timeLineClassDAO.insertTimeLine(title, details, momoTransferDate, location);
                         /*applicationDb.overwriteAccount(userProfile, acctOfCustomer);
                         applicationDb.savNewT(profileID, customerID, accountNo, type,amountRequested, newBalance,momoOperator, Long.parseLong(momoPhoneNO),
                                 momoOperator, refID, momoPhoneNO,

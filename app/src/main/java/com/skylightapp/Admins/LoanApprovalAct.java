@@ -19,6 +19,8 @@ import com.skylightapp.Classes.Loan;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
 import com.skylightapp.Transactions.TransferPayload;
 import com.skylightapp.Transactions.Transfers;
@@ -55,6 +57,8 @@ public class LoanApprovalAct extends AppCompatActivity {
     int messageID;
     int customerID;
     private  SecureRandom random;
+    private TimeLineClassDAO timeLineClassDAO;
+    private TranXDAO tranXDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,8 @@ public class LoanApprovalAct extends AppCompatActivity {
         loanCustomer= new Customer();
         userProfile= new Profile();
         random = new SecureRandom();
+        timeLineClassDAO= new TimeLineClassDAO(this);
+        tranXDAO=new TranXDAO(this);
         Calendar calendar = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy");
         paymentDate = mdformat.format(calendar.getTime());
@@ -395,15 +401,17 @@ public class LoanApprovalAct extends AppCompatActivity {
                     transferPayload.setBeneficiary_name(acctName);
                    String response = transfers.doTransfer(transferPayload);
                     String tittle="Payment Request Alert!";
+                    timeLineClassDAO= new TimeLineClassDAO(LoanApprovalAct.this);
+                    tranXDAO=new TranXDAO(LoanApprovalAct.this);
                     double newBalance =initialAcctBalance-loanAmt;
                     Transaction.TRANSACTION_TYPE type= Transaction.TRANSACTION_TYPE.BORROWING;
                     //dbHelper.insertMessage(profileID,customerID,messageID,paymentMessage,"Admin",paymentDate);
-                    dbHelper.insertTimeLine(tittle,paymentMessage,paymentDate,location);
+                    timeLineClassDAO.insertTimeLine(tittle,paymentMessage,paymentDate,location);
                     loanCustomer.addCusTransactions(loanAmt);
                     String acctDetails=acctBank+","+acctName+","+acctNumber;
                     loanCustomer.getCusAccount().setAccountBalance(newBalance);
                     userProfile.addPTransaction(transactionID,surName,firstName,customerPhone,loanAmt, String.valueOf(loanAcctID),acctDetails,paymentDate,"Loan Disbursement");
-                    dbHelper.savePaymentTransactionP(profileID,customerID,type,response);
+                    tranXDAO.savePaymentTransactionP(profileID,customerID,type,response);
                     approvalMessage(loanAmt,customerPhone);
 
                 } catch (Exception e) {

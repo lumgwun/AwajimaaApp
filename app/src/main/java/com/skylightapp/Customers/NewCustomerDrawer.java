@@ -46,6 +46,7 @@ import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.StandingOrderAcct;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.LoginActivity;
 import com.skylightapp.Markets.MarketTab;
 import com.skylightapp.MyTimelineAct;
@@ -283,7 +284,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
         accountNo = findViewById(R.id.cus_BankNo33);
 
         imgProfilePic = findViewById(R.id.profile_image_cus);
-        DBHelper applicationDb = new DBHelper(this);
+        ProfDAO applicationDb = new ProfDAO(this);
         if(userProfile !=null){
             profileID=userProfile.getPID();
             Bitmap bitmap = applicationDb.getProfilePicture(profileID);
@@ -655,7 +656,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
         json1 = userPreferences.getString("LastCustomerUsed", "");
         customer = gson.fromJson(json1, Customer.class);
 
-        DBHelper applicationDb = new DBHelper(this);
+        ProfDAO applicationDb = new ProfDAO(this);
         if(userProfile !=null){
             profileID=userProfile.getPID();
             Bitmap bitmap = applicationDb.getProfilePicture(profileID);

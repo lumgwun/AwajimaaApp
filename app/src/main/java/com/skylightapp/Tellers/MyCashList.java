@@ -26,6 +26,7 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.AppCash;
 import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.TCashDAO;
 import com.skylightapp.R;
 
 import java.text.SimpleDateFormat;
@@ -127,8 +128,9 @@ public class MyCashList extends AppCompatActivity implements MyTellerCashAdapter
         appCashArrayAll =dbHelper.getAllSkylightCashForProfile(profileID);
         totalSCForDate =dbHelper.getSkylightCashTotalForProfileAndDate(profileID,dateOfCash);
         totalSCForToday =dbHelper.getSkylightCashTotalForProfileAndDate(profileID,todayDate);
+        TCashDAO tCashDAO= new TCashDAO(this);
         totalSC=dbHelper.getSkylightCashTotalForProfile(profileID);
-        tellerCashArrayList=dbHelper.getTellerCashForTeller(profileID);
+        tellerCashArrayList=tCashDAO.getTellerCashForTeller(profileID);
 
         if(totalSC >0){
             txtTotalSCTotal.setText("Total  N:"+ totalSC);

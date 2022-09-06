@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.SnapHelper;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.skylightapp.Classes.Message;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.MessageDAO;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -62,6 +64,8 @@ public class SuperMessages extends AppCompatActivity implements  MessageAdapter.
     private OnFragmentInteractionListener listener;
     AppCompatButton btnSearchMessages,btnSearchByOffice;
     AppCompatSpinner spnOfficeBranch;
+    private SQLiteDatabase sqLiteDatabase;
+    private MessageDAO messageDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,18 +157,28 @@ public class SuperMessages extends AppCompatActivity implements  MessageAdapter.
 
         try {
             btnSearchMessages.setOnClickListener(this::searchByDate);
+            messageDAO= new MessageDAO(this);
 
             btnSearchMessages.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    try {
-
-                        messages = dbHelper.getAllMessages2();
-                        messagesToday=dbHelper.getMessagesToday(dateOfMessage);
-                        messageCount=dbHelper.getMessageCountToday(dateOfMessage);
-                    } catch (NullPointerException e) {
-                        System.out.println("Oops!");
+                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                        dbHelper.openDataBase();
+                        sqLiteDatabase = dbHelper.getReadableDatabase();
+                        messages = messageDAO.getAllMessages2();
                     }
+                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                        dbHelper.openDataBase();
+                        sqLiteDatabase = dbHelper.getReadableDatabase();
+                        messagesToday=messageDAO.getMessagesToday(dateOfMessage);
+                    }
+                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                        dbHelper.openDataBase();
+                        sqLiteDatabase = dbHelper.getReadableDatabase();
+                        messageCount=messageDAO.getMessageCountToday(dateOfMessage);
+
+                    }
+
 
                 }
             });
@@ -222,24 +236,43 @@ public class SuperMessages extends AppCompatActivity implements  MessageAdapter.
 
     }
     public void searchByDate(View view) {
-        try {
-
-            messages = dbHelper.getAllMessages2();
-            messagesToday=dbHelper.getMessagesToday(dateOfMessage);
-            messageCount=dbHelper.getMessageCountToday(dateOfMessage);
-        } catch (NullPointerException e) {
-            System.out.println("Oops!");
+        messageDAO= new MessageDAO(this);
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            messages = messageDAO.getAllMessages2();
         }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            messagesToday=messageDAO.getMessagesToday(dateOfMessage);
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            messageCount=messageDAO.getMessageCountToday(dateOfMessage);
+
+        }
+
     }
 
     public void searchOfficeMessages(View view) {
-        try {
+        messageDAO= new MessageDAO(this);
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            messages = messageDAO.getAllMessages2();
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            messagesToday=messageDAO.getMessagesToday(dateOfMessage);
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            messageCount=messageDAO.getMessageCountToday(dateOfMessage);
 
-            messages = dbHelper.getAllMessagesForBranch(selectedOffice);
-            messagesToday=dbHelper.getMessagesToday(dateOfMessage);
-            messageCount=dbHelper.getMessageCountToday(dateOfMessage);
-        } catch (Exception e) {
-            System.out.println("Oops!");
         }
     }
     private void chooseDate() {

@@ -16,7 +16,9 @@ import com.melnykov.fab.FloatingActionButton;
 import com.skylightapp.Adapters.GroupAcctAdapter;
 import com.skylightapp.Classes.GroupAccount;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Database.AcctDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.GroupAccountDAO;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ public class GrpSavingsAct extends AppCompatActivity implements GroupAcctAdapter
     private ArrayList<GroupAccount> groupAccountArrayList;
     private GroupAcctAdapter mAdapter;
 
-    DBHelper dbHelper;
+    GroupAccountDAO dbHelper;
     String json;
     TextView getTxtTitleMessage;
 
@@ -51,7 +53,7 @@ public class GrpSavingsAct extends AppCompatActivity implements GroupAcctAdapter
         groupAccountArrayList = new ArrayList<GroupAccount>();
         mAdapter = new GroupAcctAdapter(this, R.layout.grp_acct_row, groupAccountArrayList);
 
-        dbHelper = new DBHelper(this);
+        dbHelper = new GroupAccountDAO(this);
 
         groupAccountArrayList = dbHelper.getAllGroupAcctList();
 

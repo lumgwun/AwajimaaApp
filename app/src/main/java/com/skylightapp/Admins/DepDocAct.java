@@ -24,6 +24,8 @@ import com.google.gson.Gson;
 import com.skylightapp.Classes.AdminUser;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.UserSuperAdmin;
+import com.skylightapp.Database.AdminBDepositDAO;
+import com.skylightapp.Database.AdminUserDAO;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.R;
 import com.squareup.picasso.Picasso;
@@ -96,10 +98,11 @@ public class DepDocAct extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(mImageUri !=null){
+                    AdminBDepositDAO adminBDepositDAO= new AdminBDepositDAO(DepDocAct.this);
                     sqLiteDatabase = dbHelper.getWritableDatabase();
                     if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                         dbHelper.openDataBase();
-                        dbHelper.updateAdminDeposit(adminDepositID,mImageUri);
+                        adminBDepositDAO.updateAdminDeposit(adminDepositID,mImageUri);
 
                     }
                 }else{

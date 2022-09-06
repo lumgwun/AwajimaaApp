@@ -111,7 +111,19 @@ import com.skylightapp.Classes.StandingOrderAcct;
 import com.skylightapp.Classes.TimeLine;
 import com.skylightapp.Classes.User;
 import com.skylightapp.Classes.UserSuperAdmin;
+import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.AdminUserDAO;
+import com.skylightapp.Database.BirthdayDAO;
+import com.skylightapp.Database.CusDAO;
+import com.skylightapp.Database.Customer_TellerDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.StockTransferDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.WorkersDAO;
+import com.skylightapp.Interfaces.StandingOrderAcctDao;
 import com.skylightapp.MapAndLoc.ProfileLocSourceAct;
 import com.skylightapp.NewLocAct;
 import com.skylightapp.R;
@@ -325,6 +337,8 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
             android.Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,Manifest.permission.SEND_SMS
     };
     private static final String PREF_NAME = "skylight";
+    ProfDAO profDAO= new ProfDAO(this);
+
 
     ActivityResultLauncher<Intent> mGetUserPixContent = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -338,7 +352,12 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                                 //logo = findViewById(R.id.imageLogo);
                                 Intent data = result.getData();
                                 selectedImage = data.getData();
-                                dbHelper.insertProfilePicture(profileID2,customerID1,selectedImage);
+                                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                    dbHelper.openDataBase();
+                                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                                    profDAO.insertProfilePicture(profileID2,customerID1,selectedImage);
+
+                                }
                                 /*if (selectedImage != null) {
                                     logo.setImageBitmap(getScaledBitmap(selectedImage));
                                 } else {
@@ -829,7 +848,14 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
         //sign_up.setMovementMethod(LinkMovementMethod.getInstance());
         btnVerifyOTPAndSignUp.setOnClickListener(this::verifySuperOTP);
-        customers=dbHelper.getAllCustomers11();
+        CusDAO cusDAO = new CusDAO(this);
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            customers=cusDAO.getAllCustomers11();
+
+        }
+
 
 
 
@@ -890,7 +916,13 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                                     otpPhoneNumber = "+234" + uPhoneNumber;
                                     doOtpNotification();
                                     sendOTPMessage(otpPhoneNumber,otpMessage);
-                                    dbHelper.insertMessage(profileID1,customerID,messageID,otpMessage,"Skylight",customerName,selectedOffice,joinedDate);
+                                    MessageDAO messageDAO= new MessageDAO(SuperUserCreator.this);
+
+                                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                        dbHelper.openDataBase();
+                                        sqLiteDatabase = dbHelper.getReadableDatabase();
+                                        messageDAO.insertMessage(profileID1,customerID,messageID,otpMessage,"Skylight",customerName,selectedOffice,joinedDate);
+                                    }
 
                                 }
                             } catch (NullPointerException e) {
@@ -1245,8 +1277,17 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
+        MessageDAO messageDAO = new MessageDAO(this);
+        TimeLineClassDAO timeLineClassDAO1 = new TimeLineClassDAO(this);
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            messageDAO.insertMessage(profileID1,customerID,messageID,otpMessage,"Skylight",customerName,selectedOffice,joinedDate);
+        }
+
+
         try {
-            dbHelper.insertTimeLine("Sign up", "", "23/09/2022", mCurrentLocation);
+            timeLineClassDAO1.insertTimeLine("Sign up", "", "23/09/2022", mCurrentLocation);
 
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -1257,8 +1298,16 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+        BirthdayDAO birthdayDAO = new BirthdayDAO(this);
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            messageDAO.insertMessage(profileID1,customerID,messageID,otpMessage,"Skylight",customerName,selectedOffice,joinedDate);
+        }
+
+
         try {
-            dbHelper.insertBirthDay3(birthday, "25/04/1983");
+            birthdayDAO.insertBirthDay3(birthday, "25/04/1983");
 
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -1278,10 +1327,34 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
         tellerID = random.nextInt((int) (Math.random() * 35021) + 12122);
         accountTypeStr = null;
         dbHelper = new DBHelper(this);
-        profiles = dbHelper.getAllProfiles();
-        customers = dbHelper.getAllCustomers();
-        tellers = dbHelper.getAllCustomersManagers();
-        adminUserArrayList = dbHelper.getAllAdmin();
+        ProfDAO profDAO1 =new ProfDAO(this);
+        CusDAO cusDAO =new CusDAO(this);
+        Customer_TellerDAO customer_tellerDAO =new Customer_TellerDAO(this);
+        AdminUserDAO adminUserDAO =new AdminUserDAO(this);
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            profiles = profDAO1.getAllProfiles();
+        }
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            customers = cusDAO.getAllCustomers();        }
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            tellers = customer_tellerDAO.getAllCustomersManagers();        }
+
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            adminUserArrayList = adminUserDAO.getAllAdmin();        }
+
+
+
+
         if(userSuperAdmin !=null){
             superSurname = userSuperAdmin.getSSurname();
             superFirstName = userSuperAdmin.getSFirstName();
@@ -1390,7 +1463,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
         @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         timeLineTime = mdformat.format(calendar.getTime());
-        profiles = dbHelper.getAllProfiles();
+        profiles = profDAO1.getAllProfiles();
         //customers = dbHelper.getAllCustomers();
         smsMessage="Welcome to the Skylight  App, may you have the best experience";
         String names = uSurname + uFirstName;
@@ -1494,7 +1567,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
         }*/
 
-
+        WorkersDAO workersDAO= new WorkersDAO(this);
 
         for (int i = 0; i < profiles.size(); i++) {
 
@@ -1563,9 +1636,12 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                             e.printStackTrace();
                         }
                     }*/
+                    SODAO sodao = new SODAO(this);
+                    AcctDAO acctDAO = new AcctDAO(this);
+                    TimeLineClassDAO timeLineClassDAO = new TimeLineClassDAO(this);
                     if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                         dbHelper.openDataBase();
-                        dbHelper.insertStandingOrderAcct(profileID2, customerID1, soAccountNumber, accountName, 0.00);
+                        sodao.insertStandingOrderAcct(profileID2, customerID1, soAccountNumber, accountName, 0.00);
 
                     }
 
@@ -1579,7 +1655,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                     if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                         dbHelper.openDataBase();
-                        dbHelper.insertBirthDay3(birthday, dateOfBirth);
+                        birthdayDAO.insertBirthDay3(birthday, dateOfBirth);
 
 
                     }
@@ -1605,7 +1681,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                     try {
 
                         dbHelper.openDataBase();
-                        dbHelper.insertStandingOrderAcct(profileID1, customerID, virtualAccountNumber, accountName, 0.00);
+                        sodao.insertStandingOrderAcct(profileID1, customerID, virtualAccountNumber, accountName, 0.00);
 
 
                     } catch (Exception e) {
@@ -1613,7 +1689,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                     }
                     if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                         dbHelper.openDataBase();
-                        dbHelper.insertAccount(profileID1, customerID, skylightMFb, accountName, virtualAccountNumber, accountBalance, accountTypeStr);
+                        acctDAO.insertAccount(profileID1, customerID, skylightMFb, accountName, virtualAccountNumber, accountBalance, accountTypeStr);
 
                     }
 
@@ -1624,6 +1700,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
 
                     }
+                    AdminUserDAO adminUserDAO1 = new AdminUserDAO(this);
 
 
                     if (selectedUserType != null) {
@@ -1634,7 +1711,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
-                                dbHelper.insertTimeLine(tittleTCus, timelineDetailCus, timeLineTime, mCurrentLocation);
+                                timeLineClassDAO.insertTimeLine(tittleTCus, timelineDetailCus, timeLineTime, mCurrentLocation);
 
 
 
@@ -1664,7 +1741,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
-                                dbHelper.saveNewWorker(profileID1, namesT);
+                                workersDAO.saveNewWorker(profileID1, namesT);
                             }
 
 
@@ -1680,7 +1757,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
-                                dbHelper.insertTimeLine(tittleTeller, timelineDetailsT, timeLineTime, mCurrentLocation);
+                                timeLineClassDAO.insertTimeLine(tittleTeller, timelineDetailsT, timeLineTime, mCurrentLocation);
 
                             }
 
@@ -1697,7 +1774,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
-                                dbHelper.saveNewWorker(profileID1, namesT);
+                                workersDAO.saveNewWorker(profileID1, namesT);
                             }
 
 
@@ -1714,18 +1791,18 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
-                                dbHelper.insertTimeLine(tittleAdmin, timelineDAd, timeLineTime, mCurrentLocation);
+                                timeLineClassDAO.insertTimeLine(tittleAdmin, timelineDAd, timeLineTime, mCurrentLocation);
 
                             }
 
                             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
-                                dbHelper.saveNewWorker(profileID1, namesT);
+                                workersDAO.saveNewWorker(profileID1, namesT);
                             }
 
                             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
-                                dbHelper.insertAdminUser(profileID2, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedOffice, joinedDate, uUserName, uPassword, nIN, selectedState, selectedImage, "new");
+                                adminUserDAO1.insertAdminUser(profileID2, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedOffice, joinedDate, uUserName, uPassword, nIN, selectedState, selectedImage, "new");
 
                             }
 
@@ -1744,7 +1821,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
-                                dbHelper.saveNewWorker(profileID1, superAcctantNames);
+                                workersDAO.saveNewWorker(profileID1, superAcctantNames);
                             }
 
 
@@ -1767,7 +1844,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
-                                dbHelper.saveNewWorker(profileID1, namesT);
+                                workersDAO.saveNewWorker(profileID1, namesT);
                             }
 
                             String tittleT = "Super Admin Sign Up Alert!";
@@ -1804,7 +1881,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                             String namesT = uSurname + "," + uFirstName;
                             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
-                                dbHelper.saveNewWorker(profileID1, namesT);
+                                workersDAO.saveNewWorker(profileID1, namesT);
                             }
 
 
@@ -2005,7 +2082,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
             selectedImage = null;
             if (resultCode == RESULT_OK) {
                 selectedImage = data.getData();
-                DBHelper dbHelper = new DBHelper(this);
+                ProfDAO dbHelper = new ProfDAO(this);
                 dbHelper.insertProfilePicture(superID,customerID1,selectedImage);
                 if (selectedImage != null) {
                     profilePix.setImageBitmap(getScaledBitmap(selectedImage));

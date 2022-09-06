@@ -25,6 +25,7 @@ import com.skylightapp.Adapters.StandingOrderAdapterC;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.StandingOrder;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.SODAO;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -65,10 +66,11 @@ public class SOCompletedList extends AppCompatActivity implements StandingOrderA
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         dbHelper= new DBHelper(this);
+        SODAO sodao= new SODAO(this);
         standingOrders =new ArrayList<>();
         standingOrderArrayList =new ArrayList<>();
-        standingOrders =dbHelper.getAllStandingOrdersWithStatus("Completed");
-        completedSOCount =dbHelper.getAllStandingOrdersWithStatusCount("Completed");
+        standingOrders =sodao.getAllStandingOrdersWithStatus("Completed");
+        completedSOCount =sodao.getAllStandingOrdersWithStatusCount("Completed");
         if(completedSOCount >0){
             txtSOCompletedCount.setText(MessageFormat.format("Completed Standing Orders:{0}", completedSOCount));
 

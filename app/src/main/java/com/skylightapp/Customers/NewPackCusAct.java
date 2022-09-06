@@ -54,11 +54,14 @@ import com.skylightapp.Classes.PaymentCode;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.Transaction;
+import com.skylightapp.Database.AdminBalanceDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.PayNowActivity;
 import com.skylightapp.R;
 import com.skylightapp.SMSAct;
-import com.skylightapp.SuperAdmin.AdminBalance;
+import com.skylightapp.SuperAdmin.AppCommission;
 import com.skylightapp.Tellers.TellerCash;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
@@ -209,7 +212,7 @@ public class NewPackCusAct extends AppCompatActivity {
     private FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthListner;
     com.skylightapp.Classes.Transaction Skylightransaction;
-    AdminBalance adminBalance;
+    AppCommission appCommission;
     String transactionID,tellerSurName,selectedItem,tellerOffice,tellerFirstName,tellerName;
     TellerCash tellerCash;
     AppCompatSpinner spnSavingsPlan, spnFoodAndItem, spnInvestment,spnTypeOfPackage,spnPromo;
@@ -308,7 +311,7 @@ public class NewPackCusAct extends AppCompatActivity {
         spnPromo=  findViewById(R.id._promoStuff);
         customer= new Customer();
         PaymentCode paymentCode=new PaymentCode();
-        AdminBalance adminBalance= new AdminBalance();
+        AppCommission appCommission = new AppCommission();
         skylightCode = random.nextInt((int) (Math.random() * 10180) + 12341);
         tellerCashCode = random.nextInt((int) (Math.random() * 20089) + 12041);
         json = userPreferences.getString("LastProfileUsed", "");
@@ -912,13 +915,16 @@ public class NewPackCusAct extends AppCompatActivity {
         String paymentMessage = "Congratulations" + customerNames + "as you start a new Package, may you achieve big big things with us";
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            //dbHelper = new DBHelper(this);
+            dbHelper = new DBHelper(this);
+            TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(this);
+            TranXDAO tranXDAO = new TranXDAO(this);
+            AdminBalanceDAO balanceDAO = new AdminBalanceDAO(this);
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.insertTimeLine(tittle, details, reportDate, mCurrentLocation);
-            dbHelper.insertTimeLine(timelineTittle3, details, reportDate, mCurrentLocation);
-            dbHelper.saveNewTransaction(profileID, customerID,Skylightransaction, acctID, "Skylight", customerNames,transaction_type, totalAmountSum, reportID, officeBranch, reportDate);
+            timeLineClassDAO.insertTimeLine(tittle, details, reportDate, mCurrentLocation);
+            timeLineClassDAO.insertTimeLine(timelineTittle3, details, reportDate, mCurrentLocation);
+            tranXDAO.saveNewTransaction(profileID, customerID,Skylightransaction, acctID, "Skylight", customerNames,transaction_type, totalAmountSum, reportID, officeBranch, reportDate);
             dbHelper.insertNewPackage(userProfile, customer,  skyLightPackage1);
-            dbHelper.saveNewAdminBalance(acctID, profileID, customerID, packageID, savingsAmount, reportDate,"Unconfirmed");
+            balanceDAO.saveNewAdminBalance(acctID, profileID, customerID, packageID, savingsAmount, reportDate,"Unconfirmed");
             dbHelper.insertDailyReport(packageID,reportID, profileID, customerID, reportDate, savingsAmount,numberOfDays,newTotal,newAmountContributedSoFar,newAmountRemaining,newDaysRemaining,"First Report");
 
 

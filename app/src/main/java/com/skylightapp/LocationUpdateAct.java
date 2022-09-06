@@ -65,7 +65,10 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.EmergencyReport;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.EmergReportNextDAO;
+import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.MapAndLoc.GetAddressIntentService;
 
 import org.apache.hc.core5.http.protocol.BasicHttpContext;
@@ -727,8 +730,10 @@ public class LocationUpdateAct extends AppCompatActivity implements LocationList
 
         stringLatLng=String.valueOf(latitude1 + "," + longitude1);
 
+        EmergReportNextDAO nextDAO= new EmergReportNextDAO(this);
+
         if(distanceCovered>1){
-            dbHelper.insertNewEmergNextLoc(emergencyNextReportID,emergencyReportID,dateOfToday,stringLatLng);
+            nextDAO.insertNewEmergNextLoc(emergencyNextReportID,emergencyReportID,dateOfToday,stringLatLng);
 
         }
 

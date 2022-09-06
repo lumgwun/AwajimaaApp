@@ -45,7 +45,9 @@ import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.StandingOrderAcct;
 import com.skylightapp.Customers.NewCustomerDrawer;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.SuperAdmin.SuperAdminOffice;
 import com.skylightapp.Tellers.TellerDrawerAct;
 import com.skylightapp.Tellers.TellerHomeChoices;
@@ -444,9 +446,11 @@ public class LoginActivity extends AppCompatActivity {
         userProfile= new Profile();
         customer1= new Customer();
         profiles=new ArrayList<Profile>();
+        ProfDAO profileDao= new ProfDAO(this);
+        CusDAO cusDAO= new CusDAO(this);
         customers=new ArrayList<Customer>();
-        profiles = dbHelper.getAllProfiles();
-        customers = dbHelper.getAllCustomers11();
+        profiles = profileDao.getAllProfiles();
+        customers = cusDAO.getAllCustomers11();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = userPreferences.edit();
 
@@ -463,12 +467,13 @@ public class LoginActivity extends AppCompatActivity {
             edtPassword.setError("Please Enter the password");
             return;
         }
-        progressBar.setVisibility(View.GONE);
-        sharedPrefRole=dbHelper.getProfileRoleByUserNameAndPassword(userName,password);
 
-        profileID=dbHelper.getProfileIDByUserNameAndPassword(userName,password);
-        sharedPrefUserMachine= dbHelper.getProfileRoleByUserNameAndPassword(userName,password);
-        userProfile=dbHelper.getProfileFromUserNameAndPassword(userName,password);
+        progressBar.setVisibility(View.GONE);
+        sharedPrefRole=profileDao.getProfileRoleByUserNameAndPassword(userName,password);
+
+        profileID=profileDao.getProfileIDByUserNameAndPassword(userName,password);
+        sharedPrefUserMachine= profileDao.getProfileRoleByUserNameAndPassword(userName,password);
+        userProfile=profileDao.getProfileFromUserNameAndPassword(userName,password);
 
         if(userProfile !=null){
             profileID=userProfile.getPID();

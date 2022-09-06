@@ -54,7 +54,7 @@ import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.Database.TransactionGrantingDAO;
 import com.skylightapp.Database.WorkersDAO;
 import com.skylightapp.R;
-import com.skylightapp.SuperAdmin.AdminBalance;
+import com.skylightapp.SuperAdmin.AppCommission;
 import com.twilio.Twilio;
 
 import org.apache.http.HttpResponse;
@@ -120,7 +120,7 @@ public class CusLoanAct extends AppCompatActivity {
     private Bundle loanBundle;
     private String loanType, loanOffice;
     private Account account;
-    private AdminBalance adminBalance;
+    private AppCommission appCommission;
     private TransactionGranting granting;
     private static final String PREF_NAME = "skylight";
     private SQLiteDatabase sqLiteDatabase;
@@ -185,7 +185,7 @@ public class CusLoanAct extends AppCompatActivity {
 
         codeDAO= new CodeDAO(this);
         acctDAO= new AcctDAO(this);
-        adminBalance= new AdminBalance();
+        appCommission = new AppCommission();
         granting= new TransactionGranting(loanNumber, profileID, customerID, customerName, selectedBank, acctName, accountNo, amountDouble1, "", loanDate, "", "", "inProgress");
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         edt_Amount =  findViewById(R.id.loanAmountSO);

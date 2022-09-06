@@ -20,6 +20,7 @@ import com.skylightapp.Classes.GroupSavings;
 import com.skylightapp.Classes.MyTouchListener;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.GroupSavingsDAO;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class MyGrpSavingsList extends AppCompatActivity implements GroupSavingsA
     SecureRandom random;
     DatePicker picker;
     Random ran ;
-    DBHelper dbHelper;
+    GroupSavingsDAO dbHelper;
     long profileID;
     AppCompatTextView txtNoSavings;
 
@@ -43,7 +44,7 @@ public class MyGrpSavingsList extends AppCompatActivity implements GroupSavingsA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_my_grp_savings_list);
-        dbHelper = new DBHelper(this);
+        dbHelper = new GroupSavingsDAO(this);
         /*getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getActionBar().hide();*/
         groupSavingsArrayList = new ArrayList<>();

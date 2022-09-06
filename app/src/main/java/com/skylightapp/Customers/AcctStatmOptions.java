@@ -28,7 +28,10 @@ import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.StandingOrderAcct;
 import com.skylightapp.Classes.TellerReport;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.SODAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
 
 import java.text.ParseException;
@@ -272,6 +275,9 @@ public class AcctStatmOptions extends AppCompatActivity {
         String yearMonth =year121+"-"+month133;
 
         dosText.setText("Date with Month"+stringDate);
+        TranXDAO tranXDAO= new TranXDAO(this);
+        CusDAO cusDAO= new CusDAO(this);
+        SODAO sodao= new SODAO(this);
 
         if(stringDate.isEmpty()){
             stringDate=todayDate;
@@ -281,11 +287,11 @@ public class AcctStatmOptions extends AppCompatActivity {
 
 
         monthPackCount =dbHelper.getCusMonthPackagesCount1(customerID,yearMonth);
-        monthSOCount =dbHelper.getCusMonthSOCount1(customerID,yearMonth);
+        monthSOCount =sodao.getCusMonthSOCount1(customerID,yearMonth);
         monthSavingsCount=dbHelper.getCusMonthSavingsCount1(customerID,yearMonth);
-        monthTranxCount=dbHelper.getCusMonthTransactionCount1(customerID,stringDate);
+        monthTranxCount=tranXDAO.getCusMonthTransactionCount1(customerID,stringDate);
         monthTotalSavings =dbHelper.getMonthTotalSavingsForCustomer(customerID,yearMonth);
-        monthTotalTranx =dbHelper.getMonthTotalTransactionForCus1(customerID,yearMonth);
+        monthTotalTranx =tranXDAO.getMonthTotalTransactionForCus1(customerID,yearMonth);
 
         String finalYearMonth = yearMonth;
         btnGetByDate.setOnClickListener(new View.OnClickListener() {
@@ -294,10 +300,10 @@ public class AcctStatmOptions extends AppCompatActivity {
                 monthPackCount =dbHelper.getCusMonthPackagesCount1(customerID, finalYearMonth);
                 monthSavingsCount=dbHelper.getCusMonthSavingsCount1(customerID, finalYearMonth);
 
-                monthSOCount =dbHelper.getCusMonthSOCount1(customerID,finalYearMonth);
-                monthTranxCount=dbHelper.getCusMonthTransactionCount1(customerID,finalYearMonth);
+                monthSOCount =sodao.getCusMonthSOCount1(customerID,finalYearMonth);
+                monthTranxCount=tranXDAO.getCusMonthTransactionCount1(customerID,finalYearMonth);
                 monthTotalSavings =dbHelper.getMonthTotalSavingsForCustomer(customerID,dateOfStatement);
-                monthTotalTranx =dbHelper.getMonthTotalTransactionForCus1(customerID,finalYearMonth);
+                monthTotalTranx =tranXDAO.getMonthTotalTransactionForCus1(customerID,finalYearMonth);
                 statementType="byDate";
                 typeBundle.putString("PackageType",statementType);
                 typeBundle.putString("customerName",cmName);
@@ -323,13 +329,12 @@ public class AcctStatmOptions extends AppCompatActivity {
         btnGetByDaysBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 monthPackCount =dbHelper.getCusMonthPackagesCount1(customerID, finalYearMonth1);
-                monthSOCount =dbHelper.getCusMonthSOCount1(customerID, finalYearMonth1);
+                monthSOCount =sodao.getCusMonthSOCount1(customerID, finalYearMonth1);
                 monthSavingsCount=dbHelper.getCusMonthSavingsCount1(customerID, finalYearMonth1);
-                monthTranxCount=dbHelper.getCusMonthTransactionCount1(customerID, finalYearMonth1);
+                monthTranxCount=tranXDAO.getCusMonthTransactionCount1(customerID, finalYearMonth1);
                 monthTotalSavings =dbHelper.getMonthTotalSavingsForCustomer(customerID, finalYearMonth1);
-                monthTotalTranx =dbHelper.getMonthTotalTransactionForCus1(customerID, finalYearMonth1);
+                monthTotalTranx =tranXDAO.getMonthTotalTransactionForCus1(customerID, finalYearMonth1);
 
                 statementType="daysAgo";
                 typeBundle.putString("PackageType",statementType);

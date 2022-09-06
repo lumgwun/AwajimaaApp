@@ -40,6 +40,7 @@ import com.skylightapp.Database.AwardDAO;
 import com.skylightapp.Database.BirthdayDAO;
 import com.skylightapp.Database.CodeDAO;
 import com.skylightapp.Database.CusDAO;
+import com.skylightapp.Database.Customer_TellerDAO;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.GrpProfileDAO;
 import com.skylightapp.Database.LoanDAO;
@@ -155,6 +156,7 @@ public class StocksTransferAct extends AppCompatActivity {
     private BirthdayDAO birthdayDAO;
     private TransactionGrantingDAO grantingDAO;
     private AwardDAO awardDAO;
+    private Customer_TellerDAO customer_tellerDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,6 +169,7 @@ public class StocksTransferAct extends AppCompatActivity {
         gson1 = new Gson();
         gson2 = new Gson();
         workersDAO= new WorkersDAO(this);
+        customer_tellerDAO= new Customer_TellerDAO(this);
         awardDAO= new AwardDAO(this);
         grantingDAO= new TransactionGrantingDAO(this);
         stocksDAO= new StocksDAO(this);
@@ -305,7 +308,7 @@ public class StocksTransferAct extends AppCompatActivity {
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            stocksArrayList =dbHelper.getAllStockForProfile(profileID);
+            stocksArrayList =stockTransferDAO.getAllStockForProfile(profileID);
         }
 
 
@@ -328,7 +331,7 @@ public class StocksTransferAct extends AppCompatActivity {
             selectedStocksID=selectedStocks.getStockID();
             stocksName=selectedStocks.getStockName();
         }
-        recipientStock =dbHelper.getRecipientAndStock(receiverID,stocksName);
+        recipientStock =stockTransferDAO.getRecipientAndStock(receiverID,stocksName);
         if(userProfile !=null){
             customers=userProfile.getProfileCustomers();
         }
@@ -389,7 +392,7 @@ public class StocksTransferAct extends AppCompatActivity {
                 layoutCompatTeller.setVisibility(View.VISIBLE);
                 layoutCompatBranch.setVisibility(View.GONE);
                 layoutCompatCus.setVisibility(View.GONE);
-                tellers=dbHelper.getTellersFromMachine(machine);
+                tellers=profileDao.getTellersFromMachine(machine);
                 profileAdapter = new ProfileSimpleAdapter(StocksTransferAct.this, android.R.layout.simple_spinner_item, tellers);
                 spnTeller.setAdapter(profileAdapter);
                 spnTeller.setSelection(0);
@@ -441,7 +444,7 @@ public class StocksTransferAct extends AppCompatActivity {
                 layoutCompatBranch.setVisibility(View.VISIBLE);
                 layoutCompatTeller.setVisibility(View.GONE);
                 layoutCompatCus.setVisibility(View.GONE);
-                branches=dbHelper.getBranchFromMachine(machine);
+                branches=profileDao.getBranchFromMachine(machine);
                 profileAdapter = new ProfileSimpleAdapter(StocksTransferAct.this, android.R.layout.simple_spinner_item, branches);
                 spnBranch.setAdapter(profileAdapter);
                 spnBranch.setSelection(0);
@@ -598,13 +601,13 @@ public class StocksTransferAct extends AppCompatActivity {
                         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                             dbHelper.openDataBase();
                             sqLiteDatabase = dbHelper.getWritableDatabase();
-                            dbHelper.saveNewStocksTransfer(transferID,selectedStocksID,profileID,receiverID,stocksName,qty,transferer,transferAccepter,from,to,transferDate, this.transferCode,"UnVerified");
+                            stockTransferDAO.saveNewStocksTransfer(transferID,selectedStocksID,profileID,receiverID,stocksName,qty,transferer,transferAccepter,from,to,transferDate, this.transferCode,"UnVerified");
 
                         }
                         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                             dbHelper.openDataBase();
                             sqLiteDatabase = dbHelper.getWritableDatabase();
-                            dbHelper.updateStocksQty(selectedStocksID,newQuantity);
+                            stockTransferDAO.updateStocksQty(selectedStocksID,newQuantity);
                         }
 
 

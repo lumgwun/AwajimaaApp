@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
@@ -37,7 +38,11 @@ import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Loan;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.FlutterWavePayments.FluPaywithBank;
 import com.skylightapp.LoginDirAct;
 import com.skylightapp.PayNowActivity;
@@ -133,6 +138,7 @@ public class AllCusLoanRepayment extends AppCompatActivity {
     AppCompatEditText amountToRepay;
     AppCompatButton btnPay;
     AppCompatTextView loanBalance;
+    private SQLiteDatabase sqLiteDatabase;
 
     Long userID;
     int loanID;
@@ -157,6 +163,8 @@ public class AllCusLoanRepayment extends AppCompatActivity {
     private List<Customer> customerList;
     private ArrayList<Loan> loanArrayList;
     AppCompatSpinner spn_customers;
+    private LoanDAO loanDAO;
+    private TimeLineClassDAO timeLineClassDAO;
     ActivityResultLauncher<Intent> allCusStartLoanRepaymentForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
@@ -168,7 +176,11 @@ public class AllCusLoanRepayment extends AppCompatActivity {
                         unpaidLoanBalance=loan.getLoanBalance();
                         residueAmt=unpaidLoanBalance-loanAmount;
                         loan.setLoanBalance(residueAmt);
-                        dbHelper.updateLoan("Complete",loanID,residueAmt);
+                        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                            dbHelper.openDataBase();
+                            loanDAO.updateLoan("Complete",loanID,residueAmt);
+                        }
+
                         SimpleDateFormat dateFormatWithZone = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                         String currentDate = dateFormatWithZone.format(date);
 
@@ -176,7 +188,12 @@ public class AllCusLoanRepayment extends AppCompatActivity {
                         String tittle = "Loan repayment Alert!";
                         String mYtimelineDetails = "You made loan payment of N" + loanAmount + " for"  + customerName+ "on" + timeLineTime;
                         String custimelineDetails = "loan repayment of N" + loanAmount + " was recorded at" + timeLineTime;
-                        dbHelper.insertTimeLine(tittle,timelineDetails,currentDate,null);
+                        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                            dbHelper.openDataBase();
+                            timeLineClassDAO.insertTimeLine(tittle,timelineDetails,currentDate,null);
+                        }
+
+
                         userProfile.addPTimeLine(tittle,mYtimelineDetails);
                         customer.addCusTimeLine(tittle,custimelineDetails);
                         finish();
@@ -202,6 +219,8 @@ public class AllCusLoanRepayment extends AppCompatActivity {
         date = new Date();
         loan= new Loan();
         customer=new Customer();
+        timeLineClassDAO= new TimeLineClassDAO(this);
+        loanDAO = new LoanDAO(this);
         dateFormatWithZone= new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         currentDate = dateFormatWithZone.format(date);
         btnPay = findViewById(R.id.loanPayNowAll);
@@ -209,9 +228,10 @@ public class AllCusLoanRepayment extends AppCompatActivity {
         spn_loan = findViewById(R.id.loanFromAllCus);
         amountToRepay= findViewById(R.id.amountToRepayAll);
         spn_customers = findViewById(R.id._customerAll);
-        Twilio.init("ACb6e4c829a5792a4b744a3e6bd1cf2b4e", "0d5cbd54456dd0764786db0c37212578");
+        CusDAO cusDAO= new CusDAO(this);
+        //Twilio.init("ACb6e4c829a5792a4b744a3e6bd1cf2b4e", "0d5cbd54456dd0764786db0c37212578");
         dbHelper= new DBHelper(this);
-        customerArrayList = dbHelper.getAllCustomers11();
+        customerArrayList = cusDAO.getAllCustomers11();
 
         //spn_old_customers.setSelection(0);
         try {
@@ -377,12 +397,14 @@ public class AllCusLoanRepayment extends AppCompatActivity {
 
                             }
                         });
+                loanDAO= new LoanDAO(this);
+                timeLineClassDAO= new TimeLineClassDAO(this);
                 builder.setItems(Options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(which == 0){
-                            applicationDb.updateLoan(loanStatus,loanID,remainingAmount);
-                            dbHelper.insertTimeLine(tittle,timelineDetails,currentDate,null);
+                            loanDAO.updateLoan(loanStatus,loanID,remainingAmount);
+                            timeLineClassDAO.insertTimeLine(tittle,timelineDetails,currentDate,null);
                             userProfile.addPTimeLine(tittle,mYtimelineDetails);
                             customer.addCusTimeLine(tittle,custimelineDetails);
 

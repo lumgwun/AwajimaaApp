@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.skylightapp.Admins.AdminBankDeposit;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Database.AdminBDepositDAO;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.R;
 
@@ -136,13 +137,14 @@ public class UpDateDeposit extends AppCompatActivity {
         }
 
         txtDepositID.setText("Deposit ID:"+adminDepositID);
+        AdminBDepositDAO depositDAO= new AdminBDepositDAO(this);
         btnRunUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sqLiteDatabase = dbHelper.getWritableDatabase();
                 if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                     dbHelper.openDataBase();
-                    dbHelper.updateAdminDeposit(adminDepositID,selectedStatus,superAdminName,dateOfApproval);
+                    depositDAO.updateAdminDeposit(adminDepositID,selectedStatus,superAdminName,dateOfApproval);
 
 
 

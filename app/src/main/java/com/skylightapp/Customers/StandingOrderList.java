@@ -30,6 +30,7 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.StandingOrder;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.SODAO;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -103,11 +104,12 @@ public class StandingOrderList extends AppCompatActivity implements StandingOrde
                 chooseDate();
             }
         });
+        SODAO sodao= new SODAO(this);
 
         dateOfSO = picker.getDayOfMonth()+"-"+ (picker.getMonth() + 1)+"-"+picker.getYear();
-        soAllCount =dbHelper.getSOCountCustomer(customerID);
-        soCount = dbHelper.getCustomerSOCountForDate(customerID,dateOfSO);
-        standingOrders=dbHelper.getAllStandingOrdersForCustomerDate(customerID,dateOfSO);
+        soAllCount =sodao.getSOCountCustomer(customerID);
+        soCount = sodao.getCustomerSOCountForDate(customerID,dateOfSO);
+        standingOrders=sodao.getAllStandingOrdersForCustomerDate(customerID,dateOfSO);
         btnSearchDB.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -144,10 +146,11 @@ public class StandingOrderList extends AppCompatActivity implements StandingOrde
                 return false;
             }
         });
+
         if (customer !=null){
             customerID=customer.getCusUID();
             dbHelper= new DBHelper(this);
-            standingOrdersAll =dbHelper.getSOFromCurrentCustomer(customerID);
+            standingOrdersAll =sodao.getSOFromCurrentCustomer(customerID);
             final CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.addOnScrollListener(new CenterScrollListener());

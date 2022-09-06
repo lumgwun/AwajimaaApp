@@ -25,6 +25,7 @@ import androidx.preference.PreferenceManager;
 import com.google.android.gms.maps.model.LatLng;
 import com.skylightapp.Classes.ChartData;
 import com.skylightapp.Classes.AppCash;
+import com.skylightapp.Classes.OfficeBranch;
 import com.skylightapp.Classes.TellerCountData;
 import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Classes.Utils;
@@ -42,7 +43,6 @@ import com.skylightapp.Classes.PasswordHelpers;
 import com.skylightapp.Classes.Payee;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
-import com.skylightapp.Tellers.TellerCash;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -89,6 +89,7 @@ import static com.skylightapp.Classes.EmergencyReport.CREATE_EMERGENCY_REPORT_TA
 import static com.skylightapp.Classes.EmergencyReport.EMERGENCY_REPORT_TABLE;
 import static com.skylightapp.Classes.Loan.LOAN_PROF_ID;
 import static com.skylightapp.Classes.Message.MESSAGE_PROF_ID;
+import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_NAME;
 import static com.skylightapp.Classes.Payee.PAYEE_CUS_ID;
 import static com.skylightapp.Classes.Payee.PAYEE_PROF_ID;
 import static com.skylightapp.Classes.Payment.CREATE_PAYMENT_TABLE;
@@ -147,8 +148,8 @@ import static com.skylightapp.Markets.MarketStock.KEY_PROD_NAME;
 import static com.skylightapp.Markets.MarketStock.KEY_PROD_SALES;
 import static com.skylightapp.Markets.MarketStock.MARKET_STOCK_TABLE;
 
-import static com.skylightapp.SuperAdmin.AdminBalance.ADMIN_BALANCE_TABLE;
-import static com.skylightapp.SuperAdmin.AdminBalance.CREATE_ADMIN_BALANCE_TABLE;
+import static com.skylightapp.SuperAdmin.AppCommission.ADMIN_BALANCE_TABLE;
+import static com.skylightapp.SuperAdmin.AppCommission.CREATE_ADMIN_BALANCE_TABLE;
 import static com.skylightapp.Classes.AdminUser.ADMIN_TABLE;
 import static com.skylightapp.Classes.AdminUser.CREATE_ADMIN_TABLE;
 import static com.skylightapp.Classes.Birthday.BIRTHDAY_DAYS_BTWN;
@@ -322,17 +323,8 @@ import static com.skylightapp.SuperAdmin.SuperCash.SUPER_CASH_PROFILE_ID;
 import static com.skylightapp.SuperAdmin.SuperCash.SUPER_CASH_TABLE;
 import static com.skylightapp.SuperAdmin.SuperCash.SUPER_CASH_TRANX_STATUS;
 import static com.skylightapp.Tellers.TellerCash.CREATE_TELLER_CASH_TABLE;
-import static com.skylightapp.Tellers.TellerCash.TELLER_CASH_AMOUNT;
-import static com.skylightapp.Tellers.TellerCash.TELLER_CASH_BRANCH;
-import static com.skylightapp.Tellers.TellerCash.TELLER_CASH_CODE;
-import static com.skylightapp.Tellers.TellerCash.TELLER_CASH_DATE;
 import static com.skylightapp.Tellers.TellerCash.TELLER_CASH_ID;
-import static com.skylightapp.Tellers.TellerCash.TELLER_CASH_ITEM_NAME;
-import static com.skylightapp.Tellers.TellerCash.TELLER_CASH_PACKAGE_ID;
-import static com.skylightapp.Tellers.TellerCash.TELLER_CASH_PROFILE_ID;
-import static com.skylightapp.Tellers.TellerCash.TELLER_CASH_STATUS;
 import static com.skylightapp.Tellers.TellerCash.TELLER_CASH_TABLE;
-import static com.skylightapp.Tellers.TellerCash.TELLER_CASH_TELLER_NAME;
 import static com.skylightapp.Transactions.BillModel.CREATE_BILLS_TABLE;
 import static java.lang.String.valueOf;
 
@@ -5693,7 +5685,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private ContentValues contentValuesFrom(MarketStock p) {
         ContentValues content = new ContentValues();
-
         content.put(MarketStock.KEY_PROD_NAME, p.getName());
         content.put(MarketStock.KEY_PROD_STOCK, p.getStock());
         content.put(MarketStock.KEY_PROD_COST, p.getCost());
@@ -5877,7 +5868,32 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.delete(MARKET_TABLE, selection,selectionArgs);
 
     }
+    private void getOfficeBranchCursor(ArrayList<OfficeBranch> officeBranchArrayList, Cursor cursor) {
+        while (cursor.moveToNext()) {
 
+            int officeID = cursor.getInt(0);
+            String officeName = cursor.getString(2);
+            String officeStatus = cursor.getString(6);
+            officeBranchArrayList.add(new OfficeBranch(officeID, officeName,officeStatus));
+        }
+    }
+    public ArrayList<OfficeBranch> getAllBranchOffices() {
+        ArrayList<OfficeBranch> officeBranchArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] columns = {OFFICE_BRANCH_NAME};
+        Cursor cursor = db.query(OFFICE_BRANCH_TABLE, columns, OFFICE_BRANCH_NAME, null, null,
+                null, null);
+
+        if (cursor != null)
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                getOfficeBranchCursor(officeBranchArrayList, cursor);
+                cursor.close();
+            }
+
+        db.close();
+        return officeBranchArrayList;
+    }
 
 
 

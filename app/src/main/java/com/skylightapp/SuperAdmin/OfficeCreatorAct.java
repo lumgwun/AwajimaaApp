@@ -164,6 +164,7 @@ public class OfficeCreatorAct extends AppCompatActivity {
         checkInternetConnection();
         gson1 = new Gson();
         gson = new Gson();
+        dbHelper= new DBHelper(this);
         officeBranch=new OfficeBranch();
         workersDAO= new WorkersDAO(this);
         awardDAO= new AwardDAO(this);
@@ -320,6 +321,7 @@ public class OfficeCreatorAct extends AppCompatActivity {
         customerID = random.nextInt((int) (Math.random() * 1203) + 1101);
         accountTypeStr = null;
         dbHelper = new DBHelper(this);
+        dbHelper= new DBHelper(this);
         officeBranchArrayList = dbHelper.getAllBranchOffices();
         //superAdminArrayList = dbHelper.getAllCustomersManagers();
         if (userSuperAdmin != null) {
@@ -347,8 +349,8 @@ public class OfficeCreatorAct extends AppCompatActivity {
                     if (sqLiteDatabaseObj == null || !sqLiteDatabaseObj.isOpen()) {
                         sqLiteDatabaseObj = dbHelper.getWritableDatabase();
 
-                        dbHelper.insertAccount(profileID1, customerID, "Skylight", selectedOffice, virtualAccountNumber, 0.00, accountTypeStr);
-                        dbHelper.insertOfficeBranch(officeID,superAdminID,selectedOffice,joinedDate,uAddress,"Super Admin","Approved");
+                        acctDAO.insertAccount(profileID1, customerID, "Skylight", selectedOffice, virtualAccountNumber, 0.00, accountTypeStr);
+                        officeBranchDAO.insertOfficeBranch(officeID,superAdminID,selectedOffice,joinedDate,uAddress,"Super Admin","Approved");
                         Toast.makeText(OfficeCreatorAct.this, "Data insertion ,successful", Toast.LENGTH_LONG).show();
 
                     }

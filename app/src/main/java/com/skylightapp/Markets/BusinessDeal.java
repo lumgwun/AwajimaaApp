@@ -1,9 +1,11 @@
 package com.skylightapp.Markets;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.skylightapp.Classes.Account;
+import com.skylightapp.Classes.PaymentDoc;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,11 +35,29 @@ public class BusinessDeal implements Serializable, Parcelable {
     private ArrayList<MarketTranx> bizDealMarketTranxS;
     private ArrayList<BizDealMileStone> bizDealMileStones;
     private ArrayList<BusinessDealLoan> bizDealLoans;
+    private ArrayList<BusinessDealSub> bizDealSubs;
+    private ArrayList<BusinessDealDoc> bizDealDocs;
+
     private ArrayList<BizDealRemittance> dealBizDealRemittances;
 
     public BusinessDeal () {
         super();
 
+    }
+    public void addBizDealSubDeal(int id, int suBDealCode,String title,String desc, double amount, String Currency,int milestones,String startTime,String endTime,String status) {
+        bizDealSubs = new ArrayList<>();
+        BusinessDealSub businessDealSub = new BusinessDealSub(id,suBDealCode,title, desc, amount,Currency,milestones,startTime,endTime,status);
+        bizDealSubs.add(businessDealSub);
+    }
+    public void addBizDealMarketTranx(int id, String title,double amount, String from, String to,int code,String date,String status) {
+        bizDealMarketTranxS = new ArrayList<>();
+        MarketTranx marketTranx = new MarketTranx(id,title, amount, from,to,code,date,status);
+        bizDealMarketTranxS.add(marketTranx);
+    }
+    public void addBizDealDoc(int id, String title,String desc, Uri documentLink, String status) {
+        bizDealDocs = new ArrayList<>();
+        BusinessDealDoc businessDealDoc = new BusinessDealDoc(id,title, desc, documentLink,status);
+        bizDealDocs.add(businessDealDoc);
     }
 
     protected BusinessDeal(Parcel in) {
@@ -294,5 +314,21 @@ public class BusinessDeal implements Serializable, Parcelable {
 
     public void setDealBizDealRemittances(ArrayList<BizDealRemittance> dealBizDealRemittances) {
         this.dealBizDealRemittances = dealBizDealRemittances;
+    }
+
+    public ArrayList<BusinessDealSub> getBizDealSubs() {
+        return bizDealSubs;
+    }
+
+    public void setBizDealSubs(ArrayList<BusinessDealSub> bizDealSubs) {
+        this.bizDealSubs = bizDealSubs;
+    }
+
+    public ArrayList<BusinessDealDoc> getBizDealDocs() {
+        return bizDealDocs;
+    }
+
+    public void setBizDealDocs(ArrayList<BusinessDealDoc> bizDealDocs) {
+        this.bizDealDocs = bizDealDocs;
     }
 }

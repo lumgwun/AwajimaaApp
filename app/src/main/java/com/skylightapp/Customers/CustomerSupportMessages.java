@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.skylightapp.Classes.Message;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.MessageDAO;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
@@ -73,10 +74,11 @@ public class CustomerSupportMessages extends Fragment {
 
         messages = new ArrayList<>();
         mAdapter = new MessageAdapter(getActivity(), messages);
+        MessageDAO messageDAO= new MessageDAO(getContext());
 
         dbHelper = new DBHelper(getContext());
 
-        messages = dbHelper.getMessagesForCurrentProfile(profileID);
+        messages = messageDAO.getMessagesForCurrentProfile(profileID);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);

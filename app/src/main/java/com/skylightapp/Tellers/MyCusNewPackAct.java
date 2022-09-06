@@ -17,6 +17,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.location.Location;
 import android.net.ConnectivityManager;
@@ -48,10 +49,16 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Transaction;
+import com.skylightapp.Database.AdminBalanceDAO;
+import com.skylightapp.Database.CodeDAO;
+import com.skylightapp.Database.PaymentCodeDAO;
+import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.NewLocAct;
 import com.skylightapp.SMSAct;
 import com.skylightapp.SignUpAct;
-import com.skylightapp.SuperAdmin.AdminBalance;
+import com.skylightapp.SuperAdmin.AppCommission;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.AccountTypes;
 import com.skylightapp.Classes.Customer;
@@ -216,7 +223,7 @@ public class MyCusNewPackAct extends AppCompatActivity implements View.OnClickLi
     TextWatcher textWatcherDuration;
     PaymentCode paymentCode;
     Transaction transaction;
-    AdminBalance adminBalance;
+    AppCommission appCommission;
     String transactionID,tellerSurName,selectedItem,tellerOffice,tellerFirstName,tellerName;
     TellerCash tellerCash;
     AppCompatSpinner spnSavingsPlan, spnFoodAndItem, spnInvestment,spnTypeOfPackage,spnPromo;
@@ -230,6 +237,7 @@ public class MyCusNewPackAct extends AppCompatActivity implements View.OnClickLi
     LatLng cusLatLng;
     double tellerAmount;
     private static final String PREF_NAME = "skylight";
+    private SQLiteDatabase sqLiteDatabase;
     String investStringEndDate,selectedPromoPack,invMaturityDate,invDates,newPackageType,selectedFoodStuff,selectedItemType,finalItemType,selectedInvestmentType;
     LinearLayoutCompat layoutInvestment, layoutFoodItemPurchase,layoutPackageType,layoutPromo;
     //public static final String ACCOUNT_SID = System.getenv("ACb6e4c829a5792a4b744a3e6bd1cf2b4e");
@@ -271,7 +279,7 @@ public class MyCusNewPackAct extends AppCompatActivity implements View.OnClickLi
                     switch (result.getResultCode()) {
                         case Activity.RESULT_OK:
                             Toast.makeText(MyCusNewPackAct.this, "Payment returned successful", Toast.LENGTH_SHORT).show();
-                            doProcessing(tellerAmount, packageType, finalItemType, packageDuration, packageEndDate, totalAmountCalc, skylightCode, paymentCode, adminBalance, tellerCash, profileID, tellerName, tellerCashCode, tellerOffice, customer, adminBalance);
+                            doProcessing(tellerAmount, packageType, finalItemType, packageDuration, packageEndDate, totalAmountCalc, skylightCode, paymentCode, appCommission, tellerCash, profileID, tellerName, tellerCashCode, tellerOffice, customer, appCommission);
                             break;
                         case Activity.RESULT_CANCELED:
                             Toast.makeText(MyCusNewPackAct.this, "Activity canceled", Toast.LENGTH_SHORT).show();
@@ -373,7 +381,7 @@ public class MyCusNewPackAct extends AppCompatActivity implements View.OnClickLi
         customersN=new ArrayList<Customer>();
         tellerCash= new TellerCash();
         PaymentCode paymentCode=new PaymentCode();
-        AdminBalance adminBalance= new AdminBalance();
+        AppCommission appCommission = new AppCommission();
         skylightCode = random.nextInt((int) (Math.random() * 10180) + 12341);
         tellerCashCode = random.nextInt((int) (Math.random() * 20089) + 12041);
 
@@ -684,7 +692,7 @@ public class MyCusNewPackAct extends AppCompatActivity implements View.OnClickLi
 
 
                         } else {
-                            doProcessing(tellerAmount, packageType, finalItemType, packageDuration, packageEndDate, totalAmountCalc, skylightCode, paymentCode, adminBalance, tellerCash, profileID, tellerName, tellerCashCode, tellerOffice, customer, adminBalance);
+                            doProcessing(tellerAmount, packageType, finalItemType, packageDuration, packageEndDate, totalAmountCalc, skylightCode, paymentCode, appCommission, tellerCash, profileID, tellerName, tellerCashCode, tellerOffice, customer, appCommission);
 
 
                         }
@@ -755,7 +763,7 @@ public class MyCusNewPackAct extends AppCompatActivity implements View.OnClickLi
     public void payDialoqMyNew(View view) {
 
     }
-    protected  void doProcessing(double tellerAmount, String packageType, String finalItemType, int packageDuration, String packageEndDate, double totalAmountCalc, long skylightCode, PaymentCode paymentCode, AdminBalance adminBalance, TellerCash tellerCash, int profileID, String tellerName, long tellerCashCode, String tellerOffice, Customer customer, AdminBalance balance){
+    protected  void doProcessing(double tellerAmount, String packageType, String finalItemType, int packageDuration, String packageEndDate, double totalAmountCalc, long skylightCode, PaymentCode paymentCode, AppCommission appCommission, TellerCash tellerCash, int profileID, String tellerName, long tellerCashCode, String tellerOffice, Customer customer, AppCommission balance){
         Bundle locBundle = new Bundle();
         Bundle packageTypeBundle1 = new Bundle();
         dbHelper.openDataBase();
@@ -841,7 +849,7 @@ public class MyCusNewPackAct extends AppCompatActivity implements View.OnClickLi
         }
 
         transactionID="Skylight"+packageID;
-        double adminCommission=adminBalance.getAdminReceivedBalance();
+        double adminCommission= appCommission.getAdminReceivedBalance();
         //double skylightCommission=100;
         double initialDeposit=totalAmountSum-savingsAmount;
         double acctBalance=account1.getAccountBalance();
@@ -875,9 +883,13 @@ public class MyCusNewPackAct extends AppCompatActivity implements View.OnClickLi
 
 
             }else {
+                TCashDAO tCashDAO= new TCashDAO(this);
                 tellerCash=new TellerCash(reportID,profileID,packageID,finalItemType,tellerAmount,tellerName,officeBranch,packageStartDate,tellerCashCode,"UnConfirmed");
                 tellerCash.setTellerCashCode(tellerCashCode);
-                dbHelper.insertTellerCash(reportID,profileID,packageID,finalItemType,tellerAmount,tellerName,officeBranch,packageStartDate,tellerCashCode,"UnConfirmed");
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    dbHelper.openDataBase();
+                    tCashDAO.insertTellerCash(reportID,profileID,packageID,finalItemType,tellerAmount,tellerName,officeBranch,packageStartDate,tellerCashCode,"UnConfirmed");
+                }
 
                 String status3 = "inProgress";
                 String status1 = "Unconfirmed";
@@ -911,7 +923,7 @@ public class MyCusNewPackAct extends AppCompatActivity implements View.OnClickLi
                 String details = managerName + "added a new package of NGN" + newTotal + "for" + customerName + "on" + reportDate;
                 SkyLightPackage skyLightPackage1 = new SkyLightPackage(this.profileID, customerID, packageID, this.packageType,finalItemType, savingsAmount, this.packageDuration, reportDate, grandTotal, this.packageEndDate, "fresh");
                 customerDailyReport = new CustomerDailyReport(packageID,reportID, savingsAmount, numberOfDays, initialDeposit, daysRemaining, amountRemaining, reportDate, status3);
-                adminBalance.setAdminReceivedBalance(adminNewBalance);
+                appCommission.setAdminReceivedBalance(adminNewBalance);
                 paymentCode=new PaymentCode(customerID,reportID,skylightCode,reportDate);
                 if(skyLightPackage1 !=null){
                     skyLightPackage1.addPProfileManager(userProfile);
@@ -955,15 +967,36 @@ public class MyCusNewPackAct extends AppCompatActivity implements View.OnClickLi
                     }
                 }).start();
 
-
+                TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(this);
+                TranXDAO tranXDAO= new TranXDAO(this);
+                AdminBalanceDAO adminBalanceDAO= new AdminBalanceDAO(this);
+                CodeDAO paymentCodeDAO= new CodeDAO(this);
                 try {
+                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                        dbHelper.openDataBase();
+                        timeLineClassDAO.insertTimeLine(tittle, details, reportDate, mCurrentLocation);                    }
+                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                        dbHelper.openDataBase();
+                        tranXDAO.saveNewTransaction(profileID, customerID,Skylightransaction, acctID, "Skylight", customerName,transaction_type,initialDeposit, reportID, officeBranch, reportDate);
+                    }
+                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                        dbHelper.openDataBase();
+                        dbHelper.insertNewPackage(profileID, customerID,packageID, skylightCode, finalItemType,this.packageType, this.packageDuration,savingsAmount,  reportDate, grandTotal, this.packageEndDate, "fresh");
+                    }
+                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                        dbHelper.openDataBase();
+                        dbHelper.insertNewDailyReport(profileID,customerID,packageID,reportID,reportCode,numberOfDays,newTotal,reportDate,newDaysRemaining,newAmountRemaining,"First");
+                    }
+                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                        dbHelper.openDataBase();
+                        adminBalanceDAO.saveNewAdminBalance(acctID,profileID,customerID,packageID,savingsAmount,reportDate,"Unconfirmed");
+                    }
+                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                        dbHelper.openDataBase();
+                        paymentCodeDAO.insertSavingsCode(paymentCode);                    }
 
-                    dbHelper.insertTimeLine(tittle, details, reportDate, mCurrentLocation);
-                    dbHelper.saveNewTransaction(profileID, customerID,Skylightransaction, acctID, "Skylight", customerName,transaction_type,initialDeposit, reportID, officeBranch, reportDate);
-                    dbHelper.insertNewPackage(profileID, customerID,packageID, skylightCode, finalItemType,this.packageType, this.packageDuration,savingsAmount,  reportDate, grandTotal, this.packageEndDate, "fresh");
-                    dbHelper.insertNewDailyReport(profileID,customerID,packageID,reportID,reportCode,numberOfDays,newTotal,reportDate,newDaysRemaining,newAmountRemaining,"First");
-                    dbHelper.saveNewAdminBalance(acctID,profileID,customerID,packageID,savingsAmount,reportDate,"Unconfirmed");
-                    dbHelper.insertSavingsCode(paymentCode);
+
                     //dbHelper.insertDailyReport(packageID,reportID, this.profileID, customerID,reportDate,savingsAmount,numberOfDays,newTotal,newAmountContributedSoFar,newAmountRemaining,newDaysRemaining,"first");
 
                 } catch (SQLiteException e) {

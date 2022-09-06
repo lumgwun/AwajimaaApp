@@ -15,6 +15,8 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.quickblox.core.model.QBEntity;
+import com.quickblox.users.model.QBUser;
 import com.skylightapp.Admins.AdminBankDeposit;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Inventory.StockTransfer;
@@ -137,6 +139,9 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
     //@Ignore
     public static final String PROF_ID_FOREIGN_KEY_PASSWORD = "prof_ID_FkeyPassW";
+    public static final String PROF_BUSINESS_ID = "prof_BizID";
+    public static final String PROF_MARKET_ID = "market_ID";
+
 
     //@Ignore
     public static final String CREATE_PIXTURE_TABLE = "CREATE TABLE " + PICTURE_TABLE + " (" + PROFILE_PIC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PROFID_FOREIGN_KEY_PIX + " INTEGER, " + CUS_ID_PIX_KEY + " INTEGER , " +
@@ -147,7 +152,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
             "FOREIGN KEY(" + CUS_ID_PASS_KEY + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
     public static final String CREATE_PROFILES_TABLE = "CREATE TABLE " + PROFILES_TABLE + " (" + PROFILE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PROFILE_SURNAME + " TEXT, " + PROFILE_FIRSTNAME + " TEXT, " + PROFILE_PHONE + " TEXT, " + PROFILE_EMAIL + " TEXT, " + PROFILE_DOB + " TEXT, " + PROFILE_GENDER + " TEXT, " +
-            PROFILE_ADDRESS + " TEXT, " + PROFILE_NIN + " TEXT, " + PROFILE_UNIT + " TEXT, " + PROFILE_WARD + " TEXT, " + PROFILE_TOWN + " TEXT, " + PROFILE_STATE + " TEXT, " + PROFILE_COUNTRY + " TEXT, " + PROFILE_OFFICE + " TEXT, " + PROFILE_DATE_JOINED + " TEXT, " + PROFILE_ROLE + " TEXT, " + PROFILE_USERNAME + " TEXT, " + PROFILE_PASSWORD + " TEXT, " + PROFILE_STATUS + " TEXT, " + PROFILE_NEXT_OF_KIN + " TEXT,"+ PROFILE_SPONSOR_ID + " TEXT,"+ PROFILE_CUS_ID_KEY + " INTEGER," + "FOREIGN KEY(" + PROFILE_CUS_ID_KEY + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+            PROFILE_ADDRESS + " TEXT, " + PROFILE_NIN + " TEXT, " + PROFILE_UNIT + " TEXT, " + PROFILE_WARD + " TEXT, " + PROFILE_TOWN + " TEXT, " + PROFILE_STATE + " TEXT, " + PROFILE_COUNTRY + " TEXT, " + PROFILE_OFFICE + " TEXT, " + PROFILE_DATE_JOINED + " TEXT, " + PROFILE_ROLE + " TEXT, " + PROFILE_USERNAME + " TEXT, " + PROFILE_PASSWORD + " TEXT, " + PROFILE_STATUS + " TEXT, " + PROFILE_NEXT_OF_KIN + " TEXT,"+ PROFILE_SPONSOR_ID + " TEXT,"+ PROFILE_CUS_ID_KEY + " INTEGER,"+ PROF_BUSINESS_ID + " TEXT,"+ PROF_MARKET_ID + " TEXT," + "FOREIGN KEY(" + PROFILE_CUS_ID_KEY + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
     //@Ignore
     public static final String CREATE_SPONSOR_TABLE = "CREATE TABLE " + SPONSOR_TABLE + " (" + SPONSOR_TABLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + SPONSOR_TABLE_CUS_ID + " INTEGER, " + SPONSOR_TABLE_PROF_ID + " INTEGER, " + SPONSOR_TABLE_PHONE + " TEXT, " + SPONSOR_TABLE_EMAIL + " TEXT, " + "FOREIGN KEY(" + SPONSOR_TABLE_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
@@ -242,7 +247,10 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     @ColumnInfo(name = PROFILE_STATUS)
     private String profileStatus;
 
-
+    private int profileBusinessID;
+    private int profileMarketID;
+    private QBUser profQbUser;
+    private QBEntity profQbEntity;
 
 
     public void setProfilePassword(String profilePassword)   {
@@ -1590,5 +1598,37 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
     public void setProfPixID(int profPixID) {
         this.profPixID = profPixID;
+    }
+
+    public int getProfileBusinessID() {
+        return profileBusinessID;
+    }
+
+    public void setProfileBusinessID(int profileBusinessID) {
+        this.profileBusinessID = profileBusinessID;
+    }
+
+    public int getProfileMarketID() {
+        return profileMarketID;
+    }
+
+    public void setProfileMarketID(int profileMarketID) {
+        this.profileMarketID = profileMarketID;
+    }
+
+    public QBUser getProfQbUser() {
+        return profQbUser;
+    }
+
+    public void setProfQbUser(QBUser profQbUser) {
+        this.profQbUser = profQbUser;
+    }
+
+    public QBEntity getProfQbEntity() {
+        return profQbEntity;
+    }
+
+    public void setProfQbEntity(QBEntity profQbEntity) {
+        this.profQbEntity = profQbEntity;
     }
 }
