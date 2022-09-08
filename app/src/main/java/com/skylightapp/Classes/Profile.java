@@ -34,8 +34,8 @@ import java.util.Locale;
 
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
-import static com.skylightapp.Markets.Market.MARKET_ID;
-import static com.skylightapp.Markets.Market.MARKET_TABLE;
+import static com.skylightapp.MarketClasses.Market.MARKET_ID;
+import static com.skylightapp.MarketClasses.Market.MARKET_TABLE;
 
 //@Entity(tableName = "RoomProfileTable")
 public class Profile implements Parcelable, Serializable, BaseColumns {

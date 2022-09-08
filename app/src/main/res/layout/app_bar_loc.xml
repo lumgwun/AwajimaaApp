@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.skylightapp.MarketPlaceTransport.LocActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarLoc"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include layout="@layout/content_loc"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_Loc"
+        android:layout_width="wrap_content"
+        android:gravity="top"
+        app:iconTint="@color/ORANGE_CHAT"
+        android:foregroundGravity="top"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        app:fab_colorNormal="@color/ORANGE_CHAT"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/ic_home_black_24dp" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

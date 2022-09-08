@@ -24,6 +24,8 @@ import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
 import com.skylightapp.Classes.SwipeToDeleteCallback;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.MarketClasses.Commodity;
+import com.skylightapp.MarketClasses.CommodityAdater;
 import com.skylightapp.R;
 import com.smarteist.autoimageslider.SliderView;
 

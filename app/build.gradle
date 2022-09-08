@@ -84,6 +84,7 @@ android {
             it.buildConfigField 'String', 'QuickT_Secret_Key', quickTeller_Secret_key
 
             it.buildConfigField 'String', 'MAP_API', map_API
+            it.buildConfigField 'String', 'Teliver_API_Key', teliver_key
 
             /*it.buildConfigField "String", "T_ACCT_SID", localProperties.getProperty("TWILLO_ACCOUNT_SID")
             it.buildConfigField "String", "TWILLO_NO", localProperties.getProperty("TWILLO_PHONE_NO")
@@ -583,6 +584,28 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata:2.5.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+    implementation 'net.qiujuer.genius:ui:2.0.0'
+    implementation 'com.github.kofigyan:StateProgressBar:78670c686e'
+    implementation 'com.github.johnkil.android-robototextview:robototextview:4.0.0'
+    implementation 'com.github.orangegangsters:swipy:1.2.2@aar'
+    implementation 'com.github.mtotschnig:StickyListHeaders:2.7.1'
+    implementation 'link.fls:swipestack:0.3.0'
+    implementation 'com.scwang.wave:MultiWaveHeader:1.0.0-alpha-1'
+    implementation 'com.intuit.sdp:sdp-android:1.0.5'
+    implementation 'com.jemshit:crystal-range-seekbar:1.2.0'
+    implementation 'com.yuyakaido.android:card-stack-view:1.0.0-beta9'
+    implementation 'com.jemshit:crystal-range-seekbar:1.2.0'
+    implementation 'com.github.ybq:parallaxviewpager:2.0.0'
+    implementation 'com.flaviofaria:kenburnsview:1.0.7'
+    implementation 'com.github.mmin18:realtimeblurview:1.1.2'
+    implementation 'com.timehop.stickyheadersrecyclerview:library:[0.4.3]@aar'
+    implementation 'com.github.vipulasri:timelineview:1.0.6'
+    implementation 'com.google.android.gms:play-services-places:17.0.0'
+
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+    implementation 'com.teliver.sdk:TeliverSdk:3.0.1'
+    implementation 'com.google.firebase:firebase-messaging:21.1.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
 
 
 

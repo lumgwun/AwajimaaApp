@@ -14,6 +14,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.MarketClasses.Market;
+import com.skylightapp.MarketClasses.MarketAdapter;
 import com.skylightapp.R;
 
 import java.util.ArrayList;

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_User_Home"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_market"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Market Place" />
+        <item
+            android:id="@+id/nav_my_rides"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="My Rides" />
+
+        <item
+            android:id="@+id/nav_ride_chats"
+            android:icon="@drawable/ic_directions"
+            android:title="Chats" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_loc_setting"
+                android:icon="@drawable/settings"
+                android:title="Settings" />
+            <item
+                android:id="@+id/nav_logout_loc"
+                android:icon="@drawable/logout1"
+                android:title="LogOut" />
+        </menu>
+    </item>
+
+</menu>

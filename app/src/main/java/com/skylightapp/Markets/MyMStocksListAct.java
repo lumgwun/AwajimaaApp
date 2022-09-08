@@ -2,7 +2,6 @@ package com.skylightapp.Markets;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
-import androidx.viewpager.widget.ViewPager;
 
 import android.app.ListActivity;
 import android.content.DialogInterface;
@@ -17,15 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TabWidget;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.AppController;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Customers.CustomerHelpActTab;
-import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.MarketClasses.MyStockAdapter;
 import com.skylightapp.R;
 
 import java.util.List;

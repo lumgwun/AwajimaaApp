@@ -14,6 +14,24 @@
         <item>Unknown threat</item>
         <item>Others</item>
     </string-array>
+    <string-array name="vehicles">
+        <item></item>
+        <item>Flying Boat</item>
+        <item>Canoe</item>
+        <item>Wheel Birrow</item>
+        <item>Pick up Van</item>
+        <item>Big Van</item>
+        <item>Keke</item>
+        <item>Okada</item>
+        <item>Trailer</item>
+        <item>Flight Logistics</item>
+        <item>Road Express</item>
+        <item>Train Express</item>
+    </string-array>
+    <string-array name="dlg_image_pick">
+        <item>Gallery</item>
+        <item>Camera</item>
+    </string-array>
 
     <string-array name="fromAcctType">
         <item></item>

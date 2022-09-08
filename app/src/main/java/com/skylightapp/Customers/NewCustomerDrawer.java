@@ -203,7 +203,11 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         if(userProfile ==null){
-            userProfile=homeBundle.getParcelable("Profile");
+            if(homeBundle !=null){
+                userProfile=homeBundle.getParcelable("Profile");
+
+            }
+
         }
         json1 = userPreferences.getString("LastCustomerUsed", "");
         customer = gson1.fromJson(json1, Customer.class);

@@ -1,17 +1,32 @@
 package com.skylightapp.Classes;
 
 import android.app.Application;
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.gson.Gson;
 import com.quickblox.auth.session.QBSession;
 import com.quickblox.auth.session.QBSessionManager;
 import com.quickblox.auth.session.QBSessionParameters;
 import com.quickblox.auth.session.QBSettings;
+import com.quickblox.core.ServiceZone;
 import com.quickblox.messages.services.QBPushManager;
+import com.skylightapp.MarketClasses.BackgroundListener;
+import com.skylightapp.MarketClasses.ConfigUtils;
+import com.skylightapp.MarketClasses.CoreConfigUtils;
+import com.skylightapp.MarketClasses.ImageLoader;
+import com.skylightapp.MarketClasses.MyPreferences;
+import com.skylightapp.MarketClasses.PreferencesManager;
+import com.skylightapp.MarketClasses.QbConfigs;
+import com.skylightapp.MarketClasses.SampleConfigs;
+import com.skylightapp.MarketInterfaces.ConstsInterface;
 import com.skylightapp.R;
+
+import java.io.IOException;
+import java.util.Calendar;
 
 public class App extends Application {
     private static final String TAG = App.class.getSimpleName();
@@ -25,6 +40,18 @@ public class App extends Application {
 
     private static App instance;
 
+    private static final String QB_CONFIG_DEFAULT_FILE_NAME = "qb_config.json";
+    private static QbConfigs qbConfigs;
+    private static SampleConfigs sampleConfigs;
+    private static ImageLoader imageLoader;
+
+    private static Context context;
+    public static int year = Calendar.getInstance().get(Calendar.YEAR);
+
+    private static PreferencesManager preferencesManager;
+    private static MyPreferences preferences;
+    private static Gson gson = new Gson();
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -34,6 +61,16 @@ public class App extends Application {
         initCredentials();
         initQBSessionManager();
         initPushManager();
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(new BackgroundListener());
+
+        initQbConfigs();
+
+        App.context = getApplicationContext();
+        preferencesManager = new PreferencesManager(App.context);
+        preferences = preferencesManager.getMyPreferences();
+        imageLoader = new ImageLoader();
+        initSampleConfigs();
+
     }
 
     private void checkConfig() {
@@ -42,17 +79,21 @@ public class App extends Application {
             throw new AssertionError(getString(R.string.error_qb_credentials_empty));
         }
     }
+    public void initCredentials(){
+        if (qbConfigs != null) {
+            //QBSettings.getInstance().init(getApplicationContext(), qbConfigs.getAppId(), qbConfigs.getAuthKey(), qbConfigs.getAuthSecret());
+            //QBSettings.getInstance().setAccountKey(qbConfigs.getAccountKey());
 
-    private void initCredentials() {
-        QBSettings.getInstance().init(getApplicationContext(), APPLICATION_ID, AUTH_KEY, AUTH_SECRET);
-        QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
+            QBSettings.getInstance().init(getApplicationContext(), APPLICATION_ID, AUTH_KEY, AUTH_SECRET);
+            QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
 
-        // Uncomment and put your Api and Chat servers endpoints if you want to point the sample
-        // against your own server.
-        //
-        // QBSettings.getInstance().setEndpoints("https://your_api_endpoint.com", "your_chat_endpoint", ServiceZone.PRODUCTION);
-        // QBSettings.getInstance().setZone(ServiceZone.PRODUCTION);
+            if (!TextUtils.isEmpty(qbConfigs.getApiDomain()) && !TextUtils.isEmpty(qbConfigs.getChatDomain())) {
+                QBSettings.getInstance().setEndpoints(qbConfigs.getApiDomain(), qbConfigs.getChatDomain(), ServiceZone.PRODUCTION);
+                QBSettings.getInstance().setZone(ServiceZone.PRODUCTION);
+            }
+        }
     }
+
 
     private void initQBSessionManager() {
         QBSessionManager.getInstance().addListener(new QBSessionManager.QBSessionListener() {
@@ -113,7 +154,55 @@ public class App extends Application {
         });
     }
 
+
+    private void initSampleConfigs() {
+        try {
+            sampleConfigs = ConfigUtils.getSampleConfigs(ConstsInterface.SAMPLE_CONFIG_FILE_NAME);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static SampleConfigs getSampleConfigs() {
+        return sampleConfigs;
+    }
+
+    private void initQbConfigs() {
+        Log.e(TAG, "QB CONFIG FILE NAME: " + getQbConfigFileName());
+        qbConfigs = CoreConfigUtils.getCoreConfigsOrNull(getQbConfigFileName());
+    }
+
     public static synchronized App getInstance() {
         return instance;
+    }
+
+
+
+    public static Gson getGson() {
+        return gson;
+    }
+
+    public static QbConfigs getQbConfigs(){
+        return qbConfigs;
+    }
+
+    public static String getQbConfigFileName(){
+        return QB_CONFIG_DEFAULT_FILE_NAME;
+    }
+
+    public static Context getAppContext() {
+        return App.context;
+    }
+
+    public static ImageLoader getImageLoader() {
+        return imageLoader;
+    }
+
+    public static MyPreferences getPreferences() {
+        return preferences;
+    }
+
+    public static PreferencesManager getPreferencesManager() {
+        return preferencesManager;
     }
 }

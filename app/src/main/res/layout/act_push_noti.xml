@@ -17,7 +17,9 @@
             android:hint="@string/hint_enter_your_message"
             android:inputType="textMultiLine"
             android:maxLength="@integer/push_max_length"
+            android:gravity="center_horizontal"
             android:lines="10"
+            android:foregroundGravity="center_vertical"
             android:padding="@dimen/padding_large"
             android:textSize="@dimen/text_size_medium" />
 

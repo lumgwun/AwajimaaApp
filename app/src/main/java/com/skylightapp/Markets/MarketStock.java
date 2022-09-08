@@ -2,6 +2,7 @@ package com.skylightapp.Markets;
 
 import android.graphics.Bitmap;
 
+import com.skylightapp.MarketClasses.StockAttrException;
 import com.skylightapp.R;
 
 import java.io.ByteArrayOutputStream;

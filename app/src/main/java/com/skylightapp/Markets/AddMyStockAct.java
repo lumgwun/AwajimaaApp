@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.MarketClasses.StockAttrException;
 import com.skylightapp.R;
 
 public class AddMyStockAct extends AppCompatActivity implements View.OnClickListener {

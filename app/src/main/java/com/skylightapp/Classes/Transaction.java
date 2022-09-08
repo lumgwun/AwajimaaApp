@@ -61,7 +61,7 @@ public class Transaction implements Parcelable, Serializable {
 
     public static final String CREATE_GRP_TX_TABLE = "CREATE TABLE IF NOT EXISTS " + GRP_TRANX_TABLE + " (" + GRP_TRANX_ID + " INTEGER, " + GRP_TRANX_PROF_ID + " INTEGER , " +
             GRPA_ID + " INTEGER NOT NULL, " + TRANS_TYPE + " TEXT, " + TRANSACTION_AMOUNT + " REAL, " + TRANSACTION_DATE + " TEXT, " + GRP_PAYMENT_METHOD + " TEXT, " + TRANSACTION_SENDING_ACCT + " REAL, " +
-            TRANSACTION_DEST_ACCT + " LONG, " + TRANSACTION_STATUS + " TEXT, " + "PRIMARY KEY(" +GRP_TRANX_ID + "), " +"FOREIGN KEY(" + GRP_TRANX_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + GRPA_ID + ") REFERENCES " + GRP_ACCT_TABLE + "(" + GRPA_ID + "))";
+            TRANSACTION_DEST_ACCT + " INTEGER, " + TRANSACTION_STATUS + " TEXT, " + "PRIMARY KEY(" +GRP_TRANX_ID + "), " +"FOREIGN KEY(" + GRP_TRANX_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + GRPA_ID + ") REFERENCES " + GRP_ACCT_TABLE + "(" + GRPA_ID + "))";
     private String tranxPayer;
     private String tranxBankAcct;
     private String tranxBankAccName;

@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.skylightapp.Classes.AppController;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.MarketClasses.StockAttrException;
 import com.skylightapp.R;
 
 public class MarketStockDAct extends AppCompatActivity {

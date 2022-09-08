@@ -83,9 +83,31 @@
         android:value="androidx.core.app.CoreComponentFactory"
         tools:ignore="GoogleAppIndexingWarning"
         tools:node="replace">
-        <activity android:name=".Markets.BusinessDealSub"></activity>
+        <activity android:name=".MarketPlaceTransport.DriverAct"></activity>
+
+        <receiver
+            android:name=".MarketClasses.NotificationReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".MarketPlaceTransport.LocationSelecAct" />
+        <activity android:name=".MarketPlaceTransport.FindDriverAct" />
+        <activity android:name=".MarketPlaceTransport.LocActivity" />
+        <activity android:name=".Markets.BaseActivity" />
+        <activity android:name=".Markets.CoreBaseActivity" />
+
+        <service
+            android:name=".MarketClasses.CallService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".Markets.BizDealComAct" />
+        <activity android:name=".Markets.BizDealMileStoneAct" />
+        <activity android:name=".Markets.BusDealDocAct" />
+        <activity android:name=".Markets.BizDealRemitAct" />
+        <activity android:name=".Markets.BizDealTimeLineAct" />
+        <activity android:name=".Markets.BusinessDealSubAct" />
         <activity android:name=".BasicPushAct" />
-        <activity android:name=".PushNotiAct" />
         <activity android:name=".Markets.AppointmentAct" />
         <activity android:name=".Markets.MarketInvTab" />
         <activity android:name=".Markets.LogisticsTab" />
@@ -200,17 +222,7 @@
 
         <activity android:name=".SuperAdmin.SuperAnyDayCount" />
         <activity android:name=".SMSAct" />
-        <activity android:name=".RealEstate.OfficePropAct" />
-        <activity android:name=".RealEstate.EventCenterListAct" />
-        <activity android:name=".RealEstate.ResPropAct" />
-        <activity android:name=".RealEstate.SaveListingAct" />
         <activity android:name=".VoiceRecogAct" />
-        <activity android:name=".RealEstate.PropLocUpdate" />
-        <activity android:name=".RealEstate.PropertyUpdateAct" />
-        <activity android:name=".RealEstate.EstatePropAct" />
-        <activity android:name=".RealEstate.OrgRegActivity" />
-        <activity android:name=".RealEstate.PropertyRegAct" />
-        <activity android:name=".RealEstate.AddPropPixActivity" />
         <activity
             android:name=".Inventory.SuperInvTab"
             android:theme="@style/Theme.SkylightApp3" />

@@ -1,7 +1,6 @@
 package com.skylightapp.Markets;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -25,6 +24,7 @@ import android.widget.ListView;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.MarketClasses.MyStockAdapter;
 import com.skylightapp.R;
 
 import java.util.List;
