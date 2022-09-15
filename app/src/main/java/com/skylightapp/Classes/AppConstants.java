@@ -16,6 +16,16 @@ public class AppConstants {
     //public static final String TWILLO_ACCOUNT_SID = "AC5e05dc0a793a29dc1da2eabdebd6c28d";
     //public static final String TWILLO_AUTH_TOKEN = "@39410e8b813c131da386f3d7bb7f94f7";
     //public static final String TWILLO_PHONE_NO = "+15703251701";
+    public final static String ACCOUNT_TYPE = "account_type";
+    public final static byte NEW_DAILY_ACCOUNT = 0;
+    public final static byte NEW_JOURNEY_ACCOUNT = 1;
+
+    public final static String JOURNEY_ID = "journey_id";
+    public final static byte NONE_JOURNEY = -99;
+
+    public final static String CACHE_DATA = "user_preference";
+    public final static String PRIMARY_CURRENCY = "primary_currency";
+    public final static String SECONDARY_CURRENCY = "secondary_currency";
 
     public static int DEFAULT_YEAR_OF_BIRTH = 1990;
     public static long DAY_IN_MILLIS = 86400000L; // / 86,400,000 milliseconds in a day

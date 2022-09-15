@@ -1,10 +1,19 @@
 package com.skylightapp.MarketClasses;
 
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 public class HashMapJsonAdapter extends TypeAdapter<HashMap<String, String>> {
     @Override
     public void write(JsonWriter out, HashMap<String, String> value) throws IOException {
         if (value == null)
             return;
+
         out.beginArray();
         for (Map.Entry<String, String> entry: value.entrySet()) {
             out.beginObject();

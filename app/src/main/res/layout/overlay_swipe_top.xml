@@ -13,6 +13,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:src="@mipmap/overlay_top"/>
+        android:src="@drawable/top_fg"/>
 
 </androidx.cardview.widget.CardView>

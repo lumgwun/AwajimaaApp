@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class Business implements Serializable, Parcelable {
     private int busIdentity;
-    private String busStatus;
+    private int busStatus;
     private String busCACRegStatus;
     private Location busLocation;
     private  String busName;
@@ -29,9 +29,27 @@ public class Business implements Serializable, Parcelable {
     private ArrayList<BusinessDeal> busBizDeals;
     private ArrayList<MarketTranx> busMarketTranxS;
 
-    protected Business(Parcel in) {
+    public static final String BUSINESS_NAME = "business_name";
+    public static final String BUSINESS_TABLE22 = "business_Table";
+    public static final String BUSINESS_EMAIL = "business_Email";
+    public static final String BUSINESS_PHONE_NO = "business_Phone";
+    public static final String BUSINESS_REG_NO = "business_cac_no";
+    public static final String BUSINESS_TYPE = "business-type";
+    public static final String BUSINESS_OWNER22 = "business_owner_name";
+    public static final String BUSINESS_MANAGER = "business_manager_name";
+    public static final String BUSINESS_PROF_ID = "business_prof_Id";
+    public static final String BUSINESS_MANAGER_ID22 = "business_manager_prof_Id";
+    public static final String BUSINESS_LOCATION = "business_location";
+    public static final String BUSINESS_MARKET_ID = "business_market_Id";
+    public static final String BUSINESS_STATUS = "business_status";
+    public static final String BUSINESS_ID33 = "business_ID";
+    public static final String BUSINESS_LOGO = "business_Logo";
+    public static final String BUSINESS_COUNTRY = "business_Country";
+
+
+    public Business(Parcel in) {
         busIdentity = in.readInt();
-        busStatus = in.readString();
+        busStatus = in.readInt();
         busCACRegStatus = in.readString();
         busLocation = in.readParcelable(Location.class.getClassLoader());
         busName = in.readString();
@@ -56,11 +74,15 @@ public class Business implements Serializable, Parcelable {
         }
     };
 
-    public String getBusStatus() {
+    public Business() {
+        super();
+    }
+
+    public int getBusStatus() {
         return busStatus;
     }
 
-    public void setBusStatus(String busStatus) {
+    public void setBusStatus(int busStatus) {
         this.busStatus = busStatus;
     }
 
@@ -200,7 +222,7 @@ public class Business implements Serializable, Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(busIdentity);
-        parcel.writeString(busStatus);
+        parcel.writeInt(busStatus);
         parcel.writeString(busCACRegStatus);
         parcel.writeParcelable(busLocation, i);
         parcel.writeString(busName);

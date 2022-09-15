@@ -1,82 +1,44 @@
 package com.skylightapp.MarketClasses;
 
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 
-import com.skylightapp.Classes.App;
+public abstract class BaseAsyncTask<Params, Progress, Result> extends AsyncTask<Params, Progress, Result> {
+    private static final String TAG = BaseAsyncTask.class.getSimpleName();
 
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-public class BaseAsyncTask<T> extends AsyncTask<String, Void, String> {
-    private String httpMethod;
-    private T requestParams;
-    private HttpURLConnection connection;
-
-    public BaseAsyncTask(String urn, T params) {
-        try {
-            connection = (HttpURLConnection) new URL(Config.getServer() + urn).openConnection();
-            requestParams = params;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    private static final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
+    private boolean isExceptionOccurred;
 
     @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
-
-    @Override
-    protected String doInBackground(String[] params) {
+    protected final Result doInBackground(Params... params) {
         try {
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setDoInput(true);
-            if ("POST".equals(httpMethod) || "DELETE".equals(httpMethod)) {
-                connection.setDoOutput(true);
-                connection.setRequestMethod(httpMethod);
-
-                OutputStream os = connection.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, "UTF-8"));
-                writer.write(App.getGson().toJson(requestParams));
-                writer.flush();
-                writer.close();
-                os.close();
-            }
-
-            connection.connect();
-
-            int responseCode = connection.getResponseCode();
-
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                StringBuilder sb = new StringBuilder();
-                String line;
-                while ((line = br.readLine()) != null) {
-                    sb.append(line).append("\n");
+            return performInBackground(params);
+        } catch (final Exception e) {
+            isExceptionOccurred = true;
+            mainThreadHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    onException(e);
                 }
-                br.close();
-                return sb.toString();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+            });
+            return null;
         }
-        return null;
     }
 
     @Override
-    protected void onPostExecute(String result) {
-        super.onPostExecute(result);
+    protected final void onPostExecute(Result result) {
+        if (!isExceptionOccurred) {
+            onResult(result);
+        }
     }
 
-    public void setHttpMethod(String httpMethod) {
-        this.httpMethod = httpMethod;
+    public abstract Result performInBackground(Params... params) throws Exception;
+
+    public abstract void onResult(Result result);
+
+    public void onException(Exception e) {
+        Log.w(TAG, e);
     }
 }

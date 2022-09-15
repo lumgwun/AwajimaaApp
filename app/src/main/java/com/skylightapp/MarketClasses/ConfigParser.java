@@ -1,8 +1,16 @@
 package com.skylightapp.MarketClasses;
 
+import android.content.Context;
+
 import com.skylightapp.Classes.AppController;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
 public class ConfigParser {
+
     private Context context;
 
     public ConfigParser() {

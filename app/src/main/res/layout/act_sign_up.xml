@@ -572,7 +572,6 @@
                 android:layout_marginTop="20dp"
                 app:accentType="all"
                 android:layout_gravity="center_horizontal"
-                app:mask="#"
                 app:digitTextSize="11sp"
                 app:pinInputType="number"
                 android:gravity="center_horizontal"

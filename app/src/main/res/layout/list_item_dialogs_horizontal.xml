@@ -25,7 +25,7 @@
         android:layout_height="64dp"
         android:scaleType="centerCrop"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/background_icon_circle"/>
+        android:src="@drawable/rect_their4c"/>
 
     <TextView
         android:id="@+id/list_dialogs_slider_name"

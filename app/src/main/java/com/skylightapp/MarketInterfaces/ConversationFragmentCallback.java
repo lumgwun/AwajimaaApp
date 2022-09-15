@@ -9,8 +9,7 @@ import com.quickblox.videochat.webrtc.callbacks.QBRTCClientVideoTracksCallbacks;
 import com.quickblox.videochat.webrtc.callbacks.QBRTCSessionEventsCallback;
 import com.quickblox.videochat.webrtc.callbacks.QBRTCSessionStateCallback;
 import com.quickblox.videochat.webrtc.view.QBRTCVideoTrack;
-import com.skylightapp.MarketClasses.CallService;
-import com.skylightapp.Markets.BizDealComAct;
+import com.skylightapp.MarketClasses.CallServiceConf;
 
 import org.jivesoftware.smack.ConnectionListener;
 import org.webrtc.CameraVideoCapturer;
@@ -36,13 +35,13 @@ public interface ConversationFragmentCallback {
 
     void removeSessionEventsListener(QBRTCSessionEventsCallback eventsCallback);
 
-    void addCurrentCallStateListener(BizDealComAct.CurrentCallStateCallback currentCallStateCallback);
+    void addCurrentCallStateListener(CallServiceConf.CurrentCallStateCallback currentCallStateCallback);
 
-    void removeCurrentCallStateListener(BizDealComAct.CurrentCallStateCallback currentCallStateCallback);
+    void removeCurrentCallStateListener(CallActivity.CurrentCallStateCallback currentCallStateCallback);
 
-    void addOnChangeAudioDeviceListener(BizDealComAct.OnChangeAudioDevice onChangeDynamicCallback);
+    void addOnChangeAudioDeviceListener(CallActivity.OnChangeAudioDevice onChangeDynamicCallback);
 
-    void removeOnChangeAudioDeviceListener(BizDealComAct.OnChangeAudioDevice onChangeDynamicCallback);
+    void removeOnChangeAudioDeviceListener(CallActivity.OnChangeAudioDevice onChangeDynamicCallback);
 
     void onSetAudioEnabled(boolean isAudioEnabled);
 
@@ -85,9 +84,9 @@ public interface ConversationFragmentCallback {
 
     void removeClientConnectionCallback(QBRTCSessionStateCallback clientConnectionCallbacks);
 
-    void addCurrentCallStateCallback(CallService.CurrentCallStateCallback currentCallStateCallback);
+    void addCurrentCallStateCallback(CallServiceConf.CurrentCallStateCallback currentCallStateCallback);
 
-    void removeCurrentCallStateCallback(CallService.CurrentCallStateCallback currentCallStateCallback);
+    void removeCurrentCallStateCallback(CallServiceConf.CurrentCallStateCallback currentCallStateCallback);
 
     void addReconnectionCallback(ReconnectionCallback reconnectionCallback);
 

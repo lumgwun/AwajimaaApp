@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import androidx.lifecycle.ProcessLifecycleOwner;
+import androidx.multidex.MultiDexApplication;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,13 +30,18 @@ import org.acra.annotation.ReportsCrashes;
 
 import java.util.Calendar;
 
+import static com.skylightapp.BuildConfig.QUICKBLOX_ACCT_KEY;
+import static com.skylightapp.BuildConfig.QUICKBLOX_APP_ID;
+import static com.skylightapp.BuildConfig.QUICKBLOX_AUTH_KEY;
+import static com.skylightapp.BuildConfig.QUICKBLOX_SECRET_KEY;
+
 
 @ReportsCrashes(mailTo = "lumgwun1@gmail.com", customReportContent = {
         ReportField.APP_VERSION_CODE, ReportField.APP_VERSION_NAME,
         ReportField.ANDROID_VERSION, ReportField.PHONE_MODEL,
         ReportField.CUSTOM_DATA, ReportField.STACK_TRACE, ReportField.LOGCAT}, mode = ReportingInteractionMode.TOAST, resToastText = R.string.crash_toast_text)
 
-public class AppController extends Application {
+public class AppController extends MultiDexApplication {
 
     public static final String TAG = AppController.class.getSimpleName();
 
@@ -66,10 +72,12 @@ public class AppController extends Application {
     public static final boolean ALLOW_LISTEN_NETWORK = true;
 
     //App credentials
-    private static final String APPLICATION_ID = "97776";   //QUICKBLOX_APP_ID
-    private static final String AUTH_KEY = "OgUsH5zOOUSCEYG";
-    private static final String AUTH_SECRET = "6jUsxcH9ua3z9vC";
-    private static final String ACCOUNT_KEY = "8_x7t1uYpTckdzzrYbEa";
+    private static final String APPLICATION_ID = QUICKBLOX_APP_ID;
+    private static final String AUTH_KEY = QUICKBLOX_AUTH_KEY;
+    private static final String AUTH_SECRET = QUICKBLOX_SECRET_KEY;
+    private static final String ACCOUNT_KEY = QUICKBLOX_ACCT_KEY;
+
+    public static final String DEFAULT_USER_PASSWORD = "quickblox";
     private static final String SERVER_URL = "";
 
     //Chat settings range

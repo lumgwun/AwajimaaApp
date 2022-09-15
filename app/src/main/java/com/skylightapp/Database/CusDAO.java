@@ -28,6 +28,7 @@ import static com.skylightapp.Classes.Customer.CUSTOMER_OFFICE;
 import static com.skylightapp.Classes.Customer.CUSTOMER_PASSWORD;
 import static com.skylightapp.Classes.Customer.CUSTOMER_PHONE_NUMBER;
 import static com.skylightapp.Classes.Customer.CUSTOMER_PROF_ID;
+import static com.skylightapp.Classes.Customer.CUSTOMER_STATUS;
 import static com.skylightapp.Classes.Customer.CUSTOMER_SURNAME;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
 import static com.skylightapp.Classes.Customer.CUSTOMER_USER_NAME;
@@ -85,6 +86,26 @@ public class CusDAO extends DBHelperDAO{
         cursor.close();
 
         return customerArrayList;
+    }
+    public Cursor check_CusPhone_No_exist(String user_phone_no, String status){
+        String query = "SELECT * FROM "+CUSTOMER_TABLE+" WHERE "+CUSTOMER_PHONE_NUMBER+" ="+user_phone_no+ " AND "+CUSTOMER_STATUS+" = "+status;
+        Cursor cursor = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        if(db != null){
+            cursor = db.rawQuery(query,null);
+            return cursor;
+        }
+        else{
+            return cursor;
+        }
+    }
+    Cursor get_user_details(int user_id){
+        String Query = "SELECT "+CUSTOMER_FIRST_NAME+","+CUSTOMER_SURNAME+","+CUSTOMER_PHONE_NUMBER+","+CUSTOMER_EMAIL_ADDRESS+","+CUSTOMER_DATE_JOINED+" FROM "+CUSTOMER_TABLE+" WHERE "+CUSTOMER_ID+"="+user_id ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        cursor = db.rawQuery(Query,null);
+        return  cursor;
     }
     @SuppressLint("Range")
     public ArrayList<ChartData> getChartCustomers(String yearMonth){

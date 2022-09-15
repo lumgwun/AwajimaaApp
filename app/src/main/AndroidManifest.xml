@@ -83,7 +83,41 @@
         android:value="androidx.core.app.CoreComponentFactory"
         tools:ignore="GoogleAppIndexingWarning"
         tools:node="replace">
-        <activity android:name=".MarketPlaceTransport.DriverAct"></activity>
+        <activity android:name=".Markets.ForwardToActCon"></activity>
+        <activity android:name=".Markets.NewGroupActCon" />
+        <activity android:name=".Markets.PermissionsActCon" />
+        <activity android:name=".Markets.SelectUsersActCon" />
+        <activity android:name=".Markets.BaseActCon" />
+        <activity android:name=".Markets.ChatActCon" />
+        <activity android:name=".Markets.CallActivityCon" />
+        <activity android:name=".Markets.BizDealCreatorAct" />
+
+        <service
+            android:name=".VideoChat.LoginService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".VideoChat.BaseActivity" />
+        <activity android:name=".VideoChat.OpponentsActivity" />
+        <activity android:name=".Conference.DialogsActivity" />
+        <activity android:name=".VideoChat.PermissionsActivity" />
+
+        <service
+            android:name=".VideoChat.CallServiceV"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".VideoChat.CallActV" />
+        <activity android:name=".Markets.BizOTPAct" />
+        <activity android:name=".Markets.BizRegAct" />
+        <activity android:name=".Markets.BizOnbordingAct" />
+        <activity android:name=".Markets.BizDealTranXAct" />
+        <activity android:name=".SplashAct" />
+        <activity android:name=".Markets.AddDailyBizRecordAct" />
+        <activity android:name=".Markets.AttachmentImageActivity" />
+        <activity android:name=".Markets.ChatAct" />
+        <activity android:name=".Markets.ProfileActivity" />
+        <activity android:name=".MarketPlaceTransport.DriverAct" />
 
         <receiver
             android:name=".MarketClasses.NotificationReceiver"
@@ -97,7 +131,7 @@
         <activity android:name=".Markets.CoreBaseActivity" />
 
         <service
-            android:name=".MarketClasses.CallService"
+            android:name=".MarketClasses.CallServiceConf"
             android:enabled="true"
             android:exported="true" />
 

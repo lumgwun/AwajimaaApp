@@ -142,7 +142,7 @@
             style="@style/BorderlessImageButtonStyle"
             android:layout_gravity="center_vertical"
             android:onClick="onAttachmentsClick"
-            android:src="@drawable/ic_action_attachment" />
+            android:src="@drawable/ic_attach_foreground" />
 
         <EditText
             android:id="@+id/edit_chat_message"

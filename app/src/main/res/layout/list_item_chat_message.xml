@@ -10,7 +10,7 @@
     <RelativeLayout
         android:id="@+id/layout_message_content_container"
         style="@style/MessageContentContainerStyle"
-        tools:background="@drawable/outgoing_message_bg">
+        tools:background="@drawable/outgoing_message_background">
 
         <TextView
             android:id="@+id/text_image_message"
@@ -23,16 +23,17 @@
             android:layout_width="@dimen/chat_message_attachment_size"
             android:layout_height="@dimen/chat_message_attachment_size"
             android:scaleType="centerCrop"
-            app:mask="@drawable/outgoing_message_bg" />
+            app:mask="@drawable/outgoing_message_background" />
 
         <ProgressBar
             android:id="@+id/progress_message_attachment"
             style="@style/CenterProgressBarStyle"
-            android:theme="@style/AppTheme.BlueAccent"/>
+            android:theme="@style/FirebaseUI.TopProgressBar"/>
 
         <com.devspark.robototextview.widget.RobotoTextView
             android:id="@+id/text_message_author"
             style="@style/MessageAuthorStyle"
+            android:padding="10dp"
             android:layout_alignParentTop="true"
             tools:text="User 2" />
     </RelativeLayout>

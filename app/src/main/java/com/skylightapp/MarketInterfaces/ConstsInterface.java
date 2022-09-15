@@ -44,4 +44,12 @@ public interface ConstsInterface {
     String EXTRA_DIALOG_OCCUPANTS = "9";
     String EXTRA_AS_LISTENER = "8";
     String PREF_MIC_ENABLED = "MIC ENABLED";
+    String PREF_SWAP_CAM_TOGGLE_CHECKED = "pref_swap_cam_toggle_checked";
+    String PREF_SCREEN_SHARING_TOGGLE_CHECKED = "pref_screen_sharing_toggle_checked";
+    String PREF_CAM_ENABLED = "pref_cam_enabled";
+
+
+    String EXTRA_CERTAIN_DIALOG_ID = "certain_dialog_id";
+    String EXTRA_SETTINGS_TYPE = "extra_settings_type";
+
 }

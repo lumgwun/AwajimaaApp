@@ -23,6 +23,9 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.skylightapp.Classes.Customer.CUSTOMER_PHONE_NUMBER;
+import static com.skylightapp.Classes.Customer.CUSTOMER_STATUS;
+import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
 import static com.skylightapp.Classes.GroupAccount.GRP_PROFILE_TABLE;
 import static com.skylightapp.Classes.Profile.CUS_ID_PIX_KEY;
 import static com.skylightapp.Classes.Profile.PASSWORD;
@@ -85,6 +88,19 @@ public class ProfDAO extends DBHelperDAO{
 
         db.close();
         return password;
+    }
+    Cursor check_ProfPhone_No_exist(String user_phone_no, String status){
+        String query = "SELECT * FROM "+PROFILES_TABLE+" WHERE "+PROFILE_PHONE+" ="+user_phone_no+ " AND "+PROFILE_STATUS+" = "+status;
+        Cursor cursor = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        if(db != null){
+            cursor = db.rawQuery(query,null);
+            return cursor;
+        }
+        else{
+            return cursor;
+        }
     }
     public String getUserName(String phoneNo) {
         SQLiteDatabase db = this.getReadableDatabase();

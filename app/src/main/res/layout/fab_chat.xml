@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="200dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:id="@+id/Fab_layoutP"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/fabLayout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="13dp"
+            android:padding="12dp"
+            android:layout_below="@id/fabBGLayout"
+            android:clipToPadding="false"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="13dp"
+            android:layout_gravity="bottom|end"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white_good"
+                android:text="Create Milestones"/>
+
+            <net.qiujuer.genius.ui.widget.FloatActionButton
+                android:id="@+id/fab_create_mileston"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                app:gBackgroundColor="@color/yellow_intense"
+                app:gTouchColor="@color/white_good"
+                app:srcCompat="@android:drawable/ic_menu_agenda"
+                app:fabSize="mini"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fabLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:clipToPadding="false"
+            android:layout_marginRight="13dp"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="13dp"
+            android:layout_gravity="bottom|end"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/blue_dark"
+                android:text="Add Members"/>
+
+            <net.qiujuer.genius.ui.widget.FloatActionButton
+                android:id="@+id/fab_add_members"
+                app:gBackgroundColor="@color/blue_dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                app:srcCompat="@drawable/ic_camera"
+                app:fabSize="mini"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/fabLayout3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:clipToPadding="false"
+            android:layout_marginRight="13dp"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="13dp"
+            android:layout_gravity="bottom|end"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white_good"
+                android:text="View Transactions"/>
+
+            <net.qiujuer.genius.ui.widget.FloatActionButton
+                android:id="@+id/fab_tranx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                app:gBackgroundColor="@color/yellow_intense"
+                app:srcCompat="@drawable/ic__category"
+                android:tint="@android:color/white"
+                app:fabSize="mini"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:clipToPadding="false"
+            android:padding="12dp"
+            android:layout_marginRight="13dp"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:layout_gravity="bottom|end">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white_good"
+                android:text="Discussion Timeline"/>
+
+
+            <net.qiujuer.genius.ui.widget.FloatActionButton
+                android:id="@+id/fab_timelines"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                app:gBackgroundColor="@color/fontWhiteEnable"
+                android:gravity="center_vertical"
+                app:srcCompat="@drawable/ic_menu_gallery"
+                app:fabSize="normal"/>
+        </LinearLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:clipToPadding="false"
+        android:padding="12dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_gravity="bottom|end">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white_good"
+            android:text="More Control"/>
+
+
+        <net.qiujuer.genius.ui.widget.FloatActionButton
+            android:id="@+id/fabControl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            app:gBackgroundColor="@color/yellow_intense"
+            android:gravity="center_vertical"
+            app:srcCompat="@drawable/ic_menu_gallery"
+            app:fabSize="normal"/>
+    </LinearLayout>
+
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -84,9 +84,17 @@ import static com.skylightapp.Classes.CustomerManager.CREATE_WORKERS_TABLE;
 import static com.skylightapp.Classes.CustomerManager.CUSTOMER_TELLER_PIX;
 import static com.skylightapp.Classes.CustomerManager.CUSTOMER_TELLER_PROF_ID;
 import static com.skylightapp.Classes.CustomerManager.WORKER_TABLE;
+import static com.skylightapp.Classes.DailyAccount.CREATE_DAILY_ACCOUNTING_TABLE;
+
+import static com.skylightapp.Classes.DailyAccount.DAILY_ACCOUNTING_TABLE;
+
 import static com.skylightapp.Classes.EmergReportNext.CREATE_EMERGENCY_NEXT_REPORT_TABLE;
 import static com.skylightapp.Classes.EmergencyReport.CREATE_EMERGENCY_REPORT_TABLE;
 import static com.skylightapp.Classes.EmergencyReport.EMERGENCY_REPORT_TABLE;
+import static com.skylightapp.Classes.Journey.CREATE_JOURNEY_TABLE;
+import static com.skylightapp.Classes.Journey.JOURNEY_TABLE;
+import static com.skylightapp.Classes.JourneyAccount.CREATE_JOURNEY_ACCOUNT_TABLE;
+import static com.skylightapp.Classes.JourneyAccount.JOURNEY_ACCOUNT_TABLE;
 import static com.skylightapp.Classes.Loan.LOAN_PROF_ID;
 import static com.skylightapp.Classes.Message.MESSAGE_PROF_ID;
 import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_NAME;
@@ -132,6 +140,8 @@ import static com.skylightapp.Classes.Transaction.TRANSACTION_PROF_ID;
 import static com.skylightapp.Classes.TransactionGranting.CREATE_TANSACTION_EXTRA_TABLE;
 import static com.skylightapp.Classes.TransactionGranting.TANSACTION_EXTRA_TABLE;
 import static com.skylightapp.Classes.UserSuperAdmin.SUPER_ADMIN_PROFILE_ID;
+import static com.skylightapp.Database.MarketTranXDAO.CREATE_MARKET_TX_TABLE_TABLE;
+import static com.skylightapp.Database.MarketTranXDAO.MARKET_TX_TABLE;
 import static com.skylightapp.Inventory.StockTransfer.CREATE_T_STOCKS_TABLE;
 import static com.skylightapp.Inventory.StockTransfer.T_STOCKS_TABLE;
 import static com.skylightapp.Inventory.Stocks.CREATE_STOCK_TABLE;
@@ -408,6 +418,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.d("table", CREATE_SPONSOR_TABLE);
         Log.d("table", CREATE_EMERGENCY_NEXT_REPORT_TABLE);
         Log.d("table", CREATE_TELLER_REPORT_TABLE);
+        Log.d("table", CREATE_MARKET_TX_TABLE_TABLE);
 
 
     }
@@ -480,6 +491,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
             db.execSQL(CREATE_MARKET_STOCK_TABLE);
             db.execSQL(CREATE_MARKET_STOCK_TABLE);
+            db.execSQL(CREATE_DAILY_ACCOUNTING_TABLE);
+            db.execSQL(CREATE_JOURNEY_TABLE);
+            db.execSQL(CREATE_JOURNEY_ACCOUNT_TABLE);
+            db.execSQL(CREATE_MARKET_TX_TABLE_TABLE);
 
             db.execSQL("create table ROLES " + "(role_ID integer primary key, roleUserName text,rolePassword text,rolePhoneNo text,role text)");
             db.setTransactionSuccessful();
@@ -553,6 +568,11 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + MARKET_STOCK_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MARKET_TABLE);
 
+        db.execSQL("DROP TABLE IF EXISTS " + DAILY_ACCOUNTING_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + JOURNEY_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + JOURNEY_ACCOUNT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MARKET_TX_TABLE);
+
         onCreate(db);
 
     }
@@ -612,6 +632,10 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + SPONSOR_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MARKET_STOCK_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MARKET_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + DAILY_ACCOUNTING_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + JOURNEY_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + JOURNEY_ACCOUNT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MARKET_TX_TABLE);
         onCreate(db);
     }
 

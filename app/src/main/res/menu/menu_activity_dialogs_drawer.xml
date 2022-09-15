@@ -1,0 +1,32 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group
+        android:id="@+id/settings">
+
+        <item
+            android:id="@+id/menu_video_settings"
+            android:icon="@drawable/settings"
+            android:title="Video settings"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/menu_audio_settings"
+            android:icon="@drawable/settings"
+            android:title="Audio settings"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/menu_appinfo"
+            android:icon="@drawable/ic_notification_icon"
+            android:title="@string/menu_dialogs_app_info"
+            app:showAsAction="never" />
+    </group>
+
+    <item
+        android:id="@+id/menu_dialogs_action_logout"
+        android:icon="@drawable/ic_exit"
+        android:title="@string/menu_dialogs_logout"
+        app:showAsAction="never" />
+
+</menu>

@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <com.skylightapp.MarketClasses.CircularProgressIndicator
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/dialog_match_progress_indicator"
             android:layout_width="72dp"
             android:layout_height="72dp"
@@ -36,9 +36,9 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/list_item_side_margin"
             android:scaleType="centerCrop"
-            android:src="@drawable/background_icon_circle"
+            android:src="@drawable/rect_their_message"
             tools:ignore="ContentDescription"
-            tools:src="@drawable/ic_chat_group" />
+            tools:src="@drawable/group_call" />
     </RelativeLayout>
 
     <LinearLayout

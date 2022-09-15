@@ -21,6 +21,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -35,6 +36,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 import com.melnykov.fab.FloatingActionButton;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.QBEntityCallbackImpl;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.users.QBUsers;
+import com.quickblox.users.model.QBUser;
 import com.skylightapp.Accountant.AcctantBackOffice;
 import com.skylightapp.Admins.AdminDrawerActivity;
 import com.skylightapp.Classes.Account;
@@ -48,9 +54,13 @@ import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Markets.ToastUtils;
 import com.skylightapp.SuperAdmin.SuperAdminOffice;
 import com.skylightapp.Tellers.TellerDrawerAct;
 import com.skylightapp.Tellers.TellerHomeChoices;
+import com.skylightapp.VideoChat.BaseActivity;
+import com.skylightapp.VideoChat.OpponentsActivity;
+import com.skylightapp.VideoChat.SharedPrefsHelperV;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -80,7 +90,7 @@ import static com.skylightapp.Database.DBHelper.DATABASE_NAME;
 import static com.skylightapp.Database.DBHelper.DB_PATH;
 
 @SuppressWarnings("deprecation")
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
     public static final String LOGIN_ID_EXTRA_KEY = "LoginActivity.LOGIN_ID_EXTRA_KEY";
     private Bundle bundle;
     private String username;
@@ -97,8 +107,8 @@ public class LoginActivity extends AppCompatActivity {
     Customer customer1 ;
     AccountTypes accountTypeStr;
     SQLiteDatabase sqLiteDatabase;
-    private Gson gson;
-    private String json;
+    private Gson gson,gson1;
+    private String json,json1;
     DBHelper dbHelper;
     private SharedPreferences userPreferences;
     Customer skyLightCustomer;
@@ -160,6 +170,7 @@ public class LoginActivity extends AppCompatActivity {
     String userProfileType;
     private StandingOrderAcct standingOrderAcct;
     private  Profile userProfile;
+    private QBUser qbUser;
 
     private static final String TAG = "EmailPassword";
     private static final String PREF_NAME = "skylight";
@@ -172,6 +183,11 @@ public class LoginActivity extends AppCompatActivity {
                     + "([a-zA-Z]+[w-]+.)+[a-zA-Z]{2,4})$";
     private FirebaseAuth mAuth;
     private Context context;
+    public static void start(Context context) {
+        Intent intent = new Intent(context, LoginActivity.class);
+        context.startActivity(intent);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,18 +200,22 @@ public class LoginActivity extends AppCompatActivity {
         customer1 = new Customer();
         skyLightCustomer= new Customer();
         gson = new Gson();
+        gson1 = new Gson();
+        qbUser= new QBUser();
         userProfile= new Profile();
         profileID2 = random.nextInt((int) (Math.random() * 109) + 1119);
-        /*userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastQBUserUsed", "");
+        qbUser = gson1.fromJson(json1, QBUser.class);
         if(userProfile !=null){
             sharedPrefUserMachine=userPreferences.getString("Machine","");
             sharedPrefSurName=userPreferences.getString("USER_SURNAME","");
             sharedPrefFirstName=userPreferences.getString("USER_FIRSTNAME","");
             sharedPrefRole=userPreferences.getString("USER_ROLE","");
             sharedPrefProfileID=userPreferences.getInt("PROFILE_ID",0);
-        }*/
+        }
 
         dbHelper = new DBHelper(this);
         sqLiteDatabase = dbHelper.getWritableDatabase();
@@ -304,6 +324,51 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
+    }
+    private void saveUserData(QBUser qbUser) {
+        SharedPrefsHelperV sharedPrefsHelper = SharedPrefsHelperV.getInstance();
+        sharedPrefsHelper.saveQbUser(qbUser);
+    }
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    private void signInCreatedUser(final QBUser qbUser) {
+        Log.d(TAG, "SignIn Started");
+        requestExecutor.signInUser(qbUser, new QBEntityCallbackImpl<QBUser>() {
+            @Override
+            public void onSuccess(QBUser user, Bundle params) {
+                Log.d(TAG, "SignIn Successful");
+                sharedPrefsHelper.saveQbUser(qbUser);
+                updateUserOnServer(qbUser);
+            }
+
+            @Override
+            public void onError(QBResponseException responseException) {
+                Log.d(TAG, "Error SignIn" + responseException.getMessage());
+                hideProgressDialog();
+                ToastUtils.longToast(R.string.sign_in_error);
+            }
+        });
+    }
+
+    private void updateUserOnServer(QBUser user) {
+        user.setPassword(null);
+        QBUsers.updateUser(user).performAsync(new QBEntityCallback<QBUser>() {
+            @Override
+            public void onSuccess(QBUser qbUser, Bundle bundle) {
+                hideProgressDialog();
+                //OpponentsActivity.start(LoginActivity.this);
+                finish();
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                hideProgressDialog();
+                ToastUtils.longToast(R.string.update_user_error);
+            }
+        });
     }
     public void SQLiteDataBaseBuild(){
         String myPath = DB_PATH + DATABASE_NAME;
@@ -526,10 +591,14 @@ public class LoginActivity extends AppCompatActivity {
             gender = userPreferences.getString("USER_GENDER", "");
             address = userPreferences.getString("USER_ADDRESS", "");
             picture = Uri.parse(userPreferences.getString("PICTURE_URI", ""));
+            json1 = userPreferences.getString("LastQBUserUsed", "");
+            qbUser = gson1.fromJson(json1, QBUser.class);
         }
         if(customer1 !=null){
             customerID1=customer1.getCusUID();
         }
+        signInCreatedUser(qbUser);
+
         PrefManager prefManager= new PrefManager(this);
         prefManager.saveLoginDetails(userName,password);
         editor.putString("USERNAME", userName);

@@ -7,7 +7,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
-import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -54,12 +53,15 @@ public class Customer  implements Parcelable, Serializable {
     public static final String CUSTOMER_WARD = "customer_Ward";
     public static final String CUS_LOC_CUS_ID = "cusLoc_CusId";
     public static final String CUS_CUS_LOCID = "cus_Cus_LocId";
+    public static final String CUS_BIZ_ID1 = "customer_Biz_ID";
+    public static final String CUSTOMER_MARKET_ID = "customer_Market_ID";
+    public static final String CUSTOMER_COUNTRY = "customer_Country";
 
 
     public static final String CREATE_CUSTOMERS_TABLE = "CREATE TABLE IF NOT EXISTS " + CUSTOMER_TABLE + " ( " + CUSTOMER_ID + " INTEGER  , " + CUS_CUS_LOCID + " INTEGER , " + CUSTOMER_PROF_ID + " INTEGER  , " +
             CUSTOMER_SURNAME + " TEXT, " + CUSTOMER_FIRST_NAME + " TEXT, " + CUSTOMER_PHONE_NUMBER + " TEXT, " + CUSTOMER_EMAIL_ADDRESS + " TEXT, " + CUSTOMER_NIN + " TEXT, " +
             CUSTOMER_DOB + " TEXT, " + CUSTOMER_GENDER + " TEXT, " + CUSTOMER_ADDRESS + " TEXT, " + CUSTOMER_USER_NAME + " TEXT, " + CUSTOMER_PASSWORD + " TEXT, " +
-            CUSTOMER_OFFICE + " TEXT, " + CUSTOMER_DATE_JOINED + " TEXT, " + CUSTOMER_STATUS + " TEXT, "+ "FOREIGN KEY(" + CUS_CUS_LOCID + ") REFERENCES " + CUSTOMER_LOCATION_TABLE + "(" + CUSTOMER_LOC_ID + "),"+ "FOREIGN KEY(" + CUSTOMER_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + CUSTOMER_ID  + "))";
+            CUSTOMER_OFFICE + " TEXT, " + CUSTOMER_DATE_JOINED + " TEXT, " + CUSTOMER_STATUS + " TEXT, "+ CUSTOMER_COUNTRY + " TEXT, "+ "FOREIGN KEY(" + CUS_CUS_LOCID + ") REFERENCES " + CUSTOMER_LOCATION_TABLE + "(" + CUSTOMER_LOC_ID + "),"+ "FOREIGN KEY(" + CUSTOMER_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + CUSTOMER_ID  + "))";
 
 
     public static final String CREATE_CUSTOMER_LOCATION_TABLE = "CREATE TABLE IF NOT EXISTS " + CUSTOMER_LOCATION_TABLE + " ( " + CUSTOMER_LOC_ID + " INTEGER  , " + CUS_LOC_CUS_ID + " INTEGER  , " +
@@ -70,25 +72,29 @@ public class Customer  implements Parcelable, Serializable {
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     @PrimaryKey(autoGenerate = true)
     private int cusID=1112;
-    String firstName;
-    String surname;
-    String middleName;
-    String gender;
-    String office;
+    String cusFirstName;
+    String cusSurname;
+    String cusMiddleName;
+    String cusGender;
+    String cusOffice;
     private String cusStatus;
-    String state;
-    String nin;
-    private String address;
-    String profilePicture;
-    String lga;
+    String cusState;
+    String cusNin;
+    private String cusAddress;
+    String cusProfPicture;
+    String cusLga;
     ArrayList<Address> addresses;
-    String dob;
-    private String password;
-    private String emailAddress;
-    private String phoneNumber;
-    private String dateJoined;
-    String nextOfKin;
-    private String userName;
+    String cusDob;
+    private String cusPassword;
+    private String cusEmailAddress;
+    private String cusPhoneNumber;
+    private String cusDateJoined;
+    String cusNextOfKin;
+    private String cusUserName;
+    private String cusCountry;
+    private String cusMarketID;
+    private ArrayList<Integer> cusMarketIDs;
+    private ArrayList<Integer> cusBizIDs;
     CustomerDailyReport savings;
     private Payment payment;
     private Transaction transaction;
@@ -101,7 +107,7 @@ public class Customer  implements Parcelable, Serializable {
     ArrayList<SkyLightPackage> skyLightPackages;
     ArrayList<SkylightPackageModel> skylightPackageModelArrayList;
     ArrayList<Customer> customersReferred;
-    ArrayList<Payee> payees;
+    private ArrayList<Payee> payees;
     private String role;
     ArrayList<Account> accounts;
     ArrayList<Message> messages;
@@ -140,47 +146,47 @@ public class Customer  implements Parcelable, Serializable {
     private double cusBankBalance;
     private String cusBankAcctNo;
 
-    public Customer(String refID, String phoneNumber) {
+    public Customer(String refID, String cusPhoneNumber) {
 
     }
 
     public Customer(int customerID, String customerName, String phone, String currentAddress, LatLng currentLocation) {
-        this.firstName=customerName;
-        this.phoneNumber=phone;
-        this.address=currentAddress;
+        this.cusFirstName =customerName;
+        this.cusPhoneNumber =phone;
+        this.cusAddress =currentAddress;
         this.latLong=currentLocation;
         this.cusID=customerID;
     }
 
     public Customer(int customerID, String cusName, LatLng currentLocation) {
-        this.firstName=cusName;
+        this.cusFirstName =cusName;
         this.latLong=currentLocation;
         this.cusID=customerID;
 
     }
 
-    public Customer(int customerID, String surname, String firstName) {
+    public Customer(int customerID, String cusSurname, String cusFirstName) {
         this.cusID=customerID;
-        this.surname=surname;
-        this.firstName=firstName;
+        this.cusSurname = cusSurname;
+        this.cusFirstName = cusFirstName;
 
     }
-    public Customer(int count, int customerID, String customerName, String customerPhoneNo, String dateJoined, String customerStatus) {
+    public Customer(int count, int customerID, String customerName, String customerPhoneNo, String cusDateJoined, String customerStatus) {
         this.cusID=customerID;
-        this.surname=customerName;
-        this.firstName=customerName;
-        this.phoneNumber=customerPhoneNo;
-        this.dateJoined=dateJoined;
+        this.cusSurname =customerName;
+        this.cusFirstName =customerName;
+        this.cusPhoneNumber =customerPhoneNo;
+        this.cusDateJoined = cusDateJoined;
         //this.status=customerStatus;
 
     }
-    public Customer(int customerID, String customerName, String customerPhoneNo, String emailAddress,String address, String office) {
+    public Customer(int customerID, String customerName, String customerPhoneNo, String cusEmailAddress, String cusAddress, String cusOffice) {
         this.cusID=customerID;
-        this.surname=customerName;
-        this.emailAddress=emailAddress;
-        this.phoneNumber=customerPhoneNo;
-        this.address=address;
-        this.office=office;
+        this.cusSurname =customerName;
+        this.cusEmailAddress = cusEmailAddress;
+        this.cusPhoneNumber =customerPhoneNo;
+        this.cusAddress = cusAddress;
+        this.cusOffice = cusOffice;
 
     }
 
@@ -231,20 +237,20 @@ public class Customer  implements Parcelable, Serializable {
 
     protected Customer(Parcel in) {
         cusID = in.readInt();
-        firstName = in.readString();
-        surname = in.readString();
-        middleName = in.readString();
-        gender = in.readString();
-        office = in.readString();
-        state = in.readString();
-        lga = in.readString();
+        cusFirstName = in.readString();
+        cusSurname = in.readString();
+        cusMiddleName = in.readString();
+        cusGender = in.readString();
+        cusOffice = in.readString();
+        cusState = in.readString();
+        cusLga = in.readString();
 
-        password = in.readString();
-        emailAddress = in.readString();
-        phoneNumber = in.readString();
-        dateJoined = in.readString();
-        nextOfKin = in.readString();
-        userName = in.readString();
+        cusPassword = in.readString();
+        cusEmailAddress = in.readString();
+        cusPhoneNumber = in.readString();
+        cusDateJoined = in.readString();
+        cusNextOfKin = in.readString();
+        cusUserName = in.readString();
         dailyReports = in.createTypedArrayList(CustomerDailyReport.CREATOR);
         transactions = in.createTypedArrayList(Transaction.CREATOR);
     }
@@ -264,43 +270,43 @@ public class Customer  implements Parcelable, Serializable {
     public Customer() {
 
     }
-    public Customer(String firstName,String customerEmailAddress,String customerPhoneNumber) {
-        this.emailAddress = customerEmailAddress;
-        this.firstName = firstName;
-        this.nin = nin;
-        this.phoneNumber = customerPhoneNumber;
+    public Customer(String cusFirstName, String customerEmailAddress, String customerPhoneNumber) {
+        this.cusEmailAddress = customerEmailAddress;
+        this.cusFirstName = cusFirstName;
+        this.cusNin = cusNin;
+        this.cusPhoneNumber = customerPhoneNumber;
     }
 
     public Customer(JSONObject jsonObject) {
 
     }
 
-    public Customer(int uID, String surname, String firstName, String customerPhoneNumber, String customerEmailAddress, String customerAddress, String customerGender, String customerOffice, String customerState, Uri profilePicture, String dateJoined, String userName, String password) {
-        this.firstName = firstName;
-        this.surname = surname;
-        this.phoneNumber = customerPhoneNumber;
-        this.gender = gender;
+    public Customer(int uID, String cusSurname, String cusFirstName, String customerPhoneNumber, String customerEmailAddress, String customerAddress, String customerGender, String customerOffice, String customerState, Uri cusProfPicture, String cusDateJoined, String cusUserName, String cusPassword) {
+        this.cusFirstName = cusFirstName;
+        this.cusSurname = cusSurname;
+        this.cusPhoneNumber = customerPhoneNumber;
+        this.cusGender = cusGender;
         this.cusID = uID;
-        this.nin = nin;
-        this.gender = customerGender;
-        this.office = office;
-        this.emailAddress = customerEmailAddress;
-        this.password = password;
-        this.userName = userName;
-        this.dob = dob;
-        this.address = customerAddress;
-        this.dateJoined = dateJoined;
+        this.cusNin = cusNin;
+        this.cusGender = customerGender;
+        this.cusOffice = cusOffice;
+        this.cusEmailAddress = customerEmailAddress;
+        this.cusPassword = cusPassword;
+        this.cusUserName = cusUserName;
+        this.cusDob = cusDob;
+        this.cusAddress = customerAddress;
+        this.cusDateJoined = cusDateJoined;
 
     }
-    public Customer(int uID, String surname, String firstName, String customerPhoneNumber, String customerEmailAddress, String customerAddress,  String userName) {
-        this.firstName = firstName;
-        this.surname = surname;
-        this.phoneNumber = customerPhoneNumber;
+    public Customer(int uID, String cusSurname, String cusFirstName, String customerPhoneNumber, String customerEmailAddress, String customerAddress, String cusUserName) {
+        this.cusFirstName = cusFirstName;
+        this.cusSurname = cusSurname;
+        this.cusPhoneNumber = customerPhoneNumber;
         this.cusID = uID;
-        this.nin = nin;
-        this.emailAddress = customerEmailAddress;
-        this.userName = userName;
-        this.address = customerAddress;
+        this.cusNin = cusNin;
+        this.cusEmailAddress = customerEmailAddress;
+        this.cusUserName = cusUserName;
+        this.cusAddress = customerAddress;
 
     }
 
@@ -336,7 +342,7 @@ public class Customer  implements Parcelable, Serializable {
     }
 
     public void setCusAddress(String address) {
-        this.address=address;
+        this.cusAddress =address;
 
     }
     public StandingOrderAcct getCusStandingOrderAcct() { return standingOrderAcct; }
@@ -493,10 +499,10 @@ public class Customer  implements Parcelable, Serializable {
         return role;
     }
     public String getCusGender() {
-        return gender;
+        return cusGender;
     }
     public void setCusGender(String gender) {
-        this.gender = gender;
+        this.cusGender = gender;
     }
 
     public void setCusLoans(ArrayList<Loan> loans) {
@@ -548,6 +554,46 @@ public class Customer  implements Parcelable, Serializable {
         this.cusBankAcctNo = cusBankAcctNo;
     }
 
+    public String getCusCountry() {
+        return cusCountry;
+    }
+
+    public void setCusCountry(String cusCountry) {
+        this.cusCountry = cusCountry;
+    }
+
+    public ArrayList<Payee> getPayees() {
+        return payees;
+    }
+
+    public void setPayees(ArrayList<Payee> payees) {
+        this.payees = payees;
+    }
+
+    public String getCusMarketID() {
+        return cusMarketID;
+    }
+
+    public void setCusMarketID(String cusMarketID) {
+        this.cusMarketID = cusMarketID;
+    }
+
+    public ArrayList<Integer> getCusMarketIDs() {
+        return cusMarketIDs;
+    }
+
+    public void setCusMarketIDs(ArrayList<Integer> cusMarketIDs) {
+        this.cusMarketIDs = cusMarketIDs;
+    }
+
+    public ArrayList<Integer> getCusBizIDs() {
+        return cusBizIDs;
+    }
+
+    public void setCusBizIDs(ArrayList<Integer> cusBizIDs) {
+        this.cusBizIDs = cusBizIDs;
+    }
+
 
     public static class CustomerItem {
         public final String id;
@@ -567,67 +613,67 @@ public class Customer  implements Parcelable, Serializable {
         }
     }
 
-    public Customer(int uid, String surname, String firstName, String phoneNumber, String  emailAddress, String nin,String dob, String gender, String address, String userName, String password, String office, String dateJoined) {
+    public Customer(int uid, String cusSurname, String cusFirstName, String cusPhoneNumber, String cusEmailAddress, String cusNin, String cusDob, String cusGender, String cusAddress, String cusUserName, String cusPassword, String cusOffice, String cusDateJoined) {
 
-        this.firstName = firstName;
-        this.surname = surname;
-        this.phoneNumber = phoneNumber;
-        this.gender = gender;
+        this.cusFirstName = cusFirstName;
+        this.cusSurname = cusSurname;
+        this.cusPhoneNumber = cusPhoneNumber;
+        this.cusGender = cusGender;
         this.cusID = uid;
-        this.gender = gender;
-        this.office = office;
-        this.emailAddress = emailAddress;
-        this.password = password;
-        this.userName = userName;
-        this.dob = dob;
-        this.nin = nin;
-        this.address = address;
-        this.dateJoined = dateJoined;
+        this.cusGender = cusGender;
+        this.cusOffice = cusOffice;
+        this.cusEmailAddress = cusEmailAddress;
+        this.cusPassword = cusPassword;
+        this.cusUserName = cusUserName;
+        this.cusDob = cusDob;
+        this.cusNin = cusNin;
+        this.cusAddress = cusAddress;
+        this.cusDateJoined = cusDateJoined;
 
     }
-    public Customer(int uid, String surname, String firstName, String phoneNumber,String nin,String gender, ArrayList<Address> address, String userName, String password, String office) {
+    public Customer(int uid, String cusSurname, String cusFirstName, String cusPhoneNumber, String cusNin, String cusGender, ArrayList<Address> cusAddress, String cusUserName, String cusPassword, String cusOffice) {
         this.cusID = uid;
-        this.dateJoined = DATE_FORMAT.format(new Date());
-        this.surname = surname;
-        this.firstName = firstName;
-        this.phoneNumber = phoneNumber;
-        this.gender = gender;
-        this.nin = nin;
-        this.addresses = address;
-        this.userName = userName;
-        this.password = password;
-        this.office = office;
+        this.cusDateJoined = DATE_FORMAT.format(new Date());
+        this.cusSurname = cusSurname;
+        this.cusFirstName = cusFirstName;
+        this.cusPhoneNumber = cusPhoneNumber;
+        this.cusGender = cusGender;
+        this.cusNin = cusNin;
+        this.addresses = cusAddress;
+        this.cusUserName = cusUserName;
+        this.cusPassword = cusPassword;
+        this.cusOffice = cusOffice;
     }
 
 
-    public Customer(int uid,String surname, String firstName, String customerPhoneNumber, String customerEmailAddress,String nin, ArrayList<Address> customerAddress, String customerGender, String customerOffice, String customerState,String userName,String password) {
+    public Customer(int uid, String cusSurname, String cusFirstName, String customerPhoneNumber, String customerEmailAddress, String cusNin, ArrayList<Address> customerAddress, String customerGender, String customerOffice, String customerState, String cusUserName, String cusPassword) {
         this.cusID = uid;
-        this.dateJoined = DATE_FORMAT.format(new Date());
-        this.surname = surname;
-        this.firstName = firstName;
-        this.phoneNumber = customerPhoneNumber;
-        this.gender = customerGender;
+        this.cusDateJoined = DATE_FORMAT.format(new Date());
+        this.cusSurname = cusSurname;
+        this.cusFirstName = cusFirstName;
+        this.cusPhoneNumber = customerPhoneNumber;
+        this.cusGender = customerGender;
         this.addresses = customerAddress;
-        this.userName = userName;
-        this.nin = nin;
-        this.password = password;
-        this.office = customerOffice;
+        this.cusUserName = cusUserName;
+        this.cusNin = cusNin;
+        this.cusPassword = cusPassword;
+        this.cusOffice = customerOffice;
     }
 
-    public Customer(int uid, String surname, String firstName, String phoneNumber, String emailAddress, String nin, String gender, String address, String userName, String password, String office, String dateJoined) {
-        this.firstName = firstName;
-        this.surname = surname;
-        this.phoneNumber = phoneNumber;
-        this.gender = gender;
-        this.nin = nin;
+    public Customer(int uid, String cusSurname, String cusFirstName, String cusPhoneNumber, String cusEmailAddress, String cusNin, String cusGender, String cusAddress, String cusUserName, String cusPassword, String cusOffice, String cusDateJoined) {
+        this.cusFirstName = cusFirstName;
+        this.cusSurname = cusSurname;
+        this.cusPhoneNumber = cusPhoneNumber;
+        this.cusGender = cusGender;
+        this.cusNin = cusNin;
         this.cusID = uid;
-        this.gender = gender;
-        this.office = office;
-        this.emailAddress = emailAddress;
-        this.password = password;
-        this.userName = userName;
-        this.address = address;
-        this.dateJoined = dateJoined;
+        this.cusGender = cusGender;
+        this.cusOffice = cusOffice;
+        this.cusEmailAddress = cusEmailAddress;
+        this.cusPassword = cusPassword;
+        this.cusUserName = cusUserName;
+        this.cusAddress = cusAddress;
+        this.cusDateJoined = cusDateJoined;
     }
 
 
@@ -695,17 +741,17 @@ public class Customer  implements Parcelable, Serializable {
     }
 
     public void setCusFirstName(String firstName) {
-        this.firstName = firstName;
+        this.cusFirstName = firstName;
     }
 
     public String getCusFirstName() {
-        return firstName;
+        return cusFirstName;
     }
     public void setCusSurname(String surname) {
-        this.surname = surname;
+        this.cusSurname = surname;
     }
     public String getCusSurname() {
-        return surname;
+        return cusSurname;
     }
 
     public Account getCusAccount() {
@@ -715,17 +761,17 @@ public class Customer  implements Parcelable, Serializable {
         this.account = account;
     }
     public String getCusProfilePicture() {
-        return profilePicture;
+        return cusProfPicture;
     }
     public void setCusProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
+        this.cusProfPicture = profilePicture;
     }
 
     public String getCusMiddleName() {
-        return middleName;
+        return cusMiddleName;
     }
     public void setCusMiddleName(String middleName) {
-        this.middleName = middleName;
+        this.cusMiddleName = middleName;
     }
 
     /*public long getId() {
@@ -750,23 +796,23 @@ public class Customer  implements Parcelable, Serializable {
         this.uID = uID;
     }*/
     public String getCusEmail() {
-        return emailAddress;
+        return cusEmailAddress;
     }
     public void setCusEmail(String email) {
-        this.emailAddress = email;
+        this.cusEmailAddress = email;
     }
     public String getCusUserName() {
-        return userName;
+        return cusUserName;
     }
     public void setCusUserName(String userName) {
-        this.userName = userName;
+        this.cusUserName = userName;
 
     }
     public String getCustomerNin() {
-        return nin;
+        return cusNin;
     }
     public void setCustomerNin(String nin) {
-        this.nin = nin;
+        this.cusNin = nin;
 
     }
     public void setCusCurrency(String currency) {
@@ -777,7 +823,7 @@ public class Customer  implements Parcelable, Serializable {
         return currency;
     }
     public void setCusDob(String dob) {
-        this.dob = dob;
+        this.cusDob = dob;
 
     }
     public void setCusRole(String role) {
@@ -785,41 +831,41 @@ public class Customer  implements Parcelable, Serializable {
     }
 
     public void setCusOffice(String office) {
-        this.office = office;
+        this.cusOffice = office;
     }
 
 
 
     public String getCusDateJoined() {
-        return dateJoined;
+        return cusDateJoined;
     }
     public void setCusDateJoined(String dateJoined) {
-        this.dateJoined = dateJoined;
+        this.cusDateJoined = dateJoined;
 
     }
     public String getCusDob() {
-        return String.valueOf(dob);
+        return String.valueOf(cusDob);
     }
 
     public String getCusLga() {
-        return lga;
+        return cusLga;
     }
 
     public void setCusNextOfKin(String nextOfKin) {
-        this.nextOfKin = nextOfKin;
+        this.cusNextOfKin = nextOfKin;
     }
 
     public void setCusLga(String lga) {
-        this.lga = lga;
+        this.cusLga = lga;
     }
     public String getCusState() {
-        return state;
+        return cusState;
     }
     public String getCusAddress() {
-        return address;
+        return cusAddress;
     }
     public void setCusState(String state) {
-        this.state = state;
+        this.cusState = state;
     }
     public ArrayList<Address> getCusAddresses() {
         return addresses;
@@ -830,23 +876,23 @@ public class Customer  implements Parcelable, Serializable {
     }
 
     public String getCusEmailAddress() {
-        return emailAddress;
+        return cusEmailAddress;
     }
     public void setCusEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+        this.cusEmailAddress = emailAddress;
 
     }
 
     public String getCusNextOfKin() {
-        return nextOfKin;
+        return cusNextOfKin;
     }
 
 
     public String getCusPhoneNumber() {
-        return phoneNumber;
+        return cusPhoneNumber;
     }
     public void setCusPhoneNumber(String phoneNumber) {
-        this.phoneNumber = String.valueOf(phoneNumber);
+        this.cusPhoneNumber = String.valueOf(phoneNumber);
 
     }
 
@@ -858,20 +904,20 @@ public class Customer  implements Parcelable, Serializable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(cusID);
-        parcel.writeString(firstName);
-        parcel.writeString(surname);
-        parcel.writeString(middleName);
-        parcel.writeString(gender);
-        parcel.writeString(office);
-        parcel.writeString(state);
-        parcel.writeString(lga);
-        parcel.writeString(password);
-        parcel.writeString(emailAddress);
-        parcel.writeString(phoneNumber);
-        parcel.writeString(dateJoined);
-        parcel.writeString(nextOfKin);
-        parcel.writeString(userName);
+        parcel.writeString(cusFirstName);
+        parcel.writeString(cusSurname);
+        parcel.writeString(cusMiddleName);
+        parcel.writeString(cusGender);
+        parcel.writeString(cusOffice);
+        parcel.writeString(cusState);
+        parcel.writeString(cusLga);
+        parcel.writeString(cusPassword);
+        parcel.writeString(cusEmailAddress);
+        parcel.writeString(cusPhoneNumber);
+        parcel.writeString(cusDateJoined);
+        parcel.writeString(cusNextOfKin);
+        parcel.writeString(cusUserName);
     }
     @NonNull
-    public String toString() { return (firstName + " (" + cusID + ")"); }
+    public String toString() { return (cusFirstName + " (" + cusID + ")"); }
 }

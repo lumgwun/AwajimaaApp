@@ -17,21 +17,20 @@ import com.quickblox.chat.QBChatService;
 import com.quickblox.users.model.QBUser;
 import com.quickblox.videochat.webrtc.QBRTCTypes;
 import com.skylightapp.Classes.PrefManager;
-import com.skylightapp.MarketClasses.CallService;
+import com.skylightapp.MarketClasses.CallServiceConf;
 import com.skylightapp.MarketClasses.CollectionsUtils;
 import com.skylightapp.MarketClasses.QbUsersDbManager;
 import com.skylightapp.MarketClasses.UsersUtils;
 import com.skylightapp.MarketClasses.WebRtcSessionManager;
 import com.skylightapp.MarketInterfaces.ConstsInterface;
 import com.skylightapp.MarketInterfaces.ConversationFragmentCallback;
-import com.skylightapp.Markets.BizDealComAct;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public abstract class BaseConversationFragment extends BaseToolBarFragment implements BizDealComAct.CurrentCallStateCallback {
+public abstract class BaseConversationFragment extends BaseToolBarFragment implements CallActivity.CurrentCallStateCallback {
     private static final String TAG = BaseConversationFragment.class.getSimpleName();
 
     public static final String MIC_ENABLED = "is_microphone_enabled";
@@ -182,7 +181,7 @@ public abstract class BaseConversationFragment extends BaseToolBarFragment imple
                 actionButtonsEnabled(false);
                 handUpVideoCall.setEnabled(false);
                 handUpVideoCall.setActivated(false);
-                CallService.stop(getContext());
+                CallServiceConf.stop(getContext());
 
                 if (conversationFragmentCallback != null) {
                     conversationFragmentCallback.onHangUpCurrentSession();
@@ -223,7 +222,7 @@ public abstract class BaseConversationFragment extends BaseToolBarFragment imple
 
     @Override
     public void onCallStopped() {
-        CallService.stop(getContext());
+        CallServiceConf.stop(getContext());
         isStarted = false;
         clearButtonsState();
         actionButtonsEnabled(false);

@@ -70,6 +70,9 @@ public class BusinessDeal implements Serializable, Parcelable {
     public static final String BIZ_DEAL_START_DATE = "bizDeal_Start_Date";
     public static final String BIZ_DEAL_FROM_ACCT_ID = "bizDeal_From_Acct_ID";
     public static final String BIZ_DEAL_TO_ACCT_ID = "bizDeal_To_Acct_ID";
+    public static final String BIZ_DEAL_FROM_B_ID = "bizDeal_From_Biz_ID";
+    public static final String BIZ_DEAL_TO_BIZ_ID = "bizDeal_To_Biz_ID";
+
     public static final String BIZ_DEAL_QTY = "bizDeal_QTY";
     public static final String BIZ_DEAL_NO_OF_MILESTONE = "bizDeal_No_Of_MS";
     public static final String BIZ_DEAL_CODE = "bizDeal_Code";
@@ -92,7 +95,7 @@ public class BusinessDeal implements Serializable, Parcelable {
     public static final String CREATE_BIZ_DEAL_TABLE = "CREATE TABLE IF NOT EXISTS " + BIZ_DEAL_TABLE + " (" + BIZ_DEAL_ID + " INTEGER, " + BIZ_DEAL_ACCT_NO + " INTEGER , " +
             BIZ_DEAL_TO_PROF_ID + " INTEGER , " + BIZ_DEAL_FROM_PROF_ID + " INTEGER , " + BIZ_DEAL_FROM_ACCT_ID + " INTEGER, " + BIZ_DEAL_TO_ACCT_ID + " INTEGER, " +
             BIZ_DEAL_TITTLE + " TEXT, " + BIZ_DEAL_PROD_AMOUNT + " REAL, " + BIZ_DEAL_SHIPPING_FEE + " REAL, " + BIZ_DEAL_QTY + " REAL, " +
-            BIZ_DEAL_INS_FEE + " TEXT, " + BIZ_DEAL_TYPE + " TEXT, " + BIZ_DEAL_START_DATE + " TEXT, "+ BIZ_DEAL_NO_OF_MILESTONE + BIZ_DEAL_CODE + " TEXT, "+  BIZ_DEAL_STATUS + " TEXT, " + "PRIMARY KEY(" +BIZ_DEAL_ID + "), "+"FOREIGN KEY(" + BIZ_DEAL_FROM_ACCT_ID  + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," +"FOREIGN KEY(" + BIZ_DEAL_TO_ACCT_ID  + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," +"FOREIGN KEY(" + BIZ_DEAL_TO_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + BIZ_DEAL_ACCT_NO  + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," +"FOREIGN KEY(" + BIZ_DEAL_FROM_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+            BIZ_DEAL_INS_FEE + " TEXT, " + BIZ_DEAL_TYPE + " TEXT, " + BIZ_DEAL_START_DATE + " TEXT, "+ BIZ_DEAL_NO_OF_MILESTONE + BIZ_DEAL_CODE + " TEXT, "+  BIZ_DEAL_STATUS + " TEXT, "+ BIZ_DEAL_FROM_B_ID + " INTEGER, "+ BIZ_DEAL_TO_BIZ_ID + " INTEGER, " + "PRIMARY KEY(" +BIZ_DEAL_ID + "), "+"FOREIGN KEY(" + BIZ_DEAL_FROM_ACCT_ID  + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," +"FOREIGN KEY(" + BIZ_DEAL_TO_ACCT_ID  + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," +"FOREIGN KEY(" + BIZ_DEAL_TO_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + BIZ_DEAL_ACCT_NO  + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," +"FOREIGN KEY(" + BIZ_DEAL_FROM_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
 
     public void addBizDealBDTimeline(int id, int bdTimelineProfID,String title,String details, String time,String status) {

@@ -10,6 +10,9 @@
     <string name="google_api_key33">AIzaSyD-wXTX8DBPhyESIeVjaGTLCclr8eculzM</string>
 
     <string name="reply_title">Default reply action</string>
+    <string name="terms_of_use">Terms Of Use</string>
+    <string name="privacy_policy">Privacy Policy</string>
+
 
     <string name="title_home">Home</string>
     <string name="duration_minutes_shortest">%1$d m</string>
@@ -312,13 +315,11 @@
 
     <string name="street">Street</string>
 
-    <string name="country">City/State/Zip</string>
 
     <string name="save">Save Contact</string>
 
     <string name="deleteContact">Are you sure, you want to delete it.</string>
 
-    <string name="yes">Yes</string>
 
     <string name="no">No</string>
 
@@ -355,8 +356,6 @@
     <string name="help">Need help?</string>
 
     <string name="create_account">Create Profile</string>
-
-    <string name="cancel">Cancel</string>
 
     <string name="first_name">First Name</string>
 
@@ -606,8 +605,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
 
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="crash_toast_text">Crash report</string>
 
@@ -911,7 +908,6 @@
 
     <string name="home">Home</string>
 
-    <string name="profile">Profile</string>
 
     <string name="notifications">Notifications</string>
 
@@ -945,10 +941,6 @@
 
     <!-- Strings used for fragments for navigation -->
 
-
-    <string name="first_fragment_label">First Fragment</string>
-
-    <string name="second_fragment_label">Second Fragment</string>
 
     <string name="previous">Previous</string>
 
@@ -1115,7 +1107,6 @@
 
     <string name="testing">hgj</string>
 
-    <string name="completed">Completed</string>
 
     <!-- Sync Preferences -->
 
@@ -1285,13 +1276,10 @@
     <string name="send_push">Send Message</string>
     <string name="received_messages">Received Push Notifications</string>
     <string name="no_messages">No messages received yet</string>
-    <string name="dlg_logout">Logout…</string>
-    <string name="dlg_retry">Retry</string>
 
-    <string name="error_logout">Logout Error</string>
+
     <string name="error">Error</string>
     <string name="error_field_is_empty">Field is empty!</string>
-    <string name="error_qb_credentials_empty">Error, no server credentials</string>
 
     <string name="enable_notification">Enable Notification</string>
     <string name="disable_notification">Disable Notification</string>
@@ -1302,8 +1290,6 @@
     <string name="error_connection_failed">Connection failed. Please check your internet connection.</string>
     <string name="error_no_responce_timeout">No response received within reply timeout.</string>
     <string name="no_internet_connection">No internet connection</string>
-    <string name="field_name_user_fullname">User Name in Full</string>
-    <string name="field_name_user_login">Login Credential</string>
 
     <integer name="pref_default_int_value">0</integer>
 
@@ -1377,7 +1363,6 @@
     <string name="pref_hwcodec_key">hwcodec_preference</string>
     <string name="pref_hwcodec_title">Video codec hardware acceleration</string>
     <string name="pref_hwcodec_default">true</string>
-    <string name="public_group_chat_cannot_be_deleted">Public Group chat can be deleted only by owner</string>
 
     <string name="pref_audiocodec_key">pref_audio_codec</string>
     <string name="pref_audiocodec_title">Default audio codec</string>
@@ -1387,9 +1372,6 @@
     <string name="app_name_lowercase">eternal</string>
 
     <string name="menu_delete_match">Delete match</string>
-    <string name="menu_dialogs_delete">Delete</string>
-    <string name="dlg_loading">Loading</string>
-    <string name="dialogs_deletion_error">Dialog deletion errors</string>
 
     <string name="chat_send">Send</string>
     <string name="chat_edit_text_hint">Message</string>
@@ -1480,7 +1462,6 @@
     <string name="question_5">Question 5</string>
     <string name="question_6">Question 6</string>
     <string name="results">Results</string>
-    <string name="exit">Exit</string>
     <string name="perceiving">Perceiving:</string>
     <string name="feeling">Feeling:</string>
     <string name="intuition">Intuition:</string>
@@ -1501,5 +1482,499 @@
     <string name="women">Women</string>
     <string name="Men">Men</string>
     <string name="men_and_women">Men and women</string>
+
+
+    <string name="i_agree_to">I agree to</string>
+    <string name="dim_dim">Dim Dim</string>
+    <string name="and">and</string>
+    <string name="chats">Chats</string>
+    <string name="profile">Profile</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="diamond_wallet">DIAMOND WALLET</string>
+    <string name="saved_profiles">SAVED PROFILES</string>
+    <string name="share_this_app">SHARE THIS APP</string>
+    <string name="be_a_host">BE A HOST</string>
+    <string name="log_out">LOG OUT</string>
+    <string name="version">v1.3.5</string>
+    <string name="delete_my_account">DELETE MY ACCOUNT</string>
+    <string name="profiles">Profiles</string>
+    <string name="live_streams">Live Streams</string>
+    <string name="cancel">Cancel</string>
+    <string name="diamonds">Diamonds</string>
+    <string name="purchase_dimond_text">You don’t have enough\ndiamonds to continue chatting,\nplease purchase some diamonds\nand enjoy the chatting..</string>
+    <string name="buy">Buy</string>
+    <string name="are_you">Are you</string>
+    <string name="sure">sure</string>
+    <string name="delete_account_text">Do you really want\nto delete your account ?\nYou won’t be able to recover it\nlater and data will be lost forever..</string>
+    <string name="yes">yes</string>
+    <string name="exit">Exit</string>
+    <string name="add">ADD</string>
+    <string name="comment">Comment...</string>
+    <string name="write_here">Write here...</string>
+    <string name="diamond">diamond</string>
+    <string name="shop">Shop</string>
+    <string name="by_continuing_the_purchase_you_agree_to_our">By continuing the purchase you agree to our</string>
+    <string name="apply_for_host">APPLY FOR HOST</string>
+    <string name="photos">Photos</string>
+    <string name="_5_images_of_your_self">(5 Images of your self)</string>
+    <string name="videos">VIDEOS</string>
+    <string name="minimum_2_videos_of_yourself">(Minimum 2 videos of yourself)</string>
+    <string name="age">age</string>
+    <string name="enter_your_age">Enter Your Age...</string>
+    <string name="original_full_name">ORIGINAL FULL NAME</string>
+    <string name="your_full_name">Your Full name...</string>
+    <string name="about_yourself">ABOUT YOURSELF</string>
+    <string name="visible_for_public">(Visible for public)</string>
+    <string name="your_interests">Your Interests</string>
+    <string name="eg_sports_music_dance">(Eg : Sports, Music, Dance)</string>
+    <string name="bio">BIO</string>
+    <string name="_80">/80)</string>
+    <string name="availability_hours">Availability hours</string>
+    <string name="per_day">(Per Day)</string>
+    <string name="billing_address">BILLING ADDRESS</string>
+    <string name="for_earnings_invoices">(For earnings invoices)</string>
+    <string name="contact_email">CONTACT EMAIL</string>
+    <string name="terms_conditions"><![CDATA[Terms & Conditions,]]></string>
+    <string name="take_me_forward">take me forward</string>
+    <string name="submit">Submit</string>
+    <string name="host_dashboard">HOST DASHBOARD</string>
+    <string name="host_verification">HOST VERIFICATION</string>
+    <string name="pending">PENDING</string>
+    <string name="you_will_get_calls_from_users_if_this_is_on">You will get calls from users if this is On</string>
+    <string name="available_for_calls">Available For Calls</string>
+    <string name="go_live">GO LIVE</string>
+    <string name="minimum_threshold_50_000">Minimum Threshold : 50,000</string>
+    <string name="redeem">REDEEM</string>
+    <string name="total_collection">TOTAL COLLECTION</string>
+    <string name="redeem_requests">REDEEM REQUESTS</string>
+    <string name="history">HISTORY</string>
+    <string name="update_profile">Update profile</string>
+    <string name="start_the_live">START THE LIVE</string>
+    <string name="live_dialog_text">Set the Diamonds price you want to\nkeep for users to join your live.\n Price will be per minute.\n\n You will be charged 100\ndiamonds to start each\nlive stream session</string>
+    <string name="_25">25</string>
+    <string name="minute">Minute</string>
+
+    <string name="diamonds_">Diamonds:</string>
+    <string name="amount_paid">Amount Paid:</string>
+    <string name="completed">Completed</string>
+    <string name="processing">Processing</string>
+    <string name="log_out_text">Do you really want to LogOut\nfrom this app?</string>
+    <string name="country">Country</string>
+    <string name="search_here">Search Here...</string>
+    <string name="write_something_about_you">Write Something About You..</string>
+    <string name="add_your_bio">Add your Bio...</string>
+    <string name="your_address">Your Address..</string>
+    <string name="write_your_interests">Write your Interests...</string>
+    <string name="email_address">Email Address..</string>
+    <string name="desh">-</string>
+    <string name="report">Report</string>
+    <string name="reason_for_report">Reason for report</string>
+    <string name="how_it_hurts_you">How it hurts you</string>
+    <string name="report_text">By clicking this submit button, you agree that you are\ntaking all the responsibilities of all the progress that may\nbr done by us or the content uploader.click the link\nbelow to know more about that.</string>
+    <string name="global">Global</string>
+    <string name="chatting">CHATTING</string>
+    <string name="title_activity_submit_redeem">SubmitRedeemActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+
+    <string name="title_activity_chatting">ChattingActivity</string>
+    <string name="title_activity_redeem_request">RedeemRequestActivity</string>
+    <string name="title_activity_diamond_history">DiamondHistoryActivity</string>
+    <string name="title_activity_create_profile">CreateProfileActivity</string>
+    <string name="title_activity_find_match">FindMatchActivity</string>
+    <string name="title_activity_host_main">HostMainActivity</string>
+    <string name="title_activity_purchase_diamond">PurchaseDiamondActivity</string>
+    <string name="title_activity_sign_in">SignInActivity</string>
+    <string name="title_activity_user_call">UserCallActivity</string>
+    <string name="title_activity_user_calling">UserCallingActivity</string>
+    <string name="title_activity_user_live">UserLiveActivity</string>
+
+
+    <string name="sender_id">97776</string>
+
+    <string name="menu_chat_info">Chat Info</string>
+    <string name="menu_add_users_to_chat">Add Users to Chat</string>
+    <string name="menu_leave_chat">Leave Chat</string>
+    <string name="menu_delete_chat">Delete Chat</string>
+    <string name="menu_dialogs_logout">Logout</string>
+    <string name="menu_dialogs_delete">Delete</string>
+    <string name="menu_dialogs_app_info">App Info</string>
+    <string name="menu_create">Create</string>
+    <string name="menu_done">Done</string>
+    <string name="menu_finish">Finish</string>
+    <string name="menu_send">Send</string>
+    <string name="menu_save_attachment">Save attachment</string>
+
+    <string name="menu_message_forward">Forward</string>
+    <string name="menu_message_delivered_to">Delivered to…</string>
+    <string name="menu_message_viewed_by">Viewed by…</string>
+    <string name="menu_file_save">Save File</string>
+
+    <string name="field_name_user_login">User name</string>
+    <string name="field_name_user_fullname">User Full Name</string>
+
+    <string name="dlg_loading">Loading</string>
+    <string name="dlg_relogin">Relogin</string>
+    <string name="dlg_restoring_chat_session">Restoring chat session…</string>
+    <string name="dlg_login">Login…</string>
+    <string name="dlg_logout">Logout…</string>
+    <string name="dlg_retry">Retry</string>
+    <string name="dlg_choose_file_from">Select file from…</string>
+    <string name="dlg_sending">Sending…</string>
+    <string name="create_chat">Creating chat…</string>
+    <string name="dlg_deleting_chats">Deleting chats…</string>
+    <string name="dlg_updating">Updating…</string>
+    <string name="dlg_delete_private_dialog">Delete dialog</string>
+    <string name="dlg_delete_private_question">Are you sure you want to leave dialog?</string>
+    <string name="dlg_leave_group_dialog">Leave dialog</string>
+    <string name="dlg_leave_group_question">Are you sure you want to leave dialog?</string>
+    <string name="dlg_leave">Leave</string>
+    <string name="dlg_delete">Delete</string>
+    <string name="dlg_cancel">Cancel</string>
+
+    <string name="new_chat_created">%s created the group chat \"%s\"</string>
+    <string name="occupant_added">%s added %s</string>
+    <string name="occupant_left">%s has left</string>
+
+    <string name="chat_still_joining">You\'re still joining a group chat, please wait a bit</string>
+    <string name="chat_error_send_message">Can\'t send a message, You are not connected to chat</string>
+
+    <string name="placeholder_username_you">%s (you)</string>
+    <string name="error_recreate_session">Login Chat error</string>
+
+    <string name="login_chat_login_error">Login to Chat error. Please relogin. </string>
+
+    <string name="dialogs_logged_in_as">Logged in as %s</string>
+    <string name="dialogs_cannot_delete_chat">You can not leave from dialog %s</string>
+    <string name="dialogs_creation_error">Dialog creation errors</string>
+    <string name="dialogs_deletion_error">Dialog deletion errors</string>
+    <string name="dialogs_actionmode_title">Delete Chats</string>
+    <string name="dialogs_actionmode_subtitle">%s chats selected</string>
+    <string name="dialogs_actionmode_subtitle_single">%s chat selected</string>
+
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+
+    <string name="select_users_search_hint">Search</string>
+    <string name="select_users_create_chat_title">New Chat</string>
+    <string name="select_users_create_chat_subtitle">%s users selected</string>
+    <string name="select_users_create_chat_subtitle_single">%s user selected</string>
+    <string name="select_users_edit_chat">Add Occupants</string>
+    <string name="select_users_get_users_error">Get users errors</string>
+    <string name="select_users_get_dialog_error">Error getting dialog from server</string>
+    <string name="select_users_get_users_dialog_error">Error getting users dialog from server</string>
+    <string name="select_users_choose_users">Please, choose at least one participant</string>
+    <string name="select_users_not_found">No user with that name</string>
+
+    <string name="you">You</string>
+
+    <string name="chat_send_message_error">Failed to send a message</string>
+    <string name="chat_empty_you_are_alone_here">You\'re all alone out here.</string>
+
+    <string name="reconnect_failed">Reconnecting Failed</string>
+
+    <string name="chat_info_subtitle">%s members</string>
+    <string name="chat_info_updating">Updating…</string>
+
+    <string name="message_forwarded_from">Forwarded from\u0020</string>
+    <string name="message_info_delivered_to">Message Delivered to</string>
+    <string name="message_info_read_by">Message Viewed by</string>
+
+    <string name="message_info_noone">no one</string>
+    <string name="message_info_single_user">1 member</string>
+    <string name="message_info_multiple_users"> members</string>
+
+    <string name="forward_to">Forward to</string>
+
+    <string name="public_group_chat_cannot_be_deleted">Public Group chat can be deleted only by owner</string>
+
+    <string name="appinfo_application_version">Application version:</string>
+    <string name="appinfo_qbsdk_version">QuickBlox SDK version:</string>
+    <string name="appinfo_application_id">Application ID:</string>
+    <string name="appinfo_authorization_key">Authorization key:</string>
+    <string name="appinfo_authorization_secret">Authorization secret:</string>
+    <string name="appinfo_account_key">Account key:</string>
+    <string name="appinfo_api_domain">API domain:</string>
+    <string name="appinfo_chat_domain">Chat domain:</string>
+    <string name="appinfo_title">App Info</string>
+    <string name="appinfo_qa_verion">QA version:</string>
+
+    <string name="typing_postfix_singular">is typing…</string>
+    <string name="typing_postfix_plural">are typing…</string>
+    <string name="typing_ellipsis">…</string>
+
+    <string name="dialog_chat_name">Chat Name</string>
+    <string name="dialog_chat_name_hint">Must be in a range from 3 to 20 characters</string>
+
+    <!--Error strings-->
+    <string name="error_qb_credentials_empty">Credentials are wrong or empty. You have to set:
+        Application ID, Authentification Key, Authentification Secret, Account Key in constants in App.java
+        and you have to set Sender ID in the string resources to launch application.
+        If you haven\'t them you can register new account and application at https://admin.quickblox.com
+        then put Application credentials from Overview page + Account key from https://admin.quickblox.com/account/settings</string>
+    <string name="error_chat_credentails_empty">Some parameter for Chat Settings is wrong. Please check the Chat Settings</string>
+    <string name="error_load_image">Error load image</string>
+    <string name="error_load_video">Can not play video file. It might be corrupt</string>
+    <string name="error_attachment_corrupted">Attachment is corrupted</string>
+    <string name="error_attachment_size">The uploaded file exceeds maximum file size (100MB)</string>
+    <string name="error_forwarding_not_connected">Unable to forward message. Not Connected to Chat</string>
+    <string name="error_attachment_count">You can send 1 attachment per message</string>
+    <string name="error_logout">Unable to Logout: </string>
+    <string name="error_joining_chat">Unable to Join chat</string>
+
+    <!-- Dialogs strings -->
+    <string name="dlg_signal_error">Disconnected… Please check your Internet connection!</string>
+    <string name="dlg_relogin_wait">You are still connecting.. Please try once more</string>
+
+    <string name="dlg_sign_in">Sign In…</string>
+    <string name="dlg_creating_new_user">Creating new user…</string>
+    <string name="dlg_loading_opponents">Loading opponents…</string>
+    <string name="dlg_allow">Allow</string>
+
+    <!-- Notification -->
+    <string name="notification_text">Touch takes you back to the call %1$s</string>
+
+    <!-- Errors strings -->
+    <string name="error_max_opponents_count">You can select up to %d opponents</string>
+    <string name="sign_up_error">Error creating new user, please try again</string>
+    <string name="sign_in_error">Error SignIn user, please try again</string>
+    <string name="no_connection_error">Connection failed. Please check your internet connection.</string>
+    <string name="no_responce_timeout">No response received within reply timeout</string>
+
+    <string name="error_permission_video">You should allow Camera permission</string>
+    <string name="error_permission_audio">You should allow Microphone permission</string>
+
+    <string name="update_user_error">Update user error. Error</string>
+    <string name="loading_users_error">Loading users error. Error</string>
+
+    <string name="permission_unavailable">%s is not available now!</string>
+
+    <!-- menu -->
+    <string name="action_start_login">Done</string>
+
+    <string name="action_screen_share">Screen share</string>
+    <string name="action_update_opponens_list">Update opponents list</string>
+    <string name="action_logout">Logout</string>
+    <string name="action_start_video_call">Video call</string>
+    <string name="action_dialogs_app_info">App Info</string>
+
+    <!-- action bar -->
+    <string name="title_login_activity">Enter to Videochat</string>
+    <string name="subtitle_text_logged_in_as">Logged in as %s</string>
+    <string name="title_one_user_selected">%s user selected</string>
+    <string name="tile_many_users_selected">%s users selected</string>
+
+    <string name="also_on_call">Also on call:</string>
+    <string name="user_list_on_call">User 1, User 2, User 3, User 4, User 5, User 6</string>
+
+    <string name="opponent_pending">Pending</string>
+    <string name="opponent_closed">Closed</string>
+    <string name="text_incoming_audio_call">Incoming Audio Call</string>
+    <string name="text_incoming_video_call">Incoming Video Call</string>
+    <string name="text_status_connect">Connect…</string>
+    <string name="text_status_checking">Checking…</string>
+    <string name="text_status_connected">Connected</string>
+    <string name="text_status_disconnected">Disconnected</string>
+
+    <string name="text_status_rejected">Rejected</string>
+    <string name="text_status_no_answer">No answer</string>
+    <string name="text_status_hang_up">Hung up</string>
+    <string name="text_status_closed">Closed</string>
+
+    <string name="text_select_users_to_call">Select users you want to call</string>
+
+    <string name="text_push_notification_message">"%s is calling you"</string>
+
+    <!-- Settings strings. -->
+    <string name="title_video_category">Video</string>
+    <string name="title_call_settings_category">Call Settings</string>
+
+
+    <string name="accepted">Accepted</string>
+    <string name="connection_was_lost">Connection was lost</string>
+
+    <string name="opponents">and %s other</string>
+    <string name="opponent">and %s </string>
+    <string name="ringing">Ringing</string>
+    <string name="stop_share">Stop</string>
+
+    <string name="facebook_app_id">737650964002305</string>
+
+    <string name="splash_signin_error">Sign In Error:</string>
+    <string name="splash_signup_error">Sign Up Error:</string>
+
+
+    <string name="dlg_sign_up">Sign Up…</string>
+
+
+    <!-- Manage Group Screen -->
+
+
+    <!-- Menu -->
+
+
+    <!-- Chat Screen -->
+
+    <string name="chat_conference">Conference</string>
+    <string name="chat_stream">Stream</string>
+    <string name="chat_conversation_started">%s started</string>
+
+    <!-- Chat Info Screen -->
+
+    <!-- Notification -->
+
+    <string name="error_server_url_null">Multi-conference server is available only for Enterprise plans. Please refer to https://quickblox.com/developers/EnterpriseFeatures for more information and contacts.</string>
+
+
+    <!-- Settings strings -->
+
+
+    <!-- Checkout -->
+    <string name="google_pay_status_unavailable">Unfortunately, Google Pay is not available on this device.</string>
+    <string name="google_wallet_status_unavailable" translatable="false">Unfortunately, Google Wallet is not available on this phone.</string>
+    <string name="payments_show_name">Successfully received payment data for %s!</string>
+    <string name="add_google_wallet_success" translatable="false">The pass was added successfully!</string>
+
+
+    <string name="reconnection_failed">reconnection failed</string>
+    <string name="load_user">Load User</string>
+    <string name="conv_p">How are you today?</string>
+    <string name="online_participants_label">Online participants</string>
+    <string name="online_participants_label_single">An online VIP</string>
+    <string name="manage_group_update_users_error">error</string>
+    <string name="manage_group_chat_subtitle">Subtittle</string>
+    <string name="login_hint">incorrect password</string>
+    <string name="default_notification_channel_id">32456</string>
+    <string name="msg_token_fmt">Firebase token</string>
+
+    /* Side Navigation Bar */
+    <string name="nav_qrcode">QR Code</string>
+    <string name="nav_help">Help &amp; Support</string>
+    <string name="nav_share">Share This App</string>
+    <string name="nav_logout">Log Out</string>
+
+
+    /* Bottom Navigation Bar */
+    <string name="nav_home">Home</string>
+    <string name="nav_customer">Customer</string>
+    <string name="nav_transaction">Transaction</string>
+
+    /* Common Values */
+    <string name="redirecticon">Redirect Circle Icon</string>
+    <string name="rightarrow">Right Arrow Icon</string>
+
+    /* Registration Page Values */
+    <string name="registericon">Registration Icon</string>
+    <string name="registrationheading">Register</string>
+    <string name="registrationparagraph1">Enter your mobile number</string>
+    <string name="registrationvalidation">Phone Number is not valid</string>
+    <string name="registrationparagraph2">We\'ll send OTP on this number</string>
+    <string name="registrationparagraph3">Have an account ?</string>
+    <string name="registrationredirecttologin">Login</string>
+
+    /* Login Page Values */
+    <string name="loginicon">Login Icon</string>
+    <string name="loginheading">Login</string>
+    <string name="loginparagraph1">Enter your mobile number</string>
+    <string name="loginvalidation">Phone Number is not valid</string>
+    <string name="loginparagraph2">We\'ll send OTP on this number</string>
+    <string name="loginparagraph3">Don\'t have an account ?</string>
+    <string name="loginredirecttoregistration">Register</string>
+
+
+    /* OTP Page Values */
+    <string name="otpicon">OTP Icon</string>
+    <string name="otpheading">OTP</string>
+    <string name="otpparagraph1">Enter 4 digit number sent to</string>
+    <string name="otpparagraph2">mobile number</string>
+    <string name="otpparagraph3">+2347084936423</string>
+    <string name="otpvalidation">Incorrect OTP Provided</string>
+    <string name="otpparagraph4">Resend OTP (13)</string>
+
+
+    /*Passcode Page*/
+    <string name="passcodeheading">Passcode</string>
+    <string name="passcodeparagraph1">Enter 4 digit Passcode</string>
+    <string name="passcodeparagraph2">mobile number</string>
+    <string name="passcodeparagraph3">+2347084936423</string>
+    <string name="passcodeparagraph4">Don\'t remember a passcode ?</string>
+    <string name="passcodeparagraph5">Re-create</string>
+    <string name="passcodevalidation">Incorrect Passcode Provided</string>
+
+
+    /* FormDashboard Page Values */
+    <string name="formdashboardicon">OTP Icon</string>
+    <string name="formdashboardheading">+234 - 8849364239</string>
+    <string name="formdashboardplaceholder1">Name</string>
+    <string name="formdashboardvalidation1">Only whitespace and character</string>
+    <string name="formdashboardplaceholder2">Business Name</string>
+    <string name="formdashboardvalidation2"></string>
+    <string name="formdashboardplaceholder3">Location</string>
+    <string name="formdashboardvalidation3">Only whitespace and character</string>
+    <string name="editbutton">Save</string>
+    <string name="editformdashboardheading">Update Details</string>
+
+
+    /* Home Dashboad */
+
+    <string name="homedashboardstatusbar">Account Summary</string>
+    <string name="homedashboardparagraph1">Net Balance</string>
+    <string name="netbalance">-17000</string>
+    <string name="debitbalance">-34000</string>
+    <string name="debitbalancetext">Debit</string>
+    <string name="creditbalance">+17000</string>
+    <string name="creditbalancetext">Credit</string>
+    <string name="homedashboardparagraph2">Till Last Transaction</string>
+    <string name="homedashboardparagraph3">All Transactions</string>
+    <string name="homedashboardparagraph4">SEE ALL</string>
+
+    /* Select Customer Dashboard */
+
+    <string name="selectcustomerdashboardstatusbar">Select Customer</string>
+    <string name="selectcustomerdashboardheading">Add New Contact</string>
+    <string name="selectcustomerdashboardparagraph1">All Contacts</string>
+
+    /* Transaction List Dashboard */
+
+    <string name="transactionlistdashboardstatusbar">Transaction List</string>
+    <string-array name="numbers">
+        <item>All Transactions </item>
+        <item>Credit Transactions</item>
+        <item>Debit Transactions</item>
+    </string-array>
+
+    /* transaction_chat */
+
+    <string name="debitbutton">You Gave</string>
+    <string name="creditbutton">You Got</string>
+
+
+    /* Qr Code */
+    <string name="qrdashboardstatusbar">QR Code</string>
+
+    /* Temp String */
+    <string name="customername">Gwun-orene Rufus</string>
+    <string name="customerphonenumber">+234 8849364239</string>
+    <string name="transactionamountcredit">+17000</string>
+    <string name="transactionamountdebit">-17000</string>
+    <string name="transactiondate">24 July 2020 10:00 AM</string>
+    <string name="transaction_details">Pay For Bill</string>
+    <string name="error_credentials_empty">Error empty server  credentials</string>
+    <string name="relogin_chat_failed">relogining failed!</string>
+    <string name="error_getting_chat_service">Error, geting chat services</string>
+    <string name="error_leave_chat">error, leave chat</string>
+    <string name="update_dialog_error">error sending update</string>
+    <string name="error_no_connection">Error! no connection</string>
+    <string name="no_server_connection">Error! no server connection</string>
+    <string name="join_conference">Join Conference</string>
+    <string name="join_conference_error">sorry! something went wrong, as you try to join.</string>
+    <string name="starting_stream">Starting Stream</string>
+    <string name="join_stream_error">Sorry! an error came up</string>
+    <string name="join_stream">Join Live Streaming</string>
+    <!-- TODO: Remove or change this placeholder text -->
+
 
 </resources>

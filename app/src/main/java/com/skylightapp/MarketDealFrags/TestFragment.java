@@ -17,18 +17,17 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.kofigyan.stateprogressbar.StateProgressBar;
 import com.skylightapp.Classes.App;
-import com.skylightapp.Classes.AppController;
-import com.skylightapp.MarketClasses.BaseAsyncTask;
+import com.skylightapp.MarketClasses.BaseAsyncTask22;
 import com.skylightapp.MarketClasses.MyPreferences;
 import com.skylightapp.MarketClasses.PersonalityTrait;
 import com.skylightapp.MarketClasses.TestRequest;
 import com.skylightapp.MarketInterfaces.ServerMethodsConsts;
 import com.skylightapp.R;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class TestFragment extends Fragment {
     private ScrollView scrollView;
@@ -39,6 +38,7 @@ public class TestFragment extends Fragment {
     private SeekBar SliderQ5;
     private SeekBar SliderQ6;
     private SeekBar[] sliders;
+
     private StateProgressBar pageProgressBar;
 
     private TextView[] textViews;
@@ -50,6 +50,7 @@ public class TestFragment extends Fragment {
     private int actualScreen;
     private int numberOfQuestionsPerPage;
     private float range;
+
     private MyPreferences myPreferences;
 
     @Nullable
@@ -104,16 +105,22 @@ public class TestFragment extends Fragment {
         pageProgressBar = (StateProgressBar) view.findViewById(R.id.pageProgressBar);
 
         String[] questionsJ = new String[4];
+        // Tworzę listę zadań do wykonania i trzymam się jej
         questionsJ[0] = "I create to-do list and stick to it";
+        // Skupiam się na jednej rzeczy do wykonania na raz
         questionsJ[1] = "I focus on one thing at a time";
+        // Moja praca jest metodyczna i zorganizowana
         questionsJ[2] = "My work is methodical and organized";
+        // Nie lubię niespodziewanych wydarzeń
         questionsJ[3] = "I don't like unexpected events";
         int[] numbers = new int[]{1, 2, 3, 4};
         System.arraycopy(questionsJ, 0, allQuestions, 0, questionsJ.length);
         PersonalityTrait JTrait = new PersonalityTrait("J", questionsJ, numbers);
 
         String[] questionsP = new String[2];
+        // Jestem najbardziej efektywny, kiedy wykonuję swoje zadania na ostatnią chwilę
         questionsP[0] = "I am most effective when I complete my tasks at the last minute";
+        // Często podejmuję decyzje impulsywnie
         questionsP[1] = "I often make decisions impulsively";
         numbers = new int[]{5, 6};
         System.arraycopy(questionsP, 0, allQuestions, 4, questionsP.length);
@@ -121,8 +128,11 @@ public class TestFragment extends Fragment {
 
 
         String[] questionsN = new String[3];
+        // Żyję bardziej w swojej głowie, niż w świecie rzeczywistym
         questionsN[0] = "I live more in my head than in the real world";
+        // Fantazjowanie często sprawia mi większą przyjemność niż realne doznania
         questionsN[1] = "Fantasizing often give more joy than real sensations";
+        // Wolę wymyślać nowe sposoby na rozwiązanie problemu, niż korzystać ze sprawdzonych
         questionsN[2] = "I prefer to invent new ways to solve problems, than using a proven ones";
         numbers = new int[]{7, 8, 9};
         System.arraycopy(questionsN, 0, allQuestions, 6, questionsN.length);
@@ -130,8 +140,11 @@ public class TestFragment extends Fragment {
         NTrait.setScore(40);
 
         String[] questionsS = new String[3];
+        // Stąpam twardo po ziemi
         questionsS[0] = "I keep my feet firmly on the ground";
+        // Wolę skupić się na rzeczywistości, niż oddawać fantazjom
         questionsS[1] = "I prefer to focus on reality than indulge in fantasies";
+        // Aktywność fizyczna sprawia mi większą przyjemność niż umysłowa
         questionsS[2] = "Psychical activity is more enjoyable than mental one";
         numbers = new int[]{10, 11, 12};
         System.arraycopy(questionsS, 0, allQuestions, 9, questionsS.length);
@@ -139,16 +152,22 @@ public class TestFragment extends Fragment {
         STrait.setScore(60);
 
         String[] questionsE = {
+                // Mówienie o moich problemach nie jest dla mnie trudne
                 "It is not difficult for me to talk about my problems",
+                // Lubię być w centrum uwagi
                 "I like being the center of attention",
+                // Łatwo nawiązuję nowe znajomości
                 "I easily make new friendships",
+                // Często rozpoczynam rozmowę
                 "I start conversations often"};
         numbers = new int[]{13, 14, 15, 16};
         System.arraycopy(questionsE, 0, allQuestions, 12, questionsE.length);
         PersonalityTrait ETrait = new PersonalityTrait("E", questionsE, numbers);
 
         String[] questionsI = new String[2];
+        // Chętnie chodzę na samotne spacery z dala od zgiełku i hałasu
         questionsI[0] = "I like to go for lonely walks away from the hustle and bustle";
+        // Wolę przysłuchiwać się dyskusji niż w niej uczestniczyć
         questionsI[1] = "I prefer to listen to the discussion than to participate in it";
         numbers = new int[]{17, 18};
         System.arraycopy(questionsI, 0, allQuestions, 16, questionsI.length);
@@ -156,16 +175,22 @@ public class TestFragment extends Fragment {
 
 
         String[] questionsF = new String[3];
+        // Unikam kłótni, nawet jeśli wiem, że mam rację
         questionsF[0] = "I avoid arguing, even if I know I'm right";
+        // Subiektywne odczucia mają duży wpływ na moje decyzje
         questionsF[1] = "Subjective feelings have a big influence on my decisions";
+        // Wyrażanie swoich uczuć nie sprawia mi problemu
         questionsF[2] = "I have no problem expressing my feelings";
         numbers = new int[]{19, 20, 21};
         System.arraycopy(questionsF, 0, allQuestions, 18, questionsF.length);
         PersonalityTrait FTrait = new PersonalityTrait("F", questionsF, numbers);
 
         String[] questionsT = new String[3];
+        // Wolę być postrzegany jako ktoś niemiły, niż nielogiczny
         questionsT[0] = "I'd rather be seen as rude than illogical";
+        // Uważam, że logiczne rozwiązania są zawsze najlepsze
         questionsT[1] = "I believe logical solutions are always the best";
+        // Jestem bezpośredni, nawet jeśli mogę tym kogoś zranić"
         questionsT[2] = "I am straightforward, even if it can hurt somebody";
         numbers = new int[]{22, 23, 24};
         System.arraycopy(questionsT, 0, allQuestions, 21, questionsT.length);
@@ -249,14 +274,14 @@ public class TestFragment extends Fragment {
             saveAnswers();
 
             HashMap<String, String> answers = new HashMap<>();
-
             for (PersonalityTrait tr : personalityTraits) {
                 for (int i = 0; i < tr.getNumbersOfQuestions().length; i++) {
                     answers.put("q" + tr.getNumbersOfQuestions()[i], String.valueOf(tr.getAnswerPoints()[i]));
                 }
             }
+
             TestRequest testRequest = new TestRequest(myPreferences.getUserId(), 24, answers);
-            BaseAsyncTask<TestRequest> sendResults = new BaseAsyncTask<>(ServerMethodsConsts.TEST, testRequest);
+            BaseAsyncTask22<TestRequest> sendResults = new BaseAsyncTask22<>(ServerMethodsConsts.TEST, testRequest);
             sendResults.setHttpMethod("POST");
             sendResults.execute();
 
@@ -265,7 +290,7 @@ public class TestFragment extends Fragment {
     }
 
     private void showResults() {
-        FragmentTransaction ft = Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction();
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.main_content, new TestResultsFragment());
         ft.commit();
     }

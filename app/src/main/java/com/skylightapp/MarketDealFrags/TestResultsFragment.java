@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,15 +15,15 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import com.skylightapp.Classes.App;
-import com.skylightapp.Customers.NewCustomerDrawer;
+import com.skylightapp.Classes.AppEtherNal;
 import com.skylightapp.LoginDirAct;
 import com.skylightapp.MarketClasses.BaseAsyncTask;
+import com.skylightapp.MarketClasses.BaseAsyncTask22;
 import com.skylightapp.MarketClasses.MyPreferences;
 
 import com.skylightapp.MarketClasses.PreferencesManager;
 import com.skylightapp.MarketClasses.TestReply;
 import com.skylightapp.MarketInterfaces.ServerMethodsConsts;
-import com.skylightapp.Markets.MarketTab;
 import com.skylightapp.R;
 
 public class TestResultsFragment extends Fragment {
@@ -46,8 +45,8 @@ public class TestResultsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_test_results, container, false);
 
-        preferencesManager = App.getPreferencesManager();
-        myPreferences = App.getPreferences();
+        preferencesManager = AppEtherNal.getPreferencesManager();
+        myPreferences = AppEtherNal.getPreferences();
 
         GetResults gR = new GetResults(ServerMethodsConsts.RESULTS + "/" + myPreferences.getUserId());
         gR.execute();
@@ -77,14 +76,15 @@ public class TestResultsFragment extends Fragment {
 
         return view;
     }
-
-    private class GetResults extends BaseAsyncTask<Void> {
+    private class GetResults extends BaseAsyncTask22<Void> {
         ProgressDialog resultProgress;
 
         public GetResults(String urn) {
             super(urn, null);
             resultProgress = new ProgressDialog(getActivity());
         }
+
+
 
         @Override
         protected void onPreExecute() {
@@ -116,5 +116,10 @@ public class TestResultsFragment extends Fragment {
             if (resultProgress.isShowing())
                 resultProgress.dismiss();
         }
+
+
     }
+
+
+
 }

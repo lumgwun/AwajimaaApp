@@ -17,7 +17,7 @@
         android:layout_width="@dimen/chat_attachment_preview_size"
         android:layout_height="@dimen/chat_attachment_preview_size"
         android:adjustViewBounds="true"
-        android:background="@drawable/gradient_attachment" />
+        android:background="@drawable/shape_layer_1a" />
 
     <ImageButton
         android:id="@+id/button_attachment_preview_delete"
@@ -26,7 +26,7 @@
         android:layout_height="24dp"
         android:layout_gravity="top|right"
         android:padding="0dp"
-        android:src="@drawable/ic_action_remove" />
+        android:src="@drawable/ic_delete" />
 
     <ProgressBar
         android:id="@+id/progress_attachment_preview"

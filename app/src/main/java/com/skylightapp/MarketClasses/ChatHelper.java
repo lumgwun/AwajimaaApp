@@ -115,7 +115,7 @@ public class ChatHelper {
         return QBChatService.getInstance().isLoggedIn();
     }
 
-    public static QBUser getCurrentUser() {
+    public static com.skylightapp.MarketClasses.QBUser getCurrentUser() {
         return AppController.getInstance().getQbUser();
     }
 
@@ -199,7 +199,7 @@ public class ChatHelper {
                 new QbEntityCallbackWrapper<QBChatDialog>(callback) {
                     @Override
                     public void onSuccess(QBChatDialog dialog, Bundle args) {
-                        QbDialogHolder.getInstance().addDialog(dialog);
+                        QbDialogHolderE.getInstance().addDialog(dialog);
                         QbUsersHolder.getInstance().putUsers(users);
                         super.onSuccess(dialog, args);
                     }

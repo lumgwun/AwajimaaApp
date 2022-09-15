@@ -376,7 +376,7 @@ public class SkylightCashList extends AppCompatActivity implements SkylightCashA
         });
 
         dateOfSC = picker.getDayOfMonth()+"/"+ (picker.getMonth() + 1)+"/"+picker.getYear();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String todayDate = sdf.format(calendar1.getTime());
         if(dateOfSC !=null){
             dateOfSC =todayDate;

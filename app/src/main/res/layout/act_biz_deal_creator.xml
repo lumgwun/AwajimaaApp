@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Markets.BizDealCreatorAct">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/gOfC"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:focusable="false"
+        android:textColor="@android:color/holo_red_dark"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:background="@null"
+        android:text="Select the Type of Biz Deal" />
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/lSpnSelect"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="7dp"
+        android:layout_marginBottom="7dp"
+        android:layout_weight="1"
+        app:strokeColor="@color/colorAccent"
+        app:strokeWidth="2dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/Bd_type_selection"
+                android:foregroundGravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:hint="Gender"
+                android:background="@drawable/rect6h"
+                style="@style/Widget.AppCompat.Spinner.DropDown"
+                android:drawableStart="@drawable/ic_icon_foreground"
+                android:entries="@array/biz_deal"
+                android:padding="30dp"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:clickable="false"
+                />
+
+        </androidx.cardview.widget.CardView>    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/bizDeal_Tittle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="7dp"
+        android:layout_marginBottom="7dp"
+        android:layout_weight="1"
+        app:strokeColor="@color/colorAccent"
+        app:strokeWidth="2dp">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/biz_deal_tittle"
+            android:layout_width="match_parent"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:focusable="true"
+            android:drawableStart="@drawable/ic_icon_foreground"
+            android:layout_height="match_parent"
+            android:drawableEnd="@drawable/ic_icon_foreground"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:clickable="false"
+            android:layout_gravity="center_horizontal|center"
+            android:gravity="center_horizontal|center"
+            android:background="@drawable/rect_their4"
+            android:textColorHint="@android:color/holo_red_dark"
+            android:hint="Tittle"
+            />
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_sub_bd"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="7dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="7dp"
+        android:layout_weight="1"
+        android:onClick="btnSubmitBizDeal"
+        app:strokeColor="@color/colorAccent"
+        app:strokeWidth="2dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:text="Create Biz Deal"
+            android:textSize="20sp"
+            android:padding="20dp"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:textStyle="bold"
+            android:id="@+id/btnS_BizDeal"
+            android:textColor="@android:color/white"
+            android:background="@drawable/rect6g"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.card.MaterialCardView>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

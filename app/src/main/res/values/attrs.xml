@@ -16,8 +16,7 @@
         <attr name="digitTextColor" format="color" />
         <!-- Digit elevation (API 21+ only), default 0dp -->
         <attr name="digitElevation" format="dimension" />
-        <!-- The character to use to mask the input -->
-        <attr name="mask" format="string" />
+        <!--         <attr name="mask" format="string" /> -->
         <!-- Accent color, defaults to theme colorAccent -->
         <attr name="pinAccentColor" format="color" />
         <!-- Accent width, default 3dp -->

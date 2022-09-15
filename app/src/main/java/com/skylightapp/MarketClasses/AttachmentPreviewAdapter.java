@@ -1,5 +1,30 @@
 package com.skylightapp.MarketClasses;
 
+import android.content.Context;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+
+import com.bumptech.glide.Glide;
+import com.quickblox.chat.model.QBAttachment;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.QBProgressCallback;
+import com.quickblox.core.exception.QBResponseException;
+import com.skylightapp.Classes.App;
+import com.skylightapp.R;
+
+import java.io.File;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+
 public class AttachmentPreviewAdapter extends BaseListAdapter<File> {
 
     private static final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
@@ -10,8 +35,7 @@ public class AttachmentPreviewAdapter extends BaseListAdapter<File> {
     private final OnAttachmentCountChangedListener onAttachmentCountChangedListener;
     private final OnAttachmentUploadErrorListener onAttachmentUploadErrorListener;
 
-    public AttachmentPreviewAdapter(Context context,
-                                    OnAttachmentCountChangedListener countChangedListener,
+    public AttachmentPreviewAdapter(Context context, OnAttachmentCountChangedListener countChangedListener,
                                     OnAttachmentUploadErrorListener errorListener) {
         super(context);
         fileQBAttachmentMap = Collections.synchronizedMap(new HashMap<File, QBAttachment>());
@@ -67,6 +91,7 @@ public class AttachmentPreviewAdapter extends BaseListAdapter<File> {
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
+
             convertView = inflater.inflate(R.layout.item_attachment_preview, parent, false);
             holder.attachmentImageView = (ImageView) convertView.findViewById(R.id.image_attachment_preview);
             holder.progressBar = (ProgressBar) convertView.findViewById(R.id.progress_attachment_preview);
