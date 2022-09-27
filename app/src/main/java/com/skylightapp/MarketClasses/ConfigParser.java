@@ -3,6 +3,7 @@ package com.skylightapp.MarketClasses;
 import android.content.Context;
 
 import com.skylightapp.Classes.AppController;
+import com.skylightapp.Classes.AssetsUtilsEthernal;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,7 +19,7 @@ public class ConfigParser {
     }
 
     public String getConfigsAsJsonString(String fileName) throws IOException {
-        return AssetsUtils.getJsonAsString(fileName, context);
+        return AssetsUtilsEthernal.getJsonAsString(fileName, context);
     }
 
     public JSONObject getConfigsAsJson(String fileName) throws IOException, JSONException {

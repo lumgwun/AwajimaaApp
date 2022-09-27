@@ -45,9 +45,7 @@ public class AppE extends MultiDexApplication {
         super.onCreate();
         instance = this;
         ActivityLifecycle.init(this);
-
         initQbConfigs();
-
         AppE.context = getApplicationContext();
         preferencesManager = new PreferencesManager(AppE.context);
         preferences = preferencesManager.getMyPreferences();

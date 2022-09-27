@@ -15,7 +15,7 @@
         android:title="Match"
         app:cnb_iconTintMode="src_in"
         app:cnb_iconColor="#F44336"
-        android:icon="@drawable/settings_fg"/>
+        android:icon="@drawable/settings"/>
 
     <item
         android:id="@+id/menu_chat_"

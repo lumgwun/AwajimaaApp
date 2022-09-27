@@ -94,7 +94,7 @@ public class MoroBirthdays extends AppCompatActivity {
         dbHelper = new DBHelper(this);
         birthdayArrayList = new ArrayList<>();
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         calendar.add(Calendar.DAY_OF_YEAR, 1);
         Date newDate = calendar.getTime();
         String tomorrowDaysDate = sdf.format(newDate);

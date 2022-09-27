@@ -10,6 +10,10 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.skylightapp.Admins.AdminBankDeposit;
+import com.skylightapp.MarketClasses.BusinessOthers;
+import com.skylightapp.MarketClasses.Market;
+import com.skylightapp.MarketClasses.MarketAdmin;
+import com.skylightapp.MarketClasses.MarketBusiness;
 
 import org.json.JSONObject;
 
@@ -59,16 +63,35 @@ public class AdminUser  implements Parcelable, Serializable {
     @Ignore
     public static final String ADMIN_TABLE = "admin_table";
     @Ignore
+    public static final String ADMIN_BUSINESS_ID = "ad_Business_ID";
+    public static final String ADMIN_MARKET_ID = "ad_market_ID";
+    public static final String ADMIN_MARKET_TYPE = "ad_market_Type";
 
     public static final String CREATE_ADMIN_TABLE = "CREATE TABLE IF NOT EXISTS " + ADMIN_TABLE + " ( " + ADMIN_ID + " INTEGER   , " + ADMIN_PROFILE_ID + " INTEGER , " + ADMIN_SURNAME + " TEXT  , " +
             ADMIN_FIRST_NAME + " TEXT, " + ADMIN_PHONE_NUMBER + " TEXT, " + ADMIN_EMAIL_ADDRESS + " TEXT, " + ADMIN_DOB + " TEXT, " + ADMIN_GENDER + " TEXT, " +
             ADMIN_ADDRESS + " TEXT, " + ADMIN_OFFICE + " TEXT, " + ADMIN_DATE_JOINED + " TEXT, " + ADMIN_USER_NAME + " TEXT, " + ADMIN_PASSWORD + " TEXT, " +
-            ADMIN_NIN + " TEXT,  " + ADMIN_PIX + " TEXT, " + ADMIN_STATUS + " TEXT, " + "FOREIGN KEY(" + ADMIN_PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + ADMIN_ID  + "))";
+            ADMIN_NIN + " TEXT,  " + ADMIN_PIX + " TEXT, " + ADMIN_STATUS + " TEXT, "+ ADMIN_BUSINESS_ID + " TEXT, "+ ADMIN_MARKET_ID + " TEXT, " + ADMIN_MARKET_TYPE + " TEXT, " + "FOREIGN KEY(" + ADMIN_BUSINESS_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + ADMIN_MARKET_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + ADMIN_PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + ADMIN_ID  + "))";
 
     private static final long serialVersionUID = 8924708152697574031L;
     @SuppressLint("SimpleDateFormat")
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+
+    public String getAdminType() {
+        return adminType;
+    }
+
+    public void setAdminType(String adminType) {
+        this.adminType = adminType;
+    }
+
+
+
+
     //this.dateJoined = DATE_FORMAT.format(new Date());
+
+    public enum ADMIN_TYPE {
+        REGULATOR, TELLER, RECORD_KEEPER,PARTNER, WORKER,INVESTOR;
+    }
     @PrimaryKey(autoGenerate = true)
     private int adminID=1013;
     String adminFirstName;
@@ -91,6 +114,17 @@ public class AdminUser  implements Parcelable, Serializable {
     String adminNextOfKin;
     private Uri adminPhoto;
     private String adminUserName;
+    private int adminBusinessID;
+    private int adminMarketID;
+    private ArrayList<Integer> adminMarketIDList;
+    private ArrayList<Integer> adminBusinessIDList;
+    private ArrayList<BusinessOthers> adminBusinessOthersArrayList;
+    private ArrayList<MarketBusiness> adminMarketBizArrayList;
+    private ArrayList<Market> adminMarketArrayList;
+    private ArrayList<MarketAdmin> adminMarketAdminArrayList;
+    private ArrayList<AdminBankDeposit> adminBankDeposits;
+
+    private String adminType;
 
     protected AdminUser(Parcel in) {
         adminID = in.readInt();
@@ -120,7 +154,36 @@ public class AdminUser  implements Parcelable, Serializable {
         alreadyAdded = in.readByte() != 0;
         timeLines = in.createTypedArrayList(TimeLine.CREATOR);
     }
+    public void addDepositReport(AdminBankDeposit adminBankDeposit) {
+        adminBankDeposits = new ArrayList<>();
+        adminBankDeposits.add(adminBankDeposit);
 
+    }
+
+    public void addMarketAdmin(MarketAdmin marketAdmin) {
+        adminMarketAdminArrayList = new ArrayList<>();
+        adminMarketAdminArrayList.add(marketAdmin);
+    }
+    public void addMarketID(int marketID) {
+        adminMarketIDList = new ArrayList<>();
+        adminMarketIDList.add(marketID);
+    }
+    public void addBusinessOthers(BusinessOthers businessOthers) {
+        adminBusinessOthersArrayList = new ArrayList<>();
+        adminBusinessOthersArrayList.add(businessOthers);
+    }
+    public void addMarketBusiness(MarketBusiness marketBusiness) {
+        adminMarketBizArrayList = new ArrayList<>();
+        adminMarketBizArrayList.add(marketBusiness);
+    }
+    public void addMarket(Market market) {
+        adminMarketArrayList = new ArrayList<>();
+        adminMarketArrayList.add(market);
+    }
+    public void addBusinessID(int businessID) {
+        adminBusinessIDList = new ArrayList<>();
+        adminBusinessIDList.add(businessID);
+    }
     public static final Creator<AdminUser> CREATOR = new Creator<AdminUser>() {
         @Override
         public AdminUser createFromParcel(Parcel in) {
@@ -268,8 +331,6 @@ public class AdminUser  implements Parcelable, Serializable {
     ArrayList<TellerReport> tellerReportArrayList;
     @Ignore
     ArrayList<Transaction> transactions;
-    @Ignore
-    ArrayList<AdminBankDeposit> adminBankDeposits;
     @Ignore
     ArrayList<Payment> payments;
     @Ignore
@@ -504,5 +565,69 @@ public class AdminUser  implements Parcelable, Serializable {
         parcel.writeTypedList(payments);
         parcel.writeByte((byte) (alreadyAdded ? 1 : 0));
         parcel.writeTypedList(timeLines);
+    }
+
+    public int getAdminBusinessID() {
+        return adminBusinessID;
+    }
+
+    public void setAdminBusinessID(int adminBusinessID) {
+        this.adminBusinessID = adminBusinessID;
+    }
+
+    public int getAdminMarketID() {
+        return adminMarketID;
+    }
+
+    public void setAdminMarketID(int adminMarketID) {
+        this.adminMarketID = adminMarketID;
+    }
+
+    public ArrayList<Integer> getAdminMarketIDList() {
+        return adminMarketIDList;
+    }
+
+    public void setAdminMarketIDList(ArrayList<Integer> adminMarketIDList) {
+        this.adminMarketIDList = adminMarketIDList;
+    }
+
+    public ArrayList<Integer> getAdminBusinessIDList() {
+        return adminBusinessIDList;
+    }
+
+    public void setAdminBusinessIDList(ArrayList<Integer> adminBusinessIDList) {
+        this.adminBusinessIDList = adminBusinessIDList;
+    }
+
+    public ArrayList<BusinessOthers> getAdminBusinessArrayList() {
+        return adminBusinessOthersArrayList;
+    }
+
+    public void setAdminBusinessArrayList(ArrayList<BusinessOthers> adminBusinessOthersArrayList) {
+        this.adminBusinessOthersArrayList = adminBusinessOthersArrayList;
+    }
+
+    public ArrayList<Market> getAdminMarketArrayList() {
+        return adminMarketArrayList;
+    }
+
+    public void setAdminMarketArrayList(ArrayList<Market> adminMarketArrayList) {
+        this.adminMarketArrayList = adminMarketArrayList;
+    }
+
+    public ArrayList<MarketAdmin> getAdminMarketAdminArrayList() {
+        return adminMarketAdminArrayList;
+    }
+
+    public void setAdminMarketAdminArrayList(ArrayList<MarketAdmin> adminMarketAdminArrayList) {
+        this.adminMarketAdminArrayList = adminMarketAdminArrayList;
+    }
+
+    public ArrayList<MarketBusiness> getAdminMarketBizArrayList() {
+        return adminMarketBizArrayList;
+    }
+
+    public void setAdminMarketBizArrayList(ArrayList<MarketBusiness> adminMarketBizArrayList) {
+        this.adminMarketBizArrayList = adminMarketBizArrayList;
     }
 }

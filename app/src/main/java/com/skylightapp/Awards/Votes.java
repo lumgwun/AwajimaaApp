@@ -8,7 +8,7 @@ import com.skylightapp.Classes.Profile;
 import java.io.Serializable;
 
 import static com.skylightapp.Awards.Award.AWARD_ID;
-import static com.skylightapp.Classes.OtherBusiness.BIZ_ID;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_ID;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 import static com.skylightapp.Classes.Profile.PROFILE_PHONE;
@@ -26,7 +26,7 @@ public class Votes extends  Nomination implements Serializable, Parcelable {
     public static final String VOTER_IDENTITY = "VoterIdentity";
     public static final String VOTER_COUNT = "VoterCount";
 
-    public static final String CREATE_VOTE_TABLE = "CREATE TABLE " + VOTE_TABLE + " (" + VOTE_ID + " LONG PRIMARY KEY, " + AWARD_ID + " LONG , " + NOMINATION_ID + " LONG , " + PROFILE_ID + " LONG , " +BIZ_ID + " LONG , " +
+    public static final String CREATE_VOTE_TABLE = "CREATE TABLE " + VOTE_TABLE + " (" + VOTE_ID + " LONG PRIMARY KEY, " + AWARD_ID + " LONG , " + NOMINATION_ID + " LONG , " + PROFILE_ID + " LONG , " + MARKET_BIZ_ID + " LONG , " +
             VOTING_TITTLE + " TEXT, " + VOTE_CATEGORY + " TEXT, " +  VOTEE_ + " TEXT, " + PROFILE_PHONE + " TEXT, " + PROFILE_STATE + " TEXT, " + VOTER_IDENTITY + " TEXT, " + VOTE_AMOUNT + " DOUBLE, " +
             VOTE_DATE + " TEXT, " + VOTER_COUNT + " TEXT, " +  VOTE_STATUS +  " TEXT,"+ "FOREIGN KEY(" + PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
     public static final int SUCCESS = 1;

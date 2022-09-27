@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 
+import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.PaymentDoc;
 
 import java.util.ArrayList;
@@ -28,16 +29,23 @@ import static com.skylightapp.Classes.TimeLine.TIMELINE_ID;
 import static java.lang.String.valueOf;
 
 public class PaymDocDAO extends DBHelperDAO{
+    int reportID;
     private static final String WHERE_ID_EQUALS = DOCUMENT_ID
             + " =?";
     public PaymDocDAO(Context context) {
         super(context);
     }
     public long saveNewDocument1(PaymentDoc paymentDoc) {
+        CustomerDailyReport customerDailyReport= new CustomerDailyReport();
         SQLiteDatabase db = this.getWritableDatabase();
+        if(paymentDoc !=null){
+            reportID=paymentDoc.getDocReportID();
+
+        }
+
         ContentValues documentValues = new ContentValues();
         documentValues.put(DOCUMENT_ID, valueOf(paymentDoc.getDocumentId()));
-        documentValues.put(DOCUMENT_REPORT_NO, valueOf(paymentDoc.getRecordID()));
+        documentValues.put(DOCUMENT_REPORT_NO, valueOf(reportID));
         documentValues.put(DOCUMENT_CUS_ID, valueOf(paymentDoc.getDocCusID()));
         documentValues.put(DOCUMENT_TITLE, valueOf(paymentDoc.getDocTittle()));
         documentValues.put(DOCUMENT_URI, valueOf(paymentDoc.getDocumentLink()));

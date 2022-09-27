@@ -33,11 +33,11 @@
                 android:textStyle="bold"
                 android:layout_marginEnd="10dp"
                 app:title="@string/app_name"
-                app:titleMarginStart="35dp"
+                app:titleMarginStart="10dp"
                 android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal"
                 android:textAlignment="center"
-                android:layout_marginStart="30dp"
+                android:layout_marginStart="22dp"
                 app:titleTextColor="@android:color/holo_red_dark"
                 android:layout_height="100dp"/>
 

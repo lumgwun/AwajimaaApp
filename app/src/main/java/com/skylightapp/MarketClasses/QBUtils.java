@@ -1,6 +1,7 @@
 package com.skylightapp.MarketClasses;
 
 import com.skylightapp.Classes.AppController;
+import com.skylightapp.Classes.AppEtherNal;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,7 +52,7 @@ public class QBUtils {
     }
 
     public static String getSignatureRequestData(String FBToken) {
-        QbConfigs qbConfigs = App.getInstance().getQbConfigs();
+        QbConfigs qbConfigs = AppEtherNal.getQbConfigs();
         String nonce = getNonce();
         Long timestamp = getUnixTimestamp();
         JSONObject json = new JSONObject();
@@ -87,6 +88,7 @@ public class QBUtils {
         if (mac != null) {
             return toHexString(mac.doFinal(data.getBytes()));
         }
+        return key;
     }
 
     private static String toHexString(byte[] bytes) {

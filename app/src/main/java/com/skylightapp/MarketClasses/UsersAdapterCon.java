@@ -12,18 +12,36 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.quickblox.chat.QBChatService;
+import com.quickblox.users.model.QBUser;
+import com.skylightapp.Markets.ChatInfoActCon;
+import com.skylightapp.Markets.MessageInfoActCon;
 import com.skylightapp.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UsersAdapterCon extends BaseAdapter {
 
-    List<QBUser> userList;
+    List<com.quickblox.users.model.QBUser> userList;
+    ArrayList<com.quickblox.users.model.QBUser> qbUserArrayList;
     protected com.quickblox.users.model.QBUser currentUser;
 
     private Context context;
+    protected QBUser currentUserAwajima;
 
-    public UsersAdapterCon(Context context, List<QBUser> users) {
+    public UsersAdapterCon(Context context, List<com.quickblox.users.model.QBUser> users) {
+        this.context = context;
+        currentUser = QBChatService.getInstance().getUser();
+        userList = users;
+    }
+
+    public UsersAdapterCon(MessageInfoActCon context, ArrayList<com.quickblox.users.model.QBUser> qbUsers) {
+        this.context = context;
+        currentUser = QBChatService.getInstance().getUser();
+        qbUserArrayList = qbUsers;
+    }
+
+    public UsersAdapterCon(ChatInfoActCon chatInfoActCon, List<com.quickblox.users.model.QBUser> users) {
         this.context = context;
         currentUser = QBChatService.getInstance().getUser();
         userList = users;
@@ -40,10 +58,20 @@ public class UsersAdapterCon extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void addUsers(List<QBUser> users) {
-        for (QBUser user : users) {
+    public void addUsersQ(List<com.quickblox.users.model.QBUser> users) {
+        for (com.quickblox.users.model.QBUser user : users) {
             if (!userList.contains(user)) {
                 userList.add(user);
+            }
+        }
+        notifyDataSetChanged();
+
+    }
+
+    public void addUsersAwajima(List<QBUser> users) {
+        for (QBUser currentUserAwajima : users) {
+            if (!userList.contains(currentUserAwajima)) {
+                userList.add(currentUserAwajima);
             }
         }
         notifyDataSetChanged();
@@ -64,7 +92,7 @@ public class UsersAdapterCon extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-        QBUser user = getItem(position);
+        com.quickblox.users.model.QBUser user = getItem(position);
 
         if (convertView == null) {
 
@@ -112,12 +140,16 @@ public class UsersAdapterCon extends BaseAdapter {
     }
 
     @Override
-    public QBUser getItem(int position) {
+    public com.quickblox.users.model.QBUser getItem(int position) {
         return userList.get(position);
     }
 
-    boolean isUserMe(QBUser user) {
+    boolean isUserMe(com.quickblox.users.model.QBUser user) {
         return currentUser != null && currentUser.getId().equals(user.getId());
+    }
+
+    public void addUsers(List<com.quickblox.users.model.QBUser> users) {
+
     }
 
     static class ViewHolder {

@@ -29,6 +29,7 @@ import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.PropertyValuesHolder;
 import com.nineoldandroids.animation.TypeEvaluator;
 import com.nineoldandroids.animation.ValueAnimator;
+import com.skylightapp.MarketInterfaces.DefaultAnimatorListener;
 import com.skylightapp.R;
 
 import java.lang.annotation.Retention;
@@ -394,14 +395,15 @@ public class CircularProgressIndicator extends View {
                 invalidate();
             }
         });
-        progressAnimator.addListener(new DefaultAnimatorListener() {
+
+        /*progressAnimator.addListener(new DefaultAnimatorListener() {
             @Override
             public void onAnimationCancel(Animator animation) {
                 sweepAngle = (int) finalAngle;
                 invalidate();
                 progressAnimator = null;
             }
-        });
+        });*/
         progressAnimator.start();
     }
 

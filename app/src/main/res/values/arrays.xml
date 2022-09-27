@@ -8,6 +8,30 @@
         <item>Local</item>
         <item>International</item>
     </string-array>
+    <string-array name="toFrom">
+        <item>To</item>
+        <item>From</item>
+    </string-array>
+    <string-array name="tranx_type">
+        <item>Cash</item>
+        <item>Deposit</item>
+        <item>Transfer</item>
+        <item>POS</item>
+        <item>Mobile Money</item>
+        <item>Wire Transfer</item>
+        <item>Trade by Barter</item>
+        <item>Debt Reduction</item>
+    </string-array>
+    <string-array name="Admin_Type">
+        <item>REGULATOR</item>
+        <item>TELLER</item>
+        <item>RECORD_KEEPER</item>
+        <item>PARTNER</item>
+        <item>WORKER</item>
+        <item>INVESTOR</item>
+        <item>Others</item>
+    </string-array>
+
     <string-array name="EmergencyType">
         <item></item>
         <item>Sickness</item>

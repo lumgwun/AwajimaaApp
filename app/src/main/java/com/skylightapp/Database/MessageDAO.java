@@ -19,10 +19,12 @@ import java.util.Calendar;
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Message.MESSAGE_ADMIN_ID;
 import static com.skylightapp.Classes.Message.MESSAGE_ADMIN_NAME;
+import static com.skylightapp.Classes.Message.MESSAGE_BIZ_ID;
 import static com.skylightapp.Classes.Message.MESSAGE_BRANCH_OFFICE;
 import static com.skylightapp.Classes.Message.MESSAGE_CUS_ID;
 import static com.skylightapp.Classes.Message.MESSAGE_DETAILS;
 import static com.skylightapp.Classes.Message.MESSAGE_ID;
+import static com.skylightapp.Classes.Message.MESSAGE_MARKET_ID;
 import static com.skylightapp.Classes.Message.MESSAGE_OTP;
 import static com.skylightapp.Classes.Message.MESSAGE_PHONENO;
 import static com.skylightapp.Classes.Message.MESSAGE_PROF_ID;
@@ -219,7 +221,7 @@ public class MessageDAO extends DBHelperDAO{
     }
 
 
-    public long insertMessage(int profileID, int customerID ,int messageID , String message, String sender,String sendee,String officeBranch, String messageTime) {
+    public long insertMessage(int profileID, int customerID, int messageID, long bizID, String message, String sender, String sendee, String officeBranch, String messageTime) {
         try {
             SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
@@ -228,7 +230,34 @@ public class MessageDAO extends DBHelperDAO{
             contentValues.put(MESSAGE_DETAILS, message);
             contentValues.put(MESSAGE_ID, messageID);
             contentValues.put(MESSAGE_SENDER, sender);
+            contentValues.put(MESSAGE_BIZ_ID, bizID);
             contentValues.put(MESSAGE_SENDEE, sendee);
+            contentValues.put(MESSAGE_BRANCH_OFFICE, officeBranch);
+            contentValues.put(MESSAGE_TIME, messageTime);
+            sqLiteDatabase.insert(MESSAGE_TABLE, null, contentValues);
+
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return messageID;
+    }
+    public long insertMessage(int profileID, int customerID, int bizID,int marketID, String purposeTittle,String message, String sender, String sendee, String officeBranch, String messageTime) {
+
+        int messageID=0;
+        try {
+
+            SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MESSAGE_PROF_ID, profileID);
+            contentValues.put(MESSAGE_CUS_ID, customerID);
+            contentValues.put(MESSAGE_DETAILS, message);
+            contentValues.put(MESSAGE_SENDER, sender);
+            contentValues.put(MESSAGE_BIZ_ID, bizID);
+            contentValues.put(MESSAGE_MARKET_ID, marketID);
+            contentValues.put(MESSAGE_SENDEE, sendee);
+            contentValues.put(MESSAGE_PURPOSE, purposeTittle);
             contentValues.put(MESSAGE_BRANCH_OFFICE, officeBranch);
             contentValues.put(MESSAGE_TIME, messageTime);
             sqLiteDatabase.insert(MESSAGE_TABLE, null, contentValues);

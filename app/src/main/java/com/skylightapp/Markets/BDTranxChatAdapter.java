@@ -28,7 +28,7 @@ public class BDTranxChatAdapter extends RecyclerView.Adapter<BDTranxChatAdapter.
 
     public BDTranxChatAdapter(Context context, int user_id, ArrayList transaction_sender_id, ArrayList transaction_amount, ArrayList transaction_remarks, ArrayList transaction_time, ArrayList transaction_id) {
         this.context = context;
-        this.user_id = user_id;
+        this.user_id = String.valueOf(user_id);
         this.transaction_sender_id = transaction_sender_id;
         this.transaction_amount = transaction_amount;
         this.transaction_remarks = transaction_remarks;

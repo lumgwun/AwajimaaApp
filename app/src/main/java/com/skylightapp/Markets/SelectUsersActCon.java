@@ -1,7 +1,6 @@
 package com.skylightapp.Markets;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
 import android.os.Bundle;
@@ -9,13 +8,10 @@ import android.text.TextUtils;
 import android.widget.AbsListView;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.SystemClock;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -33,7 +29,10 @@ import com.quickblox.core.request.QBPagedRequestBuilder;
 
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
+import com.skylightapp.MarketClasses.ChatHelperCon;
 import com.skylightapp.MarketClasses.CheckboxUsersAdapter;
+import com.skylightapp.MarketClasses.ScrollViewWithMaxHeightCon;
+import com.skylightapp.MarketClasses.ToastUtilsCon;
 import com.skylightapp.MarketClasses.UiUtils;
 import com.skylightapp.R;
 
@@ -61,7 +60,7 @@ public class SelectUsersActCon extends BaseActCon {
     private ListView usersListView;
     private ProgressBar progressBar;
     private Menu menu;
-    private ScrollViewWithMaxHeight scrollView;
+    private ScrollViewWithMaxHeightCon scrollView;
     private ChipGroup chipGroup;
     private TextView tvNotFound;
     private CheckboxUsersAdapter usersAdapter;
@@ -148,7 +147,7 @@ public class SelectUsersActCon extends BaseActCon {
                 for (QBUser user : usersAdapter.getSelectedUsers()) {
                     Chip chip = new Chip(SelectUsersActCon.this);
                     chip.setText(user.getFullName());
-                    chip.setChipIcon(UiUtils.getColorCircleDrawable(getApplicationContext(), user.getId().hashCode()));
+                    chip.setChipIcon(UiUtils.getColorCircleDrawable(SelectUsersActCon.this, user.getId().hashCode()));
                     chip.setCloseIconVisible(false);
                     chip.setCheckable(false);
                     chip.setClickable(false);
@@ -186,10 +185,10 @@ public class SelectUsersActCon extends BaseActCon {
             case R.id.menu_select_people_action_done:
                 if (usersAdapter != null) {
                     if (usersAdapter.getSelectedUsers().size() < MINIMUM_CHAT_OCCUPANTS_SIZE) {
-                        ToastUtils.shortToast(getApplicationContext(), R.string.select_users_choose_users);
+                        ToastUtilsCon.shortToast(SelectUsersActCon.this, R.string.select_users_choose_users);
                     } else {
                         if (qbChatDialog == null) {
-                            NewGroupActivity.startForResult(SelectUsersActCon.this, REQUEST_DIALOG_NAME);
+                            NewGroupActCon.startForResult(SelectUsersActCon.this, REQUEST_DIALOG_NAME);
                         } else {
                             passResultToCallerActivity();
                         }
@@ -289,7 +288,7 @@ public class SelectUsersActCon extends BaseActCon {
             @Override
             public void onSuccess(ArrayList<QBUser> usersList, Bundle params) {
                 tvNotFound.setVisibility(View.INVISIBLE);
-                int totalPagesFromParams = (int) params.get(ChatHelper.TOTAL_PAGES_BUNDLE_PARAM);
+                int totalPagesFromParams = (int) params.get(ChatHelperCon.TOTAL_PAGES_BUNDLE_PARAM);
                 if (currentPage >= totalPagesFromParams) {
                     hasNextPage = false;
                 }
@@ -322,7 +321,7 @@ public class SelectUsersActCon extends BaseActCon {
         QBUsers.getUsersByFullName(query, requestBuilder).performAsync(new QBEntityCallback<ArrayList<QBUser>>() {
             @Override
             public void onSuccess(ArrayList<QBUser> qbUsers, Bundle params) {
-                int totalPagesFromParams = (int) params.get(ChatHelper.TOTAL_PAGES_BUNDLE_PARAM);
+                int totalPagesFromParams = (int) params.get(ChatHelperCon.TOTAL_PAGES_BUNDLE_PARAM);
                 if (currentPage >= totalPagesFromParams) {
                     hasNextPage = false;
                 }

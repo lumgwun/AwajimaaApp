@@ -5,7 +5,7 @@
     android:orientation="horizontal"
     android:weightSum="6"
     android:layout_marginBottom="10dp"
-    android:background="@drawable/shape_rect_2a"
+    android:background="@drawable/shape_layer_3b"
     android:layout_height="wrap_content">
     <com.github.florent37.shapeofview.shapes.ArcView
         android:layout_width="0dp"
@@ -27,18 +27,17 @@
         app:shape_arc_position="bottom">
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:background="@drawable/rect_their4d"
+            android:background="@drawable/rect6d"
             android:layout_height="wrap_content">
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:textStyle="bold"
                 android:layout_marginEnd="10dp"
                 app:title="@string/app_name"
-                app:titleMarginStart="40dp"
                 android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal"
                 android:textAlignment="center"
-                android:layout_marginStart="30dp"
+                android:layout_marginStart="20dp"
                 app:titleTextColor="@color/red_brown_dark"
                 android:layout_height="100dp"/>
 

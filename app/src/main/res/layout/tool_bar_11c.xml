@@ -29,16 +29,16 @@
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:textStyle="bold"
-                app:title="Skylight Coop. App"
+                app:title="@string/app_name"
                 android:background="@drawable/rect6b"
                 android:layout_marginEnd="10dp"
-                app:titleMarginStart="40dp"
+                app:titleMarginStart="30dp"
                 android:foregroundGravity="center_horizontal"
                 android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal"
                 android:textAlignment="center"
                 android:layout_marginStart="10dp"
-                app:titleTextColor="@android:color/holo_red_dark"
+                app:titleTextColor="@color/gray_10"
                 android:layout_height="100dp"/>
 
         </com.google.android.material.appbar.AppBarLayout>

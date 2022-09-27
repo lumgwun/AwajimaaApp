@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.UriMatcher;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.SQLException;
@@ -30,7 +31,7 @@ import com.skylightapp.Classes.TellerCountData;
 import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Classes.Utils;
 import com.skylightapp.MarketClasses.Market;
-import com.skylightapp.Markets.MarketStock;
+import com.skylightapp.MarketClasses.MarketStock;
 import com.skylightapp.MarketClasses.StockAttrException;
 import com.skylightapp.Markets.StockSettingAct;
 import com.skylightapp.Classes.Account;
@@ -43,23 +44,30 @@ import com.skylightapp.Classes.PasswordHelpers;
 import com.skylightapp.Classes.Payee;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.R;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.skylightapp.Admins.AdminBankDeposit.CREATE_ADMIN_DEPOSIT_TABLE;
 import static com.skylightapp.Admins.AdminBankDeposit.DEPOSIT_TABLE;
@@ -72,8 +80,12 @@ import static com.skylightapp.Classes.Account.CREATE_ACCOUNTS_TABLE;
 import static com.skylightapp.Classes.Account.CREATE_ACCOUNT_TYPE_TABLE;
 import static com.skylightapp.Classes.Birthday.B_DOB;
 import static com.skylightapp.Classes.Birthday.B_PROF_ID;
+import static com.skylightapp.Classes.Customer.CUSTOMER_CITY;
 import static com.skylightapp.Classes.Customer.CUSTOMER_LATLONG;
+import static com.skylightapp.Classes.Customer.CUSTOMER_MARKET_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_PROF_ID;
+import static com.skylightapp.Classes.Customer.CUSTOMER_STATUS;
+import static com.skylightapp.Classes.Customer.CUS_BIZ_ID1;
 import static com.skylightapp.Classes.Customer.CUS_LOC_CUS_ID;
 import static com.skylightapp.Classes.CustomerDailyReport.REPORT_ACCOUNT_NO_FK;
 import static com.skylightapp.Classes.CustomerDailyReport.REPORT_PACK_ID_FK;
@@ -91,6 +103,7 @@ import static com.skylightapp.Classes.DailyAccount.DAILY_ACCOUNTING_TABLE;
 import static com.skylightapp.Classes.EmergReportNext.CREATE_EMERGENCY_NEXT_REPORT_TABLE;
 import static com.skylightapp.Classes.EmergencyReport.CREATE_EMERGENCY_REPORT_TABLE;
 import static com.skylightapp.Classes.EmergencyReport.EMERGENCY_REPORT_TABLE;
+import static com.skylightapp.Classes.ImageUtil.TAG;
 import static com.skylightapp.Classes.Journey.CREATE_JOURNEY_TABLE;
 import static com.skylightapp.Classes.Journey.JOURNEY_TABLE;
 import static com.skylightapp.Classes.JourneyAccount.CREATE_JOURNEY_ACCOUNT_TABLE;
@@ -110,6 +123,8 @@ import static com.skylightapp.Classes.PaymentCode.CODE_CUS_ID;
 import static com.skylightapp.Classes.PaymentCode.CODE_PROFILE_ID;
 import static com.skylightapp.Classes.PaymentCode.CODE_REPORT_NO;
 import static com.skylightapp.Classes.Profile.CREATE_SPONSOR_TABLE;
+import static com.skylightapp.Classes.Profile.CUS_ID_PASS_KEY;
+import static com.skylightapp.Classes.Profile.CUS_ID_PIX_KEY;
 import static com.skylightapp.Classes.Profile.PROFILE_CUS_ID_KEY;
 import static com.skylightapp.Classes.Profile.PROFID_FOREIGN_KEY_PIX;
 import static com.skylightapp.Classes.Profile.PROFILE_PIC_ID;
@@ -151,12 +166,12 @@ import static com.skylightapp.MarketClasses.Market.MARKET_ID;
 import static com.skylightapp.MarketClasses.Market.MARKET_NAME;
 import static com.skylightapp.MarketClasses.Market.MARKET_STATE;
 import static com.skylightapp.MarketClasses.Market.MARKET_TABLE;
-import static com.skylightapp.Markets.MarketStock.CREATE_MARKET_STOCK_TABLE;
-import static com.skylightapp.Markets.MarketStock.KEYS_PROD;
-import static com.skylightapp.Markets.MarketStock.KEY_PROD_BENEFIT;
-import static com.skylightapp.Markets.MarketStock.KEY_PROD_NAME;
-import static com.skylightapp.Markets.MarketStock.KEY_PROD_SALES;
-import static com.skylightapp.Markets.MarketStock.MARKET_STOCK_TABLE;
+import static com.skylightapp.MarketClasses.MarketStock.CREATE_MARKET_STOCK_TABLE;
+import static com.skylightapp.MarketClasses.MarketStock.KEYS_PROD;
+import static com.skylightapp.MarketClasses.MarketStock.KEY_PROD_BENEFIT;
+import static com.skylightapp.MarketClasses.MarketStock.KEY_PROD_NAME;
+import static com.skylightapp.MarketClasses.MarketStock.KEY_PROD_SALES;
+import static com.skylightapp.MarketClasses.MarketStock.MARKET_STOCK_TABLE;
 
 import static com.skylightapp.SuperAdmin.AppCommission.ADMIN_BALANCE_TABLE;
 import static com.skylightapp.SuperAdmin.AppCommission.CREATE_ADMIN_BALANCE_TABLE;
@@ -351,10 +366,15 @@ public class DBHelper extends SQLiteOpenHelper {
     private Context context;
 
     private SQLiteDatabase db;
+    private static String TICK = "`";
 
     private DBHelper dbHelper;
+    private SharedPreferences sharedPreferences;
+
+    private Bitmap missingPhoto;
 
     public static String DB_PATH = "/data/D";
+    private static String TAG = "Awajima Business Book";
 
     public static final String DATABASE_NAME = "dBSklight";
     private static final String LOG = DBHelper.class.getName();
@@ -366,6 +386,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String BILL_ID_WITH_PREFIX = "bill.id";
     public static final int DATABASE_VERSION = 13;
     public static final int DATABASE_NEW_VERSION = 15;
+    private static final String TIME_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss.SSSZZZZZ";
+    private SimpleDateFormat timeStamp;
+    private DateTimeFormatter timeFormat;
+    private static final String PREF_NAME = "skylight";
 
 
     public DBHelper(Context context) {
@@ -419,6 +443,24 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.d("table", CREATE_EMERGENCY_NEXT_REPORT_TABLE);
         Log.d("table", CREATE_TELLER_REPORT_TABLE);
         Log.d("table", CREATE_MARKET_TX_TABLE_TABLE);
+        try {
+            this.context = context;
+            sharedPreferences = context.getSharedPreferences(PREF_NAME, 0);
+
+
+            timeStamp = new SimpleDateFormat(TIME_FORMAT_PATTERN,
+                    Locale.getDefault());
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                timeFormat = DateTimeFormatter.ofPattern(TIME_FORMAT_PATTERN, Locale.getDefault());
+            }
+
+            missingPhoto = BitmapFactory.decodeResource(context.getResources(), R.drawable.user3);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.w("FieldBook", "Unable to create or open database");
+        }
 
 
     }
@@ -637,6 +679,172 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + JOURNEY_ACCOUNT_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MARKET_TX_TABLE);
         onCreate(db);
+    }
+
+    private String arrayToString(String table, String[] s) {
+        String value = "";
+
+        for (int i = 0; i < s.length; i++) {
+            if (table.length() > 0)
+                value += table + "." + TICK + s[i] + TICK;
+            else
+                value += s[i];
+
+            if (i < s.length - 1)
+                value += ",";
+        }
+
+        return value;
+    }
+    public static String replaceIdentifiers(String s) {
+
+        return s.replaceAll("'", "''");
+    }
+    public static String replaceSpecialChars(String s) {
+
+        final Pattern p = Pattern.compile("[\\[\\]`\"\']");
+
+        int lastIndex = 0;
+
+        StringBuilder output = new StringBuilder();
+
+        Matcher matcher = p.matcher(s);
+
+        while (matcher.find()) {
+
+            output.append(s, lastIndex, matcher.start());
+
+            lastIndex = matcher.end();
+
+        }
+
+        if (lastIndex < s.length()) {
+
+            output.append(s, lastIndex, s.length());
+
+        }
+
+        return output.toString();
+    }
+
+    /**
+     * V2 - Check if a string has any special characters
+     */
+    public static boolean hasSpecialChars(String s) {
+//        final Pattern p = Pattern.compile("[()<>/;\\*%$`\"\']");
+        final Pattern p = Pattern.compile("[\\[\\]`\"\']");
+
+        final Matcher m = p.matcher(s);
+
+        return m.find();
+    }
+    /**
+     * Helper function to convert array to csv format
+     */
+    private static String convertToCommaDelimited(String[] list) {
+        StringBuilder ret = new StringBuilder("");
+        for (int i = 0; list != null && i < list.length; i++) {
+            ret.append(list[i]);
+            if (i < list.length - 1) {
+                ret.append(',');
+            }
+        }
+        return ret.toString();
+    }
+    private void copyFile(File oldFile, File newFile) throws IOException {
+        if (oldFile.exists()) {
+            try {
+                copyFileCall(new FileInputStream(oldFile), new FileOutputStream(newFile));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    private static void copyFileCall(FileInputStream fromFile, FileOutputStream toFile) throws IOException {
+        FileChannel fromChannel = null;
+        FileChannel toChannel = null;
+
+        try {
+            fromChannel = fromFile.getChannel();
+            toChannel = toFile.getChannel();
+            fromChannel.transferTo(0, fromChannel.size(), toChannel);
+        } finally {
+            try {
+                if (fromChannel != null) {
+                    fromChannel.close();
+                }
+            } finally {
+                if (toChannel != null) {
+                    toChannel.close();
+                }
+            }
+        }
+    }
+    private void copyFile(String fullPath, String filename) {
+        AssetManager assetManager = context.getAssets();
+
+        InputStream in;
+        OutputStream out;
+
+        try {
+            in = assetManager.open(filename);
+            out = new FileOutputStream(fullPath + "/" + filename);
+
+            byte[] buffer = new byte[1024];
+            int read;
+
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+
+            in.close();
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            Log.e("Sample Data", e.getMessage());
+        }
+
+    }
+
+    public static String getDatabasePath(Context context) {
+        return context.getDatabasePath(DATABASE_NAME).getPath();
+    }
+
+    public boolean isTableExists(String tableName) {
+
+        open();
+
+        Cursor cursor = db.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '" + tableName + "'", null);
+        if (cursor != null) {
+            if (cursor.getCount() > 0) {
+                cursor.close();
+                return true;
+            }
+            cursor.close();
+        }
+        return false;
+    }
+
+    public boolean isTableEmpty(String tableName) {
+        boolean empty = true;
+
+        if (!isTableExists(tableName)) {
+            return empty;
+        }
+
+        Cursor cur = db.rawQuery("SELECT COUNT(*) FROM " + tableName, null);
+        if (cur != null) {
+            if (cur != null && cur.moveToFirst()) {
+                empty = (cur.getInt(0) == 0);
+            }
+            cur.close();
+        }
+        return empty;
+    }
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        db.rawQuery("PRAGMA foreign_keys=ON;", null).close();
+
     }
 
 
@@ -4508,6 +4716,53 @@ public class DBHelper extends SQLiteOpenHelper {
         return 0;
     }*/
 
+    public void insertCustomer11(int profileID1, int customerID, long bizID, int marketID, String uSurname, String uFirstName, String uPhoneNumber, String uEmail, String dateOfBirth, String selectedGender, String uAddress, String selectedState, String s, String joinedDate, String uUserName, String uPassword, Uri mImageUri, String status) {
+
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        //insertProfilePicture(profileID, customerID, profilePicture);
+        ContentValues contentValues = new ContentValues();
+
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(CUSTOMER_PROF_ID, profileID1);
+        cv.put(CUSTOMER_ID, customerID);
+        cv.put(CUS_BIZ_ID1, bizID);
+        cv.put(CUSTOMER_MARKET_ID, marketID);
+        cv.put(CUSTOMER_SURNAME, uSurname);
+        cv.put(CUSTOMER_FIRST_NAME, uFirstName);
+        cv.put(CUSTOMER_PHONE_NUMBER, uPhoneNumber);
+        cv.put(CUSTOMER_EMAIL_ADDRESS, uEmail);
+        cv.put(CUSTOMER_DOB, dateOfBirth);
+        cv.put(CUSTOMER_ADDRESS, uAddress);
+        cv.put(CUSTOMER_CITY, selectedState);
+        cv.put(CUSTOMER_GENDER, selectedGender);
+        cv.put(CUSTOMER_DATE_JOINED, joinedDate);
+        cv.put(CUSTOMER_STATUS, status);
+        cv.put(CUSTOMER_USER_NAME, uUserName);
+        cv.put(CUSTOMER_PASSWORD, uPassword);
+
+        ContentValues pictureValues = new ContentValues();
+        pictureValues.put(CUS_ID_PIX_KEY, customerID);
+        pictureValues.put(PROFID_FOREIGN_KEY_PIX, profileID1);
+        pictureValues.put(PICTURE_URI, String.valueOf(mImageUri));
+        db.insertOrThrow(PICTURE_TABLE, null, pictureValues);
+
+        ContentValues doBValue = new ContentValues();
+        doBValue.put(B_PROF_ID, profileID1);
+        doBValue.put(B_DOB, dateOfBirth);
+        db.insertOrThrow(BIRTHDAY_TABLE, null, doBValue);
+        uPassword = PasswordHelpers.passwordHash(uPassword);
+
+        ContentValues passwordValue = new ContentValues();
+        passwordValue.put(PROF_ID_FOREIGN_KEY_PASSWORD, profileID1);
+        passwordValue.put(CUS_ID_PASS_KEY, customerID);
+        passwordValue.put(PASSWORD, uPassword);
+        db.insertOrThrow(PASSWORD_TABLE, null, passwordValue);
+        db.insert(CUSTOMER_TABLE, null, cv);
+
+    }
+
 
 
     public long insertCustomer11(int profileID, int customerID, String lastName, String firstName, String phoneNumber, String email, String dob, String gender, String address, String state, String nextOfKin, String dateJoined, String userName, String password, Uri profilePicture, String machine) {
@@ -4515,7 +4770,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         //insertProfilePicture(profileID, customerID, profilePicture);
         ContentValues contentValues = new ContentValues();
-        password = PasswordHelpers.passwordHash(password);
+        //password = PasswordHelpers.passwordHash(password);
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();

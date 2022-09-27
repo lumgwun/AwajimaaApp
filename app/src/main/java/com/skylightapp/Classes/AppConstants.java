@@ -11,7 +11,7 @@ public class AppConstants {
     public static int CURRENT_CATEGORY = 0;
 
     public static final String FILENAME = "birthdays.json";
-    //public static final String Sky_EMAIL_PASSWORD = "@2021_Madam";
+    public static final String AWAJIMA_PRIVACY_POLICIES = "https://docs.google.com/document/d/1G8L2qti36yVtxGFJOQR0NV1RA0eQiK2DZFpZQj_Metw/edit?usp=sharing";
 
     //public static final String TWILLO_ACCOUNT_SID = "AC5e05dc0a793a29dc1da2eabdebd6c28d";
     //public static final String TWILLO_AUTH_TOKEN = "@39410e8b813c131da386f3d7bb7f94f7";

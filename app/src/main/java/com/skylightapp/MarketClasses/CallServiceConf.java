@@ -39,6 +39,7 @@ import com.quickblox.videochat.webrtc.callbacks.QBRTCClientVideoTracksCallbacks;
 import com.quickblox.videochat.webrtc.callbacks.QBRTCSessionStateCallback;
 import com.quickblox.videochat.webrtc.view.QBRTCVideoTrack;
 import com.skylightapp.MarketInterfaces.ConstsInterface;
+import com.skylightapp.Markets.CallActivityCon;
 import com.skylightapp.R;
 
 import org.webrtc.CameraVideoCapturer;
@@ -123,7 +124,7 @@ public class CallServiceConf extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Notification notification = initNotification();
+        android.app.Notification notification = initNotification();
         startForeground(SERVICE_ID, notification);
         if (intent != null) {
             roomID = intent.getStringExtra(ConstsInterface.EXTRA_ROOM_ID);
@@ -163,7 +164,7 @@ public class CallServiceConf extends Service {
     }
 
     private android.app.Notification initNotification() {
-        Intent notifyIntent = new Intent(this, CallActivity.class);
+        Intent notifyIntent = new Intent(this, CallActivityCon.class);
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         int intentFlag = 0;
@@ -601,7 +602,7 @@ public class CallServiceConf extends Service {
                     client.createSession(currentSession.getCurrentUserID(), conferenceType, new ConferenceEntityCallback<ConferenceSession>() {
                         @Override
                         public void onSuccess(ConferenceSession conferenceSession) {
-                            WebRtcSessionManager.getInstance().setCurrentSession(conferenceSession);
+                            WebRtcSessionManagerCon.getInstance().setCurrentSession(conferenceSession);
                             currentSession = conferenceSession;
                             initListeners();
                             timer.purge();

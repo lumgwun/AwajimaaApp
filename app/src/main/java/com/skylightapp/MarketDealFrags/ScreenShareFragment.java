@@ -24,6 +24,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.quickblox.users.model.QBUser;
 import com.quickblox.videochat.webrtc.QBRTCMediaConfig;
 import com.skylightapp.R;
+import com.skylightapp.VideoChat.CallActV;
 
 import java.util.ArrayList;
 
@@ -32,7 +33,7 @@ public class ScreenShareFragment extends BaseToolBarFragment {
 
     public static final String TAG = ScreenShareFragment.class.getSimpleName();
     private OnSharingEvents onSharingEvents;
-    private CallActivity.CurrentCallStateCallback currentCallStateCallback;
+    private CallActV.CurrentCallStateCallback currentCallStateCallback;
 
     public static ScreenShareFragment newInstance() {
         return new ScreenShareFragment();
@@ -90,7 +91,7 @@ public class ScreenShareFragment extends BaseToolBarFragment {
     public void onResume() {
         super.onResume();
         currentCallStateCallback = new CurrentCallStateCallbackImpl();
-        ((CallActivity) getActivity()).addCurrentCallStateListener(currentCallStateCallback);
+        ((CallActV) getActivity()).addCurrentCallStateListener(currentCallStateCallback);
     }
 
     @Override
@@ -133,7 +134,7 @@ public class ScreenShareFragment extends BaseToolBarFragment {
     public void onPause() {
         super.onPause();
         if (currentCallStateCallback != null) {
-            ((CallActivity) getActivity()).removeCurrentCallStateListener(currentCallStateCallback);
+            ((CallActV) getActivity()).removeCurrentCallStateListener(currentCallStateCallback);
         }
     }
 
@@ -157,7 +158,7 @@ public class ScreenShareFragment extends BaseToolBarFragment {
         }
     }
 
-    private class CurrentCallStateCallbackImpl implements CallActivity.CurrentCallStateCallback {
+    private class CurrentCallStateCallbackImpl implements CallActV.CurrentCallStateCallback {
         @Override
         public void onCallStarted() {
 

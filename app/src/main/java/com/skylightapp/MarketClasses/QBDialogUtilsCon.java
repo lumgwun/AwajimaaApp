@@ -7,6 +7,7 @@ import android.util.Log;
 import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.chat.model.QBDialogType;
 import com.quickblox.chat.utils.DialogUtils;
+import com.quickblox.users.model.QBUser;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,13 +35,13 @@ public class QBDialogUtilsCon {
         return users.size() == 2;
     }
 
-    public static List<QBUser> getAddedUsers(Context context, QBUser currentUser, QBChatDialog dialog, List<QBUser> currentUsers) {
+    public static List<com.quickblox.users.model.QBUser> getAddedUsers(Context context, QBUser currentUser, QBChatDialog dialog, List<QBUser> currentUsers) {
         return getAddedUsers(currentUser, getQbUsersFromQbDialog(context, dialog), currentUsers);
     }
 
-    private static List<QBUser> getAddedUsers(QBUser currentUser, List<QBUser> previousUsers, List<QBUser> currentUsers) {
-        List<QBUser> addedUsers = new ArrayList<>();
-        for (QBUser user : currentUsers) {
+    private static List<com.quickblox.users.model.QBUser> getAddedUsers(QBUser currentUser, List<QBUser> previousUsers, List<com.quickblox.users.model.QBUser> currentUsers) {
+        List<com.quickblox.users.model.QBUser> addedUsers = new ArrayList<>();
+        for (com.quickblox.users.model.QBUser user : currentUsers) {
             boolean wasInChatBefore = false;
             for (QBUser previousUser : previousUsers) {
                 if (user.getId().equals(previousUser.getId())) {
@@ -57,15 +58,15 @@ public class QBDialogUtilsCon {
         return addedUsers;
     }
 
-    public static List<QBUser> getRemovedUsers(Context context, QBUser currentUser, QBChatDialog dialog, List<QBUser> currentUsers) {
+    public static List<com.quickblox.users.model.QBUser> getRemovedUsers(Context context, QBUser currentUser, QBChatDialog dialog, List<QBUser> currentUsers) {
         return getRemovedUsers(currentUser, getQbUsersFromQbDialog(context, dialog), currentUsers);
     }
 
-    private static List<QBUser> getRemovedUsers(QBUser currentUser, List<QBUser> previousUsers, List<QBUser> currentUsers) {
-        List<QBUser> removedUsers = new ArrayList<>();
+    private static List<com.quickblox.users.model.QBUser> getRemovedUsers(QBUser currentUser, List<QBUser> previousUsers, List<com.quickblox.users.model.QBUser> currentUsers) {
+        List<com.quickblox.users.model.QBUser> removedUsers = new ArrayList<>();
         for (QBUser previousUser : previousUsers) {
             boolean isUserStillPresented = false;
-            for (QBUser user : currentUsers) {
+            for (com.quickblox.users.model.QBUser user : currentUsers) {
                 if (previousUser.getId().equals(user.getId())) {
                     isUserStillPresented = true;
                     break;
@@ -85,8 +86,8 @@ public class QBDialogUtilsCon {
         logUsersByIds(context, qbDialog.getOccupants());
     }
 
-    public static void logUsers(List<QBUser> users) {
-        for (QBUser user : users) {
+    public static void logUsers(List<com.quickblox.users.model.QBUser> users) {
+        for (com.quickblox.users.model.QBUser user : users) {
             Log.i(TAG, user.getId() + " " + user.getFullName());
         }
     }
@@ -128,9 +129,9 @@ public class QBDialogUtilsCon {
         return TextUtils.join(",", occupantIdsList);
     }
 
-    public static String getOccupantsNamesStringFromList(Collection<QBUser> qbUsers) {
+    public static String getOccupantsNamesStringFromList(Collection<QBUser> appServerUsers) {
         ArrayList<String> userNameList = new ArrayList<>();
-        for (QBUser user : qbUsers) {
+        for (QBUser user : appServerUsers) {
             if (TextUtils.isEmpty(user.getFullName())) {
                 userNameList.add(user.getLogin());
             } else {

@@ -12,8 +12,8 @@
     <string name="reply_title">Default reply action</string>
     <string name="terms_of_use">Terms Of Use</string>
     <string name="privacy_policy">Privacy Policy</string>
-
-
+    <string name="dlg_delete_question">Are you sure you want to delete dialogs?</string>
+    <string name="dlg_delete_dialogs">Delete dialogs</string>
     <string name="title_home">Home</string>
     <string name="duration_minutes_shortest">%1$d m</string>
     <string name="duration_hours_shortest">%1$d h</string>
@@ -21,9 +21,23 @@
     <string name="duration_week_shortest">%1$d w</string>
     <string name="add_geofences">Add geofences</string>
     <string name="remove_geofences">Remove geofences</string>
+    <string name="error_relogin_to_chat">Relogin to Chat Filed:</string>
+    <string name="dlg_updating_user">Updating user…</string>
+
+    <string name="dlg_loading_dialogs">Loading dialogs…</string>
+    <string name="dlg_loading_users">Loading users…</string>
+    <string name="dlg_updating_dialog">Updating dialog…</string>
+    <string name="dialog_OK">OK</string>
+    <string name="dialog_Cancel">Cancel</string>
+    <string name="dlg_ok">OK</string>
+    <string name="dlg_connecting_another_conversation">Connecting another conversation…</string>
+    <string name="dlg_leave_question">Are you sure you want to leave dialog?</string>
+    <string name="dlg_leave_dialog">Leave dialog</string>
 
     <string name="geofences_added">Geofences added</string>
     <string name="geofences_removed">Geofences removed</string>
+    <string name="dlg_wait_for_chat_connection_title">Please wait for connection</string>
+    <string name="dlg_wait_for_chat_connection">Please wait for a connection to the chat as it now is in the progress</string>
 
     <!-- Error strings -->
     <string name="geofence_not_available">Geofence service is not available now</string>
@@ -65,6 +79,17 @@
         <item quantity="one">One location reported</item>
         <item quantity="other">%d locations reported</item>
     </plurals>
+
+    <string name="join_chat_error">Joining Chat error</string>
+    <string name="load_chat_history_error">Chat History Loading Error</string>
+    <string name="chat_subtitle_plural">%s members</string>
+    <string name="chat_subtitle_singular">%s member</string>
+    <string name="chat_conference_join">Join</string>
+    <string name="chat_info_subtitle_plural">%s members</string>
+    <string name="chat_info_subtitle_singular">%s member</string>
+    <string name="packet_failed">Packet loss occurs</string>
+    <string name="manage_group_chat_subtitle_single">%s user in call</string>
+    <string name="manage_group_load_user_error">Load User Error</string>
 
     <string name="title_dashboard">Dashboard</string>
 
@@ -1974,6 +1999,9 @@
     <string name="starting_stream">Starting Stream</string>
     <string name="join_stream_error">Sorry! an error came up</string>
     <string name="join_stream">Join Live Streaming</string>
+    <string name="menu_settings_video">Video Settings</string>
+    <string name="menu_settings_audio">Audio Settings!</string>
+    <string name="error_file_not_created">Error file not created</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 

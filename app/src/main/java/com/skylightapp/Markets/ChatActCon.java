@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -37,6 +38,9 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
+import com.quickblox.auth.session.QBSettings;
 import com.quickblox.chat.QBChatService;
 import com.quickblox.chat.QBMessageStatusesManager;
 import com.quickblox.chat.QBRestChatService;
@@ -60,21 +64,27 @@ import com.quickblox.core.exception.QBResponseException;
 
 import com.quickblox.users.model.QBUser;
 import com.quickblox.videochat.webrtc.QBRTCTypes;
-import com.skylightapp.MarketClasses.AttachmentPreviewAdapter;
+import com.skylightapp.Classes.Profile;
+import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.MarketClasses.AttachmentPreviewAdapCon;
 import com.skylightapp.MarketClasses.AttachmentPreviewAdapterView;
+import com.skylightapp.MarketClasses.BusinessDeal;
+import com.skylightapp.MarketClasses.BusinessDealSub;
 import com.skylightapp.MarketClasses.CallServiceConf;
 import com.skylightapp.MarketClasses.ChatAdapterConf;
+import com.skylightapp.MarketClasses.ChatHelperCon;
 import com.skylightapp.MarketClasses.DialogsManager;
+import com.skylightapp.MarketClasses.MediaPickHelper;
 import com.skylightapp.MarketClasses.NetworkConnectionChecker;
 import com.skylightapp.MarketClasses.OnMediaPickedListener;
 import com.skylightapp.MarketClasses.PermissionsCheckerCon;
 import com.skylightapp.MarketClasses.QBDialogUtilsCon;
 import com.skylightapp.MarketClasses.SystemPermissionsHelper;
-import com.skylightapp.MarketClasses.VerboseQbChatConnectionListener;
-import com.skylightapp.MarketClasses.WebRtcSessionManager;
+import com.skylightapp.MarketClasses.ToastUtilsCon;
+import com.skylightapp.MarketClasses.VerboseQbChatConListenerCon;
 import com.skylightapp.MarketClasses.WebRtcSessionManagerCon;
 import com.skylightapp.MarketInterfaces.ConstsInterface;
-import com.skylightapp.VideoChat.PermissionsChecker;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
 import org.jivesoftware.smack.ConnectionListener;
@@ -84,6 +94,7 @@ import org.jivesoftware.smackx.muc.DiscussionHistory;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -92,13 +103,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-
 import com.skylightapp.R;
 
 import net.qiujuer.genius.ui.widget.FloatActionButton;
+
+import static com.skylightapp.BuildConfig.QUICKBLOX_ACCT_KEY;
+import static com.skylightapp.BuildConfig.QUICKBLOX_APP_ID;
+import static com.skylightapp.BuildConfig.QUICKBLOX_AUTH_KEY;
+import static com.skylightapp.BuildConfig.QUICKBLOX_SECRET_KEY;
 
 public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBMessageStatusListener {
     private static final String TAG = ChatActCon.class.getSimpleName();
@@ -132,7 +144,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     private LinearLayout attachmentPreviewContainerLayout;
     private RecyclerView chatMessagesRecyclerView;
     private ChatAdapterConf chatAdapter;
-    private AttachmentPreviewAdapter attachmentPreviewAdapter;
+    private AttachmentPreviewAdapCon attachmentPreviewAdapter;
     private ConnectionListener chatConnectionListener;
     private ImageAttachClickListener imageAttachClickListener;
     private VideoAttachClickListener videoAttachClickListener;
@@ -154,6 +166,24 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     private String streamID;
     private ServiceConnection callServiceConnection;
     private LinearLayoutCompat fabLayout;
+    private ProfDAO profDAO;
+    SharedPreferences userPreferences;
+    private int qbUserID;
+    private Calendar cal;
+    private static final String APPLICATION_ID = QUICKBLOX_APP_ID;   //QUICKBLOX_APP_ID
+    private static final String AUTH_KEY = QUICKBLOX_AUTH_KEY;
+    private static final String AUTH_SECRET = QUICKBLOX_SECRET_KEY;
+    private static final String ACCOUNT_KEY = QUICKBLOX_ACCT_KEY;
+    private static final String SERVER_URL = "";
+    private ArrayList<BusinessDeal> businessDeals;
+    private ArrayList<BusinessDealSub> businessDealSubs;
+    private static final String PREF_NAME = "skylight";
+    private DBHelper dbHelper;
+    Gson gson, gson1;
+    String json, json1, nIN;
+    Profile userProfile,  lastProfileUsed;
+    private QBUser qbUser;
+    private  FirebaseAuth firebaseAuth;
     private FloatActionButton fabMilestones,fabAddMembers,fabTranx,fabTimelines,fabControl;
 
     public static void startForResultFromCall(Activity activity, int code, String dialogId, boolean isOpenFromCall) {
@@ -171,10 +201,28 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     }
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_chat_act_con);
+        setTitle("Awajima Biz Comms");
+        dbHelper= new DBHelper(this);
+        profDAO = new ProfDAO(this);
+        QBSettings.getInstance().init(this, APPLICATION_ID, AUTH_KEY, AUTH_SECRET);
+        QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
+        gson= new Gson();
+        gson1= new Gson();
+        qbUser= new QBUser();
+        userProfile= new Profile();
+        firebaseAuth = FirebaseAuth.getInstance();
+        cal = Calendar.getInstance();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        json = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastQBUserUsed", "");
+        qbUser = gson1.fromJson(json1, QBUser.class);
+        //FirebaseAuthSettings firebaseAuthSettings = auth.getFirebaseAuthSettings();
         fabLayout = findViewById(R.id.Fab_layoutP);
         fabMilestones = findViewById(R.id.fab_create_mileston);
         fabAddMembers = findViewById(R.id.fab_add_members);
@@ -708,11 +756,11 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     }
 
     private void showDeliveredToScreen(QBChatMessage message) {
-        MessageInfoActivity.start(this, message, MessageInfoActivity.MESSAGE_INFO_DELIVERED_TO);
+        MessageInfoActCon.start(this, message, MessageInfoActCon.MESSAGE_INFO_DELIVERED_TO);
     }
 
     private void showViewedByScreen(QBChatMessage message) {
-        MessageInfoActivity.start(this, message, MessageInfoActivity.MESSAGE_INFO_READ_BY);
+        MessageInfoActCon.start(this, message, MessageInfoActCon.MESSAGE_INFO_READ_BY);
     }
 
     private void startChatInfoWithUpdatedDialog() {
@@ -724,7 +772,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
                 Log.d(TAG, "Update Dialog Successful: " + updatedChatDialog.getDialogId());
                 getQBDialogsHolder().addDialog(updatedChatDialog);
                 hideProgressDialog();
-                ChatInfoActivity.start(ChatActCon.this, qbChatDialog.getDialogId());
+                ChatInfoActCon.start(ChatActCon.this, qbChatDialog.getDialogId());
             }
 
             @Override
@@ -742,12 +790,12 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     }
 
     private void openAlertDialogWaitChat() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ChatActivity.this, R.style.AlertDialogStyle);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ChatActCon.this, R.style.AlertDialogStyle);
         alertDialogBuilder.setTitle(getString(R.string.dlg_wait_for_chat_connection_title));
         alertDialogBuilder.setMessage(getString(R.string.dlg_wait_for_chat_connection));
         alertDialogBuilder.setCancelable(false);
 
-        alertDialogBuilder.setPositiveButton(getString(R.string.dlg_ok), new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -919,7 +967,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
                     sendChatMessage(null, attachment);
                 }
             } else {
-                ToastUtils.shortToast(getApplicationContext(), R.string.chat_wait_for_attachments_to_upload);
+                ToastUtilsCon.shortToast(ChatActCon.this, R.string.chat_wait_for_attachments_to_upload);
             }
         }
 
@@ -971,21 +1019,21 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
             @Override
             public void onClick(View v) {
                 if (attachmentPreviewAdapter.getCount() >= MAX_ATTACHMENTS_COUNT) {
-                    ToastUtils.shortToast(getApplicationContext(), R.string.error_attachment_count);
+                    ToastUtilsCon.shortToast(ChatActCon.this, R.string.error_attachment_count);
                 } else {
                     openImagePicker();
                 }
             }
         });
 
-        attachmentPreviewAdapter = new AttachmentPreviewAdapter(this,
-                new AttachmentPreviewAdapter.AttachmentCountChangedListener() {
+        attachmentPreviewAdapter = new AttachmentPreviewAdapCon(this,
+                new AttachmentPreviewAdapCon.AttachmentCountChangedListener() {
                     @Override
                     public void onAttachmentCountChanged(int count) {
                         attachmentPreviewContainerLayout.setVisibility(count == 0 ? View.GONE : View.VISIBLE);
                     }
                 },
-                new AttachmentPreviewAdapter.AttachmentUploadErrorListener() {
+                new AttachmentPreviewAdapCon.AttachmentUploadErrorListener() {
                     @Override
                     public void onAttachmentUploadError(QBResponseException e) {
                         showErrorSnackbar(0, e, new View.OnClickListener() {
@@ -1051,7 +1099,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
                         Log.d(TAG, e.getMessage());
                     }
                 }
-                ToastUtils.shortToast(getApplicationContext(), R.string.chat_still_joining);
+                ToastUtilsCon.shortToast(ChatActCon.this, R.string.chat_still_joining);
                 return;
             }
 
@@ -1072,7 +1120,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
                 if (e.getMessage() != null) {
                     Log.w(TAG, e.getMessage());
                 }
-                ToastUtils.shortToast(getApplicationContext(), R.string.chat_error_send_message);
+                ToastUtilsCon.shortToast(ChatActCon.this, R.string.chat_error_send_message);
             }
         } else {
             showProgressDialog(R.string.dlg_login);
@@ -1089,7 +1137,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
                 public void onError(QBResponseException e) {
                     Log.d(TAG, "Relogin Error: " + e.getMessage());
                     hideProgressDialog();
-                    ToastUtils.shortToast(getApplicationContext(), R.string.chat_send_message_error);
+                    ToastUtilsCon.shortToast(ChatActCon.this, R.string.chat_send_message_error);
                 }
             });
         }
@@ -1106,7 +1154,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
                     loadDialogUsers();
                     break;
                 default:
-                    ToastUtils.shortToast(getApplicationContext(), String.format("%s %s", getString(R.string.chat_unsupported_type), qbChatDialog.getType().name()));
+                    ToastUtilsCon.shortToast(ChatActCon.this, String.format("%s %s", getString(R.string.chat_unsupported_type), qbChatDialog.getType().name()));
                     Log.e(TAG, "Finishing " + TAG + ". Unsupported chat type");
                     finish();
                     break;
@@ -1230,7 +1278,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
                 if (skipPagination == 0) {
                     scrollMessageListDown();
                 }
-                skipPagination += ChatHelper.CHAT_HISTORY_ITEMS_PER_PAGE;
+                skipPagination += ChatHelperCon.CHAT_HISTORY_ITEMS_PER_PAGE;
                 progressBar.setVisibility(View.GONE);
             }
 
@@ -1265,7 +1313,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
 
     private void deleteChat() {
         if (qbChatDialog.getType() == QBDialogType.PUBLIC_GROUP) {
-            ToastUtils.shortToast(getApplicationContext(), R.string.public_group_chat_cannot_be_deleted);
+            ToastUtilsCon.shortToast(ChatActCon.this, R.string.public_group_chat_cannot_be_deleted);
         } else {
             QBRestChatService.deleteDialog(qbChatDialog.getDialogId(), false).performAsync(new QBEntityCallback<Void>() {
                 @Override
@@ -1286,7 +1334,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
 
     private void initChatConnectionListener() {
         View rootView = findViewById(R.id.rv_chat_messages);
-        chatConnectionListener = new VerboseQbChatConnectionListener(getApplicationContext(), rootView) {
+        chatConnectionListener = new VerboseQbChatConListenerCon(ChatActCon.this, rootView) {
             @Override
             public void reconnectionSuccessful() {
                 super.reconnectionSuccessful();
@@ -1386,7 +1434,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
         }
     }
 
-    private class ImageAttachClickListener implements ChatAdapterConf.AttachClickListener {
+    public class ImageAttachClickListener implements ChatAdapterConf.AttachClickListener {
 
         @Override
         public void onAttachmentClicked(int itemViewType, View view, QBAttachment attachment) {
@@ -1403,7 +1451,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
         public void onAttachmentClicked(int itemViewType, View view, QBAttachment attachment) {
             if (attachment != null) {
                 String url = QBFile.getPrivateUrlForUID(attachment.getId());
-                AttachmentVideoActivity.start(ChatActCon.this, attachment.getName(), url);
+                AttachmentVideoAct.start(ChatActCon.this, attachment.getName(), url);
             }
         }
     }

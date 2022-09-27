@@ -24,6 +24,7 @@
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
                 android:id="@+id/app_bar_inv"
+                android:background="@drawable/shape_layer_3b"
                 android:layout_height="wrap_content">
                 <androidx.appcompat.widget.Toolbar
                     android:layout_width="match_parent"
@@ -35,7 +36,7 @@
                     android:id="@+id/order_toolbar"
                     android:textAlignment="center"
                     android:layout_marginStart="85dp"
-                    app:titleTextColor="@color/white_good"
+                    app:titleTextColor="@color/red_brown_dark"
                     android:layout_height="100dp"/>
             </com.google.android.material.appbar.AppBarLayout>
 
@@ -59,8 +60,8 @@
         android:layout_gravity="end"
         android:foregroundGravity="center_horizontal"
         android:theme="@style/ThemeOverlay.MaterialComponents"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="9dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginTop="29dp"
         android:layout_marginBottom="12dp"
         android:layout_height="wrap_content"/>
 

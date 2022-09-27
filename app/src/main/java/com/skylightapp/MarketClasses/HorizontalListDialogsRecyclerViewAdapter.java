@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.quickblox.chat.model.QBChatDialog;
 import com.skylightapp.Classes.App;
 import com.skylightapp.MarketInterfaces.ItemTouchHelperAdapter;
-import com.skylightapp.Markets.ChatAct;
+import com.skylightapp.Markets.ChatActEthernal;
 import com.skylightapp.R;
 
 import java.util.Collections;
@@ -21,7 +21,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.skylightapp.MarketDealFrags.DialogsFragment.REQUEST_DIALOG_ID_FOR_UPDATE;
+import static com.skylightapp.Markets.DialogsActCon.REQUEST_DIALOG_ID_FOR_UPDATE;
 
 
 @SuppressWarnings("deprecation")
@@ -61,7 +61,7 @@ public class HorizontalListDialogsRecyclerViewAdapter extends RecyclerView.Adapt
             public void onClick(View view) {
 
                 QBChatDialog selectedDialog = dialogList.get(pos);
-                ChatAct.startForResult(fragmentActivity, REQUEST_DIALOG_ID_FOR_UPDATE, selectedDialog);
+                ChatActEthernal.startForResult(fragmentActivity, REQUEST_DIALOG_ID_FOR_UPDATE, selectedDialog);
             }
         });
 

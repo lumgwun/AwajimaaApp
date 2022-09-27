@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment;
 import com.skylightapp.Classes.App;
 import com.skylightapp.Classes.AppEtherNal;
 import com.skylightapp.LoginDirAct;
-import com.skylightapp.MarketClasses.BaseAsyncTask;
 import com.skylightapp.MarketClasses.BaseAsyncTask22;
 import com.skylightapp.MarketClasses.MyPreferences;
 

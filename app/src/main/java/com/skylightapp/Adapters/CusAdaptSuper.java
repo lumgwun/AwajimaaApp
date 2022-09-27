@@ -17,10 +17,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.skylightapp.Admins.AdminDrawerActivity;
 import com.skylightapp.BlockedUserAct;
 import com.skylightapp.Classes.Customer;
-import com.skylightapp.Customers.SendCustomerMessage;
+import com.skylightapp.Markets.SendCusMessAct;
 import com.skylightapp.R;
 import com.skylightapp.SuperAdmin.CusByPackAct;
 import com.skylightapp.SuperAdmin.SuperAdminCountAct;
@@ -185,7 +184,7 @@ public class CusAdaptSuper extends RecyclerView.Adapter<CusAdaptSuper.RecyclerVi
             public void onClick(View view) {
                 Bundle messageBundle= new Bundle();
                 messageBundle.putParcelable("Customer", customer);
-                Intent intent = new Intent(mContext.getApplicationContext(), SendCustomerMessage.class);
+                Intent intent = new Intent(mContext.getApplicationContext(), SendCusMessAct.class);
                 intent.putExtras(messageBundle);
                 mContext.startActivity(intent);
 

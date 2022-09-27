@@ -1,6 +1,5 @@
 package com.skylightapp.Classes;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
@@ -20,7 +19,7 @@ import com.skylightapp.Database.DBHelper;
 import com.skylightapp.MarketClasses.BackgroundListener;
 import com.skylightapp.MarketClasses.MyPreferences;
 import com.skylightapp.MarketClasses.SampleConfigs;
-import com.skylightapp.Markets.MarketStock;
+import com.skylightapp.MarketClasses.MarketStock;
 import com.skylightapp.R;
 
 import org.acra.ACRA;

@@ -177,7 +177,7 @@ public class RequestItemAct extends AppCompatActivity {
         btnRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                messageDAO.insertMessage(profileID,customerID,messageID,"Package Request",message,customerName,customerBranch,dateOfRequest);
+                //messageDAO.insertMessage(profileID,customerID,messageID, bizID, "Package Request",message,customerName,customerBranch,dateOfRequest, bizID);
                 Toast.makeText(RequestItemAct.this, "Request has been sent", Toast.LENGTH_LONG).show();
             }
         });

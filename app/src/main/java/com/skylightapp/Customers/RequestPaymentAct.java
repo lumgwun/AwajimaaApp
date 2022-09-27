@@ -492,7 +492,7 @@ public class RequestPaymentAct extends AppCompatActivity {
                 timeLineClassDAO= new TimeLineClassDAO(this);
                 userProfile.addPTranxGranding(tranxPayoutID,customerID,customerName,amountRequested,acctBank,bankName, acctBankNo,requestDate,"Payout");
                 customer.addCusTranxGranding(tranxPayoutID,customerID,customerName,amountRequested,acctBank,bankName, acctBankNo,customerName,requestDate);
-                messageDAO.insertMessage(profileID,customerID,messageID,paymentMessage,sender,"Admin",officeBranch,requestDate);
+                //messageDAO.insertMessage(profileID,customerID,messageID, bizID, paymentMessage,sender,"Admin",officeBranch,requestDate);
                 timeLineClassDAO.insertTimeLine(tittle,paymentMessage,requestDate,location);
                 grantingDAO.insertTransaction_Granting(tranxPayoutID,profileID,customerID,customerName,amountRequested,requestDate,acctBank,bankName,acctBankNo,"Payout","","","Payout","pending");
                 //customer.addCusTransactions(amountRequested);

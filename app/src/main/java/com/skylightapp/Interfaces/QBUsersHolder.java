@@ -9,9 +9,12 @@ public interface QBUsersHolder {
 
     void putUsers(List<QBUser> users);
 
-    com.skylightapp.MarketClasses.QBUser getUserById(int userID);
+    QBUser getUserById(int userID);
 
     List<QBUser> getUsersByIds(List<Integer> usersIDs);
 
     boolean hasAllUsers(List<Integer> usersIDs);
+
+    void putUsersAwajima(List<QBUser> users);
+
 }

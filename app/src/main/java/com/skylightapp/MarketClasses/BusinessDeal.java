@@ -4,8 +4,8 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.blongho.country_data.Currency;
 import com.skylightapp.Classes.Account;
-import com.skylightapp.Markets.BizDealAccount;
 import com.skylightapp.Markets.MarketTranx;
 
 import java.io.Serializable;
@@ -22,8 +22,8 @@ public class BusinessDeal implements Serializable, Parcelable {
     private int dealAcctNumber;
     private int dealFromProfileID;
     private int dealToProfileID;
-    private Business toBiz;
-    private Business fromBiz;
+    private BusinessOthers toBiz;
+    private BusinessOthers fromBiz;
     private int dealToBizID;
     private int dealFromBizID;
     private int dealQty;
@@ -32,6 +32,7 @@ public class BusinessDeal implements Serializable, Parcelable {
     private Account dealBuyerAcct;
     private double dealCostOfProduct;
     private double dealCostOfInsurance;
+    private double dealBalance;
     private double dealShippingCost;
     private LogisticManager dealLogisticManager;
     private InsurancePolicy dealInsuranceP;
@@ -40,8 +41,9 @@ public class BusinessDeal implements Serializable, Parcelable {
     private  String dealEndDate;
     private  String dealStatus;
     private  String dealType;
+    private Currency bizDealCurrency;
     private BizDealAccount bizDealBDAccount;
-    private ArrayList<Business> bizDealBusS;
+    private ArrayList<BusinessOthers> bizDealBusS;
     private ArrayList<Market> bizDealMarkets;
     private ArrayList<MarketAdmin> bizDealMarketAdmins;
     private ArrayList<MarketTranx> bizDealMarketTranxS;
@@ -52,6 +54,7 @@ public class BusinessDeal implements Serializable, Parcelable {
     private ArrayList<BizDealTimeLine> bizDealBDTimeLines;
 
     private ArrayList<BizDealRemittance> dealBizDealRemittances;
+    private ArrayList<BizDealAccount> bizDealAccts;
 
     public BusinessDeal () {
         super();
@@ -124,8 +127,8 @@ public class BusinessDeal implements Serializable, Parcelable {
         dealTittle = in.readString();
         dealFromProfileID = in.readInt();
         dealToProfileID = in.readInt();
-        toBiz = in.readParcelable(Business.class.getClassLoader());
-        fromBiz = in.readParcelable(Business.class.getClassLoader());
+        toBiz = in.readParcelable(BusinessOthers.class.getClassLoader());
+        fromBiz = in.readParcelable(BusinessOthers.class.getClassLoader());
         dealQty = in.readInt();
         dealSellerAcct = in.readParcelable(Account.class.getClassLoader());
         dealBuyerAcct = in.readParcelable(Account.class.getClassLoader());
@@ -135,7 +138,7 @@ public class BusinessDeal implements Serializable, Parcelable {
         dealCode = in.readInt();
         dealStartDate = in.readString();
         dealEndDate = in.readString();
-        bizDealBusS = in.createTypedArrayList(Business.CREATOR);
+        bizDealBusS = in.createTypedArrayList(BusinessOthers.CREATOR);
     }
 
     @Override
@@ -207,19 +210,19 @@ public class BusinessDeal implements Serializable, Parcelable {
         this.dealToProfileID = dealToProfileID;
     }
 
-    public Business getToBiz() {
+    public BusinessOthers getToBiz() {
         return toBiz;
     }
 
-    public void setToBiz(Business toBiz) {
+    public void setToBiz(BusinessOthers toBiz) {
         this.toBiz = toBiz;
     }
 
-    public Business getFromBiz() {
+    public BusinessOthers getFromBiz() {
         return fromBiz;
     }
 
-    public void setFromBiz(Business fromBiz) {
+    public void setFromBiz(BusinessOthers fromBiz) {
         this.fromBiz = fromBiz;
     }
 
@@ -311,11 +314,11 @@ public class BusinessDeal implements Serializable, Parcelable {
         this.dealEndDate = dealEndDate;
     }
 
-    public ArrayList<Business> getBizDealBusS() {
+    public ArrayList<BusinessOthers> getBizDealBusS() {
         return bizDealBusS;
     }
 
-    public void setBizDealBusS(ArrayList<Business> bizDealBusS) {
+    public void setBizDealBusS(ArrayList<BusinessOthers> bizDealBusS) {
         this.bizDealBusS = bizDealBusS;
     }
 
@@ -445,5 +448,29 @@ public class BusinessDeal implements Serializable, Parcelable {
 
     public void setDealType(String dealType) {
         this.dealType = dealType;
+    }
+
+    public Currency getBizDealCurrency() {
+        return bizDealCurrency;
+    }
+
+    public void setBizDealCurrency(Currency bizDealCurrency) {
+        this.bizDealCurrency = bizDealCurrency;
+    }
+
+    public double getDealBalance() {
+        return dealBalance;
+    }
+
+    public void setDealBalance(double dealBalance) {
+        this.dealBalance = dealBalance;
+    }
+
+    public ArrayList<BizDealAccount> getBizDealAccts() {
+        return bizDealAccts;
+    }
+
+    public void setBizDealAccts(ArrayList<BizDealAccount> bizDealAccts) {
+        this.bizDealAccts = bizDealAccts;
     }
 }

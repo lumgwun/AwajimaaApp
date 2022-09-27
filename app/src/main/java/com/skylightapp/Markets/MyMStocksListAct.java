@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.skylightapp.Classes.AppController;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.MarketClasses.MarketStock;
 import com.skylightapp.MarketClasses.MyStockAdapter;
 import com.skylightapp.R;
 

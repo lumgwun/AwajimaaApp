@@ -12,6 +12,8 @@ import androidx.core.app.ActivityCompat;
 
 import android.os.Bundle;
 
+import com.skylightapp.MarketClasses.PermissionsCheckerCon;
+import com.skylightapp.MarketClasses.ToastUtilsCon;
 import com.skylightapp.R;
 
 public class PermissionsActCon extends AppCompatActivity {
@@ -22,6 +24,7 @@ public class PermissionsActCon extends AppCompatActivity {
         CAMERA,
         MICROPHONE
     }
+
 
     private PermissionsCheckerCon checker;
     private boolean requiresCheck;
@@ -40,7 +43,7 @@ public class PermissionsActCon extends AppCompatActivity {
         }
         setContentView(R.layout.act_permissions_act_con);
 
-        checker = new PermissionsChecker(this);
+        checker = new PermissionsCheckerCon(this);
         requiresCheck = true;
     }
 
@@ -97,11 +100,11 @@ public class PermissionsActCon extends AppCompatActivity {
         if (grantResults.length > 1) {
             for (int i = 0; i < grantResults.length; i++) {
                 if (grantResults[i] != 0) {
-                    ToastUtils.longToast(getApplicationContext(), getString(R.string.permission_unavailable, permissionFeatures.values()[i]));
+                    ToastUtilsCon.longToast(PermissionsActCon.this, getString(R.string.permission_unavailable, permissionFeatures.values()[i]));
                 }
             }
         } else {
-            ToastUtils.longToast(getApplicationContext(), getString(R.string.permission_unavailable, permissionFeatures.MICROPHONE));
+            ToastUtilsCon.longToast(PermissionsActCon.this, getString(R.string.permission_unavailable, permissionFeatures.MICROPHONE));
         }
     }
 

@@ -83,7 +83,20 @@
         android:value="androidx.core.app.CoreComponentFactory"
         tools:ignore="GoogleAppIndexingWarning"
         tools:node="replace">
-        <activity android:name=".Markets.ForwardToActCon"></activity>
+        <activity android:name=".Customers.CusMessageAct"></activity>
+        <activity android:name=".Markets.SingleCusMessagingAct" />
+        <activity android:name=".Markets.MarketMessagingTab" />
+        <activity android:name=".Markets.BizDealPartnersListAct" />
+        <activity android:name=".Markets.BizCusDepositAct" />
+        <activity android:name=".Markets.BizDepositTab" />
+        <activity android:name=".Markets.MarketChatTab" />
+        <activity android:name=".Markets.ManageGroupActCon" />
+        <activity android:name=".Markets.MessageInfoActCon" />
+        <activity android:name=".Markets.ChatInfoActCon" />
+        <activity android:name=".Markets.AttachmentVideoAct" />
+        <activity android:name=".Markets.SettingsActCon" />
+        <activity android:name=".Markets.DialogsActCon" />
+        <activity android:name=".Markets.ForwardToActCon" />
         <activity android:name=".Markets.NewGroupActCon" />
         <activity android:name=".Markets.PermissionsActCon" />
         <activity android:name=".Markets.SelectUsersActCon" />
@@ -99,7 +112,6 @@
 
         <activity android:name=".VideoChat.BaseActivity" />
         <activity android:name=".VideoChat.OpponentsActivity" />
-        <activity android:name=".Conference.DialogsActivity" />
         <activity android:name=".VideoChat.PermissionsActivity" />
 
         <service
@@ -115,7 +127,7 @@
         <activity android:name=".SplashAct" />
         <activity android:name=".Markets.AddDailyBizRecordAct" />
         <activity android:name=".Markets.AttachmentImageActivity" />
-        <activity android:name=".Markets.ChatAct" />
+        <activity android:name=".Markets.ChatActEthernal" />
         <activity android:name=".Markets.ProfileActivity" />
         <activity android:name=".MarketPlaceTransport.DriverAct" />
 
@@ -227,7 +239,6 @@
         <activity android:name=".SuperAdmin.SkylightCashList" />
         <activity android:name=".SuperAdmin.UpDateDeposit" />
         <activity android:name=".SuperAdmin.ADepositList" />
-        <activity android:name=".Admins.AdminDepositAct" />
         <activity android:name=".LocationUpdateAct" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -354,7 +365,7 @@
             android:name=".Tellers.DailyReportAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".Customers.SendCustomerMessage"
+            android:name=".Markets.SendCusMessAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".SuperAdmin.SuperAdminOffice" />
         <activity
@@ -772,7 +783,7 @@
         <activity
             android:name=".Admins.TrackWorkersAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActChat">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>

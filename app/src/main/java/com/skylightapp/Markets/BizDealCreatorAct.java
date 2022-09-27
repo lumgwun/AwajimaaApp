@@ -10,17 +10,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.BizDealDAO;
-import com.skylightapp.MarketClasses.Business;
+import com.skylightapp.MarketClasses.BusinessOthers;
 import com.skylightapp.R;
-import com.skylightapp.SignUpAct;
 
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
@@ -40,7 +37,7 @@ public class BizDealCreatorAct extends AppCompatActivity {
     private static final String PREF_NAME = "skylight";
     Gson gson, gson1;
     String json, json1, bDTittle,selectedDealType;
-    private Business business;
+    private BusinessOthers businessOthers;
     private Profile adminProfile;
     private Calendar calendar;
     private AppCompatEditText edtDealTittle;
@@ -56,7 +53,7 @@ public class BizDealCreatorAct extends AppCompatActivity {
         setTitle("Business Deal Creation");
         gson1 = new Gson();
         gson = new Gson();
-        business = new Business();
+        businessOthers = new BusinessOthers();
         adminProfile = new Profile();
         bizDealDAO = new BizDealDAO(this);
         spnDealType = findViewById(R.id.Bd_type_selection);
@@ -67,15 +64,15 @@ public class BizDealCreatorAct extends AppCompatActivity {
         json = userPreferences.getString("LastProfileUsed", "");
         adminProfile = gson.fromJson(json, Profile.class);
         json1 = userPreferences.getString("LastBusinessUsed", "");
-        business = gson1.fromJson(json1, Business.class);
+        businessOthers = gson1.fromJson(json1, BusinessOthers.class);
         businessAcctNo = ThreadLocalRandom.current().nextInt(112537, 1040045);
         calendar = Calendar.getInstance();
         if (adminProfile != null) {
             profileID = adminProfile.getPID();
 
         }
-        if (business != null) {
-            bdFromID = business.getBusIdentity();
+        if (businessOthers != null) {
+            bdFromID = businessOthers.getBusIdentity();
 
         }
         @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());

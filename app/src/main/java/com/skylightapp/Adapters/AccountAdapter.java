@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import com.blongho.country_data.Currency;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.R;
 
@@ -24,6 +25,8 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 
     private Context context;
     private int resource;
+    private Currency currency;
+    private String currencyCode,currencySymbol;
 
     public AccountAdapter(Context context, int resource, ArrayList<Account> accounts) {
         super(context, resource, accounts);
@@ -48,14 +51,21 @@ public class AccountAdapter extends ArrayAdapter<Account> {
         }
 
         Account account = getItem(position);
+        if(account !=null){
+            currency=account.getCurrency();
+        }
+        currencyCode=currency.getCode();
+        currencySymbol=currency.getSymbol();
 
         TextView txtAccountName = convertView.findViewById(R.id.txt_account_name);
+        TextView txtAccountCurrency = convertView.findViewById(R.id.account_currency);
         assert account != null;
         txtAccountName.setText(account.getAccountName());
         TextView txtAccountNo = convertView.findViewById(R.id.txt_acc_no);
+        txtAccountCurrency.setText(String.format("%s %s", "", currencySymbol));
         txtAccountNo.setText(String.format("%s %s", context.getString(R.string.account_no), account.getSkyLightAcctNo()));
         TextView txtAccountBalance = convertView.findViewById(R.id.txt_balance);
-        txtAccountBalance.setText(MessageFormat.format("Account balance: NGN{0}", String.format("%.2f", account.getAccountBalance())));
+        txtAccountBalance.setText(MessageFormat.format("Account balance:", currencySymbol+String.format("%.2f", account.getAccountBalance())));
 
         return convertView;
     }

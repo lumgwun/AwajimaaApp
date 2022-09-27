@@ -31,7 +31,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:textStyle="bold"
-                app:titleMarginStart="46dp"
+                app:titleMarginStart="2dp"
                 app:title="@string/app_name"
                 android:layout_marginEnd="10dp"
                 android:gravity="center_horizontal"

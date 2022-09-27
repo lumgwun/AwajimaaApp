@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/rect6h"
+    tools:context=".Markets.BizDepositAct">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:id="@+id/title22"
+            android:text="Biz Manual Bank Deposit"
+            android:padding="20dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp"
+            android:layout_marginBottom="@dimen/button_margin_bottom"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:id="@+id/useDate"
+            android:text="Use Today's Date"
+            android:padding="20dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
+            android:layout_marginBottom="@dimen/button_margin_bottom"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:id="@+id/orReport"
+            android:layout_below="@id/useDate"
+            android:text="or\n Selct the Date below"
+            android:padding="20dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
+            android:layout_marginBottom="@dimen/button_margin_bottom"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:layout_below="@+id/orReport"
+            android:id="@+id/cardReport"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rect6g"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/dob_text_sign"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center_vertical|left"
+                    android:gravity="center_vertical|left"
+                    android:background="@null"
+                    android:text="Select Deposit Date " />
+                <DatePicker
+                    android:id="@+id/admin_date_deposit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:inputType="date"
+                    android:backgroundTintMode="src_in"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:datePickerMode="spinner"
+                    android:spinnersShown="true"
+                    android:yearListSelectorColor="@color/white"
+                    android:calendarTextColor="@color/white"
+                    android:layout_gravity="center_vertical|left"
+                    android:gravity="center_vertical|left"
+                    android:calendarViewShown="false" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_below="@id/cardReport"
+            android:background="@drawable/rect6g"
+            android:id="@+id/layoutClient"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:paddingBottom="20dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textAlignment="center"
+                android:id="@+id/totalCus"
+                android:text="Paid To or From, Select:"
+                android:padding="20dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:layout_marginBottom="@dimen/button_margin_bottom"/>
+            <Spinner
+                android:layout_width="match_parent"
+                android:id="@+id/spinnerSelectToFrom"
+                android:textAlignment="center"
+                android:padding="30dp"
+                android:entries="@array/toFrom"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_below="@id/cardReport"
+            android:background="@drawable/rect6g"
+            android:id="@+id/layoutMessage"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:paddingBottom="20dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textAlignment="center"
+                android:id="@+id/purposeTittle"
+                android:text="Deposited Office"
+                android:padding="20dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:layout_marginBottom="@dimen/button_margin_bottom"/>
+            <Spinner
+                android:layout_width="match_parent"
+                android:id="@+id/spinnerAdminOffice"
+                android:textAlignment="center"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal"
+                android:padding="30dp"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_below="@id/cardReport"
+            android:background="@drawable/rect6g"
+            android:id="@+id/layoutBizDeal"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:paddingBottom="20dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textAlignment="center"
+                android:id="@+id/select_The_Deal"
+                android:text="Select The Business Deal:"
+                android:padding="20dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:layout_marginBottom="@dimen/button_margin_bottom"/>
+            <Spinner
+                android:layout_width="match_parent"
+                android:id="@+id/spinnerSelectBizDeal"
+                android:textAlignment="center"
+                android:padding="30dp"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_below="@id/cardReport"
+            android:background="@drawable/rect6g"
+            android:id="@+id/layoutAcct"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:paddingBottom="20dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textAlignment="center"
+                android:id="@+id/select_The_Title"
+                android:text="Select The Business Account:"
+                android:padding="20dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:layout_marginBottom="@dimen/button_margin_bottom"/>
+            <Spinner
+                android:layout_width="match_parent"
+                android:id="@+id/spinnerSelectAcct"
+                android:textAlignment="center"
+                android:padding="30dp"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <EditText
+            android:id="@+id/adminDepositAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Amount(in Cash)"
+            android:padding="40dp"
+            android:textAlignment="center"
+            android:background="@drawable/shape_rect14"
+            android:inputType="number"
+            android:layout_below="@id/layoutMessage"/>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/confirmSubmitAdminDe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:padding="15dp"
+            android:onClick="sendReport"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:background="@null"
+            android:layout_centerHorizontal="true"
+            android:text="@string/confirm" />
+        <TextView
+            android:id="@+id/notification3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/inputMessage2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/button_margin_bottom"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</ScrollView>

@@ -62,6 +62,7 @@ import com.skylightapp.Database.TReportDAO;
 import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.GroupSavingsTab;
+import com.skylightapp.Markets.BizCusDepositAct;
 import com.skylightapp.PasswordRecovAct;
 import com.skylightapp.PayNowActivity;
 import com.skylightapp.R;
@@ -72,7 +73,6 @@ import com.skylightapp.SuperAdmin.SuperEmergList;
 import com.skylightapp.Tellers.AllCusLoanRepayment;
 import com.skylightapp.Tellers.LoanRepaymentTab;
 import com.skylightapp.Tellers.MyCusList;
-import com.skylightapp.Tellers.MyCusLoanRepayment;
 import com.skylightapp.Tellers.TellerWebTab;
 import com.skylightapp.TransactionFragment;
 import com.skylightapp.UserPrefActivity;
@@ -459,7 +459,7 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
                             break;
 
                         case 12:
-                            Intent depositIntent = new Intent(AdminDrawerActivity.this, AdminDepositAct.class);
+                            Intent depositIntent = new Intent(AdminDrawerActivity.this, BizCusDepositAct.class);
                             depositIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                     Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(depositIntent);

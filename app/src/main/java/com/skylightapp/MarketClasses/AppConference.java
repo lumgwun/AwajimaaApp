@@ -1,5 +1,6 @@
 package com.skylightapp.MarketClasses;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import androidx.lifecycle.ProcessLifecycleOwner;
@@ -42,15 +43,20 @@ public class AppConference extends MultiDexApplication {
 
     public static final String USER_DEFAULT_PASSWORD = "quickblox";
 
-    private SharedPrefsHelperCon sharedPrefsHelperCon;
+    private static SharedPrefsHelperCon sharedPrefsHelperCon;
     private QBUsersHolder qbUsersHolder;
     private QBDialogsHolderConference qbDialogsHolder;
-    private ChatHelper chatHelper;
+    private ChatHelperCon chatHelper;
     private DialogsManager dialogsManager;
+    private static AppConference instance;
+    private static PreferencesManager preferencesManager;
+    private static MyPreferences preferences;
+    private static Context context;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
         ActivityLifecycle.init(this);
         checkAppCredentials();
         checkChatSettings();
@@ -61,15 +67,30 @@ public class AppConference extends MultiDexApplication {
         initDialogsHolder();
         initChatHelper();
         initDialogsManager();
+        preferencesManager = new PreferencesManager(AppConference.context);
+        preferences = preferencesManager.getMyPreferences();
 
         ProcessLifecycleOwner.get().getLifecycle().addObserver(new BackgroundListener());
     }
-
-    private void initSharedPreferences() {
-        sharedPrefsHelperCon = new SharedPrefsHelperCon(getApplicationContext());
+    public void initApplication() {
+        instance = this;
+    }
+    public static synchronized AppConference getInstance() {
+        return instance;
     }
 
-    public SharedPrefsHelperCon getSharedPrefsHelper() {
+    public void initSharedPreferences() {
+        sharedPrefsHelperCon = new SharedPrefsHelperCon(getApplicationContext());
+    }
+    public static MyPreferences getPreferences() {
+        return preferences;
+    }
+
+    public static PreferencesManager getPreferencesManager() {
+        return preferencesManager;
+    }
+
+    public static SharedPrefsHelperCon getSharedPrefsHelper() {
         return sharedPrefsHelperCon;
     }
 
@@ -90,10 +111,10 @@ public class AppConference extends MultiDexApplication {
     }
 
     private void initChatHelper() {
-        chatHelper = new ChatHelper(getApplicationContext());
+        chatHelper = new ChatHelperCon(getApplicationContext());
     }
 
-    public ChatHelper getChatHelper() {
+    public ChatHelperCon getChatHelper() {
         return chatHelper;
     }
 

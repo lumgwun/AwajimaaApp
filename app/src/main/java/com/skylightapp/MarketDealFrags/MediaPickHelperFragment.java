@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 
-import com.skylightapp.MarketClasses.GetFilepathFromUriTask;
+import com.skylightapp.MarketClasses.GetFilepathFromUriTaskCon;
 import com.skylightapp.MarketClasses.ImageUtils;
 import com.skylightapp.MarketInterfaces.OnImagePickedListener;
 
@@ -107,7 +107,7 @@ public class MediaPickHelperFragment extends Fragment {
                     }
                 }
             }
-            new GetFilepathFromUriTask(getChildFragmentManager(), listener, getArguments().getInt(ARG_REQUEST_CODE)).execute(data);
+            new GetFilepathFromUriTaskCon(getChildFragmentManager(), listener, getArguments().getInt(ARG_REQUEST_CODE)).execute(data);
         } else {
             stop(getChildFragmentManager());
             if (listener != null) {

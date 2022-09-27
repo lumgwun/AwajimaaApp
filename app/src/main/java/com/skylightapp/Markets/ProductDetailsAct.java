@@ -28,7 +28,7 @@ import com.skylightapp.Adapters.MyRewardsAdapter;
 import com.skylightapp.Classes.ProductSpecModel;
 import com.skylightapp.Classes.RewardModel;
 import com.skylightapp.DeliveryAct;
-import com.skylightapp.MainActivity;
+import com.skylightapp.MainActChat;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
@@ -334,7 +334,7 @@ public class ProductDetailsAct extends AppCompatActivity {
             //todo:search
             return true;
         } else if (id == R.id.main_cart_icon) {
-            Intent cartIntent = new Intent(ProductDetailsAct.this, MainActivity.class);
+            Intent cartIntent = new Intent(ProductDetailsAct.this, MainActChat.class);
             showCart = true;
             startActivity(cartIntent);
             return true;

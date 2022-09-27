@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/shape_rect11"
+    android:background="@drawable/rect_their4c"
     android:layout_height="wrap_content">
     <com.github.florent37.shapeofview.shapes.ArcView
         android:layout_width="match_parent"
@@ -14,16 +14,19 @@
         app:shape_arc_position="bottom">
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
+            android:background="@drawable/rect_their4c"
             android:layout_height="wrap_content">
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:textStyle="bold"
+                app:titleMarginStart="60dp"
+                app:title="@string/app_name"
                 android:layout_marginEnd="10dp"
                 android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal"
                 android:textAlignment="center"
                 android:layout_marginStart="40dp"
-                app:titleTextColor="@color/white_good"
+                app:titleTextColor="@color/red_brown_dark"
                 android:layout_height="100dp"/>
 
         </com.google.android.material.appbar.AppBarLayout>

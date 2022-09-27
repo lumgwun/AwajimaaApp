@@ -5,6 +5,7 @@ import android.util.Log;
 import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.chat.model.QBChatMessage;
 import com.quickblox.chat.model.QBDialogType;
+import com.quickblox.users.model.QBUser;
 
 import java.util.ArrayList;
 import java.util.Collection;

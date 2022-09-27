@@ -1,7 +1,5 @@
 package com.skylightapp.Markets;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,11 +18,11 @@ import com.quickblox.chat.model.QBChatMessage;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.core.request.QBRequestGetBuilder;
+import com.quickblox.users.model.QBUser;
 import com.skylightapp.LoginActivity;
-import com.skylightapp.MarketClasses.BaseAsyncTask;
+import com.skylightapp.MarketClasses.BaseAsyncTaskCon;
 import com.skylightapp.MarketClasses.DialogsAdapter;
 import com.skylightapp.MarketClasses.DialogsManager;
-import com.skylightapp.MarketClasses.QBUser;
 import com.skylightapp.MarketClasses.ToastUtilsCon;
 import com.skylightapp.R;
 
@@ -84,7 +82,7 @@ public class ForwardToActCon extends BaseActCon {
 
         originMessage = (QBChatMessage) getIntent().getSerializableExtra(EXTRA_FORWARD_MESSAGE);
         requestBuilder = new QBRequestGetBuilder();
-        requestBuilder.setLimit(DialogsActivity.DIALOGS_PER_PAGE);
+        requestBuilder.setLimit(DialogsActCon.DIALOGS_PER_PAGE);
         requestBuilder.setSkip(0);
         initUi();
     }
@@ -100,9 +98,9 @@ public class ForwardToActCon extends BaseActCon {
 
     private void reloginToChat() {
         showProgressDialog(R.string.dlg_loading);
-        QBUser qbUser = getChatHelper().getCurrentUser();
-        if (qbUser != null) {
-            getChatHelper().loginToChat(qbUser, new QBEntityCallback<Void>() {
+        QBUser appServerUser = getChatHelper().getCurrentUser();
+        if (appServerUser != null) {
+            getChatHelper().loginToChat(appServerUser, new QBEntityCallback<Void>() {
                 @Override
                 public void onSuccess(Void aVoid, Bundle bundle) {
                     Log.d(TAG, "Relogin Successful");
@@ -175,7 +173,7 @@ public class ForwardToActCon extends BaseActCon {
         }
         if (item.getItemId() == R.id.menu_send) {
             showProgressDialog(R.string.dlg_sending);
-            new ForwardedMessageSenderAsyncTask(this, dialogsAdapter.getSelectedItems()).execute();
+            new ForwardedMessageSenderAsyncTaskCon(this, dialogsAdapter.getSelectedItems()).execute();
             return true;
         } else {
             return super.onOptionsItemSelected(item);
@@ -225,7 +223,7 @@ public class ForwardToActCon extends BaseActCon {
         getChatHelper().getDialogs(requestBuilder, new QBEntityCallback<ArrayList<QBChatDialog>>() {
             @Override
             public void onSuccess(ArrayList<QBChatDialog> dialogs, Bundle bundle) {
-                if (dialogs.size() < DialogsActivity.DIALOGS_PER_PAGE) {
+                if (dialogs.size() < DialogsActCon.DIALOGS_PER_PAGE) {
                     hasMoreDialogs = false;
                 }
                 loadedDialogs.addAll(dialogs);
@@ -259,11 +257,11 @@ public class ForwardToActCon extends BaseActCon {
         dialogsAdapter.prepareToSelect();
     }
 
-    private static class ForwardedMessageSenderAsyncTask extends BaseAsyncTask {
+    private static class ForwardedMessageSenderAsyncTaskCon extends BaseAsyncTaskCon {
         private WeakReference<ForwardToActCon> activityRef;
         private List<QBChatDialog> dialogs;
 
-        ForwardedMessageSenderAsyncTask(ForwardToActCon forwardToActivity, List<QBChatDialog> dialogs) {
+        ForwardedMessageSenderAsyncTaskCon(ForwardToActCon forwardToActivity, List<QBChatDialog> dialogs) {
             activityRef = new WeakReference<>(forwardToActivity);
             this.dialogs = dialogs;
         }

@@ -9,8 +9,8 @@ import java.util.List;
 
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
-import static com.skylightapp.MarketClasses.QBUser.QBUSER_ID;
-import static com.skylightapp.MarketClasses.QBUser.QBUSER_TABLE;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_ID;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TABLE;
 
 
 public class UserProfileInfo implements Parcelable {
@@ -25,7 +25,7 @@ public class UserProfileInfo implements Parcelable {
     private String description;
 
     public static final String USER_PROF_INFO_ID = "upi_Id";
-    public static final String USER_PROF_QB_ID = "upi_ID";
+    public static final String USER_PROF_BUS_ID = "upi_ID";
     public static final String USER_PROF_INFO_PROF_ID = "upi_saved_prof_id";
     public static final String USER_PROF_INFO_NAME = "upi_name";
     public static final String USER_PROF_INFO_AGE = "upi_Age";
@@ -35,9 +35,9 @@ public class UserProfileInfo implements Parcelable {
     public static final String USER_PROF_INFO_TABLE = "upi_table";
 
 
-    public static final String CREATE_USER_PROF_INFO_TABLE = "CREATE TABLE IF NOT EXISTS " + USER_PROF_INFO_TABLE + " ( " + USER_PROF_INFO_ID + " INTEGER  , " + USER_PROF_QB_ID + " INTEGER , " + USER_PROF_INFO_PROF_ID + " INTEGER  , " +
+    public static final String CREATE_USER_PROF_INFO_TABLE = "CREATE TABLE IF NOT EXISTS " + USER_PROF_INFO_TABLE + " ( " + USER_PROF_INFO_ID + " INTEGER  , " + USER_PROF_BUS_ID + " INTEGER , " + USER_PROF_INFO_PROF_ID + " INTEGER  , " +
             USER_PROF_INFO_NAME + " TEXT, " + USER_PROF_INFO_DESC + " TEXT, " + USER_PROF_INFO_AGE + " TEXT, " + USER_PROF_INFO_MATCHED_VALUE + " TEXT, " + USER_PROF_INFO_DISTANCE + " TEXT, " +
-            "FOREIGN KEY(" + USER_PROF_QB_ID + ") REFERENCES " + QBUSER_TABLE + "(" + QBUSER_ID + "),"+ "FOREIGN KEY(" + USER_PROF_INFO_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + USER_PROF_INFO_ID  + "))";
+            "FOREIGN KEY(" + USER_PROF_BUS_ID + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+ "FOREIGN KEY(" + USER_PROF_INFO_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + USER_PROF_INFO_ID  + "))";
 
 
     public UserProfileInfo() {

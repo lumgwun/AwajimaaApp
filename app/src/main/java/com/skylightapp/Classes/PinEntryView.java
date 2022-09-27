@@ -115,10 +115,10 @@ public class PinEntryView extends ViewGroup {
                         accentColor.data);
 
         // Mask character
-        String maskCharacter = array.getString(R.styleable.PinEntryView_mask);
+        /*String maskCharacter = array.getString(R.styleable.PinEntryView_mask);
         if (maskCharacter != null) {
             mask = maskCharacter;
-        }
+        }*/
 
         accentRequiresFocus = array.getBoolean(R.styleable.PinEntryView_accentRequiresFocus, true);
 

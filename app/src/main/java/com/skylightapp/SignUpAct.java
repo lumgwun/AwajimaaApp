@@ -39,7 +39,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Criteria;
@@ -68,6 +75,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -100,6 +108,7 @@ import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 import com.hbb20.CountryCodePicker;
+import com.quickblox.auth.session.QBSettings;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.AccountInvestment;
 import com.skylightapp.Classes.AccountItemPurchase;
@@ -139,6 +148,7 @@ import com.skylightapp.Database.TReportDAO;
 import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.Interfaces.ProfileDao;
+import com.skylightapp.MarketClasses.ResourceUtils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -166,6 +176,10 @@ import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.skylightapp.BuildConfig.QUICKBLOX_ACCT_KEY;
+import static com.skylightapp.BuildConfig.QUICKBLOX_APP_ID;
+import static com.skylightapp.BuildConfig.QUICKBLOX_AUTH_KEY;
+import static com.skylightapp.BuildConfig.QUICKBLOX_SECRET_KEY;
 import static com.skylightapp.Classes.Account.BANK_ACCT_NO;
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_LATLONG;
@@ -221,7 +235,6 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     private Bundle bundle;
     AppCompatTextView dobText;
     String uPhoneNumber, accountName, skylightMFb;
-
     int profileID, birthdayID, messageID;
 
     private ProgressDialog progressDialog;
@@ -387,6 +400,12 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     private BirthdayDAO birthdayDAO;
     private AdminBDepositDAO depositDAO;
     private TimeLineClassDAO timeLineClassDAO;
+    private static final String APPLICATION_ID = QUICKBLOX_APP_ID;   //QUICKBLOX_APP_ID
+    private static final String AUTH_KEY = QUICKBLOX_AUTH_KEY;
+    private static final String AUTH_SECRET = QUICKBLOX_SECRET_KEY;
+    private static final String ACCOUNT_KEY = QUICKBLOX_ACCT_KEY;
+    private static final String SERVER_URL = "";
+    public static final String USER_DEFAULT_PASSWORD = "quickblox";
     String regEx =
             "^(([w-]+.)+[w-]+|([a-zA-Z]{1}|[w-]{2,}))@"
                     + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9]).([0-1]?"
@@ -398,6 +417,9 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     private FirebaseAuth.AuthStateListener mAuthListener;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     private DatePickerDialog.OnDateSetListener mDateSetListener;
+    private Bundle bizNameBundle;
+    private int bizID,marketID;
+    private LinearLayout layoutPrivacyAndTerms;
 
     SupportMapFragment mapFrag;
     int PERMISSION_ALL = 1;
@@ -532,7 +554,11 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_sign_up);
         dbHelper = new DBHelper(this);
+        bizNameBundle= new Bundle();
+        QBSettings.getInstance().init(this, APPLICATION_ID, AUTH_KEY, AUTH_SECRET);
+        QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
         setTitle("OnBoarding Arena");
+        bizNameBundle=getIntent().getExtras();
         createLocationRequest();
         cusDAO= new CusDAO(this);
         paymentCodeDAO= new PaymentCodeDAO(this);
@@ -545,6 +571,10 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         adminBalanceDAO= new AdminBalanceDAO(this);
         depositDAO= new AdminBDepositDAO(this);
         timeLineClassDAO= new TimeLineClassDAO(this);
+        if(bizNameBundle !=null){
+            bizID=bizNameBundle.getInt("MARKET_BIZ_ID");
+            marketID=bizNameBundle.getInt("MARKET_ID");
+        }
 
         sodao= new SODAO(this);
         tranXDAO= new TranXDAO(this);
@@ -566,6 +596,21 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         setInitialLocation();
         txtLoc = findViewById(R.id.hereYou333);
         locTxt = findViewById(R.id.whereYou222);
+        layoutPrivacyAndTerms = findViewById(R.id.pp_and_terms_layout);
+        layoutPrivacyAndTerms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*Intent myIntent = new Intent(SignUpAct.this, AppBottomSheet.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(myIntent);*/
+                //AppBottomSheet appBottomSheet= new AppBottomSheet(getClassLoader().loadClass("AppBottomSheet")).onViewCreated(view,savedInstanceState);
+            }
+        });
+        layoutPrivacyAndTerms.setOnClickListener(this::showPrivacyPolicy);
+
 
         String provider = locationManager.getBestProvider(criteria, true);
         if (provider != null) {
@@ -1172,7 +1217,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                                     if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                         dbHelper.openDataBase();
                                         sqLiteDatabase = dbHelper.getWritableDatabase();
-                                        messageDAO.insertMessage(profileID, customerID, messageID, otpMessage, "Skylight", customerName, selectedOffice, joinedDate);
+                                        messageDAO.insertMessage(profileID, customerID, messageID, bizID, otpMessage, "Awajima App", customerName, selectedOffice, joinedDate);
 
                                     }
 
@@ -1468,37 +1513,77 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if ((data != null) && requestCode == RESULT_CAMERA_CODE) {
-            mImageUri = data.getData();
+            this.mImageUri = data.getData();
+            Bitmap logoBitmap = drawableToBitmap(this.profilePix.getDrawable());
             Glide.with(SignUpAct.this)
                     .asBitmap()
-                    .load(mImageUri)
+                    .load(this.mImageUri)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .error(R.drawable.ic_alert)
                     //.listener(listener)
                     .skipMemoryCache(true)
                     .fitCenter()
                     .centerCrop()
-                    .into(profilePix);
-
+                    .into(this.profilePix);
+            this.profilePix.setImageBitmap(addGradient(logoBitmap));
 
         }
         if ((data != null) && requestCode == RESULT_LOAD_IMAGE) {
-            mImageUri = data.getData();
+            this.mImageUri = data.getData();
+            Bitmap logoBitmap = drawableToBitmap(this.profilePix.getDrawable());
             Glide.with(SignUpAct.this)
                     .asBitmap()
-                    .load(mImageUri)
+                    .load(this.mImageUri)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .error(R.drawable.ic_alert)
                     //.listener(listener)
                     .skipMemoryCache(true)
                     .fitCenter()
                     .centerCrop()
-                    .into(profilePix);
+                    .into(this.profilePix);
+            this.profilePix.setImageBitmap(addGradient(logoBitmap));
 
 
         }
 
     }
+    public static Bitmap drawableToBitmap (Drawable drawable) {
+        Bitmap bitmap = null;
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if(bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+
+        if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
+    public Bitmap addGradient(Bitmap originalBitmap) {
+        int width = originalBitmap.getWidth();
+        int height = originalBitmap.getHeight();
+        Bitmap updatedBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(updatedBitmap);
+        canvas.drawBitmap(originalBitmap, 0, 0, null);
+        Paint paint = new Paint();
+        LinearGradient shader = new LinearGradient(0, 0, width/2, height, ResourceUtils.getColor(R.color.primary_blue), ResourceUtils.getColor(R.color.primary_purple), Shader.TileMode.CLAMP);
+        paint.setShader(shader);
+        paint.setFilterBitmap(true);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawRect(0, 0, width, height, paint);
+
+        return updatedBitmap;
+    }
+
 
 
     private void saveMyPreferences(int sponsorID, LatLng cusLatLng, Account account, StandingOrderAcct standingOrderAcct, String joinedDate, String uFirstName, String uSurname, String uPhoneNumber, String uAddress, String uUserName, String uPassword, Customer customer, Profile customerProfile, String nIN, Profile managerProfile, String dateOfBirth, String selectedGender, String selectedOffice, String selectedState, Birthday birthday, CustomerManager customerManager, String ofBirth, int profileID1, int virtualAccountNumber, int soAccountNumber, int customerID, int birthdayID, int investmentAcctID, int itemPurchaseAcctID, int promoAcctID, int packageAcctID, ArrayList<Customer> customers) {
@@ -1616,8 +1701,6 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         editor.putString(PROFILE_ROLE, "Customer");
         editor.putString("LastCustomerUsed", json1);
         editor.putString("LastProfileUsed", json).apply();
-
-
 
         userBundle.putString(PROFILE_DOB, dateOfBirth);
         userBundle.putString(BANK_ACCT_NO, bankAcctNumber);
@@ -1918,8 +2001,6 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
             sqLiteDatabase = dbHelper.getWritableDatabase();
             profileDao.insertProfile(userProfile1);
 
-
-
         }
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
@@ -2025,6 +2106,9 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    public void showPrivacyPolicy(View view) {
     }
 
     public interface OnPinEnteredListener {

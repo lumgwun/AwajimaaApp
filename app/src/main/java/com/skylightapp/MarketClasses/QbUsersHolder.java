@@ -35,6 +35,10 @@ public class QbUsersHolder {
     public void putUser(QBUser user) {
         qbUserSparseArray.put(user.getId(), user);
     }
+    public void putUserA(QBUser user) {
+        qbUserSparseArray.put(user.getId(), user);
+    }
+
 
     public QBUser getUserById(int id) {
         return qbUserSparseArray.get(id);

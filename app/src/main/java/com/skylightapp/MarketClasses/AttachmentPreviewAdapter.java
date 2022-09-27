@@ -16,6 +16,7 @@ import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.QBProgressCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.skylightapp.Classes.App;
+import com.skylightapp.Markets.ChatActCon;
 import com.skylightapp.R;
 
 import java.io.File;
@@ -43,6 +44,7 @@ public class AttachmentPreviewAdapter extends BaseListAdapter<File> {
         onAttachmentCountChangedListener = countChangedListener;
         onAttachmentUploadErrorListener = errorListener;
     }
+
 
     @Override
     public void add(final File item) {

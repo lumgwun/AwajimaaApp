@@ -25,14 +25,14 @@
         app:shape_arc_position="bottom">
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:background="@null"
+            android:background="@drawable/shape_layer_3b"
             android:layout_height="wrap_content">
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:textStyle="bold"
-                app:titleMarginStart="33dp"
+                app:titleMarginStart="43dp"
                 android:marqueeRepeatLimit="@android:integer/config_longAnimTime"
-                app:title="Welcome to Skylight"
+                app:title="Welcome to Awajima"
                 android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal"
                 android:textAlignment="center"

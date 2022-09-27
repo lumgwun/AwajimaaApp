@@ -7,22 +7,42 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.preference.PreferenceManager;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.quickblox.auth.session.QBSessionManager;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.core.helper.StringifyArrayList;
+import com.quickblox.messages.QBPushNotifications;
+import com.quickblox.messages.model.QBEnvironment;
+import com.quickblox.messages.model.QBEvent;
+import com.quickblox.messages.model.QBNotificationType;
+import com.quickblox.messages.services.QBPushManager;
+import com.quickblox.messages.services.SubscribeService;
+import com.quickblox.users.QBUsers;
 import com.skylightapp.Classes.AdminUser;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerManager;
+import com.skylightapp.Classes.KeyboardUtils;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Database.AdminUserDAO;
@@ -30,7 +50,10 @@ import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.Customer_TellerDAO;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Interfaces.Consts;
+import com.skylightapp.LoginActivity;
 import com.skylightapp.LoginDirAct;
+import com.skylightapp.Markets.ToastUtils;
 import com.skylightapp.R;
 import com.twilio.Twilio;
 
@@ -42,11 +65,12 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import static com.skylightapp.Classes.ImageUtil.TAG;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
-public class SendUserMessageAct extends AppCompatActivity {
+public class SendUserMessageAct extends AppCompatActivity implements TextWatcher {
     Bundle bundle,userBundle;
-    int iD;
+    int cusID;
     int userProfID;
     String cusPhoneNo,firstName,surName,cusEmail,customerFirstName,cusSurname,cusLoc,profilePhone,email,location;
     AppCompatButton btnSend;
@@ -61,6 +85,7 @@ public class SendUserMessageAct extends AppCompatActivity {
     PreferenceManager preferenceManager;
     boolean isInvisible;
     String messageDetails,name;
+    private static final String PREF_NAME = "skylight";
     AppCompatEditText editMessage;
     com.twilio.rest.api.v2010.account.Message message;
     private static boolean isPersistenceEnabled = false;
@@ -86,7 +111,26 @@ public class SendUserMessageAct extends AppCompatActivity {
     private ArrayAdapter<AdminUser> adminUserArrayAdapter;
     private ArrayAdapter<UserSuperAdmin> userSuperAdminArrayAdapter;
     AppCompatSpinner spnOfficeBranch;
-    int selectedTellerIndex,selectedAdminIndex;
+    int selectedTellerIndex,marketID;
+    private  StringifyArrayList<Integer> userIds;
+    long bizID;
+    private BroadcastReceiver pushBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra(Consts.EXTRA_FCM_MESSAGE);
+            if (TextUtils.isEmpty(message)) {
+                message = Consts.EMPTY_FCM_MESSAGE;
+            }
+            Log.i(TAG, "Receiving event " + Consts.ACTION_NEW_FCM_EVENT + " with data: " + message);
+            //retrieveMessage(message);
+        }
+    };
+
+    public static void start(Context context, String message) {
+        Intent intent = new Intent(context, SendUserMessageAct.class);
+        intent.putExtra(Consts.EXTRA_FCM_MESSAGE, message);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +141,7 @@ public class SendUserMessageAct extends AppCompatActivity {
         layoutAdmin = findViewById(R.id.layoutAllAdmin);
         layoutOffice = findViewById(R.id.layoutOffice);
         spnOfficeBranch = findViewById(R.id.SendeeOfficeBranch);
+        userIds= new StringifyArrayList<>();
         bundle=getIntent().getExtras();
         if(bundle !=null){
             userProfID = bundle.getInt("PROFILE_ID",0);
@@ -105,7 +150,7 @@ public class SendUserMessageAct extends AppCompatActivity {
             profilePhone = bundle.getString("USER_PHONE","");
             email = bundle.getString("USER_EMAIL","");
             location = bundle.getString("USER_LOCATION","");
-            iD = bundle.getInt("CUSTOMER_ID",0);
+            cusID = bundle.getInt("CUSTOMER_ID",0);
             customerFirstName = bundle.getString("CUSTOMER_FIRST_NAME","");
             cusSurname = bundle.getString("CUSTOMER_SURNAME","");
             cusEmail = bundle.getString("CUSTOMER_EMAIL_ADDRESS","");
@@ -114,7 +159,8 @@ public class SendUserMessageAct extends AppCompatActivity {
             name=surName+","+firstName;
             texName.setText(MessageFormat.format("Name:{0}", name));
             txtPhoneNo.setText(MessageFormat.format("Phone No:{0}", cusPhoneNo));
-            txtCusID.setText(MessageFormat.format("ID:{0}", iD));
+            txtCusID.setText(MessageFormat.format("ID:{0}", cusID));
+            userIds= (StringifyArrayList<Integer>) bundle.getIntegerArrayList("userIds");
             //doBundleDialog();
         }
         random= new SecureRandom();
@@ -156,7 +202,7 @@ public class SendUserMessageAct extends AppCompatActivity {
         Customer_TellerDAO customer_tellerDAO= new Customer_TellerDAO(this);
         if(machine.equalsIgnoreCase("UserSuperAdmin")){
             customersN = cusDAO.getAllCustomerSpinner();
-            sender="Skylight";
+            sender="Awajima App";
             customerManagerArrayList=customer_tellerDAO.getAllTellersSpinner();
             adminUsers=adminUserDAO.getAllAdminSpinner();
             dialogSuperAdmin(customersN,customerManagerArrayList,adminUsers, sender,bundle,profileID);
@@ -216,7 +262,6 @@ public class SendUserMessageAct extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 customer = (Customer) parent.getSelectedItem();
-                Toast.makeText(SendUserMessageAct.this, "Customer's ID: " + customer.getCusUID() + ",  Customer's Name : " + customer.getCusFirstName(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -259,14 +304,141 @@ public class SendUserMessageAct extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 doMessageSend();
+                sendPushMessage();
 
             }
         });
 
 
+    }
+    private void registerReceiver() {
+        LocalBroadcastManager.getInstance(this).registerReceiver(pushBroadcastReceiver,
+                new IntentFilter(Consts.ACTION_NEW_FCM_EVENT));
+    }
+    private void sendPushMessage() {
+        editMessage = findViewById(R.id.messageUser);
+        String outMessage = editMessage.getText().toString().trim();
+        if (!isValidData(outMessage)) {
+            Toast.makeText(SendUserMessageAct.this, R.string.error_field_is_empty , Toast.LENGTH_LONG).show();
+            invalidateOptionsMenu();
+            return;
+        }
 
+        QBEvent qbEvent = new QBEvent();
+        qbEvent.setNotificationType(QBNotificationType.PUSH);
+        qbEvent.setEnvironment(QBEnvironment.PRODUCTION);
+        qbEvent.setMessage(outMessage);
+
+        userIds = new StringifyArrayList<>();
+        userIds.add(QBSessionManager.getInstance().getSessionParameters().getUserId());
+        qbEvent.setUserIds(userIds);
+        //qbEvent.setUserId();
+
+        QBPushNotifications.createEvent(qbEvent).performAsync(new QBEntityCallback<QBEvent>() {
+            @Override
+            public void onSuccess(QBEvent qbEvent, Bundle bundle) {
+                //progressBar.setVisibility(View.INVISIBLE);
+                KeyboardUtils.hideKeyboard(editMessage);
+                editMessage.setText(null);
+                invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                View rootView = findViewById(R.id.activity_messages);
+                Toast.makeText(SendUserMessageAct.this,R.string.sending_error , Toast.LENGTH_LONG).show();
+                /*showErrorSnackbar(rootView, R.string.sending_error, e, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sendPushMessage();
+                    }
+                });*/
+                //progressBar.setVisibility(View.INVISIBLE);
+                KeyboardUtils.hideKeyboard(editMessage);
+                invalidateOptionsMenu();
+            }
+        });
+
+        //progressBar.setVisibility(View.VISIBLE);
+    }
+    private void unsubscribeFromPushes() {
+        if (QBPushManager.getInstance().isSubscribedToPushes()) {
+            QBPushManager.getInstance().addListener(new QBPushManager.QBSubscribeListener() {
+                @Override
+                public void onSubscriptionCreated() {
+                    // empty
+                }
+
+                @Override
+                public void onSubscriptionError(Exception e, int i) {
+                    // empty
+                }
+
+                @Override
+                public void onSubscriptionDeleted(boolean success) {
+                    Log.d(TAG, "Subscription Deleted -> Success: " + success);
+                    QBPushManager.getInstance().removeListener(this);
+                    userLogout();
+                }
+            });
+            SubscribeService.unSubscribeFromPushes(SendUserMessageAct.this);
+        }
+    }
+    private void userLogout() {
+        Log.d(TAG, "SignOut");
+        //showProgressDialog(R.string.dlg_logout);
+
+        QBUsers.signOut().performAsync(new QBEntityCallback<Void>() {
+            @Override
+            public void onSuccess(Void aVoid, Bundle bundle) {
+                Log.d(TAG, "SignOut Successful");
+                //SharedPrefsHelper.getInstance().removeQbUser();
+                Intent myIntent = new Intent(SendUserMessageAct.this, LoginActivity.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(myIntent);
+                //hideProgressDialog();
+                finish();
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                Log.d(TAG, "Unable to SignOut: " + e.getMessage());
+                //hideProgressDialog();
+                View rootView = findViewById(R.id.activity_messages);
+
+            }
+        });
+        SharedPreferences preferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
 
     }
+
+    private boolean isValidData(String message) {
+        return !TextUtils.isEmpty(message);
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        // empty
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        // empty
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        if (s.length() >= getResources().getInteger(R.integer.push_max_length)) {
+            ToastUtils.shortToast(R.string.error_too_long_push);
+        }
+    }
+
+
     protected void doTellerDialog(ArrayList<Customer> customersN, String officeBranch, ArrayList<CustomerManager> customerManagerArrayList, String sender, Bundle bundle, long profileID){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Send to:");
@@ -298,7 +470,7 @@ public class SendUserMessageAct extends AppCompatActivity {
                                     try {
                                         if (customer != null) {
                                             SendUserMessageAct.this.bundle =null;
-                                            iD =customer.getCusUID();
+                                            cusID =customer.getCusUID();
                                             cusPhoneNo=customer.getCusPhoneNumber();
                                             userProfID=customer.getCusProfile().getPID();
                                             firstName=customer.getCusFirstName();
@@ -306,7 +478,7 @@ public class SendUserMessageAct extends AppCompatActivity {
                                             name=surName+","+firstName;
                                             texName.setText("Name:"+name);
                                             txtPhoneNo.setText("Phone No:"+cusPhoneNo);
-                                            txtCusID.setText("ID:"+ iD);
+                                            txtCusID.setText("ID:"+ cusID);
 
                                         }
                                     } catch (NullPointerException e) {
@@ -335,7 +507,7 @@ public class SendUserMessageAct extends AppCompatActivity {
                                     try {
                                         if (customerManager != null) {
                                             SendUserMessageAct.this.bundle =null;
-                                            iD =customerManager.getTID();
+                                            cusID =customerManager.getTID();
                                             cusPhoneNo=customerManager.getTPhoneNumber();
                                             userProfID=customerManager.getTellerProfile().getPID();
                                             firstName=customerManager.getTFirstName();
@@ -343,7 +515,7 @@ public class SendUserMessageAct extends AppCompatActivity {
                                             name=surName+","+firstName;
                                             texName.setText("Name:"+name);
                                             txtPhoneNo.setText("Phone No:"+cusPhoneNo);
-                                            txtCusID.setText("ID:"+ iD);
+                                            txtCusID.setText("ID:"+ cusID);
 
                                         }
                                     } catch (NullPointerException e) {
@@ -401,7 +573,7 @@ public class SendUserMessageAct extends AppCompatActivity {
                                     try {
                                         if (customerManager != null) {
                                             SendUserMessageAct.this.bundle =null;
-                                            iD =customerManager.getTID();
+                                            cusID =customerManager.getTID();
                                             cusPhoneNo=customerManager.getTPhoneNumber();
                                             userProfID=customerManager.getTellerProfile().getPID();
                                             firstName=customerManager.getTFirstName();
@@ -409,7 +581,7 @@ public class SendUserMessageAct extends AppCompatActivity {
                                             name=surName+","+firstName;
                                             texName.setText("Name:"+name);
                                             txtPhoneNo.setText("Phone No:"+cusPhoneNo);
-                                            txtCusID.setText("ID:"+ iD);
+                                            txtCusID.setText("ID:"+ cusID);
 
                                         }
                                     } catch (NullPointerException e) {
@@ -458,7 +630,7 @@ public class SendUserMessageAct extends AppCompatActivity {
                                     try {
                                         if (customer != null) {
                                             SendUserMessageAct.this.bundle =null;
-                                            iD =customer.getCusUID();
+                                            cusID =customer.getCusUID();
                                             cusPhoneNo=customer.getCusPhoneNumber();
                                             userProfID=customer.getCusProfile().getPID();
                                             firstName=customer.getCusFirstName();
@@ -466,7 +638,7 @@ public class SendUserMessageAct extends AppCompatActivity {
                                             name=surName+","+firstName;
                                             texName.setText("Name:"+name);
                                             txtPhoneNo.setText("Phone No:"+cusPhoneNo);
-                                            txtCusID.setText("ID:"+ iD);
+                                            txtCusID.setText("ID:"+ cusID);
 
                                         }
                                     } catch (NullPointerException e) {
@@ -527,7 +699,7 @@ public class SendUserMessageAct extends AppCompatActivity {
                                     try {
                                         if (customer != null) {
                                             bundle=null;
-                                            iD =customer.getCusUID();
+                                            cusID =customer.getCusUID();
                                             cusPhoneNo=customer.getCusPhoneNumber();
                                             userProfID=customer.getCusProfile().getPID();
                                             firstName=customer.getCusFirstName();
@@ -535,7 +707,7 @@ public class SendUserMessageAct extends AppCompatActivity {
                                             name=surName+","+firstName;
                                             texName.setText("Name:"+name);
                                             txtPhoneNo.setText("Phone No:"+cusPhoneNo);
-                                            txtCusID.setText("ID:"+ iD);
+                                            txtCusID.setText("ID:"+ cusID);
 
                                         }
                                     } catch (NullPointerException e) {
@@ -603,7 +775,7 @@ public class SendUserMessageAct extends AppCompatActivity {
                                     try {
                                         if (customer != null) {
                                             SendUserMessageAct.this.bundle =null;
-                                            iD =customer.getCusUID();
+                                            cusID =customer.getCusUID();
                                             cusPhoneNo=customer.getCusPhoneNumber();
                                             userProfID=customer.getCusProfile().getPID();
                                             firstName=customer.getCusFirstName();
@@ -611,7 +783,7 @@ public class SendUserMessageAct extends AppCompatActivity {
                                             name=surName+","+firstName;
                                             texName.setText("Name:"+name);
                                             txtPhoneNo.setText("Phone No:"+cusPhoneNo);
-                                            txtCusID.setText("ID:"+ iD);
+                                            txtCusID.setText("ID:"+ cusID);
 
                                         }
                                     } catch (NullPointerException e) {
@@ -673,11 +845,16 @@ public class SendUserMessageAct extends AppCompatActivity {
 
 
         }
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy");
+        if(userProfile !=null){
+            bizID=userProfile.getProfileBusinessID();
+            marketID=userProfile.getProfileMarketID();
+        }
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
         String meassageDate = mdformat.format(calendar.getTime());
         messageID = random.nextInt((int) (Math.random() * 129) + 11);
         try {
-            messageDAO.insertMessage(userProfID, iD,messageID, messageDetails,sender,sendee,officeBranch,meassageDate);
+            //messageDAO.insertMessage(profileID,customerID, bizID,marketID, tittle,messageDetails,"Awajima App",sendee,officeBranch,meassageDate);
+            //messageDAO.insertMessage(userProfID, iD,messageID, bizID, messageDetails,sender,sendee,officeBranch,meassageDate, bizID);
 
 
         }catch (NullPointerException e)

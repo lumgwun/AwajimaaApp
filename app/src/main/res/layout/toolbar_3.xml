@@ -7,13 +7,12 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_rect_2a"
-
+        android:background="@drawable/shape_layer_3b"
         android:theme="@style/Theme.OurApp">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            app:titleTextColor="@color/white"
+            app:titleTextColor="@color/red_brown_dark"
             app:title="@string/app_name"
             android:layout_width="match_parent"
             android:layout_height="300dp"

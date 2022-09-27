@@ -22,15 +22,14 @@ import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
 import com.skylightapp.Interfaces.QBUsersHolder;
 import com.skylightapp.MarketClasses.AppConference;
-import com.skylightapp.MarketClasses.ChatHelper;
+import com.skylightapp.MarketClasses.ChatHelperCon;
 import com.skylightapp.MarketClasses.DialogsManager;
 import com.skylightapp.MarketClasses.ErrorUtilsCon;
-import com.skylightapp.MarketClasses.QBDialogsHolder;
 import com.skylightapp.MarketClasses.QBDialogsHolderConference;
 import com.skylightapp.MarketClasses.SharedPrefsHelperCon;
 import com.skylightapp.R;
 
-public class BaseActCon extends AppCompatActivity {
+public abstract class BaseActCon extends AppCompatActivity {
     private static final String TAG = BaseActCon.class.getSimpleName();
     private static final String DUMMY_VALUE = "dummy_value";
 
@@ -49,7 +48,7 @@ public class BaseActCon extends AppCompatActivity {
         super.onCreate(savedInstanceState);
     }
     protected SharedPrefsHelperCon getSharedPrefsHelper() {
-        return ((AppConference) getApplicationContext()).getSharedPrefsHelper();
+        return AppConference.getSharedPrefsHelper();
     }
 
     protected QBUsersHolder getQBUsersHolder() {
@@ -60,7 +59,7 @@ public class BaseActCon extends AppCompatActivity {
         return ((AppConference) getApplicationContext()).getQBDialogsHolder();
     }
 
-    protected ChatHelper getChatHelper() {
+    protected ChatHelperCon getChatHelper() {
         return ((AppConference) getApplicationContext()).getChatHelper();
     }
 

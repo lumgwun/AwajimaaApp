@@ -13,17 +13,17 @@ import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
-import static com.skylightapp.MarketClasses.Business.BUSINESS_COUNTRY;
-import static com.skylightapp.MarketClasses.Business.BUSINESS_ID33;
-import static com.skylightapp.MarketClasses.Business.BUSINESS_LOCATION;
-import static com.skylightapp.MarketClasses.Business.BUSINESS_LOGO;
-import static com.skylightapp.MarketClasses.Business.BUSINESS_MARKET_ID;
-import static com.skylightapp.MarketClasses.Business.BUSINESS_NAME;
-import static com.skylightapp.MarketClasses.Business.BUSINESS_PROF_ID;
-import static com.skylightapp.MarketClasses.Business.BUSINESS_REG_NO;
-import static com.skylightapp.MarketClasses.Business.BUSINESS_STATUS;
-import static com.skylightapp.MarketClasses.Business.BUSINESS_TABLE22;
-import static com.skylightapp.MarketClasses.Business.BUSINESS_TYPE;
+import static com.skylightapp.MarketClasses.BusinessOthers.BUSINESS_COUNTRY;
+import static com.skylightapp.MarketClasses.BusinessOthers.BUSINESS_ID33;
+import static com.skylightapp.MarketClasses.BusinessOthers.BUSINESS_LOCATION;
+import static com.skylightapp.MarketClasses.BusinessOthers.BUSINESS_LOGO;
+import static com.skylightapp.MarketClasses.BusinessOthers.BUSINESS_MARKET_ID;
+import static com.skylightapp.MarketClasses.BusinessOthers.BUSINESS_NAME;
+import static com.skylightapp.MarketClasses.BusinessOthers.BUSINESS_PROF_ID;
+import static com.skylightapp.MarketClasses.BusinessOthers.BUSINESS_REG_NO;
+import static com.skylightapp.MarketClasses.BusinessOthers.BUSINESS_STATUS;
+import static com.skylightapp.MarketClasses.BusinessOthers.BUSINESS_TABLE22;
+import static com.skylightapp.MarketClasses.BusinessOthers.BUSINESS_TYPE;
 import static java.lang.String.valueOf;
 
 public class MarketTranXDAO extends DBHelperDAO{

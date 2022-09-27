@@ -3,11 +3,15 @@ package com.skylightapp.SuperAdmin;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -26,10 +30,10 @@ import com.skylightapp.Database.MessageDAO;
 import com.skylightapp.Database.SODAO;
 import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.Database.TransactionGrantingDAO;
-import com.skylightapp.Interfaces.StandingOrderAcctDao;
+import com.skylightapp.Interfaces.Consts;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
 import com.skylightapp.SMSAct;
-import com.skylightapp.Tellers.MyCusLoanRepayment;
 import com.skylightapp.Transactions.TransferPayload;
 import com.skylightapp.Transactions.Transfers;
 
@@ -39,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import static com.skylightapp.Classes.ImageUtil.TAG;
 import static com.skylightapp.Classes.Profile.PROFILE_PHONE;
 import static com.skylightapp.Transactions.OurConfig.SKYLIGHT_SECRET_KEY;
 import static java.lang.String.valueOf;
@@ -70,28 +75,52 @@ public class TranxApprovalAct extends AppCompatActivity {
     private Account account;
     private  Calendar calendar;
     private static final String PREF_NAME = "skylight";
-    Gson gson;
+    Gson gson,gson1,gson2,gson3;
     private Loan loan;
-    String json,fromType,paymentType,selectedBank,todayDate,txApprover;
+    String json,json1,json2,json3 ,fromType,paymentType,selectedBank,todayDate,txApprover;
     private StandingOrderAcct standingOrderAcct;
     private Transaction transaction;
     private UserSuperAdmin superAdmin;
     private SQLiteDatabase sqLiteDatabase;
     private ArrayList<Transaction>transactionArrayList;
     private Transaction.TRANSACTION_TYPE txType;
+    private int marketID;
+    private long bizID;
+    private MarketBusiness marketBusiness;
+
+    private BroadcastReceiver pushBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra(Consts.EXTRA_FCM_MESSAGE);
+            if (TextUtils.isEmpty(message)) {
+                message = Consts.EMPTY_FCM_MESSAGE;
+            }
+            Log.i(TAG, "Receiving event " + Consts.ACTION_NEW_FCM_EVENT + " with data: " + message);
+            //retrieveMessage(message);
+        }
+    };
+
+    public static void start(Context context, String message) {
+        Intent intent = new Intent(context, TranxApprovalAct.class);
+        intent.putExtra(Consts.EXTRA_FCM_MESSAGE, message);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tranx_approval);
         userProfile=new Profile();
+        marketBusiness= new MarketBusiness();
         bundle=getIntent().getExtras();
         dbHelper=new DBHelper(this);
         calendar = Calendar.getInstance();
         gson = new Gson();
+        gson1 = new Gson();
+        gson2 = new Gson();
         superAdmin= new UserSuperAdmin();
         customer=new Customer();
-        transaction= new Transaction(payoutID, loanProfileID, customerID, acctNo, todayDate, "Skylight", acctNo, acctName, customerName, amountRequested, paymentType, "PayStack Transfer", officeBranch, txApprover, todayDate, "Completed");
+        transaction= new Transaction(payoutID, loanProfileID, customerID, acctNo, todayDate, "Awajima", acctNo, acctName, customerName, amountRequested, paymentType, "PayStack Transfer", officeBranch, txApprover, todayDate, "Completed");
         superProfile=new Profile();
         loanProfile=new Profile();
         account=new Account();
@@ -103,19 +132,26 @@ public class TranxApprovalAct extends AppCompatActivity {
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
         superProfile = gson.fromJson(json, Profile.class);
+
+        json1 = userPreferences.getString("LastProfileUsed", "");
+        marketBusiness = gson1.fromJson(json1, MarketBusiness.class);
         if(superProfile !=null){
             superAdmin=superProfile.getProfile_SuperAdmin();
         }
         if(superAdmin !=null){
             txApprover=superAdmin.getSFirstName();
         }
+        if(marketBusiness !=null){
+            bizID=marketBusiness.getBusinessID();
+
+        }
 
 
         @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         approvalTime = mdformat.format(calendar.getTime());
         payoutID = random.nextInt((int) (Math.random() * 120) + 1011);
-        refID = "SkyLightT/"+ random.nextInt((int) (Math.random() * 1000) + 115);
-        String narration ="Skylight requested Payment";
+        refID = "AwajimaT/"+ random.nextInt((int) (Math.random() * 1000) + 115);
+        String narration ="Awajima App requested Payment";
         if(bundle !=null){
             transactionGranting=bundle.getParcelable("TransactionGranting");
         }
@@ -138,6 +174,7 @@ public class TranxApprovalAct extends AppCompatActivity {
         }
         if(userProfile !=null){
             profileID=userProfile.getPID();
+            marketID=userProfile.getProfileMarketID();
 
         }
         if(tgType !=null) {
@@ -412,7 +449,7 @@ public class TranxApprovalAct extends AppCompatActivity {
                             transferPayload.setReference(refID);
                             transferPayload.setBeneficiary_name(customerName);
                             response = transfers.doTransfer(transferPayload);
-                            smsMessage="Skylight has approved the payment request for"+""+"N"+amountRequested+""+"of"+""+customerName;
+                            smsMessage="Awajima has approved the payment request for"+""+"N"+amountRequested+""+"of"+""+customerName;
                             tittle="Payment request approval";
                             double newBalance =e_WalletBalance-amountRequested;
                             Location location= null;
@@ -469,7 +506,7 @@ public class TranxApprovalAct extends AppCompatActivity {
                             }
                             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
-                                messageDAO.insertMessage(profileID,customerID,messageID,tittle+"/"+response,"Skylight",customerName,officeBranch,approvalTime);
+                                messageDAO.insertMessage(profileID,customerID, Math.toIntExact(bizID),marketID, tittle,response,"Awajima App",customerName,officeBranch,approvalTime);
 
                             }
                             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
@@ -481,8 +518,6 @@ public class TranxApprovalAct extends AppCompatActivity {
                                 dbHelper.openDataBase();
                                 grantingDAO.updateTranxGrantingStatus(tranxPayoutID,response);
                             }
-
-
 
 
                             sendSMSMessage(otpPhoneNumber,smsMessage);

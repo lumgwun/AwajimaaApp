@@ -6,6 +6,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.squareup.picasso.Picasso;
 
 public class ImageLoader {
     private LruCache<String, Bitmap> mMemoryCache;
@@ -43,13 +44,7 @@ public class ImageLoader {
         Bitmap bitmap = getBitmapFromMemCache(photoUrl);
 
         if (bitmap == null) {
-            Glide.with(App.getAppContext()).load(photoUrl).asBitmap().into(new SimpleTarget<Bitmap>() {
-                @Override
-                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                    imageView.setImageBitmap(resource);
-                    addBitmapToMemoryCache(photoUrl, resource);
-                }
-            });
+            Picasso.get().load(photoUrl).into(imageView);
         } else {
             imageView.setImageBitmap(bitmap);
         }

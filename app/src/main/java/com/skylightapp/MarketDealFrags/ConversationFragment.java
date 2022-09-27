@@ -182,7 +182,7 @@ public class ConversationFragment extends BaseToolBarFragment implements CallSer
         // If user changed camera state few times and last state was CameraState.ENABLED_FROM_USER
         // than we turn on cam, else we nothing change
         if (!conversationFragmentCallback.isListenerRole()) {
-            boolean isCamEnabled = sharedPrefsHelperCon.get(Consts.PREF_CAM_ENABLED, false);
+            boolean isCamEnabled = sharedPrefsHelperCon.get(ConstsInterface.PREF_CAM_ENABLED, false);
             if (cameraState != CameraState.DISABLED_FROM_USER) {
                 toggleCamera(isCamEnabled);
             }
@@ -265,10 +265,10 @@ public class ConversationFragment extends BaseToolBarFragment implements CallSer
         }
         controlLayout = view.findViewById(R.id.element_set_call_buttons);
 
-        boolean isCamEnabled = sharedPrefsHelperCon.get(Consts.PREF_CAM_ENABLED, false);
-        boolean isMicEnabled = sharedPrefsHelperCon.get(Consts.PREF_MIC_ENABLED, true);
-        boolean isScreenSharingChecked = sharedPrefsHelperCon.get(Consts.PREF_SCREEN_SHARING_TOGGLE_CHECKED, true);
-        boolean isSwapCamChecked = sharedPrefsHelperCon.get(Consts.PREF_SWAP_CAM_TOGGLE_CHECKED, true);
+        boolean isCamEnabled = sharedPrefsHelperCon.get(ConstsInterface.PREF_CAM_ENABLED, false);
+        boolean isMicEnabled = sharedPrefsHelperCon.get(ConstsInterface.PREF_MIC_ENABLED, true);
+        boolean isScreenSharingChecked = sharedPrefsHelperCon.get(ConstsInterface.PREF_SCREEN_SHARING_TOGGLE_CHECKED, true);
+        boolean isSwapCamChecked = sharedPrefsHelperCon.get(ConstsInterface.PREF_SWAP_CAM_TOGGLE_CHECKED, true);
 
         cameraToggle.setChecked(isCamEnabled);
         micToggle.setChecked(isMicEnabled);
@@ -302,7 +302,7 @@ public class ConversationFragment extends BaseToolBarFragment implements CallSer
 
                     QBRTCVideoTrack localVideoTrack = conversationFragmentCallback.getVideoTrackMap().get(currentUser.getId());
                     if (localVideoTrack != null) {
-                        boolean isCamEnabled = sharedPrefsHelperCon.get(Consts.PREF_CAM_ENABLED, false);
+                        boolean isCamEnabled = sharedPrefsHelperCon.get(ConstsInterface.PREF_CAM_ENABLED, false);
                         localVideoTrack.setEnabled(isCamEnabled);
                         onConnectedToUser(currentSession, currentUser.getId());
                     }
@@ -534,7 +534,7 @@ public class ConversationFragment extends BaseToolBarFragment implements CallSer
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (controlLayoutVisible) {
                     conversationFragmentCallback.onSetAudioEnabled(isChecked);
-                    sharedPrefsHelperCon.save(Consts.PREF_MIC_ENABLED, isChecked);
+                    sharedPrefsHelperCon.save(ConstsInterface.PREF_MIC_ENABLED, isChecked);
                 } else {
                     controlsDispatcher.wakeupControls();
                 }
@@ -547,7 +547,7 @@ public class ConversationFragment extends BaseToolBarFragment implements CallSer
                 if (controlLayoutVisible) {
                     if (cameraState != CameraState.DISABLED_FROM_USER) {
                         toggleCamera(isChecked);
-                        sharedPrefsHelperCon.save(Consts.PREF_CAM_ENABLED, isChecked);
+                        sharedPrefsHelperCon.save(ConstsInterface.PREF_CAM_ENABLED, isChecked);
                         swapCamToggle.setEnabled(isChecked);
                     }
                 }
@@ -592,14 +592,14 @@ public class ConversationFragment extends BaseToolBarFragment implements CallSer
         swapCamToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                boolean isCamEnabled = sharedPrefsHelperCon.get(Consts.PREF_CAM_ENABLED, false);
+                boolean isCamEnabled = sharedPrefsHelperCon.get(ConstsInterface.PREF_CAM_ENABLED, false);
                 if (!isCamEnabled) {
                     swapCamToggle.setChecked(!isChecked);
                     return;
                 }
                 if (controlLayoutVisible) {
                     switchCamera();
-                    sharedPrefsHelperCon.save(Consts.PREF_SWAP_CAM_TOGGLE_CHECKED, isChecked);
+                    sharedPrefsHelperCon.save(ConstsInterface.PREF_SWAP_CAM_TOGGLE_CHECKED, isChecked);
                 }
                 controlsDispatcher.wakeupControls();
             }
@@ -796,20 +796,6 @@ public class ConversationFragment extends BaseToolBarFragment implements CallSer
         actionButtonsEnabled(true);
     }
 
-    @Override
-    public void onCallStopped() {
-
-    }
-
-    @Override
-    public void onOpponentsListUpdated(ArrayList<QBUser> newUsers) {
-
-    }
-
-    @Override
-    public void onCallTimeUpdate(String time) {
-
-    }
 
     private OpponentsFromCallAdapter.ViewHolder getViewHolderForOpponent(Integer userID) {
         OpponentsFromCallAdapter.ViewHolder holder = opponentViewHolders.get(userID);
@@ -988,7 +974,7 @@ public class ConversationFragment extends BaseToolBarFragment implements CallSer
         cameraState = CameraState.NONE;
         actionButtonsEnabled(true);
 
-        boolean isNeedEnableLocalVideo = sharedPrefsHelperCon.get(ConstsI.PREF_CAM_ENABLED, false);
+        boolean isNeedEnableLocalVideo = sharedPrefsHelperCon.get(ConstsInterface.PREF_CAM_ENABLED, false);
         if (conversationFragmentCallback.isScreenSharingState()) {
             return;
         }

@@ -22,6 +22,10 @@ import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Inventory.StockTransfer;
 import com.skylightapp.Inventory.Stocks;
 
+import com.skylightapp.MarketClasses.BusinessOthers;
+import com.skylightapp.MarketClasses.Market;
+import com.skylightapp.MarketClasses.MarketAdmin;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.SuperAdmin.Skylight;
 import com.skylightapp.Tellers.TellerCash;
 
@@ -36,6 +40,8 @@ import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
 import static com.skylightapp.MarketClasses.Market.MARKET_ID;
 import static com.skylightapp.MarketClasses.Market.MARKET_TABLE;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_ID;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TABLE;
 
 //@Entity(tableName = "RoomProfileTable")
 public class Profile implements Parcelable, Serializable, BaseColumns {
@@ -141,6 +147,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public static final String PROF_ID_FOREIGN_KEY_PASSWORD = "prof_ID_FkeyPassW";
     public static final String PROF_BUSINESS_ID = "prof_BizID";
     public static final String PROF_MARKET_ID = "market_ID";
+    public static final String PROF_ADMIN_TYPE = "market_Admin_Type";
 
 
     //@Ignore
@@ -152,7 +159,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
             "FOREIGN KEY(" + CUS_ID_PASS_KEY + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
     public static final String CREATE_PROFILES_TABLE = "CREATE TABLE " + PROFILES_TABLE + " (" + PROFILE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PROFILE_SURNAME + " TEXT, " + PROFILE_FIRSTNAME + " TEXT, " + PROFILE_PHONE + " TEXT, " + PROFILE_EMAIL + " TEXT, " + PROFILE_DOB + " TEXT, " + PROFILE_GENDER + " TEXT, " +
-            PROFILE_ADDRESS + " TEXT, " + PROFILE_NIN + " TEXT, " + PROFILE_UNIT + " TEXT, " + PROFILE_WARD + " TEXT, " + PROFILE_TOWN + " TEXT, " + PROFILE_STATE + " TEXT, " + PROFILE_COUNTRY + " TEXT, " + PROFILE_OFFICE + " TEXT, " + PROFILE_DATE_JOINED + " TEXT, " + PROFILE_ROLE + " TEXT, " + PROFILE_USERNAME + " TEXT, " + PROFILE_PASSWORD + " TEXT, " + PROFILE_STATUS + " TEXT, " + PROFILE_NEXT_OF_KIN + " TEXT,"+ PROFILE_SPONSOR_ID + " TEXT,"+ PROFILE_CUS_ID_KEY + " INTEGER,"+ PROF_BUSINESS_ID + " TEXT,"+ PROF_MARKET_ID + " TEXT," + "FOREIGN KEY(" + PROFILE_CUS_ID_KEY + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+            PROFILE_ADDRESS + " TEXT, " + PROFILE_NIN + " TEXT, " + PROFILE_UNIT + " TEXT, " + PROFILE_WARD + " TEXT, " + PROFILE_TOWN + " TEXT, " + PROFILE_STATE + " TEXT, " + PROFILE_COUNTRY + " TEXT, " + PROFILE_OFFICE + " TEXT, " + PROFILE_DATE_JOINED + " TEXT, " + PROFILE_ROLE + " TEXT, " + PROFILE_USERNAME + " TEXT, " + PROFILE_PASSWORD + " TEXT, " + PROFILE_STATUS + " TEXT, " + PROFILE_NEXT_OF_KIN + " TEXT,"+ PROFILE_SPONSOR_ID + " TEXT,"+ PROFILE_CUS_ID_KEY + " INTEGER,"+ PROF_BUSINESS_ID + " TEXT,"+ PROF_MARKET_ID + " TEXT," + "FOREIGN KEY(" + PROF_BUSINESS_ID + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+ "FOREIGN KEY(" + PROF_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+ "FOREIGN KEY(" + PROFILE_CUS_ID_KEY + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
     //@Ignore
     public static final String CREATE_SPONSOR_TABLE = "CREATE TABLE " + SPONSOR_TABLE + " (" + SPONSOR_TABLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + SPONSOR_TABLE_CUS_ID + " INTEGER, " + SPONSOR_TABLE_PROF_ID + " INTEGER, " + SPONSOR_TABLE_PHONE + " TEXT, " + SPONSOR_TABLE_EMAIL + " TEXT, " + "FOREIGN KEY(" + SPONSOR_TABLE_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
@@ -249,8 +256,11 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
     private int profileBusinessID;
     private int profileMarketID;
+    private int profOfficeID;
     private QBUser profQbUser;
     private QBEntity profQbEntity;
+    private AdminUser.ADMIN_TYPE profileAdmin_type;
+
 
 
     public void setProfilePassword(String profilePassword)   {
@@ -356,27 +366,27 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         this.profileSponsorID = sponsorID;
     }
 
-    @Ignore
+    //@Ignore
     public ArrayList<Address> getProfileAddresses() { return profile_Addresses; }
-    @Ignore
+    //@Ignore
     AdminUser adminUser2;
 
 
-    @Ignore
+    //@Ignore
     private ArrayList<Account> profile_Accounts;
-    @Ignore
+    //@Ignore
     private ArrayList<Stocks> profile_Stocks;
-    @Ignore
+    //@Ignore
     private ArrayList<Address> profile_Addresses;
-    @Ignore
+    //@Ignore
     private ArrayList<Payee> profile_Payees;
-    @Ignore
+    //@Ignore
     private ArrayList<TimeLine> profile_TimeLines;
-    @Ignore
+    //@Ignore
     private ArrayList<Customer> profile_Customers;
-    @Ignore
-    private ArrayList<OtherBusiness> profile_Other_Businesses;
-    @Ignore
+    //@Ignore
+    private ArrayList<MarketBusiness> marketBusinessArrayList;
+    //@Ignore
     private ArrayList<CustomerDailyReport> profile_DailyReports;
     @Ignore
     private ArrayList<SkyLightPackage> profile_SkyLightPackages;
@@ -427,7 +437,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     @Ignore
     private Birthday profile_Birthday;
     @Ignore
-    private OtherBusiness profile_Biz;
+    private MarketBusiness profile_Biz;
     @Ignore
     private GroupAccount profile_GroupAcct;
     @Ignore
@@ -475,8 +485,14 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     private int payoutNo;
     @Ignore
     int profileNo;
-
-
+    private ArrayList<Integer> profile_bizIDs;
+    private ArrayList<Integer> profile_acctIDs;
+    private ArrayList<Integer> profMarketIDs;
+    private ArrayList<Integer> profBusinessIDs;
+    private ArrayList<BusinessOthers> profBizOthers;
+    private ArrayList<MarketBusiness> profMarketBizs;
+    private ArrayList<Market> profMarketArrayList;
+    private ArrayList<MarketAdmin> profMarketAdmins;
 
 
     public Profile(int profile_id, String surName, String profileFirstName, String phone, String profileEmail, String profileDob, String profileGender, String profileAddress, String s, String profileState, String profile_OfficeBranch, String joinedDate, String profileRole, String userName, String profilePassword, String profileStatus) {
@@ -488,6 +504,27 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         this.profile_Identity = profile_Identity;
         this.profileUserName = userName;
     }
+    public Profile(String uSurname, String uFirstName, String uPhoneNumber, String uEmail, String dateOfBirth, String selectedGender, String uAddress, String selectedState, String selectedOffice, String dateJoined, String uUserName, String selectedUserType, String status, Uri image, AdminUser.ADMIN_TYPE profileAdmin_type) {
+        this.profileFirstName = uFirstName;
+        this.profileLastName = uSurname;
+        this.profilePhoneNumber = uPhoneNumber;
+        this.profileEmail = uEmail;
+        this.profileDob = dateOfBirth;
+        this.profileGender = selectedGender;
+        this.profileAddress = uAddress;
+        this.profileState = selectedState;
+        this.profileOffice = selectedOffice;
+        this.profileDateJoined = dateJoined;
+        this.profileUserName = uUserName;
+        this.profileRole = selectedUserType;
+        this.profileStatus = status;
+        this.profilePicture = image;
+        this.profileAdmin_type = profileAdmin_type;
+
+
+
+    }
+
 
     public Profile(int profileID1, String uSurname, String uFirstName, String uPhoneNumber, String uEmail, String dateOfBirth, String selectedGender, String uAddress, String nIN, String selectedState, String selectedOffice, String dateOfJoin, String userProfileType, String username, String profilePassword, String profileStatus, String nextOfKin) {
         super();
@@ -585,7 +622,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         profile_Tranx = in.readParcelable(Transaction.class.getClassLoader());
         profile_Loan = in.readParcelable(Loan.class.getClassLoader());
         profile_Birthday = in.readParcelable(Birthday.class.getClassLoader());
-        profile_Biz = in.readParcelable(OtherBusiness.class.getClassLoader());
+        profile_Biz = in.readParcelable(MarketBusiness.class.getClassLoader());
         profile_GroupAcct = in.readParcelable(GroupAccount.class.getClassLoader());
         profile_SavingsGroup = in.readParcelable(SavingsGroup.class.getClassLoader());
         profile_SavingsGroups = in.createTypedArrayList(SavingsGroup.CREATOR);
@@ -898,7 +935,12 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         return businessName;
     }
     @Ignore
-    public void setProfileBusinessName(String businessName) { this.profileEmail = businessName; }
+    public void setProfileBusinessName(String businessName) { this.profileEmail = businessName;
+    }
+    public void addPTellerReport(int bizID, int officeBranchID, double amountEntered, int noOfSavings, String dateSting) {
+
+
+    }
 
 
     public Profile (int userID, String profileFirstName, String profileLastName, String phone, String profileEmail, String username, String profilePassword, String profile_Machine, Uri profilePicture) {
@@ -1019,10 +1061,10 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
     }
     @Ignore
-    public OtherBusiness getProfileBusiness() { return profile_Biz; }
+    public MarketBusiness getProfileBusiness() { return profile_Biz; }
     @Ignore
-    public void setProfileBusiness(OtherBusiness otherBusiness) {
-        this.profile_Biz = otherBusiness;
+    public void setProfileBusiness(MarketBusiness marketBusiness) {
+        this.profile_Biz = marketBusiness;
 
     }
     @Ignore
@@ -1064,9 +1106,9 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public ArrayList<Customer> getProfileCustomers() { return profile_Customers;
     }
     @Ignore
-    public ArrayList<OtherBusiness> getProfile_Businesses() { return profile_Other_Businesses; }
+    public ArrayList<MarketBusiness> getProfile_Businesses() { return marketBusinessArrayList; }
     @Ignore
-    public void setProfile_Businesses(ArrayList<OtherBusiness> profile_Other_Businesses) { this.profile_Other_Businesses = profile_Other_Businesses; }
+    public void setProfile_Businesses(ArrayList<MarketBusiness> profile_Other_Businesses) { this.marketBusinessArrayList = profile_Other_Businesses; }
     @Ignore
 
     public ArrayList<SkyLightPackage> getProfileSkylightPackages() { return profile_SkyLightPackages; }
@@ -1227,15 +1269,50 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         return "ID: " + String.valueOf(this.pID) + "\nlastName: " + this.profileFirstName + "\nphoneNumber: "
                 + String.valueOf(this.profileEmail) + "\ndob: " + this.profileAddress + "\njoinedDate: " + this.profileGender;
     }
-    @Ignore
+    public void addMarketAdmin(MarketAdmin marketAdmin) {
+        profMarketAdmins = new ArrayList<>();
+        profMarketAdmins.add(marketAdmin);
+    }
+    public void addMarketID(int marketID) {
+        profMarketIDs = new ArrayList<>();
+        profMarketIDs.add(marketID);
+    }
+    /*public void addBusinessOthers(BusinessOthers businessOthers) {
+        profBizOthers = new ArrayList<>();
+        profBizOthers.add(businessOthers);
+    }*/
+    public void addMarketBusiness(MarketBusiness marketBusiness) {
+        profMarketBizs = new ArrayList<>();
+        profMarketBizs.add(marketBusiness);
+    }
+    public void addMarket(Market market) {
+        profMarketArrayList = new ArrayList<>();
+        profMarketArrayList.add(market);
+    }
+    public void addBusinessID(int businessID) {
+        profBusinessIDs = new ArrayList<>();
+        profBusinessIDs.add(businessID);
+    }
 
+    public void addProfBizID(int prodileBizID) {
+        profile_bizIDs = new ArrayList<>();
+        profile_bizIDs.add(prodileBizID);
+    }
+    public void addProfileAcctID(int profileAcctID) {
+        profile_acctIDs = new ArrayList<>();
+        profile_acctIDs.add(profileAcctID);
+    }
+    public void addProfileMarketID(int profileMarketID) {
+        ArrayList<Integer> profileMarketIDs = new ArrayList<>();
+        profileMarketIDs.add(profileMarketID);
+    }
     public void addPPaymentDocument(int id, String title, int customerId, int reportId, Uri documentLink, String status) {
         profile_PaymentDocArrayList = new ArrayList<>();
         String docNo = "Doc" + (profile_PaymentDocArrayList.size() + 1);
         PaymentDoc paymentDoc = new PaymentDoc(id,title, customerId, reportId,documentLink,status);
         profile_PaymentDocArrayList.add(paymentDoc);
     }
-    @Ignore
+    //@Ignore
 
     public void addPAddress(Locale address) {
         profile_Addresses = new ArrayList<>();
@@ -1243,16 +1320,16 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         Address address1 = new Address(address);
         profile_Addresses.add(address1);
     }
-    @Ignore
+    //@Ignore
 
 
-    public void addPBusiness(long businessID, long profileID, String businessName, String bizEmail, String bizAddress, String bizPhoneNo, String bizType, String bizRegNo, String dateOfJoin, String status) {
-        profile_Other_Businesses = new ArrayList<>();
-        String bizNo = "Biz:" + (profile_Other_Businesses.size() + 1);
-        OtherBusiness otherBusiness = new OtherBusiness(businessID,profileID, businessName, bizEmail, bizAddress, bizPhoneNo,  bizType,  bizRegNo,dateOfJoin,status);
-        profile_Other_Businesses.add(otherBusiness);
+    public void addMarketBusiness(long businessID, long profileID, String businessName, String bizEmail, String bizAddress, String bizPhoneNo, String bizType, String bizRegNo, String dateOfJoin, String status) {
+        marketBusinessArrayList = new ArrayList<>();
+        String bizNo = "Biz:" + (marketBusinessArrayList.size() + 1);
+        MarketBusiness marketBusiness = new MarketBusiness(businessID,profileID, businessName, bizEmail, bizAddress, bizPhoneNo,  bizType,  bizRegNo,dateOfJoin,status);
+        marketBusinessArrayList.add(marketBusiness);
     }
-    @Ignore
+    //@Ignore
     public void addPSOAcct(int soNo, double expectedAmount) {
         profile_StandingOrders = new ArrayList<>();
         soNo = profile_StandingOrders.size() + 1;
@@ -1260,7 +1337,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         profile_StandingOrders.add(business);
 
     }
-    @Ignore
+    //@Ignore
 
     public void addPCode(int PROFILE_ID, String CODE_OWNER_PHONE, long CODE_PIN, String CODE_DATE, String CODE_STATUS, String CODE_MANAGER) {
         profile_PaymentCodeArrayList = new ArrayList<>();
@@ -1268,7 +1345,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         PaymentCode paymentCode = new PaymentCode(PROFILE_ID,CODE_OWNER_PHONE,CODE_PIN, CODE_DATE, CODE_STATUS,CODE_MANAGER);
         profile_PaymentCodeArrayList.add(paymentCode);
     }
-    @Ignore
+    //@Ignore
     public void addPAccount(String accountBank, String accountName, int accountNumber, double accountBalance, AccountTypes accountTypes) {
         profile_Accounts = new ArrayList<>();
         String accNo = "A" + (profile_Accounts.size() + 1);
@@ -1276,14 +1353,14 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         profile_Accounts.add(account);
 
     }
-    @Ignore
+    //@Ignore
     public void addPAccount(int virtualAccountID, String customerBank, String customerNames, long accountNo, double accountBalance, AccountTypes accountTypes) {
         profile_Accounts = new ArrayList<>();
         String accNo = "A" + (profile_Accounts.size() + 1);
         Account account = new Account(virtualAccountID,customerBank,customerNames, String.valueOf(accountNo), accountBalance,accountTypes);
         profile_Accounts.add(account);
     }
-    @Ignore
+    //@Ignore
     public void addPSavingsGrp(int gsID, String groupName, String adminName, String purpose, double amount, Date startDate, Date endDate, String status) {
         profile_SavingsGroups = new ArrayList<>();
         String GSNo = "A" + (profile_SavingsGroups.size() + 1);
@@ -1295,7 +1372,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
     }*/
 
-    @Ignore
+    //@Ignore
 
     public void addPTellerReport(int dbaseID, int reportID, String date, double balance, String status) {
         ArrayList<TellerReport> tellerReports = null;
@@ -1303,14 +1380,14 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         TellerReport dailyReport = new TellerReport(reportID, dbaseID,date,balance,status);
         ptellerReportArrayList.add(dailyReport);
     }
-    @Ignore
+    //@Ignore
     public void addPTellerReport(int keyExtraReportId, String officeBranch, double amountEntered, int noOfCustomers, String reportDate) {
         ArrayList<TellerReport> tellerReports = null;
         keyExtraReportId = ptellerReportArrayList.size() + 1;
         TellerReport dailyReport = new TellerReport(keyExtraReportId, officeBranch,amountEntered,noOfCustomers,reportDate);
         ptellerReportArrayList.add(dailyReport);
     }
-    @Ignore
+    //@Ignore
     public void addPPayment(String type, double totalToWithdraw, Date date, long paymentCode, String acctType, String office, String status) {
         ArrayList<Payment> paymentArrayList = null;
         if (paymentArrayList != null) {
@@ -1320,21 +1397,21 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         paymentArrayList.add(profile_Payment);
 
     }
-    @Ignore
+    //@Ignore
 
     public void addPReport(int count, int customerID, String customerName, int packageID, int reportID, double savingsAmount, int numberOfDays, double totalAmountSum, int daysRemaining, double amountRemaining, String reportDate, String status) {
         count = profile_DailyReports.size() + 1;
         CustomerDailyReport dailyReport = new CustomerDailyReport( count,customerID,customerName,packageID, reportID, savingsAmount, numberOfDays, totalAmountSum, daysRemaining, amountRemaining,  reportDate, status);
         profile_DailyReports.add(dailyReport);
     }
-    @Ignore
+    //@Ignore
     public void addPGroupSavings(int GSNo, String groupName, double amount, Date savingsDate, String status) {
         profile_SavingsGroups = new ArrayList<>();
         GSNo = profile_GroupSavings.size() + 1;
         GroupSavings groupSavings1 = new GroupSavings(GSNo,groupName,amount, savingsDate, status);
         profile_GroupSavings.add(groupSavings1);
     }
-    @Ignore
+    //@Ignore
     public void addPCustomer(int uID, String surname, String firstName, String customerPhoneNumber, String customerEmailAddress, String customerAddress, String customerGender, String customerOffice, String customerState, Uri profilePicture, String dateJoined, String userName, String password) {
         profile_Customers = new ArrayList<>();
         String CusNo = "C" + (profile_Customers.size() + 1);
@@ -1342,7 +1419,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         profile_Customers.add(customer);
 
     }
-    @Ignore
+    //@Ignore
     public void addPCustomerManager(int uID, String surname, String firstName, String customerPhoneNumber, String dateOfBirth, String customerEmailAddress, String customerAddress, String customerGender, String customerOffice, String customerState, Uri profilePicture, String dateJoined, String userName, String password) {
         profile_CustomerManagers = new ArrayList<>();
         String CMNo = "C" + (profile_CustomerManagers.size() + 1);
@@ -1352,7 +1429,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
 
     }
-    @Ignore
+    //@Ignore
     public void addPCustomerManager1(int uID, String surname, String firstName, String managerGender, String managerOffice) {
         profile_CustomerManagers = new ArrayList<>();
         String CMNo = "C" + (profile_CustomerManagers.size() + 1);
@@ -1363,39 +1440,39 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
     }
 
-    @Ignore
+    //@Ignore
     public void addPSavings(int profileId, int customerId, int newRecordID, double packageAmount, int numberOfDaysConverted, double totalForTheDay, int newNumberOfDaysRem, double newAmountRemaining, String reportDate, String status) {
         profile_DailyReports = new ArrayList<>();
         String savingsCount = "C" + (profile_DailyReports.size() + 1);
         CustomerDailyReport customerDailyReport = new CustomerDailyReport(profileId,customerId, newRecordID, packageAmount,numberOfDaysConverted,totalForTheDay,newNumberOfDaysRem,newAmountRemaining,reportDate,status);
         profile_DailyReports.add(customerDailyReport);
     }
-    @Ignore
+    //@Ignore
     public void addPLoans(int loanId, double amount, String loanStartDate, String status, String loanEndDate, double interest1) {
         profile_Loans = new ArrayList<>();
         int loanNumber = Integer.parseInt(("Loan" + (profile_Loans.size() + 1)));
         Loan loan = new Loan(loanNumber, amount,loanStartDate,status,loanEndDate,interest1);
         profile_Loans.add(loan);
     }
-    @Ignore
+    //@Ignore
     public void addPTimeLine(String tittle, String timelineDetails) {
         profile_TimeLines = new ArrayList<>();
         String history = "History" + (profile_TimeLines.size() + 1);
         TimeLine timeLine = new TimeLine(tittle,timelineDetails);
         profile_TimeLines.add(timeLine);
     }
-    @Ignore
+    //@Ignore
     public void setProfile_Accounts(ArrayList<Account> accounts) {
         this.profile_Accounts = accounts;
     }
-    @Ignore
+    //@Ignore
     public void addPTransaction(long transactionId, String surname, String firstName, String customerPhoneNumber, double amount, String accountNumber, String description, String date, String type) {
         profile_Transactions = new ArrayList<>();
         String transactionCount = "C" + (profile_Transactions.size() + 1);
         Transaction transaction1 = new Transaction(transactionId,surname, firstName, customerPhoneNumber,amount,accountNumber,description,date,type);
         profile_Transactions.add(transaction1);
     }
-    @Ignore
+    //@Ignore
 
     public void addPTransferTranX(Account sendingAcc, Account receivingAcc, double transferAmount) {
 
@@ -1418,7 +1495,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         //sendingAcc.getTransactions1().add(new Transaction(Integer.parseInt("T" + (sendingAcc.getTransactions1().size() + 1) + "-T" + (sendingAccTransferCount+1)), sendingAcc.toTransactionString(), receivingAcc.toTransactionString(), transferAmount));
         //receivingAcc.getTransactions1().add(new Transaction(Integer.parseInt("T" + (receivingAcc.getTransactions1().size() + 1) + "-T" + (receivingAccTransferCount+1)), sendingAcc.toTransactionString(), receivingAcc.toTransactionString(), transferAmount));
     }
-    @Ignore
+    //@Ignore
 
     public void addPPayee(String payeeName) {
         profile_Payees = new ArrayList<>();
@@ -1426,16 +1503,16 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         Payee payee = new Payee(payeeID, payeeName);
         profile_Payees.add(payee);
     }
-    @Ignore
+    //@Ignore
 
     public void setProfile_Payees(ArrayList<Payee> payees) {
         this.profile_Payees = payees;
     }
-    @Ignore
+    //@Ignore
     public void setProfile_Customers(ArrayList<Customer> customers) {
         this.profile_Customers = customers;
     }
-    @Ignore
+    //@Ignore
 
     public void addPBorrowingTranx(Account receivingAccount, double amountToBorrow) {
         receivingAccount.setAccountBalance(receivingAccount.getAccountBalance() - amountToBorrow);
@@ -1451,13 +1528,13 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         //receivingAccount.getTransactions1().add(new Transaction("T" + (receivingAccount.getTransactions1().size() + 1) + "-T" + (receivingAccBorrowingCount+1), receivingAccount.toTransactionString(), receivingAccount.toTransactionString(), amountToBorrow));
 
     }
-    @Ignore
+    //@Ignore
 
 
     public int leaveMessage(String message, int userId) {
         return 0;
     }
-    @Ignore
+    //@Ignore
 
     public void addPNewSkylightPackage(int profileID, int customerID, int packageID, String packageType, double savingsAmount, int packageDuration, String startDate, double grandTotal, String endDate, String just_stated) {
         profile_SkyLightPackages = new ArrayList<>();
@@ -1465,7 +1542,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         profile_SkyLightPackage = new SkyLightPackage(profileID,customerID, packageID, SkyLightPackage.SkylightPackage_Type.valueOf(packageType),savingsAmount,packageDuration,startDate,grandTotal,endDate, profileStatus);
         profile_SkyLightPackages.add(profile_SkyLightPackage);
     }
-    @Ignore
+    //@Ignore
 
 
     public void addPStocksAll(int stocksID, String selectedStockPackage, String uStockType, String uStockModel, String uStockColor, String uStockSize, int uStockQuantity, String selectedOfficeBranch, double uStockPricePerUnit, String stockDate) {
@@ -1475,7 +1552,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         profile_Stocks.add(stocks1);
 
     }
-    @Ignore
+    //@Ignore
     public void addPStocks(int stocksID, String stocksName, String uStockType, int uStockQuantity, long stockCode, String selectedOfficeBranch, String stockDate, String status) {
         profile_Stocks = new ArrayList<>();
         int  stocksNo = profile_Stocks.size() + 1;
@@ -1484,7 +1561,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
     }
 
-    @Ignore
+    //@Ignore
     public void addPTellerCash(int reportID, int packageID, String finalItemType, double tellerAmount, String tellerName, String officeBranch, String packageStartDate) {
         profile_TellerCashes = new ArrayList<>();
         int  stocksNo = profile_TellerCashes.size() + 1;
@@ -1492,12 +1569,12 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         profile_TellerCashes.add(tellerCash);
 
     }
-    @Ignore
+    //@Ignore
     @Override
     public int describeContents() {
         return 0;
     }
-    @Ignore
+    //@Ignore
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeLong(pID);
@@ -1533,7 +1610,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         parcel.writeTypedList(profile_Payees);
         parcel.writeTypedList(profile_TimeLines);
         parcel.writeTypedList(profile_Customers);
-        parcel.writeTypedList(profile_Other_Businesses);
+        parcel.writeTypedList(marketBusinessArrayList);
         parcel.writeTypedList(profile_DailyReports);
         parcel.writeTypedList(profile_SkyLightPackages);
         parcel.writeTypedList(profile_Loans);
@@ -1630,5 +1707,30 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
     public void setProfQbEntity(QBEntity profQbEntity) {
         this.profQbEntity = profQbEntity;
+    }
+
+    public ArrayList<Integer> getProfile_bizIDs() {
+        return profile_bizIDs;
+    }
+
+    public void setProfile_bizIDs(ArrayList<Integer> profile_bizIDs) {
+        this.profile_bizIDs = profile_bizIDs;
+    }
+
+    public ArrayList<Integer> getProfile_acctIDs() {
+        return profile_acctIDs;
+    }
+
+    public void setProfile_acctIDs(ArrayList<Integer> profile_acctIDs) {
+        this.profile_acctIDs = profile_acctIDs;
+    }
+
+
+    public int getProfOfficeID() {
+        return profOfficeID;
+    }
+
+    public void setProfOfficeID(int profOfficeID) {
+        this.profOfficeID = profOfficeID;
     }
 }

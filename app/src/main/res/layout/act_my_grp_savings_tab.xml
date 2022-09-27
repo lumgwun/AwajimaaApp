@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:id="@android:id/tabhost"
     android:theme="@style/NoActionBar"
-    android:background="@drawable/sky4"
+    android:background="@drawable/shape_layer"
     tools:context="com.skylightapp.MyGrpSavingsTab">
 
     <LinearLayout

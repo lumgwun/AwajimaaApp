@@ -8,6 +8,18 @@
     android:id="@android:id/tabhost"
     android:background="#fff"
     tools:context="com.skylightapp.AllCusPackTab">
+    <com.melnykov.fab.FloatingActionButton
+        android:layout_width="match_parent"
+        android:src="@drawable/icon_tab1"
+        android:id="@+id/fab_all"
+        app:fab_type="mini"
+        android:foregroundGravity="right"
+        android:theme="@style/ThemeOverlay.MaterialComponents"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginBottom="12dp"
+        android:layout_height="wrap_content"/>
+
 
     <LinearLayout
         android:orientation="vertical"
@@ -18,12 +30,14 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:elevation="5.0dp"
+            android:background="@color/white"
             app:shape_arc_cropDirection="inside"
             app:shape_arc_height="15dp"
             app:shape_arc_position="bottom">
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
                 android:id="@+id/app_bar_all"
+                android:background="@color/white"
                 android:layout_height="wrap_content">
                 <androidx.appcompat.widget.Toolbar
                     android:layout_width="match_parent"
@@ -35,7 +49,7 @@
                     android:id="@+id/all_toolbar"
                     android:textAlignment="center"
                     android:layout_marginStart="42dp"
-                    app:titleTextColor="@color/white_good"
+                    app:titleTextColor="@color/red_brown_dark"
                     android:layout_height="100dp"/>
             </com.google.android.material.appbar.AppBarLayout>
 
@@ -50,19 +64,10 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:padding="5dp" />
+
+
     </LinearLayout>
 
-    <com.melnykov.fab.FloatingActionButton
-        android:layout_width="match_parent"
-        android:src="@drawable/icon_tab1"
-        android:id="@+id/fab_all"
-        android:layout_gravity="end"
-        android:foregroundGravity="center_horizontal"
-        android:theme="@style/ThemeOverlay.MaterialComponents"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="9dp"
-        android:layout_marginBottom="12dp"
-        android:layout_height="wrap_content"/>
 
 
 </TabHost>

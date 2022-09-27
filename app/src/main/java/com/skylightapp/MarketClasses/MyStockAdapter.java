@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.skylightapp.Markets.MarketStock;
 import com.skylightapp.R;
 
 import java.util.Currency;

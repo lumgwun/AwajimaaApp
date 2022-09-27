@@ -23,7 +23,7 @@ import com.quickblox.users.model.QBUser;
 import com.quickblox.videochat.webrtc.QBRTCTypes;
 import com.quickblox.videochat.webrtc.view.QBRTCSurfaceView;
 import com.skylightapp.Classes.App;
-import com.skylightapp.MarketDealFrags.BaseConversationFragment;
+import com.skylightapp.MarketDealFrags.BaseConversationFragV;
 import com.skylightapp.R;
 
 import java.util.List;
@@ -37,7 +37,7 @@ public class OpponentsFromCallAdapter extends RecyclerView.Adapter<OpponentsFrom
     private  int itemWidth;
 
     private Context context;
-    private BaseConversationFragment baseConversationFragment;
+    private BaseConversationFragV baseConversationFragV;
     private List<QBUser> opponents;
     private LayoutInflater inflater;
     private OnAdapterEventListener adapterListener;
@@ -47,9 +47,9 @@ public class OpponentsFromCallAdapter extends RecyclerView.Adapter<OpponentsFrom
 
 
 
-    public OpponentsFromCallAdapter(Context context, BaseConversationFragment baseConversationFragment, List<QBUser> users, int width, int height) {
+    public OpponentsFromCallAdapter(Context context, BaseConversationFragV baseConversationFragV, List<QBUser> users, int width, int height) {
         this.context = context;
-        this.baseConversationFragment = baseConversationFragment;
+        this.baseConversationFragV = baseConversationFragV;
         this.opponents = users;
         this.inflater = LayoutInflater.from(context);
         itemWidth = width;
@@ -179,7 +179,7 @@ public class OpponentsFromCallAdapter extends RecyclerView.Adapter<OpponentsFrom
             holder.ivMutedOpponentIndicator.setVisibility(View.VISIBLE);
         }
 
-        QBRTCTypes.QBRTCConnectionState state = baseConversationFragment.getConnectionState(userID);
+        QBRTCTypes.QBRTCConnectionState state = baseConversationFragV.getConnectionState(userID);
         if (state != null) {
             Log.d(TAG, "State ordinal= " + state.ordinal());
             holder.setStatus(context.getString(QBRTCSessionUtils.getStatusDescriptionResource(state)));

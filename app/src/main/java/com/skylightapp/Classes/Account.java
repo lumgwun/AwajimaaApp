@@ -6,12 +6,13 @@ import android.os.Parcelable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.blongho.country_data.Currency;
 import com.skylightapp.Database.DBHelper;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Currency;
+
 
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
@@ -19,6 +20,10 @@ import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 import static com.skylightapp.Classes.Transaction.TRANSACTIONS_TABLE;
 import static com.skylightapp.Classes.Transaction.TRANSACTION_ID;
+import static com.skylightapp.MarketClasses.Market.MARKET_ID;
+import static com.skylightapp.MarketClasses.Market.MARKET_TABLE;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_ID;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TABLE;
 
 @Entity(tableName = Account.ACCOUNTS_TABLE)
 public class Account implements Serializable, Parcelable {
@@ -49,6 +54,8 @@ public class Account implements Serializable, Parcelable {
     public static final String ACCOUNT_TYPE_NO_F = "acct_F_Key";
     public static final String ACCOUNT_PROF_ID = "acct_prof_number";
     public static final String ACCOUNT_TX_ID = "acct_TX_ID";
+    public static final String ACCOUNT_MARKET_BUSINESS_ID = "acct_Biz_ID";
+    public static final String ACCOUNT_MARKET_ID = "acct_Market_ID";
 
 
     public static final String CREATE_ACCOUNT_TYPE_TABLE = "CREATE TABLE " + ACCOUNT_TYPES_TABLE + " (" + ACCOUNT_TYPE_ID + " INTEGER, " +
@@ -59,7 +66,7 @@ public class Account implements Serializable, Parcelable {
     public static final String CREATE_ACCOUNTS_TABLE = "CREATE TABLE IF NOT EXISTS " + ACCOUNTS_TABLE + " (" + ACCOUNT_NO + " INTEGER , " + BANK_ACCT_NO + "TEXT," + ACCOUNT_PROF_ID + " INTEGER , " +
             ACCOUNT_CUS_ID + " INTEGER , " + ACCOUNT_TX_ID + " INTEGER , " +
             ACCOUNT_TYPE + " TEXT , " + ACCOUNT_BANK + " TEXT , " + ACCOUNT_NAME + " TEXT, " + ACCOUNT_BALANCE + " REAL, " +
-            ACCOUNT_EXPECTED_SAVINGS + " TEXT, " + ACCOUNT_SAVED_AMOUNT + " REAL, " + BANK_ACCT_BALANCE + "REAL, "+"FOREIGN KEY(" + ACCOUNT_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + ACCOUNT_CUS_ID  + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + ")," + "FOREIGN KEY(" + ACCOUNT_TX_ID + ") REFERENCES " + TRANSACTIONS_TABLE + "(" + TRANSACTION_ID + ")," +
+            ACCOUNT_EXPECTED_SAVINGS + " TEXT, " + ACCOUNT_SAVED_AMOUNT + " REAL, " + BANK_ACCT_BALANCE + "REAL, "+ "FOREIGN KEY(" + ACCOUNT_MARKET_BUSINESS_ID + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+ "FOREIGN KEY(" + ACCOUNT_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+"FOREIGN KEY(" + ACCOUNT_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + ACCOUNT_CUS_ID  + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + ")," + "FOREIGN KEY(" + ACCOUNT_TX_ID + ") REFERENCES " + TRANSACTIONS_TABLE + "(" + TRANSACTION_ID + ")," +
             "PRIMARY KEY(" + ACCOUNT_NO + "))";
 
     protected Account(Parcel in) {
@@ -144,6 +151,30 @@ public class Account implements Serializable, Parcelable {
         return itemAcctBalance;
     }
 
+    public int getAcctBizID() {
+        return acctBizID;
+    }
+
+    public void setAcctBizID(int acctBizID) {
+        this.acctBizID = acctBizID;
+    }
+
+    public int getAcctMarketID() {
+        return acctMarketID;
+    }
+
+    public void setAcctMarketID(int acctMarketID) {
+        this.acctMarketID = acctMarketID;
+    }
+
+    public int getAcctBizDealID() {
+        return acctBizDealID;
+    }
+
+    public void setAcctBizDealID(int acctBizDealID) {
+        this.acctBizDealID = acctBizDealID;
+    }
+
     public enum ACCOUNT_TYPE {
         WALLET, STANDING_ORDER, GROUP_SAVINGS;
     }
@@ -173,6 +204,9 @@ public class Account implements Serializable, Parcelable {
 
     double totalAmountToSave;
     double interest;
+    private int acctBizID;
+    private int acctMarketID;
+    private int acctBizDealID;
     private String image;
     private BigDecimal balance1 = null;
     private BigDecimal interestRate = BigDecimal.ZERO;
@@ -410,9 +444,7 @@ public class Account implements Serializable, Parcelable {
         this.currency = currency;
     }
 
-    public Currency getCurrency() {
-        currency.getCurrencyCode();
-        currency.getDisplayName();
+    public com.blongho.country_data.Currency getCurrency() {
         return currency;
     }
     public void setBankName(String bankName) {

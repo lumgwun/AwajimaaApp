@@ -6,11 +6,7 @@ import android.os.Parcelable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.Transaction;
-
 import java.io.Serializable;
-import java.util.Currency;
 import java.util.Date;
 
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
@@ -33,23 +29,24 @@ public class AdminBankDeposit implements Serializable, Parcelable {
     public static final String DEPOSIT_APPROVER = "transaction_Approver";
     public static final String DEPOSIT_CONFIRMATION_DATE = "DConfirmation_Date";
     public static final String DEPOSIT_DOC = "deposit_doc";
-    public static final String DEPOSIT_PROFILE_ID = "deposit_Profile_Doc";
-
+    public static final String DEPOSIT_PROFILE_ID = "deposit_Profile_ID";
+    public static final String DEPOSIT_BIZ_ID = "deposit_BIZ_ID";
+    public static final String DEPOSIT_OFFICE_ID22 = "deposit_OfficeB_ID";
 
     public static final String CREATE_ADMIN_DEPOSIT_TABLE = "CREATE TABLE IF NOT EXISTS " + DEPOSIT_TABLE + " (" + DEPOSIT_ID + " LONG, " + DEPOSIT_PROFILE_ID + " INTEGER , " + DEPOSIT_AMOUNT + " FLOAT , " +
             DEPOSIT_OFFICE_BRANCH + " TEXT, " + DEPOSIT_TRANS_TYPE + " TEXT , " + DEPOSIT_BANK + " TEXT, " + DEPOSIT_ACCOUNT_NAME + " TEXT, " +
             DEPOSIT_ACCOUNT + " TEXT, " + DEPOSIT_DATE + " TEXT, " + DEPOSITOR + " TEXT, " + DEPOSIT_APPROVER + " TEXT, " +
-            DEPOSIT_CONFIRMATION_DATE + " TEXT, " + DEPOSIT_TRANSACTION_STATUS + " TEXT, " +  DEPOSIT_DOC + " TEXT, " +"PRIMARY KEY(" +DEPOSIT_ID + "), " +"FOREIGN KEY(" + DEPOSIT_PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
-
-
+            DEPOSIT_CONFIRMATION_DATE + " TEXT, " + DEPOSIT_TRANSACTION_STATUS + " TEXT, " +  DEPOSIT_DOC + " TEXT, "+  DEPOSIT_BIZ_ID + " TEXT, "+  DEPOSIT_OFFICE_ID22 + " INTEGER, " +"PRIMARY KEY(" +DEPOSIT_ID + "), " +"FOREIGN KEY(" + DEPOSIT_PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
 
     @PrimaryKey(autoGenerate = true)
     int depositID=1182;
 
-    int profileID;
+    int depositProfileID;
+    private int depositBizID;
+    private int depositOfficeID;
     String depositDate;
-    String depositAcctNo;
+    int depositAcctNo;
      String depositBank;
      double depositAmount;
     String depositAcctName;
@@ -61,8 +58,8 @@ public class AdminBankDeposit implements Serializable, Parcelable {
     String depositApprover;
     String depositApprovalDate;
 
-    public AdminBankDeposit(int depositID, int profileID, double depositAmt, String officeBranch, String type, String bank, String acctName, String acctNo, String date, String depositor, String depositApprover, String confirmationDate, String status) {
-        this.profileID = profileID;
+    public AdminBankDeposit(int depositID, int depositProfileID, double depositAmt, String officeBranch, String type, String bank, String acctName, int acctNo, String date, String depositor, String depositApprover, String confirmationDate, String status) {
+        this.depositProfileID = depositProfileID;
         this.depositID = depositID;
         this.depositAmount = depositAmt;
         this.depositBranchOffice = officeBranch;
@@ -77,7 +74,7 @@ public class AdminBankDeposit implements Serializable, Parcelable {
         this.depositStatus = status;
     }
 
-    public AdminBankDeposit(double depositAmt, String officeBranch, String type, String bank, String acctName, String acctNo, String date, String depositor, String status) {
+    public AdminBankDeposit(double depositAmt, String officeBranch, String type, String bank, String acctName, int acctNo, String date, String depositor, String status) {
         this.depositAmount = depositAmt;
         this.depositBranchOffice = officeBranch;
         this.depositType = type;
@@ -91,9 +88,9 @@ public class AdminBankDeposit implements Serializable, Parcelable {
 
     protected AdminBankDeposit(Parcel in) {
         depositID = in.readInt();
-        profileID = in.readInt();
+        depositProfileID = in.readInt();
         depositDate = in.readString();
-        depositAcctNo = in.readString();
+        depositAcctNo = in.readInt();
         depositBank = in.readString();
         depositAmount = in.readDouble();
         depositAcctName = in.readString();
@@ -106,7 +103,7 @@ public class AdminBankDeposit implements Serializable, Parcelable {
     }
     public AdminBankDeposit(int depositID, int senderProfileID, String adminName, String dateOfReport, String officeBranch, String selectedBank, double amountEntered) {
         this.depositID = depositID;
-        this.profileID = senderProfileID;
+        this.depositProfileID = senderProfileID;
         this.depositor = adminName;
         this.depositDate = dateOfReport;
         this.depositBranchOffice = officeBranch;
@@ -137,15 +134,25 @@ public class AdminBankDeposit implements Serializable, Parcelable {
         super();
     }
 
-
-
-
-    public int getProfileID() {
-        return profileID;
+    public AdminBankDeposit(int depositID, int senderProfileID, String adminName, String dateOfReport, int bizID, int officeBranchID, String selectedBank, double amountEntered) {
+        this.depositID = depositID;
+        this.depositProfileID = senderProfileID;
+        this.depositor = adminName;
+        this.depositDate = dateOfReport;
+        this.depositBizID = bizID;
+        this.depositOfficeID = officeBranchID;
+        this.depositBank = selectedBank;
+        this.depositAmount = amountEntered;
     }
 
-    public void setProfileID(int profileID) {
-        this.profileID = profileID;
+
+
+    public int getDepositProfileID() {
+        return depositProfileID;
+    }
+
+    public void setDepositProfileID(int depositProfileID) {
+        this.depositProfileID = depositProfileID;
     }
 
     public String getDepositType() {
@@ -195,11 +202,11 @@ public class AdminBankDeposit implements Serializable, Parcelable {
         return depositBank;
     }
 
-    public String getDepositAcctNo() {
+    public int getDepositAcctNo() {
         return depositAcctNo;
     }
 
-    public void setDepositAcctNo(String depositAcctNo) {
+    public void setDepositAcctNo(int depositAcctNo) {
         this.depositAcctNo = depositAcctNo;
     }
 
@@ -252,9 +259,9 @@ public class AdminBankDeposit implements Serializable, Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeLong(depositID);
-        parcel.writeLong(profileID);
+        parcel.writeLong(depositProfileID);
         parcel.writeString(depositDate);
-        parcel.writeString(depositAcctNo);
+        parcel.writeInt(depositAcctNo);
         parcel.writeString(depositBank);
         parcel.writeDouble(depositAmount);
         parcel.writeString(depositAcctName);
@@ -264,5 +271,21 @@ public class AdminBankDeposit implements Serializable, Parcelable {
         parcel.writeString(depositBranchOffice);
         parcel.writeString(depositApprover);
         parcel.writeString(depositApprovalDate);
+    }
+
+    public int getDepositBizID() {
+        return depositBizID;
+    }
+
+    public void setDepositBizID(int depositBizID) {
+        this.depositBizID = depositBizID;
+    }
+
+    public int getDepositOfficeID() {
+        return depositOfficeID;
+    }
+
+    public void setDepositOfficeID(int depositOfficeID) {
+        this.depositOfficeID = depositOfficeID;
     }
 }

@@ -22,6 +22,7 @@ import com.skylightapp.Classes.ExpandableTextView;
 import com.skylightapp.Classes.PaymentCode;
 import com.skylightapp.Classes.PaymentDoc;
 import com.skylightapp.Classes.ProfileManager;
+import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.PaymDocDAO;
 import com.skylightapp.Interfaces.OnTellerReportChangeListener;
@@ -50,6 +51,10 @@ public class SavingsAdapter extends RecyclerView.Adapter<SavingsAdapter.Recycler
     int position;
     private OnItemsClickListener listener;
     private CustomerDailyReport customerDailyReport;
+    private long savingsCode;
+    private PaymentDoc document;
+    private SkyLightPackage skyLightPackage;
+    private double total;
 
     public SavingsAdapter(ArrayList<CustomerDailyReport> reports, Context mcontext) {
         this.savings = reports;
@@ -155,35 +160,70 @@ public class SavingsAdapter extends RecyclerView.Adapter<SavingsAdapter.Recycler
         //SavingsAdapter.bindData(getItemByPosition(position));
         paymDocDAO= new PaymDocDAO(context.getApplicationContext());
         CustomerDailyReport savings = this.savings.get(position);
-        PaymentDoc document = (PaymentDoc) this.savings.get(position);
-        PaymentCode savingsCode = (PaymentCode) this.savings.get(position);
-        DBHelper dbHelper = new DBHelper(mcontext.getApplicationContext());
-        Bitmap docId=paymDocDAO.getDocPicture(savings.getRecordID());
-        holder.amountRemaining.setText(MessageFormat.format("Rem Amount: NGN{0}", String.format("%.2f", savings.getRecordAmountRemaining())));
-        holder.totalAmount.setText(MessageFormat.format("Total: NGN{0}", String.format("%.2f", savings.getRecordAmount())));
-        holder.savingsAmount.setText(MessageFormat.format("Package Amount: NGN{0}", String.format("%.2f", savings.getRecordAmount())));
-        holder.packageID.setText(MessageFormat.format("Package ID:{0}", String.valueOf(savings.getRecordPackageId())));
-        holder.status.setText(MessageFormat.format("Status:{0}", savings.getRecordStatus()));
-        holder.savingsID.setText(MessageFormat.format("Start Date:{0}", savings.getRecordID()));
-        holder.date.setText(MessageFormat.format("Savings date:{0}", savings.getRecordDate()));
-        holder.daysRemaining.setText(MessageFormat.format("Days Rem:{0}", String.valueOf(savings.getRecordRemainingDays())));
-        holder.days.setText(MessageFormat.format("Number of Days:{0}", String.valueOf(savings.getRecordNumberOfDays())));
-        holder.savingsCount.setText(MessageFormat.format("Number of Saving:{0}", String.valueOf(savings.getCount())));
-        holder.paymentMethod.setText(MessageFormat.format("Method:{0}", document.getPaymentMethod()));
-        holder.savingsCode.setText(MessageFormat.format("Savings Code:{0}", String.valueOf(savingsCode.getCode())));
-        holder.savingsID.setText(MessageFormat.format("Savings ID:{0}", String.valueOf(savings.getRecordID())));
-        holder.paymentDoc.setImageBitmap( docId);
-        holder.days.setText(MessageFormat.format("Number of Days:{0}", String.valueOf(savings.getRecordNumberOfDays())));
+        if(savings !=null){
+            document = savings.getRecordPaymentDoc();
+            savingsCode = savings.getRecordSavingsCode();
+            skyLightPackage=savings.getRecordPackage();
 
-        if (savings.getRecordStatus().equalsIgnoreCase("confirmed")) {
-            holder.icon.setImageResource(R.drawable.verified_savings);
-            holder.savingsID.setTextColor(Color.MAGENTA);
-        } else if (savings.getRecordStatus().equalsIgnoreCase(""))  {
-            holder.icon.setImageResource(R.drawable.unverified);
-            holder.savingsID.setTextColor(Color.RED);
-        } else if (savings.getRecordStatus().equalsIgnoreCase("unconfirmed"))  {
-            holder.icon.setImageResource(R.drawable.unverified);
-            holder.savingsID.setTextColor(Color.RED);
+        }
+        if(skyLightPackage !=null){
+            total=skyLightPackage.getPackageTotalAmount();
+
+        }
+
+        Bitmap docId= null;
+        if (savings != null) {
+            docId = paymDocDAO.getDocPicture(savings.getRecordID());
+        }
+        if (savings != null) {
+            holder.amountRemaining.setText(MessageFormat.format("Rem Amount: NGN{0}", String.format("%.2f", savings.getRecordAmountRemaining())));
+        }
+        holder.totalAmount.setText(MessageFormat.format("Total: NGN{0}", String.format("%.2f", total)));
+        if (savings != null) {
+            holder.savingsAmount.setText(MessageFormat.format("Package Amount: NGN{0}", String.format("%.2f", savings.getRecordAmount())));
+        }
+        if (savings != null) {
+            holder.packageID.setText(MessageFormat.format("Package ID:{0}", String.valueOf(savings.getRecordPackageId())));
+        }
+        if (savings != null) {
+            holder.status.setText(MessageFormat.format("Status:{0}", savings.getRecordStatus()));
+        }
+        if (savings != null) {
+            holder.savingsID.setText(MessageFormat.format("Start Date:{0}", savings.getRecordID()));
+        }
+        if (savings != null) {
+            holder.date.setText(MessageFormat.format("Savings date:{0}", savings.getRecordDate()));
+        }
+        if (savings != null) {
+            holder.daysRemaining.setText(MessageFormat.format("Days Rem:{0}", String.valueOf(savings.getRecordRemainingDays())));
+        }
+        if (savings != null) {
+            holder.days.setText(MessageFormat.format("Number of Days:{0}", String.valueOf(savings.getRecordNumberOfDays())));
+        }
+        if (savings != null) {
+            holder.savingsCount.setText(MessageFormat.format("Number of Saving:{0}", String.valueOf(savings.getCount())));
+        }
+        holder.paymentMethod.setText(MessageFormat.format("Method:{0}", document.getPaymentMethod()));
+        holder.savingsCode.setText(MessageFormat.format("Savings Code:{0}", String.valueOf(savingsCode)));
+        if (savings != null) {
+            holder.savingsID.setText(MessageFormat.format("Savings ID:{0}", String.valueOf(savings.getRecordID())));
+        }
+        holder.paymentDoc.setImageBitmap( docId);
+        if (savings != null) {
+            holder.days.setText(MessageFormat.format("Number of Days:{0}", String.valueOf(savings.getRecordNumberOfDays())));
+        }
+
+        if (savings != null) {
+            if (savings.getRecordStatus().equalsIgnoreCase("verified")) {
+                holder.icon.setImageResource(R.drawable.verified_savings);
+                holder.savingsID.setTextColor(Color.MAGENTA);
+            } else if (savings.getRecordStatus().equalsIgnoreCase(""))  {
+                holder.icon.setImageResource(R.drawable.unverified);
+                holder.savingsID.setTextColor(Color.RED);
+            } else if (savings.getRecordStatus().equalsIgnoreCase("Unverified"))  {
+                holder.icon.setImageResource(R.drawable.unverified);
+                holder.savingsID.setTextColor(Color.RED);
+            }
         }
 
 

@@ -115,7 +115,7 @@ public class ChatHelper {
         return QBChatService.getInstance().isLoggedIn();
     }
 
-    public static com.skylightapp.MarketClasses.QBUser getCurrentUser() {
+    public static QBUser getCurrentUser() {
         return AppController.getInstance().getQbUser();
     }
 
@@ -526,6 +526,7 @@ public class ChatHelper {
             }
         });
     }
+
 
     @SuppressWarnings("deprecation")
     private class DeleteGroupDialogsTask extends AsyncTask<Void, Void, Void> {

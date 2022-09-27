@@ -291,7 +291,7 @@ public class TestFragment extends Fragment {
 
     private void showResults() {
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.main_content, new TestResultsFragment());
+        //ft.replace(R.id.main_content, new TestResultsFragment());
         ft.commit();
     }
 

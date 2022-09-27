@@ -17,7 +17,7 @@ public class CheckboxUsersAdapter extends UsersAdapterCon {
     private Set<QBUser> selectedUsers;
     private Context context;
 
-    public CheckboxUsersAdapter(Context context, List<com.skylightapp.MarketClasses.QBUser> users) {
+    public CheckboxUsersAdapter(Context context, List<QBUser> users) {
         super(context, users);
         selectedUsers = new HashSet<>();
         this.context = context;
@@ -48,7 +48,7 @@ public class CheckboxUsersAdapter extends UsersAdapterCon {
     }
 
     public void onItemClicked(int position, View convertView) {
-        com.skylightapp.MarketClasses.QBUser user = getItem(position);
+        QBUser user = getItem(position);
         ViewHolder holder = (UsersAdapterCon.ViewHolder) convertView.getTag();
 
         if (isUserMe(user)) {
@@ -65,7 +65,7 @@ public class CheckboxUsersAdapter extends UsersAdapterCon {
     }
 
     @Override
-    public com.skylightapp.MarketClasses.QBUser getItem(int position) {
+    public QBUser getItem(int position) {
         return userList.get(position);
     }
 }

@@ -10,6 +10,7 @@ import com.quickblox.videochat.webrtc.callbacks.QBRTCSessionEventsCallback;
 import com.quickblox.videochat.webrtc.callbacks.QBRTCSessionStateCallback;
 import com.quickblox.videochat.webrtc.view.QBRTCVideoTrack;
 import com.skylightapp.MarketClasses.CallServiceConf;
+import com.skylightapp.Markets.CallActivityCon;
 
 import org.jivesoftware.smack.ConnectionListener;
 import org.webrtc.CameraVideoCapturer;
@@ -37,11 +38,11 @@ public interface ConversationFragmentCallback {
 
     void addCurrentCallStateListener(CallServiceConf.CurrentCallStateCallback currentCallStateCallback);
 
-    void removeCurrentCallStateListener(CallActivity.CurrentCallStateCallback currentCallStateCallback);
+    //void removeCurrentCallStateListener(CallActi.CurrentCallStateCallback currentCallStateCallback);
 
-    void addOnChangeAudioDeviceListener(CallActivity.OnChangeAudioDevice onChangeDynamicCallback);
+    //void addOnChangeAudioDeviceListener(CallActivity.OnChangeAudioDevice onChangeDynamicCallback);
 
-    void removeOnChangeAudioDeviceListener(CallActivity.OnChangeAudioDevice onChangeDynamicCallback);
+    //void removeOnChangeAudioDeviceListener(CallActivity.OnChangeAudioDevice onChangeDynamicCallback);
 
     void onSetAudioEnabled(boolean isAudioEnabled);
 

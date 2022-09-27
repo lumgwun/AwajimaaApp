@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.skylightapp.Classes.Account;
-import com.skylightapp.Markets.BizDealAccount;
 import com.skylightapp.Markets.MarketTranx;
 
 import java.io.Serializable;
@@ -23,7 +22,7 @@ public class Market implements Serializable, Parcelable {
     public static final String MARKET_NAME = "market_name";
     public static final String MARKET_STATE = "market_state";
     public static final String MARKET_TYPE = "market_type";
-    public static final String MARKET_ID = "market_ID";
+    public static final String MARKET_ID = "market_ID33";
     public static final String MARKET_COUNTRY = "market_Country";
     public static final String MARKET_COMMODITY_COUNT = "market_com_count";
     public static final String MARKET_USER_COUNT = "market_user_count";
@@ -59,7 +58,7 @@ public class Market implements Serializable, Parcelable {
     private Account marketAccount;
     private ArrayList<Commodity> commodityArrayList;
     private ArrayList<MarketDays> marketMDaysArrayList;
-    private ArrayList<Business> marketBizArrayList;
+    private ArrayList<BusinessOthers> marketBizArrayList;
     private ArrayList<BusinessDeal> marketBizDealList;
     private ArrayList<BizDealAccount> marketBizDealAcctList;
     private ArrayList<MarketCustomer> marketCustomers;
@@ -92,7 +91,7 @@ public class Market implements Serializable, Parcelable {
         marketLat = in.readDouble();
         commodityCount = in.readInt();
         marketLogo = in.readInt();
-        marketBizArrayList = in.createTypedArrayList(Business.CREATOR);
+        marketBizArrayList = in.createTypedArrayList(BusinessOthers.CREATOR);
         marketBizDealList = in.createTypedArrayList(BusinessDeal.CREATOR);
         marketBizDealAcctList = in.createTypedArrayList(BizDealAccount.CREATOR);
     }
@@ -271,11 +270,11 @@ public class Market implements Serializable, Parcelable {
         this.marketBizDealList = marketBizDealList;
     }
 
-    public ArrayList<Business> getMarketBizArrayList() {
+    public ArrayList<BusinessOthers> getMarketBizArrayList() {
         return marketBizArrayList;
     }
 
-    public void setMarketBizArrayList(ArrayList<Business> marketBizArrayList) {
+    public void setMarketBizArrayList(ArrayList<BusinessOthers> marketBizArrayList) {
         this.marketBizArrayList = marketBizArrayList;
     }
 

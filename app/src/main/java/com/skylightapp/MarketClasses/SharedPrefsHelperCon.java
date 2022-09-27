@@ -8,7 +8,7 @@ import com.quickblox.users.model.QBUser;
 import com.skylightapp.Classes.App;
 
 public class SharedPrefsHelperCon {
-    private static final String SHARED_PREFS_NAME = "qb";
+    private static final String SHARED_PREFS_NAME = "skylight";
 
     private static final String QB_USER_ID = "qb_user_id";
     private static final String QB_USER_LOGIN = "qb_user_login";
@@ -24,8 +24,6 @@ public class SharedPrefsHelperCon {
         sharedPreferences = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
     }
 
-
-
     public static synchronized SharedPrefsHelperCon getInstance() {
         if (instance == null) {
             instance = new SharedPrefsHelperCon();
@@ -36,7 +34,7 @@ public class SharedPrefsHelperCon {
 
     public SharedPrefsHelperCon() {
         instance = this;
-        sharedPreferences = App.getInstance().getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
+        sharedPreferences = AppConference.getInstance().getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
     }
 
     public void delete(String key) {

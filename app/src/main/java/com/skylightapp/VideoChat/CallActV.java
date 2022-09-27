@@ -32,6 +32,7 @@ import com.quickblox.videochat.webrtc.BaseSession;
 import com.quickblox.videochat.webrtc.QBRTCScreenCapturer;
 import com.quickblox.videochat.webrtc.QBRTCSession;
 import com.quickblox.videochat.webrtc.QBRTCTypes;
+import com.quickblox.videochat.webrtc.callbacks.QBRTCClientSessionCallbacks;
 import com.quickblox.videochat.webrtc.callbacks.QBRTCClientVideoTracksCallbacks;
 import com.quickblox.videochat.webrtc.callbacks.QBRTCSessionEventsCallback;
 import com.quickblox.videochat.webrtc.callbacks.QBRTCSessionStateCallback;
@@ -41,6 +42,7 @@ import com.skylightapp.MarketClasses.QbUsersDbManager;
 import com.skylightapp.MarketClasses.SettingsUtil;
 import com.skylightapp.MarketClasses.UsersUtils;
 import com.skylightapp.MarketClasses.WebRtcSessionManager;
+import com.skylightapp.MarketInterfaces.ConstsInterface;
 import com.skylightapp.Markets.ToastUtils;
 import com.skylightapp.R;
 
@@ -54,8 +56,11 @@ import java.util.List;
 import java.util.Map;
 
 import static com.quickblox.videochat.webrtc.BaseSession.QBRTCSessionState.QB_RTC_SESSION_PENDING;
+import static com.skylightapp.VideoChat.CallServiceV.ONE_OPPONENT;
 
-public class CallActV extends AppCompatActivity {
+public class CallActV extends BaseActivity implements IncomeCallFragmentCallbackListener,
+        QBRTCSessionStateCallback<QBRTCSession>, QBRTCClientSessionCallbacks,
+        ConversationFragmentCallback, ScreenShareFragment.OnSharingEvents {
     private static final String TAG = CallActV.class.getSimpleName();
 
     public static final String INCOME_CALL_FRAGMENT = "income_call_fragment";
@@ -328,7 +333,7 @@ public class CallActV extends AppCompatActivity {
     private void addIncomeCallFragment() {
         Log.d(TAG, "Adding IncomeCallFragment");
         if (callService.currentSessionExist()) {
-            IncomeCallFragment fragment = new IncomeCallFragment();
+            IncomeCallFragmentV fragment = new IncomeCallFragmentV();
             FragmentExecuotr.addFragment(getSupportFragmentManager(), R.id.fragment_containerV, fragment, INCOME_CALL_FRAGMENT);
         } else {
             Log.d(TAG, "SKIP Adding IncomeCallFragment");
@@ -336,7 +341,7 @@ public class CallActV extends AppCompatActivity {
     }
 
     private void addConversationFragment(boolean isIncomingCall) {
-        BaseConversationFragment conversationFragment = BaseConversationFragment.newInstance(
+        BaseConversationFragmentV conversationFragment = BaseConversationFragmentV.newInstance(
                 isVideoCall
                         ? new VideoConversationFragV()
                         : new AudioConversationFragment(),
@@ -669,7 +674,7 @@ public class CallActV extends AppCompatActivity {
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            CallService.CallServiceBinder binder = (CallService.CallServiceBinder) service;
+            CallServiceV.CallServiceBinder binder = (CallServiceV.CallServiceBinder) service;
             callService = binder.getService();
             if (callService.currentSessionExist()) {
                 if (QBChatService.getInstance().isLoggedIn()) {
@@ -683,14 +688,14 @@ public class CallActV extends AppCompatActivity {
         }
 
         private void login() {
-            QBUser qbUser = SharedPrefsHelper.getInstance().getQbUser();
+            QBUser qbUser = SharedPrefsHelperV.getInstance().getQbUser();
             Intent tempIntent = new Intent(CallActV.this, LoginService.class);
-            PendingIntent pendingIntent = createPendingResult(Consts.EXTRA_LOGIN_RESULT_CODE, tempIntent, 0);
+            PendingIntent pendingIntent = createPendingResult(ConstsInterface.EXTRA_LOGIN_RESULT_CODE, tempIntent, 0);
             LoginService.start(CallActV.this, qbUser, pendingIntent);
         }
     }
 
-    private class CallTimerCallback implements CallService.CallTimerListener {
+    private class CallTimerCallback implements CallServiceV.CallTimerListener {
         @Override
         public void onCallTimeUpdate(String time) {
             runOnUiThread(new Runnable() {

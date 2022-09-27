@@ -31,7 +31,7 @@ public class QBUsersHolderImpl implements QBUsersHolder {
     }
 
     @Override
-    public com.skylightapp.MarketClasses.QBUser getUserById(int userID) {
+    public QBUser getUserById(int userID) {
         return qbUserSparseArray.get(userID);
     }
 
@@ -56,5 +56,15 @@ public class QBUsersHolderImpl implements QBUsersHolder {
             }
         }
         return true;
+    }
+
+    @Override
+    public void putUsersAwajima(List<QBUser> users) {
+        for (QBUser user : users) {
+            if (user != null) {
+                putUser(user);
+            }
+        }
+
     }
 }

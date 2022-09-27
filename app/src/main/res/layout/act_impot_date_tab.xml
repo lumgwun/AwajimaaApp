@@ -14,7 +14,7 @@
         android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:orientation="vertical"
             android:padding="10dp"
@@ -26,11 +26,11 @@
                 style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Skylight Due Packages"
+                android:text="Customer Due Packages"
                 android:textAlignment="center"
                 android:textSize="20sp"
                 android:gravity="center_horizontal"
-                android:textColor="@color/black"
+                android:textColor="@color/red_brown_dark"
                 android:textStyle="bold" />
             <TextView
                 style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"

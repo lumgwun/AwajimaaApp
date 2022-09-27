@@ -14,10 +14,9 @@ import com.skylightapp.R;
 
 public class AdminHomeChoices extends AppCompatActivity {
     private Context mContext = this;
-    private final String[] mItems = {"Ogku", "Elel", "Wempy"};
+    private final String[] mItems = {"Etekan", "Otuo", "Oyet-Ile"};
     private final Class<?>[] mClasses = {AdminDrawerActivity.class, AdminDashboardTab.class,
             AdminTabActivity.class};
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

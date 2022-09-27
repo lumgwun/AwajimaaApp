@@ -29,7 +29,7 @@ import com.skylightapp.Adapters.CusAdaptSuper;
 import com.skylightapp.BlockedUserAct;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Customers.SendCustomerMessage;
+import com.skylightapp.Markets.SendCusMessAct;
 import com.skylightapp.Database.AcctDAO;
 import com.skylightapp.Database.CodeDAO;
 import com.skylightapp.Database.CusDAO;
@@ -47,23 +47,6 @@ import com.skylightapp.R;
 import com.skylightapp.UnBlockUserAct;
 
 import java.util.ArrayList;
-
-import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
-import static com.skylightapp.Classes.Profile.PICTURE_URI;
-import static com.skylightapp.Classes.Profile.PROFILE_ADDRESS;
-import static com.skylightapp.Classes.Profile.PROFILE_DATE_JOINED;
-import static com.skylightapp.Classes.Profile.PROFILE_DOB;
-import static com.skylightapp.Classes.Profile.PROFILE_EMAIL;
-import static com.skylightapp.Classes.Profile.PROFILE_FIRSTNAME;
-import static com.skylightapp.Classes.Profile.PROFILE_GENDER;
-import static com.skylightapp.Classes.Profile.PROFILE_ID;
-import static com.skylightapp.Classes.Profile.PROFILE_OFFICE;
-import static com.skylightapp.Classes.Profile.PROFILE_PASSWORD;
-import static com.skylightapp.Classes.Profile.PROFILE_PHONE;
-import static com.skylightapp.Classes.Profile.PROFILE_ROLE;
-import static com.skylightapp.Classes.Profile.PROFILE_STATE;
-import static com.skylightapp.Classes.Profile.PROFILE_SURNAME;
-import static com.skylightapp.Classes.Profile.PROFILE_USERNAME;
 
 public class CusByPackAct extends AppCompatActivity implements  CusAdaptSuper.CustomerListener{
     private FloatingActionButton fab;
@@ -264,7 +247,7 @@ public class CusByPackAct extends AppCompatActivity implements  CusAdaptSuper.Cu
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0:
-                        Intent intent = new Intent(CusByPackAct.this, SendCustomerMessage.class);
+                        Intent intent = new Intent(CusByPackAct.this, SendCusMessAct.class);
                         intent.putExtras(messageBundle);
                         startActivity(intent);
                     case 1:

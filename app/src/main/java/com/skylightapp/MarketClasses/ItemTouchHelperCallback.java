@@ -12,7 +12,6 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private ItemTouchHelperAdapter mAdapter;
     private DialogsAdapter dialogsAdapter;
-    DialogAdapter44 dialogsAdapter33;
 
 
     public ItemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
@@ -20,11 +19,6 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     }
     public ItemTouchHelperCallback(DialogsAdapter adapter) {
         dialogsAdapter = adapter;
-    }
-
-    public ItemTouchHelperCallback(DialogAdapter44 dialogsAdapter) {
-        dialogsAdapter33 = dialogsAdapter;
-
     }
 
     @Override

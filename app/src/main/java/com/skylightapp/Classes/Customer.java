@@ -24,6 +24,10 @@ import java.util.Map;
 
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
+import static com.skylightapp.MarketClasses.Market.MARKET_ID;
+import static com.skylightapp.MarketClasses.Market.MARKET_TABLE;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_ID;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TABLE;
 
 //@Entity(tableName = Customer.CUSTOMER_TABLE)
 public class Customer  implements Parcelable, Serializable {
@@ -53,7 +57,7 @@ public class Customer  implements Parcelable, Serializable {
     public static final String CUSTOMER_WARD = "customer_Ward";
     public static final String CUS_LOC_CUS_ID = "cusLoc_CusId";
     public static final String CUS_CUS_LOCID = "cus_Cus_LocId";
-    public static final String CUS_BIZ_ID1 = "customer_Biz_ID";
+    public static final String CUS_BIZ_ID1 = "customer_Biz_ID22";
     public static final String CUSTOMER_MARKET_ID = "customer_Market_ID";
     public static final String CUSTOMER_COUNTRY = "customer_Country";
 
@@ -61,7 +65,7 @@ public class Customer  implements Parcelable, Serializable {
     public static final String CREATE_CUSTOMERS_TABLE = "CREATE TABLE IF NOT EXISTS " + CUSTOMER_TABLE + " ( " + CUSTOMER_ID + " INTEGER  , " + CUS_CUS_LOCID + " INTEGER , " + CUSTOMER_PROF_ID + " INTEGER  , " +
             CUSTOMER_SURNAME + " TEXT, " + CUSTOMER_FIRST_NAME + " TEXT, " + CUSTOMER_PHONE_NUMBER + " TEXT, " + CUSTOMER_EMAIL_ADDRESS + " TEXT, " + CUSTOMER_NIN + " TEXT, " +
             CUSTOMER_DOB + " TEXT, " + CUSTOMER_GENDER + " TEXT, " + CUSTOMER_ADDRESS + " TEXT, " + CUSTOMER_USER_NAME + " TEXT, " + CUSTOMER_PASSWORD + " TEXT, " +
-            CUSTOMER_OFFICE + " TEXT, " + CUSTOMER_DATE_JOINED + " TEXT, " + CUSTOMER_STATUS + " TEXT, "+ CUSTOMER_COUNTRY + " TEXT, "+ "FOREIGN KEY(" + CUS_CUS_LOCID + ") REFERENCES " + CUSTOMER_LOCATION_TABLE + "(" + CUSTOMER_LOC_ID + "),"+ "FOREIGN KEY(" + CUSTOMER_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + CUSTOMER_ID  + "))";
+            CUSTOMER_OFFICE + " TEXT, " + CUSTOMER_DATE_JOINED + " TEXT, " + CUSTOMER_STATUS + " TEXT, "+ CUSTOMER_COUNTRY + " TEXT, "+ CUS_BIZ_ID1 + " TEXT, "+ CUSTOMER_MARKET_ID + " TEXT, "+ "FOREIGN KEY(" + CUS_BIZ_ID1 + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+ "FOREIGN KEY(" + CUSTOMER_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+ "FOREIGN KEY(" + CUS_CUS_LOCID + ") REFERENCES " + CUSTOMER_LOCATION_TABLE + "(" + CUSTOMER_LOC_ID + "),"+ "FOREIGN KEY(" + CUSTOMER_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + CUSTOMER_ID  + "))";
 
 
     public static final String CREATE_CUSTOMER_LOCATION_TABLE = "CREATE TABLE IF NOT EXISTS " + CUSTOMER_LOCATION_TABLE + " ( " + CUSTOMER_LOC_ID + " INTEGER  , " + CUS_LOC_CUS_ID + " INTEGER  , " +
@@ -92,7 +96,8 @@ public class Customer  implements Parcelable, Serializable {
     String cusNextOfKin;
     private String cusUserName;
     private String cusCountry;
-    private String cusMarketID;
+    private int cusMarketID;
+    private long cusBizID;
     private ArrayList<Integer> cusMarketIDs;
     private ArrayList<Integer> cusBizIDs;
     CustomerDailyReport savings;
@@ -125,6 +130,11 @@ public class Customer  implements Parcelable, Serializable {
     boolean alreadyAdded;
     LatLng latLong;
     Profile profile;
+    private int sponsorID;
+    private String pin;
+    private String cusBank;
+    private double cusBankBalance;
+    private String cusBankAcctNo;
     private Message supportMessage;
     ArrayList<Payment> paymentArrayList;
     public static final List<CustomerItem> ITEMS = new ArrayList<CustomerItem>();
@@ -139,12 +149,6 @@ public class Customer  implements Parcelable, Serializable {
             addItem(createCustomerItem(i));
         }
     }
-
-    private int sponsorID;
-    private String pin;
-    private String cusBank;
-    private double cusBankBalance;
-    private String cusBankAcctNo;
 
     public Customer(String refID, String cusPhoneNumber) {
 
@@ -190,6 +194,23 @@ public class Customer  implements Parcelable, Serializable {
 
     }
 
+    public Customer(int customerID1, long bizID, String uSurname, String uFirstName, String uPhoneNumber, String uEmail, String nIN, String dateOfBirth, String selectedGender, String uAddress, String userName, String cusPassword, String selectedOffice, String joinedDate) {
+        this.cusID=customerID1;
+        this.cusBizID =bizID;
+        this.cusSurname = uSurname;
+        this.cusFirstName = uFirstName;
+        this.cusPhoneNumber =uPhoneNumber;
+        this.cusEmailAddress = uEmail;
+        this.cusNin = nIN;
+        this.cusDob = dateOfBirth;
+        this.cusGender = selectedGender;
+        this.cusAddress = uAddress;
+        this.cusUserName = userName;
+        this.cusPassword = cusPassword;
+        this.cusOffice = selectedOffice;
+        this.cusDateJoined = joinedDate;
+
+    }
 
 
     public void addShoppableItems(String shopItem) {
@@ -570,11 +591,11 @@ public class Customer  implements Parcelable, Serializable {
         this.payees = payees;
     }
 
-    public String getCusMarketID() {
+    public int getCusMarketID() {
         return cusMarketID;
     }
 
-    public void setCusMarketID(String cusMarketID) {
+    public void setCusMarketID(int cusMarketID) {
         this.cusMarketID = cusMarketID;
     }
 
@@ -592,6 +613,14 @@ public class Customer  implements Parcelable, Serializable {
 
     public void setCusBizIDs(ArrayList<Integer> cusBizIDs) {
         this.cusBizIDs = cusBizIDs;
+    }
+
+    public long getCusBizID() {
+        return cusBizID;
+    }
+
+    public void setCusBizID(long cusBizID) {
+        this.cusBizID = cusBizID;
     }
 
 

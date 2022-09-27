@@ -255,7 +255,7 @@ public class CodeDAO extends DBHelperDAO{
         CustomerDailyReport customerDailyReport= new CustomerDailyReport();
         //customerDailyReport=paymentCode.getCustomerDailyReport();
         int codeID= paymentCode.getCodeID();
-        codeValues.put(CODE_REPORT_NO, paymentCode.getRecordID());
+        codeValues.put(CODE_REPORT_NO, paymentCode.getCodeID());
         codeValues.put(CODE_CUS_ID, valueOf(customer.getCusUID()));
         codeValues.put(CODE_ID, codeID);
         codeValues.put(CODE_PIN, paymentCode.getCode());

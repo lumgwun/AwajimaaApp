@@ -42,6 +42,7 @@ import com.quickblox.core.QBProgressCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.core.helper.CollectionsUtil;
 import com.quickblox.core.io.IOUtils;
+import com.quickblox.users.model.QBUser;
 import com.skylightapp.Markets.ChatActCon;
 import com.skylightapp.R;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
@@ -540,7 +541,7 @@ public class ChatAdapterConf extends RecyclerView.Adapter<ChatAdapterConf.NewMes
             public void onSuccess(InputStream inputStream, Bundle bundle) {
                 Log.d(TAG, "Loading File as Attachment Successful");
                 if (inputStream != null) {
-                    new FileLoaderAsyncTask(file, inputStream, holder, position).execute();
+                    new FileLoaderAsyncTaskCon(file, inputStream, holder, position).execute();
                 }
             }
 
@@ -981,13 +982,13 @@ public class ChatAdapterConf extends RecyclerView.Adapter<ChatAdapterConf.NewMes
         }
     }
 
-    private class FileLoaderAsyncTask extends BaseAsyncTask<Void, Void, Void> {
+    private class FileLoaderAsyncTaskCon extends BaseAsyncTaskCon<Void, Void, Void> {
         private File file;
         private InputStream inputStream;
         private NewMessageViewHolder holder;
         private int position;
 
-        FileLoaderAsyncTask(File file, InputStream inputStream, NewMessageViewHolder holder, int position) {
+        FileLoaderAsyncTaskCon(File file, InputStream inputStream, NewMessageViewHolder holder, int position) {
             this.file = file;
             this.inputStream = inputStream;
             this.holder = holder;
@@ -995,7 +996,7 @@ public class ChatAdapterConf extends RecyclerView.Adapter<ChatAdapterConf.NewMes
         }
 
         @Override
-        protected Void performInBackground(Void... voids) throws Exception {
+        public Void performInBackground(Void... voids) throws Exception {
             Log.d(TAG, "Downloading File as InputStream");
             FileOutputStream output = new FileOutputStream(file);
             if (inputStream != null) {
@@ -1007,7 +1008,7 @@ public class ChatAdapterConf extends RecyclerView.Adapter<ChatAdapterConf.NewMes
         }
 
         @Override
-        protected void onResult(Void aVoid) {
+        public void onResult(Void aVoid) {
             Log.d(TAG, "File Downloaded");
             if (holder != null) {
                 fillVideoFileThumb(file, holder, position);

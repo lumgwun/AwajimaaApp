@@ -120,11 +120,10 @@ import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.MessageDAO;
 import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.Database.SODAO;
-import com.skylightapp.Database.StockTransferDAO;
 import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.Database.WorkersDAO;
-import com.skylightapp.Interfaces.StandingOrderAcctDao;
 import com.skylightapp.MapAndLoc.ProfileLocSourceAct;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.NewLocAct;
 import com.skylightapp.R;
 import com.skylightapp.SMSAct;
@@ -286,8 +285,8 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
     int daysBTWN;
 
     String acct;
-    Gson gson,gson1;
-    String json,json1,nIN;
+    Gson gson,gson1,gson2,gson3,gson4;
+    String json,json1,json2,json3,json4,nIN;
     Profile userProfile;
     String pix;
 
@@ -312,7 +311,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
     protected DatePickerDialog datePickerDialog;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     int messageID,soAccountNumber,customerID;
-    String selectedUserType;
+    String selectedUserType, selectedAdminType;
     private UserSuperAdmin userSuperAdmin;
     private CustomerManager teller;
     private  AdminUser adminUser,adminUser2;
@@ -322,8 +321,15 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
     Bitmap thumbnail;
     private GoogleApiClient googleApiClient;
     private PinEntryView pinEntryView;
+    private Spinner spnAdminType;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+    private AdminUser.ADMIN_TYPE admin_type;
+    private long bizID;
+    private int marketID;
+    private int officeID;
 
+    LinearLayoutCompat layoutAdminType;
+    private MarketBusiness marketBusiness;
 
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {
@@ -479,6 +485,8 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
         layoutOTP = findViewById(R.id.layoutSuperOtp);
         layoutPreOTP = findViewById(R.id.layoutPreO);
         otpTxt = findViewById(R.id.super_textOTP);
+        layoutAdminType = findViewById(R.id.admin_layout_type);
+
         pinEntryView = (PinEntryView) findViewById(R.id.super_pin_entry);
         btnVerifyOTPAndSignUp = findViewById(R.id.BtnVerifySuper);
 
@@ -489,12 +497,12 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                 if (email.matches(emailPattern) && s.length() > 0)
                 {
-                    Toast.makeText(getApplicationContext(),"valid email address",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SuperUserCreator.this,"valid email address",Toast.LENGTH_SHORT).show();
 
                 }
                 else
                 {
-                    Toast.makeText(getApplicationContext(),"Invalid email address",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SuperUserCreator.this,"Invalid email address",Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -511,9 +519,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
         txtLoc = findViewById(R.id.whereSuperYou);
 
         layoutPreOTP = findViewById(R.id.layoutSign);
-        edtNIN = findViewById(R.id.NIN);
-        edtNIN.setVisibility(View.GONE);
-
+        edtNIN = findViewById(R.id.NIN_No);
         dobText = findViewById(R.id.dob_super);
         dobText.setOnClickListener(this::superDatePicker);
         random = new SecureRandom();
@@ -554,7 +560,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
         otpDigit = ThreadLocalRandom.current().nextInt(1022, 16300);
         messageID = ThreadLocalRandom.current().nextInt(1125, 10400);
-        otpMessage = "&message=" + "Hello Skylight, Your OTP Code is " +otpDigit;
+        otpMessage = "&message=" + "Hello Awajima User, Your OTP Code is " +otpDigit;
 
         profileID1 = random.nextInt((int) (Math.random() * 1400) + 1115);
         profileID2 = random.nextInt((int) (Math.random() * 1400) + 1115);
@@ -610,16 +616,24 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
         birthday= new Birthday();
         gson1 = new Gson();
         gson = new Gson();
+        gson2= new Gson();
         newUserProfileL = new Profile();
         userSuperAdmin =new UserSuperAdmin();
         teller =new CustomerManager();
         superAdmin =new UserSuperAdmin();
+        marketBusiness= new MarketBusiness();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
         superAdminProfile = gson.fromJson(json, Profile.class);
         json1 = userPreferences.getString("LastSuperProfileUsed", "");
-        userSuperAdmin = gson1.fromJson(json, UserSuperAdmin.class);
+        userSuperAdmin = gson1.fromJson(json1, UserSuperAdmin.class);
+        json2 = userPreferences.getString("LastMarketBusinessUsed", "");
+        marketBusiness = gson2.fromJson(json2, MarketBusiness.class);
         ran = new Random();
+        if(marketBusiness !=null){
+            bizID=marketBusiness.getBusinessID();
+
+        }
         birthday= new Birthday();
         dbHelper = new DBHelper(this);
         profiles=new ArrayList<Profile>();
@@ -632,8 +646,8 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
         }else{
             try {
-                dbHelper.createDataBase();
-            } catch (IOException e) {
+                dbHelper.openDataBase();
+            } catch (NullPointerException e) {
                 e.printStackTrace();
             }
 
@@ -642,15 +656,42 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
         spnUserType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedUserType = spnUserType.getSelectedItem().toString();
+                //selectedUserType = spnUserType.getSelectedItem().toString();
                 selectedUserType = (String) parent.getSelectedItem();
-                Toast.makeText(SuperUserCreator.this, "User Type: "+ selectedUserType,Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        if(selectedUserType !=null){
+            if(selectedUserType.equalsIgnoreCase("Admin User")){
+                layoutAdminType.setVisibility(View.VISIBLE);
+                spnAdminType.setVisibility(View.VISIBLE);
+
+            }else {
+                layoutAdminType.setVisibility(View.GONE);
+
+            }
+
+        }
+
+        spnAdminType = findViewById(R.id.admin_spinner_type);
+
+        spnAdminType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //selectedSelectedType = spnUserType.getSelectedItem().toString();
+                selectedAdminType = parent.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        if(selectedAdminType !=null){
+            admin_type=AdminUser.ADMIN_TYPE.valueOf(selectedAdminType);
+        }
         StringBuilder welcomeString = new StringBuilder();
         if(userSuperAdmin !=null){
             superSurname = userSuperAdmin.getSSurname();
@@ -751,7 +792,6 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedGender = spnGender.getSelectedItem().toString();
                 selectedGender = (String) parent.getSelectedItem();
-                Toast.makeText(SuperUserCreator.this, "Gender: "+ selectedGender,Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -794,24 +834,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
 
             }
-            protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-                if ((data != null) && requestCode == RESULT_CAMERA_CODE) {
-                    mImageUri = data.getData();
-                    //dbHelper= new DBHelper(SignUpAct.this);
-                    //dbHelper.insertProfilePicture(profileID1,customerID,photoUri);
-
-
-                }
-                if ((data != null) && requestCode == RESULT_LOAD_IMAGE) {
-                    mImageUri = data.getData();
-                    //dbHelper= new DBHelper(SignUpAct.this);
-                    //dbHelper.insertProfilePicture(profileID1,customerID,photoUri);
-
-
-                }
-
-            }
         });
 
 
@@ -823,7 +846,6 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedOffice = office.getSelectedItem().toString();
                 selectedOffice = (String) parent.getSelectedItem();
-                Toast.makeText(SuperUserCreator.this, "Office Branch Selected: "+ selectedOffice,Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -831,13 +853,11 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
             }
         });
 
-
-
         state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedState = state.getSelectedItem().toString();
-                selectedState = (String) parent.getSelectedItem();
+                //selectedState = state.getSelectedItem().toString();
+                selectedState = (String) parent.getSelectedItem().toString();
                 Toast.makeText(SuperUserCreator.this, "State: "+ selectedState,Toast.LENGTH_SHORT).show();
             }
 
@@ -856,9 +876,6 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
         }
 
-
-
-
         btnSendOTP.setOnClickListener(this::sendOTPSuper);
         btnSendOTP.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -872,7 +889,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                 uPhoneNumber = Objects.requireNonNull(phone_number.getText()).toString();
                 uUserName = userName.getText().toString();
                 boolean usernameTaken = false;
-                nIN=null;
+                nIN=edtNIN.getText().toString().trim();
                 customerName=uSurname+","+uFirstName;
                 try {
                     sponsorID= Integer.parseInt(sponsorIDString);
@@ -886,6 +903,9 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                     if (TextUtils.isEmpty(uFirstName)) {
                         firstName.setError("Please enter Your First Name");
+                    } else if (TextUtils.isEmpty(nIN)) {
+                        edtNIN.setError("Please enter your National ID No.");
+
                     } else if (TextUtils.isEmpty(uSurname)) {
                         surname1.setError("Please enter your Last/SurName");
                     }else if (TextUtils.isEmpty(uPassword)) {
@@ -921,7 +941,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                                     if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                         dbHelper.openDataBase();
                                         sqLiteDatabase = dbHelper.getReadableDatabase();
-                                        messageDAO.insertMessage(profileID1,customerID,messageID,otpMessage,"Skylight",customerName,selectedOffice,joinedDate);
+                                        messageDAO.insertMessage(profileID1,customerID,messageID,bizID,otpMessage,"Awajima App",customerName,selectedOffice,joinedDate);
                                     }
 
                                 }
@@ -945,7 +965,6 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
             @Override
             public void onClick(View view) {
                 boolean usernameTaken = false;
-                nIN=null;
                 accountTypeStr = AccountTypes.EWALLET;
                 //long accountNumber = Long.parseLong(String.valueOf((long) (Math.random() * 10501) + 10010));
 
@@ -954,7 +973,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                 if (code.equals(String.valueOf(otpDigit))) {
                     Toast.makeText(SuperUserCreator.this, "OTP verification, a Success", Toast.LENGTH_SHORT).show();
-                    startNewProfileActivity(sponsorID,cusLatLng,account,standingOrderAcct,joinedDate,uFirstName,uSurname,uPhoneNumber,uAddress,uUserName,uPassword,customer,newUserProfileL,nIN, superAdminProfile,dateOfBirth,selectedGender,selectedOffice,selectedState,birthday,customerManager,dateOfBirth,profileID1,virtualAccountNumber,soAccountNumber, customerID,birthdayID, investmentAcctID,itemPurchaseAcctID,promoAcctID,packageAcctID,customers,selectedUserType);
+                    startNewProfileActivity(sponsorID,cusLatLng,account,standingOrderAcct,joinedDate,uFirstName,uSurname,uPhoneNumber,uAddress,uUserName,uPassword,customer,newUserProfileL,nIN, superAdminProfile,dateOfBirth,selectedGender,selectedOffice,selectedState,birthday,customerManager,dateOfBirth,profileID1,virtualAccountNumber,soAccountNumber, customerID,birthdayID, investmentAcctID,itemPurchaseAcctID,promoAcctID,packageAcctID,customers,selectedUserType,admin_type,bizID);
 
                 } else {
                     Toast.makeText(SuperUserCreator.this, "FAIL", Toast.LENGTH_SHORT).show();
@@ -1013,7 +1032,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.mipmap.ic_launcher_round)
-                        .setContentTitle("Skylight OTP Message")
+                        .setContentTitle("Awajima App OTP Message")
                         .setContentText(otpMessage);
 
         //Intent notificationIntent = new Intent(this, NewCustomerDrawer.class);
@@ -1168,7 +1187,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
     }
     protected void sendSMSMessage() {
-        String welcomeMessage="Welcome to Skylight, your best Cooperative from Africa";
+        String welcomeMessage="Welcome to Awajima, your best Business Community from Africa";
         phone_number = findViewById(R.id.super_phone_);
         uPhoneNumber = Objects.requireNonNull(phone_number.getText()).toString();
         Twilio.init(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
@@ -1257,7 +1276,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
             Log.e("Exception: %s", e.getMessage(), e);
         }
     }
-    private void startNewProfileActivity(int sponsorID, LatLng cusLatLng, Account account, StandingOrderAcct standingOrderAcct, String joinedDate, String uFirstName, String uSurname, String uPhoneNumber, String uAddress, String uUserName, String uPassword, Customer customer, Profile newUserProfileL, String nIN, Profile superAdminProfile, String dateOfBirth, String selectedGender, String selectedOffice, String selectedState, Birthday birthday, CustomerManager customerManager, String dateOfBirth1, int profileID1, int virtualAccountNumber, int soAccountNumber, int customerID, int birthdayID, int investmentAcctID, int itemPurchaseAcctID, int promoAcctID, int packageAcctID, ArrayList<Customer> customers, String selectedUserType) {
+    private void startNewProfileActivity(int sponsorID, LatLng cusLatLng, Account account, StandingOrderAcct standingOrderAcct, String joinedDate, String uFirstName, String uSurname, String uPhoneNumber, String uAddress, String uUserName, String uPassword, Customer customer, Profile newUserProfileL, String nIN, Profile superAdminProfile, String dateOfBirth, String selectedGender, String selectedOffice, String selectedState, Birthday birthday, CustomerManager customerManager, String dateOfBirth1, int profileID1, int virtualAccountNumber, int soAccountNumber, int customerID, int birthdayID, int investmentAcctID, int itemPurchaseAcctID, int promoAcctID, int packageAcctID, ArrayList<Customer> customers, String selectedUserType, AdminUser.ADMIN_TYPE admin_type, long bizID) {
         Toast.makeText(SuperUserCreator.this, "Gender: "+ selectedGender,Toast.LENGTH_SHORT).show();
 
         Toast.makeText(SuperUserCreator.this, "Office Branch Selected: "+ selectedOffice,Toast.LENGTH_SHORT).show();
@@ -1267,8 +1286,9 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
         dbHelper = new DBHelper(this);
         random = new SecureRandom();
         //user= new User(profileID1,"Ezekiel", "Gwun-orene", "07038843102", "lumgwun1@gmail.com", "25/04/1983", "male", "Ilabuchi", "","Rivers", "Elelenwo", "19/04/2022","SuperAdmin", "Lumgwun", "@Awajima1","Confirmed","");
-        userProfile1= new Profile(profileID1,"Emmanuel", "Becky", "08069524599", "urskylight@gmail.com", "25/04/1983", "female", "Skylight", "","Rivers", "Elelenwo", "19/04/2022","SuperAdmin", "Skylight4ever", "@Awajima2","Confirmed","");
+        userProfile1= new Profile(profileID1,"Emma", "Uja", "08069524599", "urskylight@gmail.com", "25/04/1983", "female", "Skylight", "","Rivers", "Elelenwo", "19/04/2022","SuperAdmin", "Skylight4ever", "@Awajima2","Confirmed","");
         //user=new User(profileID1, "Ezekiel", "Gwun-orene", "07038843102", "lumgwun1@gmail.com", "25/04/1983", "male", "Ilabuchi", "", "Rivers", "Elelenwo", "19/04/2022", "SuperAdmin", "Lumgwun", "@Awajima1", "Confirmed", "");
+
 
         try {
             dbHelper.openDataBase();
@@ -1277,15 +1297,25 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
+        BirthdayDAO birthdayDAO = new BirthdayDAO(this);
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            try {
+                birthdayDAO.insertBirthDay3(birthday, "25/04/1983");
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
+
         MessageDAO messageDAO = new MessageDAO(this);
         TimeLineClassDAO timeLineClassDAO1 = new TimeLineClassDAO(this);
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getReadableDatabase();
-            messageDAO.insertMessage(profileID1,customerID,messageID,otpMessage,"Skylight",customerName,selectedOffice,joinedDate);
+            messageDAO.insertMessage(profileID1,customerID,messageID, bizID, otpMessage,"Awajima App",customerName,selectedOffice,joinedDate);
         }
-
-
         try {
             timeLineClassDAO1.insertTimeLine("Sign up", "", "23/09/2022", mCurrentLocation);
 
@@ -1298,20 +1328,8 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        BirthdayDAO birthdayDAO = new BirthdayDAO(this);
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            messageDAO.insertMessage(profileID1,customerID,messageID,otpMessage,"Skylight",customerName,selectedOffice,joinedDate);
-        }
 
 
-        try {
-            birthdayDAO.insertBirthDay3(birthday, "25/04/1983");
-
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
 
 
         ArrayList<Profile> profiles = new ArrayList<>();
@@ -1461,11 +1479,11 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
         calendar = Calendar.getInstance();
 
 
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         timeLineTime = mdformat.format(calendar.getTime());
         profiles = profDAO1.getAllProfiles();
         //customers = dbHelper.getAllCustomers();
-        smsMessage="Welcome to the Skylight  App, may you have the best experience";
+        smsMessage="Welcome to the Awajima  App, may you have the best experience";
         String names = uSurname + uFirstName;
         //long customerId = customer.getId();
         //Customer c = new Customer();
@@ -1475,9 +1493,9 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
         gson = new Gson();
         accountTypeStr = AccountTypes.EWALLET;
 
-        String timelineDetailsTD = uSurname + "," + uFirstName + "was added as a Customer" + "by" + "Skylight" + "@" + timeLineTime;
-        String tittleT1 = "Customer Sign Up Alert!";
-        String timelineDetailsT11 = "You added" + uSurname + "," + uFirstName + "as a Customer" + "on" + timeLineTime;
+        String timelineDetailsTD = uSurname + "," + uFirstName + "was added as a User" + "by" + "Awajima App" + "@" + timeLineTime;
+        String tittleT1 = "NewUser Sign Up Alert!";
+        String timelineDetailsT11 = "You added" + uSurname + "," + uFirstName + "as a User" + "on" + timeLineTime;
 
         String accountName = uSurname + "," + uFirstName;
 
@@ -1502,7 +1520,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
         String currentDate = dateFormatWithZone.format(date);
         birthday = new Birthday(profileID2, customerID1, names, uPhoneNumber, uEmail, selectedGender, uAddress, dateOfBirth, 0, formattedDaysRem, "");
 
-        BroadcastUtils.sendExplicitBroadcast(this, new Intent(), "skylight Account Sign up action");
+        BroadcastUtils.sendExplicitBroadcast(this, new Intent(), "Awajima Account Sign up action");
 
 
 
@@ -1519,9 +1537,9 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
         }
         newUserProfileL = new Profile(uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress,
-                selectedState, selectedOffice, currentDate, uUserName, selectedUserType, "Pending Approval", String.valueOf(selectedImage));
+                selectedState, selectedOffice, currentDate, uUserName, selectedUserType, "Pending Approval", selectedImage,admin_type);
         //newUserProfileL.addAccount("Our Cooperative", names, virtualAccountNumber, 0.00, accountTypeStr);
-        customer = new Customer(customerID1, uSurname, uFirstName, uPhoneNumber, uEmail, nIN, dateOfBirth, selectedGender, uAddress, userName.getText().toString(), password.getText().toString(), selectedOffice, joinedDate);
+        customer = new Customer(customerID1, bizID, uSurname, uFirstName, uPhoneNumber, uEmail, nIN, dateOfBirth, selectedGender, uAddress, userName.getText().toString(), password.getText().toString(), selectedOffice, joinedDate);
 
         /*for (int i = 0; i < tellers.size(); i++) {
             try {
@@ -1566,6 +1584,62 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
 
         }*/
+        if(selectedUserType !=null){
+            if(selectedUserType.equalsIgnoreCase("Teller")){
+
+            }
+
+        }
+        if(selectedUserType !=null){
+            if(selectedUserType.equalsIgnoreCase("Customer")){
+
+
+            }
+
+        }
+        if(selectedUserType !=null){
+            if(selectedUserType.equalsIgnoreCase("Admin User")){
+
+            }
+
+        }
+        if(selectedUserType !=null){
+            if(selectedUserType.equalsIgnoreCase("Accountant")){
+
+            }
+
+        }
+        if(selectedUserType !=null){
+            if(selectedUserType.equalsIgnoreCase("REGULATOR")){
+
+            }
+
+        }
+        if(selectedUserType !=null){
+            if(selectedUserType.equalsIgnoreCase("RECORD_KEEPER")){
+
+            }
+
+        }
+        if(selectedUserType !=null){
+            if(selectedUserType.equalsIgnoreCase("PARTNER")){
+
+            }
+
+        }
+        if(selectedUserType !=null){
+            if(selectedUserType.equalsIgnoreCase("WORKER")){
+
+            }
+
+        }
+        if(selectedUserType !=null){
+            if(selectedUserType.equalsIgnoreCase("INVESTOR")){
+
+            }
+
+        }
+
 
         WorkersDAO workersDAO= new WorkersDAO(this);
 
@@ -1583,7 +1657,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                     customer.setCusFirstName(uFirstName);
                     customer.setCusSurname(uSurname);
                     customer.setCusAddress(uAddress);
-                    customer.setCusDob("NGN");
+                    customer.setCusDob(dateOfBirth);
                     customer.setCusUID(customerID);
                     customer.setCusDateJoined(joinedDate);
                     customer.setCusEmail(uEmail);
@@ -1593,7 +1667,6 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                     customer.setCustomerLocation(this.cusLatLng);
                     customer.setCusUserName(uUserName);
                     customer.setCusState(selectedState);
-                    customer.setCustomerLocation(this.cusLatLng);
                     customer.setCusSponsorID(sponsorID);
                     customer.setCusOffice(selectedOffice);
                     customer.setCusAccount(account);
@@ -1615,18 +1688,23 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                     newUserProfileL.setProfileState(selectedState);
                     newUserProfileL.setProfileSponsorID(profileID1);
                     newUserProfileL.setProfileOffice(selectedOffice);
+                    newUserProfileL.setProfileBusinessID(Math.toIntExact(bizID));
                     newUserProfileL.setProfile_CustomerManager(customerManager);
 
                     customer.addCusAccountManager(managerProfileID, superSurname, superFirstName, "", selectedOffice);
                     dbHelper.openDataBase();
 
-                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                        dbHelper.openDataBase();
-                        dbHelper.insertCustomer11(profileID1, customerID, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedState, "", joinedDate, uUserName, uPassword, mImageUri, "Customer");
+                    if(selectedUserType !=null){
+                        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                            dbHelper.openDataBase();
+                            dbHelper.saveNewProfile(newUserProfileL);
 
 
+                        }
 
                     }
+
+
 
                     /*if (cusLatLng != null) {
                         try {
@@ -1876,6 +1954,42 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                             superAdminProfile.addPTimeLine(tittleSuper, timelineDetailsTMe);
 
                         }
+
+
+                        if (selectedUserType.equalsIgnoreCase("Customer")) {
+                            String managerFullNamesT = superSurname + "," + superFirstName;
+                            String namesT = uSurname + "," + uFirstName;
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                dbHelper.openDataBase();
+                                dbHelper.insertCustomer11(profileID1, customerID, bizID, marketID, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedState, "", joinedDate, uUserName, uPassword, mImageUri, "Customer");
+
+
+
+                            }
+
+
+
+                            String tittleT = "Support Manager Sign Up Alert!";
+
+                            String managerFullNames = superSurname + "," + superFirstName;
+                            String timelineDetailsSuport = uSurname + "," + uFirstName + "was added as a Support Manager" + "by" + managerFullNames + "@" + timeLineTime;
+                            String tittleTSupport = "Support Manager Sign Up Alert!";
+                            String timelineDetailsTme = "You added" + uSurname + "," + uFirstName + "as a Support Manager" + "on" + timeLineTime;
+
+
+                            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                                dbHelper.openDataBase();
+                                dbHelper.insertRole(profileID1, "Customer", uPhoneNumber);
+
+                            }
+
+
+                            if (superAdminProfile != null) {
+                                superAdminProfile.addPTimeLine(tittleTSupport, timelineDetailsTme);
+                            }
+
+
+                        }
                         if (selectedUserType.equalsIgnoreCase("Support Manager")) {
                             String managerFullNamesT = superSurname + "," + superFirstName;
                             String namesT = uSurname + "," + uFirstName;
@@ -1908,8 +2022,9 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                         }
 
+
                     }Toast.makeText(SuperUserCreator.this, "Thank you" +
-                            "for Signing up " + uFirstName + "on the Skylight App", Toast.LENGTH_LONG).show();
+                            "for Signing up " + uFirstName + "on the Awajima App", Toast.LENGTH_LONG).show();
                     setResult(Activity.RESULT_OK, new Intent());
                 }
 
@@ -2077,6 +2192,17 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if ((data != null) && requestCode == RESULT_CAMERA_CODE) {
+            mImageUri = data.getData();
+
+
+        }
+        if ((data != null) && requestCode == RESULT_LOAD_IMAGE) {
+            mImageUri = data.getData();
+
+
+
+        }
 
         if (requestCode == PICTURE_REQUEST_CODE && data != null) {
             selectedImage = null;

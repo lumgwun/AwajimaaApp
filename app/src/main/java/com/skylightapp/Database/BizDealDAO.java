@@ -8,26 +8,22 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 import com.skylightapp.Classes.Account;
-import com.skylightapp.Classes.OtherBusiness;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.MarketClasses.BusinessDeal;
 
 import java.util.ArrayList;
 
-import static com.skylightapp.Classes.OtherBusiness.BIZ_ADDRESS;
-import static com.skylightapp.Classes.OtherBusiness.BIZ_BRANDNAME;
-import static com.skylightapp.Classes.OtherBusiness.BIZ_EMAIL;
-import static com.skylightapp.Classes.OtherBusiness.BIZ_ID;
-import static com.skylightapp.Classes.OtherBusiness.BIZ_NAME;
-import static com.skylightapp.Classes.OtherBusiness.BIZ_PHONE_NO;
-import static com.skylightapp.Classes.OtherBusiness.BIZ_PIX;
-import static com.skylightapp.Classes.OtherBusiness.BIZ_REG_NO;
-import static com.skylightapp.Classes.OtherBusiness.BIZ_STATE;
-import static com.skylightapp.Classes.OtherBusiness.BIZ_STATUS;
-import static com.skylightapp.Classes.OtherBusiness.BIZ_TABLE;
-import static com.skylightapp.Classes.OtherBusiness.BIZ_TYPE;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_ADDRESS;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_BRANDNAME;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_EMAIL;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_ID;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_NAME;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_PHONE_NO;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_REG_NO;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_STATE;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TABLE;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TYPE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
-import static com.skylightapp.Classes.StandingOrder.SO_ID;
 import static com.skylightapp.MarketClasses.BusinessDeal.BIZ_DEAL_ACCT_NO;
 import static com.skylightapp.MarketClasses.BusinessDeal.BIZ_DEAL_FROM_B_ID;
 import static com.skylightapp.MarketClasses.BusinessDeal.BIZ_DEAL_FROM_PROF_ID;
@@ -102,25 +98,25 @@ public class BizDealDAO extends DBHelperDAO{
 
 
 
-    public ArrayList<OtherBusiness> getBusinessesFromProfile(long profileID) {
+    public ArrayList<MarketBusiness> getBusinessesFromProfile(long profileID) {
         try {
-            ArrayList<OtherBusiness> otherBusinesses = new ArrayList<>();
+            ArrayList<MarketBusiness> marketBusinesses = new ArrayList<>();
             SQLiteDatabase db = this.getWritableDatabase();
             Profile profile = new Profile();
             if(profile !=null) {
                 profileID = profile.getPID();
 
 
-                Cursor cursor = db.query(BIZ_TABLE, null, PROFILE_ID + "=?",
+                Cursor cursor = db.query(MARKET_BIZ_TABLE, null, PROFILE_ID + "=?",
                         new String[]{String.valueOf(profileID)}, null, null,
                         null, null);
-                getBiZsFromCursor(otherBusinesses, cursor);
+                getBiZsFromCursor(marketBusinesses, cursor);
                 cursor.close();
                 //db.close();
 
-                return otherBusinesses;
+                return marketBusinesses;
             }
-            return otherBusinesses;
+            return marketBusinesses;
 
         }catch (SQLException e)
         {
@@ -135,9 +131,9 @@ public class BizDealDAO extends DBHelperDAO{
             ArrayList<String> array_list = new ArrayList<String>();
 
             SQLiteDatabase db = this.getReadableDatabase();
-            String selection = BIZ_BRANDNAME + "=?";
+            String selection = MARKET_BIZ_BRANDNAME + "=?";
             //String[] selectionArgs = new String[]{valueOf(town)};
-            Cursor res = db.query(BIZ_TABLE,null,selection,null,null,null,null);
+            Cursor res = db.query(MARKET_BIZ_TABLE,null,selection,null,null,null,null);
             if (res.moveToFirst()) {
                 while (!res.isAfterLast()) {
                     array_list.add(res.getString(7));
@@ -162,23 +158,23 @@ public class BizDealDAO extends DBHelperDAO{
 
 
 
-    public ArrayList<OtherBusiness> getAllBusinesses() {
+    public ArrayList<MarketBusiness> getAllBusinesses() {
         try {
-            ArrayList<OtherBusiness> otherBusinesses = new ArrayList<>();
+            ArrayList<MarketBusiness> marketBusinesses = new ArrayList<>();
             SQLiteDatabase db = this.getWritableDatabase();
             Profile profile = new Profile();
             long profileID = profile.getPID();
             Account account = new Account();
             //String accountNo = String.valueOf(account.getAcctID());
-            Cursor cursor = db.query(BIZ_TABLE, null, null, null, BIZ_TYPE,
+            Cursor cursor = db.query(MARKET_BIZ_TABLE, null, null, null, MARKET_BIZ_TYPE,
                     null, null);
 
-            getBiZsFromCursor(otherBusinesses, cursor);
+            getBiZsFromCursor(marketBusinesses, cursor);
 
             cursor.close();
             //db.close();
 
-            return otherBusinesses;
+            return marketBusinesses;
 
         }catch (SQLException e)
         {
@@ -187,7 +183,7 @@ public class BizDealDAO extends DBHelperDAO{
 
         return null;
     }
-    private void getBiZsFromCursor(ArrayList<OtherBusiness> otherBusinesses, Cursor cursor) {
+    private void getBiZsFromCursor(ArrayList<MarketBusiness> marketBusinesses, Cursor cursor) {
         try {
             while (cursor.moveToNext()) {
                 long bizID = (cursor.getLong(0));
@@ -201,7 +197,7 @@ public class BizDealDAO extends DBHelperDAO{
                 String state = cursor.getString(8);
                 String status = cursor.getString(9);
                 Uri logo = Uri.parse(cursor.getString(10));
-                otherBusinesses.add(new OtherBusiness(bizID, name,brandName,type, regNo, email, phoneNo,address,state,status,logo));
+                marketBusinesses.add(new MarketBusiness(bizID, name,brandName,type, regNo, email, phoneNo,address,state,status,logo));
             }
 
         }catch (SQLException e)
@@ -217,16 +213,16 @@ public class BizDealDAO extends DBHelperDAO{
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues cv = new ContentValues();
             cv.put(PROFILE_ID, profileID);
-            cv.put(BIZ_ID, biZID);
-            cv.put(BIZ_NAME, name);
-            cv.put(BIZ_BRANDNAME, brandName);
-            cv.put(BIZ_TYPE, typeBiz);
-            cv.put(BIZ_EMAIL, bizEmail);
-            cv.put(BIZ_ADDRESS, bizAddress);
-            cv.put(BIZ_PHONE_NO, ph_no);
-            cv.put(BIZ_STATE, state);
-            cv.put(BIZ_REG_NO, regNo);
-            db.update(BIZ_TABLE, cv, PROFILE_ID + "=?", new String[]{valueOf(profileID)});
+            cv.put(MARKET_BIZ_ID, biZID);
+            cv.put(MARKET_BIZ_NAME, name);
+            cv.put(MARKET_BIZ_BRANDNAME, brandName);
+            cv.put(MARKET_BIZ_TYPE, typeBiz);
+            cv.put(MARKET_BIZ_EMAIL, bizEmail);
+            cv.put(MARKET_BIZ_ADDRESS, bizAddress);
+            cv.put(MARKET_BIZ_PHONE_NO, ph_no);
+            cv.put(MARKET_BIZ_STATE, state);
+            cv.put(MARKET_BIZ_REG_NO, regNo);
+            db.update(MARKET_BIZ_TABLE, cv, PROFILE_ID + "=?", new String[]{valueOf(profileID)});
             //db.close();
 
         }catch (SQLException e)

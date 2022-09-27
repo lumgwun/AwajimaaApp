@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Markets.BizDealAccount;
 import com.skylightapp.Markets.MarketTranx;
 
 import java.io.Serializable;
@@ -15,7 +14,7 @@ public class MarketCustomer implements Serializable, Parcelable {
     private Profile marketCusProf;
     private String marketCusStatus;
     private ArrayList<Market> marketCusMarkets;
-    private ArrayList<Business> marketCusBizS;
+    private ArrayList<BusinessOthers> marketCusBizS;
     private ArrayList<BusinessDeal> marketCusBizDeals;
     private ArrayList<BusinessDealLoan> marketCusBizDealLoans;
     private ArrayList<InsurancePolicy> marketCusInsurances;
@@ -34,7 +33,7 @@ public class MarketCustomer implements Serializable, Parcelable {
         marketCusProf = in.readParcelable(Profile.class.getClassLoader());
         marketCusStatus = in.readString();
         marketCusMarkets = in.createTypedArrayList(Market.CREATOR);
-        marketCusBizS = in.createTypedArrayList(Business.CREATOR);
+        marketCusBizS = in.createTypedArrayList(BusinessOthers.CREATOR);
         marketCusBizDeals = in.createTypedArrayList(BusinessDeal.CREATOR);
         marketCusBizDealLoans = in.createTypedArrayList(BusinessDealLoan.CREATOR);
         marketCusRemitances = in.createTypedArrayList(BizDealRemittance.CREATOR);
@@ -93,11 +92,11 @@ public class MarketCustomer implements Serializable, Parcelable {
         this.marketCusBizDeals = marketCusBizDeals;
     }
 
-    public ArrayList<Business> getMarketCusBizS() {
+    public ArrayList<BusinessOthers> getMarketCusBizS() {
         return marketCusBizS;
     }
 
-    public void setMarketCusBizS(ArrayList<Business> marketCusBizS) {
+    public void setMarketCusBizS(ArrayList<BusinessOthers> marketCusBizS) {
         this.marketCusBizS = marketCusBizS;
     }
 

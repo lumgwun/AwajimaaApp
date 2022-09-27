@@ -55,6 +55,7 @@ public class SavingsListFragment extends Fragment {
 
     private Profile adminProfile;
     private String profileID;
+    private PaymentDoc paymentDoc;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -130,6 +131,10 @@ public class SavingsListFragment extends Fragment {
     static class SavingsAdapter extends RecyclerView.Adapter<SavingsAdapter.MyViewHolder> {
         private final Context context;
         private final List<CustomerDailyReport> dailyReports;
+        private PaymentDoc paymentDoc;
+        private SkyLightPackage skyLightPackage;
+        private int packageCount;
+        int packageID;
 
         public static class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView savings_customer,packageCount,paymentMethod,paymentCode, status11,amount_remaining,package_id,savings_date,record_amount3,savings_id12,numberOfSavings,daysRemaining3,total;
@@ -200,11 +205,17 @@ public class SavingsListFragment extends Fragment {
         @Override
         public void onBindViewHolder(MyViewHolder holder, final int position) {
             final CustomerDailyReport customerDailyReport = dailyReports.get(position);
-            PaymentDoc paymentDoc = customerDailyReport.getRecordPaymentDoc();
-            DBHelper dbHelper=new DBHelper(context.getApplicationContext());
+            if(customerDailyReport !=null){
+                paymentDoc = customerDailyReport.getRecordPaymentDoc();
+                skyLightPackage=customerDailyReport.getRecordPackage();
 
-            SkyLightPackage skyLightPackage = customerDailyReport.getRecordPackage();
-            long packageID=skyLightPackage.getPackID();
+            }
+            if(skyLightPackage !=null){
+                packageCount=skyLightPackage.getCount();
+                packageID=skyLightPackage.getPackID();
+
+            }
+
             holder.package_id.setText(MessageFormat.format("Pack ID: {0}", customerDailyReport.getRecordPackageId()));
             holder.savings_customer.setText(MessageFormat.format("Customer: {0}", customerDailyReport.getRecordCustomerName()));
             holder.record_amount3.setText(MessageFormat.format("Amount:{0}", valueOf(customerDailyReport.getRecordAmount())));
@@ -214,7 +225,7 @@ public class SavingsListFragment extends Fragment {
             holder.amount_remaining.setText(String.valueOf("Amount Rem:"+customerDailyReport.getRecordAmountRemaining()));
             holder.paymentCode.setText(MessageFormat.format("Code:{0}", customerDailyReport.getRecordSavingsCode()));
             if(paymentDoc !=null){
-                holder.packageCount.setText(MessageFormat.format("Count:{0}", paymentDoc.getTotalPSavingsCount(packageID)));
+                holder.packageCount.setText(MessageFormat.format("Count:{0}", packageCount));
                 holder.paymentMethod.setText(MessageFormat.format("Payment method:{0}", paymentDoc.getPaymentMethod()));
 
 

@@ -1,6 +1,5 @@
 package com.skylightapp.Markets;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -20,6 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
+import com.google.firebase.FirebaseApp;
+import com.quickblox.auth.session.QBSettings;
 import com.quickblox.conference.ConferenceSession;
 import com.quickblox.conference.WsException;
 import com.quickblox.conference.WsHangUpException;
@@ -29,11 +30,16 @@ import com.quickblox.videochat.webrtc.BaseSession;
 import com.quickblox.videochat.webrtc.QBRTCScreenCapturer;
 import com.quickblox.videochat.webrtc.callbacks.QBRTCSessionStateCallback;
 import com.quickblox.videochat.webrtc.view.QBRTCVideoTrack;
-import com.skylightapp.Conference.DialogsActivity;
 import com.skylightapp.MarketClasses.CallServiceConf;
+import com.skylightapp.MarketClasses.SettingsUtils;
+import com.skylightapp.MarketClasses.ToastUtilsCon;
 import com.skylightapp.MarketClasses.WebRtcSessionManager;
+import com.skylightapp.MarketClasses.WebRtcSessionManagerCon;
+import com.skylightapp.MarketDealFrags.ConversationFragment;
 import com.skylightapp.MarketInterfaces.ConstsInterface;
+import com.skylightapp.MarketInterfaces.ConversationFragCallbackCon;
 import com.skylightapp.MarketInterfaces.ReconnectionCallback;
+import com.skylightapp.MarketInterfaces.ScreenShareFragmentCon;
 import com.skylightapp.R;
 
 import org.webrtc.CameraVideoCapturer;
@@ -45,10 +51,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import android.os.Bundle;
+import static com.skylightapp.BuildConfig.QUICKBLOX_ACCT_KEY;
+import static com.skylightapp.BuildConfig.QUICKBLOX_APP_ID;
+import static com.skylightapp.BuildConfig.QUICKBLOX_AUTH_KEY;
+import static com.skylightapp.BuildConfig.QUICKBLOX_SECRET_KEY;
 
-public class CallActivityCon extends BaseActivity implements QBRTCSessionStateCallback<ConferenceSession>, ConferenceSessionCallbacks,
-        ConversationFragmentCallback, ScreenShareFragment.OnSharingEvents {
+public class CallActivityCon extends BaseActCon implements QBRTCSessionStateCallback<ConferenceSession>, ConferenceSessionCallbacks,
+        ConversationFragCallbackCon, ScreenShareFragmentCon.OnSharingEvents {
     private static final String TAG = CallActivityCon.class.getSimpleName();
     private static final String ICE_FAILED_REASON = "ICE failed";
     private static final int REQUEST_CODE_OPEN_CONVERSATION_CHAT = 183;
@@ -60,6 +69,11 @@ public class CallActivityCon extends BaseActivity implements QBRTCSessionStateCa
     private String currentRoomID;
     private String currentRoomTitle;
     private ServiceConnection callServiceConnection;
+    private static final String APPLICATION_ID = QUICKBLOX_APP_ID;   //QUICKBLOX_APP_ID
+    private static final String AUTH_KEY = QUICKBLOX_AUTH_KEY;
+    private static final String AUTH_SECRET = QUICKBLOX_SECRET_KEY;
+    private static final String ACCOUNT_KEY = QUICKBLOX_ACCT_KEY;
+    private static final String SERVER_URL = "";
 
     private ArrayList<CallServiceConf.CurrentCallStateCallback> currentCallStateCallbackList = new ArrayList<>();
     private volatile boolean connectedToJanus;
@@ -100,6 +114,9 @@ public class CallActivityCon extends BaseActivity implements QBRTCSessionStateCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(this);
+        QBSettings.getInstance().init(this, APPLICATION_ID, AUTH_KEY, AUTH_SECRET);
+        QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
 
         setContentView(R.layout.act_call_con);
         currentRoomID = getIntent().getStringExtra(ConstsInterface.EXTRA_ROOM_ID);
@@ -110,19 +127,18 @@ public class CallActivityCon extends BaseActivity implements QBRTCSessionStateCa
 
         reconnectingLayout = findViewById(R.id.llReconnecting);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window w = getWindow();
-            w.setStatusBarColor(ContextCompat.getColor(this, R.color.color_new_blue));
+        Window w = getWindow();
+        w.setStatusBarColor(ContextCompat.getColor(this, R.color.color_new_blue));
 
-            // TODO: To set fullscreen style in a call:
-            //w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
+        // TODO: To set fullscreen style in a call:
+        //w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
+
 
     private void initScreen() {
         SettingsUtils.setSettingsStrategy(settingsSharedPref, CallActivityCon.this);
 
-        WebRtcSessionManager sessionManager = WebRtcSessionManager.getInstance();
+        WebRtcSessionManagerCon sessionManager = WebRtcSessionManagerCon.getInstance();
         if (sessionManager.getCurrentSession() == null) {
             //we have already currentSession == null, so it's no reason to do further initialization
             finish();
@@ -162,7 +178,7 @@ public class CallActivityCon extends BaseActivity implements QBRTCSessionStateCa
                     }
                     break;
                 case FAILED:
-                    ToastUtils.shortToast(getApplicationContext(), R.string.reconnection_failed);
+                    ToastUtilsCon.shortToast(CallActivityCon.this, R.string.reconnection_failed);
                     callService.leaveCurrentSession();
                     finish();
                     break;
@@ -188,7 +204,7 @@ public class CallActivityCon extends BaseActivity implements QBRTCSessionStateCa
         if (callService != null) {
             dialogID = callService.getDialogID();
         }
-        DialogsActivity.start(this, dialogID);
+        DialogsActCon.start(this, dialogID);
         Log.d(TAG, "Starting Dialogs Activity to open dialog with ID : " + dialogID);
 
         Log.d(TAG, "finish CallActivity");
@@ -309,9 +325,6 @@ public class CallActivityCon extends BaseActivity implements QBRTCSessionStateCa
 
     @Override
     public void onStartScreenSharing() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            return;
-        }
         QBRTCScreenCapturer.requestPermissions(this);
     }
 
@@ -327,7 +340,7 @@ public class CallActivityCon extends BaseActivity implements QBRTCSessionStateCa
 
     @Override
     public void onReturnToChat() {
-        ChatActivity.startForResultFromCall(CallActivityCon.this, REQUEST_CODE_OPEN_CONVERSATION_CHAT,
+        ChatActCon.startForResultFromCall(CallActivityCon.this, REQUEST_CODE_OPEN_CONVERSATION_CHAT,
                 callService.getDialogID(), true);
     }
 
@@ -335,8 +348,7 @@ public class CallActivityCon extends BaseActivity implements QBRTCSessionStateCa
     public void onManageGroup() {
         ArrayList<Integer> publishers = callService.getActivePublishers();
         publishers.add(0, getChatHelper().getCurrentUser().getId());
-
-        ManageGroupActivity.startForResult(CallActivityCon.this, REQUEST_CODE_MANAGE_GROUP,
+        ManageGroupActCon.startForResult(CallActivityCon.this, REQUEST_CODE_MANAGE_GROUP,
                 currentRoomTitle, publishers);
     }
 
@@ -378,9 +390,9 @@ public class CallActivityCon extends BaseActivity implements QBRTCSessionStateCa
     }
 
     private void startScreenSharing(final Intent data) {
-        ScreenShareFragment screenShareFragment = ScreenShareFragment.newInstance();
+        ScreenShareFragmentCon screenShareFragment = ScreenShareFragmentCon.newInstance();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                screenShareFragment, ScreenShareFragment.class.getSimpleName())
+                screenShareFragment, ScreenShareFragmentCon.class.getSimpleName())
                 .commitAllowingStateLoss();
 
         callService.setVideoEnabled(true);
@@ -440,12 +452,12 @@ public class CallActivityCon extends BaseActivity implements QBRTCSessionStateCa
     @Override
     public void onError(WsException exception) {
         if (WsHangUpException.class.isInstance(exception) && exception.getMessage() != null && exception.getMessage().equals(ICE_FAILED_REASON)) {
-            ToastUtils.shortToast(getApplicationContext(), exception.getMessage());
+            ToastUtilsCon.shortToast(CallActivityCon.this, exception.getMessage());
             Log.d(TAG, "OnError exception= " + exception.getMessage());
             releaseCurrentSession();
             finish();
         } else {
-            ToastUtils.shortToast(getApplicationContext(), (WsNoResponseException.class.isInstance(exception)) ? getString(R.string.packet_failed) : exception.getMessage());
+            ToastUtilsCon.shortToast(CallActivityCon.this, (WsNoResponseException.class.isInstance(exception)) ? getString(R.string.packet_failed) : exception.getMessage());
         }
     }
 
@@ -503,7 +515,7 @@ public class CallActivityCon extends BaseActivity implements QBRTCSessionStateCa
                     }
                     break;
                 case FAILED:
-                    ToastUtils.shortToast(getApplicationContext(), R.string.reconnection_failed);
+                    ToastUtilsCon.shortToast(CallActivityCon.this, R.string.reconnection_failed);
                     callService.leaveCurrentSession();
                     finish();
                     break;

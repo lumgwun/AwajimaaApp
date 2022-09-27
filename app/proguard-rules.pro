@@ -21,3 +21,28 @@
 #-renamesourcefileattribute SourceFile
 -keepclasseswithmembers public class com.flutterwave.raveandroid.** {*; }
 -dontwarn com.flutterwave.raveandroid.card.CardFragment
+-keep
+
+class com
+
+.blongho.** {
+    *;
+}
+-keep
+
+interface com
+
+.blongho.**
+#
+
+# hide the original source file name.
+# -renamesourcefileattribute SourceFile
+-keeppackagenames com.blongho.country_data
+-keepclassmembers
+
+class com
+
+.blongho.country_data.* {
+    public *;
+}
+

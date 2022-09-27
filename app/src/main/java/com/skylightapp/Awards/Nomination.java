@@ -9,8 +9,8 @@ import com.skylightapp.Classes.Profile;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import static com.skylightapp.Classes.OtherBusiness.BIZ_ID;
-import static com.skylightapp.Classes.OtherBusiness.BIZ_TABLE;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_ID;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TABLE;
 
 public class Nomination implements Serializable, Parcelable {
     public static final String NOMINATION_TABLE = "NTable";
@@ -23,9 +23,9 @@ public class Nomination implements Serializable, Parcelable {
     public static final String NOMINATION_DESCRIPTION = "NDescription";
     public static final String NOMINATION_BANNER = "NBanner";
 
-    public static final String CREATE_NOMINATION_TABLE = "CREATE TABLE " + NOMINATION_TABLE + " (" + NOMINATION_ID + " LONG PRIMARY KEY, " + BIZ_ID + " LONG , " +
+    public static final String CREATE_NOMINATION_TABLE = "CREATE TABLE " + NOMINATION_TABLE + " (" + NOMINATION_ID + " LONG PRIMARY KEY, " + MARKET_BIZ_ID + " LONG , " +
             NOMINATION_TITTLE + " TEXT, " +  NOMINATED_CATEGORY + " TEXT, " +  NOMINATED_NAME + " TEXT, " + NOMINATION_DESCRIPTION + " TEXT, " +NOMINATION_DATE + " TEXT,"+  NOMINATED_STATUS + " TEXT, " +  NOMINATION_BANNER + " BLOB, " +
-            "FOREIGN KEY(" + BIZ_ID + ") REFERENCES " + BIZ_TABLE + "(" + BIZ_ID + "))";
+            "FOREIGN KEY(" + MARKET_BIZ_ID + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "))";
 
 
 

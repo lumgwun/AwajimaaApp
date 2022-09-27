@@ -41,7 +41,7 @@ import com.google.gson.Gson;
 import com.skylightapp.BuildConfig;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.MarketTranXDAO;
-import com.skylightapp.MarketClasses.Business;
+import com.skylightapp.MarketClasses.BusinessOthers;
 import com.skylightapp.R;
 
 public class BizDealTranXAct extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
@@ -60,7 +60,7 @@ public class BizDealTranXAct extends AppCompatActivity implements DatePickerDial
     Profile userProfile, customerProfile, lastProfileUsed;
     String selectedCountry, selectedBank, bankName, bankNumber, officePref, userNamePref;
     private static final String PREF_NAME = "skylight";
-    private Business business;
+    private BusinessOthers businessOthers;
     private Profile businessOwnerProfile;
     TextView transaction_date, save_debit, transaction_name, transaction_balance, save_credit, friend_name, error_msg_transaction_amount, error_msg_transaction_date, error_msg_transaction_name;
     String transaction_date_text, transaction_name_text, transaction_balance_text, Friend_name;
@@ -81,7 +81,7 @@ public class BizDealTranXAct extends AppCompatActivity implements DatePickerDial
         transaction_credit = findViewById(R.id.transaction_credit);
         friend_name = findViewById(R.id.friend_name);
         share_layout = findViewById(R.id.share_layout);
-        business= new Business();
+        businessOthers = new BusinessOthers();
         gson= new Gson();
         gson1= new Gson();
 
@@ -89,7 +89,7 @@ public class BizDealTranXAct extends AppCompatActivity implements DatePickerDial
         json = userPreferences.getString("LastProfileUsed", "");
         businessOwnerProfile = gson.fromJson(json, Profile.class);
         json1 = userPreferences.getString("LastTellerProfileUsed", "");
-        business = gson1.fromJson(json1, Business.class);
+        businessOthers = gson1.fromJson(json1, BusinessOthers.class);
         biz_ID = userPreferences.getInt("BUSINESS_ID33",0);
         intent = getIntent();
         cusBundle=getIntent().getExtras();

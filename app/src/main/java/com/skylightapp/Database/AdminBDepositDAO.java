@@ -16,14 +16,17 @@ import static com.skylightapp.Admins.AdminBankDeposit.DEPOSIT_ACCOUNT_NAME;
 import static com.skylightapp.Admins.AdminBankDeposit.DEPOSIT_AMOUNT;
 import static com.skylightapp.Admins.AdminBankDeposit.DEPOSIT_APPROVER;
 import static com.skylightapp.Admins.AdminBankDeposit.DEPOSIT_BANK;
+import static com.skylightapp.Admins.AdminBankDeposit.DEPOSIT_BIZ_ID;
 import static com.skylightapp.Admins.AdminBankDeposit.DEPOSIT_CONFIRMATION_DATE;
 import static com.skylightapp.Admins.AdminBankDeposit.DEPOSIT_DATE;
 import static com.skylightapp.Admins.AdminBankDeposit.DEPOSIT_DOC;
 import static com.skylightapp.Admins.AdminBankDeposit.DEPOSIT_ID;
 import static com.skylightapp.Admins.AdminBankDeposit.DEPOSIT_OFFICE_BRANCH;
+import static com.skylightapp.Admins.AdminBankDeposit.DEPOSIT_OFFICE_ID22;
 import static com.skylightapp.Admins.AdminBankDeposit.DEPOSIT_PROFILE_ID;
 import static com.skylightapp.Admins.AdminBankDeposit.DEPOSIT_TABLE;
 import static com.skylightapp.Admins.AdminBankDeposit.DEPOSIT_TRANSACTION_STATUS;
+import static com.skylightapp.Admins.AdminBankDeposit.DEPOSIT_TRANS_TYPE;
 import static com.skylightapp.Classes.AdminUser.ADMIN_PROFILE_ID;
 import static com.skylightapp.SuperAdmin.AppCommission.ADMIN_BALANCE_CUS_ID;
 import static com.skylightapp.SuperAdmin.AppCommission.ADMIN_BALANCE_DATE;
@@ -141,7 +144,7 @@ public class AdminBDepositDAO extends DBHelperDAO{
             String depositApprover = cursor.getString(10);
             String confirmationDate = cursor.getString(11);
             String status = cursor.getString(12);
-            adminBankDepositArrayList.add(new AdminBankDeposit(depositID, profileID,depositAmt,officeBranch,type, bank,acctName, acctNo, date,depositor,depositApprover,confirmationDate,status));
+            adminBankDepositArrayList.add(new AdminBankDeposit(depositID, profileID,depositAmt,officeBranch,type, bank,acctName, Integer.parseInt(acctNo), date,depositor,depositApprover,confirmationDate,status));
         }
 
     }
@@ -153,7 +156,7 @@ public class AdminBDepositDAO extends DBHelperDAO{
             String type = cursor.getString(4);
             String bank = cursor.getString(5);
             String acctName = cursor.getString(6);
-            String acctNo = cursor.getString(7);
+            int acctNo = cursor.getInt(7);
             String date = cursor.getString(8);
             String depositor = cursor.getString(9);
             String status = cursor.getString(12);
@@ -499,4 +502,42 @@ public class AdminBDepositDAO extends DBHelperDAO{
     }
 
 
+    public void saveNewAdminDeposit(AdminBankDeposit adminBankDeposit) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        String tranxType=null;
+        String bank=null;
+        String date=null;
+        int profileID=0;
+        int officeID=0;
+        int bizID=0;
+        int acctNo=0;
+        String depositor=null;
+        double amount=0.00;
+        String officeName=null;
+        if(adminBankDeposit !=null){
+            tranxType=adminBankDeposit.getDepositType();
+            bank=adminBankDeposit.getDepositBank();
+            date=adminBankDeposit.getDepositDate();
+            profileID=adminBankDeposit.getDepositProfileID();
+            officeID=adminBankDeposit.getDepositOfficeID();
+            bizID=adminBankDeposit.getDepositBizID();
+            depositor=adminBankDeposit.getDepositor();
+            amount=adminBankDeposit.getDepositAmount();
+            officeName=adminBankDeposit.getDepositOfficeBranch();
+            acctNo=adminBankDeposit.getDepositAcctNo();
+        }
+        cv.put(DEPOSIT_TRANS_TYPE, tranxType);
+        cv.put(DEPOSIT_PROFILE_ID, profileID);
+        cv.put(DEPOSIT_AMOUNT, amount);
+        cv.put(DEPOSIT_OFFICE_BRANCH, officeName);
+        cv.put(DEPOSIT_BANK, bank);
+        cv.put(DEPOSIT_OFFICE_ID22, officeID);
+        cv.put(DEPOSIT_DATE, date);
+        cv.put(DEPOSIT_BIZ_ID, bizID);
+        cv.put(DEPOSITOR, depositor);
+        cv.put(DEPOSIT_ACCOUNT, acctNo);
+        db.insert(DEPOSIT_TABLE, null, cv);
+
+    }
 }

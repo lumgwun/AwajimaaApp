@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="@dimen/margin_common"
-            android:textColor="@color/text_color_light_grey"
+            android:textColor="@color/red_brown_dark"
             android:textSize="@dimen/text_size"
             android:visibility="invisible"
             tools:text="10:15"

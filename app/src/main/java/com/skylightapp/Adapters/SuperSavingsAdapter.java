@@ -30,6 +30,7 @@ import com.skylightapp.Classes.ExpandableTextView;
 import com.skylightapp.Classes.PaymentCode;
 import com.skylightapp.Classes.PaymentDoc;
 import com.skylightapp.Classes.ProfileManager;
+import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.PaymDocDAO;
 import com.skylightapp.Interfaces.OnTellerReportChangeListener;
@@ -64,6 +65,10 @@ public class SuperSavingsAdapter extends RecyclerView.Adapter<SuperSavingsAdapte
     private  ActivityResultRegistry mRegistry;
     private ActivityResultLauncher<Intent> mGetContent;
     private final MutableLiveData<Bitmap> mThumbnailLiveData = new MutableLiveData();
+    private long savingsCode;
+    private PaymentDoc document;
+    private SkyLightPackage skyLightPackage;
+    private double total;
 
     public SuperSavingsAdapter(ArrayList<CustomerDailyReport> reports, Context mcontext) {
         this.savings = reports;
@@ -147,31 +152,58 @@ public class SuperSavingsAdapter extends RecyclerView.Adapter<SuperSavingsAdapte
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         holder.itemView.setLongClickable(true);
         savings1 = this.savings.get(position);
-        PaymentDoc document = (PaymentDoc) this.savings.get(position);
-        PaymentCode savingsCode = (PaymentCode) this.savings.get(position);
-        paymDocDAO = new PaymDocDAO(mcontext.getApplicationContext());
         if(savings1 !=null){
-            Bitmap docId=paymDocDAO.getDocPicture(savings1.getRecordID());
-            holder.paymentDoc.setImageBitmap( docId);
+            document = savings1.getRecordPaymentDoc();
+            savingsCode = savings1.getRecordSavingsCode();
+            skyLightPackage=savings1.getRecordPackage();
+
+        }
+        if(skyLightPackage !=null){
+            total=skyLightPackage.getPackageTotalAmount();
 
         }
 
-        if (savings != null) {
+        Bitmap docId= null;
+        if (savings1 != null) {
+            docId = paymDocDAO.getDocPicture(savings1.getRecordID());
+        }
+        if (savings1 != null) {
             holder.amountRemaining.setText(MessageFormat.format("Rem Amount: NGN{0}", String.format("%.2f", savings1.getRecordAmountRemaining())));
-            holder.totalAmount.setText(MessageFormat.format("Total: NGN{0}", String.format("%.2f", savings1.getRecordAmount())));
+        }
+        holder.totalAmount.setText(MessageFormat.format("Total: NGN{0}", String.format("%.2f", total)));
+        if (savings1 != null) {
             holder.savingsAmount.setText(MessageFormat.format("Package Amount: NGN{0}", String.format("%.2f", savings1.getRecordAmount())));
-            //holder.packageID.setText(MessageFormat.format("Package ID:{0}", String.valueOf(savings.getPackageId())));
-            holder.status.setText(MessageFormat.format("Status:{0}", savings1.getRecordStatus()));
-            holder.savingsID.setText(MessageFormat.format("Start Date:{0}", savings1.getRecordID()));
-            holder.date.setText(MessageFormat.format("Savings date:{0}", savings1.getRecordDate()));
-            holder.daysRemaining.setText(MessageFormat.format("Days Rem:{0}", String.valueOf(savings1.getRecordRemainingDays())));
-            holder.days.setText(MessageFormat.format("Number of Days:{0}", String.valueOf(savings1.getRecordNumberOfDays())));
-            holder.savingsCount.setText(MessageFormat.format("Number of Saving:{0}", String.valueOf(savings1.getCount())));
-            holder.paymentMethod.setText(MessageFormat.format("Method:{0}", document.getPaymentMethod()));
-            holder.savingsCode.setText(MessageFormat.format("Savings Code:{0}", String.valueOf(savingsCode.getCode())));
-            holder.savingsID.setText(MessageFormat.format("Savings ID:{0}", String.valueOf(savings1.getRecordID())));
+        }
 
+        if (savings1 != null) {
+            holder.status.setText(MessageFormat.format("Status:{0}", savings1.getRecordStatus()));
+        }
+        if (savings1 != null) {
+            holder.savingsID.setText(MessageFormat.format("Start Date:{0}", savings1.getRecordID()));
+        }
+        if (savings1 != null) {
+            holder.date.setText(MessageFormat.format("Savings date:{0}", savings1.getRecordDate()));
+        }
+        if (savings1 != null) {
+            holder.daysRemaining.setText(MessageFormat.format("Days Rem:{0}", String.valueOf(savings1.getRecordRemainingDays())));
+        }
+        if (savings1 != null) {
             holder.days.setText(MessageFormat.format("Number of Days:{0}", String.valueOf(savings1.getRecordNumberOfDays())));
+        }
+        if (savings1 != null) {
+            holder.savingsCount.setText(MessageFormat.format("Number of Saving:{0}", String.valueOf(savings1.getCount())));
+        }
+        holder.paymentMethod.setText(MessageFormat.format("Method:{0}", document.getPaymentMethod()));
+        holder.savingsCode.setText(MessageFormat.format("Savings Code:{0}", String.valueOf(savingsCode)));
+        if (savings != null) {
+            holder.savingsID.setText(MessageFormat.format("Savings ID:{0}", String.valueOf(savings1.getRecordID())));
+        }
+        holder.paymentDoc.setImageBitmap( docId);
+        if (savings != null) {
+            holder.days.setText(MessageFormat.format("Number of Days:{0}", String.valueOf(savings1.getRecordNumberOfDays())));
+        }
+
+        if (savings1 != null) {
             if (savings1.getRecordStatus().equalsIgnoreCase("verified")) {
                 holder.icon.setImageResource(R.drawable.verified_savings);
                 holder.savingsID.setTextColor(Color.MAGENTA);
@@ -182,7 +214,6 @@ public class SuperSavingsAdapter extends RecyclerView.Adapter<SuperSavingsAdapte
                 holder.icon.setImageResource(R.drawable.unverified);
                 holder.savingsID.setTextColor(Color.RED);
             }
-
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -229,7 +260,6 @@ public class SuperSavingsAdapter extends RecyclerView.Adapter<SuperSavingsAdapte
             });
 
         }
-
 
     }
     private void updateStatus(){

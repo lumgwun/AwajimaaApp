@@ -13,7 +13,14 @@
     <dimen name="fab_size">56dp</dimen>
     <dimen name="spinner_height">300dp</dimen>
     <dimen name="spinner_width">72dp</dimen>
-    <dimen name="text_size">16sp</dimen>
+    <dimen name="text_size16">16sp</dimen>
+    <dimen name="cell_height">40dp</dimen>
+    <dimen name="row_header_width">55dp</dimen>
+    <dimen name="text_size">12sp</dimen>
+
+    <!-- Overriding the default values of the tableView -->
+    <dimen name="default_row_header_width">55dp</dimen>
+    <dimen name="default_column_header_height">40dp</dimen>
 
     <dimen name="flag_size">24dp</dimen>
     <dimen name="small_intrinsic_padding">4dp</dimen>

@@ -37,6 +37,7 @@ public class CustomerHelpActTab extends TabActivity {
     Profile userProfile;
     long profileUID11;
     Customer customer;
+
     private static final String PREF_NAME = "skylight";
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserName,SharedPrefUserMachine,
             SharedPrefProfileID
@@ -82,7 +83,7 @@ public class CustomerHelpActTab extends TabActivity {
                 .setIndicator("", resources.getDrawable(R.drawable.icon3))
                 .setContent(newIntent);
 
-        Intent loanListIntent = new Intent().setClass(this, CustomerSupportMessages.class);
+        Intent loanListIntent = new Intent().setClass(this, CusMessageAct.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecLoanList = tabhost
                 .newTabSpec("Messages")
                 .setIndicator("", resources.getDrawable(R.drawable.icon8))

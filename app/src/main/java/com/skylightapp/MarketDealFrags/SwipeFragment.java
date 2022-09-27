@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.quickblox.users.model.QBUser;
 import com.skylightapp.Classes.App;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.MainActChat;
 import com.skylightapp.MarketClasses.BaseAsyncTask22;
 import com.skylightapp.MarketClasses.MyPreferences;
 import com.skylightapp.MarketClasses.PushUtils;
@@ -145,11 +146,11 @@ public class SwipeFragment extends Fragment implements SwipeStack.SwipeStackList
             if (result != null) {
                 UserSwipeReply userSwipeReply = App.getGson().fromJson(result, UserSwipeReply.class);
                 if (userSwipeReply.isMatch()) {
-                    MainActivity mainActivity = (MainActivity) getContext();
+                    MainActChat mainActivity = (MainActChat) getContext();
                     UserProfileInfo userProfile = userSwipeProfileAdapter.getProfileByUserId(userSwipeReply.getUserId());
                     UserProfileInfoHolder.getInstance().putProfileInfo(userProfile);
 
-                    ((DialogsFragment) mainActivity.getContentFragment().getFragmentForPosition(2)).createNewDialog(userSwipeReply.getRecipientQuickBloxId(), userSwipeReply.getMatchValue());
+                    //((DialogsFragment) mainActivity.getContentFragment().getFragmentForPosition(2)).createNewDialog(userSwipeReply.getRecipientQuickBloxId(), userSwipeReply.getMatchValue());
                     PushUtils.sendPushAboutNewPair(userSwipeReply.getRecipientQuickBloxId());
                     onMatchCreatedListener.showMatchDialog(userProfile, false);
                 }
@@ -169,10 +170,10 @@ public class SwipeFragment extends Fragment implements SwipeStack.SwipeStackList
             if (result != null) {
                 UserSwipeReply userSwipeReply = App.getGson().fromJson(result, UserSwipeReply.class);
                 if (userSwipeReply.isMatch()) {
-                    MainActivity mainActivity = (MainActivity) getContext();
+                    MainActChat mainActivity = (MainActChat) getContext();
                     UserProfileInfo userProfile = userSwipeProfileAdapter.getProfileByUserId(userSwipeReply.getUserId());
                     UserProfileInfoHolder.getInstance().putProfileInfo(userProfile);
-                    ((DialogsFragment) mainActivity.getContentFragment().getFragmentForPosition(2)).createNewDialog(userSwipeReply.getRecipientQuickBloxId(), userSwipeReply.getMatchValue());
+                    //((DialogsFragment) mainActivity.getContentFragment().getFragmentForPosition(2)).createNewDialog(userSwipeReply.getRecipientQuickBloxId(), userSwipeReply.getMatchValue());
                     PushUtils.sendPushAboutNewPair(userSwipeReply.getRecipientQuickBloxId());
                     onMatchCreatedListener.showMatchDialog(userProfile, false);
                 }

@@ -1,17 +1,23 @@
 package com.skylightapp.Classes;
 
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
+import static com.skylightapp.Classes.CustomerDailyReport.DAILY_REPORT_TABLE;
+import static com.skylightapp.Classes.CustomerDailyReport.REPORT_ID;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 @Entity(tableName = PaymentDoc.DOCUMENT_TABLE)
-public class PaymentDoc extends CustomerDailyReport{
+public class PaymentDoc implements Parcelable, Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private int documentId=211;
@@ -51,6 +57,29 @@ public class PaymentDoc extends CustomerDailyReport{
     public PaymentDoc() {
         super();
     }
+
+    protected PaymentDoc(Parcel in) {
+        documentId = in.readInt();
+        docTittle = in.readString();
+        docStatus = in.readString();
+        docCustomerID = in.readInt();
+        docReportID = in.readInt();
+        paymentMethod = in.readString();
+        documentLink = in.readParcelable(Uri.class.getClassLoader());
+        docCustomer = in.readParcelable(Customer.class.getClassLoader());
+    }
+
+    public static final Creator<PaymentDoc> CREATOR = new Creator<PaymentDoc>() {
+        @Override
+        public PaymentDoc createFromParcel(Parcel in) {
+            return new PaymentDoc(in);
+        }
+
+        @Override
+        public PaymentDoc[] newArray(int size) {
+            return new PaymentDoc[size];
+        }
+    };
 
     public String getDocStatus() { return docStatus; }
     public void setDocStatus(String docStatus) { this.docStatus = docStatus; }
@@ -104,5 +133,22 @@ public class PaymentDoc extends CustomerDailyReport{
 
     public void setDocReportID(int reportID) {
         this.docReportID = reportID;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(documentId);
+        parcel.writeString(docTittle);
+        parcel.writeString(docStatus);
+        parcel.writeInt(docCustomerID);
+        parcel.writeInt(docReportID);
+        parcel.writeString(paymentMethod);
+        parcel.writeParcelable(documentLink, i);
+        parcel.writeParcelable(docCustomer, i);
     }
 }

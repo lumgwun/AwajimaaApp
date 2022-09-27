@@ -4,14 +4,14 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.skylightapp.Classes.OtherBusiness;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.Classes.Profile;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import static com.skylightapp.Classes.OtherBusiness.BIZ_ID;
-import static com.skylightapp.Classes.OtherBusiness.BIZ_TABLE;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_ID;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
@@ -27,9 +27,9 @@ public class Award implements Serializable, Parcelable {
     public static final String AWARD_LOGO = "Award_Logo";
     public static final String AWARD_COUNTRY = "Award_Country";
 
-    public static final String CREATE_AWARD_TABLE = "CREATE TABLE " + AWARD_TABLE + " (" + AWARD_ID + " LONG PRIMARY KEY, " + BIZ_ID + " LONG , " + PROFILE_ID + " LONG , " +
+    public static final String CREATE_AWARD_TABLE = "CREATE TABLE " + AWARD_TABLE + " (" + AWARD_ID + " LONG PRIMARY KEY, " + MARKET_BIZ_ID + " LONG , " + PROFILE_ID + " LONG , " +
             AWARD_TITTLE + " TEXT, " +  AWARD_DESCRIPTION + " TEXT, " +  AWARD_DATE + " TEXT, " + AWARD_START_DATE + " TEXT, " +AWARD_END_DATE + " TEXT,"+  AWARD_STATUS + " TEXT, " +  AWARD_LOGO + " BLOB, " + AWARD_COUNTRY + " TEXT,"+"FOREIGN KEY(" + PROFILE_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +
-            "FOREIGN KEY(" + BIZ_ID + ") REFERENCES " + BIZ_TABLE + "(" + BIZ_ID + "))";
+            "FOREIGN KEY(" + MARKET_BIZ_ID + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "))";
 
 
 
@@ -45,7 +45,7 @@ public class Award implements Serializable, Parcelable {
     private boolean allowOnePersonMultipleVote=false;
     private boolean allowNomineeSelfVote=false;
     private Profile profile;
-    private OtherBusiness otherBusiness;
+    private MarketBusiness marketBusiness;
     private ArrayList<Votes> votes;
     private ArrayList<NominationCategory> nominationCategories;
     private ArrayList<Profile> profiles;
@@ -89,7 +89,7 @@ public class Award implements Serializable, Parcelable {
         allowOnePersonMultipleVote = in.readByte() != 0;
         allowNomineeSelfVote = in.readByte() != 0;
         profile = in.readParcelable(Profile.class.getClassLoader());
-        otherBusiness = in.readParcelable(OtherBusiness.class.getClassLoader());
+        marketBusiness = in.readParcelable(MarketBusiness.class.getClassLoader());
         votes = in.createTypedArrayList(Votes.CREATOR);
         nominationCategories = in.createTypedArrayList(NominationCategory.CREATOR);
         //profiles = in.createTypedArrayList(Profile.CREATOR);
@@ -107,8 +107,8 @@ public class Award implements Serializable, Parcelable {
         }
     };
 
-    public OtherBusiness getBusiness() { return otherBusiness; }
-    public void setBusiness(OtherBusiness otherBusiness) { this.otherBusiness = otherBusiness; }
+    public MarketBusiness getBusiness() { return marketBusiness; }
+    public void setBusiness(MarketBusiness marketBusiness) { this.marketBusiness = marketBusiness; }
 
     public Profile getAwardGiverProfile() { return profile; }
     public void setAwardGiverProfile(Profile profile) { this.profile = profile; }
@@ -187,7 +187,7 @@ public class Award implements Serializable, Parcelable {
         parcel.writeByte((byte) (allowOnePersonMultipleVote ? 1 : 0));
         parcel.writeByte((byte) (allowNomineeSelfVote ? 1 : 0));
         parcel.writeParcelable(profile, i);
-        parcel.writeParcelable(otherBusiness, i);
+        parcel.writeParcelable(marketBusiness, i);
         parcel.writeTypedList(votes);
         parcel.writeTypedList(nominationCategories);
         parcel.writeTypedList(profiles);

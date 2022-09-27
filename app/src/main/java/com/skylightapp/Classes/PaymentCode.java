@@ -1,5 +1,8 @@
 package com.skylightapp.Classes;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -7,13 +10,15 @@ import java.io.Serializable;
 
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
+import static com.skylightapp.Classes.CustomerDailyReport.DAILY_REPORT_TABLE;
+import static com.skylightapp.Classes.CustomerDailyReport.REPORT_ID;
 import static com.skylightapp.Classes.PaymentCode.CODE_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 
 @Entity(tableName = CODE_TABLE)
-public class PaymentCode extends  CustomerDailyReport implements Serializable {
+public class PaymentCode  implements Parcelable, Serializable {
     private String ownerPhone;
     private long code;
     private String codeDate;
@@ -69,6 +74,31 @@ public class PaymentCode extends  CustomerDailyReport implements Serializable {
         this.codeDate = CODE_DATE;
 
     }
+
+    protected PaymentCode(Parcel in) {
+        ownerPhone = in.readString();
+        code = in.readLong();
+        codeDate = in.readString();
+        codeStatus = in.readString();
+        codeManager = in.readString();
+        cod_customer_ID = in.readInt();
+        code_ID = in.readInt();
+        code_savingsID = in.readInt();
+        customerDailyReport = in.readParcelable(CustomerDailyReport.class.getClassLoader());
+    }
+
+    public static final Creator<PaymentCode> CREATOR = new Creator<PaymentCode>() {
+        @Override
+        public PaymentCode createFromParcel(Parcel in) {
+            return new PaymentCode(in);
+        }
+
+        @Override
+        public PaymentCode[] newArray(int size) {
+            return new PaymentCode[size];
+        }
+    };
+
     public int getCode_savingsID() {
         return code_savingsID;
     }
@@ -134,5 +164,23 @@ public class PaymentCode extends  CustomerDailyReport implements Serializable {
 
     public void setCustomerDailyReport(CustomerDailyReport customerDailyReport) {
         this.customerDailyReport = customerDailyReport;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(ownerPhone);
+        parcel.writeLong(code);
+        parcel.writeString(codeDate);
+        parcel.writeString(codeStatus);
+        parcel.writeString(codeManager);
+        parcel.writeInt(cod_customer_ID);
+        parcel.writeInt(code_ID);
+        parcel.writeInt(code_savingsID);
+        parcel.writeParcelable(customerDailyReport, i);
     }
 }
