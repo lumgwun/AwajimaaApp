@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.blongho.country_data.Currency;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Birthday;
 import com.skylightapp.Classes.Customer;
@@ -132,6 +133,9 @@ public class MarketBusiness implements Parcelable, Serializable {
 
     private ArrayList<Integer> marketBiz_acctIDs;
     private ArrayList<OfficeBranch> officeBranches;
+    private Account marketBizAcct;
+    private double marketBizRevenue;
+    private Currency marketBizCurrency;
 
 
     public MarketBusiness(long businessID) {
@@ -620,5 +624,30 @@ public class MarketBusiness implements Parcelable, Serializable {
 
     public void setBizMarketID(int bizMarketID) {
         this.bizMarketID = bizMarketID;
+    }
+
+    public Account getMarketBizAcct() {
+
+        return marketBizAcct;
+    }
+
+    public void setMarketBizAcct(Account marketBizAcct) {
+        this.marketBizAcct = marketBizAcct;
+    }
+
+    public double getMarketBizRevenue() {
+        return marketBizRevenue;
+    }
+
+    public void setMarketBizRevenue(double marketBizRevenue) {
+        this.marketBizRevenue = marketBizRevenue;
+    }
+
+    public Currency getMarketBizCurrency() {
+        return marketBizCurrency;
+    }
+
+    public void setMarketBizCurrency(Currency marketBizCurrency) {
+        this.marketBizCurrency = marketBizCurrency;
     }
 }

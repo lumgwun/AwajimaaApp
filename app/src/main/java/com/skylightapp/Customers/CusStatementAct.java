@@ -172,8 +172,8 @@ public class CusStatementAct extends AppCompatActivity {
         }
         cmName=cmLastName+""+cmFirstName;
         if(account !=null){
-            acctID=account.getSkyLightAcctNo();
-            accountID=account.getSkyLightAcctNo();
+            acctID=account.getAwajimaAcctNo();
+            accountID=account.getAwajimaAcctNo();
             wBalance=account.getAccountBalance();
         }
         if(standingOrderAcct !=null){

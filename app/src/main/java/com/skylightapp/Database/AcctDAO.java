@@ -45,7 +45,7 @@ public class AcctDAO extends DBHelperDAO{
         ContentValues contentValues = new ContentValues();
         String accountName = account.getAccountName();
         String accountBank = account.getBankName();
-        int accountNumber = account.getSkyLightAcctNo();
+        int accountNumber = account.getAwajimaAcctNo();
         String accountBalance = valueOf(account.getAccountBalance());
         contentValues.put(ACCOUNT_PROF_ID, profileId);
         contentValues.put(ACCOUNT_NAME, accountName);
@@ -239,7 +239,7 @@ public class AcctDAO extends DBHelperDAO{
         cv.put(ACCOUNT_BALANCE, account.getAccountBalance());
         cv.put(BANK_ACCT_BALANCE, account.getBankAccountBalance());
         String selection = ACCOUNT_PROF_ID + "=? AND " + ACCOUNT_NO + "=? AND " + ACCOUNT_CUS_ID + "=?";
-        String[] selectionArgs = new String[]{valueOf(profile.getPID()), valueOf(account.getSkyLightAcctNo()),valueOf(customer.getCusUID())};
+        String[] selectionArgs = new String[]{valueOf(profile.getPID()), valueOf(account.getAwajimaAcctNo()),valueOf(customer.getCusUID())};
         db.update(ACCOUNTS_TABLE, cv, selection,
                 selectionArgs);
         db.close();
@@ -254,7 +254,7 @@ public class AcctDAO extends DBHelperDAO{
         cv.put(ACCOUNT_BALANCE, account.getAccountBalance());
         cv.put(BANK_ACCT_BALANCE, account.getBankAccountBalance());
         String selection = ACCOUNT_PROF_ID + "=? AND " + ACCOUNT_NO + "=? AND " + ACCOUNT_CUS_ID + "=?";
-        String[] selectionArgs = new String[]{valueOf(userProfile.getPID()), valueOf(account.getSkyLightAcctNo()),valueOf(cusID)};
+        String[] selectionArgs = new String[]{valueOf(userProfile.getPID()), valueOf(account.getAwajimaAcctNo()),valueOf(cusID)};
 
         db.update(ACCOUNTS_TABLE, cv, selection,
                 selectionArgs);

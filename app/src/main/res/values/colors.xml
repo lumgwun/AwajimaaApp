@@ -11,6 +11,7 @@
     <color name="White">#FFF</color>
     <color name="colorPrimaryDark">@color/purple_blue</color>
     <color name="colorPrimary">#0fc0fc</color>
+    <color name="colorP">#980e03</color>
 
     <color name="colorPrimaryD">#1D90CD</color>
     <color name="gray_light_pro">#D9D9D9</color>

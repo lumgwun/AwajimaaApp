@@ -419,7 +419,7 @@ public class Account implements Serializable, Parcelable {
 
 
 
-    public int getSkyLightAcctNo() {
+    public int getAwajimaAcctNo() {
         return skyLightAcctNo;
     }
     /*public void setId(int id) {

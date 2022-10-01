@@ -204,7 +204,7 @@ public class TellerForCusLoanAct extends AppCompatActivity {
         if(paymentBundle !=null){
             mySelectedCustomer=paymentBundle.getParcelable("Customer");
             account=paymentBundle.getParcelable("Account");
-            customerId=account.getSkyLightAcctNo();
+            customerId=account.getAwajimaAcctNo();
             spnFromAllCustomer.setVisibility(View.GONE);
             spnMyCustomer.setVisibility(View.GONE);
 
@@ -702,7 +702,7 @@ public class TellerForCusLoanAct extends AppCompatActivity {
             accountBalance = acctOfCustomer.getAccountBalance();
             unAvailableAmount = 0.033 * accountBalance;
             availableBalance = accountBalance-unAvailableAmount;
-            accountNo = acctOfCustomer.getSkyLightAcctNo();
+            accountNo = acctOfCustomer.getAwajimaAcctNo();
             customerNames = acctOfCustomer.getAccountName();
 
         }

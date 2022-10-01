@@ -255,7 +255,7 @@ public class MobileMoneyTransfer extends AppCompatActivity {
         transferFee = 0.02 * amountRequested;
         availableBalance = accountBalance - unAvailableAmount;
         newBalance = availableBalance - amountRequested-transferFee;
-        accountNo = account.getSkyLightAcctNo();
+        accountNo = account.getAwajimaAcctNo();
         customerNames = account.getAccountName();
         payeeNames = payeeSurName+","+payeeFirstName;
         customerID = mySelectedCustomer.getCusUID();

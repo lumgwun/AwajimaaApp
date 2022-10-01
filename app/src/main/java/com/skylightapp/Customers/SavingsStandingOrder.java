@@ -372,7 +372,7 @@ public class SavingsStandingOrder extends AppCompatActivity {
             uSurname=customer.getCusSurname();
             account = customer.getCusAccount();
             if(account !=null){
-                acctID = account.getSkyLightAcctNo();
+                acctID = account.getAwajimaAcctNo();
             }
             customerID = customer.getCusUID();
 

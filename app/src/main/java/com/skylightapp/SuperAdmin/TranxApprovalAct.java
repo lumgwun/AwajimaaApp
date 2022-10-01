@@ -203,7 +203,7 @@ public class TranxApprovalAct extends AppCompatActivity {
         }
 
         if(account !=null){
-            acctNo=account.getSkyLightAcctNo();
+            acctNo=account.getAwajimaAcctNo();
 
         }
 
@@ -457,7 +457,7 @@ public class TranxApprovalAct extends AppCompatActivity {
                             if(fromType.equalsIgnoreCase("EWallet")){
                                 if(account !=null){
                                     e_WalletBalance=account.getAccountBalance();
-                                    acctNo=account.getSkyLightAcctNo();
+                                    acctNo=account.getAwajimaAcctNo();
 
 
                                 }

@@ -103,7 +103,6 @@ import static com.skylightapp.Classes.DailyAccount.DAILY_ACCOUNTING_TABLE;
 import static com.skylightapp.Classes.EmergReportNext.CREATE_EMERGENCY_NEXT_REPORT_TABLE;
 import static com.skylightapp.Classes.EmergencyReport.CREATE_EMERGENCY_REPORT_TABLE;
 import static com.skylightapp.Classes.EmergencyReport.EMERGENCY_REPORT_TABLE;
-import static com.skylightapp.Classes.ImageUtil.TAG;
 import static com.skylightapp.Classes.Journey.CREATE_JOURNEY_TABLE;
 import static com.skylightapp.Classes.Journey.JOURNEY_TABLE;
 import static com.skylightapp.Classes.JourneyAccount.CREATE_JOURNEY_ACCOUNT_TABLE;
@@ -609,7 +608,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + SPONSOR_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MARKET_STOCK_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MARKET_TABLE);
-
         db.execSQL("DROP TABLE IF EXISTS " + DAILY_ACCOUNTING_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + JOURNEY_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + JOURNEY_ACCOUNT_TABLE);
@@ -3099,7 +3097,7 @@ public class DBHelper extends SQLiteOpenHelper {
         packageSavingsValue.put(REPORT_PROF_ID_FK, profile.getPID());
         packageSavingsValue.put(REPORT_PACK_ID_FK, skyLightPackage.getPackID());
         packageSavingsValue.put(REPORT_CUS_ID_FK, customer.getCusUID());
-        packageSavingsValue.put(REPORT_ACCOUNT_NO_FK, account.getSkyLightAcctNo());
+        packageSavingsValue.put(REPORT_ACCOUNT_NO_FK, account.getAwajimaAcctNo());
         packageSavingsValue.put(REPORT_AMOUNT, valueOf(customerDailyReport.getRecordAmount()));
         packageSavingsValue.put(REPORT_NUMBER_OF_DAYS, customerDailyReport.getRecordNumberOfDays());
         packageSavingsValue.put(REPORT_TOTAL, customerDailyReport.getRecordAmount());

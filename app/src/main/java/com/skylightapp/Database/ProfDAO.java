@@ -23,9 +23,6 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.skylightapp.Classes.Customer.CUSTOMER_PHONE_NUMBER;
-import static com.skylightapp.Classes.Customer.CUSTOMER_STATUS;
-import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
 import static com.skylightapp.Classes.GroupAccount.GRP_PROFILE_TABLE;
 import static com.skylightapp.Classes.Profile.CUS_ID_PIX_KEY;
 import static com.skylightapp.Classes.Profile.PASSWORD;
@@ -54,6 +51,11 @@ import static com.skylightapp.Classes.Profile.PROFILE_STATUS;
 import static com.skylightapp.Classes.Profile.PROFILE_SURNAME;
 import static com.skylightapp.Classes.Profile.PROFILE_USERNAME;
 import static com.skylightapp.Classes.Profile.PROF_ID_FOREIGN_KEY_PASSWORD;
+import static com.skylightapp.Classes.Profile.PROF_REF_LINK;
+import static com.skylightapp.Classes.Profile.SPONSOR_REFERER;
+import static com.skylightapp.Classes.Profile.SPONSOR_REF_COUNT;
+import static com.skylightapp.Classes.Profile.SPONSOR_REF_REWARD_COUNT21;
+import static com.skylightapp.Classes.Profile.SPONSOR_TABLE;
 import static java.lang.String.valueOf;
 
 public class ProfDAO extends DBHelperDAO{
@@ -88,6 +90,76 @@ public class ProfDAO extends DBHelperDAO{
 
         db.close();
         return password;
+    }
+    public int getReferrerCount(String refLink) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = SPONSOR_REFERER + "=?";
+        int refCount=0;
+        String[] selectionArgs = new String[]{valueOf(refLink)};
+        Cursor cursor = db.query(SPONSOR_TABLE, null, selection, selectionArgs, null, null, null);
+
+        if (cursor.getCount() < 1) {
+            cursor.close();
+            return 0;
+        }
+
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    refCount=cursor.getColumnCount();
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        db.close();
+        return refCount;
+    }
+    public void updateRewardCount(String refLink,int newUserCount) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(SPONSOR_REF_REWARD_COUNT21, newUserCount);
+        String selection = SPONSOR_REFERER + "=?";
+        String[] selectionArgs = new String[]{refLink};
+        sqLiteDatabase.update(SPONSOR_TABLE, contentValues, selection, selectionArgs);
+
+
+    }
+    public int getReferrerRewardCount(String refLink) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = SPONSOR_REFERER + "=?";
+        int refCount=0;
+        String[] selectionArgs = new String[]{valueOf(refLink)};
+        Cursor cursor = db.query(SPONSOR_TABLE, null, selection, selectionArgs, null, null, null);
+
+        if (cursor.getCount() < 1) {
+            cursor.close();
+            return 0;
+        }
+
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    refCount=cursor.getInt(9);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        db.close();
+        return refCount;
+    }
+    public void updateRefCount(String refLink,int newUserCount) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(SPONSOR_REF_COUNT, newUserCount);
+        String selection = SPONSOR_REFERER + "=?";
+        String[] selectionArgs = new String[]{refLink};
+        sqLiteDatabase.update(SPONSOR_TABLE, contentValues, selection, selectionArgs);
+
+
     }
     Cursor check_ProfPhone_No_exist(String user_phone_no, String status){
         String query = "SELECT * FROM "+PROFILES_TABLE+" WHERE "+PROFILE_PHONE+" ="+user_phone_no+ " AND "+PROFILE_STATUS+" = "+status;
@@ -1021,5 +1093,16 @@ public class ProfDAO extends DBHelperDAO{
         contentValues.put(PICTURE_URI, valueOf(photoUri));
         return sqLiteDatabase.update(PICTURE_TABLE, contentValues, selection,
                 selectionArgs) > 0;
+    }
+
+    public long addProfRefLink(int sharedPrefProfileID, Uri mInvitationUrl) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        String selection = PROFILE_ID + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(sharedPrefProfileID)};
+        contentValues.put(PROF_REF_LINK, valueOf(mInvitationUrl));
+        return sqLiteDatabase.update(PROFILES_TABLE, contentValues, selection,
+                selectionArgs);
+
     }
 }

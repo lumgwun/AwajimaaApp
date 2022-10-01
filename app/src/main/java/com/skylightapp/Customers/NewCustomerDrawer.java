@@ -45,14 +45,12 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.StandingOrderAcct;
-import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.LoginActivity;
 import com.skylightapp.Markets.MarketTab;
 import com.skylightapp.MyTimelineAct;
 import com.skylightapp.PasswordRecovAct;
 import com.skylightapp.PrivacyPolicy_Web;
-import com.skylightapp.Markets.ProductsAct;
 import com.skylightapp.R;
 import com.skylightapp.SignTabMainActivity;
 import com.skylightapp.SkylightSliderAct;
@@ -313,7 +311,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
             standingOrderAcct=customer.getCusStandingOrderAcct();
             if(account !=null){
                 accountBalance = account.getAccountBalance();
-                accountN = account.getSkyLightAcctNo();
+                accountN = account.getAwajimaAcctNo();
 
             }
             String nBank=customer.getCusBank();
@@ -677,7 +675,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
             standingOrderAcct=customer.getCusStandingOrderAcct();
             if(account !=null){
                 accountBalance = account.getAccountBalance();
-                accountN = account.getSkyLightAcctNo();
+                accountN = account.getAwajimaAcctNo();
 
             }
             if (accountBalance == 0.00) {

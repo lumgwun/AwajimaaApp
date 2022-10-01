@@ -68,7 +68,6 @@ import static com.skylightapp.BuildConfig.QUICKBLOX_ACCT_KEY;
 import static com.skylightapp.BuildConfig.QUICKBLOX_APP_ID;
 import static com.skylightapp.BuildConfig.QUICKBLOX_AUTH_KEY;
 import static com.skylightapp.BuildConfig.QUICKBLOX_SECRET_KEY;
-import static com.skylightapp.Markets.DialogsActCon.REQUEST_DIALOG_ID_FOR_UPDATE;
 
 public class SendCusMessAct extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private static final String TAG = SendCusMessAct.class.getSimpleName();
@@ -92,7 +91,7 @@ public class SendCusMessAct extends AppCompatActivity implements AdapterView.OnI
     private int sendeeProfileID;
     private int customerID;
     private int SharedPrefAdminID;
-    private  String purpose,skylightType;
+    private  String purpose, roleType;
     private Spinner spnPurpose;
     private  String selectedPurpose,sendee;
     private  Customer customer;
@@ -245,7 +244,7 @@ public class SendCusMessAct extends AppCompatActivity implements AdapterView.OnI
         }
         //SharedPrefProfileID=userPreferences.getString(PROFILE_ID, "");
         adminName=userPreferences.getString("AdminName", "");
-        skylightType=profileDao.getProfileRoleByUserNameAndPassword(SharedPrefUserName,SharedPrefUserPassword);
+        roleType =profileDao.getProfileRoleByUserNameAndPassword(SharedPrefUserName,SharedPrefUserPassword);
         spnPurpose.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override

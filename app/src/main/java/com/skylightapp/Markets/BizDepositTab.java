@@ -149,7 +149,7 @@ public class BizDepositTab extends TabActivity {
         Resources resources = getResources();
 
         floatingActionButton = findViewById(R.id.fab_deposit_Tab);
-        Intent intentSignUp = new Intent().setClass(this, BizCusDepositAct.class);
+        Intent intentSignUp = new Intent().setClass(this, BizBizDepositAct.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecSignUp = tabhost
                 .newTabSpec("From/To Business")
                 .setIndicator("", resources.getDrawable(R.drawable.ic_create_new))

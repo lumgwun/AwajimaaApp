@@ -24,7 +24,7 @@ public class MarketAdapter extends RecyclerView.Adapter<MarketAdapter.RecyclerVi
     private Context mcontext;
     int resources;
     AppCompatActivity activity;
-    private OnItemsClickListener listener;
+    private OnMarketItemsClickListener listener;
     private String marketName,marketState,marketLGA,marketType;
     private int commodityCount;
     private int marketImage;
@@ -58,7 +58,7 @@ public class MarketAdapter extends RecyclerView.Adapter<MarketAdapter.RecyclerVi
         this.marketArrayList.add(sliderItem);
         notifyDataSetChanged();
     }
-    public void setWhenClickListener(OnItemsClickListener listener){
+    public void setWhenClickListener(OnMarketItemsClickListener listener){
         this.listener = listener;
     }
     public MarketAdapter(Context context, ArrayList<Market> marketArrayList) {
@@ -127,8 +127,12 @@ public class MarketAdapter extends RecyclerView.Adapter<MarketAdapter.RecyclerVi
 
         }
     }
-    public interface OnItemsClickListener{
+    public interface OnMarketItemsClickListener {
         void onItemClick(Market market);
+    }
+    public interface OnMarketClickListener {
+        void onItemClick(int position);
+
     }
 
 }

@@ -29,10 +29,11 @@ public class BizDealAdapter extends ArrayAdapter<BusinessDeal> {
     private double dealAmount,bizDealBalance;
     private Currency bizDealCurrency;
 
-    public BizDealAdapter(Context context, int resource, ArrayList<BusinessDeal> accounts) {
-        super(context, resource, accounts);
+    public BizDealAdapter(Context context, int resource, ArrayList<BusinessDeal> dealArrayList) {
+        super(context, resource, dealArrayList);
         this.context = context;
         this.resource = resource;
+        this.businessDeals = dealArrayList;
     }
 
     public BizDealAdapter(FragmentActivity activity, int deal_item, ArrayList<BusinessDeal> accounts) {

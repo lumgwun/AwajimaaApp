@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.BizDealDAO;
 import com.skylightapp.MarketClasses.BusinessOthers;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
 
 import java.security.SecureRandom;
@@ -44,7 +45,8 @@ public class BizDealCreatorAct extends AppCompatActivity {
     private BizDealDAO bizDealDAO;
     private MaterialCardView btnCreate;
     private long bdID;
-    private int bdFromID;
+    private long bdFromID;
+    private MarketBusiness marketBusiness;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class BizDealCreatorAct extends AppCompatActivity {
         gson1 = new Gson();
         gson = new Gson();
         businessOthers = new BusinessOthers();
+        marketBusiness= new MarketBusiness();
         adminProfile = new Profile();
         bizDealDAO = new BizDealDAO(this);
         spnDealType = findViewById(R.id.Bd_type_selection);
@@ -64,17 +67,19 @@ public class BizDealCreatorAct extends AppCompatActivity {
         json = userPreferences.getString("LastProfileUsed", "");
         adminProfile = gson.fromJson(json, Profile.class);
         json1 = userPreferences.getString("LastBusinessUsed", "");
-        businessOthers = gson1.fromJson(json1, BusinessOthers.class);
+        marketBusiness = gson1.fromJson(json1, MarketBusiness.class);
         businessAcctNo = ThreadLocalRandom.current().nextInt(112537, 1040045);
         calendar = Calendar.getInstance();
         if (adminProfile != null) {
             profileID = adminProfile.getPID();
 
         }
-        if (businessOthers != null) {
-            bdFromID = businessOthers.getBusIdentity();
+
+        if(marketBusiness !=null){
+            bdFromID=marketBusiness.getBusinessID();
 
         }
+
         @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         creationDate = mdformat.format(calendar.getTime());
         spnDealType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

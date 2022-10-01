@@ -83,7 +83,20 @@
         android:value="androidx.core.app.CoreComponentFactory"
         tools:ignore="GoogleAppIndexingWarning"
         tools:node="replace">
-        <activity android:name=".Customers.CusMessageAct"></activity>
+        <activity android:name=".Markets.MyBizArrayDealListAct"></activity>
+
+        <receiver
+            android:name=".MarketClasses.AppInstallRefReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.INSTALL_PACKAGES">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".Markets.BizBizDepositAct"></activity>
+        <activity android:name=".Customers.CusMessageAct" />
         <activity android:name=".Markets.SingleCusMessagingAct" />
         <activity android:name=".Markets.MarketMessagingTab" />
         <activity android:name=".Markets.BizDealPartnersListAct" />

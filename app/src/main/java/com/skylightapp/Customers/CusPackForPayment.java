@@ -292,7 +292,7 @@ public class CusPackForPayment extends AppCompatActivity implements PackageRecyc
             grandTotal = skyLightPackage.getPackageTotalAmount();
             double packageAmount=skyLightPackage.getPackageDailyAmount();
             account = skyLightPackage.getPackageAccount();
-            long acctID=account.getSkyLightAcctNo();
+            long acctID=account.getAwajimaAcctNo();
             String status=skyLightPackage.getPackageStatus();
             customer = skyLightPackage.getPackageCustomer();
             long customerID=customer.getCusUID();

@@ -49,7 +49,6 @@ import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.Database.MessageDAO;
 import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.LoginDirAct;
 import com.skylightapp.PayNowActivity;
@@ -431,7 +430,7 @@ public class OldPackCusAct extends AppCompatActivity {
                 account = selectedPackage.getPackageAccount();
                 if (account != null) {
                     newBalance = account.getAccountBalance() + totalAmountSum;
-                    acctID = account1.getSkyLightAcctNo();
+                    acctID = account1.getAwajimaAcctNo();
 
 
                 }

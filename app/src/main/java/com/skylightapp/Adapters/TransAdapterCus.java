@@ -18,9 +18,7 @@ import androidx.annotation.NonNull;
 
 import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.Transaction;
-import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.PaymDocDAO;
-import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.R;
 
 import java.io.FileNotFoundException;
@@ -75,7 +73,7 @@ public class TransAdapterCus extends ArrayAdapter<Transaction> {
         txtID.setText(MessageFormat.format("{0} - {1}", "Package ID:", customerDailyReport.getRecordPackageId()));
         txtType.setText(MessageFormat.format("{0} - {1}", "Package Type:", customerDailyReport.getRecordPackage().getPackageType()));
         txtSavingsID.setText(MessageFormat.format("{0} - {1}", "Report ID:", customerDailyReport.getRecordID()));
-        txtTx_Ewallet.setText(MessageFormat.format("{0} - {1}", "Account ID:", customerDailyReport.getRecordCustomer().getCusAccount().getSkyLightAcctNo()));
+        txtTx_Ewallet.setText(MessageFormat.format("{0} - {1}", "Account ID:", customerDailyReport.getRecordCustomer().getCusAccount().getAwajimaAcctNo()));
         txtTransactionTimestamp.setText(MessageFormat.format("Date{0}", transaction.getTranxDate()));
         txtTransactionAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", transaction.getRecordAmount())));
 

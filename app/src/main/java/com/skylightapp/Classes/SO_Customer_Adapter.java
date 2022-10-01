@@ -94,7 +94,7 @@ public class SO_Customer_Adapter extends BaseAdapter {
         String soStatus = standingOrder.getSoStatus();
         double balance =standingOrder.getSo_Account().getAccountBalance();
         double newBalance =balance-amountReceived;
-        long accountNo = (long) standingOrder.getSo_Account().getSkyLightAcctNo();
+        long accountNo = (long) standingOrder.getSo_Account().getAwajimaAcctNo();
         long soID = standingOrder.getUID();
         Bundle payBundle = new Bundle();
         double newBalanceForCustomer =standingOrder.getSo_Account().setBalance(newBalance);

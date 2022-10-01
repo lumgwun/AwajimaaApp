@@ -115,7 +115,7 @@ public class CardDepositActivity extends AppCompatActivity {
         spnAcct.setAdapter(accountAdapter);
         spnAcct.setSelection(0);
         account = (Account) spnAcct.getSelectedItem();
-        accountNo= account.getSkyLightAcctNo();
+        accountNo= account.getAwajimaAcctNo();
         accountBalance=account.getAccountBalance();
         depositID = random.nextInt((int) (Math.random() * 99) + 11);
         depositBtn.setOnClickListener(new View.OnClickListener() {

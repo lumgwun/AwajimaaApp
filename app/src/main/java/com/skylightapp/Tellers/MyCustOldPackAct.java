@@ -52,7 +52,6 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.PayNowActivity;
 import com.skylightapp.R;
@@ -270,7 +269,7 @@ public class MyCustOldPackAct extends AppCompatActivity implements View.OnClickL
             try {
                 customer = customersN.get(selectedCustomerIndex);
                 account=customer.getCusAccount();
-                acctID=account.getSkyLightAcctNo();
+                acctID=account.getAwajimaAcctNo();
                 accountBalance1=account.getAccountBalance();
                 getSkylightPackages(customer,account,acctID,accountBalance1);
                 try {
@@ -384,7 +383,7 @@ public class MyCustOldPackAct extends AppCompatActivity implements View.OnClickL
             account = selectedPackage.getPackageAccount();
             if (account != null) {
                 packageAccountBalance = account.getAccountBalance() + totalAmountSum;
-                acctID = account.getSkyLightAcctNo();
+                acctID = account.getAwajimaAcctNo();
 
             }
             if(customer !=null){

@@ -33,6 +33,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -103,6 +104,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.gson.Gson;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
@@ -148,6 +150,7 @@ import com.skylightapp.Database.TReportDAO;
 import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.Interfaces.ProfileDao;
+import com.skylightapp.MarketClasses.AppInstallRefReceiver;
 import com.skylightapp.MarketClasses.ResourceUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -345,6 +348,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     private static final int REQUEST_CHECK_SETTINGS = 1000;
     private String mVerificationId;
     double lat, lng;
+    private AppInstallRefReceiver appInstallRefReceiver;
 
     String dob;
     String SharedPrefState, otpMessage, smsMessage;
@@ -555,6 +559,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         setContentView(R.layout.act_sign_up);
         dbHelper = new DBHelper(this);
         bizNameBundle= new Bundle();
+        appInstallRefReceiver= new AppInstallRefReceiver();
         QBSettings.getInstance().init(this, APPLICATION_ID, AUTH_KEY, AUTH_SECRET);
         QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
         setTitle("OnBoarding Arena");
@@ -1911,6 +1916,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                 switch (responseCode) {
                     case InstallReferrerClient.InstallReferrerResponse.OK:
                         ReferrerDetails response = null;
+                        appInstallRefReceiver= new AppInstallRefReceiver();
                         try {
                             response = referrerClient.getInstallReferrer();
 
@@ -1923,6 +1929,17 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                             boolean instantExperienceLaunched = response.getGooglePlayInstantParam();
 
                             referrer = response.getInstallReferrer();
+                            //IntentFilter filter = new IntentFilter();
+                            Intent intent = new Intent();
+                            intent.setAction("com.example.broadcast.MY_NOTIFICATION");
+                            intent.putExtra("data", "Nothing to see here, move along.");
+                            sendBroadcast(intent);
+
+                            IntentFilter filter = new IntentFilter("com.android.vending.INSTALL_REFERRER");
+                            filter.addAction(Intent.ACTION_MAIN);
+                            registerReceiver(appInstallRefReceiver, filter, "android.permission.INSTALL_PACKAGES", null );
+                            registerReceiver(appInstallRefReceiver, filter );
+
 
                             //refrerTV.setText("Referrer is : \n" + referrerUrl + "\n" + "Referrer Click Time is : " + referrerClickTime + "\nApp Install Time : " + appInstallTime);
                         } catch (RemoteException e) {

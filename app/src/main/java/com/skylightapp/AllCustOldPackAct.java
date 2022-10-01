@@ -559,7 +559,7 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
             account1 = selectedPackage.getPackageAccount();
             if (account1 != null) {
                 packageAccountBalance = account1.getAccountBalance() + totalAmountSum;
-                acctID = account1.getSkyLightAcctNo();
+                acctID = account1.getAwajimaAcctNo();
 
             }
             if(customer !=null){

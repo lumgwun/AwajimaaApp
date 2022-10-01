@@ -233,7 +233,7 @@ public class CusLoanAct extends AppCompatActivity {
         if(loanType.equals("EWallet")){
             balance=accountBalance1;
             if(account !=null){
-                loanAcctNo=account.getSkyLightAcctNo();
+                loanAcctNo=account.getAwajimaAcctNo();
 
             }
 

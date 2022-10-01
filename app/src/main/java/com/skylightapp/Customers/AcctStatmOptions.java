@@ -203,7 +203,7 @@ public class AcctStatmOptions extends AppCompatActivity {
             profileID=userProfile.getPID();
         }
         if(account!=null){
-            acctID=account.getSkyLightAcctNo();
+            acctID=account.getAwajimaAcctNo();
             walletBalance=account.getAccountBalance();
 
 

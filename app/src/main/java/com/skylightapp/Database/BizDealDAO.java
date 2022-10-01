@@ -55,7 +55,7 @@ public class BizDealDAO extends DBHelperDAO{
 
 
     }
-    public long saveBizDeal(int dealAcctNo, int creatorProfileID,int bizID,String tittle,String dateOfCreation,String type ,String status) {
+    public long saveBizDeal(int dealAcctNo, int creatorProfileID, long bizID, String tittle, String dateOfCreation, String type , String status) {
         int dealID=0;
         try {
             SQLiteDatabase db = this.getWritableDatabase();

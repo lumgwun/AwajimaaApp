@@ -301,7 +301,7 @@ public class ManualPaymentAct extends AppCompatActivity {
 
         }
         if(account !=null){
-            accountID=account.getSkyLightAcctNo();
+            accountID=account.getAwajimaAcctNo();
             accountBalance=account.getAccountBalance();
             newBalance=account.getAccountBalance()-totalToWithdraw;
         }

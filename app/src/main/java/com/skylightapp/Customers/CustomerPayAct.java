@@ -45,7 +45,6 @@ import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.Database.TranXDAO;
-import com.skylightapp.Interfaces.TimeLineDao;
 import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 import com.skylightapp.SMSAct;
@@ -276,7 +275,7 @@ public class CustomerPayAct extends AppCompatActivity {
                         account=skyLightPackage.getPackageAccount();
                         if(account !=null){
                             accountBalance=account.getAccountBalance();
-                            accountID=account.getSkyLightAcctNo();
+                            accountID=account.getAwajimaAcctNo();
 
                         }
 
@@ -307,7 +306,7 @@ public class CustomerPayAct extends AppCompatActivity {
                 if(account !=null){
                     accountBalanceNow=account.getAccountBalance();
                     accountBalance=account.getAccountBalance();
-                    accountID=account.getSkyLightAcctNo();
+                    accountID=account.getAwajimaAcctNo();
 
                 }
             }
@@ -523,7 +522,7 @@ public class CustomerPayAct extends AppCompatActivity {
                     account=skyLightPackage.getPackageAccount();
                     packageAmount=skyLightPackage.getPackageDailyAmount();
                     accountBalance=account.getAccountBalance();
-                    accountID=account.getSkyLightAcctNo();
+                    accountID=account.getAwajimaAcctNo();
                 } catch (IndexOutOfBoundsException e) {
                     System.out.println("Oops!");
                 }

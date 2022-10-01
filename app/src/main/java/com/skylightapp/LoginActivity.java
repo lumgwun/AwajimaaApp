@@ -1,7 +1,6 @@
 package com.skylightapp;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatEditText;
@@ -32,8 +31,12 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.google.gson.Gson;
 import com.melnykov.fab.FloatingActionButton;
 import com.quickblox.core.QBEntityCallback;
@@ -59,7 +62,6 @@ import com.skylightapp.SuperAdmin.SuperAdminOffice;
 import com.skylightapp.Tellers.TellerDrawerAct;
 import com.skylightapp.Tellers.TellerHomeChoices;
 import com.skylightapp.VideoChat.BaseActivity;
-import com.skylightapp.VideoChat.OpponentsActivity;
 import com.skylightapp.VideoChat.SharedPrefsHelperV;
 
 import java.security.MessageDigest;
@@ -171,9 +173,15 @@ public class LoginActivity extends BaseActivity {
     private StandingOrderAcct standingOrderAcct;
     private  Profile userProfile;
     private QBUser qbUser;
+    private FirebaseUser firebaseUser;
+    private String link;
+    private Uri mInvitationUrl;
+    private ProfDAO profDAO;
+    private PrefManager prefManager;
 
     private static final String TAG = "EmailPassword";
     private static final String PREF_NAME = "skylight";
+
     String regEx =
             "^(([w-]+.)+[w-]+|([a-zA-Z]{1}|[w-]{2,}))@"
                     + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9]).([0-1]?"
@@ -194,8 +202,11 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setTitle("Login Access");
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         random= new Random();
         SQLiteDataBaseBuild();
+        prefManager= new PrefManager(this);
+        profDAO= new ProfDAO(this);
         standingOrderAcct = new StandingOrderAcct();
         customer1 = new Customer();
         skyLightCustomer= new Customer();
@@ -216,9 +227,39 @@ public class LoginActivity extends BaseActivity {
             sharedPrefRole=userPreferences.getString("USER_ROLE","");
             sharedPrefProfileID=userPreferences.getInt("PROFILE_ID",0);
         }
+        link = "https://mygame.example.com/?invitedby=" + sharedPrefProfileID;
 
         dbHelper = new DBHelper(this);
         sqLiteDatabase = dbHelper.getWritableDatabase();
+        FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse(link))
+                .setDomainUriPrefix("https://example.page.link")
+                .setAndroidParameters(
+                        new DynamicLink.AndroidParameters.Builder("com.example.android")
+                                .setMinimumVersion(125)
+                                .build())
+                /*.setIosParameters(
+                        new DynamicLink.IosParameters.Builder("com.example.ios")
+                                .setAppStoreId("123456789")
+                                .setMinimumVersion("1.0.1")
+                                .build())*/
+                .buildShortDynamicLink()
+                .addOnSuccessListener(new OnSuccessListener<ShortDynamicLink>() {
+                    @Override
+                    public void onSuccess(ShortDynamicLink shortDynamicLink) {
+                        mInvitationUrl = shortDynamicLink.getShortLink();
+                        // ...
+                    }
+                });
+        if(dbHelper !=null){
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            prefManager.saveAppReferrer(mInvitationUrl);
+
+        }
+        profDAO.addProfRefLink(sharedPrefProfileID,mInvitationUrl);
+
+
         profiles=new ArrayList<Profile>();
         customers=new ArrayList<Customer>();
         account= new Account();

@@ -21,7 +21,7 @@ import com.skylightapp.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MarketHub extends AppCompatActivity implements MarketAdapter.OnItemsClickListener {
+public class MarketHub extends AppCompatActivity implements MarketAdapter.OnMarketItemsClickListener {
     List<Market> marketArrayList;
     private EditText etSearch;
     private ImageView btn_close1,btn_search1,btn_close2;
@@ -181,7 +181,7 @@ public class MarketHub extends AppCompatActivity implements MarketAdapter.OnItem
             }
         });
         if(mAdapter !=null){
-            mAdapter.setWhenClickListener(new MarketAdapter.OnItemsClickListener() {
+            mAdapter.setWhenClickListener(new MarketAdapter.OnMarketItemsClickListener() {
                 @Override
                 public void onItemClick(Market market) {
 

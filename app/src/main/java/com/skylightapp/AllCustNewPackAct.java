@@ -757,7 +757,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
             account1=customer.getCusAccount();
             if(account1 !=null){
                 packageAccountBalance=account1.getAccountBalance()+ totalAmountCalc;
-                acctID=account1.getSkyLightAcctNo();
+                acctID=account1.getAwajimaAcctNo();
 
             }
             transactionID="SkyLight/"+packageID;

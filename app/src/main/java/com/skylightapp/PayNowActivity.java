@@ -43,7 +43,6 @@ import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.SkyLightPackModel;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Customers.NewCustomerDrawer;
-import com.skylightapp.Database.AdminBDepositDAO;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.Database.TranXDAO;
@@ -563,7 +562,7 @@ public class PayNowActivity extends AppCompatActivity  {
             }
 
             if(account !=null){
-                accountID=account.getSkyLightAcctNo();
+                accountID=account.getAwajimaAcctNo();
                 accountBalance=account.getAccountBalance();
             }
             if (skyLightPackage != null) {
@@ -1020,7 +1019,7 @@ public class PayNowActivity extends AppCompatActivity  {
         }
 
         if(account !=null){
-            accountNo=account.getSkyLightAcctNo();
+            accountNo=account.getAwajimaAcctNo();
         }
 
         Transaction transaction1 = new Transaction();

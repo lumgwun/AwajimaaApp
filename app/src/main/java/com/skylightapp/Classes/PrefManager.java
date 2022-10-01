@@ -23,6 +23,7 @@ import static com.skylightapp.Classes.Profile.PROFILE_ID;
 import static com.skylightapp.Classes.Profile.PROFILE_USERNAME;
 import static com.skylightapp.Classes.Profile.PROFILE_EMAIL;
 import static com.skylightapp.Classes.Profile.PROFILE_PASSWORD;
+import static com.skylightapp.Classes.Profile.PROF_REF_LINK;
 
 
 public class PrefManager {
@@ -66,7 +67,7 @@ public class PrefManager {
     public PrefManager(Context context) {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
-        sharedPreferences = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
+        //sharedPreferences = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
         editor = pref.edit();
     }
 
@@ -90,11 +91,32 @@ public class PrefManager {
     }
 
 
+    /*public void saveLoginDetails(String email, String password) {
+        SharedPreferences sharedPreferences = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("Email", email);
+        editor.putString("Password", password);
+        editor.apply();
+    }*/
     public void saveLoginDetails(String email, String password) {
         SharedPreferences sharedPreferences = _context.getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("Email", email);
         editor.putString("Password", password);
+        editor.apply();
+    }
+    public void saveAppReferrer(String referrer,String strName,String refCode) {
+        SharedPreferences sharedPreferences = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("AwajimaReferrer", referrer);
+        editor.putString("AwajimaRefCode", refCode);
+        editor.putString("AwajimaRefUser", strName);
+        editor.apply();
+    }
+    public void saveAppReferrer(Uri refLink) {
+        SharedPreferences sharedPreferences = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PROF_REF_LINK, String.valueOf(refLink));
         editor.apply();
     }
     public void createUserLoginSession(long profileID,String uName, String uPassword,String email,String machine){
@@ -194,7 +216,7 @@ public class PrefManager {
     public void saveBankAccountDetails(Account account) {
         String bankName = account.getBankName();
         String userName=account.getAccountName();
-        int accountNumber =account.getSkyLightAcctNo();
+        int accountNumber =account.getAwajimaAcctNo();
         AccountTypes accountType = (AccountTypes) account.getType();
         String accountBalance = String.valueOf(account.getAccountBalance());
         SharedPreferences sharedPreferences = _context.getSharedPreferences("BankAccountDetails", Context.MODE_PRIVATE);

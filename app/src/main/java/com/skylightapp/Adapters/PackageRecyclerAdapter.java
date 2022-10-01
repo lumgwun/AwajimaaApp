@@ -71,7 +71,7 @@ public class PackageRecyclerAdapter extends RecyclerView.Adapter<PackageRecycler
         public TextView status,amountRemaining,daysRemaining,packageAmount,customerName,customerID;
         public final BezelImageView ImageIcon;
         private TextView endDate,startDate,profileManager,savedAmount ,grandTotalAmount,packageType,duration,packageID;
-        public AppCompatButton btnMore;
+        //public AppCompatButton btnMore;
         LinearLayoutCompat p_01,p_41;
 
         public RecyclerViewHolder(@NonNull View convertView) {
@@ -95,7 +95,7 @@ public class PackageRecyclerAdapter extends RecyclerView.Adapter<PackageRecycler
             status = convertView.findViewById(R.id.package_status_3);
 
 
-            btnMore.setOnClickListener(new View.OnClickListener() {
+            /*btnMore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     p_01.setVisibility(View.VISIBLE);
@@ -118,7 +118,7 @@ public class PackageRecyclerAdapter extends RecyclerView.Adapter<PackageRecycler
                     p_41.setVisibility(View.GONE);
                     return false;
                 }
-            });
+            });*/
         }
     }
 
