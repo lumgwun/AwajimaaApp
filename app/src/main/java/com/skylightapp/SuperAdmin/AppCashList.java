@@ -30,7 +30,6 @@ import com.skylightapp.Adapters.ProfileSpinnerAdapter;
 import com.skylightapp.Classes.AlarmReceiver;
 import com.skylightapp.Classes.AppCash;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.Database.WorkersDAO;
 import com.skylightapp.R;
 import com.skylightapp.Tellers.UpdateTellerCashAct;
@@ -42,7 +41,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class SkylightCashList extends AppCompatActivity implements SkylightCashAdapter.OnItemsClickListener, AdapterView.OnItemSelectedListener{
+public class AppCashList extends AppCompatActivity implements SkylightCashAdapter.OnItemsClickListener, AdapterView.OnItemSelectedListener{
     private RecyclerView recyclerViewCustomDate,recyclerCTo,recyclerViewFrom;
     private RecyclerView recyclerViewPayee;
     private RecyclerView recyclerViewPayer,recyclerViewAll;
@@ -100,7 +99,7 @@ public class SkylightCashList extends AppCompatActivity implements SkylightCashA
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_super_tcash);
+        setContentView(R.layout.act_app_cash_list);
         dbHelper= new DBHelper(this);
         payeeOfAppCashes =new ArrayList<>();
         appCashToday =new ArrayList<>();
@@ -318,7 +317,7 @@ public class SkylightCashList extends AppCompatActivity implements SkylightCashA
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedPayee = parent.getItemAtPosition(position).toString();
-                Toast.makeText(SkylightCashList.this, "Payee: "+ selectedPayee,Toast.LENGTH_SHORT).show();
+                Toast.makeText(AppCashList.this, "Payee: "+ selectedPayee,Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -338,7 +337,7 @@ public class SkylightCashList extends AppCompatActivity implements SkylightCashA
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedPayer = parent.getItemAtPosition(position).toString();
-                Toast.makeText(SkylightCashList.this, "Payer: "+ selectedPayer,Toast.LENGTH_SHORT).show();
+                Toast.makeText(AppCashList.this, "Payer: "+ selectedPayer,Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -349,7 +348,7 @@ public class SkylightCashList extends AppCompatActivity implements SkylightCashA
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedFrom = parent.getItemAtPosition(position).toString();
-                Toast.makeText(SkylightCashList.this, "From: "+ selectedFrom,Toast.LENGTH_SHORT).show();
+                Toast.makeText(AppCashList.this, "From: "+ selectedFrom,Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -360,7 +359,7 @@ public class SkylightCashList extends AppCompatActivity implements SkylightCashA
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedTo = parent.getItemAtPosition(position).toString();
-                Toast.makeText(SkylightCashList.this, "To: "+ selectedTo,Toast.LENGTH_SHORT).show();
+                Toast.makeText(AppCashList.this, "To: "+ selectedTo,Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -400,10 +399,10 @@ public class SkylightCashList extends AppCompatActivity implements SkylightCashA
         appCashAll =dbHelper.getAllSkylightCash();
 
         if(todaySCAmount >0){
-            txtTodayTotal.setText("Skylight Cash Today:"+ todaySCAmount);
+            txtTodayTotal.setText(" Cash Today:"+ todaySCAmount);
 
         }else if(todaySCAmount ==0){
-            txtTodayTotal.setText("Sorry! no Skylight Cash,for today, yet");
+            txtTodayTotal.setText("Sorry! no  Cash,for today, yet");
 
         }
 
@@ -421,8 +420,8 @@ public class SkylightCashList extends AppCompatActivity implements SkylightCashA
         buttonSCFrom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                recyclerViewFrom.setLayoutManager(new LinearLayoutManager(SkylightCashList.this, LinearLayoutManager.HORIZONTAL, false));
-                adapterFroms = new SkylightCashAdapter(SkylightCashList.this, fromCategoryOfSkylightUsersWithDate);
+                recyclerViewFrom.setLayoutManager(new LinearLayoutManager(AppCashList.this, LinearLayoutManager.HORIZONTAL, false));
+                adapterFroms = new SkylightCashAdapter(AppCashList.this, fromCategoryOfSkylightUsersWithDate);
                 recyclerViewFrom.setItemAnimator(new DefaultItemAnimator());
                 recyclerViewFrom.setAdapter(adapterFroms);
                 recyclerViewFrom.setNestedScrollingEnabled(false);
@@ -433,8 +432,8 @@ public class SkylightCashList extends AppCompatActivity implements SkylightCashA
         buttonSCTo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                recyclerCTo.setLayoutManager(new LinearLayoutManager(SkylightCashList.this, LinearLayoutManager.HORIZONTAL, false));
-                adapterTos = new SkylightCashAdapter(SkylightCashList.this, toCategoryOfSkylightUsersWithDate);
+                recyclerCTo.setLayoutManager(new LinearLayoutManager(AppCashList.this, LinearLayoutManager.HORIZONTAL, false));
+                adapterTos = new SkylightCashAdapter(AppCashList.this, toCategoryOfSkylightUsersWithDate);
                 recyclerCTo.setItemAnimator(new DefaultItemAnimator());
                 recyclerCTo.setAdapter(adapterTos);
                 recyclerCTo.setNestedScrollingEnabled(false);
@@ -445,8 +444,8 @@ public class SkylightCashList extends AppCompatActivity implements SkylightCashA
         btnByPayee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                recyclerViewPayee.setLayoutManager(new LinearLayoutManager(SkylightCashList.this, LinearLayoutManager.HORIZONTAL, false));
-                adapterOffice = new SkylightCashAdapter(SkylightCashList.this, payeeOfAppCashes);
+                recyclerViewPayee.setLayoutManager(new LinearLayoutManager(AppCashList.this, LinearLayoutManager.HORIZONTAL, false));
+                adapterOffice = new SkylightCashAdapter(AppCashList.this, payeeOfAppCashes);
                 recyclerViewPayee.setItemAnimator(new DefaultItemAnimator());
                 recyclerViewPayee.setAdapter(adapterPayees);
                 recyclerViewPayee.setNestedScrollingEnabled(false);
@@ -457,8 +456,8 @@ public class SkylightCashList extends AppCompatActivity implements SkylightCashA
         btnByAPayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                recyclerViewPayer.setLayoutManager(new LinearLayoutManager(SkylightCashList.this, LinearLayoutManager.HORIZONTAL, false));
-                adapterPayers = new SkylightCashAdapter(SkylightCashList.this, payersOfAppCashes);
+                recyclerViewPayer.setLayoutManager(new LinearLayoutManager(AppCashList.this, LinearLayoutManager.HORIZONTAL, false));
+                adapterPayers = new SkylightCashAdapter(AppCashList.this, payersOfAppCashes);
                 recyclerViewPayer.setItemAnimator(new DefaultItemAnimator());
                 recyclerViewPayer.setAdapter(adapterPayers);
                 recyclerViewPayer.setNestedScrollingEnabled(false);
@@ -474,7 +473,7 @@ public class SkylightCashList extends AppCompatActivity implements SkylightCashA
                 recyclerViewCustomDate.setLayoutManager(linearLayoutManager);
                 recyclerViewCustomDate.setItemAnimator(new DefaultItemAnimator());
                 recyclerViewCustomDate.setAdapter(adapterCustomDate);
-                recyclerViewCustomDate.addItemDecoration(new DividerItemDecoration(SkylightCashList.this,DividerItemDecoration.VERTICAL));
+                recyclerViewCustomDate.addItemDecoration(new DividerItemDecoration(AppCashList.this,DividerItemDecoration.VERTICAL));
                 recyclerViewCustomDate.setNestedScrollingEnabled(false);
                 //SnapHelper snapHelperCDate = new PagerSnapHelper();
                 //snapHelperCDate.attachToRecyclerView(recyclerViewCustomDate);
@@ -483,10 +482,10 @@ public class SkylightCashList extends AppCompatActivity implements SkylightCashA
             }
         });
         adapterAll = new SkylightCashAdapter(this, R.layout.skylight_cash_row, appCashAll);
-        recyclerViewAll.setLayoutManager(new LinearLayoutManager(SkylightCashList.this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewAll.setLayoutManager(new LinearLayoutManager(AppCashList.this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewAll.setItemAnimator(new DefaultItemAnimator());
         recyclerViewAll.setAdapter(adapterAll);
-        recyclerViewAll.addItemDecoration(new DividerItemDecoration(SkylightCashList.this,DividerItemDecoration.VERTICAL));
+        recyclerViewAll.addItemDecoration(new DividerItemDecoration(AppCashList.this,DividerItemDecoration.VERTICAL));
         recyclerViewAll.setNestedScrollingEnabled(false);
         recyclerViewAll.setClickable(true);
         SnapHelper snapHelperT = new PagerSnapHelper();
@@ -618,7 +617,7 @@ public class SkylightCashList extends AppCompatActivity implements SkylightCashA
     public void onItemClick(AppCash appCash) {
         bundle= new Bundle();
         bundle.putParcelable("TellerCash", appCash);
-        Intent intent = new Intent(SkylightCashList.this, UpdateTellerCashAct.class);
+        Intent intent = new Intent(AppCashList.this, UpdateTellerCashAct.class);
         intent.putExtras(bundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

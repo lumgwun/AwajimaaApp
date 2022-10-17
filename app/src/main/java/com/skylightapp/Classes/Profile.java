@@ -264,7 +264,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     private QBUser profQbUser;
     private QBEntity profQbEntity;
     private AdminUser.ADMIN_TYPE profileAdmin_type;
-
+    private ArrayList<CustomerManager> profileTellers;
 
 
     public void setProfilePassword(String profilePassword)   {
@@ -402,10 +402,10 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     private ArrayList<PaymentCode> profile_PaymentCodeArrayList;
     @Ignore
     private ArrayList<PaymentDoc> profile_PaymentDocArrayList;
-    @Ignore
+    //@Ignore
 
     private ArrayList<CustomerManager> profile_CustomerManagers;
-    @Ignore
+    //@Ignore
     private ArrayList<AdminUser> adminUsers;
     @Ignore
     private ArrayList<AdminBankDeposit> profile_AdminBankDeposits;
@@ -768,23 +768,30 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public int getProfileID() {
         return profileID;
     }*/
+    public ArrayList<CustomerManager> getProfile_Teller() {
+        return profileTellers;
+    }
+
+    public void setProfile_Tellers(ArrayList<CustomerManager> profileTellers) {
+        this.profileTellers = profileTellers;
+    }
 
 
-    @Ignore
+    //@Ignore
     public void setProfilePayments(ArrayList<Payment> paymentArrayList) {
         this.profile_PaymentArrayList = paymentArrayList;
     }
-    @Ignore
+    //@Ignore
     public ArrayList<Payment> getProfilePayments() { return profile_PaymentArrayList;
     }
-    @Ignore
+    //@Ignore
     public void setProfilePaymentCodes(ArrayList<PaymentCode> paymentCodeArrayList) {
         this.profile_PaymentCodeArrayList = paymentCodeArrayList;
     }
-    @Ignore
+    //@Ignore
     public ArrayList<PaymentCode> getProfilePaymentCodes() { return profile_PaymentCodeArrayList;
     }
-    @Ignore
+    //@Ignore
     public void setUserPaymentDocuments(ArrayList<PaymentDoc> paymentDocArrayList) {
         this.profile_PaymentDocArrayList = paymentDocArrayList;
     }
@@ -1737,4 +1744,6 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public void setProfOfficeID(int profOfficeID) {
         this.profOfficeID = profOfficeID;
     }
+
+
 }

@@ -31,11 +31,12 @@ public class GroupSavings implements Parcelable, Serializable {
 
     public static final String GS_GRPA_ID = "gs_gaID";
     public static final String GS_PROF_ID = "gs_prof_id";
+    public static final String GS_DB_ID = "gs_DB_id";
 
 
     public static final String CREATE_GROUP_SAVINGS_TABLE = "CREATE TABLE IF NOT EXISTS " + GROUP_SAVINGS_TABLE + " (" + GS_PROF_ID + " INTEGER ," + GS_GRPA_ID + " INTEGER ,"+
-            GS_ID + " INTEGER , " + GROUP_NAME + " TEXT, " + GROUP_PURPOSE + " TEXT, " + GROUP_AMOUNT + " REAL, " + GROUP_DATE +" TEXT, "+ GS_STATUS + " TEXT, "  +
-            "PRIMARY KEY(" + GS_ID + "), " +"FOREIGN KEY(" + GS_GRPA_ID  + ") REFERENCES " + GRP_ACCT_TABLE + "(" + GRPA_ID + ")," +"FOREIGN KEY(" + GS_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+            GS_ID + " INTEGER , " + GROUP_NAME + " TEXT, " + GROUP_PURPOSE + " TEXT, " + GROUP_AMOUNT + " REAL, " + GROUP_DATE +" TEXT, "+ GS_STATUS + " TEXT, " + GS_DB_ID + " INTEGER, " +
+            "PRIMARY KEY(" + GS_DB_ID + "), " +"FOREIGN KEY(" + GS_GRPA_ID  + ") REFERENCES " + GRP_ACCT_TABLE + "(" + GRPA_ID + ")," +"FOREIGN KEY(" + GS_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
     private Date savingsDate;
     private long gProfileID;

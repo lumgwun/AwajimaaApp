@@ -56,7 +56,8 @@ public class AppInstallRefReceiver extends BroadcastReceiver {
                         Log.e("Receiver Referral Name", "===>" + strName);
                     }
                     refCount =profDAO.getReferrerCount(referrer);
-                    refNewCount +=refCount+1;
+                    refNewCount =refCount+1;
+                    //refNewCount +=refCount+1;
                     profDAO.updateRefCount(referrer,refNewCount);
                     prefManager.saveAppReferrer(referrer,strName,strCode);
                 }

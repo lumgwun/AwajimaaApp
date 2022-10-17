@@ -39,7 +39,7 @@
                     android:textAlignment="center"
                     android:textColor="#111"
                     android:textSize="15sp" />
-                <ImageView
+                <com.mikepenz.materialdrawer.view.BezelImageView
                     android:id="@+id/thumbnail_"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
@@ -63,7 +63,7 @@
                 android:id="@+id/p_1"
                 android:layout_below="@+id/p_14"
                 android:layout_height="wrap_content">
-                <ImageView
+                <com.mikepenz.materialdrawer.view.BezelImageView
                     android:id="@+id/thumbnail_mb"
                     android:layout_width="50dp"
                     android:layout_height="50dp"

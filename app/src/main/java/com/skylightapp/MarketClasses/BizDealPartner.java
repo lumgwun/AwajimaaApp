@@ -7,9 +7,15 @@ public class BizDealPartner {
     private boolean isSelected = false;
 
 
+
+
     public BizDealPartner(QBUser user, boolean isSelected) {
         this.user = user;
         this.isSelected = isSelected;
+    }
+
+    public BizDealPartner() {
+        super();
     }
 
     public QBUser getUser() {

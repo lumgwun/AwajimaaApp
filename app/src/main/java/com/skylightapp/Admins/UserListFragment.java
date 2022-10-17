@@ -1,5 +1,6 @@
 package com.skylightapp.Admins;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -294,7 +295,7 @@ public class UserListFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(MyViewHolder holder, final int position) {
+        public void onBindViewHolder(MyViewHolder holder, @SuppressLint("RecyclerView") final int position) {
             final Profile profile = profileList.get(position);
             final long savingsCount = profile.getProfileDailyReports().size();
             int profileCount = getItemCount();
@@ -367,7 +368,7 @@ public class UserListFragment extends Fragment {
                         Intent userIntent = new Intent(getContext(), AdminCusActionView.class);
                         userIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         userIntent.putExtras(userBundle);
-                        Objects.requireNonNull(getContext()).startActivity(userIntent);
+                        requireContext().startActivity(userIntent);
 
                     }
                 })

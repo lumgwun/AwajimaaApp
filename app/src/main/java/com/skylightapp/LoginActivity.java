@@ -57,6 +57,11 @@ import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.Markets.BizRegulOffice;
+import com.skylightapp.Markets.MarketAdminOffice;
+import com.skylightapp.Markets.MarketBizDonorOffice;
+import com.skylightapp.Markets.MarketBizOffice;
+import com.skylightapp.Markets.MarketBizPOffice;
 import com.skylightapp.Markets.ToastUtils;
 import com.skylightapp.SuperAdmin.SuperAdminOffice;
 import com.skylightapp.Tellers.TellerDrawerAct;
@@ -174,7 +179,7 @@ public class LoginActivity extends BaseActivity {
     private  Profile userProfile;
     private QBUser qbUser;
     private FirebaseUser firebaseUser;
-    private String link;
+    private String refLink;
     private Uri mInvitationUrl;
     private ProfDAO profDAO;
     private PrefManager prefManager;
@@ -227,16 +232,16 @@ public class LoginActivity extends BaseActivity {
             sharedPrefRole=userPreferences.getString("USER_ROLE","");
             sharedPrefProfileID=userPreferences.getInt("PROFILE_ID",0);
         }
-        link = "https://mygame.example.com/?invitedby=" + sharedPrefProfileID;
+        refLink = "https://skylightbizapp.page.link/?invitedby=" + sharedPrefProfileID;
 
         dbHelper = new DBHelper(this);
         sqLiteDatabase = dbHelper.getWritableDatabase();
         FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse(link))
-                .setDomainUriPrefix("https://example.page.link")
+                .setLink(Uri.parse(refLink))
+                .setDomainUriPrefix("https://skylightbizapp.page.link")
                 .setAndroidParameters(
-                        new DynamicLink.AndroidParameters.Builder("com.example.android")
-                                .setMinimumVersion(125)
+                        new DynamicLink.AndroidParameters.Builder("com.skylightapp")
+                                .setMinimumVersion(1)
                                 .build())
                 /*.setIosParameters(
                         new DynamicLink.IosParameters.Builder("com.example.ios")
@@ -257,7 +262,7 @@ public class LoginActivity extends BaseActivity {
             prefManager.saveAppReferrer(mInvitationUrl);
 
         }
-        profDAO.addProfRefLink(sharedPrefProfileID,mInvitationUrl);
+        profDAO.addProfRefLink(sharedPrefProfileID, String.valueOf(mInvitationUrl));
 
 
         profiles=new ArrayList<Profile>();
@@ -616,12 +621,12 @@ public class LoginActivity extends BaseActivity {
             address = userPreferences.getString("PROFILE_ADDRESS", "");
             picture = Uri.parse(userPreferences.getString("PICTURE_URI", ""));
             profileID = userPreferences.getInt("PROFILE_ID", 0);
-            userName = userPreferences.getString("USER_NAME", "");
-            officeBranch = userPreferences.getString("USER_OFFICE", "");
-            state = userPreferences.getString("USER_STATE", "");
-            sharedPrefRole = userPreferences.getString("USER_ROLE", "");
+            //userName = userPreferences.getString("USER_NAME", "");
+            //officeBranch = userPreferences.getString("USER_OFFICE", "");
+            //state = userPreferences.getString("USER_STATE", "");
+            //sharedPrefRole = userPreferences.getString("USER_ROLE", "");
 
-            dateJoined = userPreferences.getString("USER_DATE_JOINED", "");
+            /*dateJoined = userPreferences.getString("USER_DATE_JOINED", "");
             password = userPreferences.getString("USER_PASSWORD", "");
             sharedPrefSurName = userPreferences.getString("USER_SURNAME", "");
             email = userPreferences.getString("EMAIL_ADDRESS", "");
@@ -630,7 +635,7 @@ public class LoginActivity extends BaseActivity {
             dob = userPreferences.getString("USER_DOB", "");
             customerID1 = userPreferences.getInt("CUSTOMER_ID", 0);
             gender = userPreferences.getString("USER_GENDER", "");
-            address = userPreferences.getString("USER_ADDRESS", "");
+            address = userPreferences.getString("USER_ADDRESS", "");*/
             picture = Uri.parse(userPreferences.getString("PICTURE_URI", ""));
             json1 = userPreferences.getString("LastQBUserUsed", "");
             qbUser = gson1.fromJson(json1, QBUser.class);
@@ -900,6 +905,266 @@ public class LoginActivity extends BaseActivity {
         }
         if(sharedPrefUserMachine.equalsIgnoreCase("AdminUser")){
             Intent adminIntent = new Intent(this, AdminDrawerActivity.class);
+            adminIntent.putExtra("PROFILE_ID", profileID);
+            adminIntent.putExtra("PROFILE_USERNAME", userName);
+            adminIntent.putExtra("PROFILE_PASSWORD", password);
+            adminIntent.putExtra("PROFILE_OFFICE", officeBranch);
+            adminIntent.putExtra("PROFILE_STATE", state);
+            adminIntent.putExtra("PROFILE_ROLE", sharedPrefRole);
+            adminIntent.putExtra("PROFILE_EMAIL", email);
+            adminIntent.putExtra("PROFILE_PHONE", sharedPrefPhone);
+            adminIntent.putExtra("PROFILE_FIRSTNAME", sharedPrefPhone);
+            adminIntent.putExtra("PROFILE_SURNAME", sharedPrefSurName);
+            adminIntent.putExtra("PROFILE_DOB", dob);
+            adminIntent.putExtra("PROFILE_DATE_JOINED", dateJoined);
+            adminIntent.putExtra("CUSTOMER_ID", customerID1);
+            adminIntent.putExtra("PROFILE_GENDER", gender);
+            adminIntent.putExtra("PROFILE_ADDRESS", address);
+            adminIntent.putExtra("PICTURE_URI", picture);
+            adminIntent.putExtra(PROFILE_ID, profileID);
+            adminIntent.putExtra(PROFILE_USERNAME, userName);
+            adminIntent.putExtra(PROFILE_PASSWORD, password);
+            adminIntent.putExtra(PROFILE_OFFICE, officeBranch);
+            adminIntent.putExtra(PROFILE_STATE, state);
+            adminIntent.putExtra(PROFILE_ROLE, sharedPrefRole);
+            adminIntent.putExtra(PROFILE_DATE_JOINED, dateJoined);
+            adminIntent.putExtra(PROFILE_PHONE, sharedPrefPhone);
+            adminIntent.putExtra(PROFILE_FIRSTNAME, sharedPrefFirstName);
+            adminIntent.putExtra(PROFILE_SURNAME, sharedPrefSurName);
+            adminIntent.putExtra(PROFILE_DOB, dob);
+            adminIntent.putExtra(CUSTOMER_ID, customerID1);
+            adminIntent.putExtra(PROFILE_GENDER, gender);
+            adminIntent.putExtra(PROFILE_ADDRESS, address);
+            adminIntent.putExtra(PICTURE_URI, picture);
+            adminIntent.putExtra("USER_NAME", userName);
+            adminIntent.putExtra("USER_PASSWORD", password);
+            adminIntent.putExtra("USER_OFFICE", officeBranch);
+            adminIntent.putExtra("USER_STATE", state);
+            adminIntent.putExtra("USER_ROLE", sharedPrefRole);
+            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
+            adminIntent.putExtra("EMAIL_ADDRESS", email);
+            adminIntent.putExtra("USER_PHONE", sharedPrefPhone);
+            adminIntent.putExtra("USER_FIRSTNAME", sharedPrefFirstName);
+            adminIntent.putExtra("USER_SURNAME", sharedPrefSurName);
+            adminIntent.putExtra("USER_DOB", dob);
+            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
+            adminIntent.putExtra("CUSTOMER_ID", customerID1);
+            adminIntent.putExtra("USER_GENDER", gender);
+            adminIntent.putExtra("USER_ADDRESS", address);
+            adminIntent.putExtra("PICTURE_URI", picture);
+            startActivity(adminIntent);
+
+        }
+        if(sharedPrefUserMachine.equalsIgnoreCase("MarketBusiness")){
+            Intent adminIntent = new Intent(this, MarketBizOffice.class);
+            adminIntent.putExtra("PROFILE_ID", profileID);
+            adminIntent.putExtra("PROFILE_USERNAME", userName);
+            adminIntent.putExtra("PROFILE_PASSWORD", password);
+            adminIntent.putExtra("PROFILE_OFFICE", officeBranch);
+            adminIntent.putExtra("PROFILE_STATE", state);
+            adminIntent.putExtra("PROFILE_ROLE", sharedPrefRole);
+            adminIntent.putExtra("PROFILE_EMAIL", email);
+            adminIntent.putExtra("PROFILE_PHONE", sharedPrefPhone);
+            adminIntent.putExtra("PROFILE_FIRSTNAME", sharedPrefPhone);
+            adminIntent.putExtra("PROFILE_SURNAME", sharedPrefSurName);
+            adminIntent.putExtra("PROFILE_DOB", dob);
+            adminIntent.putExtra("PROFILE_DATE_JOINED", dateJoined);
+            adminIntent.putExtra("CUSTOMER_ID", customerID1);
+            adminIntent.putExtra("PROFILE_GENDER", gender);
+            adminIntent.putExtra("PROFILE_ADDRESS", address);
+            adminIntent.putExtra("PICTURE_URI", picture);
+            adminIntent.putExtra(PROFILE_ID, profileID);
+            adminIntent.putExtra(PROFILE_USERNAME, userName);
+            adminIntent.putExtra(PROFILE_PASSWORD, password);
+            adminIntent.putExtra(PROFILE_OFFICE, officeBranch);
+            adminIntent.putExtra(PROFILE_STATE, state);
+            adminIntent.putExtra(PROFILE_ROLE, sharedPrefRole);
+            adminIntent.putExtra(PROFILE_DATE_JOINED, dateJoined);
+            adminIntent.putExtra(PROFILE_PHONE, sharedPrefPhone);
+            adminIntent.putExtra(PROFILE_FIRSTNAME, sharedPrefFirstName);
+            adminIntent.putExtra(PROFILE_SURNAME, sharedPrefSurName);
+            adminIntent.putExtra(PROFILE_DOB, dob);
+            adminIntent.putExtra(CUSTOMER_ID, customerID1);
+            adminIntent.putExtra(PROFILE_GENDER, gender);
+            adminIntent.putExtra(PROFILE_ADDRESS, address);
+            adminIntent.putExtra(PICTURE_URI, picture);
+            adminIntent.putExtra("USER_NAME", userName);
+            adminIntent.putExtra("USER_PASSWORD", password);
+            adminIntent.putExtra("USER_OFFICE", officeBranch);
+            adminIntent.putExtra("USER_STATE", state);
+            adminIntent.putExtra("USER_ROLE", sharedPrefRole);
+            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
+            adminIntent.putExtra("EMAIL_ADDRESS", email);
+            adminIntent.putExtra("USER_PHONE", sharedPrefPhone);
+            adminIntent.putExtra("USER_FIRSTNAME", sharedPrefFirstName);
+            adminIntent.putExtra("USER_SURNAME", sharedPrefSurName);
+            adminIntent.putExtra("USER_DOB", dob);
+            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
+            adminIntent.putExtra("CUSTOMER_ID", customerID1);
+            adminIntent.putExtra("USER_GENDER", gender);
+            adminIntent.putExtra("USER_ADDRESS", address);
+            adminIntent.putExtra("PICTURE_URI", picture);
+            startActivity(adminIntent);
+
+        }
+        if(sharedPrefUserMachine.equalsIgnoreCase("MarketBizRegulator")){
+            Intent adminIntent = new Intent(this, BizRegulOffice.class);
+            adminIntent.putExtra("PROFILE_ID", profileID);
+            adminIntent.putExtra("PROFILE_USERNAME", userName);
+            adminIntent.putExtra("PROFILE_PASSWORD", password);
+            adminIntent.putExtra("PROFILE_OFFICE", officeBranch);
+            adminIntent.putExtra("PROFILE_STATE", state);
+            adminIntent.putExtra("PROFILE_ROLE", sharedPrefRole);
+            adminIntent.putExtra("PROFILE_EMAIL", email);
+            adminIntent.putExtra("PROFILE_PHONE", sharedPrefPhone);
+            adminIntent.putExtra("PROFILE_FIRSTNAME", sharedPrefPhone);
+            adminIntent.putExtra("PROFILE_SURNAME", sharedPrefSurName);
+            adminIntent.putExtra("PROFILE_DOB", dob);
+            adminIntent.putExtra("PROFILE_DATE_JOINED", dateJoined);
+            adminIntent.putExtra("CUSTOMER_ID", customerID1);
+            adminIntent.putExtra("PROFILE_GENDER", gender);
+            adminIntent.putExtra("PROFILE_ADDRESS", address);
+            adminIntent.putExtra("PICTURE_URI", picture);
+            adminIntent.putExtra(PROFILE_ID, profileID);
+            adminIntent.putExtra(PROFILE_USERNAME, userName);
+            adminIntent.putExtra(PROFILE_PASSWORD, password);
+            adminIntent.putExtra(PROFILE_OFFICE, officeBranch);
+            adminIntent.putExtra(PROFILE_STATE, state);
+            adminIntent.putExtra(PROFILE_ROLE, sharedPrefRole);
+            adminIntent.putExtra(PROFILE_DATE_JOINED, dateJoined);
+            adminIntent.putExtra(PROFILE_PHONE, sharedPrefPhone);
+            adminIntent.putExtra(PROFILE_FIRSTNAME, sharedPrefFirstName);
+            adminIntent.putExtra(PROFILE_SURNAME, sharedPrefSurName);
+            adminIntent.putExtra(PROFILE_DOB, dob);
+            adminIntent.putExtra(CUSTOMER_ID, customerID1);
+            adminIntent.putExtra(PROFILE_GENDER, gender);
+            adminIntent.putExtra(PROFILE_ADDRESS, address);
+            adminIntent.putExtra(PICTURE_URI, picture);
+            adminIntent.putExtra("USER_NAME", userName);
+            adminIntent.putExtra("USER_PASSWORD", password);
+            adminIntent.putExtra("USER_OFFICE", officeBranch);
+            adminIntent.putExtra("USER_STATE", state);
+            adminIntent.putExtra("USER_ROLE", sharedPrefRole);
+            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
+            adminIntent.putExtra("EMAIL_ADDRESS", email);
+            adminIntent.putExtra("USER_PHONE", sharedPrefPhone);
+            adminIntent.putExtra("USER_FIRSTNAME", sharedPrefFirstName);
+            adminIntent.putExtra("USER_SURNAME", sharedPrefSurName);
+            adminIntent.putExtra("USER_DOB", dob);
+            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
+            adminIntent.putExtra("CUSTOMER_ID", customerID1);
+            adminIntent.putExtra("USER_GENDER", gender);
+            adminIntent.putExtra("USER_ADDRESS", address);
+            adminIntent.putExtra("PICTURE_URI", picture);
+            startActivity(adminIntent);
+
+        }
+        if(sharedPrefUserMachine.equalsIgnoreCase("MarketBizPartner")){
+            Intent adminIntent = new Intent(this, MarketBizPOffice.class);
+            adminIntent.putExtra("PROFILE_ID", profileID);
+            adminIntent.putExtra("PROFILE_USERNAME", userName);
+            adminIntent.putExtra("PROFILE_PASSWORD", password);
+            adminIntent.putExtra("PROFILE_OFFICE", officeBranch);
+            adminIntent.putExtra("PROFILE_STATE", state);
+            adminIntent.putExtra("PROFILE_ROLE", sharedPrefRole);
+            adminIntent.putExtra("PROFILE_EMAIL", email);
+            adminIntent.putExtra("PROFILE_PHONE", sharedPrefPhone);
+            adminIntent.putExtra("PROFILE_FIRSTNAME", sharedPrefPhone);
+            adminIntent.putExtra("PROFILE_SURNAME", sharedPrefSurName);
+            adminIntent.putExtra("PROFILE_DOB", dob);
+            adminIntent.putExtra("PROFILE_DATE_JOINED", dateJoined);
+            adminIntent.putExtra("CUSTOMER_ID", customerID1);
+            adminIntent.putExtra("PROFILE_GENDER", gender);
+            adminIntent.putExtra("PROFILE_ADDRESS", address);
+            adminIntent.putExtra("PICTURE_URI", picture);
+            adminIntent.putExtra(PROFILE_ID, profileID);
+            adminIntent.putExtra(PROFILE_USERNAME, userName);
+            adminIntent.putExtra(PROFILE_PASSWORD, password);
+            adminIntent.putExtra(PROFILE_OFFICE, officeBranch);
+            adminIntent.putExtra(PROFILE_STATE, state);
+            adminIntent.putExtra(PROFILE_ROLE, sharedPrefRole);
+            adminIntent.putExtra(PROFILE_DATE_JOINED, dateJoined);
+            adminIntent.putExtra(PROFILE_PHONE, sharedPrefPhone);
+            adminIntent.putExtra(PROFILE_FIRSTNAME, sharedPrefFirstName);
+            adminIntent.putExtra(PROFILE_SURNAME, sharedPrefSurName);
+            adminIntent.putExtra(PROFILE_DOB, dob);
+            adminIntent.putExtra(CUSTOMER_ID, customerID1);
+            adminIntent.putExtra(PROFILE_GENDER, gender);
+            adminIntent.putExtra(PROFILE_ADDRESS, address);
+            adminIntent.putExtra(PICTURE_URI, picture);
+            adminIntent.putExtra("USER_NAME", userName);
+            adminIntent.putExtra("USER_PASSWORD", password);
+            adminIntent.putExtra("USER_OFFICE", officeBranch);
+            adminIntent.putExtra("USER_STATE", state);
+            adminIntent.putExtra("USER_ROLE", sharedPrefRole);
+            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
+            adminIntent.putExtra("EMAIL_ADDRESS", email);
+            adminIntent.putExtra("USER_PHONE", sharedPrefPhone);
+            adminIntent.putExtra("USER_FIRSTNAME", sharedPrefFirstName);
+            adminIntent.putExtra("USER_SURNAME", sharedPrefSurName);
+            adminIntent.putExtra("USER_DOB", dob);
+            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
+            adminIntent.putExtra("CUSTOMER_ID", customerID1);
+            adminIntent.putExtra("USER_GENDER", gender);
+            adminIntent.putExtra("USER_ADDRESS", address);
+            adminIntent.putExtra("PICTURE_URI", picture);
+            startActivity(adminIntent);
+
+        }
+        if(sharedPrefUserMachine.equalsIgnoreCase("MarketAdmin")){
+            Intent adminIntent = new Intent(this, MarketAdminOffice.class);
+            adminIntent.putExtra("PROFILE_ID", profileID);
+            adminIntent.putExtra("PROFILE_USERNAME", userName);
+            adminIntent.putExtra("PROFILE_PASSWORD", password);
+            adminIntent.putExtra("PROFILE_OFFICE", officeBranch);
+            adminIntent.putExtra("PROFILE_STATE", state);
+            adminIntent.putExtra("PROFILE_ROLE", sharedPrefRole);
+            adminIntent.putExtra("PROFILE_EMAIL", email);
+            adminIntent.putExtra("PROFILE_PHONE", sharedPrefPhone);
+            adminIntent.putExtra("PROFILE_FIRSTNAME", sharedPrefPhone);
+            adminIntent.putExtra("PROFILE_SURNAME", sharedPrefSurName);
+            adminIntent.putExtra("PROFILE_DOB", dob);
+            adminIntent.putExtra("PROFILE_DATE_JOINED", dateJoined);
+            adminIntent.putExtra("CUSTOMER_ID", customerID1);
+            adminIntent.putExtra("PROFILE_GENDER", gender);
+            adminIntent.putExtra("PROFILE_ADDRESS", address);
+            adminIntent.putExtra("PICTURE_URI", picture);
+            adminIntent.putExtra(PROFILE_ID, profileID);
+            adminIntent.putExtra(PROFILE_USERNAME, userName);
+            adminIntent.putExtra(PROFILE_PASSWORD, password);
+            adminIntent.putExtra(PROFILE_OFFICE, officeBranch);
+            adminIntent.putExtra(PROFILE_STATE, state);
+            adminIntent.putExtra(PROFILE_ROLE, sharedPrefRole);
+            adminIntent.putExtra(PROFILE_DATE_JOINED, dateJoined);
+            adminIntent.putExtra(PROFILE_PHONE, sharedPrefPhone);
+            adminIntent.putExtra(PROFILE_FIRSTNAME, sharedPrefFirstName);
+            adminIntent.putExtra(PROFILE_SURNAME, sharedPrefSurName);
+            adminIntent.putExtra(PROFILE_DOB, dob);
+            adminIntent.putExtra(CUSTOMER_ID, customerID1);
+            adminIntent.putExtra(PROFILE_GENDER, gender);
+            adminIntent.putExtra(PROFILE_ADDRESS, address);
+            adminIntent.putExtra(PICTURE_URI, picture);
+            adminIntent.putExtra("USER_NAME", userName);
+            adminIntent.putExtra("USER_PASSWORD", password);
+            adminIntent.putExtra("USER_OFFICE", officeBranch);
+            adminIntent.putExtra("USER_STATE", state);
+            adminIntent.putExtra("USER_ROLE", sharedPrefRole);
+            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
+            adminIntent.putExtra("EMAIL_ADDRESS", email);
+            adminIntent.putExtra("USER_PHONE", sharedPrefPhone);
+            adminIntent.putExtra("USER_FIRSTNAME", sharedPrefFirstName);
+            adminIntent.putExtra("USER_SURNAME", sharedPrefSurName);
+            adminIntent.putExtra("USER_DOB", dob);
+            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
+            adminIntent.putExtra("CUSTOMER_ID", customerID1);
+            adminIntent.putExtra("USER_GENDER", gender);
+            adminIntent.putExtra("USER_ADDRESS", address);
+            adminIntent.putExtra("PICTURE_URI", picture);
+            startActivity(adminIntent);
+
+        }
+        if(sharedPrefUserMachine.equalsIgnoreCase("MarketBizDonor")){
+            Intent adminIntent = new Intent(this, MarketBizDonorOffice.class);
             adminIntent.putExtra("PROFILE_ID", profileID);
             adminIntent.putExtra("PROFILE_USERNAME", userName);
             adminIntent.putExtra("PROFILE_PASSWORD", password);

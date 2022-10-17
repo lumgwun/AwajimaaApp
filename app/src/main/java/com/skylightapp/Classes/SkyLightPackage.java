@@ -53,12 +53,14 @@ public class SkyLightPackage implements Parcelable, Serializable {
     public static final String PACKAGE_PROFILE_ID_FOREIGN = "profile_ID_Foreign";
     public static final String PACKAGE_CUSTOMER_ID_FOREIGN = "package_cus_ID_Foreign";
     public static final boolean PACKAGE_IS_COMPLETE = false;
+    public static final String PACKAGE_DB_ID = "package_DB_id";
+    public static final String PACKAGE_COLLECTION_STATUS = "package_Collection_Status";
 
 
     public static final String CREATE_PACKAGE_TABLE = "CREATE TABLE IF NOT EXISTS " + PACKAGE_TABLE + " (" + PACKAGE_ID + " INTEGER  , " + PACKAGE_PROFILE_ID_FOREIGN + " INTEGER NOT NULL, " + PACKAGE_CUSTOMER_ID_FOREIGN + " INTEGER NOT NULL, " +
             PACKAGE_REPORT_ID + " INTEGER , " + PACKAGE_NAME + " TEXT, " + PACKAGE_TYPE + " TEXT, " + PACKAGE_START_DATE + " TEXT, " + PACKAGE_DURATION + " TEXT, " + PACKAGE_END_DATE + " TEXT, " +
-            PACKAGE_VALUE + " REAL, " + PACKAGE_EXPECTED_VALUE + " REAL, " + PACKAGE_BALANCE + " REAL, " + PACKAGE_STATUS + " TEXT, " + PACKAGE_CODE + " REAL, " + PACKAGE_ITEM + " TEXT, "+ PACKAGE_IS_COMPLETE + " TEXT, " +
-            "PRIMARY KEY("  + PACKAGE_ID + "),"+ "FOREIGN KEY(" + PACKAGE_REPORT_ID + ") REFERENCES " + DAILY_REPORT_TABLE + "(" + REPORT_ID + "),"+ "FOREIGN KEY(" + PACKAGE_PROFILE_ID_FOREIGN + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + PACKAGE_CUSTOMER_ID_FOREIGN + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+            PACKAGE_VALUE + " REAL, " + PACKAGE_EXPECTED_VALUE + " REAL, " + PACKAGE_BALANCE + " REAL, " + PACKAGE_STATUS + " TEXT, " + PACKAGE_CODE + " REAL, " + PACKAGE_ITEM + " TEXT, "+ PACKAGE_IS_COMPLETE + " TEXT, " + PACKAGE_DB_ID + " TEXT, "+ PACKAGE_COLLECTION_STATUS + " TEXT, " +
+            "PRIMARY KEY("  + PACKAGE_DB_ID + "),"+ "FOREIGN KEY(" + PACKAGE_REPORT_ID + ") REFERENCES " + DAILY_REPORT_TABLE + "(" + REPORT_ID + "),"+ "FOREIGN KEY(" + PACKAGE_PROFILE_ID_FOREIGN + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + PACKAGE_CUSTOMER_ID_FOREIGN + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
     private static int count;
 
 
@@ -104,6 +106,7 @@ public class SkyLightPackage implements Parcelable, Serializable {
     private Customer packageCustomer;
     boolean packageCompleted;
     private String packageTellerName;
+    private String packageCollectionStatus;
 
     {
         Boolean.parseBoolean("false");
@@ -355,6 +358,14 @@ public class SkyLightPackage implements Parcelable, Serializable {
 
     public void setPackageAmtRem(double packageAmtRem) {
         this.packageAmtRem = packageAmtRem;
+    }
+
+    public String getPackageCollectionStatus() {
+        return packageCollectionStatus;
+    }
+
+    public void setPackageCollectionStatus(String packageCollectionStatus) {
+        this.packageCollectionStatus = packageCollectionStatus;
     }
 
 

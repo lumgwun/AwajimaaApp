@@ -24,10 +24,11 @@ public class Payee implements Serializable, Parcelable {
     public static final String PAYEE_CUS_ID = "payee_Cus_ID";
     public static final String PAYEE_PROF_ID = "payee_Prof_ID";
     public static final String PAYEE_AMOUNT = "payee_Amount";
+    public static final String PAYEE_DB_ID = "payee_DB_ID";
 
 
-    public static final String CREATE_PAYEES_TABLE = "CREATE TABLE IF NOT EXISTS " + PAYEES_TABLE + " (" + PAYEE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT  , " + PAYEE_CUS_ID + " INTEGER , " + PAYEE_PROF_ID + " INTEGER , " +
-            PAYEE_NAME + " TEXT, " + PAYEE_AMOUNT + " REAL , "+ "FOREIGN KEY(" + PAYEE_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," + "FOREIGN KEY(" + PAYEE_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+    public static final String CREATE_PAYEES_TABLE = "CREATE TABLE IF NOT EXISTS " + PAYEES_TABLE + " (" + PAYEE_ID + " INTEGER   , " + PAYEE_CUS_ID + " INTEGER , " + PAYEE_PROF_ID + " INTEGER , " +
+            PAYEE_NAME + " TEXT, " + PAYEE_AMOUNT + " REAL , "+ PAYEE_DB_ID + " INTEGER PRIMARY KEY AUTOINCREMENT , "+ "FOREIGN KEY(" + PAYEE_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," + "FOREIGN KEY(" + PAYEE_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
 
     private String payeeName;

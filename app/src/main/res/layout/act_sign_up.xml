@@ -432,7 +432,7 @@
                         android:paddingLeft="10dp"
                         android:background="@drawable/rect6h"
                         android:drawableStart="@drawable/ic_icon_foreground"
-                        android:entries="@array/officeBranch33"
+                        android:entries="@array/state"
                         android:padding="30dp"
                         android:textSize="20sp"
                         android:layout_gravity="center_vertical|start"

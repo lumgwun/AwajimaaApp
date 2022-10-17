@@ -38,12 +38,13 @@ public class GroupAccount implements Parcelable, Serializable {
     public static final String GRPA_PROFID = "GRPP_Acct_Prof_ID";
 
     public static final String GRPP_ACCT_PROFILE_ID = "GRPP_Acct_Prof_ID";
+    public static final String GRPA_DBID = "GRPP_Acct_DB_ID";
 
 
     public static final String CREATE_GRP_ACCT_TABLE = "CREATE TABLE IF NOT EXISTS " + GRP_ACCT_TABLE + " (" + GRPA_ID + " INTEGER, " + GRPP_ACCT_PROFILE_ID + " INTEGER , " +
             GRPA_TITTLE + " TEXT, " + GRPA_PURPOSE + " TEXT, "+ GRPA_SURNAME + " TEXT, " + GRPA_FIRSTNAME + " TEXT, " + GRPA_EMAIL + " TEXT, " + GRPA_PHONE + " TEXT, " +
             GRPA_START_DATE + " TEXT, " + GRPA_END_DATE + " TEXT, " + GRPA_BALANCE + " REAL, "+ GRPA_STATUS + " TEXT, " +
-            ISCOMPLETE + " REAL, " + HASCARRIED + " REAL, " + "PRIMARY KEY(" +GRPA_ID + "), " +"FOREIGN KEY(" + GRPP_ACCT_PROFILE_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+            ISCOMPLETE + " REAL, " + HASCARRIED + " REAL, "  + GRPA_DBID + " INTEGER, "+ "PRIMARY KEY(" +GRPA_DBID + "), " +"FOREIGN KEY(" + GRPP_ACCT_PROFILE_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
 
     public static final String CREATE_GRP_ACCT_PROFILE_TABLE = "CREATE TABLE IF NOT EXISTS " + GRP_PROFILE_TABLE + " (" + GRPP_ID + " INTEGER, " + GRPP_PROFILE_ID + " INTEGER , " +

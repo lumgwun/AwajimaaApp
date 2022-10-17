@@ -14,11 +14,17 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blongho.country_data.Currency;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.MultiTransformation;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.mikepenz.materialdrawer.view.BezelImageView;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Utils;
 import com.skylightapp.Customers.CusPackageList;
 import com.skylightapp.R;
+import com.skylightapp.SignUpAct;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -69,19 +75,21 @@ public class MarketBizRecyAdapter extends RecyclerView.Adapter<MarketBizRecyAdap
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView desc, brandName, bizMarketID,packageAmount, bizLogo,customerID;
-        public final BezelImageView ImageIcon;
+        public TextView desc, brandName, bizMarketID,packageAmount,customerID;
+        public final BezelImageView bizLogo,bizStatusIcon;
         private TextView bizDateJoined, bizState,profileManager, bizRevenueAmt,grandTotalAmount, bizType,duration,packageID;
         public AppCompatButton btnMore;
         LinearLayoutCompat p_01,p_41;
 
         public RecyclerViewHolder(@NonNull View convertView) {
             super(convertView);
-            ImageIcon = convertView.findViewById(R.id.thumbnail_mb);
             brandName = convertView.findViewById(R.id.mb_name);
+            bizStatusIcon = convertView.findViewById(R.id.thumbnail_);
+            bizLogo = convertView.findViewById(R.id.thumbnail_mb);
+
             bizType = convertView.findViewById(R.id.type_mb);
             desc = convertView.findViewById(R.id.mb_desc);
-            bizLogo = convertView.findViewById(R.id.thumbnail_);
+
             bizState = convertView.findViewById(R.id.mb_state);
             bizDateJoined = convertView.findViewById(R.id.mb_date_joined);
             bizRevenueAmt = convertView.findViewById(R.id.mb_revenue);
@@ -108,20 +116,29 @@ public class MarketBizRecyAdapter extends RecyclerView.Adapter<MarketBizRecyAdap
             holder.bizType.setText(MessageFormat.format("Type:{0}", marketBusiness.getBizType()));
             holder.brandName.setText(MessageFormat.format("Brand Name:", marketBusiness.getBizBrandname()));
             holder.desc.setText(MessageFormat.format("Desc:{0}", marketBusiness.getBizDescription()));
-            holder.bizLogo.setText(MessageFormat.format("Biz Logo:{0},{1}", marketBusiness.bizPicture));
             holder.bizState.setText(MessageFormat.format("State:{0}", marketBusiness.getBizState()));
             holder.bizDateJoined.setText(MessageFormat.format("Joined date:{0}", marketBusiness.getDateOfJoin()));
             holder.bizRevenueAmt.setText(MessageFormat.format("Revenue Amount: curCode{0}", String.format("%.2f", marketBusiness.getMarketBizRevenue())));
             holder.bizMarketID.setText(MessageFormat.format("Market ID:{0}", String.valueOf(marketBusiness.getBizMarketID())));
+            Glide.with(mcontext)
+                    .asBitmap()
+                    .load(marketBusiness.bizPicture)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .error(R.drawable.ic_alert)
+                    //.listener(listener)
+                    .skipMemoryCache(true)
+                    .fitCenter()
+                    .centerCrop()
+                    .into(holder.bizLogo);
 
             if (bizStatus.equalsIgnoreCase("Verified")) {
-                holder.ImageIcon.setImageResource(R.drawable.verified3);
+                holder.bizStatusIcon.setImageResource(R.drawable.verified3);
                 holder.brandName.setTextColor(Color.BLACK);
             } else if (bizStatus .equalsIgnoreCase("unVerified")) {
-                holder.ImageIcon.setImageResource(R.drawable.unverified);
+                holder.bizStatusIcon.setImageResource(R.drawable.unverified);
                 holder.brandName.setTextColor(Color.RED);
             } else if (bizStatus.equalsIgnoreCase("")) {
-                holder.ImageIcon.setImageResource(R.drawable.ic_add_business);
+                holder.bizStatusIcon.setImageResource(R.drawable.ic_add_business);
                 holder.brandName.setTextColor(android.R.color.holo_blue_dark);
             }
 
@@ -143,6 +160,6 @@ public class MarketBizRecyAdapter extends RecyclerView.Adapter<MarketBizRecyAdap
 
     }
     public interface OnItemsClickListener{
-        void onItemClick(MarketBusiness marketBusiness);
+        void onBizClick(MarketBusiness marketBusiness);
     }
 }

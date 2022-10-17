@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/shape_rect12a"
+    android:layout_height="match_parent"
+    tools:context="com.skylightapp.Markets.SendMultiSendeeMAct">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="25sp"
+                android:textAlignment="center"
+                android:gravity="center_horizontal"
+                android:id="@+id/Messe7"
+                android:layout_marginBottom="10dp"
+                android:text="Awajima Multi Messenger"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:id="@+id/laFrom2"
+                android:background="@drawable/shape_rect13b"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select Profile to send From"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="30dp"
+                    android:entries="@array/Awajima_From_type"
+                    android:id="@+id/spnPFr"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <androidx.core.widget.ContentLoadingProgressBar
+                android:id="@+id/progressSDF"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center|bottom"
+                android:layout_marginBottom="20dp"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp"
+                android:id="@+id/deeName"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Sendee's Name:"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:text="or"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/layoutUType"
+                android:background="@drawable/shape_rect13b"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:textAlignment="center"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="match_parent"
+                    android:padding="30dp"
+                    android:spinnerMode="dropdown"
+                    android:entries="@array/Awajima_To_type"
+                    android:textAlignment="center"
+                    android:id="@+id/deeUserType"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/laCus"
+                android:visibility="invisible"
+                android:background="@drawable/shape_rect13b"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select from Customers"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:textAlignment="center"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <com.skylightapp.MarketClasses.MultiSelCusSpinner
+                    android:layout_width="match_parent"
+                    android:padding="30dp"
+                    android:textAlignment="center"
+                    android:id="@+id/deeCus"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:visibility="invisible"
+                android:id="@+id/laTeller"
+                android:background="@drawable/shape_rect13b"
+                android:layout_marginTop="20dp"
+                android:padding="20dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select from My Tellers"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <com.skylightapp.MarketClasses.MultiSelMarketTellerSp
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="30dp"
+                    android:id="@+id/deeCM"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:visibility="invisible"
+                android:background="@drawable/shape_rect13b"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:id="@+id/laAdmin"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select from Biz Admin"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="30dp"
+                    android:id="@+id/deeAdmin"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:visibility="invisible"
+                android:id="@+id/laDonors"
+                android:background="@drawable/shape_rect13b"
+                android:layout_marginTop="20dp"
+                android:padding="20dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select from My Donor"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <com.skylightapp.MarketClasses.MultiSelDonorSpinner
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="30dp"
+                    android:id="@+id/deeDonor"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:visibility="invisible"
+                android:id="@+id/laOffice"
+                android:background="@drawable/shape_rect13b"
+                android:padding="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select from Office Branch"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <com.skylightapp.MarketClasses.MultiSelOfficeSpinner
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="30dp"
+                    android:id="@+id/deeOff"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:visibility="invisible"
+                android:id="@+id/laPartners"
+                android:background="@drawable/shape_rect13b"
+                android:padding="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select from Partners"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <com.skylightapp.MarketClasses.MultiSelPatnersSp
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="30dp"
+                    android:id="@+id/eePartners"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:visibility="invisible"
+                android:id="@+id/laRegulators"
+                android:background="@drawable/shape_rect13b"
+                android:padding="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select from Regulators"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <com.skylightapp.MarketClasses.MultiSelRegulatorSpn
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="30dp"
+                    android:id="@+id/deeReg"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:id="@+id/laBiz"
+                android:visibility="invisible"
+                android:background="@drawable/shape_rect13b"
+                android:layout_marginTop="20dp"
+                android:padding="20dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select from All Busineses"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <com.skylightapp.MarketClasses.MultiSelBizSpinner
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="30dp"
+                    android:id="@+id/deeBiz"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:visibility="invisible"
+                android:id="@+id/laMarkets"
+                android:background="@drawable/shape_rect13b"
+                android:layout_marginTop="20dp"
+                android:padding="20dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select from All Markets"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <com.skylightapp.MarketClasses.MultiSelMarketSpinner
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="30dp"
+                    android:id="@+id/deeMarkets"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:visibility="invisible"
+                android:background="@drawable/shape_rect13b"
+                android:layout_marginTop="20dp"
+                android:padding="20dp"
+                android:id="@+id/layoutMAdm"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select from Market Admin"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <com.skylightapp.MarketClasses.MultiSelMarketAdminSp
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="30dp"
+                    android:id="@+id/SdeeAA"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:visibility="invisible"
+                android:background="@drawable/shape_rect13b"
+                android:layout_marginTop="20dp"
+                android:padding="20dp"
+                android:id="@+id/laBDeal"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select from Biz Deals"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <com.skylightapp.MarketClasses.MultiSelBizDealSp
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="30dp"
+                    android:id="@+id/Spn_dealBiz"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/rect_their_message"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:layout_width="match_parent"
+                    android:padding="20dp"
+                    android:ems="2"
+                    android:inputType="textShortMessage"
+                    android:textStyle="bold"
+                    android:id="@+id/m_Purpose"
+                    android:hint="Purpose of Message"
+                    android:textColorHint="@android:color/holo_orange_dark"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/rect_their_message"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:layout_width="match_parent"
+                    android:padding="20dp"
+                    android:ems="2"
+                    android:inputType="textShortMessage"
+                    android:textStyle="bold"
+                    android:id="@+id/message_Edt"
+                    android:hint="type the message here"
+                    android:textColorHint="@android:color/holo_orange_dark"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:id="@+id/SdeeSend"
+                android:padding="20dp"
+                android:text="Send"
+                android:onClick="sendMultiPush"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rect11"
+                android:drawableTop="@drawable/ic_send"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp"
+                android:layout_marginTop="200dp"
+                android:gravity="center_horizontal"
+                android:textAlignment="center"
+                android:text="Powered By Lumgwun SG"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </ScrollView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,9 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Customers.CusMessageAct">
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="1dp"
+    app:circularflow_defaultAngle="10"
+    android:background="@drawable/rect_their4b"
+    tools:context="com.skylightapp.Customers.CusMessageAct">
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:layout_width="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/pb_cus"
+        android:layout_height="wrap_content"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:id="@+id/first_scroll3"
+        android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.scwang.wave.MultiWaveHeader
+                android:id="@+id/waveHeader66"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:scaleY="1"
+                app:mwhVelocity="2.5"
+                app:mwhProgress="1"
+                app:mwhStartColor="@color/colorPrimaryDark"
+                app:mwhCloseColor="@color/gray_10"
+                app:mwhIsRunning="true"
+                app:mwhGradientAngle="360"
+                app:mwhWaveHeight="50dp"
+                app:mwhColorAlpha="0.2"
+                app:mwhWaves="MultiWave"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txt_name_cu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:gravity="center_horizontal"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="10dp"
+                android:text="Emeka Nnamani"
+                android:visibility="visible"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                android:textColor="@color/colorPrimary" />
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:isScrollContainer="true"
+                android:orientation="vertical"
+                android:scrollbarStyle="insideInset"
+                android:scrollbarSize="5dp"
+                android:id="@+id/p_message_select"
+                android:background="@drawable/rect_their_message"
+                android:scrollIndicators="right"
+                android:scrollbars="vertical"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/send_name_cu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center_horizontal"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Select who to send to"
+                    android:visibility="visible"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                    android:textColor="@color/colorPrimary" />
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spn_biz"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:padding="40dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:textColorHint="@color/purple_500"
+                    android:background="@drawable/rect6g"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginBottom="20dp"
+                    android:textAlignment="center" />
+
+
+
+                <!-- What is this ' 0.503 number? -->
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/send_purpose"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center_horizontal"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Select the Purpose"
+                    android:visibility="visible"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                    android:textColor="@color/colorPrimary" />
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spn_select_p"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:padding="40dp"
+                    android:autofillHints="my password"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:entries="@array/purposeOfMessage"
+                    android:textColorHint="@color/purple_500"
+                    android:background="@drawable/rect6g"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginBottom="20dp"
+                    android:textAlignment="center" />
+
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edt_Cus_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:ems="10"
+                android:textColorHint="@color/purple_500"
+                android:padding="40dp"
+                android:autofillHints="username"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/rect6h"
+                android:hint="Message"
+                android:inputType="text"
+                android:textAlignment="center" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_send_cus_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:text="Send Message"
+                android:onClick="senderSendMessage"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:textSize="20sp"
+                android:textColor="@color/purple_500"
+                android:padding="40dp"
+                android:background="@drawable/shape_layer_1a" />
+
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:textColor="@color/purple_500"
+                android:textStyle="italic"
+                android:text="or"
+                android:gravity="center_horizontal"
+                android:textAlignment="center"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_go_bk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:text="Go Back Home"
+                android:onClick="goToMyDO"
+                android:padding="40dp"
+                android:textAlignment="center"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/rect6h" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:textColor="@color/purple_500"
+                android:textStyle="italic"
+                android:id="@+id/poweredByLS"
+                android:text="Powered By Lumgwun Solutions Group"
+                android:gravity="center_horizontal"
+                android:textAlignment="center"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </ScrollView>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

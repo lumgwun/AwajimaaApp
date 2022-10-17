@@ -6,8 +6,7 @@
     android:orientation="vertical"
     android:background="@drawable/shape_rect12a"
     android:layout_height="match_parent"
-    tools:context=".Admins.SendUserMessageAct">
-    <include layout="@layout/tool_bar_11c"/>
+    tools:context=".Admins.SendSingleUserMAct">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -25,8 +24,105 @@
                 android:gravity="center_horizontal"
                 android:id="@+id/Messenger7"
                 android:layout_marginBottom="10dp"
-                android:text="Skylight Messenger"
+                android:text="Awajima App Messenger"
                 android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:id="@+id/layoutFrom2"
+                android:background="@drawable/shape_rect13b"
+                android:padding="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select Profile to send From"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="30dp"
+                    android:entries="@array/Awajima_From_type"
+                    android:id="@+id/spnPSendFrom"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:visibility="invisible"
+                android:id="@+id/layoutBiz"
+                android:background="@drawable/shape_rect13b"
+                android:layout_marginTop="20dp"
+                android:padding="20dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select from My Busineses"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="30dp"
+                    android:id="@+id/SMyBiz"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:visibility="invisible"
+                android:id="@+id/layoutMyTellers"
+                android:background="@drawable/shape_rect13b"
+                android:layout_marginTop="20dp"
+                android:padding="20dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select Personal"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="30dp"
+                    android:id="@+id/SMyTellers"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+            <androidx.core.widget.ContentLoadingProgressBar
+                android:id="@+id/pBarM"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center|bottom"
+                android:layout_marginBottom="20dp"
+                android:visibility="gone" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:textColor="@color/colorPrimaryDark"
@@ -35,29 +131,6 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:text="Sendee's Name:"
-                android:layout_height="wrap_content"/>
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="15sp"
-                android:id="@+id/SenddeePhone"
-                android:layout_marginBottom="10dp"
-                android:text="Sendee's PhoneNo:"
-                android:layout_height="wrap_content"/>
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="15sp"
-                android:id="@+id/SenddeeCusID"
-                android:layout_marginBottom="10dp"
-                android:text="Sendee's ID:"
-                android:layout_height="wrap_content"/>
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="15sp"
-                android:id="@+id/SenddeeProfileID"
-                android:layout_marginBottom="10dp"
                 android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -75,14 +148,43 @@
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:orientation="vertical"
-                android:id="@+id/layoutAllCus"
+                android:id="@+id/layoutUType"
                 android:background="@drawable/shape_rect13b"
                 android:layout_height="wrap_content">
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="15sp"
-                    android:text="Select from all Customers"
+                    android:text="Select"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:textAlignment="center"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="match_parent"
+                    android:padding="30dp"
+                    android:spinnerMode="dropdown"
+                    android:entries="@array/Awajima_To_type"
+                    android:textAlignment="center"
+                    android:id="@+id/SenddeeUserType"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/layoutMyCus"
+                android:visibility="invisible"
+                android:background="@drawable/shape_rect13b"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select from My Customers"
                     android:layout_marginStart="2dp"
                     android:layout_marginEnd="5dp"
                     android:textAlignment="center"
@@ -102,6 +204,7 @@
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:weightSum="2"
+                android:visibility="invisible"
                 android:id="@+id/layoutAllTeller"
                 android:background="@drawable/shape_rect13b"
                 android:layout_marginTop="20dp"
@@ -111,7 +214,7 @@
                     android:layout_width="0dp"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="15sp"
-                    android:text="Select from All Tellers"
+                    android:text="Select from My Tellers"
                     android:layout_marginStart="2dp"
                     android:layout_marginEnd="5dp"
                     android:layout_weight="1"
@@ -131,16 +234,17 @@
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:weightSum="2"
+                android:visibility="invisible"
                 android:background="@drawable/shape_rect13b"
                 android:layout_marginTop="20dp"
                 android:padding="20dp"
-                android:id="@+id/layoutAllAdmin"
+                android:id="@+id/layoutMyAdmin"
                 android:layout_height="wrap_content">
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="0dp"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="15sp"
-                    android:text="Select from All Admin"
+                    android:text="Select from Biz Admin"
                     android:layout_marginStart="2dp"
                     android:layout_marginEnd="5dp"
                     android:layout_weight="1"
@@ -155,11 +259,42 @@
                     android:layout_height="wrap_content"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:visibility="invisible"
+                android:id="@+id/layoutMyDonors"
+                android:background="@drawable/shape_rect13b"
+                android:layout_marginTop="20dp"
+                android:padding="20dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select from My Donor"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="30dp"
+                    android:id="@+id/SenddeeDonor"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:weightSum="2"
+                android:visibility="invisible"
                 android:id="@+id/layoutOffice"
                 android:background="@drawable/shape_rect13b"
                 android:padding="20dp"
@@ -179,11 +314,175 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:padding="30dp"
-                    android:entries="@array/officeBranch33"
-                    android:id="@+id/SendeeOfficeBranch"
+                    android:id="@+id/SendeeOfficeB"
                     android:layout_marginEnd="2dp"
                     android:layout_height="wrap_content"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:visibility="invisible"
+                android:id="@+id/layoutPartners"
+                android:background="@drawable/shape_rect13b"
+                android:padding="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select from Partners"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="30dp"
+                    android:id="@+id/SendeePartners"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:visibility="invisible"
+                android:id="@+id/layoutRegulators"
+                android:background="@drawable/shape_rect13b"
+                android:padding="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select from Regulators"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="30dp"
+                    android:id="@+id/SendeeRegulators"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:visibility="invisible"
+                android:id="@+id/layoutAllBiz"
+                android:background="@drawable/shape_rect13b"
+                android:layout_marginTop="20dp"
+                android:padding="20dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select from My Busineses"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="30dp"
+                    android:id="@+id/SenddeeAllBiz"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:visibility="invisible"
+                android:id="@+id/layoutAllMarkets"
+                android:background="@drawable/shape_rect13b"
+                android:layout_marginTop="20dp"
+                android:padding="20dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select from All Markets"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="30dp"
+                    android:id="@+id/SenddeeMarkets"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:visibility="invisible"
+                android:background="@drawable/shape_rect13b"
+                android:layout_marginTop="20dp"
+                android:padding="20dp"
+                android:id="@+id/layoutMarketA"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="Select from Market Admin"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="30dp"
+                    android:id="@+id/SenddeeAA"
+                    android:layout_marginEnd="2dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/rect_their_message"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:layout_width="match_parent"
+                    android:padding="20dp"
+                    android:ems="2"
+                    android:inputType="textShortMessage"
+                    android:textStyle="bold"
+                    android:id="@+id/mess_Purpose"
+                    android:hint="Purpose of Message"
+                    android:textColorHint="@android:color/holo_orange_dark"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -208,6 +507,7 @@
                 android:id="@+id/SenddeeSubmit"
                 android:padding="20dp"
                 android:text="Send"
+                android:onClick="SendSinglePush"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/rect11"
                 android:drawableTop="@drawable/ic_send"

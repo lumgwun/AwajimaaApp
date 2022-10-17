@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.MarketClasses.GridSpacingDeco;
 import com.skylightapp.MarketClasses.Market;
 import com.skylightapp.MarketClasses.MarketAdapter;
 import com.skylightapp.R;
@@ -31,6 +32,9 @@ public class MarketHub extends AppCompatActivity implements MarketAdapter.OnMark
     private MarketAdapter mAdapter;
     private DBHelper dbHelper;
     private int marketCount;
+    int spanCount = 3; // 3 columns
+    int spacing = 50; // 50px
+    boolean includeEdge = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,7 @@ public class MarketHub extends AppCompatActivity implements MarketAdapter.OnMark
         dbHelper= new DBHelper(this);
         RecyclerView marketRecyclerView = (RecyclerView)findViewById(R.id.markets_list);
         GridLayoutManager gridLayout = new GridLayoutManager(this, 2);
+        marketRecyclerView.addItemDecoration(new GridSpacingDeco(spanCount, spacing, includeEdge));
         marketRecyclerView.setLayoutManager(gridLayout);
         marketRecyclerView.setHasFixedSize(true);
         marketArrayList = new ArrayList<Market>();
@@ -53,7 +58,84 @@ public class MarketHub extends AppCompatActivity implements MarketAdapter.OnMark
         tv_languages = findViewById(R.id.tv_lang);
         listeners();
         getTestData();
+
     }
+    private void listeners() {
+
+        dbHelper= new DBHelper(this);
+        marketArrayList = new ArrayList<Market>();
+        dbHelper.openDataBase();
+        getTestData();
+        mAdapter = new MarketAdapter(this, getTestData());
+        marketCount=marketArrayList.size();
+        etSearch = findViewById(R.id.et_searchCom);
+        btn_close1 = findViewById(R.id.btn_close1);
+        btn_close2 = findViewById(R.id.btn_close2);
+        btn_search1 = findViewById(R.id.btn_search1);
+        lout_2 = findViewById(R.id.lout_2);
+        lout_1 = findViewById(R.id.lout_1);
+        tv_languages = findViewById(R.id.tv_languages);
+
+
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                keyWord = s.toString();
+
+                if (keyWord.isEmpty()) {
+                    mAdapter.updateItems(marketArrayList);
+                } else {
+                    searchMarkets();
+                }
+
+
+            }
+        });
+
+        btn_search1.setOnClickListener(v -> {
+
+
+            lout_1.setVisibility(View.GONE);
+            lout_2.setVisibility(View.VISIBLE);
+
+
+        });
+        btn_close2.setOnClickListener(v -> {
+            lout_1.setVisibility(View.VISIBLE);
+            lout_2.setVisibility(View.GONE);
+
+        });
+
+        btn_close1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+
+            }
+        });
+        if(mAdapter !=null){
+            mAdapter.setWhenClickListener(new MarketAdapter.OnMarketItemsClickListener() {
+                @Override
+                public void onItemClick(Market market) {
+
+                }
+            });
+
+        }
+
+
+    }
+
     public List<Market> getTestData() {
         marketArrayList = new ArrayList<Market>();
         marketArrayList.add(new Market(R.drawable.ic_add_business, "Creek Road Market", "Fish and Sea food Market","Phalga","Rivers State"));
@@ -117,84 +199,9 @@ public class MarketHub extends AppCompatActivity implements MarketAdapter.OnMark
 
         return marketArrayList;
     }
-    private void listeners() {
-
-        dbHelper= new DBHelper(this);
-        marketArrayList = new ArrayList<Market>();
-        dbHelper.openDataBase();
-        getTestData();
-        mAdapter = new MarketAdapter(this, getTestData());
-        marketCount=marketArrayList.size();
-        etSearch = findViewById(R.id.et_searchCom);
-        btn_close1 = findViewById(R.id.btn_close1);
-        btn_close2 = findViewById(R.id.btn_close2);
-        btn_search1 = findViewById(R.id.btn_search1);
-        lout_2 = findViewById(R.id.lout_2);
-        lout_1 = findViewById(R.id.lout_1);
-        tv_languages = findViewById(R.id.tv_languages);
 
 
-        etSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                keyWord = s.toString();
-
-                if (keyWord.isEmpty()) {
-                    mAdapter.updateItems(marketArrayList);
-                } else {
-                    searchCommodities();
-                }
-
-
-            }
-        });
-
-        btn_search1.setOnClickListener(v -> {
-
-
-            lout_1.setVisibility(View.GONE);
-            lout_2.setVisibility(View.VISIBLE);
-
-
-        });
-        btn_close2.setOnClickListener(v -> {
-            lout_1.setVisibility(View.VISIBLE);
-            lout_2.setVisibility(View.GONE);
-
-        });
-
-        btn_close1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-
-            }
-        });
-        if(mAdapter !=null){
-            mAdapter.setWhenClickListener(new MarketAdapter.OnMarketItemsClickListener() {
-                @Override
-                public void onItemClick(Market market) {
-
-                }
-            });
-
-        }
-
-
-    }
-
-
-    private void searchCommodities() {
+    private void searchMarkets() {
         if(marketArrayList !=null){
             marketArrayList.clear();
 

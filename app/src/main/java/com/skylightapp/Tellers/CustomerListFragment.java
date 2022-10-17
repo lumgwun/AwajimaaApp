@@ -112,22 +112,22 @@ public class CustomerListFragment extends Fragment {
             recyclerView.setAdapter(new CusRowItemAdapt(getContext(), customerList));
 
         }
-        SharedPrefUserName=sharedPreferences.getString("USER_NAME", "");
-        SharedPrefUserPassword=sharedPreferences.getString("USER_PASSWORD", "");
+        SharedPrefUserName=sharedPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserPassword=sharedPreferences.getString("PROFILE_PASSWORD", "");
         SharedPrefCusID=sharedPreferences.getString("CUSTOMER_ID", "");
         SharedPrefUserMachine=sharedPreferences.getString("machine", "");
         SharedPrefProfileID=sharedPreferences.getString("PROFILE_ID", "");
-        SharedPrefSurName=sharedPreferences.getString("SURNAME_KEY", "");
-        SharedPrefFirstName=sharedPreferences.getString("FIRST_NAME_KEY", "");
-        SharedPrefEmail=sharedPreferences.getString("EMAIL_ADDRESS", "");
+        SharedPrefSurName=sharedPreferences.getString("PROFILE_SURNAME", "");
+        SharedPrefFirstName=sharedPreferences.getString("PROFILE_FIRSTNAME", "");
+        SharedPrefEmail=sharedPreferences.getString("PROFILE_EMAIL", "");
         SharedPrefPhone=sharedPreferences.getString("PHONE_NUMBER_KEY", "");
-        SharedPrefAddress=sharedPreferences.getString("ADDRESS_KEY", "");
-        SharedPrefDOB=sharedPreferences.getString("DATE_OF_BIRTH_KEY", "");
-        SharedPrefRole=sharedPreferences.getString("USER_ROLE", "");
-        SharedPrefGender=sharedPreferences.getString("GENDER_KEY", "");
-        SharedPrefJoinedDate=sharedPreferences.getString("USER_DATE_JOINED", "");
-        SharedPrefOffice=sharedPreferences.getString("CHOSEN_OFFICE", "");
-        SharedPrefState=sharedPreferences.getString("STATE_KEY", "");
+        SharedPrefAddress=sharedPreferences.getString("PROFILE_ADDRESS", "");
+        SharedPrefDOB=sharedPreferences.getString("PROFILE_DOB", "");
+        SharedPrefRole=sharedPreferences.getString("PROFILE_ROLE", "");
+        SharedPrefGender=sharedPreferences.getString("PROFILE_GENDER", "");
+        SharedPrefJoinedDate=sharedPreferences.getString("PROFILE_DATE_JOINED", "");
+        SharedPrefOffice=sharedPreferences.getString("PROFILE_OFFICE", "");
+        SharedPrefState=sharedPreferences.getString("PROFILE_STATE", "");
 
         customerId=sharedPreferences.getString("CUSTOMER_ID", "");
         SharedPrefAcctNo=sharedPreferences.getString("ACCOUNT_NO", "");

@@ -32,6 +32,7 @@ import static com.skylightapp.Classes.Customer.CUSTOMER_STATUS;
 import static com.skylightapp.Classes.Customer.CUSTOMER_SURNAME;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
 import static com.skylightapp.Classes.Customer.CUSTOMER_USER_NAME;
+import static com.skylightapp.Classes.Customer.CUS_BIZ_ID1;
 import static com.skylightapp.Classes.CustomerDailyReport.DAILY_REPORT_TABLE;
 import static com.skylightapp.Classes.CustomerDailyReport.REPORT_PROF_ID_FK;
 import static com.skylightapp.Classes.Loan.LOAN_PROF_ID;
@@ -1145,7 +1146,17 @@ public class CusDAO extends DBHelperDAO{
     }
 
 
-
-
-
+    public ArrayList<Customer> getCusForBiz(long bizID) {
+        Customer customer = new Customer();
+        ArrayList<Customer> customers = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] columns = {CUSTOMER_SURNAME,CUSTOMER_FIRST_NAME,CUSTOMER_OFFICE,CUSTOMER_ID,CUSTOMER_DATE_JOINED,CUS_BIZ_ID1};
+        String selection = CUS_BIZ_ID1 + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(bizID)};
+        Cursor cursor = db.query(CUSTOMER_TABLE, columns, selection, selectionArgs, null, null, null);
+        getCustomerFromCursor(customers, cursor);
+        cursor.close();
+        db.close();
+        return customers;
+    }
 }

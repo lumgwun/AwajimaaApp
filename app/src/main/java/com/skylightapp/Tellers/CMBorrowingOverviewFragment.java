@@ -23,6 +23,7 @@ import com.skylightapp.Classes.BorrowingAdapter;
 import com.skylightapp.Classes.Loan;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
@@ -134,7 +135,7 @@ public class CMBorrowingOverviewFragment extends Fragment {
     }
     private void cMHome() {
         Intent usersIntent = new Intent(getContext(),
-                TellerHomeChoices.class);
+                LoginDirAct.class);
         usersIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         Toast.makeText(this.getActivity(), "Taking you to the Teller Dashboard", Toast.LENGTH_SHORT).show();

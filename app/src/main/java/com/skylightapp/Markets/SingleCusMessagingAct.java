@@ -53,7 +53,6 @@ import com.quickblox.users.QBUsers;
 import com.skylightapp.Adapters.AccountAdapter2;
 import com.skylightapp.Adapters.OfficeAdapter;
 import com.skylightapp.Admins.AdminBankDeposit;
-import com.skylightapp.Admins.SendUserMessageAct;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.AdminUser;
 import com.skylightapp.Classes.Customer;
@@ -110,7 +109,6 @@ import static com.skylightapp.BuildConfig.QUICKBLOX_ACCT_KEY;
 import static com.skylightapp.BuildConfig.QUICKBLOX_APP_ID;
 import static com.skylightapp.BuildConfig.QUICKBLOX_AUTH_KEY;
 import static com.skylightapp.BuildConfig.QUICKBLOX_SECRET_KEY;
-import static com.skylightapp.Classes.ImageUtil.TAG;
 
 public class SingleCusMessagingAct extends AppCompatActivity implements TextWatcher {
     Bundle bundle,userBundle;

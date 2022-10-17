@@ -1,5 +1,6 @@
 package com.skylightapp.Markets;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.ComponentName;
@@ -154,6 +155,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     private QBMessageStatusesManager qbMessageStatusesManager;
     private ChatMessageListener chatMessageListener = new ChatMessageListener();
     private SystemMessagesListener systemMessagesListener = new SystemMessagesListener();
+    private TypingStatusListener typingStatusListener;
     private QBSystemMessagesManager systemMessagesManager;
     private List<QBChatMessage> messagesList;
     private QBChatDialog qbChatDialog;
@@ -175,8 +177,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     private static final String AUTH_SECRET = QUICKBLOX_SECRET_KEY;
     private static final String ACCOUNT_KEY = QUICKBLOX_ACCT_KEY;
     private static final String SERVER_URL = "";
-    private ArrayList<BusinessDeal> businessDeals;
-    private ArrayList<BusinessDealSub> businessDealSubs;
+
     private static final String PREF_NAME = "skylight";
     private DBHelper dbHelper;
     Gson gson, gson1;
@@ -184,6 +185,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     Profile userProfile,  lastProfileUsed;
     private QBUser qbUser;
     private  FirebaseAuth firebaseAuth;
+    TextInputWatcher textInputWatcher;
     private FloatActionButton fabMilestones,fabAddMembers,fabTranx,fabTimelines,fabControl;
 
     public static void startForResultFromCall(Activity activity, int code, String dialogId, boolean isOpenFromCall) {
@@ -215,6 +217,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
         gson1= new Gson();
         qbUser= new QBUser();
         userProfile= new Profile();
+        textInputWatcher= new TextInputWatcher();
         firebaseAuth = FirebaseAuth.getInstance();
         cal = Calendar.getInstance();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
@@ -269,6 +272,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
         try {
             qbChatDialog.initForChat(QBChatService.getInstance());
             qbChatDialog.addMessageListener(chatMessageListener);
+            qbChatDialog.addIsTypingListener(typingStatusListener);
             setChatNameToActionBar();
         } catch (IllegalStateException | NullPointerException e) {
             Log.d(TAG, "initForChat error. Error message is : " + e.getMessage());
@@ -443,6 +447,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
         hideProgressDialog();
         chatAdapter.removeClickListeners();
         qbChatDialog.removeMessageListrener(chatMessageListener);
+        qbChatDialog.removeIsTypingListener(typingStatusListener);
         QBChatService.getInstance().removeConnectionListener(chatConnectionListener);
         chatConnectionListener = null;
         if (qbMessageStatusesManager != null) {
@@ -459,6 +464,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
         }
         if (qbChatDialog != null) {
             qbChatDialog.removeMessageListrener(chatMessageListener);
+            qbChatDialog.removeIsTypingListener(typingStatusListener);
         }
         getSharedPrefsHelper().delete(IS_IN_BACKGROUND);
     }
@@ -1004,12 +1010,11 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        textInputWatcher= new TextInputWatcher();
         typingStatus = findViewById(R.id.tv_typing_status);
 
         messageEditText = findViewById(R.id.et_chat_message);
-
-        // TODO Typing Status: 3/3 To add Typing Status functionality uncomment this string:
-        //messageEditText.addTextChangedListener(new TextInputWatcher());
+        messageEditText.addTextChangedListener(textInputWatcher);
 
         progressBar = findViewById(R.id.progress_chat);
         attachmentPreviewContainerLayout = findViewById(R.id.ll_attachment_preview_container);
@@ -1244,7 +1249,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     }
 
     private void setChatNameToActionBar() {
-        String chatName = QBDialogUtilsCon.getDialogName(getApplicationContext(), qbChatDialog);
+        String chatName = QBDialogUtilsCon.getDialogName(ChatActCon.this, qbChatDialog);
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setTitle(chatName);
@@ -1467,6 +1472,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     }
 
     private class MessageLongClickListenerImpl implements ChatAdapterConf.MessageLongClickListener {
+        @SuppressLint("MissingPermission")
         @Override
         public void onMessageLongClicked(int itemViewType, View view, QBChatMessage qbChatMessage) {
             Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);

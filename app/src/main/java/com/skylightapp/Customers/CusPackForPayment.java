@@ -59,6 +59,7 @@ public class CusPackForPayment extends AppCompatActivity implements PackageRecyc
     private PackageRecyclerAdapter packageRecyclerAdapter;
     private RecyclerView recyclerView;
     private  SkyLightPackage skyLightPackage;
+    private String collectionStatus;
     private ActivityResultLauncher<Intent> payNowStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
 
             new ActivityResultCallback<ActivityResult>() {
@@ -123,7 +124,8 @@ public class CusPackForPayment extends AppCompatActivity implements PackageRecyc
             }
 
         }
-        packages=dbHelper.getCustomerCompletePack(customerID,"completed");
+        collectionStatus="unCollected";
+        packages=dbHelper.getCustomerCompleteUnCollectedPack(customerID,"completed",collectionStatus);
 
         FloatingActionButton dashboard = findViewById(R.id.btnBackP);
 

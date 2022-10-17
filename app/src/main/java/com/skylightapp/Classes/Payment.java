@@ -33,12 +33,13 @@ public class Payment implements Parcelable,Serializable {
     public static final String PAYMENT_PROF_ID = "payment_Prof_ID";
     public static final String PAYMENT_ADMIN_ID = "payment_Admin_ID";
     public static final String PAYMENT_CUS_ID = "payment_Cus_ID";
+    public static final String PAYMENT_DB_ID = "payment_DB_ID";
 
 
-    public static final String CREATE_PAYMENT_TABLE = "CREATE TABLE IF NOT EXISTS " + PAYMENTS_TABLE + " (" + PAYMENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PAYMENT_PROF_ID + " INTEGER , " +
+    public static final String CREATE_PAYMENT_TABLE = "CREATE TABLE IF NOT EXISTS " + PAYMENTS_TABLE + " (" + PAYMENT_ID + " INTEGER , " + PAYMENT_PROF_ID + " INTEGER , " +
             PAYMENT_CUS_ID + " INTEGER , " + PAYMENT_ADMIN_ID + " INTEGER, " + PAYMENTTYPE + " TEXT, " + PAYMENT_AMOUNT + " REAL, " + PAYMENT_DATE + " TEXT, " + PAYMENT_APPROVAL_DATE + " TEXT, " +
             PAYMENT_APPROVER + " TEXT, " + PAYMENT_CODE + " REAL, " + PAYMENT_ACCOUNT + " INTEGER, " +
-            PAYMENT_ACCOUNT_TYPE + " TEXT, " + PAYMENT_OFFICE + " TEXT, " + PAYMENT_STATUS + " TEXT, " +"FOREIGN KEY(" + PAYMENT_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + PAYMENT_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+            PAYMENT_ACCOUNT_TYPE + " TEXT, " + PAYMENT_OFFICE + " TEXT, " + PAYMENT_STATUS + " TEXT, "+ PAYMENT_DB_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +"FOREIGN KEY(" + PAYMENT_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + PAYMENT_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
 
 

@@ -35,8 +35,8 @@ public class CusSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
         inflter = (LayoutInflater.from(applicationContext));
     }
 
-    public CusSpinnerAdapter(StocksTransferAct stocksTransferAct, int simple_spinner_item, ArrayList<Customer> customers) {
-        this.context = stocksTransferAct;
+    public CusSpinnerAdapter(Context applicationContext, int simple_spinner_item, ArrayList<Customer> customers) {
+        this.context = applicationContext;
         this.customerList = customers;
         this.layout = simple_spinner_item;
     }

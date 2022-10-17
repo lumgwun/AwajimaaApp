@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -273,12 +274,12 @@ public class BizCusDepositAct extends AppCompatActivity {
         json1 = userPreferences.getString("LastAdminUserUsed", "");
         adminUser = gson1.fromJson(json1, AdminUser.class);
         json2 = userPreferences.getString("LastUserProfileInfoUsed", "");
-        userProfileInfo = gson1.fromJson(json2, UserProfileInfo.class);
+        userProfileInfo = gson2.fromJson(json2, UserProfileInfo.class);
         json3 = userPreferences.getString("LastMarketBusinessUsed", "");
         marketBusiness = gson3.fromJson(json3, MarketBusiness.class);
 
         json4 = userPreferences.getString("LastMarketAdminUsed", "");
-        marketAdmin = gson1.fromJson(json4, MarketAdmin.class);
+        marketAdmin = gson4.fromJson(json4, MarketAdmin.class);
         bizNameBundle=getIntent().getExtras();
         if(bizNameBundle !=null){
             bizID=bizNameBundle.getInt("MARKET_BIZ_ID");
@@ -488,15 +489,17 @@ public class BizCusDepositAct extends AppCompatActivity {
 
                 }
 
-                if(selectedToFrom.isEmpty()){
-                    spnToFrom.setFocusable(true);
-                    return;
-                }else {
-                    adminDepositID = random.nextInt((int) (Math.random() * 1013) + 3511);
-                    intAdID = random.nextInt((int) (Math.random() * 1012) + 1511);
-                    processReport(adminDepositID,adminUser,senderProfileID, adminName,bizID,dateOfReport,userProfile, selectedBank,adminBankDeposits,selectedTranxType,amountEntered,officeBranchID);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+                    if(selectedToFrom.isEmpty()){
+                        spnToFrom.setFocusable(true);
+                        return;
+                    }else {
+                        adminDepositID = random.nextInt((int) (Math.random() * 1013) + 3511);
+                        intAdID = random.nextInt((int) (Math.random() * 1012) + 1511);
+                        processReport(adminDepositID,adminUser,senderProfileID, adminName,bizID,dateOfReport,userProfile, selectedBank,adminBankDeposits,selectedTranxType,amountEntered,officeBranchID);
 
 
+                    }
                 }
 
             }

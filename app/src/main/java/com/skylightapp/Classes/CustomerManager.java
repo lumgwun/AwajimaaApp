@@ -11,10 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.skylightapp.MarketClasses.MarketBusiness;
 
 import org.json.JSONObject;
 
@@ -31,69 +31,72 @@ import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 @Entity(tableName = CustomerManager.CUSTOMER_TELLER_TABLE)
 public class CustomerManager  implements Parcelable, Serializable , BaseColumns {
-    @Ignore
-    public static final String CUSTOMER_TELLER_ID = "ct_idT";
-    @Ignore
-    public static final String CUSTOMER_TELLER_SURNAME = "ct_surnameT";
-    @Ignore
-    public static final String CUSTOMER_TELLER_FIRST_NAME = "ct_first_nameT";
-    @Ignore
-    public static final String CUSTOMER_TELLER_PHONE_NUMBER = "ct_phone_numberT";
-    @Ignore
-    public static final String CUSTOMER_TELLER_EMAIL_ADDRESS = "ct_email_addressT";
-    @Ignore
-    public static final String CUSTOMER_TELLER_DOB = "ct_date_of_birthT";
-    @Ignore
-    public static final String CUSTOMER_TELLER_GENDER = "genderT";
-    @Ignore
-    public static final String CUSTOMER_TELLER_ADDRESS = "addressT";
-    @Ignore
-    public static final String CUSTOMER_TELLER_OFFICE = "chosen_officeT";
-    @Ignore
-    public static final String CUSTOMER_TELLER_DATE_JOINED = "date_joinedT";
-    @Ignore
-    public static final String CUSTOMER_TELLER_USER_NAME = "user_nameT";
-    @Ignore
-    public static final String CUSTOMER_TELLER_PASSWORD = "passwordT";
-    @Ignore
-    public static final String CUSTOMER_TELLER_NIN = "ninT";
-    @Ignore
-    public static final String CUSTOMER_TELLER_PIX = "pixT";
-    @Ignore
-    public static final String CUSTOMER_TELLER_STATUS = "StatusT";
-    @Ignore
-    public static final String CUSTOMER_TELLER_PROF_ID = "teller_Prof_ID";
 
-    @Ignore
+    public static final String CUSTOMER_TELLER_ID = "ct_idT";
+
+    public static final String CUSTOMER_TELLER_SURNAME = "ct_surnameT";
+
+    public static final String CUSTOMER_TELLER_FIRST_NAME = "ct_first_nameT";
+    //@Ignore
+    public static final String CUSTOMER_TELLER_PHONE_NUMBER = "ct_phone_numberT";
+    //@Ignore
+    public static final String CUSTOMER_TELLER_EMAIL_ADDRESS = "ct_email_addressT";
+    //@Ignore
+    public static final String CUSTOMER_TELLER_DOB = "ct_date_of_birthT";
+    //@Ignore
+    public static final String CUSTOMER_TELLER_GENDER = "genderT";
+    //@Ignore
+    public static final String CUSTOMER_TELLER_ADDRESS = "addressT";
+    //@Ignore
+    public static final String CUSTOMER_TELLER_OFFICE = "chosen_officeT";
+    //@Ignore
+    public static final String CUSTOMER_TELLER_DATE_JOINED = "date_joinedT";
+    //@Ignore
+    public static final String CUSTOMER_TELLER_USER_NAME = "user_nameT";
+    //@Ignore
+    public static final String CUSTOMER_TELLER_PASSWORD = "passwordT";
+    // @Ignore
+    public static final String CUSTOMER_TELLER_NIN = "ninT";
+    //@Ignore
+    public static final String CUSTOMER_TELLER_PIX = "pixT";
+    //@Ignore
+    public static final String CUSTOMER_TELLER_STATUS = "StatusT";
+    //@Ignore
+    public static final String CUSTOMER_TELLER_PROF_ID = "teller_Prof_ID";
+    public static final String CUSTOMER_TELLER_BIZ_ID = "teller_BIZ_ID";
+    public static final String CUSTOMER_TELLER_DB_ID = "teller_DB_ID";
+
+    //@Ignore
     public static final String WORKER_TELLER_PROF_ID = "worker_Prof_ID";
 
 
-    @Ignore
+    //@Ignore
     public static final String CUSTOMER_TELLER_TABLE = "tellers_table";
-    @Ignore
+    //@Ignore
     public static final String WORKER_TABLE = "workers_table";
-    @Ignore
+   //@Ignore
     public static final String WORKER = "workerName";
-    @Ignore
+    //@Ignore
     public static final String WORKER_ID = "worker_id";
-    @Ignore
+    public static final String WORKER_DB_ID = "worker_DB_id";
+    //@Ignore
 
-    public static final String CREATE_WORKERS_TABLE = "CREATE TABLE IF NOT EXISTS " + WORKER_TABLE + " ( " + WORKER_ID + " INTEGER ,  " + WORKER + " TEXT  , " +
-            WORKER_TELLER_PROF_ID + " INTEGER, " + "FOREIGN KEY(" + WORKER_TELLER_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + WORKER_ID  + "))";
+    public static final String CREATE_WORKERS_TABLE = "CREATE TABLE IF NOT EXISTS " + WORKER_TABLE + " ( " + WORKER_ID + " INTEGER ,  " + WORKER + " TEXT  , "+ WORKER_DB_ID + " TEXT, " +
+            WORKER_TELLER_PROF_ID + " INTEGER, " + "FOREIGN KEY(" + WORKER_TELLER_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + WORKER_DB_ID  + "))";
 
-    @Ignore
+    //@Ignore
     public static final String CREATE_CUSTOMERS_TELLER_TABLE = "CREATE TABLE IF NOT EXISTS " + CUSTOMER_TELLER_TABLE + " ( " + CUSTOMER_TELLER_ID + " INTEGER   ,  " + CUSTOMER_TELLER_PROF_ID + " INTEGER  , " +
             CUSTOMER_TELLER_SURNAME + " TEXT, " + CUSTOMER_TELLER_FIRST_NAME + " TEXT, " + CUSTOMER_TELLER_PHONE_NUMBER + " TEXT, " + CUSTOMER_TELLER_EMAIL_ADDRESS + " TEXT, " + CUSTOMER_TELLER_USER_NAME + " TEXT, " +
             CUSTOMER_TELLER_DOB + " TEXT, " + CUSTOMER_TELLER_GENDER + " TEXT, " + CUSTOMER_TELLER_ADDRESS + " TEXT, " + CUSTOMER_TELLER_OFFICE + " TEXT, " + CUSTOMER_TELLER_DATE_JOINED + " TEXT, " +
-            CUSTOMER_TELLER_PASSWORD + " TEXT, " + CUSTOMER_TELLER_NIN + " TEXT," + CUSTOMER_TELLER_PIX + " TEXT," + CUSTOMER_TELLER_STATUS + " TEXT, " + "FOREIGN KEY(" + CUSTOMER_TELLER_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + CUSTOMER_TELLER_ID  + "))";
-    @Ignore
+            CUSTOMER_TELLER_PASSWORD + " TEXT, " + CUSTOMER_TELLER_NIN + " TEXT," + CUSTOMER_TELLER_PIX + " TEXT," + CUSTOMER_TELLER_STATUS + " TEXT, "+ CUSTOMER_TELLER_BIZ_ID + " TEXT, "+ CUSTOMER_TELLER_DB_ID + " TEXT, " + "FOREIGN KEY(" + CUSTOMER_TELLER_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + CUSTOMER_TELLER_DB_ID  + "))";
+    //@Ignore
     private static final long serialVersionUID = 8924708152697574031L;
     @SuppressLint("SimpleDateFormat")
     @Ignore
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = CUSTOMER_TELLER_ID)
+    //@PrimaryKey(autoGenerate = true)
+    //@ColumnInfo(name = CUSTOMER_TELLER_ID)
     private int tID=1012;
     @ColumnInfo(name = CUSTOMER_TELLER_FIRST_NAME)
     String tFirstName;
@@ -101,21 +104,21 @@ public class CustomerManager  implements Parcelable, Serializable , BaseColumns 
     String tSurname;
     @ColumnInfo(name = CUSTOMER_TELLER_STATUS)
     String tStatus;
-    @Ignore
+    //@Ignore
     String tMiddleName;
     @ColumnInfo(name = CUSTOMER_TELLER_GENDER)
     String tGender;
     @ColumnInfo(name = CUSTOMER_TELLER_OFFICE)
     String tOffice;
-    @Ignore
+    //@Ignore
     String tState;
-    @Ignore
+    //@Ignore
     String tLga;
     @ColumnInfo(name = CUSTOMER_TELLER_ADDRESS)
     String tAddress;
     @ColumnInfo(name = CUSTOMER_TELLER_DOB)
     String tDob;
-    @Ignore
+    //@Ignore
     private  LatLng lastLocation;
     @ColumnInfo(name = CUSTOMER_TELLER_PASSWORD)
     private String tPassword;
@@ -125,7 +128,7 @@ public class CustomerManager  implements Parcelable, Serializable , BaseColumns 
     private String tPhoneNumber;
     @ColumnInfo(name = CUSTOMER_TELLER_DATE_JOINED)
     private String tDateJoined;
-    @Ignore
+    //@Ignore
     String tNextOfKin;
     @ColumnInfo(name = CUSTOMER_TELLER_USER_NAME)
     private String tUserName;
@@ -134,7 +137,10 @@ public class CustomerManager  implements Parcelable, Serializable , BaseColumns 
     @ColumnInfo(name = CUSTOMER_TELLER_PIX)
     private Uri tPhoto;
     private int tellerProfileID;
+    private long tellerMarketBizID;
     private String TGender;
+    private ArrayList<Long> tellerMarketBizIDs;
+    private MarketBusiness tellerMarketBiz;
 
     public void setTOffice(String tOffice) {
         this.tOffice = tOffice;
@@ -254,29 +260,30 @@ public class CustomerManager  implements Parcelable, Serializable , BaseColumns 
 
 
 
-    @Ignore
+    //@Ignore
     private Profile tellerProfile;
-    @Ignore
+    //@Ignore
     ArrayList<CustomerDailyReport> dailyReports;
-    @Ignore
+    //@Ignore
     ArrayList<Transaction> transactions;
-    @Ignore
+    //@Ignore
     ArrayList<Address> addresses;
-    @Ignore
+    //@Ignore
     ArrayList<TellerReport> tellerReportArrayList;
-    @Ignore
+    //@Ignore
     private ArrayList<TimeLine> timeLines;
-    @Ignore
+    //@Ignore
     ArrayList<Customer> customerArrayList;
-    @Ignore
+    //@Ignore
     boolean alreadyAdded;
+    private ArrayList<MarketBusiness> tMarketBusinesses;
 
-    @Ignore
+    //@Ignore
     public static final List<Customer.CustomerItem> ITEMS = new ArrayList<Customer.CustomerItem>();
-    @Ignore
+    //@Ignore
 
     public static final Map<String, Customer.CustomerItem> ITEM_MAP = new HashMap<String, Customer.CustomerItem>();
-    @Ignore
+    //@Ignore
 
     private static final int COUNT = 25;
 
@@ -503,6 +510,15 @@ public class CustomerManager  implements Parcelable, Serializable , BaseColumns 
         TimeLine timeLine = new TimeLine(tittle,timelineDetails);
         timeLines.add(timeLine);
     }
+    public void addMarketBiz(MarketBusiness marketBusiness) {
+        tMarketBusinesses= new ArrayList<>();
+        tMarketBusinesses.add(marketBusiness);
+    }
+    public void addTellerMarketBizID(Long tellerMarketBizID) {
+        tellerMarketBizIDs= new ArrayList<>();
+        tellerMarketBizIDs.add(tellerMarketBizID);
+    }
+
 
     @Ignore
     public void addTimeLine(int timeLineID,String tittle,String timelineDetails) {
@@ -584,6 +600,38 @@ public class CustomerManager  implements Parcelable, Serializable , BaseColumns 
 
     public void setTGender(String tGender) {
         this.TGender = tGender;
+    }
+
+    public MarketBusiness getTellerMarketBiz() {
+        return tellerMarketBiz;
+    }
+
+    public void setTellerMarketBiz(MarketBusiness tellerMarketBiz) {
+        this.tellerMarketBiz = tellerMarketBiz;
+    }
+
+    public ArrayList<MarketBusiness> gettMarketBusinesses() {
+        return tMarketBusinesses;
+    }
+
+    public void settMarketBusinesses(ArrayList<MarketBusiness> tMarketBusinesses) {
+        this.tMarketBusinesses = tMarketBusinesses;
+    }
+
+    public long getTellerMarketBizID() {
+        return tellerMarketBizID;
+    }
+
+    public void setTellerMarketBizID(long tellerMarketBizID) {
+        this.tellerMarketBizID = tellerMarketBizID;
+    }
+
+    public ArrayList<Long> getTellerMarketBizIDs() {
+        return tellerMarketBizIDs;
+    }
+
+    public void setTellerMarketBizIDs(ArrayList<Long> tellerMarketBizIDs) {
+        this.tellerMarketBizIDs = tellerMarketBizIDs;
     }
 
 

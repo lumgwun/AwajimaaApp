@@ -71,7 +71,7 @@ public class TranxApprovalAct extends AppCompatActivity {
     int messageID,payoutID,acctNo,profileID,eWalletID,soAcctID,loanID,txID,loanProfileID;
     double amountRequested,e_WalletBalance, sOBalance,balance;
     private DBHelper dbHelper;
-    private Profile userProfile, loanProfile;
+    private Profile userProfile, marketBizProfile,loanProfile;
     private Account account;
     private  Calendar calendar;
     private static final String PREF_NAME = "skylight";
@@ -86,6 +86,7 @@ public class TranxApprovalAct extends AppCompatActivity {
     private Transaction.TRANSACTION_TYPE txType;
     private int marketID;
     private long bizID;
+    private UserSuperAdmin marketBizSuperAdmin;
     private MarketBusiness marketBusiness;
 
     private BroadcastReceiver pushBroadcastReceiver = new BroadcastReceiver() {
@@ -119,9 +120,11 @@ public class TranxApprovalAct extends AppCompatActivity {
         gson1 = new Gson();
         gson2 = new Gson();
         superAdmin= new UserSuperAdmin();
+        marketBizSuperAdmin= new UserSuperAdmin();
         customer=new Customer();
         transaction= new Transaction(payoutID, loanProfileID, customerID, acctNo, todayDate, "Awajima", acctNo, acctName, customerName, amountRequested, paymentType, "PayStack Transfer", officeBranch, txApprover, todayDate, "Completed");
         superProfile=new Profile();
+        marketBizProfile=new Profile();
         loanProfile=new Profile();
         account=new Account();
         loan= new Loan();
@@ -133,21 +136,25 @@ public class TranxApprovalAct extends AppCompatActivity {
         json = userPreferences.getString("LastProfileUsed", "");
         superProfile = gson.fromJson(json, Profile.class);
 
-        json1 = userPreferences.getString("LastProfileUsed", "");
+        json2 = userPreferences.getString("LastUserSuperAdminUsed", "");
+        superAdmin = gson2.fromJson(json1, UserSuperAdmin.class);
+
+        json1 = userPreferences.getString("LastMarketBusinessUsed", "");
         marketBusiness = gson1.fromJson(json1, MarketBusiness.class);
+        if(marketBusiness !=null){
+            marketBizProfile=marketBusiness.getmBusOwner();
+            marketBizSuperAdmin=marketBusiness.getmBSuperAdmin();
+            bizID=marketBusiness.getBusinessID();
+        }
         if(superProfile !=null){
             superAdmin=superProfile.getProfile_SuperAdmin();
         }
         if(superAdmin !=null){
             txApprover=superAdmin.getSFirstName();
         }
-        if(marketBusiness !=null){
-            bizID=marketBusiness.getBusinessID();
-
-        }
 
 
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         approvalTime = mdformat.format(calendar.getTime());
         payoutID = random.nextInt((int) (Math.random() * 120) + 1011);
         refID = "AwajimaT/"+ random.nextInt((int) (Math.random() * 1000) + 115);
@@ -190,8 +197,6 @@ public class TranxApprovalAct extends AppCompatActivity {
             account=loan.getLoan_account();
             loanCode=loan.getLoanCode();
             loanProfile=loan.getLoan_profile();
-
-
 
         }
         LoanDAO loanDAO = new LoanDAO(this);

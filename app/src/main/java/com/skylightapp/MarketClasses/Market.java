@@ -1,9 +1,11 @@
 package com.skylightapp.MarketClasses;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.skylightapp.Classes.Account;
+import com.skylightapp.Classes.Profile;
 import com.skylightapp.Markets.MarketTranx;
 
 import java.io.Serializable;
@@ -31,12 +33,15 @@ public class Market implements Serializable, Parcelable {
     public static final String MARKET_ACCOUNT_ID = "market_Acct_ID";
     public static final String MARKET_PROF_ID = "market_Prof_ID";
     public static final String MARKET_REVENUE = "market_Revenue";
+    public static final String MARKET_ADDRESS = "market_Address";
+    public static final String MARKET_LAT = "market_Lat";
+    public static final String MARKET_LNG = "market_Lng";
 
 
     public static final String CREATE_MARKET_TABLE = "CREATE TABLE IF NOT EXISTS " + MARKET_TABLE + " (" + MARKET_ID + " INTEGER , " + MARKET_NAME + "TEXT," + MARKET_ACCOUNT_ID + " INTEGER , " +
             MARKET_PROF_ID + " INTEGER , " + MARKET_TYPE + " TEXT , " +
             MARKET_TOWN + " TEXT , " + MARKET_LGA + " TEXT , " + MARKET_STATE + " TEXT , " + MARKET_COUNTRY + " TEXT, " + MARKET_LOGO + " BLOB, " +
-            MARKET_COMMODITY_COUNT + " REAL, " + MARKET_USER_COUNT + " REAL, " + MARKET_STATUS + "TEXT, "+ MARKET_REVENUE + "TEXT, "+"FOREIGN KEY(" + MARKET_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"  + "FOREIGN KEY(" + MARKET_ACCOUNT_ID + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," +
+            MARKET_COMMODITY_COUNT + " REAL, " + MARKET_USER_COUNT + " REAL, " + MARKET_STATUS + "TEXT, "+ MARKET_REVENUE + "TEXT, "+ MARKET_ADDRESS + "TEXT, "+ MARKET_LAT + "REAL, "+ MARKET_LNG + "REAL, "+"FOREIGN KEY(" + MARKET_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"  + "FOREIGN KEY(" + MARKET_ACCOUNT_ID + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," +
             "PRIMARY KEY(" + MARKET_ID + "))";
    private Market marketInstance;
     private int marketID;
@@ -53,6 +58,7 @@ public class Market implements Serializable, Parcelable {
     private int commodityCount;
     private int marketUserCount;
     private int marketLogo;
+    private Uri marketLogoURI;
     private double marketRevenue;
     private String marketStatus;
     private Account marketAccount;
@@ -64,6 +70,9 @@ public class Market implements Serializable, Parcelable {
     private ArrayList<MarketCustomer> marketCustomers;
     private ArrayList<MarketAdmin> marketAdminArrayList;
     private ArrayList<MarketTranx> marketTranxArrayList;
+
+    private ArrayList<Long> marketBizIDList;
+    private Profile marketProf;
 
     public Market () {
         super();
@@ -107,6 +116,10 @@ public class Market implements Serializable, Parcelable {
             return new Market[size];
         }
     };
+    public void addMarketBizID(long businessID) {
+        marketBizIDList = new ArrayList<>();
+        marketBizIDList.add(businessID);
+    }
 
     public Market(int id, String marketName, String marketType, String marketLGA, String marketState, int marketLogo, int marketUserCount, int marketComCount, double marketRevenue, String marketStatus) {
         this.marketID=id;
@@ -120,11 +133,28 @@ public class Market implements Serializable, Parcelable {
         this.marketRevenue=marketRevenue;
         this.marketStatus=marketStatus;
     }
+    public Market(int marketID, String name, String address, String marketType, String town, String lga, String state, String country, Uri logo, String status, double lat, double lng, double marketRev) {
+        this.marketID=marketID;
+        this.marketName=name;
+        this.marketType=marketType;
+        this.marketLGA=lga;
+        this.marketState=state;
+        this.marketLogoURI=logo;
+        this.marketTown=town;
+        this.marketLat=lat;
+        this.marketLng=lng;
+        this.marketAddress=address;
+        this.marketCountry=country;
+        this.marketRevenue=marketRev;
+        this.marketStatus=status;
+    }
 
     public Market(Market loan_market) {
         this.marketInstance=loan_market;
 
     }
+
+
 
     public ArrayList<Commodity> getCommodityArrayList() {
         return commodityArrayList;
@@ -348,5 +378,29 @@ public class Market implements Serializable, Parcelable {
 
     public void setMarketStatus(String marketStatus) {
         this.marketStatus = marketStatus;
+    }
+
+    public Profile getMarketProf() {
+        return marketProf;
+    }
+
+    public void setMarketProf(Profile marketProf) {
+        this.marketProf = marketProf;
+    }
+
+    public Uri getMarketLogoURI() {
+        return marketLogoURI;
+    }
+
+    public void setMarketLogoURI(Uri marketLogoURI) {
+        this.marketLogoURI = marketLogoURI;
+    }
+
+    public ArrayList<Long> getMarketBizIDList() {
+        return marketBizIDList;
+    }
+
+    public void setMarketBizIDList(ArrayList<Long> marketBizIDList) {
+        this.marketBizIDList = marketBizIDList;
     }
 }

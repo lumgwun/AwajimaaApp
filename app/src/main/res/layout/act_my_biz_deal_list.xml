@@ -1,9 +1,948 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Markets.MyBizArrayDealListAct">
+    android:background="@drawable/shape_layer_3b"
+    tools:context="com.skylightapp.Markets.MyBizArrayDealListAct">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:padding="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center">
+
+            <TextView
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Business Deals Arena"
+                android:textAlignment="center"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginBottom="3dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
+                android:textSize="15sp"
+                android:id="@+id/txtS"
+                android:padding="20dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textColorHint="@color/colorPrimary"
+                android:text="Search Database By:" />
+
+        </LinearLayout>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:gravity="end"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:weightSum="3"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="0dp"
+                    android:text="Amount"
+                    android:textSize="15sp"
+                    android:padding="15dp"
+                    android:onClick="revealAmtLayout"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:textStyle="bold"
+                    android:id="@+id/buttonByDealAmount"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="0dp"
+                    android:text="Milestones"
+                    android:textSize="15sp"
+                    android:padding="15dp"
+                    android:onClick="revealMilestoneLayout"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:textStyle="bold"
+                    android:id="@+id/buttonByMilestones"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="0dp"
+                    android:text="Date"
+                    android:textSize="15sp"
+                    android:padding="15dp"
+                    android:onClick="revealDealDateLayout"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:textStyle="bold"
+                    android:id="@+id/buttonByDealDate"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:gravity="end"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:weightSum="2"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="0dp"
+                    android:text="Host"
+                    android:textSize="15sp"
+                    android:padding="15dp"
+                    android:onClick="revealHostLayout"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:textStyle="bold"
+                    android:id="@+id/buttonByHost"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="0dp"
+                    android:text="Partner"
+                    android:textSize="15sp"
+                    android:padding="15dp"
+                    android:onClick="revealPartnerLayout"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:textStyle="bold"
+                    android:id="@+id/buttonByPartner"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginBottom="3dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
+                android:textSize="15sp"
+                android:id="@+id/tcTodayTl"
+                android:padding="20dp"
+                android:gravity="start"
+                android:layout_gravity="start"
+                android:background="@drawable/shape_rect14c"
+                android:textColorHint="@color/colorPrimary"
+                android:text="From Us, Today:" />
+
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerDealToday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/re"
+            android:clipToPadding="false"
+            tools:listitem="@layout/deal_item"
+            android:foregroundGravity="center"
+            android:orientation="horizontal" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="1dp"
+            android:id="@+id/layoutDate33"
+            android:visibility="gone"
+            android:layout_marginBottom="3dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
+                android:textSize="15sp"
+                android:id="@+id/txtByDate"
+                android:padding="20dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@drawable/rect6b"
+                android:textColorHint="@color/colorPrimary"
+                android:text="Deals for Selected Date:" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerBizDealDate"
+            android:layout_width="match_parent"
+            tools:listitem="@layout/deal_item"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            android:clipToPadding="false"
+            android:foregroundGravity="center" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:visibility="gone"
+            android:id="@+id/cardDatePicker"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rect6g"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/daTE_text_"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center_vertical|left"
+                    android:gravity="center_vertical|left"
+                    android:background="@null"
+                    android:text="Select Deal Date " />
+                <DatePicker
+                    android:id="@+id/deal_date_picker"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:inputType="date"
+                    android:backgroundTintMode="src_in"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:datePickerMode="spinner"
+                    android:spinnersShown="true"
+                    android:yearListSelectorColor="@color/white"
+                    android:calendarTextColor="@color/white"
+                    android:layout_gravity="center_vertical|left"
+                    android:gravity="center_vertical|left"
+                    android:calendarViewShown="false" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:gravity="end"
+            android:id="@+id/cardDatesBtn"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:weightSum="1"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:text="Get Biz Deal for Date"
+                    android:textSize="17sp"
+                    android:padding="20dp"
+                    android:layout_weight="1"
+                    android:onClick="getBizDealsByDate"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textStyle="bold"
+                    android:id="@+id/buttonGetDealsByDate"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginBottom="3dp"
+            android:id="@+id/layoutHost"
+            android:visibility="gone"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
+                android:textSize="15sp"
+                android:id="@+id/txtByPayer"
+                android:padding="20dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@drawable/rect6b"
+                android:textColorHint="@color/colorPrimary"
+                android:text="Biz Deal for Host:" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerDealHost"
+            android:layout_width="match_parent"
+            tools:listitem="@layout/deal_item"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            android:clipToPadding="false"
+            android:foregroundGravity="center" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:visibility="gone"
+            android:id="@+id/cardPayerLayout"
+            app:cardBackgroundColor="@color/cardview_shadow_end_color"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rect6g"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/text_Payer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center_vertical|left"
+                    android:gravity="center_vertical|left"
+                    android:background="@null"
+                    android:text="Select Host" />
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spnDealHoster"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:paddingStart="150dp"
+                    android:backgroundTintMode="src_in"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:spinnersShown="true"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:gravity="end"
+            android:visibility="gone"
+            android:id="@+id/cardHostPayer"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:weightSum="1"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:text="Get Host Deals"
+                    android:textSize="17sp"
+                    android:padding="20dp"
+                    android:layout_weight="1"
+                    android:onClick="getBizDealByPayerHost"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textStyle="bold"
+                    android:id="@+id/btnHostPayer"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginBottom="3dp"
+            android:id="@+id/layoutFrom"
+            android:visibility="gone"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
+                android:textSize="15sp"
+                android:id="@+id/txtFrom"
+                android:padding="20dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@drawable/rect6b"
+                android:textColorHint="@color/colorPrimary"
+                android:text="Biz Deal for Selected Host:" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerFrom"
+            android:layout_width="match_parent"
+            tools:listitem="@layout/skylight_cash_row"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            android:clipToPadding="false"
+            android:foregroundGravity="center" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:visibility="gone"
+            android:id="@+id/cardLayoutFrom"
+            app:cardBackgroundColor="@color/cardview_shadow_end_color"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rect6g"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/text_From"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center_vertical|left"
+                    android:gravity="center_vertical|left"
+                    android:background="@null"
+                    android:text="Select Host" />
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spnCashFrom"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:entries="@array/SuperUserType"
+                    android:focusable="false"
+                    android:paddingStart="150dp"
+                    android:backgroundTintMode="src_in"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:spinnersShown="true"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:gravity="end"
+            android:visibility="gone"
+            android:id="@+id/cardAF"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:weightSum="1"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:text="Get Biz Deal from Selected Host"
+                    android:textSize="17sp"
+                    android:padding="20dp"
+                    android:layout_weight="1"
+                    android:onClick="getSCashByFrom"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textStyle="bold"
+                    android:id="@+id/buttonSCFrom"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginBottom="3dp"
+            android:id="@+id/layoutTo"
+            android:visibility="gone"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
+                android:textSize="15sp"
+                android:id="@+id/txtByTo"
+                android:padding="20dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@drawable/rect6b"
+                android:textColorHint="@color/colorPrimary"
+                android:text="Biz Deal for Selected Opponent:" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerCTo"
+            android:layout_width="match_parent"
+            tools:listitem="@layout/skylight_cash_row"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            android:clipToPadding="false"
+            android:foregroundGravity="center" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:visibility="gone"
+            android:id="@+id/cardLayoutTo"
+            app:cardBackgroundColor="@color/cardview_shadow_end_color"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rect6g"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/text_To"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center_vertical|left"
+                    android:gravity="center_vertical|left"
+                    android:background="@null"
+                    android:text="Select To" />
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spnCashTo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:entries="@array/SuperUserType"
+                    android:paddingStart="150dp"
+                    android:backgroundTintMode="src_in"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:spinnersShown="true"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:gravity="end"
+            android:visibility="gone"
+            android:id="@+id/cardATo"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:weightSum="1"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:text="Get Biz Deal from Selected Opp."
+                    android:textSize="17sp"
+                    android:padding="20dp"
+                    android:layout_weight="1"
+                    android:onClick="getSCashByPayer"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textStyle="bold"
+                    android:id="@+id/buttonSCTo"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginBottom="3dp"
+            android:id="@+id/layoutAllSkylightCash"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
+                android:textSize="15sp"
+                android:id="@+id/txtByAll"
+                android:padding="20dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@drawable/rect6b"
+                android:textColorHint="@color/colorPrimary"
+                android:text="All Our Biz Deal :" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerAllSCash"
+            android:layout_width="match_parent"
+            tools:listitem="@layout/skylight_cash_row"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            android:clipToPadding="false"
+            android:foregroundGravity="center" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:gravity="end"
+            android:visibility="gone"
+            android:id="@+id/cardAllTC"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:weightSum="1"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:text="Get All SCash"
+                    android:textSize="17sp"
+                    android:padding="20dp"
+                    android:layout_weight="1"
+                    android:onClick="getAllSkylightCash"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textStyle="bold"
+                    android:id="@+id/buttonAllTC"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginBottom="3dp"
+            android:id="@+id/layoutPayee33"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
+                android:textSize="15sp"
+                android:id="@+id/txtByOffice"
+                android:padding="20dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@drawable/rect6b"
+                android:textColorHint="@color/colorPrimary"
+                android:text="Cash for Selected Payee:" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerSCPayee"
+            android:layout_width="match_parent"
+            tools:listitem="@layout/skylight_cash_row"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            android:clipToPadding="false"
+            android:foregroundGravity="center" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:id="@+id/cardLayoutPayee"
+            app:cardBackgroundColor="@color/cardview_shadow_end_color"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rect6g"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/p_text_sign"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center_vertical|left"
+                    android:gravity="center_vertical|left"
+                    android:background="@null"
+                    android:text="Select Payee" />
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/payeeSkylightCash"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:paddingStart="150dp"
+                    android:backgroundTintMode="src_in"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:spinnersShown="true"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:gravity="end"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:id="@+id/cardPayeeLayout"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:weightSum="1"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:text="Search Database by Partner"
+                    android:textSize="17sp"
+                    android:padding="20dp"
+                    android:layout_weight="1"
+                    android:onClick="getSkylightCashByPayee"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textStyle="bold"
+                    android:id="@+id/buttonSCPayee"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</ScrollView>

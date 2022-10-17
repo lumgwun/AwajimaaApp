@@ -147,7 +147,7 @@ public class AttachmentPreviewAdapCon extends BaseAdapter {
         if (fileQBAttachmentMap.containsValue(qbAttachment)) {
             for (File file : fileQBAttachmentMap.keySet()) {
                 QBAttachment attachment = fileQBAttachmentMap.get(file);
-                if (attachment.equals(qbAttachment)) {
+                if (attachment != null && attachment.equals(qbAttachment)) {
                     remove(file);
                     break;
                 }

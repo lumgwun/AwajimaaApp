@@ -39,11 +39,12 @@ public class Message implements Serializable, Parcelable {
     public static final String MESSAGE_OTP = "message_OTP";
     public static final String MESSAGE_BIZ_ID = "message_BIZ_ID";
     public static final String MESSAGE_MARKET_ID = "message_Market_ID";
+    public static final String MESSAGE_DB_ID = "message_DB_ID";
 
 
     public static final String CREATE_MESSAGE_TABLE = "CREATE TABLE IF NOT EXISTS " + MESSAGE_TABLE + " (" + MESSAGE_PROF_ID + " INTEGER, " + MESSAGE_ID + " INTEGER , " +
             MESSAGE_CUS_ID + " INTEGER , "+ MESSAGE_ADMIN_ID + " TEXT , "+ MESSAGE_ADMIN_NAME + " TEXT , " + MESSAGE_PURPOSE + " TEXT , "+ MESSAGE_DETAILS + " TEXT , " + MESSAGE_SENDER + " TEXT , "+ MESSAGE_SENDEE + " TEXT , " + MESSAGE_TIME + " TEXT , " +
-            VIEWED + " INTEGER, " + MESSAGE_BRANCH_OFFICE + " TEXT , " + MESSAGE_PHONENO + " TEXT , "+ MESSAGE_OTP + " INTEGER , "+ MESSAGE_BIZ_ID + " INTEGER , "+ MESSAGE_MARKET_ID + " INTEGER , "+ "PRIMARY KEY("  + MESSAGE_ID + "), " +"FOREIGN KEY(" + MESSAGE_BIZ_ID + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+"FOREIGN KEY(" + MESSAGE_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+"FOREIGN KEY(" + MESSAGE_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "),"+ "FOREIGN KEY(" + MESSAGE_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+            VIEWED + " INTEGER, " + MESSAGE_BRANCH_OFFICE + " TEXT , " + MESSAGE_PHONENO + " TEXT , "+ MESSAGE_OTP + " INTEGER , "+ MESSAGE_BIZ_ID + " INTEGER , "+ MESSAGE_MARKET_ID + " INTEGER , "+ MESSAGE_DB_ID + " INTEGER , "+ "PRIMARY KEY("  + MESSAGE_DB_ID + "), " +"FOREIGN KEY(" + MESSAGE_BIZ_ID + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+"FOREIGN KEY(" + MESSAGE_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+"FOREIGN KEY(" + MESSAGE_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "),"+ "FOREIGN KEY(" + MESSAGE_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
 
     public static final String MESSAGE_REPLY_TABLE = "Message_Reply_table";

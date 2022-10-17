@@ -169,7 +169,6 @@ public class PrefManager {
 
         editor.clear();
         editor.commit();
-
         Intent i = new Intent(_context, SignTabMainActivity.class);
 
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

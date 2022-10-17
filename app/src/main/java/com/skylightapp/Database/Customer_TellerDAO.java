@@ -12,8 +12,10 @@ import com.skylightapp.Classes.CustomerManager;
 import java.util.ArrayList;
 
 import static com.skylightapp.Classes.Bookings.BOOKING_ID;
+import static com.skylightapp.Classes.CustomerManager.CUSTOMER_TELLER_BIZ_ID;
 import static com.skylightapp.Classes.CustomerManager.CUSTOMER_TELLER_ID;
 import static com.skylightapp.Classes.CustomerManager.CUSTOMER_TELLER_OFFICE;
+import static com.skylightapp.Classes.CustomerManager.CUSTOMER_TELLER_PIX;
 import static com.skylightapp.Classes.CustomerManager.CUSTOMER_TELLER_TABLE;
 import static java.lang.String.valueOf;
 
@@ -122,6 +124,26 @@ public class Customer_TellerDAO extends DBHelperDAO{
         SQLiteDatabase db = this.getWritableDatabase();
         String selection = CUSTOMER_TELLER_OFFICE + "=?";
         String[] selectionArgs = new String[]{valueOf(branchOffice)};
+
+        @SuppressLint("Recycle") Cursor cursor = db.query(CUSTOMER_TELLER_TABLE, null, selection, selectionArgs, null,
+                null, null);
+        if (cursor != null)
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                getSpinnerTellersFromCursor(customerManagerArrayList, cursor);
+                cursor.close();
+            }
+
+        db.close();
+
+        return customerManagerArrayList;
+    }
+
+    public ArrayList<CustomerManager> getTellerForBiz(long bizID) {
+        ArrayList<CustomerManager> customerManagerArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = CUSTOMER_TELLER_BIZ_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(bizID)};
 
         @SuppressLint("Recycle") Cursor cursor = db.query(CUSTOMER_TELLER_TABLE, null, selection, selectionArgs, null,
                 null, null);

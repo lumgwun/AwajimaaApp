@@ -49,7 +49,7 @@ import com.skylightapp.Admins.BirthdayTab;
 import com.skylightapp.Admins.CustomerListActivity;
 import com.skylightapp.Admins.SODueDateListAct;
 import com.skylightapp.Admins.ImportDateTab;
-import com.skylightapp.Admins.SendUserMessageAct;
+import com.skylightapp.Admins.SendSingleUserMAct;
 import com.skylightapp.Admins.SkylightAllWeb;
 import com.skylightapp.Admins.SkylightUsersActivity;
 import com.skylightapp.CameraActivity;
@@ -839,7 +839,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
 
 
             case R.id.nav_User_Messages:
-                Intent myIntent5 = new Intent(SuperAdminOffice.this, SendUserMessageAct.class);
+                Intent myIntent5 = new Intent(SuperAdminOffice.this, SendSingleUserMAct.class);
                 myIntent5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(myIntent5);
                 break;

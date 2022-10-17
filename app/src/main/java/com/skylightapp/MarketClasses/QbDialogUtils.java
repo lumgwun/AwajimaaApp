@@ -18,7 +18,6 @@ public class QbDialogUtils {
     private static final String TAG = QbDialogUtils.class.getSimpleName();
     private static final Gson gson = new Gson();
 
-
     public static QBChatDialog createDialog(List<QBUser> users, String chatName) {
         if (isPrivateChat(users)) {
             QBUser currentUser = ChatHelper.getCurrentUser();

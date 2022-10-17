@@ -22,6 +22,39 @@
         <item>Trade by Barter</item>
         <item>Debt Reduction</item>
     </string-array>
+    <string-array name="Awajima_To_type">
+        <item>Market</item>
+        <item>Business Deal Partner</item>
+        <item>Business Partner</item>
+        <item>Business Customer</item>
+        <item>Business Admin</item>
+        <item>Market Admin</item>
+        <item>Business Donor</item>
+        <item>Business Regulator</item>
+        <item>Business Teller</item>
+        <item>Market Business</item>
+
+    </string-array>
+
+    <string-array name="Awajima_From_type">
+        <item>Personal</item>
+        <item>My Business</item>
+        <item>My Partnership Profile</item>
+        <item>My Customership Profile</item>
+        <item>My Market Admin Profile</item>
+        <item>My Regulator Profile</item>
+        <item>My Market Profile</item>
+        <item>Business Regulator</item>
+        <item>My Teller Profile</item>
+        <item>My Business Admin Profile</item>
+        <item>My Admin Profile</item>
+        <item>My Donor Profile</item>
+
+
+    </string-array>
+
+
+
     <string-array name="Admin_Type">
         <item>REGULATOR</item>
         <item>TELLER</item>

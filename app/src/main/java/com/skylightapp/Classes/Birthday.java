@@ -48,11 +48,12 @@ public class Birthday implements Serializable, Parcelable {
     private static final String JSON_REMIND = "bremind";
     private static final String JSON_UID = "buid";
     private static final String JSON_SHOW_YEAR = "bshow_year";
+    public static final String B_DB_ID = "b_DB_ID";
 
 
-    public static final String CREATE_BIRTHDAY_TABLE = "CREATE TABLE IF NOT EXISTS " + BIRTHDAY_TABLE + " (" + B_PROF_ID + " INTEGER , " + BIRTHDAY_ID + " INTEGER PRIMARY KEY   , " +
+    public static final String CREATE_BIRTHDAY_TABLE = "CREATE TABLE IF NOT EXISTS " + BIRTHDAY_TABLE + " (" + B_PROF_ID + " INTEGER , " + BIRTHDAY_ID + " INTEGER   , " +
             B_FIRSTNAME + " TEXT, " + B_SURNAME + " TEXT, " + B_EMAIL + " TEXT, " + B_PHONE + " TEXT, " +
-            B_DOB + " TEXT, " + BIRTHDAY_DAYS_REMAINING + " TEXT, " + BIRTHDAY_DAYS_BTWN + " TEXT, " + BIRTHDAY_STATUS + " TEXT, " + "FOREIGN KEY(" + B_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+            B_DOB + " TEXT, " + BIRTHDAY_DAYS_REMAINING + " TEXT, " + BIRTHDAY_DAYS_BTWN + " TEXT, " + BIRTHDAY_STATUS + " TEXT, " + B_DB_ID + " INTEGER PRIMARY KEY, " + "FOREIGN KEY(" + B_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
 
     @SuppressLint("ConstantLocale")

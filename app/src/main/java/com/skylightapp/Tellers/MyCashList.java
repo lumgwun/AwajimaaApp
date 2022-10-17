@@ -165,6 +165,7 @@ public class MyCashList extends AppCompatActivity implements MyTellerCashAdapter
 
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(MyCashList.this, LinearLayoutManager.HORIZONTAL, false);
+        layoutManager.setStackFromEnd(true);
         recyclerMyTellerCash.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerMyTellerCash.getContext(),
                 layoutManager.getOrientation());

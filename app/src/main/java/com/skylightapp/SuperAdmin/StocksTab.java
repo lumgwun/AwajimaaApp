@@ -83,7 +83,7 @@ public class StocksTab extends TabActivity {
                 .setIndicator("", resources.getDrawable(R.drawable.ic_icon2))
                 .setContent(intentTellerCl);
 
-        Intent intentSCL = new Intent().setClass(this, SkylightCashList.class);
+        Intent intentSCL = new Intent().setClass(this, AppCashList.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecSCL = tabhost
                 .newTabSpec("Skylight Cash")
                 .setIndicator("", resources.getDrawable(R.drawable.ic_icon2))

@@ -11,6 +11,7 @@ import androidx.room.PrimaryKey;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.skylightapp.Inventory.Stocks;
+import com.skylightapp.MarketClasses.MarketBusiness;
 
 import org.json.JSONObject;
 
@@ -60,12 +61,13 @@ public class Customer  implements Parcelable, Serializable {
     public static final String CUS_BIZ_ID1 = "customer_Biz_ID22";
     public static final String CUSTOMER_MARKET_ID = "customer_Market_ID";
     public static final String CUSTOMER_COUNTRY = "customer_Country";
+    public static final String CUS_DB_ID = "customer_DB_ID";
 
 
     public static final String CREATE_CUSTOMERS_TABLE = "CREATE TABLE IF NOT EXISTS " + CUSTOMER_TABLE + " ( " + CUSTOMER_ID + " INTEGER  , " + CUS_CUS_LOCID + " INTEGER , " + CUSTOMER_PROF_ID + " INTEGER  , " +
             CUSTOMER_SURNAME + " TEXT, " + CUSTOMER_FIRST_NAME + " TEXT, " + CUSTOMER_PHONE_NUMBER + " TEXT, " + CUSTOMER_EMAIL_ADDRESS + " TEXT, " + CUSTOMER_NIN + " TEXT, " +
             CUSTOMER_DOB + " TEXT, " + CUSTOMER_GENDER + " TEXT, " + CUSTOMER_ADDRESS + " TEXT, " + CUSTOMER_USER_NAME + " TEXT, " + CUSTOMER_PASSWORD + " TEXT, " +
-            CUSTOMER_OFFICE + " TEXT, " + CUSTOMER_DATE_JOINED + " TEXT, " + CUSTOMER_STATUS + " TEXT, "+ CUSTOMER_COUNTRY + " TEXT, "+ CUS_BIZ_ID1 + " TEXT, "+ CUSTOMER_MARKET_ID + " TEXT, "+ "FOREIGN KEY(" + CUS_BIZ_ID1 + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+ "FOREIGN KEY(" + CUSTOMER_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+ "FOREIGN KEY(" + CUS_CUS_LOCID + ") REFERENCES " + CUSTOMER_LOCATION_TABLE + "(" + CUSTOMER_LOC_ID + "),"+ "FOREIGN KEY(" + CUSTOMER_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + CUSTOMER_ID  + "))";
+            CUSTOMER_OFFICE + " TEXT, " + CUSTOMER_DATE_JOINED + " TEXT, " + CUSTOMER_STATUS + " TEXT, "+ CUSTOMER_COUNTRY + " TEXT, "+ CUS_BIZ_ID1 + " TEXT, "+ CUSTOMER_MARKET_ID + " TEXT, "+ CUS_DB_ID + " TEXT, "+ "FOREIGN KEY(" + CUS_BIZ_ID1 + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+ "FOREIGN KEY(" + CUSTOMER_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+ "FOREIGN KEY(" + CUS_CUS_LOCID + ") REFERENCES " + CUSTOMER_LOCATION_TABLE + "(" + CUSTOMER_LOC_ID + "),"+ "FOREIGN KEY(" + CUSTOMER_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + CUS_DB_ID  + "))";
 
 
     public static final String CREATE_CUSTOMER_LOCATION_TABLE = "CREATE TABLE IF NOT EXISTS " + CUSTOMER_LOCATION_TABLE + " ( " + CUSTOMER_LOC_ID + " INTEGER  , " + CUS_LOC_CUS_ID + " INTEGER  , " +
@@ -149,6 +151,8 @@ public class Customer  implements Parcelable, Serializable {
             addItem(createCustomerItem(i));
         }
     }
+
+    private ArrayList<MarketBusiness> cusMarketBusinesses;
 
     public Customer(String refID, String cusPhoneNumber) {
 
@@ -621,6 +625,14 @@ public class Customer  implements Parcelable, Serializable {
 
     public void setCusBizID(long cusBizID) {
         this.cusBizID = cusBizID;
+    }
+
+    public ArrayList<MarketBusiness> getCusMarketBusinesses() {
+        return cusMarketBusinesses;
+    }
+
+    public void setCusMarketBusinesses(ArrayList<MarketBusiness> cusMarketBusinesses) {
+        this.cusMarketBusinesses = cusMarketBusinesses;
     }
 
 

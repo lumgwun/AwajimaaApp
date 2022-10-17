@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.ListFragment;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -22,11 +23,14 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
+import com.skylightapp.Admins.UserListFragment;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.MarketClasses.MarketStock;
 import com.skylightapp.MarketClasses.MyStockAdapter;
+import com.skylightapp.MyMessageFragment;
 import com.skylightapp.R;
+import com.skylightapp.TransactionFragment;
 
 import java.util.List;
 import java.util.Locale;
@@ -50,6 +54,11 @@ public class TopStatsAct extends FragmentActivity implements ActionBar.TabListen
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
         private TopListFragment topListFragment;
+        private TransactionFragment transactionFragment;
+        private TopBenefitsListFragment topBenefitsListFragment;
+        private TopSalesListFragment topSalesFrag;
+        private MyMessageFragment myMessageFragment;
+        private UserListFragment userListFragment;
 
 
         public SectionsPagerAdapter(FragmentManager fragmentManager) {
@@ -59,17 +68,30 @@ public class TopStatsAct extends FragmentActivity implements ActionBar.TabListen
         @Override
         public int getCount() {
 
-            return 2;
+            return 6;
         }
 
         @Override
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    this.topListFragment = new TopBenefitsListFragment();
+                    this.topBenefitsListFragment = new TopBenefitsListFragment();
                     break;
                 case 1:
-                    this.topListFragment = new TopSalesListFragment();
+                    this.topSalesFrag = new TopSalesListFragment();
+                    break;
+                case 2:
+                    this.transactionFragment = new TransactionFragment();
+                    break;
+                case 3:
+                    this.topListFragment = new TopListFragment();
+                    break;
+                case 4:
+                    this.userListFragment = new UserListFragment();
+                    break;
+
+                case 5:
+                    this.myMessageFragment = new MyMessageFragment();
                     break;
             }
 
@@ -85,6 +107,16 @@ public class TopStatsAct extends FragmentActivity implements ActionBar.TabListen
                     return getString(R.string.title_top_benefits_section).toUpperCase(l);
                 case 1:
                     return getString(R.string.title_top_sales_section).toUpperCase(l);
+                case 2:
+                    return getString(R.string.my_transactions).toUpperCase(l);
+                case 3:
+                    return getString(R.string.top_list).toUpperCase(l);
+
+                case 4:
+                    return getString(R.string.user_list).toUpperCase(l);
+
+                case 5:
+                    return getString(R.string.my_messages).toUpperCase(l);
             }
             return null;
         }

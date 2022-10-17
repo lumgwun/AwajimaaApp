@@ -102,17 +102,17 @@ public class TPackListFragment extends Fragment {
         txtTitleMessage = rootView.findViewById(R.id.package_tittle);
         recyclerView = rootView.findViewById(R.id.recycler_view_packs);
         sharedPreferences = Objects.requireNonNull(getContext()).getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        SharedPrefUserName=sharedPreferences.getString("USER_NAME", "");
-        SharedPrefUserPassword=sharedPreferences.getString("USER_PASSWORD", "");
+        SharedPrefUserName=sharedPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserPassword=sharedPreferences.getString("PROFILE_PASSWORD", "");
         SharedPrefCusID=sharedPreferences.getString("CUSTOMER_ID", "");
         SharedPrefUserMachine=sharedPreferences.getString("machine", "");
         SharedPrefProfileID=sharedPreferences.getString("PROFILE_ID", "");
 
-        SharedPrefEmail=sharedPreferences.getString("EMAIL_ADDRESS", "");
-        SharedPrefRole=sharedPreferences.getString("USER_ROLE", "");
-        SharedPrefGender=sharedPreferences.getString("GENDER_KEY", "");
-        SharedPrefJoinedDate=sharedPreferences.getString("USER_DATE_JOINED", "");
-        SharedPrefOffice=sharedPreferences.getString("CHOSEN_OFFICE", "");
+        SharedPrefEmail=sharedPreferences.getString("PROFILE_EMAIL", "");
+        SharedPrefRole=sharedPreferences.getString("PROFILE_ROLE", "");
+        SharedPrefGender=sharedPreferences.getString("PROFILE_GENDER", "");
+        SharedPrefJoinedDate=sharedPreferences.getString("PROFILE_DATE_JOINED", "");
+        SharedPrefOffice=sharedPreferences.getString("PROFILE_OFFICE", "");
         customerId=sharedPreferences.getString("CUSTOMER_ID", "");
         SharedPrefAcctNo=sharedPreferences.getString("ACCOUNT_NO", "");
         SharedPrefBankNo=sharedPreferences.getString("BANK_ACCT_NO", "");

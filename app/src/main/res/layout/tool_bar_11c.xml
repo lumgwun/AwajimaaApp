@@ -29,6 +29,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:textStyle="bold"
+                android:fontFamily="@font/hipster_script_pro"
                 app:title="@string/app_name"
                 android:background="@drawable/rect6b"
                 android:layout_marginEnd="10dp"
@@ -38,7 +39,7 @@
                 android:layout_gravity="center_horizontal"
                 android:textAlignment="center"
                 android:layout_marginStart="10dp"
-                app:titleTextColor="@color/gray_10"
+                app:titleTextColor="@color/gray_light"
                 android:layout_height="100dp"/>
 
         </com.google.android.material.appbar.AppBarLayout>

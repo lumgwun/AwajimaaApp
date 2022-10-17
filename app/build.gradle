@@ -27,7 +27,7 @@ android {
     defaultConfig {
         applicationId "com.skylightapp"
         minSdkVersion 24
-        targetSdkVersion 29
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
         javaCompileOptions {
@@ -50,9 +50,15 @@ android {
         release {
             minifyEnabled true
             multiDexEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debug {
                 resValue("string", "DB_PASSWORD_DATABASE_NAME", "password")
+            }
+            debug {
+                minifyEnabled true
+                shrinkResources true
+                proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             }
 
             //buildConfigField "String", "CLIENT_ID", localProperties['client_id']
@@ -645,6 +651,10 @@ dependencies {
     implementation 'pub.devrel:easypermissions:3.0.0'
     //implementation('com.journeyapps:zxing-android-embedded:3.6.0') { transitive = false }
     implementation 'com.h6ah4i.android.preference:numberpickerprefcompat:1.0.0'
+    implementation 'com.flaviofaria:kenburnsview:1.0.7'
+    implementation 'com.github.Zeuskartik:MediaSliderView:1.1'
+    implementation 'com.google.android.gms:play-services-wallet:19.1.0'
+
     //noinspection GradleDependency
     //implementation 'com.github.MFlisar:changelog:1.1.6'
     //implementation 'com.github.daniel-stoneuk:material-about-library:2.4.2'

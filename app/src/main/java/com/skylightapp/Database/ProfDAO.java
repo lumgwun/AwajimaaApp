@@ -1095,7 +1095,7 @@ public class ProfDAO extends DBHelperDAO{
                 selectionArgs) > 0;
     }
 
-    public long addProfRefLink(int sharedPrefProfileID, Uri mInvitationUrl) {
+    public long addProfRefLink(int sharedPrefProfileID, String mInvitationUrl) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         String selection = PROFILE_ID + "=?";

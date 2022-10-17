@@ -15,9 +15,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.skylightapp.Classes.AdminUser;
 import com.skylightapp.Classes.Customer;
+import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Database.AcctDAO;
 import com.skylightapp.Database.AdminBalanceDAO;
 import com.skylightapp.Database.AwardDAO;
@@ -96,18 +99,48 @@ public class RequestItemAct extends AppCompatActivity {
     private BirthdayDAO birthdayDAO;
     private TransactionGrantingDAO grantingDAO;
     private AwardDAO awardDAO;
+    private static final String PREF_NAME = "skylight";
+    private static boolean isPersistenceEnabled = false;
+    int selectedCustomerIndex;
+    SharedPreferences sharedpreferences;
+    Gson gson0,gson1,gson2;
+    String json0,json1,json2;
+    private Calendar calendar;
+
+    String machine,userName,officeBranch,sender,sendee,selectedOffice,collectionStatus;
+
+    AdminUser adminUser;
+    UserSuperAdmin superAdmin;
+    CustomerManager customerManager;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_request_item);
-        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Gson gson = new Gson();
+        sharedpreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        gson = new Gson();
+        gson0 = new Gson();
+        gson1 = new Gson();
         dbHelper= new DBHelper(this);
         customer = new Customer();
+        superAdmin= new UserSuperAdmin();
+        userProfile= new Profile();
+        adminUser=new AdminUser();
         userProfile=new Profile();
+        machine = sharedpreferences.getString("Machine", "");
+        gson0 = new Gson();
+        json0 = sharedpreferences.getString("LastAdminUserProfileUsed", "");
+        superAdmin = gson0.fromJson(json0, UserSuperAdmin.class);
+        gson = new Gson();
+        json = sharedpreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
+        gson1 = new Gson();
+        json1 = sharedpreferences.getString("LastAdminUserProfileUsed", "");
+        adminUser = gson1.fromJson(json1, AdminUser.class);
         packBundle=new Bundle();
+        bundle=new Bundle();
+
         workersDAO= new WorkersDAO(this);
         awardDAO= new AwardDAO(this);
         grantingDAO= new TransactionGrantingDAO(this);
@@ -135,7 +168,7 @@ public class RequestItemAct extends AppCompatActivity {
 
         codeDAO= new CodeDAO(this);
         acctDAO= new AcctDAO(this);
-        bundle=new Bundle();
+
         random= new SecureRandom();
         txtCusName = findViewById(R.id.cusForRequest);
         spn_select_package = findViewById(R.id.packageForRequestCus);
@@ -153,10 +186,12 @@ public class RequestItemAct extends AppCompatActivity {
             customerBranch=customer.getCusOfficeBranch();
         }
         Calendar calendar = Calendar.getInstance();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
         dateOfRequest = mdformat.format(calendar.getTime());
         txtCusName.setText(MessageFormat.format("Customer:{0}", customerName));
-        skyLightPackageAll=dbHelper.getCustomerCompletePack(customerID,"completed");
+        collectionStatus="unCollected";
+        skyLightPackageAll=dbHelper.getCustomerCompleteUnCollectedPack(customerID,"completed",collectionStatus);
+
         skyLightPackageAllAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, skyLightPackageAll);
         skyLightPackageAllAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spn_select_package.setAdapter(skyLightPackageAllAdapter);

@@ -56,6 +56,7 @@ public class Account implements Serializable, Parcelable {
     public static final String ACCOUNT_TX_ID = "acct_TX_ID";
     public static final String ACCOUNT_MARKET_BUSINESS_ID = "acct_Biz_ID";
     public static final String ACCOUNT_MARKET_ID = "acct_Market_ID";
+    public static final String ACCOUNT_DB_ID = "acct_DB_ID";
 
 
     public static final String CREATE_ACCOUNT_TYPE_TABLE = "CREATE TABLE " + ACCOUNT_TYPES_TABLE + " (" + ACCOUNT_TYPE_ID + " INTEGER, " +
@@ -66,8 +67,8 @@ public class Account implements Serializable, Parcelable {
     public static final String CREATE_ACCOUNTS_TABLE = "CREATE TABLE IF NOT EXISTS " + ACCOUNTS_TABLE + " (" + ACCOUNT_NO + " INTEGER , " + BANK_ACCT_NO + "TEXT," + ACCOUNT_PROF_ID + " INTEGER , " +
             ACCOUNT_CUS_ID + " INTEGER , " + ACCOUNT_TX_ID + " INTEGER , " +
             ACCOUNT_TYPE + " TEXT , " + ACCOUNT_BANK + " TEXT , " + ACCOUNT_NAME + " TEXT, " + ACCOUNT_BALANCE + " REAL, " +
-            ACCOUNT_EXPECTED_SAVINGS + " TEXT, " + ACCOUNT_SAVED_AMOUNT + " REAL, " + BANK_ACCT_BALANCE + "REAL, "+ "FOREIGN KEY(" + ACCOUNT_MARKET_BUSINESS_ID + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+ "FOREIGN KEY(" + ACCOUNT_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+"FOREIGN KEY(" + ACCOUNT_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + ACCOUNT_CUS_ID  + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + ")," + "FOREIGN KEY(" + ACCOUNT_TX_ID + ") REFERENCES " + TRANSACTIONS_TABLE + "(" + TRANSACTION_ID + ")," +
-            "PRIMARY KEY(" + ACCOUNT_NO + "))";
+            ACCOUNT_EXPECTED_SAVINGS + " TEXT, " + ACCOUNT_SAVED_AMOUNT + " REAL, " + BANK_ACCT_BALANCE + "REAL, "+ ACCOUNT_DB_ID + "INTEGER, "+ "FOREIGN KEY(" + ACCOUNT_MARKET_BUSINESS_ID + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+ "FOREIGN KEY(" + ACCOUNT_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+"FOREIGN KEY(" + ACCOUNT_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + ACCOUNT_CUS_ID  + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + ")," + "FOREIGN KEY(" + ACCOUNT_TX_ID + ") REFERENCES " + TRANSACTIONS_TABLE + "(" + TRANSACTION_ID + ")," +
+            "PRIMARY KEY(" + ACCOUNT_DB_ID + "))";
 
     protected Account(Parcel in) {
         skyLightAcctNo = in.readInt();

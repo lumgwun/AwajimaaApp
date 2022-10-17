@@ -27,21 +27,27 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.blongho.country_data.Currency;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.rom4ek.arcnavigationview.ArcNavigationView;
+import com.skylightapp.Adapters.AccountAdapter;
 import com.skylightapp.CameraActivity;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
+import com.skylightapp.Classes.Loan;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.StandingOrderAcct;
@@ -54,6 +60,7 @@ import com.skylightapp.PrivacyPolicy_Web;
 import com.skylightapp.R;
 import com.skylightapp.SignTabMainActivity;
 import com.skylightapp.SkylightSliderAct;
+import com.skylightapp.Tellers.MyCusLoanRepayment;
 import com.skylightapp.UserPrefActivity;
 import com.skylightapp.UserTimeLineAct;
 import com.squareup.picasso.Picasso;
@@ -64,6 +71,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -112,7 +120,14 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
     private static final String PREF_NAME = "skylight";
     AppCompatButton btnToPacks;
     private Bundle homeBundle;
+    private Spinner spnAccounts;
+    AccountAdapter accountArrayAdapter;
+    private ArrayList<Account> accountArrayList;
+    private AppCompatTextView txtBankAcctBalance;
     ChipNavigationBar chipNavigationBar;
+    String acctBalance;
+    private Currency currency;
+    private String currencySymbol;
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
     ActivityResultLauncher<Intent> startCusPictureActivityForResult = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -185,7 +200,9 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
         toolbar = (Toolbar) findViewById(R.id.toolbar_cus);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
+        accountArrayList= new ArrayList<>();
         gson1 = new Gson();
+        //currency= new Currency();
         userProfile=new Profile();
         customer=new Customer();
         account=new Account();
@@ -200,16 +217,48 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
         SharedPrefProfileID=userPreferences.getString("PROFILE_ID", "");
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastCustomerUsed", "");
+        customer = gson1.fromJson(json1, Customer.class);
+        txtUserName = findViewById(R.id.cus_username);
+        txtBankAcctBalance = findViewById(R.id._BankBalance4);
+        spnAccounts = findViewById(R.id.spnA);
         if(userProfile ==null){
             if(homeBundle !=null){
                 userProfile=homeBundle.getParcelable("Profile");
 
             }
+            accountArrayList=userProfile.getProfileAccounts();
+            accountArrayAdapter = new AccountAdapter(NewCustomerDrawer.this, android.R.layout.simple_spinner_item, accountArrayList);
+            accountArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spnAccounts.setAdapter(accountArrayAdapter);
+            spnAccounts.setSelection(accountArrayAdapter.getPosition(account));
 
         }
-        json1 = userPreferences.getString("LastCustomerUsed", "");
-        customer = gson1.fromJson(json1, Customer.class);
-        txtUserName = findViewById(R.id.cus_username);
+
+
+        spnAccounts.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                account = (Account) parent.getSelectedItem();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        if(account !=null){
+            currency=account.getCurrency();
+
+        }
+        if(currency !=null){
+            currencySymbol=currency.getSymbol();
+        }
+        if(account !=null){
+            txtBankAcctBalance.setText("Balance"+currencySymbol+account.getAccountBalance());
+
+        }
+
+
 
         chipNavigationBar = findViewById(R.id.bottom_nav_barC);
         chipNavigationBar.setOnClickListener(new View.OnClickListener() {

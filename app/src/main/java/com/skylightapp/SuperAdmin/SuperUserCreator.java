@@ -330,6 +330,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
     LinearLayoutCompat layoutAdminType;
     private MarketBusiness marketBusiness;
+    private int marketBizID;
 
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {
@@ -632,6 +633,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
         ran = new Random();
         if(marketBusiness !=null){
             bizID=marketBusiness.getBusinessID();
+            marketBizID=marketBusiness.getBizMarketID();
 
         }
         birthday= new Birthday();
@@ -1939,7 +1941,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
-                                dbHelper.insertSuperAdmin(profileID2, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedOffice, uUserName, uPassword, selectedImage);
+                                dbHelper.insertSuperAdmin(profileID2, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedOffice, uUserName, uPassword, selectedImage,marketBizID);
 
                             }
 

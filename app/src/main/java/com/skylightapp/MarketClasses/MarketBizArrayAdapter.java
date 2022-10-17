@@ -80,7 +80,7 @@ public class MarketBizArrayAdapter extends ArrayAdapter<MarketBusiness> {
         Glide.with(context)
                 .load(businessLogo)
                 .placeholder(R.drawable.lsgroup)
-                .error(R.drawable.ic_error_black_24dp)
+                .error(R.drawable.ic_error)
                 .into(bizLogo);
 
         return convertView;

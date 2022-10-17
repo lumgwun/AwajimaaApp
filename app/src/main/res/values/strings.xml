@@ -2002,6 +2002,9 @@
     <string name="menu_settings_video">Video Settings</string>
     <string name="menu_settings_audio">Audio Settings!</string>
     <string name="error_file_not_created">Error file not created</string>
+    <string name="top_list">Top Stocks</string>
+    <string name="user_list">Our Users</string>
+    <string name="my_messages">My Com.</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 

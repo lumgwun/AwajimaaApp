@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -268,7 +267,7 @@ public class AdminCusActionAct extends AppCompatActivity {
     }
 
     private  void sendMessage(Bundle userBundle){
-        Intent userIntent = new Intent(AdminCusActionAct.this, SendUserMessageAct.class);
+        Intent userIntent = new Intent(AdminCusActionAct.this, SendSingleUserMAct.class);
         userIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         userIntent.putExtras(userBundle);
         startActivity(userIntent);

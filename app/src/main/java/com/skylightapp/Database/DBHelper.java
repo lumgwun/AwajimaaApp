@@ -130,6 +130,7 @@ import static com.skylightapp.Classes.Profile.PROFILE_PIC_ID;
 import static com.skylightapp.Classes.Profile.PROF_ID_FOREIGN_KEY_PASSWORD;
 import static com.skylightapp.Classes.Profile.SPONSOR_TABLE;
 import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_CODE;
+import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_COLLECTION_STATUS;
 import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_CUSTOMER_ID_FOREIGN;
 import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ITEM;
 import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_NAME;
@@ -153,6 +154,7 @@ import static com.skylightapp.Classes.AppCash.APP_CASH_PAYER;
 import static com.skylightapp.Classes.Transaction.TRANSACTION_PROF_ID;
 import static com.skylightapp.Classes.TransactionGranting.CREATE_TANSACTION_EXTRA_TABLE;
 import static com.skylightapp.Classes.TransactionGranting.TANSACTION_EXTRA_TABLE;
+import static com.skylightapp.Classes.UserSuperAdmin.SUPER_ADMIN_MARKETBIZ_ID;
 import static com.skylightapp.Classes.UserSuperAdmin.SUPER_ADMIN_PROFILE_ID;
 import static com.skylightapp.Database.MarketTranXDAO.CREATE_MARKET_TX_TABLE_TABLE;
 import static com.skylightapp.Database.MarketTranXDAO.MARKET_TX_TABLE;
@@ -165,6 +167,8 @@ import static com.skylightapp.MarketClasses.Market.MARKET_ID;
 import static com.skylightapp.MarketClasses.Market.MARKET_NAME;
 import static com.skylightapp.MarketClasses.Market.MARKET_STATE;
 import static com.skylightapp.MarketClasses.Market.MARKET_TABLE;
+import static com.skylightapp.MarketClasses.MarketBusiness.CREATE_BIZ_TABLE;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TABLE;
 import static com.skylightapp.MarketClasses.MarketStock.CREATE_MARKET_STOCK_TABLE;
 import static com.skylightapp.MarketClasses.MarketStock.KEYS_PROD;
 import static com.skylightapp.MarketClasses.MarketStock.KEY_PROD_BENEFIT;
@@ -442,6 +446,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.d("table", CREATE_EMERGENCY_NEXT_REPORT_TABLE);
         Log.d("table", CREATE_TELLER_REPORT_TABLE);
         Log.d("table", CREATE_MARKET_TX_TABLE_TABLE);
+        Log.d("table", CREATE_BIZ_TABLE);
         try {
             this.context = context;
             sharedPreferences = context.getSharedPreferences(PREF_NAME, 0);
@@ -536,6 +541,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_JOURNEY_TABLE);
             db.execSQL(CREATE_JOURNEY_ACCOUNT_TABLE);
             db.execSQL(CREATE_MARKET_TX_TABLE_TABLE);
+            db.execSQL(CREATE_BIZ_TABLE);
 
             db.execSQL("create table ROLES " + "(role_ID integer primary key, roleUserName text,rolePassword text,rolePhoneNo text,role text)");
             db.setTransactionSuccessful();
@@ -612,6 +618,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + JOURNEY_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + JOURNEY_ACCOUNT_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MARKET_TX_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MARKET_BIZ_TABLE);
 
         onCreate(db);
 
@@ -676,6 +683,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + JOURNEY_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + JOURNEY_ACCOUNT_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MARKET_TX_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MARKET_BIZ_TABLE);
         onCreate(db);
     }
 
@@ -2478,7 +2486,7 @@ public class DBHelper extends SQLiteOpenHelper {
         //db.close();
         return profileID2;
     }
-    public long insertSuperAdmin(int profileID,String surname,String firstName,String phoneNo,String email,String dob,String gender,String address, String office,String userName,String password,Uri profilePix) {
+    public long insertSuperAdmin(int profileID,String surname,String firstName,String phoneNo,String email,String dob,String gender,String address, String office,String userName,String password,Uri profilePix,int marketBizID) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         ContentValues values1 = new ContentValues();
@@ -2498,6 +2506,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(SUPER_ADMIN_ADDRESS, address);
         values.put(SUPER_ADMIN_OFFICE, office);
         values.put(SUPER_ADMIN_USER_NAME, userName);
+        values.put(SUPER_ADMIN_MARKETBIZ_ID, marketBizID);
         values.put(SUPER_ADMIN_PASSWORD, passwordCoded);
         values.put(SUPER_ADMIN_NIN, "");
 
@@ -3287,11 +3296,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     }
-    public void updatePackageForCollection(int profileId, int customerId, int packageId, String status) {
+    public void updatePackageForCollection(int profileId, int customerId, int packageId, int marketBizID,String status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues packageValues = new ContentValues();
-        String selection = PACKAGE_PROFILE_ID_FOREIGN + "=? AND " + PACKAGE_CUSTOMER_ID_FOREIGN + "=?AND " + PACKAGE_ID + "=?";
-        String[] selectionArgs = new String[]{valueOf(profileId), valueOf(customerId),valueOf(packageId)};
+        String selection = PACKAGE_PROFILE_ID_FOREIGN + "=? AND " + SUPER_ADMIN_MARKETBIZ_ID + "=?AND "+ PACKAGE_CUSTOMER_ID_FOREIGN + "=?AND " + PACKAGE_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(profileId), valueOf(marketBizID),valueOf(customerId),valueOf(packageId)};
         packageValues.put(PACKAGE_STATUS, status);
         db.update(PACKAGE_TABLE, packageValues, selection, selectionArgs);
         db.close();
@@ -3778,6 +3787,35 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return skyLightPackageArrayList;
     }
+
+    public ArrayList<SkyLightPackage> getCustomerCompleteUnCollectedPack(int customerId, String completed,String collectionStatus) {
+        ArrayList<SkyLightPackage> packages = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String incomplete = null;
+        //inProgress=incomplete;
+
+        String selection = PACKAGE_CUSTOMER_ID_FOREIGN + "=? AND " + PACKAGE_COLLECTION_STATUS + "=?AND " + PACKAGE_STATUS + "=?";
+        String[] selectionArgs = new String[]{valueOf(customerId), collectionStatus,completed};
+
+        Cursor cursor = db.query(PACKAGE_TABLE, null, selection, selectionArgs, null,
+                null, null);
+
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getPackagesFromCursorAdmin(packages, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+        db.close();
+
+
+        return packages;
+    }
+
+
     public ArrayList<SkyLightPackage> getCustomerSavingsCompletePackage(int customerID,String savings,String completed) {
         ArrayList<SkyLightPackage> skyLightPackageArrayList = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
@@ -3850,32 +3888,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<SkyLightPackage> getCustomerCompletePack(int customerId, String completed) {
-        ArrayList<SkyLightPackage> packages = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
-        String incomplete = null;
-        //inProgress=incomplete;
 
-        String selection = PACKAGE_CUSTOMER_ID_FOREIGN + "=? AND " + PACKAGE_STATUS + "=?";
-        String[] selectionArgs = new String[]{valueOf(customerId), valueOf(completed)};
-
-        Cursor cursor = db.query(PACKAGE_TABLE, null, selection, selectionArgs, null,
-                null, null);
-
-        if(cursor!=null && cursor.getCount() > 0) {
-            if (cursor.moveToFirst()) {
-                do {
-                    getPackagesFromCursorAdmin(packages, cursor);
-                } while (cursor.moveToNext());
-                cursor.close();
-            }
-
-        }
-        db.close();
-
-
-        return packages;
-    }
     public ArrayList<SkyLightPackage> getProfileIncompletePack(int profileID, String inProgress) {
         ArrayList<SkyLightPackage> packages = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();

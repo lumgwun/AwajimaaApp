@@ -29,13 +29,12 @@ public class AppCash implements Serializable, Parcelable {
     public static final String S_CASH_OFFICE_ID = "s_cash_office_ID";
     public static final String APP_CASH_ADMIN_ID = "s_cash_Admin_ID";
     public static final String APP_CASH_PROFILE_ID = "s_cash_Profile_ID";
+    public static final String APP_CASH_DB_ID = "s_cash_DB_ID";
 
 
 
-
-
-    public static final String CREATE_SKYLIGHT_CASH_TABLE = "CREATE TABLE " + APP_CASH_TABLE + " (" + APP_CASH_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + S_CASH_OFFICE_ID + " TEXT, " + APP_CASH_ADMIN_ID + " TEXT, " + APP_CASH_PROFILE_ID + " TEXT, " + APP_CASH_DATE + " TEXT, " + APP_CASH_AMOUNT + " REAL, " + APP_CASH_PAYER + " TEXT, " +
-            APP_CASH_PAYEE + " TEXT, " + S_CASH_ADMIN + " TEXT, " + APP_CASH_CODE + " REAL, " + APP_CASH_STATUS + " TEXT, " + APP_CASH_FROM + " TEXT, " + APP_CASH_TO + " TEXT, "  + "FOREIGN KEY(" + S_CASH_OFFICE_ID + ") REFERENCES " + OFFICE_BRANCH_TABLE + "(" + OFFICE_BRANCH_ID + "))";
+    public static final String CREATE_SKYLIGHT_CASH_TABLE = "CREATE TABLE " + APP_CASH_TABLE + " (" + APP_CASH_ID + " INTEGER , " + S_CASH_OFFICE_ID + " TEXT, " + APP_CASH_ADMIN_ID + " TEXT, " + APP_CASH_PROFILE_ID + " TEXT, " + APP_CASH_DATE + " TEXT, " + APP_CASH_AMOUNT + " REAL, " + APP_CASH_PAYER + " TEXT, " +
+            APP_CASH_PAYEE + " TEXT, " + S_CASH_ADMIN + " TEXT, " + APP_CASH_CODE + " REAL, " + APP_CASH_STATUS + " TEXT, " + APP_CASH_FROM + " TEXT, " + APP_CASH_TO + " TEXT, "+ APP_CASH_DB_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "  + "FOREIGN KEY(" + S_CASH_OFFICE_ID + ") REFERENCES " + OFFICE_BRANCH_TABLE + "(" + OFFICE_BRANCH_ID + "))";
 
 
 

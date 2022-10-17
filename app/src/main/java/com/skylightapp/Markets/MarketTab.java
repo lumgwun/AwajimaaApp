@@ -148,17 +148,24 @@ public class MarketTab extends TabActivity implements NavigationView.OnNavigatio
         toggle.setHomeAsUpIndicator(R.drawable.home2);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        Intent intentProducts = new Intent().setClass(this, ProductsAct.class);
-        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecSignUp = tabhost
-                .newTabSpec("General Shop")
-                .setIndicator("", resources.getDrawable(R.drawable.ic_create_new))
-                .setContent(intentProducts);
 
         Intent intentMarketHub = new Intent().setClass(this, MarketHub.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecHub = tabhost
                 .newTabSpec("Market Hub")
                 .setIndicator("", resources.getDrawable(R.drawable.ic_icon2))
                 .setContent(intentMarketHub);
+
+        Intent intentMarkets = new Intent().setClass(this, MarketBizListAct.class);
+        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecMarketBiz = tabhost
+                .newTabSpec("Businesses")
+                .setIndicator("", resources.getDrawable(R.drawable.ic_admin_panel))
+                .setContent(intentMarkets);
+
+        Intent intentProducts = new Intent().setClass(this, ProductsAct.class);
+        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecSignUp = tabhost
+                .newTabSpec("General Shop")
+                .setIndicator("", resources.getDrawable(R.drawable.ic_create_new))
+                .setContent(intentProducts);
 
         Intent intentLogistics = new Intent().setClass(this, LogisticParkAct.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecLogistics = tabhost
@@ -169,6 +176,7 @@ public class MarketTab extends TabActivity implements NavigationView.OnNavigatio
         tabhost.addTab(tabSpecSignUp);
         tabhost.addTab(tabSpecHub);
         tabhost.addTab(tabSpecLogistics);
+        tabhost.addTab(tabSpecMarketBiz);
 
         tabhost.setCurrentTab(0);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {

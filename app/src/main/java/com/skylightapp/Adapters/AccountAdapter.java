@@ -14,11 +14,12 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.blongho.country_data.Currency;
 import com.skylightapp.Classes.Account;
+import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-
+import java.util.List;
 
 
 public class AccountAdapter extends ArrayAdapter<Account> {
@@ -27,16 +28,20 @@ public class AccountAdapter extends ArrayAdapter<Account> {
     private int resource;
     private Currency currency;
     private String currencyCode,currencySymbol;
+    private List<Account> accountList;
 
-    public AccountAdapter(Context context, int resource, ArrayList<Account> accounts) {
-        super(context, resource, accounts);
-
+    public AccountAdapter(Context context, int resource, ArrayList<Account> accountList) {
+        super(context, resource, accountList);
         this.context = context;
         this.resource = resource;
+        this.accountList = accountList;
     }
 
     public AccountAdapter(FragmentActivity activity, int lst_accounts, ArrayList<Account> accounts) {
         super(activity, lst_accounts, accounts);
+        this.context = activity;
+        this.resource = lst_accounts;
+        this.accountList = accounts;
     }
 
     @SuppressLint("DefaultLocale")

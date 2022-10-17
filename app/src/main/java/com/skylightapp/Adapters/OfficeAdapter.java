@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.skylightapp.Classes.Customer;
+import com.skylightapp.Admins.SendSingleUserMAct;
 import com.skylightapp.Classes.OfficeBranch;
 import com.skylightapp.Inventory.StocksTransferAct;
 import com.skylightapp.R;
@@ -54,6 +54,12 @@ public class OfficeAdapter extends BaseAdapter implements SpinnerAdapter {
     public OfficeAdapter(StocksTransferAct stocksTransferAct, int simple_spinner_item, ArrayList<OfficeBranch> officeBranchArrayList) {
         this.context = stocksTransferAct;
         this.officeBranchList = officeBranchArrayList;
+        this.layout = simple_spinner_item;
+    }
+
+    public OfficeAdapter(SendSingleUserMAct sendSingleUserMAct, int simple_spinner_item, List<OfficeBranch> officeArrayList) {
+        this.context = sendSingleUserMAct;
+        this.officeBranchList = officeArrayList;
         this.layout = simple_spinner_item;
     }
 

@@ -21,10 +21,8 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Customers.CusPacksAct;
 import com.skylightapp.R;
 
-import static com.skylightapp.Classes.Profile.PROFILE_ID;
-
 public class TellerHomeChoices extends TabActivity {
-    private AppBarLayout appBarLayout;
+
     com.melnykov.fab.FloatingActionButton floatingActionButton;
     Profile userProfile;
     long profileUID2;
@@ -70,7 +68,7 @@ public class TellerHomeChoices extends TabActivity {
         SharedPrefCusID=sharedPreferences.getInt("CUSTOMER_ID", 0);
         SharedPrefUserMachine=sharedPreferences.getString("machine", "");
         SharedPrefProfileID=sharedPreferences.getInt("PROFILE_ID", 0);
-        appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_My);
+
         Intent intentSignUp = new Intent().setClass(this, TellerDrawerAct.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecSignUp = tabhost
                 .newTabSpec("Home")
@@ -90,7 +88,7 @@ public class TellerHomeChoices extends TabActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                packageTab();
+                packageTab(userProfile,SharedPrefUserMachine,SharedPrefProfileID);
             }
         });
         tabhost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
@@ -102,13 +100,13 @@ public class TellerHomeChoices extends TabActivity {
 
 
     }
-    public void packageTab() {
+    public void packageTab(Profile userProfile, String sharedPrefUserMachine, int sharedPrefProfileID) {
         Intent intent = new Intent(this, MyCustPackTab.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("User", (Parcelable) userProfile);
+        intent.putExtra("Profile", (Parcelable) userProfile);
         intent.putExtra("Machine", SharedPrefUserMachine);
         intent.putExtra("ProfileID", SharedPrefProfileID);
-        intent.putExtra(PROFILE_ID, SharedPrefProfileID);
+        intent.putExtra("PROFILE_ID", SharedPrefProfileID);
         startActivity(intent);
 
 

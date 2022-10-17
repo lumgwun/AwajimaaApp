@@ -11,9 +11,25 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="wrap_content">
+        <com.scwang.wave.MultiWaveHeader
+            android:id="@+id/waveHeader66"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:scaleY="1"
+            app:mwhVelocity="2.5"
+            app:mwhProgress="1"
+            app:mwhStartColor="@color/colorPrimaryDark"
+            app:mwhCloseColor="@color/gray_10"
+            app:mwhIsRunning="true"
+            app:mwhGradientAngle="360"
+            app:mwhWaveHeight="50dp"
+            app:mwhColorAlpha="0.2"
+            app:mwhWaves="MultiWave"/>
+
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
+            android:background="@drawable/material_drawer_circle_mask"
             android:layout_height="wrap_content">
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
@@ -35,22 +51,8 @@
                     android:layout_width="match_parent"
                     android:orientation="vertical"
                     android:layout_marginBottom="5dp"
-                    android:background="@drawable/material_drawer_circle_mask"
+                    android:background="@drawable/shape_layer"
                     android:layout_gravity="top">
-                    <com.scwang.wave.MultiWaveHeader
-                        android:id="@+id/waveHeader"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:scaleY="1"
-                        app:mwhVelocity="2.5"
-                        app:mwhProgress="1"
-                        app:mwhIsRunning="true"
-                        app:mwhGradientAngle="360"
-                        app:mwhWaveHeight="50dp"
-                        app:mwhColorAlpha="0.2"
-                        app:mwhStartColor="@color/gray"
-                        app:mwhCloseColor="@color/white_good"
-                        app:mwhWaves="MultiWave"/>
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/cusGreetings"
@@ -71,27 +73,11 @@
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:src="@drawable/ic_admin_user"
-                        android:layout_gravity="start"
+                        android:layout_gravity="center_horizontal"
                         android:padding="5dp"
                         android:stateListAnimator="@animator/nav_default_pop_enter_anim"
                         app:civ_border_width="1dp"
                         app:civ_border_color="#ffffff"/>
-                    <com.scwang.wave.MultiWaveHeader
-                        android:id="@+id/waveHeader66"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:scaleY="1"
-                        app:mwhVelocity="2.5"
-                        app:mwhProgress="1"
-                        app:mwhIsRunning="true"
-                        app:mwhGradientAngle="360"
-                        app:mwhWaveHeight="50dp"
-                        app:mwhColorAlpha="0.2"
-                        app:mwhStartColor="@color/colorPrimaryDark"
-                        app:mwhCloseColor="@color/random_color_1"
-                        app:mwhWaves="MultiWave"/>
-
-
 
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
@@ -105,11 +91,12 @@
                             android:id="@+id/cus_name3"
                             android:layout_weight="1"
                             android:textAllCaps="true"
+                            android:fontFamily="@font/hipster_script_pro"
                             android:layout_marginStart="17dp"
                             android:layout_marginEnd="2dp"
                             android:textAlignment="center"
                             android:textSize="15sp"
-                            android:textColor="@color/white"
+                            android:textColor="@color/red_brown_dark"
                             android:text="User: Ene John"/>
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -118,76 +105,67 @@
                             android:id="@+id/cus_id2"
                             android:layout_weight="1"
                             android:textAllCaps="true"
+                            android:fontFamily="@font/gilroy_black"
                             android:layout_marginEnd="2dp"
                             android:textAlignment="center"
                             android:gravity="center"
                             android:textSize="15sp"
-                            android:textColor="@color/white"
+                            android:textColor="@color/red_brown_dark"
                             android:text="ID:094g76"/>
 
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
-                    <androidx.cardview.widget.CardView
+                    <com.balysv.materialripple.MaterialRippleLayout
+                        android:id="@+id/acct2_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:cardCornerRadius="10dp"
-                        app:cardElevation="2dp"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginTop="5dp"
-                        app:cardPreventCornerOverlap="false"
-                        app:contentPadding="2dp">
-
-                        <com.balysv.materialripple.MaterialRippleLayout
-                            android:id="@+id/acct2_layout"
+                        android:layout_height="match_parent"
+                        app:mrl_rippleAlpha="0.2"
+                        app:mrl_rippleColor="@color/blue1"
+                        app:mrl_rippleHover="true"
+                        app:mrl_rippleOverlay="false">
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:mrl_rippleAlpha="0.2"
-                            app:mrl_rippleColor="@color/blue1"
-                            app:mrl_rippleHover="true"
-                            app:mrl_rippleOverlay="false">
-                            <LinearLayout
-                                android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2"
+                            android:padding="30dp"
+                            android:layout_marginEnd="50dp"
+                            android:layout_marginStart="50dp"
+                            android:clickable="false">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/allCus_Super"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:weightSum="2"
-                                android:clickable="false">
+                                android:layout_weight="1"
+                                android:text="Wallet ID:29745L"
+                                android:textColor="@color/red_brown_dark"
+                                android:padding="10dp"
+                                android:layout_marginEnd="2dp"
+                                android:textSize="15sp"
+                                android:layout_gravity="center_vertical|start"
+                                android:gravity="center_vertical|start"
+                                android:clickable="false"
+                                />
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/balance_normalCus"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:paddingLeft="10dp"
+                                android:text="Balance: NGN30,000"
+                                android:textColor="@color/red_brown_dark"
+                                android:padding="10dp"
+                                android:textSize="15sp"
+                                android:layout_gravity="center_vertical|end"
+                                android:gravity="center_vertical|end"
+                                android:clickable="false"
+                                />
 
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:id="@+id/allCus_Super"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="Wallet ID:29745L"
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:padding="10dp"
-                                    android:layout_marginEnd="2dp"
-                                    android:textSize="15sp"
-                                    android:layout_gravity="center_vertical|start"
-                                    android:gravity="center_vertical|start"
-                                    android:clickable="false"
-                                    />
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:id="@+id/balance_normalCus"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:paddingLeft="10dp"
-                                    android:text="Balance: NGN30,000"
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:padding="10dp"
-                                    android:textSize="15sp"
-                                    android:layout_gravity="center_vertical|end"
-                                    android:gravity="center_vertical|end"
-                                    android:clickable="false"
-                                    />
+                        </LinearLayout>
 
-                            </LinearLayout>
-
-                        </com.balysv.materialripple.MaterialRippleLayout>
-
-                    </androidx.cardview.widget.CardView>
+                    </com.balysv.materialripple.MaterialRippleLayout>
 
 
                 </LinearLayout>
@@ -197,6 +175,7 @@
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="10dp"
                     app:cardElevation="2dp"
+                    android:visibility="visible"
                     android:layout_marginStart="2dp"
                     android:layout_marginEnd="5dp"
                     android:layout_gravity="bottom"
@@ -230,21 +209,19 @@
                                 android:textSize="15sp"
                                 android:layout_gravity="center_vertical|start"
                                 android:gravity="center_vertical|start"
-                                android:clickable="false"
-                                />
+                                android:clickable="false" />
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/savingsToday"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:text="Standing Order: N200,000"
+                                android:text="SO: N200,000"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:padding="10dp"
                                 android:textSize="15sp"
                                 android:layout_gravity="center_vertical|start"
                                 android:gravity="center_vertical|end"
-                                android:clickable="false"
-                                />
+                                android:clickable="false" />
 
                         </LinearLayout>
 
@@ -271,6 +248,89 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/other_BankText"
+                android:textAllCaps="true"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="2dp"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:textColor="@android:color/holo_red_dark"
+                android:text="Other Currencies Details :"/>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/selectAcct"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:background="@drawable/message_circle"
+                    android:gravity="center_horizontal"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="2dp"
+                    android:textAlignment="center"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/white"
+                    android:text="Select Currency Account :"/>
+
+                <Spinner
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spnA"
+                    android:background="@drawable/message_circle"
+                    android:textAllCaps="true"
+                    android:padding="20dp"
+                    android:layout_weight="1"
+                    android:entries="@raw/com_blongho_country_data_currencies"
+                    android:gravity="center_horizontal"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="2dp"
+                    android:textAlignment="center"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/holo_orange_dark"
+                    android:text="0012897632 :"/>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/_BankBalance4"
+                android:textAllCaps="true"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="2dp"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@android:color/holo_red_dark"
+                android:text="USD 0.00 :"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@drawable/rect_my_message"/>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="5dp"
+            android:visibility="visible"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/shape_layer_3b"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/cus_BankText"
                 android:textAllCaps="true"
                 android:layout_marginTop="10dp"
@@ -280,7 +340,7 @@
                 android:textAlignment="center"
                 android:textSize="15sp"
                 android:textColor="@android:color/holo_red_dark"
-                android:text="Bank Details :"/>
+                android:text="Nigerian Bank Details :"/>
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:orientation="horizontal"

@@ -66,8 +66,8 @@ public class RequestPaymentAct extends AppCompatActivity {
     double amount;
     private Customer customer;
     int tranxPayoutID = random.nextInt((int) (Math.random() * 220) + 170);
-    String refID = "SkyLightT/"+ random.nextInt((int) (Math.random() * 12720) + 100000);
-    String narration ="Skylight requested Payment";
+    String refID = "Awajima/"+ random.nextInt((int) (Math.random() * 12720) + 100000);
+    String narration ="Awajima requested Payment";
     int messageID = random.nextInt((int) (Math.random() * 9) + 1);
     String requestDate;
     String response;
@@ -78,7 +78,7 @@ public class RequestPaymentAct extends AppCompatActivity {
     long customerId,e_walletNo;
     double amount_Requested;
     int profileID;
-    String sender = "Your Skylight Coop." ;
+    String sender = "Your Awajima App." ;
     public static final String ACCOUNT_SID = System.getenv(TWILIO_ACCOUNT_SID);
     public static final String AUTH_TOKEN = System.getenv(TWILIO_AUTH_TOKEN);
     Message message;
@@ -124,6 +124,8 @@ public class RequestPaymentAct extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.act_request_payment);
         DBHelper dbHelper = new DBHelper(this);
         userProfile= new Profile();
@@ -168,8 +170,7 @@ public class RequestPaymentAct extends AppCompatActivity {
         json = sharedPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
 
         if(userProfile !=null){
             customer=userProfile.getProfileCus();
@@ -192,12 +193,12 @@ public class RequestPaymentAct extends AppCompatActivity {
         if(skylightAccount !=null){
             acctBalance=skylightAccount.getAccountBalance();
         }
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-DD", Locale.getDefault());
         requestDate = mdformat.format(calendar.getTime());
 
         //Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 
-        paymentMessage="You have requested for the withdrawal of NGN"+ amountRequested +"from your Skylight Acct. @"+requestDate;
+        paymentMessage="You have requested for the withdrawal of NGN"+ amountRequested +"from your Awajima Acct. @"+requestDate;
 
         if(acctBank !=null){
             acctBank=sharedPreferences.getString("Bank","");
@@ -546,8 +547,8 @@ public class RequestPaymentAct extends AppCompatActivity {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("Bank", acctBank);
             editor.putString("Bank_Acct_Name", bankName);
-            editor.putString("Bank_Acct_Number", acctBankNo);
-            editor.putString("Amount_Requested", String.valueOf(amountRequested)).apply();
+            //editor.putString("Amount_Requested", String.valueOf(amountRequested));
+            editor.putString("Bank_Acct_Number", acctBankNo).apply();
 
             if(acctBank !=null){
                 acctBank =sharedPreferences.getString("Bank","");

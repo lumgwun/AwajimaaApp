@@ -15,6 +15,7 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.StocksDAO;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
 
 import java.text.SimpleDateFormat;
@@ -45,7 +46,9 @@ public class UpdatePackageAct extends AppCompatActivity {
     private String json,json1;
     String code;
     int itemRemCount,newItemCount;
+    private MarketBusiness marketBusiness;
     private static final String PREF_NAME = "skylight";
+    private int marketBizID;
     String SharedPrefUserPassword,noOfDays,officeBranch, itemName,status,stringNoOfSavings,office, customerPhoneNo,dateOfReport,nameOfCustomer, cmFirstName,cmLastName,cmName,SharedPrefUserMachine,phoneNo,SharedPrefUserName,SharedPrefProfileID,adminName;
 
 
@@ -57,12 +60,16 @@ public class UpdatePackageAct extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         sharedpreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
         gson = new Gson();
+        gson1 = new Gson();
         userProfile= new Profile();
         bundle= new Bundle();
+        marketBusiness= new MarketBusiness();
         dbHelper= new DBHelper(this);
         customerDailyReport=new CustomerDailyReport();
         json = sharedpreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
+        json1 = sharedpreferences.getString("LastMarketBusinessUsed", "");
+        marketBusiness = gson1.fromJson(json1, MarketBusiness.class);
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         //calendar.add(Calendar.DAY_OF_YEAR, 31);
@@ -83,6 +90,9 @@ public class UpdatePackageAct extends AppCompatActivity {
             reportProfileID=skyLightPackage.getPackageProfileId();
             customerID=skyLightPackage.getPackageCustomerId();
             packageID=skyLightPackage.getPackID();
+        }
+        if(marketBusiness !=null){
+            marketBizID=marketBusiness.getBizMarketID();
         }
         SharedPrefUserName=sharedpreferences.getString("PROFILE_USERNAME", "");
         SharedPrefUserPassword=sharedpreferences.getString("PROFILE_PASSWORD", "");
@@ -121,7 +131,7 @@ public class UpdatePackageAct extends AppCompatActivity {
         }
         StocksDAO stocksDAO= new StocksDAO(this);
         if(codeLong==packageCode){
-            dbHelper.updatePackageForCollection(reportProfileID,customerID,packageID,"Collected");
+            dbHelper.updatePackageForCollection(reportProfileID,customerID,packageID,marketBizID,"Collected");
             stocksDAO.updateBranchStockCount(officeBranch,itemName,newItemCount);
 
         }

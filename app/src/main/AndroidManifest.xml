@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.skylightapp">
+    package="com.skylightapp" >
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -27,10 +27,12 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_MMS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.provider.Telephony.SMS_RECEIVED" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission
         android:name="android.permission.STATUS_BAR_SERVICE"
         tools:ignore="ProtectedPermissions" />
@@ -58,7 +60,7 @@
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.WRITE_SOCIAL_STREAM" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -73,29 +75,43 @@
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="false"
-        android:icon="@drawable/lsgroup1"
         android:installLocation="preferExternal"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:roundIcon="@mipmap/ic_logo_round"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        tools:remove="android:icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.OurCApp"
         android:value="androidx.core.app.CoreComponentFactory"
         tools:ignore="GoogleAppIndexingWarning"
-        tools:node="replace">
-        <activity android:name=".Markets.MyBizArrayDealListAct"></activity>
+        tools:node="merge" >
+        <activity
+            android:name=".Markets.SendMultiSendeeMAct"
+            android:exported="false" >
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity android:name=".Markets.MarketBizListAct" >
+        </activity>
+        <activity android:name=".Markets.MarketBizDonorOffice" />
+        <activity android:name=".Markets.MarketAdminOffice" />
+        <activity android:name=".Markets.MarketBizPOffice" />
+        <activity android:name=".Markets.BizRegulOffice" />
+        <activity android:name=".Markets.MarketBizOffice" />
+        <activity android:name=".Markets.MyBizArrayDealListAct" />
 
         <receiver
             android:name=".MarketClasses.AppInstallRefReceiver"
             android:enabled="true"
             android:exported="true"
-            android:permission="android.permission.INSTALL_PACKAGES">
+            android:permission="android.permission.INSTALL_PACKAGES" >
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
 
-        <activity android:name=".Markets.BizBizDepositAct"></activity>
+        <activity android:name=".Markets.BizBizDepositAct" />
         <activity android:name=".Customers.CusMessageAct" />
         <activity android:name=".Markets.SingleCusMessagingAct" />
         <activity android:name=".Markets.MarketMessagingTab" />
@@ -225,7 +241,7 @@
         <receiver
             android:name=".MapAndLoc.UserLocBReceiver"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="my.action" />
             </intent-filter>
@@ -249,7 +265,7 @@
         <activity android:name=".Inventory.MyStocksList" />
         <activity android:name=".Tellers.MyCashList" />
         <activity android:name=".Tellers.UpdateTellerCashAct" />
-        <activity android:name=".SuperAdmin.SkylightCashList" />
+        <activity android:name=".SuperAdmin.AppCashList" />
         <activity android:name=".SuperAdmin.UpDateDeposit" />
         <activity android:name=".SuperAdmin.ADepositList" />
         <activity android:name=".LocationUpdateAct" />
@@ -351,8 +367,9 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Customers.CusStatementAct"
+            android:exported="false"
             android:label="File Selector"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
 
@@ -589,7 +606,7 @@
             android:name=".Tellers.StoreManagerWeb"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".Admins.SendUserMessageAct"
+            android:name=".Admins.SendSingleUserMAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Admins.AdminCusActionAct"
@@ -627,7 +644,7 @@
         <activity
             android:name=".WelcomeActivity"
             android:exported="true"
-            tools:ignore="IntentFilterExportedReceiver">
+            tools:ignore="IntentFilterExportedReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -692,16 +709,12 @@
             android:enabled="true"
             android:exported="true" />
 
-        <provider
-            android:name="com.google.firebase.provider.FirebaseInitProvider"
-            android:authorities="com.PACKAGE.NAME.firebaseinitprovider"
-            android:exported="false"
-            android:initOrder="100" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.UserContentProvider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true" >
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepath_pdf" />
@@ -728,6 +741,9 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
 
         <activity
             android:name=".Transactions.CardDepositActivity"
@@ -777,7 +793,7 @@
         <receiver
             android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
             android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND">
+            android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
@@ -796,7 +812,9 @@
         <activity
             android:name=".Admins.TrackWorkersAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".MainActChat">
+        <activity
+            android:name=".MainActChat"
+            android:exported="false" >
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>

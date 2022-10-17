@@ -318,7 +318,7 @@ public class TellerDrawerAct extends AppCompatActivity {
         SharedPrefType=sharedPreferences.getString("ACCOUNT_TYPE", "");
         SharedPrefBank=sharedPreferences.getString("ACCOUNT_BANK", "");
         json1 = sharedPreferences.getString("LastAccountUsed", "");
-        acct = gson.fromJson(json1, Account.class);
+        acct = gson1.fromJson(json1, Account.class);
         json = sharedPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         applicationDb = new DBHelper(this);
@@ -810,8 +810,8 @@ public class TellerDrawerAct extends AppCompatActivity {
 
 
     private void signOut() {
-        SharedPreferences preferences =getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
+        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
         Toast.makeText(this, "Logging out", Toast.LENGTH_SHORT).show();
@@ -1022,7 +1022,7 @@ public class TellerDrawerAct extends AppCompatActivity {
                 break;
             case R.id.nav_send_message:
                 title = "Send a User Message";
-                Intent intent3 = new Intent(this, SendUserMessageAct.class);
+                Intent intent3 = new Intent(this, SendSingleUserMAct.class);
                 startActivity(intent3);
 
                 break;

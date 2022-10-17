@@ -50,7 +50,6 @@ import com.skylightapp.Adapters.AdminCusAdapter;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.MyTouchListener;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Customers.CusLoanRepaymentAct;
 import com.skylightapp.Customers.CusPackageList;
 import com.skylightapp.Customers.CustomerLoanListAct;
 import com.skylightapp.Customers.MySavingsListAct;
@@ -69,17 +68,14 @@ import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.Database.SODAO;
 import com.skylightapp.Database.TCashDAO;
 import com.skylightapp.Database.TReportDAO;
-import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.R;
-import com.skylightapp.SignUpAct;
 
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
-import static com.skylightapp.SignUpAct.hasPermissions;
 
 public class CustomerListActivity extends AppCompatActivity implements AdminCusAdapter.CustomerListener{
     ListView mCustomerList;
@@ -633,7 +629,7 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
                                 case 11:
                                     Toast.makeText(CustomerListActivity.this, "Send a message to the Customer", Toast.LENGTH_SHORT).show();
                                     Bundle messageBundle = new Bundle();
-                                    Intent messageIntent = new Intent(CustomerListActivity.this, SendUserMessageAct.class);
+                                    Intent messageIntent = new Intent(CustomerListActivity.this, SendSingleUserMAct.class);
                                     messageIntent.putExtra("Customer", (Parcelable) customer);
                                     messageIntent.putExtra("Customer Profile", (Parcelable) cusProfile);
                                     messageIntent.putExtra("Customer ID", customerID);

@@ -231,7 +231,6 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     Random ran;
     private double accountBalance;
     SecureRandom random;
-
     Context context;
     String dateOfBirth;
     PreferenceManager preferenceManager;
@@ -349,7 +348,6 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     private String mVerificationId;
     double lat, lng;
     private AppInstallRefReceiver appInstallRefReceiver;
-
     String dob;
     String SharedPrefState, otpMessage, smsMessage;
     private User user;
@@ -404,6 +402,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     private BirthdayDAO birthdayDAO;
     private AdminBDepositDAO depositDAO;
     private TimeLineClassDAO timeLineClassDAO;
+    private Customer lastCustomerUsed;
     private static final String APPLICATION_ID = QUICKBLOX_APP_ID;   //QUICKBLOX_APP_ID
     private static final String AUTH_KEY = QUICKBLOX_AUTH_KEY;
     private static final String AUTH_SECRET = QUICKBLOX_SECRET_KEY;
@@ -559,6 +558,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         setContentView(R.layout.act_sign_up);
         dbHelper = new DBHelper(this);
         bizNameBundle= new Bundle();
+        lastCustomerUsed=new Customer();
         appInstallRefReceiver= new AppInstallRefReceiver();
         QBSettings.getInstance().init(this, APPLICATION_ID, AUTH_KEY, AUTH_SECRET);
         QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
@@ -918,7 +918,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         office.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedOffice = office.getSelectedItem().toString();
+                //selectedOffice = office.getSelectedItem().toString();
                 selectedOffice = (String) parent.getSelectedItem();
 
             }
@@ -933,7 +933,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedState = state.getSelectedItem().toString();
+                //selectedState = state.getSelectedItem().toString();
                 selectedState = (String) parent.getSelectedItem();
 
             }
@@ -1384,7 +1384,6 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     }
 
     public void saveInDatabase(int sponsorID, LatLng cusLatLng, Account account, StandingOrderAcct standingOrderAcct, String joinedDate, String uFirstName, String uSurname, String uPhoneNumber, String uAddress, String uUserName, String uPassword, Customer customer, Profile customerProfile, String nIN, Profile managerProfile, String dateOfBirth, String selectedGender, String selectedOffice, String selectedState, Birthday birthday, CustomerManager customerManager, String ofBirth, int profileID1, int virtualAccountNumber, int soAccountNumber, int customerID, int birthdayID, int investmentAcctID, int itemPurchaseAcctID, int promoAcctID, int packageAcctID, ArrayList<Customer> customers) {
-        saveMyPreferences(sponsorID,cusLatLng,account,standingOrderAcct,joinedDate,uFirstName,uSurname,uPhoneNumber,uAddress,uUserName,uPassword,customer,customerProfile,nIN,managerProfile, dateOfBirth, selectedGender, selectedOffice, selectedState, birthday,  customerManager, ofBirth, profileID1,  virtualAccountNumber, soAccountNumber,  customerID, birthdayID, investmentAcctID,itemPurchaseAcctID,  promoAcctID, packageAcctID,  customers);
         Toast.makeText(SignUpAct.this, "Gender: " + selectedGender + "," + "Office:" + selectedOffice + "" + "State:" + selectedState, Toast.LENGTH_SHORT).show();
         showProgressDialog();
         dbHelper = new DBHelper(this);
@@ -1447,6 +1446,9 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         customerProfile = new Profile(profileID1, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, "", selectedState, selectedOffice, joinedDate, "Customer", uUserName, uPassword, "pending", "");
 
         lastProfileUsed = customerProfile;
+
+        saveMyPreferences(sponsorID,cusLatLng,account,standingOrderAcct,joinedDate,uFirstName,uSurname,uPhoneNumber,uAddress,uUserName,uPassword,customer,customerProfile,nIN,managerProfile, dateOfBirth, selectedGender, selectedOffice, selectedState, birthday,  customerManager, ofBirth, profileID1,  virtualAccountNumber, soAccountNumber,  customerID, birthdayID, investmentAcctID,itemPurchaseAcctID,  promoAcctID, packageAcctID,  customers);
+
 
         sqLiteDatabase = dbHelper.getWritableDatabase();
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
@@ -1515,96 +1517,23 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
 
     }
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if ((data != null) && requestCode == RESULT_CAMERA_CODE) {
-            this.mImageUri = data.getData();
-            Bitmap logoBitmap = drawableToBitmap(this.profilePix.getDrawable());
-            Glide.with(SignUpAct.this)
-                    .asBitmap()
-                    .load(this.mImageUri)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .error(R.drawable.ic_alert)
-                    //.listener(listener)
-                    .skipMemoryCache(true)
-                    .fitCenter()
-                    .centerCrop()
-                    .into(this.profilePix);
-            this.profilePix.setImageBitmap(addGradient(logoBitmap));
-
-        }
-        if ((data != null) && requestCode == RESULT_LOAD_IMAGE) {
-            this.mImageUri = data.getData();
-            Bitmap logoBitmap = drawableToBitmap(this.profilePix.getDrawable());
-            Glide.with(SignUpAct.this)
-                    .asBitmap()
-                    .load(this.mImageUri)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .error(R.drawable.ic_alert)
-                    //.listener(listener)
-                    .skipMemoryCache(true)
-                    .fitCenter()
-                    .centerCrop()
-                    .into(this.profilePix);
-            this.profilePix.setImageBitmap(addGradient(logoBitmap));
-
-
-        }
-
-    }
-    public static Bitmap drawableToBitmap (Drawable drawable) {
-        Bitmap bitmap = null;
-        if (drawable instanceof BitmapDrawable) {
-            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-            if(bitmapDrawable.getBitmap() != null) {
-                return bitmapDrawable.getBitmap();
-            }
-        }
-
-        if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
-            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
-        } else {
-            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        }
-
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        return bitmap;
-    }
-
-    public Bitmap addGradient(Bitmap originalBitmap) {
-        int width = originalBitmap.getWidth();
-        int height = originalBitmap.getHeight();
-        Bitmap updatedBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(updatedBitmap);
-        canvas.drawBitmap(originalBitmap, 0, 0, null);
-        Paint paint = new Paint();
-        LinearGradient shader = new LinearGradient(0, 0, width/2, height, ResourceUtils.getColor(R.color.primary_blue), ResourceUtils.getColor(R.color.primary_purple), Shader.TileMode.CLAMP);
-        paint.setShader(shader);
-        paint.setFilterBitmap(true);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawRect(0, 0, width, height, paint);
-
-        return updatedBitmap;
-    }
-
-
-
     private void saveMyPreferences(int sponsorID, LatLng cusLatLng, Account account, StandingOrderAcct standingOrderAcct, String joinedDate, String uFirstName, String uSurname, String uPhoneNumber, String uAddress, String uUserName, String uPassword, Customer customer, Profile customerProfile, String nIN, Profile managerProfile, String dateOfBirth, String selectedGender, String selectedOffice, String selectedState, Birthday birthday, CustomerManager customerManager, String ofBirth, int profileID1, int virtualAccountNumber, int soAccountNumber, int customerID, int birthdayID, int investmentAcctID, int itemPurchaseAcctID, int promoAcctID, int packageAcctID, ArrayList<Customer> customers) {
         Bundle userBundle = new Bundle();
-        smsMessage = "Welcome to the Skylight  App, may you have the best experience";
+        smsMessage = "Welcome to the Awajima  App, may you have the best experience";
 
         sendSMSMessage22(uPhoneNumber, smsMessage);
         sendTextMessage(uPhoneNumber, smsMessage);
 
-        if (userPreferences == null)
+        if (userPreferences == null){
             userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        gson = new Gson();
-        lastProfileUsed = customerProfile;
-        Customer lastCustomerUsed= customer;
-        json = gson.toJson(lastProfileUsed);
-        json1 = gson1.toJson(lastCustomerUsed);
+            gson = new Gson();
+            lastProfileUsed = customerProfile;
+            lastCustomerUsed= customer;
+            json = gson.toJson(lastProfileUsed);
+            json1 = gson1.toJson(lastCustomerUsed);
+
+        }
+
 
         SharedPreferences.Editor editor = userPreferences.edit();
         editor.putString("PROFILE_DOB", dateOfBirth);
@@ -1777,6 +1706,83 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         finish();
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if ((data != null) && requestCode == RESULT_CAMERA_CODE) {
+            this.mImageUri = data.getData();
+            Bitmap logoBitmap = drawableToBitmap(this.profilePix.getDrawable());
+            Glide.with(SignUpAct.this)
+                    .asBitmap()
+                    .load(this.mImageUri)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .error(R.drawable.ic_alert)
+                    //.listener(listener)
+                    .skipMemoryCache(true)
+                    .fitCenter()
+                    .centerCrop()
+                    .into(this.profilePix);
+            this.profilePix.setImageBitmap(addGradient(logoBitmap));
+
+        }
+        if ((data != null) && requestCode == RESULT_LOAD_IMAGE) {
+            this.mImageUri = data.getData();
+            Bitmap logoBitmap = drawableToBitmap(this.profilePix.getDrawable());
+            Glide.with(SignUpAct.this)
+                    .asBitmap()
+                    .load(this.mImageUri)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .error(R.drawable.ic_alert)
+                    //.listener(listener)
+                    .skipMemoryCache(true)
+                    .fitCenter()
+                    .centerCrop()
+                    .into(this.profilePix);
+            this.profilePix.setImageBitmap(addGradient(logoBitmap));
+
+
+        }
+
+    }
+    public static Bitmap drawableToBitmap (Drawable drawable) {
+        Bitmap bitmap = null;
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if(bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+
+        if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
+    public Bitmap addGradient(Bitmap originalBitmap) {
+        int width = originalBitmap.getWidth();
+        int height = originalBitmap.getHeight();
+        Bitmap updatedBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(updatedBitmap);
+        canvas.drawBitmap(originalBitmap, 0, 0, null);
+        Paint paint = new Paint();
+        LinearGradient shader = new LinearGradient(0, 0, width/2, height, ResourceUtils.getColor(R.color.primary_blue), ResourceUtils.getColor(R.color.primary_purple), Shader.TileMode.CLAMP);
+        paint.setShader(shader);
+        paint.setFilterBitmap(true);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawRect(0, 0, width, height, paint);
+
+        return updatedBitmap;
+    }
+
+
+
+
     public String currentDate() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd 'at' HH:mm:ss");
         Date date = new Date();
@@ -1917,10 +1923,9 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                     case InstallReferrerClient.InstallReferrerResponse.OK:
                         ReferrerDetails response = null;
                         appInstallRefReceiver= new AppInstallRefReceiver();
+                        profileDao= new ProfDAO(SignUpAct.this);
                         try {
                             response = referrerClient.getInstallReferrer();
-
-                            String referrerUrl = response.getInstallReferrer();
 
                             long referrerClickTime = response.getReferrerClickTimestampSeconds();
 
@@ -1929,6 +1934,9 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                             boolean instantExperienceLaunched = response.getGooglePlayInstantParam();
 
                             referrer = response.getInstallReferrer();
+
+                            //profileDao.addProfRefLink(profileID,referrer);
+
                             //IntentFilter filter = new IntentFilter();
                             Intent intent = new Intent();
                             intent.setAction("com.example.broadcast.MY_NOTIFICATION");
@@ -2139,10 +2147,10 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                         .setContentTitle("Your OTP Message")
                         .setContentText(otpMessage);
 
-        //Intent notificationIntent = new Intent(this, NewCustomerDrawer.class);
+        Intent notificationIntent = new Intent(this, LoginDirAct.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        //stackBuilder.addParentStack(LoginDirectorActivity.class);
-        //stackBuilder.addNextIntent(notificationIntent);
+        stackBuilder.addParentStack(LoginDirAct.class);
+        stackBuilder.addNextIntent(notificationIntent);
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(resultPendingIntent);
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

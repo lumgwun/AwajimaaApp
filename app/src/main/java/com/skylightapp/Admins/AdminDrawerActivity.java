@@ -412,7 +412,7 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
                             startActivity(myIntent4);
                             break;
                         case 5:
-                            Intent myIntent5 = new Intent(AdminDrawerActivity.this, SendUserMessageAct.class);
+                            Intent myIntent5 = new Intent(AdminDrawerActivity.this, SendSingleUserMAct.class);
                             myIntent5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                     Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(myIntent5);
@@ -751,7 +751,7 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
                 return true;
 
             case R.id.nav_send_message2:
-                Intent mIntent = new Intent(this, SendUserMessageAct.class);
+                Intent mIntent = new Intent(this, SendSingleUserMAct.class);
                 mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(mIntent);
                 return true;

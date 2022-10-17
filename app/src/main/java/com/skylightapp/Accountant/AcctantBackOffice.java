@@ -33,7 +33,7 @@ import com.skylightapp.Admins.AdminLoanList;
 import com.skylightapp.Admins.CustomerListActivity;
 import com.skylightapp.Admins.SOCompletedList;
 import com.skylightapp.Admins.SOListAct;
-import com.skylightapp.Admins.SendUserMessageAct;
+import com.skylightapp.Admins.SendSingleUserMAct;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
@@ -736,7 +736,7 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
                 startActivity(prefIntent);
                 break;
             case R.id.btnSendMessageAcctant:
-                Intent sendIntent = new Intent(AcctantBackOffice.this, SendUserMessageAct.class);
+                Intent sendIntent = new Intent(AcctantBackOffice.this, SendSingleUserMAct.class);
                 sendIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(sendIntent);
                 break;
@@ -757,7 +757,7 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
     }
 
     public void sendMessageAcct(View view) {
-        Intent sendIntent = new Intent(AcctantBackOffice.this, SendUserMessageAct.class);
+        Intent sendIntent = new Intent(AcctantBackOffice.this, SendSingleUserMAct.class);
         sendIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(sendIntent);
     }

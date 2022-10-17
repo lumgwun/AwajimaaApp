@@ -27,54 +27,56 @@ import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 @Entity(tableName = AdminUser.ADMIN_TABLE)
 public class AdminUser  implements Parcelable, Serializable {
-    @Ignore
+    //@Ignore
     public static final String ADMIN_ID = "admin_id";
-    @Ignore
+    //@Ignore
     public static final String ADMIN_SURNAME = "ad_surname";
-    @Ignore
+    //@Ignore
     public static final String ADMIN_FIRST_NAME = "ad_first_name";
-    @Ignore
+    //@Ignore
     public static final String ADMIN_PHONE_NUMBER = "ad_phone_number";
-    @Ignore
+    //@Ignore
     public static final String ADMIN_EMAIL_ADDRESS = "ad_email_address";
-    @Ignore
+    //@Ignore
     public static final String ADMIN_DOB = "ad_date_of_birth";
-    @Ignore
+    //@Ignore
     public static final String ADMIN_GENDER = "ad_gender";
-    @Ignore
+    //@Ignore
     public static final String ADMIN_ADDRESS = "ad_address";
-    @Ignore
+    //@Ignore
     public static final String ADMIN_OFFICE = "ad_chosen_office";
-    @Ignore
+    //@Ignore
     public static final String ADMIN_DATE_JOINED = "ad_date_joined";
-    @Ignore
+    //@Ignore
     public static final String ADMIN_USER_NAME = "ad_user_name";
-    @Ignore
+    //@Ignore
     public static final String ADMIN_PASSWORD = "ad_password";
-    @Ignore
+    //@Ignore
     public static final String ADMIN_NIN = "ad_nin";
-    @Ignore
+    //@Ignore
     public static final String ADMIN_STATUS = "ad_status";
-    @Ignore
+    //@Ignore
     public static final String ADMIN_PIX = "ad_picture";
-    @Ignore
+    //@Ignore
     public static final String ADMIN_PROFILE_ID = "ad_prof_ID";
 
-    @Ignore
+    //@Ignore
     public static final String ADMIN_TABLE = "admin_table";
-    @Ignore
+    //@Ignore
     public static final String ADMIN_BUSINESS_ID = "ad_Business_ID";
     public static final String ADMIN_MARKET_ID = "ad_market_ID";
     public static final String ADMIN_MARKET_TYPE = "ad_market_Type";
+    public static final String ADMIN_DB_ID = "ad_DB_ID";
 
     public static final String CREATE_ADMIN_TABLE = "CREATE TABLE IF NOT EXISTS " + ADMIN_TABLE + " ( " + ADMIN_ID + " INTEGER   , " + ADMIN_PROFILE_ID + " INTEGER , " + ADMIN_SURNAME + " TEXT  , " +
             ADMIN_FIRST_NAME + " TEXT, " + ADMIN_PHONE_NUMBER + " TEXT, " + ADMIN_EMAIL_ADDRESS + " TEXT, " + ADMIN_DOB + " TEXT, " + ADMIN_GENDER + " TEXT, " +
             ADMIN_ADDRESS + " TEXT, " + ADMIN_OFFICE + " TEXT, " + ADMIN_DATE_JOINED + " TEXT, " + ADMIN_USER_NAME + " TEXT, " + ADMIN_PASSWORD + " TEXT, " +
-            ADMIN_NIN + " TEXT,  " + ADMIN_PIX + " TEXT, " + ADMIN_STATUS + " TEXT, "+ ADMIN_BUSINESS_ID + " TEXT, "+ ADMIN_MARKET_ID + " TEXT, " + ADMIN_MARKET_TYPE + " TEXT, " + "FOREIGN KEY(" + ADMIN_BUSINESS_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + ADMIN_MARKET_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + ADMIN_PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + ADMIN_ID  + "))";
+            ADMIN_NIN + " TEXT,  " + ADMIN_PIX + " TEXT, " + ADMIN_STATUS + " TEXT, "+ ADMIN_BUSINESS_ID + " INTEGER, "+ ADMIN_MARKET_ID + " INTEGER, " + ADMIN_MARKET_TYPE + " TEXT, "+ ADMIN_DB_ID + " INTEGER, " + "FOREIGN KEY(" + ADMIN_BUSINESS_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + ADMIN_MARKET_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + ADMIN_PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + ADMIN_DB_ID  + "))";
 
     private static final long serialVersionUID = 8924708152697574031L;
     @SuppressLint("SimpleDateFormat")
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    private Profile adminProf;
 
     public String getAdminType() {
         return adminType;
@@ -84,7 +86,13 @@ public class AdminUser  implements Parcelable, Serializable {
         this.adminType = adminType;
     }
 
+    public Profile getAdminProf() {
+        return adminProf;
+    }
 
+    public void setAdminProf(Profile adminProf) {
+        this.adminProf = adminProf;
+    }
 
 
     //this.dateJoined = DATE_FORMAT.format(new Date());
