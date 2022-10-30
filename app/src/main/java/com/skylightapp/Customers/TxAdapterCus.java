@@ -23,7 +23,6 @@ import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.PaymDocDAO;
-import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.R;
 
 import java.io.FileNotFoundException;
@@ -100,11 +99,11 @@ public class TxAdapterCus extends ArrayAdapter<Transaction> {
         txtTx_Ewallet.setText(MessageFormat.format("{0} - {1}", "Acct No:", transaction.getTranxAcctId()));
         txtTransactionInfo.setText(MessageFormat.format("{0} - {1}", "More Info:", transaction.getTranxPayee()));
         txtTransactionTimestamp.setText(MessageFormat.format("Date{0}", transaction.getTranxDate()));
-        txtTransactionAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", transaction.getRecordAmount())));
+        txtTransactionAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", transaction.getTranxAmount())));
 
         if (transaction.getTranXType() == Transaction.TRANSACTION_TYPE.PAYMENT) {
             imgTransactionIcon.setImageResource(R.drawable.transaction);
-            txtTransactionInfo.setText(MessageFormat.format("From : {0}", " Skylight"));
+            txtTransactionInfo.setText(MessageFormat.format("From : {0}", " Awajima"));
             txtTransactionAmount.setTextColor(Color.RED);
         } else if (transaction.getTranXType() == Transaction.TRANSACTION_TYPE.TRANSFER) {
             imgTransactionIcon.setImageResource(R.drawable.transfer3);
@@ -112,7 +111,7 @@ public class TxAdapterCus extends ArrayAdapter<Transaction> {
             txtTransactionAmount.setTextColor(getContext().getResources().getColor(android.R.color.holo_blue_dark));
         } else if (transaction.getTranXType() == Transaction.TRANSACTION_TYPE.DEPOSIT) {
             imgTransactionIcon.setImageResource(R.drawable.deposit1);
-            txtTransactionInfo.setText(MessageFormat.format("Deposit To: {0}", "Skylight"));
+            txtTransactionInfo.setText(MessageFormat.format("Deposit To: {0}", "Awajima"));
             txtTransactionAmount.setTextColor(getContext().getResources().getColor(android.R.color.holo_red_dark));
         }
         addDoc.setOnClickListener(new View.OnClickListener() {

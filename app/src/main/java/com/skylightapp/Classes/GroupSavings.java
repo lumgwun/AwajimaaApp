@@ -7,58 +7,44 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.skylightapp.Classes.GroupAccount.GRPA_ID;
+import static com.skylightapp.Classes.GroupAccount.GRP_ACCT_ID;
 import static com.skylightapp.Classes.GroupAccount.GRP_ACCT_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 public class GroupSavings implements Parcelable, Serializable {
     public static final String GROUP_SAVINGS_TABLE = "grp_savings_Table";
-    public static final String GS_ID = "gS_id";
-
-    public static final String GROUP_NAME = "gS_Name";
-    public static final String GROUP_PURPOSE = "grpPurpose";
-    public static final String GROUP_AMOUNT = "gs_amount";
-    public static final String GROUP_DATE = "gS_Date";
-    public static final String GS_STATUS = "gS_Status";
-    public static final String GS_COUNTRY = "gS_Country";
-    public static final String GS_ACOUNT = "gS_Account";
-    public static final String GS_ACCOUNT_ID = "gS_AccountID";
-
-    public static final String GS_WHO_SHOULDBE_PAID = "gp_Who_should_";
-    public static final String GS_END_DATE = "gS_End_Date";
-    public static final String GS_AMOUNT_CONTRIBUTED = "gS_Amount_So_Far";
-
-    public static final String GS_GRPA_ID = "gs_gaID";
-    public static final String GS_PROF_ID = "gs_prof_id";
-    public static final String GS_DB_ID = "gs_DB_id";
+    public static final String GROUP_SAVINGS_ID = "gS_id";
+    public static final String GROUP_SAVINGS_CURRENCY = "gs_currency";
+    public static final String GROUP_SAVINGS_AMOUNT = "gs_amount";
+    public static final String GROUP_SAVINGS_DATE = "gS_Date";
+    public static final String GROUP_SAVINGS_STATUS = "gS_Status";
+    public static final String GS_GRP_ACCT_ID = "gs_grp_acctID";
+    public static final String GROUP_SAVINGS_PROF_ID = "gs_prof_id";
+    public static final String GROUP_SAVINGS_DB_ID = "gs_DB_id";
+    public static final String GS_GRP_ID = "gs_grp_ID";
+    public static final String GS_FINE = "Fine_GS";
+    public static final String GS_CODE = "grp_savings_code";
 
 
-    public static final String CREATE_GROUP_SAVINGS_TABLE = "CREATE TABLE IF NOT EXISTS " + GROUP_SAVINGS_TABLE + " (" + GS_PROF_ID + " INTEGER ," + GS_GRPA_ID + " INTEGER ,"+
-            GS_ID + " INTEGER , " + GROUP_NAME + " TEXT, " + GROUP_PURPOSE + " TEXT, " + GROUP_AMOUNT + " REAL, " + GROUP_DATE +" TEXT, "+ GS_STATUS + " TEXT, " + GS_DB_ID + " INTEGER, " +
-            "PRIMARY KEY(" + GS_DB_ID + "), " +"FOREIGN KEY(" + GS_GRPA_ID  + ") REFERENCES " + GRP_ACCT_TABLE + "(" + GRPA_ID + ")," +"FOREIGN KEY(" + GS_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
-    private Date savingsDate;
-    private long gProfileID;
+    public static final String CREATE_GROUP_SAVINGS_TABLE = "CREATE TABLE IF NOT EXISTS " + GROUP_SAVINGS_TABLE + " (" + GROUP_SAVINGS_PROF_ID + " INTEGER ," + GS_GRP_ACCT_ID + " INTEGER ,"+
+            GROUP_SAVINGS_ID + " INTEGER , " + GS_GRP_ID + " INTEGER, " + GROUP_SAVINGS_CURRENCY + " TEXT, " + GROUP_SAVINGS_AMOUNT + " REAL, " + GROUP_SAVINGS_DATE +" TEXT, "+ GROUP_SAVINGS_STATUS + " TEXT, " + GROUP_SAVINGS_DB_ID + " INTEGER, " +
+            "PRIMARY KEY(" + GROUP_SAVINGS_DB_ID + "), " +"FOREIGN KEY(" + GS_GRP_ACCT_ID + ") REFERENCES " + GRP_ACCT_TABLE + "(" + GRP_ACCT_ID + ")," +"FOREIGN KEY(" + GROUP_SAVINGS_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+
+    private String savingsDate;
+    private int gProfileID;
     private Profile gProfile;
     private Account gAccount;
     private String gStatus;
     private double gAmount;
     private int grpSavingsID;
-    String groupName;
+    private int grpSavingsAcctID;
+    private String grpSavingsCurrency;
+    private String savingsDateStr;
     private ArrayList<Transaction> transactions;
 
-    public GroupSavings (int grpSavingsID, long profileID, double amount, Date savingsDate, String status) {
-        this.grpSavingsID = grpSavingsID;
-        this.gProfileID = profileID;
-        this.gAmount = amount;
-        this.savingsDate = savingsDate;
-        this.gStatus = status;
-        gAccount = new Account();
-        gProfile = new Profile();
-
-    }
-    public GroupSavings (int grpSavingsID,String groupName,double amount, Date savingsDate, String status) {
+    public GroupSavings (int grpSavingsID,String groupName,double amount, String savingsDate, String status) {
         this.grpSavingsID = grpSavingsID;
         this.gAmount = amount;
         this.savingsDate = savingsDate;
@@ -72,17 +58,36 @@ public class GroupSavings implements Parcelable, Serializable {
 
     }
 
-    public GroupSavings(long profileID, int savingsID, double totalAmount, Date dateOfSavings,  String status) {
+    public GroupSavings(int profileID, int savingsID, double totalAmount, String dateOfSavings,  String status) {
         this.gProfileID = profileID;
         this.grpSavingsID = savingsID;
         this.gAmount = totalAmount;
-        this.savingsDate = dateOfSavings;
+        this.savingsDateStr = dateOfSavings;
         this.gStatus = status;
+
+    }
+    public GroupSavings(int profileID, int savingsID, double totalAmount, String grpSavingsCurrency,String dateOfSavings,  String status) {
+        this.gProfileID = profileID;
+        this.grpSavingsID = savingsID;
+        this.gAmount = totalAmount;
+        this.savingsDateStr = dateOfSavings;
+        this.gStatus = status;
+        this.grpSavingsCurrency = grpSavingsCurrency;
+
+    }
+    public GroupSavings(int grpSavingsID, int profID, int acctID, String grpSavingsDate, double amount, String currency, String status) {
+        this.gProfileID = profID;
+        this.grpSavingsID = grpSavingsID;
+        this.gAmount = amount;
+        this.savingsDateStr = grpSavingsDate;
+        this.gStatus = status;
+        this.grpSavingsCurrency = currency;
+        this.grpSavingsAcctID = acctID;
 
     }
 
     protected GroupSavings(Parcel in) {
-        gProfileID = in.readLong();
+        gProfileID = in.readInt();
         gProfile = in.readParcelable(Profile.class.getClassLoader());
         gAccount = in.readParcelable(Account.class.getClassLoader());
         gStatus = in.readString();
@@ -90,6 +95,7 @@ public class GroupSavings implements Parcelable, Serializable {
         grpSavingsID = in.readInt();
         transactions = in.createTypedArrayList(Transaction.CREATOR);
     }
+
 
     public static final Creator<GroupSavings> CREATOR = new Creator<GroupSavings>() {
         @Override
@@ -102,6 +108,8 @@ public class GroupSavings implements Parcelable, Serializable {
             return new GroupSavings[size];
         }
     };
+
+
 
     public ArrayList<Transaction> getTransactions() {
         return transactions;
@@ -123,8 +131,8 @@ public class GroupSavings implements Parcelable, Serializable {
 
 
 
-    public Date getSavingsDate() { return savingsDate; }
-    public void setSavingsDate(Date savingsDate) { this.savingsDate = savingsDate; }
+    public String getSavingsDate() { return savingsDate; }
+    public void setSavingsDate(String savingsDate) { this.savingsDate = savingsDate; }
 
     public int getGrpSavingsID() {
         return grpSavingsID;
@@ -154,5 +162,29 @@ public class GroupSavings implements Parcelable, Serializable {
         parcel.writeDouble(gAmount);
         parcel.writeInt(grpSavingsID);
         parcel.writeTypedList(transactions);
+    }
+
+    public String getGrpSavingsCurrency() {
+        return grpSavingsCurrency;
+    }
+
+    public void setGrpSavingsCurrency(String grpSavingsCurrency) {
+        this.grpSavingsCurrency = grpSavingsCurrency;
+    }
+
+    public String getSavingsDateStr() {
+        return savingsDateStr;
+    }
+
+    public void setSavingsDateStr(String savingsDateStr) {
+        this.savingsDateStr = savingsDateStr;
+    }
+
+    public int getGrpSavingsAcctID() {
+        return grpSavingsAcctID;
+    }
+
+    public void setGrpSavingsAcctID(int grpSavingsAcctID) {
+        this.grpSavingsAcctID = grpSavingsAcctID;
     }
 }

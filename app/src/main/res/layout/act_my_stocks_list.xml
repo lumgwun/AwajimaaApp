@@ -11,50 +11,72 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@drawable/shape_layer_3b"
         android:gravity="center">
 
-
-        <TextView
-            style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Stocks Total"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginBottom="10dp"
-            android:textAlignment="center"
-            android:id="@+id/txtTotalStocks"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-        <TextView
-            style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Stocks for Today"
-            android:layout_marginStart="5dp"
-            android:layout_marginBottom="10dp"
-            android:textAlignment="center"
-            android:id="@+id/StocksToday"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-        <TextView
-            style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Stocks for Date"
-            android:layout_marginStart="5dp"
-            android:layout_marginBottom="10dp"
-            android:textAlignment="center"
-            android:id="@+id/StocksD"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="2dp"
+            android:layout_columnWeight="1"
+            android:layout_marginBottom="16dp"
+            android:layout_rowWeight="1"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="8dp">
+
+            <LinearLayout
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_margin="16dp"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Stocks Total"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:textAlignment="center"
+                    android:id="@+id/txtTotalStocks"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Stocks for Today"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:textAlignment="center"
+                    android:id="@+id/StocksToday"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Stocks for Date"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:textAlignment="center"
+                    android:id="@+id/StocksD"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
             app:cardElevation="2dp"
             android:visibility="visible"
             android:id="@+id/cardDatePicker"
@@ -68,7 +90,7 @@
                 android:orientation="vertical"
                 android:padding="20dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/rect6e"
+                android:background="@drawable/rect_their2"
                 android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -78,22 +100,24 @@
                     android:layout_weight="1"
                     android:textSize="15sp"
                     android:focusable="false"
-                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:layout_marginBottom="10dp"
+                    android:foregroundGravity="center_horizontal"
+                    android:drawableTop="@drawable/ic_icon_foreground"
                     android:textColor="@color/black"
-                    android:layout_gravity="center_vertical|left"
-                    android:gravity="center_vertical|left"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
                     android:background="@null"
                     android:text="Select Stocks Date " />
                 <DatePicker
                     android:id="@+id/stocks_datePicker"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textSize="15sp"
                     android:focusable="false"
                     android:inputType="date"
-                    android:backgroundTintMode="src_in"
-                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:background="@drawable/rect6b"
+                    android:drawableStart="@drawable/calendar_foreground"
                     android:datePickerMode="spinner"
                     android:spinnersShown="true"
                     android:yearListSelectorColor="@color/white"
@@ -104,7 +128,8 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
+
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

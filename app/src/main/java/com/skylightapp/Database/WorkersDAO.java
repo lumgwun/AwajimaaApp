@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 
-import static com.skylightapp.Classes.CustomerManager.CUSTOMER_TELLER_ID;
 import static com.skylightapp.Classes.CustomerManager.WORKER;
 import static com.skylightapp.Classes.CustomerManager.WORKER_ID;
 import static com.skylightapp.Classes.CustomerManager.WORKER_TABLE;

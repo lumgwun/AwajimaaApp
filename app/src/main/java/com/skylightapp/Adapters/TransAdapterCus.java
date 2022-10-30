@@ -75,11 +75,11 @@ public class TransAdapterCus extends ArrayAdapter<Transaction> {
         txtSavingsID.setText(MessageFormat.format("{0} - {1}", "Report ID:", customerDailyReport.getRecordID()));
         txtTx_Ewallet.setText(MessageFormat.format("{0} - {1}", "Account ID:", customerDailyReport.getRecordCustomer().getCusAccount().getAwajimaAcctNo()));
         txtTransactionTimestamp.setText(MessageFormat.format("Date{0}", transaction.getTranxDate()));
-        txtTransactionAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", transaction.getRecordAmount())));
+        txtTransactionAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", transaction.getTranxAmount())));
 
         if (transaction.getTranXType() == Transaction.TRANSACTION_TYPE.PAYMENT) {
             imgTransactionIcon.setImageResource(R.drawable.transaction);
-            txtCusName.setText(MessageFormat.format("From : {0}", " Skylight"));
+            txtCusName.setText(MessageFormat.format("From : {0}", " Awajima"));
             txtTransactionAmount.setTextColor(Color.RED);
         } else if (transaction.getTranXType() == Transaction.TRANSACTION_TYPE.TRANSFER) {
             imgTransactionIcon.setImageResource(R.drawable.transfer3);
@@ -87,7 +87,7 @@ public class TransAdapterCus extends ArrayAdapter<Transaction> {
             txtTransactionAmount.setTextColor(getContext().getResources().getColor(android.R.color.holo_blue_dark));
         } else if (transaction.getTranXType() == Transaction.TRANSACTION_TYPE.DEPOSIT) {
             imgTransactionIcon.setImageResource(R.drawable.deposit1);
-            txtCusName.setText(MessageFormat.format("To: {0}", "Skylight"));
+            txtCusName.setText(MessageFormat.format("To: {0}", "Awajima"));
             txtTransactionAmount.setTextColor(getContext().getResources().getColor(android.R.color.holo_red_dark));
         }
         addDoc.setOnClickListener(new View.OnClickListener() {

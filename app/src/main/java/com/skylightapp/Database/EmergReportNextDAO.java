@@ -6,19 +6,19 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.skylightapp.Classes.EmergReportNext;
+import com.skylightapp.MapAndLoc.EmergReportNext;
 
 import java.util.ArrayList;
 
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
-import static com.skylightapp.Classes.EmergReportNext.EMERGENCY_NEXT_LAT;
-import static com.skylightapp.Classes.EmergReportNext.EMERGENCY_NEXT_LATLNG;
-import static com.skylightapp.Classes.EmergReportNext.EMERGENCY_NEXT_LNG;
-import static com.skylightapp.Classes.EmergReportNext.EMERGENCY_NEXT_LOCID;
-import static com.skylightapp.Classes.EmergReportNext.EMERGENCY_NEXT_LOCTIME;
-import static com.skylightapp.Classes.EmergReportNext.EMERGENCY_NEXT_REPORT_ID;
-import static com.skylightapp.Classes.EmergReportNext.EMERGENCY_NEXT_REPORT_TABLE;
-import static com.skylightapp.Classes.EmergencyReport.EMERGENCY_LOCID;
+import static com.skylightapp.MapAndLoc.EmergReportNext.EMERGENCY_NEXT_LAT;
+import static com.skylightapp.MapAndLoc.EmergReportNext.EMERGENCY_NEXT_LATLNG;
+import static com.skylightapp.MapAndLoc.EmergReportNext.EMERGENCY_NEXT_LNG;
+import static com.skylightapp.MapAndLoc.EmergReportNext.EMERGENCY_NEXT_LOCID;
+import static com.skylightapp.MapAndLoc.EmergReportNext.EMERGENCY_NEXT_LOCTIME;
+import static com.skylightapp.MapAndLoc.EmergReportNext.EMERGENCY_NEXT_REPORT_ID;
+import static com.skylightapp.MapAndLoc.EmergReportNext.EMERGENCY_NEXT_REPORT_TABLE;
+import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_LOCID;
 import static java.lang.String.valueOf;
 
 public class EmergReportNextDAO extends DBHelperDAO{

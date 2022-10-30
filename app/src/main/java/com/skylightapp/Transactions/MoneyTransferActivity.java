@@ -19,7 +19,7 @@ public class MoneyTransferActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_money_transfer);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Skylight Money Transfer");
+        builder.setTitle("Awajima Money Transfer");
         builder.setItems(new CharSequence[]
                         {"To Bank", "To Mobile Money","Back Home"},
                 new DialogInterface.OnClickListener() {

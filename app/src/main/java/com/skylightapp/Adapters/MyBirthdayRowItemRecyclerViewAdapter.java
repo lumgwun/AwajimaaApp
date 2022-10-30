@@ -165,7 +165,7 @@ public class MyBirthdayRowItemRecyclerViewAdapter extends RecyclerView.Adapter<M
     }
 
     public static void sendBirthdayMessage() {
-        String birthdayMessage = "Hello" + name + "Skylight wishes you a very blessed new year, continue to save small, small,to achieve big things, Hurray!";
+        String birthdayMessage = "Hello" + name + "Awajima wishes you a very blessed new year, continue to save small, small,to achieve big things, Hurray!";
 
 
     }

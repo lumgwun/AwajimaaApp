@@ -175,7 +175,7 @@ public class TranxSimpleAdapter extends RecyclerView.Adapter<TranxSimpleAdapter.
         long customerID = customer.getCusUID();
         final Payment payee = new Payment();
         holder.txtTransactionID.setText(MessageFormat.format("TX ID: {0}{1}", transaction.getTransactionID()));
-        holder.txtTransactionAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", transaction.getRecordAmount())));
+        holder.txtTransactionAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", transaction.getTranxAmount())));
         holder.officeBranch.setText(MessageFormat.format("Office Branch: {0}", transaction.getTransactionOfficeBranch()));
         holder.txtTransactionTimestamp.setText(MessageFormat.format("Date: {0}", transaction.getTranxDate()));
         holder.method.setText(MessageFormat.format("TX Method: {0}", transaction.getTranxMethodOfPay()));

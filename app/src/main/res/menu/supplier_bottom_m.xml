@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/suppl_Home"
+        android:title="Home"
+        app:cnb_backgroundColor="@color/dark_and_red"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#2196F3"
+        android:icon="@drawable/ic_admin_panel"/>
+
+    <item
+        android:id="@+id/market_supplier"
+        android:title="Market Area"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#F44336"
+        android:icon="@drawable/ic_home_black_24dp"/>
+
+    <item
+        android:id="@+id/TimeLine_supplier"
+        android:title="My TimeLine"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#F44336"
+        android:icon="@drawable/material_drawer_ico_account"/>
+
+    <item
+        android:id="@+id/supplier_mesTab"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#4CAF50"
+        android:title="Message Tab" />
+    <item
+        android:id="@+id/supply_Support"
+        android:title="Support"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#FF9800"
+        android:icon="@drawable/ic_admin_panel"/>
+
+</menu>

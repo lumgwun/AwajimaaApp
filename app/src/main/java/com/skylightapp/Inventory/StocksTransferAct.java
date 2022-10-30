@@ -44,6 +44,7 @@ import com.skylightapp.Database.Customer_TellerDAO;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.GrpProfileDAO;
 import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MarketBizDAO;
 import com.skylightapp.Database.MessageDAO;
 import com.skylightapp.Database.OfficeBranchDAO;
 import com.skylightapp.Database.PaymDocDAO;
@@ -60,7 +61,10 @@ import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.Database.TransactionGrantingDAO;
 import com.skylightapp.Database.WorkersDAO;
 import com.skylightapp.LoginDirAct;
+import com.skylightapp.MarketClasses.MarketBizArrayAdapter;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
+import com.skylightapp.SuperAdmin.Awajima;
 import com.skylightapp.Tellers.TellerHomeChoices;
 
 import java.security.SecureRandom;
@@ -75,8 +79,8 @@ public class StocksTransferAct extends AppCompatActivity {
     PreferenceManager preferenceManager;
     SharedPreferences userPreferences;
     Profile managerProfile,recipientProfile;
-    Gson gson,gson1,gson2;
-    String json,json1,json2;
+    Gson gson,gson1,gson2,gson3,gson4,gson5;
+    String json,json1,json2,json4,json5;
     Profile userProfile;
     DBHelper dbHelper;
     private ArrayList<Stocks> stocksArrayListTeller;
@@ -116,12 +120,12 @@ public class StocksTransferAct extends AppCompatActivity {
     private ArrayList<StockTransfer> stockTransferArrayList;
     private ArrayList<Stocks> stocksArrayList;
     private ArrayList<Stocks> stocksArrayListForRecipient;
-    private ArrayList<Profile> tellers;
+    private ArrayList<Profile> profileArrayList;
+    private ArrayList<CustomerManager> customerManagers;
     private ArrayList<Customer> customers;
-    private ArrayList<Profile> branches;
     private ArrayList<OfficeBranch> officeBranchArrayList;
 
-    AppCompatButton btnCus,btnTeller,btnBranch,btnTranxToCus,btnTranxToTeller,btnTranxToBranch;
+    AppCompatButton  btnRunStocksTransfer;
     AppCompatEditText edtQty;
     StockTransferAdapter stocksAdapter;
     ProfileSimpleAdapter profileAdapter;
@@ -131,7 +135,7 @@ public class StocksTransferAct extends AppCompatActivity {
     OfficeBranch officeBranch;
     private int recipientStockQty;
     private OfficeAdapter officeAdapter;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private SQLiteDatabase sqLiteDatabase;
     private SODAO sodao;
     private TranXDAO tranXDAO;
@@ -157,6 +161,20 @@ public class StocksTransferAct extends AppCompatActivity {
     private TransactionGrantingDAO grantingDAO;
     private AwardDAO awardDAO;
     private Customer_TellerDAO customer_tellerDAO;
+    private  String userRole,json3,bizPhoneNo,officeName, receiverType,bizName,profName;
+
+    private Spinner spnBiz, spnReceiver;
+    private  ArrayList<MarketBusiness> marketBusinessList;
+    private  ArrayList<MarketBusiness> marketBizOld;
+    private MarketBusiness marketBiz;
+    private MarketBizDAO marketBizDAO;
+    private long bizID;
+    private Awajima awajima;
+    private int selectedBizIndex,selectedOfficeIndex,officeBranchID;
+    private MarketBizArrayAdapter mBizAdapter;
+    //private CusSpinnerAdapter cusAdapter;
+    private int awajimaID,branchOfficeID, bizProfileID,cusProfileID,tellerProfileID;
+    private Profile branchProfile,receiverProfile,awajimaProfile,branchOfficeProfile,bizProfile,cusProfile,tellerProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,31 +186,34 @@ public class StocksTransferAct extends AppCompatActivity {
         gson = new Gson();
         gson1 = new Gson();
         gson2 = new Gson();
-        workersDAO= new WorkersDAO(this);
+        gson3 = new Gson();
+        gson4= new Gson();
+        gson5= new Gson();
+        awajima= new Awajima();
+        marketBizOld= new ArrayList<>();
+        customerManagers= new ArrayList<>();
+        receiverProfile= new Profile();
         customer_tellerDAO= new Customer_TellerDAO(this);
-        awardDAO= new AwardDAO(this);
-        grantingDAO= new TransactionGrantingDAO(this);
         stocksDAO= new StocksDAO(this);
         cusDAO= new CusDAO(this);
-        birthdayDAO= new BirthdayDAO(this);
+        branchProfile= new Profile();
+        marketBizDAO=new MarketBizDAO(this);
+        marketBiz= new MarketBusiness();
+        awajimaProfile= new Profile();
+        branchOfficeProfile= new Profile();
+        bizProfile = new Profile();
         officeBranchDAO= new OfficeBranchDAO(this);
         stockTransferDAO= new StockTransferDAO(this);
 
         paymentCodeDAO= new PaymentCodeDAO(this);
         profileDao= new ProfDAO(this);
-        cashDAO= new TCashDAO(this);
-        paymDocDAO= new PaymDocDAO(this);
-        tReportDAO= new TReportDAO(this);
-        paymentDAO= new PaymentDAO(this);
-        adminBalanceDAO= new AdminBalanceDAO(this);
         timeLineClassDAO= new TimeLineClassDAO(this);
-        grpProfileDAO= new GrpProfileDAO(this);
-
         sodao= new SODAO(this);
         tranXDAO= new TranXDAO(this);
         messageDAO= new MessageDAO(this);
         loanDAO= new LoanDAO(this);
-
+        cusProfile= new Profile();
+        tellerProfile= new Profile();
         codeDAO= new CodeDAO(this);
         acctDAO= new AcctDAO(this);
         recipientStock = new Stocks();
@@ -203,9 +224,9 @@ public class StocksTransferAct extends AppCompatActivity {
         stocksListBranch =new ArrayList<>();
         stocksArraySkylight =new ArrayList<>();
         stocksArrayList =new ArrayList<>();
-        tellers =new ArrayList<>();
+        marketBusinessList= new ArrayList<>();
+        profileArrayList =new ArrayList<>();
         customers =new ArrayList<>();
-        branches =new ArrayList<>();
         stocksArrayListForRecipient =new ArrayList<>();
         customerManager = new CustomerManager();
         adminUser = new AdminUser();
@@ -213,22 +234,26 @@ public class StocksTransferAct extends AppCompatActivity {
         officeBranchArrayList = new ArrayList<OfficeBranch>();
         recipientProfile = new Profile();
         calendar = Calendar.getInstance();
-        btnCus = findViewById(R.id.btn_Customer);
-        btnTeller = findViewById(R.id.btn_Teller);
-        btnBranch = findViewById(R.id.btn_Branch);
+
         spnStocks = findViewById(R.id.spn_stocks);
+        spnBiz = findViewById(R.id.spn_biz_alto);
         edtQty = findViewById(R.id.edtQTY);
         spnCus = findViewById(R.id.spn_Cus);
         spnTeller = findViewById(R.id.spn_Teller);
         spnBranch = findViewById(R.id.spnBranch);
-        btnTranxToCus = findViewById(R.id.buttonCustomerStocks);
-        btnTranxToTeller = findViewById(R.id.buttonTeller);
-        btnTranxToBranch = findViewById(R.id.buttonBranchStocks);
+
+        spnReceiver = findViewById(R.id.spn_receiver);
+
+        btnRunStocksTransfer = findViewById(R.id.button_Run_Transfer);
         layoutCompatCus = findViewById(R.id.layoutCus);
+        layoutCompatCus.setVisibility(View.GONE);
         layoutCompatTeller = findViewById(R.id.layoutTeller);
+        layoutCompatTeller.setVisibility(View.GONE);
         layoutCompatBranch = findViewById(R.id.layoutBranch);
+        layoutCompatBranch.setVisibility(View.GONE);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
+        userRole = userPreferences.getString("machine", "");
         userProfile = gson.fromJson(json, Profile.class);
         ran = new Random();
         random = new SecureRandom();
@@ -236,7 +261,21 @@ public class StocksTransferAct extends AppCompatActivity {
         adminUser = gson1.fromJson(json1, AdminUser.class);
         from="Teller";
         json2 = userPreferences.getString("LastTellerUsed", "");
-        customerManager = gson2.fromJson(json1, CustomerManager.class);
+        customerManager = gson2.fromJson(json2, CustomerManager.class);
+
+        json3 = userPreferences.getString("LastMarketBusinessUsed", "");
+        marketBiz = gson3.fromJson(json3, MarketBusiness.class);
+
+        json4 = userPreferences.getString("LastAwajimaUsed", "");
+        awajima = gson4.fromJson(json4, Awajima.class);
+        if(awajima !=null){
+            awajimaProfile=awajima.getSkyProfile();
+
+        }
+        if(awajimaProfile !=null){
+            awajimaID=awajimaProfile.getPID();
+        }
+
         spnReceipient = findViewById(R.id.gender);
         transferID = random.nextInt((int) (Math.random() * 250) + 111);
         newStockId = random.nextInt((int) (Math.random() * 150) + 1015);
@@ -250,66 +289,288 @@ public class StocksTransferAct extends AppCompatActivity {
         if(itemBundle !=null){
             userProfile=itemBundle.getParcelable("Profile");
         }
+        if(userProfile !=null){
+            profName=userProfile.getProfileLastName()+","+userProfile.getProfileFirstName();
+            profileID=userProfile.getPID();
+        }
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            officeBranchArrayList=dbHelper.getAllBranchOffices();
+            marketBusinessList=marketBizDAO.getAllBusinessesForProfile(profileID);
         }
 
-
-        if(userProfile !=null){
-            transferer=userProfile.getProfileLastName()+","+userProfile.getProfileFirstName();
-            profileID=userProfile.getPID();
-        }
+        mBizAdapter = new MarketBizArrayAdapter(StocksTransferAct.this,R.layout.item_market_biz, marketBusinessList);
+        spnBiz.setAdapter(mBizAdapter);
+        spnBiz.setSelection(0);
+        selectedBizIndex = spnBiz.getSelectedItemPosition();
 
         try {
-            if(officeBranchArrayList.size()==0){
-                spnBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        selectedOffice = spnBranch.getSelectedItem().toString();
-                        selectedOffice = (String) parent.getSelectedItem();
-                        Toast.makeText(StocksTransferAct.this, "Office Branch Selected: " + selectedOffice, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });
-
-
-            }else {
-                officeAdapter = new OfficeAdapter(StocksTransferAct.this, android.R.layout.simple_spinner_item, officeBranchArrayList);
-                spnBranch.setAdapter(officeAdapter);
-                spnBranch.setSelection(0);
-
-                spnBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        selectedBranch = (OfficeBranch) parent.getSelectedItem();
-
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });
-                if(selectedBranch !=null){
-                    selectedOffice=selectedBranch.getOfficeBranchName();
-                }
-            }
-        } catch (NullPointerException e) {
+            marketBiz = marketBusinessList.get(selectedBizIndex);
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("Oops!");
         }
+        if(marketBiz !=null){
+            stocksArrayList=marketBiz.getmBStockList();
+            officeBranchArrayList=marketBiz.getOfficeBranches();
+            bizID=marketBiz.getBusinessID();
+            bizPhoneNo=marketBiz.getBizPhoneNo();
+            bizName=marketBiz.getBizBrandname();
+            from=bizName;
+            transferer=profName;
+            customers=marketBiz.getMBCustomers();
+            bizProfile=marketBiz.getmBusProfile();
+            profileArrayList=marketBiz.getBizProfileList();
 
-        if(selectedBranch !=null){
-            selectedOffice=selectedBranch.getOfficeBranchName();
         }
+        if(bizProfile !=null){
+            bizProfileID=bizProfile.getPID();
+        }
+        profileAdapter = new ProfileSimpleAdapter(StocksTransferAct.this, android.R.layout.simple_spinner_item, profileArrayList);
+        spnTeller.setAdapter(profileAdapter);
+        spnTeller.setSelection(0);
+
+        spnTeller.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                tellerProfile = (Profile) parent.getSelectedItem();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        if(tellerProfile !=null){
+            profName=tellerProfile.getProfileLastName()+","+tellerProfile.getProfileFirstName();
+            tellerProfileID=tellerProfile.getPID();
+        }
+
+        officeAdapter = new OfficeAdapter(StocksTransferAct.this,R.layout.office_row, officeBranchArrayList);
+        spnBranch.setAdapter(officeAdapter);
+        spnBranch.setSelection(0);
+        selectedOfficeIndex = spnBranch.getSelectedItemPosition();
+
+        try {
+            officeBranch = officeBranchArrayList.get(selectedOfficeIndex);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Oops!");
+        }
+        if(officeBranch !=null){
+            officeName=officeBranch.getOfficeBranchName();
+            officeBranchID=officeBranch.getOfficeBranchID();
+            branchOfficeProfile=officeBranch.getProfile();
+        }
+        if(branchOfficeProfile !=null){
+            branchOfficeID=branchOfficeProfile.getProfOfficeID();
+        }
+
+        selectedOffice=officeName;
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
             stocksArrayList =stockTransferDAO.getAllStockForProfile(profileID);
         }
+        if(userRole !=null){
+            if(userRole.equalsIgnoreCase("AwajimaSuperAdmin")){
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    try {
+                        stocksArrayList=stocksDAO.getALLStocksSuper();
+                    } catch (Exception e) {
+                        System.out.println("Oops!");
+                    }
+
+
+                }
+
+
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    try {
+                        officeBranchArrayList=officeBranchDAO.getAllOfficeBranches("awajima");
+                    } catch (Exception e) {
+                        System.out.println("Oops!");
+                    }
+
+
+                }
+                /*if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    dbHelper.openDataBase();
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    dbHelper= new DBHelper(this);
+                    officeBranchArrayList=dbHelper.getAllBranchOffices();
+                }*/
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    try {
+                        marketBusinessList=marketBizDAO.getAllBusinesses();
+                    } catch (Exception e) {
+                        System.out.println("Oops!");
+                    }
+
+
+                }
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    try {
+                        customers=cusDAO.getAwajimaCusRole("awajima");
+                    } catch (Exception e) {
+                        System.out.println("Oops!");
+                    }
+
+
+                }
+                from="Awajima";
+                transferer=profName;
+
+            }
+            if(userRole.equalsIgnoreCase("AwajimaAdmin")){
+
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    try {
+                        stocksArrayList=stocksDAO.getALLStocksSuperAwajima("awajima");
+                    } catch (Exception e) {
+                        System.out.println("Oops!");
+                    }
+
+
+                }
+
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    try {
+                        customers=cusDAO.getAwajimaCusRole("awajima");
+                    } catch (Exception e) {
+                        System.out.println("Oops!");
+                    }
+
+
+                }
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    try {
+                        officeBranchArrayList=officeBranchDAO.getAllOfficeBranches("awajima");
+                    } catch (Exception e) {
+                        System.out.println("Oops!");
+                    }
+
+
+                }
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    try {
+                        marketBusinessList=marketBizDAO.getAllBusinesses();
+                    } catch (Exception e) {
+                        System.out.println("Oops!");
+                    }
+
+
+                }
+                from="Awajima";
+                transferer=profName;
+
+            }
+
+
+        }
+
+        customerAdapter = new CusSpinnerAdapter(StocksTransferAct.this,  customers);
+        spnCus.setAdapter(customerAdapter);
+        spnCus.setSelection(0);
+        spnCus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //selectedStocks = spnStocks.getSelectedItem().toString();
+                selectedCustomer = (Customer) parent.getSelectedItem();
+                //Toast.makeText(StocksTransferAct.this, "Selected Stocks: "+ selectedStocks,Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        if(selectedCustomer !=null){
+            //transferAccepter =selectedCustomer.getCusSurname()+","+ selectedCustomer.getCusFirstName();
+            //receiverID=selectedCustomer.getCusProfile().getPID();
+            cusProfile=selectedCustomer.getCusProfile();
+
+        }
+        if(cusProfile !=null){
+            cusProfileID=cusProfile.getPID();
+        }
+
+        spnReceiver.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                receiverType = (String) parent.getSelectedItem();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        if(receiverType !=null){
+            if(receiverType.equalsIgnoreCase("Teller")){
+                customerManagers =marketBiz.getBizTellers();
+                layoutCompatTeller.setVisibility(View.VISIBLE);
+                layoutCompatBranch.setVisibility(View.GONE);
+                layoutCompatCus.setVisibility(View.GONE);
+                to="Teller";
+                receiverProfile=tellerProfile;
+                receiverID=tellerProfileID;
+
+
+            }
+            if(receiverType.equalsIgnoreCase("Customer")){
+                customers = marketBiz.getMBCustomers();
+                layoutCompatCus.setVisibility(View.VISIBLE);
+                layoutCompatTeller.setVisibility(View.GONE);
+                layoutCompatBranch.setVisibility(View.GONE);
+                to="Customer";
+                receiverProfile=cusProfile;
+                receiverID=cusProfileID;
+
+
+
+
+
+            }
+            if(receiverType.equalsIgnoreCase("Business")){
+                marketBizOld=marketBiz.getmBMarketBusinesses();
+                layoutCompatCus.setVisibility(View.GONE);
+                layoutCompatTeller.setVisibility(View.GONE);
+                to="Business";
+                receiverProfile=branchProfile;
+                receiverID=bizProfileID;
+
+
+            }
+            if(receiverType.equalsIgnoreCase("Awajima")){
+                awajima =marketBiz.getMarketBizAwajima();
+                layoutCompatCus.setVisibility(View.GONE);
+                layoutCompatTeller.setVisibility(View.GONE);
+                layoutCompatBranch.setVisibility(View.GONE);
+                selectedOffice=officeName="Awajima";
+                to="Awajima";
+                receiverProfile=awajimaProfile;
+                receiverID=awajimaID;
+
+            }
+            if(receiverType.equalsIgnoreCase("Branch Office")){
+                officeBranchArrayList= marketBiz.getOfficeBranches();
+                layoutCompatBranch.setVisibility(View.VISIBLE);
+                layoutCompatCus.setVisibility(View.GONE);
+                layoutCompatTeller.setVisibility(View.GONE);
+                to="Branch";
+                receiverProfile=branchOfficeProfile;
+                receiverID=branchOfficeID;
+
+            }
+        }
+
+
 
 
 
@@ -331,251 +592,74 @@ public class StocksTransferAct extends AppCompatActivity {
             selectedStocksID=selectedStocks.getStockID();
             stocksName=selectedStocks.getStockName();
         }
-        recipientStock =stockTransferDAO.getRecipientAndStock(receiverID,stocksName);
-        if(userProfile !=null){
-            customers=userProfile.getProfileCustomers();
-        }
-        if(recipientStock !=null){
-            recipientStockQty=recipientStock.getStockItemQty();
-        }
-
-        btnCus.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                layoutCompatCus.setVisibility(View.GONE);
-                return false;
-            }
-        });
-
-        btnCus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                layoutCompatCus.setVisibility(View.VISIBLE);
-                layoutCompatBranch.setVisibility(View.GONE);
-                layoutCompatTeller.setVisibility(View.GONE);
-                customerAdapter = new CusSpinnerAdapter(StocksTransferAct.this,  customers);
-                spnCus.setAdapter(customerAdapter);
-                spnCus.setSelection(0);
-                spnCus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        //selectedStocks = spnStocks.getSelectedItem().toString();
-                        selectedCustomer = (Customer) parent.getSelectedItem();
-                        //Toast.makeText(StocksTransferAct.this, "Selected Stocks: "+ selectedStocks,Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });
-                if(selectedCustomer !=null){
-                    transferAccepter =selectedCustomer.getCusSurname()+","+ selectedCustomer.getCusFirstName();
-                    receiverID=selectedCustomer.getCusProfile().getPID();
-
-                }
-            }
-        });
-        if(selectedCustomer !=null){
-            customerID=selectedCustomer.getCusUID();
 
 
-        }
-        if(recipientStock !=null){
-            recipientQty= recipientStock.getStockItemQty();
-        }
-
-
-        btnTeller.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                machine="Teller";
-                layoutCompatTeller.setVisibility(View.VISIBLE);
-                layoutCompatBranch.setVisibility(View.GONE);
-                layoutCompatCus.setVisibility(View.GONE);
-                tellers=profileDao.getTellersFromMachine(machine);
-                profileAdapter = new ProfileSimpleAdapter(StocksTransferAct.this, android.R.layout.simple_spinner_item, tellers);
-                spnTeller.setAdapter(profileAdapter);
-                spnTeller.setSelection(0);
-
-                spnTeller.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        recipientProfile = (Profile) parent.getSelectedItem();
-                        //transferAccepter=selectedRecipient;
-                        Toast.makeText(StocksTransferAct.this, "Receiving Teller: "+ selectedRecipient,Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });
-                if(recipientProfile !=null){
-                    transferAccepter =recipientProfile.getProfileLastName()+","+ recipientProfile.getProfileFirstName();
-                    receiverID=recipientProfile.getPID();
-
-                }
-
-            }
-
-        });
         if(recipientProfile !=null){
+            transferAccepter =recipientProfile.getProfileLastName()+","+ recipientProfile.getProfileFirstName();
             receiverID=recipientProfile.getPID();
+
         }
-        if(recipientStock !=null){
-            recipientQty= recipientStock.getStockItemQty();
-            recipientStockID= recipientStock.getStockID();
-        }else {
-            recipientQty=qty;
-            recipientStock = new Stocks(newStockId,stocksName,recipientQty);
-        }
-        btnTeller.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                layoutCompatTeller.setVisibility(View.GONE);
-                layoutCompatBranch.setVisibility(View.VISIBLE);
-                layoutCompatCus.setVisibility(View.VISIBLE);
-                return false;
-            }
-        });
-        btnBranch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                machine="Branch";
-                layoutCompatBranch.setVisibility(View.VISIBLE);
-                layoutCompatTeller.setVisibility(View.GONE);
-                layoutCompatCus.setVisibility(View.GONE);
-                branches=profileDao.getBranchFromMachine(machine);
-                profileAdapter = new ProfileSimpleAdapter(StocksTransferAct.this, android.R.layout.simple_spinner_item, branches);
-                spnBranch.setAdapter(profileAdapter);
-                spnBranch.setSelection(0);
-
-                spnBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        selectedBranch = (OfficeBranch) parent.getSelectedItem();
-                        //transferAccepter=selectedBranch;
-                        //Toast.makeText(StocksTransferAct.this, "Branch Office: "+ selectedBranch,Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });
-                if(selectedBranch !=null){
-                    receiverID=selectedBranch.getProfile().getPID();
-                    transferAccepter=selectedBranch.getOfficeBranchName();
-                }
 
 
 
-            }
-        });
-        btnBranch.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                layoutCompatBranch.setVisibility(View.GONE);
-                return false;
-            }
-        });
-        btnTranxToTeller.setOnClickListener(this::doTeller);
-        btnTranxToTeller.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                to="Teller";
-                try {
-                    qty = Integer.parseInt(Objects.requireNonNull(edtQty.getText()).toString());
-                } catch (Exception e) {
-                    System.out.println("Oops!");
-                    edtQty.requestFocus();
-                }
-                if(selectedStocks !=null){
-                    selectedStocksID=selectedStocks.getStockID();
-                    stocksName=selectedStocks.getStockName();
-                    newQuantity=selectedStocks.getStockItemQty()-qty;
-                }
-                if(recipientProfile !=null){
-                    transferAccepter =recipientProfile.getProfileLastName()+","+ recipientProfile.getProfileFirstName();
-                    receiverID=recipientProfile.getPID();
-
-                }
-
-                doStocksTransferProcessing(qty,receiverID,transferID,customerID,selectedStocksID,stocksName,selectedStocks,transferAccepter,selectedCustomer, recipientStock,transferCode,recipientProfile,from,to);
-
-            }
-        });
-        btnTranxToTeller.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                return false;
-            }
-        });
-        btnTranxToCus.setOnClickListener(this::doCustomer);
-        btnTranxToCus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                to="Customer";
-                try {
-                    qty = Integer.parseInt(Objects.requireNonNull(edtQty.getText()).toString());
-                } catch (Exception e) {
-                    System.out.println("Oops!");
-                    edtQty.requestFocus();
-                }
-                if(selectedStocks !=null){
-                    selectedStocksID=selectedStocks.getStockID();
-                    stocksName=selectedStocks.getStockName();
-                    newQuantity=selectedStocks.getStockItemQty()-qty;
-                }
-                if(selectedCustomer !=null){
-                    customerID=selectedCustomer.getCusUID();
-                    transferAccepter=selectedCustomer.getCusSurname()+","+selectedCustomer.getCusFirstName();
-                    userProfile=selectedCustomer.getCusProfile();
-                    if(userProfile !=null){
-                        receiverID=userProfile.getPID();
-                    }
-                }
-                doStocksTransferProcessing(qty,receiverID,transferID,customerID,selectedStocksID,stocksName,selectedStocks,transferAccepter,selectedCustomer, recipientStock,transferCode,recipientProfile,from,to);
 
 
 
-            }
-        });
-        btnTranxToCus.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                return false;
-            }
-        });
-        btnTranxToBranch.setOnClickListener(this::doBranch);
-        btnTranxToBranch.setOnClickListener(new View.OnClickListener() {
+
+        btnRunStocksTransfer.setOnClickListener(this::doRunTransfer);
+        btnRunStocksTransfer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 to="Branch";
+                recipientStock =stockTransferDAO.getRecipientAndStock(receiverID,stocksName);
+
+                if(recipientStock !=null){
+                    recipientStockQty=recipientStock.getStockItemQty();
+                }
+                if(recipientStock !=null){
+                    recipientQty= recipientStock.getStockItemQty();
+                    recipientStockQty =recipientQty;
+
+                }else {
+                    recipientQty=qty;
+                    recipientStock = new Stocks(newStockId,stocksName,recipientQty);
+                }
+
+
+
+
+                transferAccepter=selectedBranch.getOfficeBranchName();
+
+                if(recipientProfile !=null){
+                    transferAccepter =recipientProfile.getProfileLastName()+","+ recipientProfile.getProfileFirstName();
+                    receiverID=recipientProfile.getPID();
+
+                }
+                if(selectedBranch !=null){
+                    transferAccepter=selectedBranch.getOfficeBranchName();
+
+                }
+
                 try {
                     qty = Integer.parseInt(Objects.requireNonNull(edtQty.getText()).toString());
                 } catch (Exception e) {
                     System.out.println("Oops!");
                     edtQty.requestFocus();
                 }
+
+
                 if(selectedStocks !=null){
                     selectedStocksID=selectedStocks.getStockID();
                     stocksName=selectedStocks.getStockName();
                     newQuantity=selectedStocks.getStockItemQty()-qty;
                 }
-                if(selectedBranch !=null){
-                    transferAccepter=selectedBranch.getOfficeBranchName();
-                    receiverID=selectedBranch.getProfile().getPID();
-                }
+
                 doStocksTransferProcessing(qty,receiverID,transferID,customerID,selectedStocksID,stocksName,selectedStocks,transferAccepter,selectedCustomer, recipientStock,transferCode,recipientProfile,from,to);
 
 
             }
         });
-        btnTranxToBranch.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                return false;
-            }
-        });
+
 
     }
 
@@ -683,5 +767,7 @@ public class StocksTransferAct extends AppCompatActivity {
     }
 
     public void doBranch(View view) {
+    }
+    public void doRunTransfer(View view) {
     }
 }

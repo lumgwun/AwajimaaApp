@@ -26,7 +26,7 @@ public class SmsReceiver extends BroadcastReceiver {
 
         Notification notification = new Notification.Builder(context)
                 .setContentText(body.toString())
-                .setContentTitle("New Skylight Message")
+                .setContentTitle("New Awajima Message")
                 .setSmallIcon(R.drawable.ic_alert)
                 .setStyle(new Notification.BigTextStyle().bigText(body.toString()))
                 .build();

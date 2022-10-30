@@ -30,6 +30,7 @@ import com.skylightapp.Classes.OfficeBranch;
 import com.skylightapp.Classes.TellerCountData;
 import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Classes.Utils;
+import com.skylightapp.MapAndLoc.PlaceContract;
 import com.skylightapp.MarketClasses.Market;
 import com.skylightapp.MarketClasses.MarketStock;
 import com.skylightapp.MarketClasses.StockAttrException;
@@ -100,9 +101,12 @@ import static com.skylightapp.Classes.DailyAccount.CREATE_DAILY_ACCOUNTING_TABLE
 
 import static com.skylightapp.Classes.DailyAccount.DAILY_ACCOUNTING_TABLE;
 
-import static com.skylightapp.Classes.EmergReportNext.CREATE_EMERGENCY_NEXT_REPORT_TABLE;
-import static com.skylightapp.Classes.EmergencyReport.CREATE_EMERGENCY_REPORT_TABLE;
-import static com.skylightapp.Classes.EmergencyReport.EMERGENCY_REPORT_TABLE;
+import static com.skylightapp.MapAndLoc.EmergReportNext.CREATE_EMERGENCY_NEXT_REPORT_TABLE;
+import static com.skylightapp.MapAndLoc.EmergReportNext.EMERGENCY_NEXT_REPORT_TABLE;
+import static com.skylightapp.MapAndLoc.EmergResponse.CREATE_RESPONSE_TABLE;
+import static com.skylightapp.MapAndLoc.EmergResponse.RESPONSE_TABLE;
+import static com.skylightapp.MapAndLoc.EmergencyReport.CREATE_EMERGENCY_REPORT_TABLE;
+import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_TABLE;
 import static com.skylightapp.Classes.Journey.CREATE_JOURNEY_TABLE;
 import static com.skylightapp.Classes.Journey.JOURNEY_TABLE;
 import static com.skylightapp.Classes.JourneyAccount.CREATE_JOURNEY_ACCOUNT_TABLE;
@@ -162,11 +166,17 @@ import static com.skylightapp.Inventory.StockTransfer.CREATE_T_STOCKS_TABLE;
 import static com.skylightapp.Inventory.StockTransfer.T_STOCKS_TABLE;
 import static com.skylightapp.Inventory.Stocks.CREATE_STOCK_TABLE;
 import static com.skylightapp.Inventory.Stocks.STOCKS_TABLE;
+import static com.skylightapp.MapAndLoc.PlaceData.CREATE_PLACES_TABLE;
+import static com.skylightapp.MapAndLoc.PlaceData.PLACE_ENTRY_TABLE;
 import static com.skylightapp.MarketClasses.Market.CREATE_MARKET_TABLE;
 import static com.skylightapp.MarketClasses.Market.MARKET_ID;
 import static com.skylightapp.MarketClasses.Market.MARKET_NAME;
 import static com.skylightapp.MarketClasses.Market.MARKET_STATE;
 import static com.skylightapp.MarketClasses.Market.MARKET_TABLE;
+import static com.skylightapp.MarketClasses.MarketBizSubScription.CREATE_MARKET_BIZ_SUB_TABLE;
+import static com.skylightapp.MarketClasses.MarketBizSubScription.MARKET_BIZ_SUB_TABLE;
+import static com.skylightapp.MarketClasses.MarketBizSupplier.CREATE_SUPPLIER_TABLE;
+import static com.skylightapp.MarketClasses.MarketBizSupplier.SUPPLIER_TABLE;
 import static com.skylightapp.MarketClasses.MarketBusiness.CREATE_BIZ_TABLE;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TABLE;
 import static com.skylightapp.MarketClasses.MarketStock.CREATE_MARKET_STOCK_TABLE;
@@ -230,18 +240,12 @@ import static com.skylightapp.Classes.CustomerManager.CUSTOMER_TELLER_PHONE_NUMB
 import static com.skylightapp.Classes.CustomerManager.CUSTOMER_TELLER_SURNAME;
 import static com.skylightapp.Classes.CustomerManager.CUSTOMER_TELLER_TABLE;
 import static com.skylightapp.Classes.CustomerManager.CUSTOMER_TELLER_USER_NAME;
-import static com.skylightapp.Classes.GroupAccount.CREATE_GRP_ACCT_PROFILE_TABLE;
+import static com.skylightapp.Classes.GroupAccount.CREATE_GRP_PROFILE_TABLE;
 import static com.skylightapp.Classes.GroupAccount.CREATE_GRP_ACCT_TABLE;
-import static com.skylightapp.Classes.GroupAccount.GRPA_BALANCE;
-import static com.skylightapp.Classes.GroupAccount.GRPA_ID;
-import static com.skylightapp.Classes.GroupAccount.GRPA_STATUS;
 import static com.skylightapp.Classes.GroupAccount.GRP_ACCT_TABLE;
 import static com.skylightapp.Classes.GroupAccount.GRP_PROFILE_TABLE;
 import static com.skylightapp.Classes.GroupSavings.CREATE_GROUP_SAVINGS_TABLE;
-import static com.skylightapp.Classes.GroupSavings.GROUP_AMOUNT;
 import static com.skylightapp.Classes.GroupSavings.GROUP_SAVINGS_TABLE;
-import static com.skylightapp.Classes.GroupSavings.GS_ID;
-import static com.skylightapp.Classes.GroupSavings.GS_STATUS;
 import static com.skylightapp.Classes.ImportantDates.CREATE_REMINDER_TABLE;
 import static com.skylightapp.Classes.ImportantDates.KEY_ACTIVE;
 import static com.skylightapp.Classes.ImportantDates.KEY_DATE_R;
@@ -298,8 +302,8 @@ import static com.skylightapp.Classes.Profile.PROFILE_ROLE;
 import static com.skylightapp.Classes.Profile.PROFILE_STATE;
 import static com.skylightapp.Classes.Profile.PROFILE_STATUS;
 import static com.skylightapp.Classes.Profile.PROFILE_SURNAME;
-import static com.skylightapp.Classes.SavingsGroup.CREATE_SAVINGS_GROUP_TABLE;
-import static com.skylightapp.Classes.SavingsGroup.SAVINGS_GROUP_TABLE;
+import static com.skylightapp.Classes.ProjectSavingsGroup.CREATE_PROJECT_SAVINGS_GROUP_TABLE;
+import static com.skylightapp.Classes.ProjectSavingsGroup.PROJECT_SAVINGS_GROUP_TABLE;
 import static com.skylightapp.Classes.SkyLightPackage.CREATE_PACKAGE_TABLE;
 import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_BALANCE;
 import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_DURATION;
@@ -376,10 +380,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private Bitmap missingPhoto;
 
-    public static String DB_PATH = "/data/D";
-    private static String TAG = "Awajima Business Book";
+    public static String DB_PATH = "/data/Awajima";
+    private static String TAG = "Business Book";
 
-    public static final String DATABASE_NAME = "dBSklight";
+    public static final String DATABASE_NAME = "dB_Awajima";
     private static final String LOG = DBHelper.class.getName();
 
     public static final String TABLE_MYTABLE = "mytable";
@@ -392,7 +396,9 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String TIME_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss.SSSZZZZZ";
     private SimpleDateFormat timeStamp;
     private DateTimeFormatter timeFormat;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
+
+
 
 
     public DBHelper(Context context) {
@@ -424,7 +430,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.d("table", CREATE_EMERGENCY_REPORT_TABLE);
         Log.d("table", CREATE_GRP_ACCT_TABLE);
         Log.d("table", CREATE_GROUP_SAVINGS_TABLE);
-        Log.d("table", CREATE_GRP_ACCT_PROFILE_TABLE);
+        Log.d("table", CREATE_GRP_PROFILE_TABLE);
         Log.d("table", CREATE_GRP_TX_TABLE);
         Log.d("table", CREATE_TELLER_REPORT_TABLE);
         Log.d("table", CREATE_ADMIN_TABLE);
@@ -444,9 +450,14 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.d("table", CREATE_TANSACTION_EXTRA_TABLE);
         Log.d("table", CREATE_SPONSOR_TABLE);
         Log.d("table", CREATE_EMERGENCY_NEXT_REPORT_TABLE);
-        Log.d("table", CREATE_TELLER_REPORT_TABLE);
         Log.d("table", CREATE_MARKET_TX_TABLE_TABLE);
         Log.d("table", CREATE_BIZ_TABLE);
+        Log.d("table", CREATE_PLACES_TABLE);
+        Log.d("table", CREATE_RESPONSE_TABLE);
+        Log.d("table", CREATE_SUPPLIER_TABLE);
+        Log.d("table", CREATE_MARKET_BIZ_SUB_TABLE);
+
+
         try {
             this.context = context;
             sharedPreferences = context.getSharedPreferences(PREF_NAME, 0);
@@ -504,15 +515,14 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_PIXTURE_TABLE);
 
             db.execSQL(CREATE_ADMIN_BALANCE_TABLE);
-            db.execSQL(CREATE_SAVINGS_GROUP_TABLE);
+            db.execSQL(CREATE_PROJECT_SAVINGS_GROUP_TABLE);
             db.execSQL(CREATE_BOOKING_TABLE);
             db.execSQL(CREATE_EMERGENCY_REPORT_TABLE);
             db.execSQL(CREATE_SO_ACCT_TABLE);
             db.execSQL(CREATE_GROUP_SAVINGS_TABLE);
             db.execSQL(CREATE_GRP_ACCT_TABLE);
-            db.execSQL(CREATE_GRP_ACCT_PROFILE_TABLE);
+            db.execSQL(CREATE_GRP_PROFILE_TABLE);
             db.execSQL(CREATE_GRP_TX_TABLE);
-            db.execSQL(CREATE_TELLER_REPORT_TABLE);
             db.execSQL(CREATE_ADMIN_TABLE);
             db.execSQL(CREATE_SUPER_ADMIN_TABLE);
             db.execSQL(CREATE_CUSTOMERS_TELLER_TABLE);
@@ -527,21 +537,22 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TELLER_CASH_TABLE);
             db.execSQL(CREATE_WORKERS_TABLE);
             db.execSQL(CREATE_T_STOCKS_TABLE);
-            db.execSQL(CREATE_TELLER_CASH_TABLE);
             db.execSQL(CREATE_SPONSOR_TABLE);
-            db.execSQL(CREATE_EMERGENCY_NEXT_REPORT_TABLE);
             db.execSQL(CREATE_TELLER_REPORT_TABLE);
             db.execSQL(CREATE_SKYLIGHT_CASH_TABLE);
             db.execSQL(CREATE_MARKET_STOCK_TABLE);
             db.execSQL(CREATE_MARKET_TABLE);
 
-            db.execSQL(CREATE_MARKET_STOCK_TABLE);
-            db.execSQL(CREATE_MARKET_STOCK_TABLE);
+            db.execSQL(EMERGENCY_NEXT_REPORT_TABLE);
             db.execSQL(CREATE_DAILY_ACCOUNTING_TABLE);
             db.execSQL(CREATE_JOURNEY_TABLE);
             db.execSQL(CREATE_JOURNEY_ACCOUNT_TABLE);
             db.execSQL(CREATE_MARKET_TX_TABLE_TABLE);
             db.execSQL(CREATE_BIZ_TABLE);
+            db.execSQL(CREATE_PLACES_TABLE);
+            db.execSQL(CREATE_RESPONSE_TABLE);
+            db.execSQL(CREATE_SUPPLIER_TABLE);
+            db.execSQL(MARKET_BIZ_SUB_TABLE);
 
             db.execSQL("create table ROLES " + "(role_ID integer primary key, roleUserName text,rolePassword text,rolePhoneNo text,role text)");
             db.setTransactionSuccessful();
@@ -582,7 +593,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + CODE_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + STANDING_ORDER_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + ADMIN_BALANCE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + SAVINGS_GROUP_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + PROJECT_SAVINGS_GROUP_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + BOOKING_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + EMERGENCY_REPORT_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + SO_ACCT_TABLE);
@@ -606,10 +617,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + SUPER_CASH_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + WORKER_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + T_STOCKS_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + EMERGENCY_REPORT_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + CUSTOMER_LOCATION_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + TELLER_CASH_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TANSACTION_EXTRA_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + TANSACTION_EXTRA_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + SPONSOR_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MARKET_STOCK_TABLE);
@@ -619,6 +628,10 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + JOURNEY_ACCOUNT_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MARKET_TX_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MARKET_BIZ_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + PLACE_ENTRY_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + RESPONSE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + SUPPLIER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MARKET_BIZ_SUB_TABLE);
 
         onCreate(db);
 
@@ -647,7 +660,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + CODE_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + STANDING_ORDER_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + ADMIN_BALANCE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + SAVINGS_GROUP_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + PROJECT_SAVINGS_GROUP_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + BOOKING_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + EMERGENCY_REPORT_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + SO_ACCT_TABLE);
@@ -684,6 +697,9 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + JOURNEY_ACCOUNT_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MARKET_TX_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MARKET_BIZ_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + RESPONSE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + SUPPLIER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MARKET_BIZ_SUB_TABLE);
         onCreate(db);
     }
 
@@ -862,7 +878,7 @@ public class DBHelper extends SQLiteOpenHelper {
             tempDB = SQLiteDatabase.openDatabase(myPath, null,
                     SQLiteDatabase.OPEN_READWRITE);
         } catch (SQLiteException e) {
-            Log.e("Skylight App - check", e.getMessage());
+            Log.e("Awajima App - check", e.getMessage());
         }
         if (tempDB != null)
             //tempDB.close();
@@ -2802,43 +2818,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }*/
 
 
-    public void updateGrpAcctStatus(long grpAccountNo,long profileID,double accountBalance,String status) {
-        try {
-            SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues savingsUpdateValues = new ContentValues();
-            savingsUpdateValues.put(GRPA_BALANCE, accountBalance);
-            savingsUpdateValues.put(GRPA_STATUS, status);
-            db.update(PROFILES_TABLE, savingsUpdateValues, PROFILE_ID + " = ?", new String[]{valueOf(profileID)});
-            db.update(GRP_ACCT_TABLE, savingsUpdateValues, GRPA_ID + " = ?", new String[]{valueOf(grpAccountNo)});
-            db.close();
 
-
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-
-
-    }
-    public void updateGrpSavingsStatus(long grpSavingsAcctID,int grpSavingsID,double amount,String status) {
-        try {
-            SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues savingsUpdateValues = new ContentValues();
-            CustomerDailyReport customerDailyReport = new CustomerDailyReport();
-            savingsUpdateValues.put(GS_STATUS, status);
-            savingsUpdateValues.put(GROUP_AMOUNT, amount);
-            db.update(GROUP_SAVINGS_TABLE, savingsUpdateValues, GS_ID + " = ?", new String[]{valueOf(grpSavingsID)});
-            db.update(GRP_ACCT_TABLE, savingsUpdateValues, GRPA_ID + " = ?", new String[]{valueOf(grpSavingsAcctID)});
-            db.close();
-
-
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-
-
-    }
 
     public long insertCustomerLocation(int customerID, LatLng latLng) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();

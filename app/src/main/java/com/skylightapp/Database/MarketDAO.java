@@ -42,7 +42,6 @@ public class MarketDAO extends DBHelperDAO{
         super(context);
     }
 
-
     public void deleteMarket(long marketID) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
@@ -95,6 +94,41 @@ public class MarketDAO extends DBHelperDAO{
         }
 
         return 0;
+    }
+    public void SaveMarketArrayList(ArrayList<Market> marketArrayList) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues Values = new ContentValues();
+        String marketName=null;
+        String marketType=null;
+        String marketLGA=null;
+        String marketState=null;
+        int marketLogo=0;
+        if(marketArrayList !=null){
+            for (int i = 0; i < marketArrayList.size(); i++) {
+                marketName=marketArrayList.get(i).getMarketName();
+                marketLogo=marketArrayList.get(i).getMarketLogo();
+                marketType=marketArrayList.get(i).getMarketType();
+                marketLGA=marketArrayList.get(i).getMarketLGA();
+                marketState=marketArrayList.get(i).getMarketState();
+            }
+
+            Values.put(MARKET_NAME, marketName);
+            Values.put(MARKET_TYPE, marketType);
+            Values.put(MARKET_STATE, marketState);
+            Values.put(MARKET_LGA, marketLGA);
+            Values.put(MARKET_COUNTRY, "Nigeria");
+            Values.put(MARKET_LOGO, marketLogo);
+
+            db.insert(MARKET_TABLE,null,Values);
+
+
+
+        }
+        db.close();
+
+
+
+
     }
 
     public ArrayList<Market> getMarketsFromProfile(int profileID) {

@@ -82,7 +82,7 @@
                 android:layout_width="@dimen/_240sdp"
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
-                android:text="Send message"
+                android:text="Join"
                 android:textColor="@color/cardview_light_background"
                 android:background="@drawable/rect6g"
                 />

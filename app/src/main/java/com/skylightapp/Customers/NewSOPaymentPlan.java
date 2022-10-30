@@ -122,7 +122,7 @@ public class NewSOPaymentPlan extends AppCompatActivity {
     private String json;
     private SharedPreferences userPreferences;
     Profile userProfile;
-    String txMessage="Savings Skylight,Congratulations! you have successfully started a standing order savings.";
+    String txMessage="Savings Awajima,Congratulations! you have successfully started a standing order savings.";
     @SuppressLint("SimpleDateFormat")
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     Bundle soBundle;
@@ -252,7 +252,7 @@ public class NewSOPaymentPlan extends AppCompatActivity {
                                     refID= "SkyLight/SO"+ random.nextInt((int) (Math.random() * 101) + 191);
 
 
-                                    //Skylightransaction= new com.skylightapp.Classes.Transaction(refID, soAcctNo, currentDate, "Skylight", String.valueOf(soAcctNo), "Skylight", namesT, sONowAmount, transaction_type, "",officeBranch, "", "", "");
+                                    //Skylightransaction= new com.skylightapp.Classes.Transaction(refID, soAcctNo, currentDate, "Awajima", String.valueOf(soAcctNo), "Awajima", namesT, sONowAmount, transaction_type, "",officeBranch, "", "", "");
 
                                     standingOrderAcct=customer.getCusStandingOrderAcct();
                                     if(standingOrderAcct !=null){
@@ -261,7 +261,7 @@ public class NewSOPaymentPlan extends AppCompatActivity {
 
                                         try {
                                             sodao.insertStandingOrderAcct(profileID,customerID,soAcctNo,customerName,sONowAmount);
-                                            tranXDAO.saveNewTransaction(profileID, customerID,Skylightransaction, soAcctNo, "Skylight", namesT,transaction_type,sONowAmount, transactionID, officeBranch, currentDate);
+                                            tranXDAO.saveNewTransaction(profileID, customerID,Skylightransaction, soAcctNo, "Awajima", namesT,transaction_type,sONowAmount, transactionID, officeBranch, currentDate);
                                             timeLineClassDAO.insertTimeLine(tittle, timelineSkylight, currentDate, null);
                                         } catch (SQLiteException e) {
                                             System.out.println("Oops!");
@@ -551,7 +551,7 @@ public class NewSOPaymentPlan extends AppCompatActivity {
                     //acctID = account.getAcctID();
                     planName="N"+sOAmount+""+frequency+""+"plan";
                     String plan_code= "SkylightSO"+sOAmount+currentDate;
-                    String description="My Skylight Standing Order"+currency+sOAmount;
+                    String description="My Awajima Standing Order"+currency+sOAmount;
                     standingOrder= new StandingOrder(soNo,customerName,expectedAmount);
 
                     sendPostRequest(reference, plan_code, authorization_code, sOAmount, email,callback_url,phoneNo,expectedAmount,sONowAmount,amtDiff,daysRemaining,customerName,frequency,currency,description,endDate,standingOrder,profileID,planName,customerSurname,customerFirstName);

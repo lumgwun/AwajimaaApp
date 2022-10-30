@@ -58,6 +58,7 @@ public class MarketBizArrayAdapter extends ArrayAdapter<MarketBusiness> {
 
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             convertView = inflater.inflate(resource, parent, false);
+            //item_market_biz
         }
 
         MarketBusiness marketBusiness = getItem(position);
@@ -67,9 +68,9 @@ public class MarketBizArrayAdapter extends ArrayAdapter<MarketBusiness> {
             bizBrandName=marketBusiness.getBizBrandname();
         }
 
-        TextView txtBizBrandName = convertView.findViewById(R.id.biz_name);
-        TextView bizID = convertView.findViewById(R.id.bIZid);
-        CircleImageView bizLogo = convertView.findViewById(R.id.logo_Biz);
+        TextView txtBizBrandName = convertView.findViewById(R.id.market_biz_names);
+        TextView bizID = convertView.findViewById(R.id.mb_IZd);
+        CircleImageView bizLogo = convertView.findViewById(R.id.img_BizL);
 
 
 

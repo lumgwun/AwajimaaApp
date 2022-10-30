@@ -37,6 +37,7 @@ public class UserTimeLineAct extends AppCompatActivity {
     int timelineCount;
     String json;
     private TextView txtNoTm;
+    private static final String PREF_NAME = "awajima";
 
 
 
@@ -50,7 +51,7 @@ public class UserTimeLineAct extends AppCompatActivity {
         txtNoTm = findViewById(R.id.actTimeline);
         timeLines = new ArrayList<TimeLine>();
         userProfile=new Profile();
-        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         String json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);

@@ -3,13 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:background="@drawable/rect_their_message"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/myimage"
+    <com.denzcoskun.imageslider.ImageSlider
+        android:id="@+id/iv_auto_image_slider"
         android:layout_width="400dp"
-        android:layout_height="300dp"
-        android:layout_centerHorizontal="true"
-        android:contentDescription="@string/app_name" />
+        android:layout_height="310dp" />
 
 </RelativeLayout>

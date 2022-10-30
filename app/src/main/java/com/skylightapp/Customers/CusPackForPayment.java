@@ -154,7 +154,7 @@ public class CusPackForPayment extends AppCompatActivity implements PackageRecyc
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.mipmap.ic_launcher_round)
-                        .setContentTitle("Skylight Message")
+                        .setContentTitle("Awajima Message")
                         .setContentText("The package you selected has been cleared");
 
         Intent notificationIntent = new Intent(this, NewCustomerDrawer.class);

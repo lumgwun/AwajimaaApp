@@ -64,6 +64,7 @@ import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.Database.SODAO;
 import com.skylightapp.Inventory.SuperInvTab;
 import com.skylightapp.LoginActivity;
+import com.skylightapp.MapAndLoc.StateEmergList;
 import com.skylightapp.PayClientActivity;
 import com.skylightapp.R;
 import com.skylightapp.SignTabMainActivity;
@@ -264,11 +265,11 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
         }
 
         if(totalAdminBalance>0){
-            txtSuperBalance.setText("Skylight Commissions: N"+totalAdminBalance);
+            txtSuperBalance.setText("Awajima Commissions: N"+totalAdminBalance);
 
 
         }else {
-            txtSuperBalance.setText("Sorry! N0 Skylight Commission, yet");
+            txtSuperBalance.setText("Sorry! N0 Awajima Commission, yet");
 
 
         }
@@ -499,7 +500,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
                 break;
         }
         welcomeString.append(", ")
-                .append("Skylight Super Admin")
+                .append("Awajima Super Admin")
                 .append("How are you? ")
                 .append(getString(R.string.happy))
                 .append(dow);
@@ -642,7 +643,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
                             break;
 
                         case 7:
-                            Intent myIntentSper = new Intent(SuperAdminOffice.this, SuperAdminCountAct.class);
+                            Intent myIntentSper = new Intent(SuperAdminOffice.this, BizSuperAdminAllView.class);
                             myIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(myIntentSper);
                             break;
@@ -832,7 +833,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
                 break;
 
             case R.id.nav_Emergencies:
-                Intent emergencyIntentSper = new Intent(SuperAdminOffice.this, SuperEmergList.class);
+                Intent emergencyIntentSper = new Intent(SuperAdminOffice.this, StateEmergList.class);
                 emergencyIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(emergencyIntentSper);
                 break;

@@ -286,7 +286,7 @@ public class MyCusLoanRepayment extends AppCompatActivity {
         });
     }
     protected void sendSMSMessage(Customer customer) {
-        String loanMessage = "Skylight appreciates your efforts in repaying  your loan";
+        String loanMessage = "Awajima appreciates your efforts in repaying  your loan";
         if(this.customer !=null){
             uPhoneNumber= this.customer.getCusPhoneNumber();
 

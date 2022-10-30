@@ -1,7 +1,6 @@
 package com.skylightapp.Classes;
 
 import android.content.Context;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.skylightapp.R;
-import com.skylightapp.SuperAdmin.SuperAdminCountAct;
+import com.skylightapp.SuperAdmin.BizSuperAdminAllView;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -28,9 +27,9 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.Recycler
         this.mcontext = mcontext;
     }
 
-    public ProfileAdapter(SuperAdminCountAct superAdminCountAct, ArrayList<Profile> allUsers) {
+    public ProfileAdapter(BizSuperAdminAllView bizSuperAdminAllView, ArrayList<Profile> allUsers) {
         this.profiles = allUsers;
-        this.mcontext = superAdminCountAct;
+        this.mcontext = bizSuperAdminAllView;
     }
 
     @NonNull

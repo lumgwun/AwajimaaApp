@@ -198,7 +198,6 @@
                 android:textAlignment="center"
                 android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal"
-                android:entries="@array/officeBranch"
                 android:layout_height="wrap_content"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>

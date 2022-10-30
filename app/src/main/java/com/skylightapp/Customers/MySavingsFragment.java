@@ -175,7 +175,7 @@ public class MySavingsFragment extends Fragment {
                 SkyLightPackageActivity.class);
         usersIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        Toast.makeText(this.getContext(), "Taking your the Skylight Shop", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this.getContext(), "Taking your the Awajima Shop", Toast.LENGTH_SHORT).show();
 
     }
 

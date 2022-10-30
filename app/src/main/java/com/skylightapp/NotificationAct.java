@@ -12,6 +12,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -21,6 +22,7 @@ import com.skylightapp.Admins.SODueDateListAct;
 import com.skylightapp.Classes.AlertReceiver;
 import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.MapAndLoc.GeofenceActivity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -89,7 +91,7 @@ public class NotificationAct extends AppCompatActivity {
         PendingIntent snoozePendingIntent = PendingIntent. getBroadcast (NotificationAct. this, 0 , snoozeIntent , 0 ) ;
         NotificationManager mNotificationManager = (NotificationManager) getSystemService( NOTIFICATION_SERVICE ) ;
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(NotificationAct. this, default_notification_channel_id ) ;
-        mBuilder.setContentTitle( "Skylight Message" ) ;
+        mBuilder.setContentTitle( "Awajima Message" ) ;
         mBuilder.setContentText( "Info" ) ;
         mBuilder.setTicker( "Pay small small, and achieve big things" ) ;
         mBuilder.setSmallIcon(R.drawable. ic_launcher_foreground ) ;
@@ -111,6 +113,74 @@ public class NotificationAct extends AppCompatActivity {
         txtNot .setText(String. valueOf ( notificationCount )) ;
         mNotificationManager.notify(( int ) System. currentTimeMillis () , mBuilder.build()) ;
 
+    }
+    public void createNotification(String title, String body) {
+        final int NOTIFY_ID = 1002;
+
+        // There are hardcoding only for show it's just strings
+        String name = "my_package_channel";
+        String id = "my_package_channel_1"; // The user-visible name of the channel.
+        String description = "my_package_first_channel"; // The user-visible description of the channel.
+
+        Intent intent;
+        PendingIntent pendingIntent;
+        NotificationCompat.Builder builder;
+
+        NotificationManager notifManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = notifManager.getNotificationChannel(id);
+            if (mChannel == null) {
+                mChannel = new NotificationChannel(id, name, importance);
+                mChannel.setDescription(description);
+                mChannel.enableVibration(true);
+                mChannel.setLightColor( Color.GREEN);
+                mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+                notifManager.createNotificationChannel(mChannel);
+            }
+            builder = new NotificationCompat.Builder(this, id);
+
+            intent = new Intent(this, GeofenceActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            int flags = PendingIntent.FLAG_UPDATE_CURRENT;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE;
+            }
+            pendingIntent = PendingIntent.getActivity(this, 0, intent, flags);
+
+            builder.setContentTitle(title)  // required
+                    .setSmallIcon(android.R.drawable.ic_popup_reminder) // required
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
+                    .setContentText(body)
+                    .setDefaults( Notification.DEFAULT_ALL)
+                    .setAutoCancel(true)
+                    .setContentIntent(pendingIntent)
+                    .setTicker(title)
+                    .setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+        } else {
+
+            builder = new NotificationCompat.Builder(this);
+
+
+            intent = new Intent(this, GeofenceActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+            builder.setContentTitle(title)                           // required
+                    .setSmallIcon(android.R.drawable.ic_popup_reminder) // required
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
+                    .setContentText(body)  // required
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setAutoCancel(true)
+                    .setContentIntent(pendingIntent)
+                    .setTicker(title)
+                    .setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400})
+                    .setPriority(Notification.PRIORITY_HIGH);
+        }
+
+        Notification notification = builder.build();
+        notifManager.notify(NOTIFY_ID, notification);
     }
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

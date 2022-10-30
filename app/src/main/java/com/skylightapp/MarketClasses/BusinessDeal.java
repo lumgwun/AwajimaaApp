@@ -6,7 +6,6 @@ import android.os.Parcelable;
 
 import com.blongho.country_data.Currency;
 import com.skylightapp.Classes.Account;
-import com.skylightapp.Markets.MarketTranx;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public class BusinessDeal implements Serializable, Parcelable {
     private double dealCostOfInsurance;
     private double dealBalance;
     private double dealShippingCost;
-    private LogisticManager dealLogisticManager;
+    private LogisticEntity dealLogisticEntity;
     private InsurancePolicy dealInsuranceP;
     private int dealCode;
     private  String dealStartDate;
@@ -274,12 +273,12 @@ public class BusinessDeal implements Serializable, Parcelable {
         this.dealShippingCost = dealShippingCost;
     }
 
-    public LogisticManager getDealLogisticManager() {
-        return dealLogisticManager;
+    public LogisticEntity getDealLogisticManager() {
+        return dealLogisticEntity;
     }
 
-    public void setDealLogisticManager(LogisticManager dealLogisticManager) {
-        this.dealLogisticManager = dealLogisticManager;
+    public void setDealLogisticManager(LogisticEntity dealLogisticEntity) {
+        this.dealLogisticEntity = dealLogisticEntity;
     }
 
     public InsurancePolicy getDealInsuranceP() {

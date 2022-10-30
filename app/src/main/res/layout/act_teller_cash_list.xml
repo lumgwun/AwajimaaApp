@@ -213,7 +213,6 @@
 
                         <Spinner
                             android:layout_width="match_parent"
-                            android:entries="@array/officeBranch33"
                             android:textColorHint="@color/colorPrimaryDark"
                             android:id="@+id/spnBranchTC"
                             android:padding="30dp"
@@ -269,7 +268,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/skylight" />
+                android:src="@drawable/awajima" />
 
 
         </LinearLayout>

@@ -62,7 +62,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.skylightapp.Interfaces.UploadImagePrefix;
-import com.skylightapp.MapAndLoc.ProfileLocSourceAct;
+import com.skylightapp.MapAndLoc.MapPanoramaStVAct;
 import com.skylightapp.R;
 import com.skylightapp.Transactions.Pay_load;
 import com.skylightapp.Transactions.SubAccounts;
@@ -95,8 +95,6 @@ import java.util.TimeZone;
 import java.util.UUID;
 
 import javax.crypto.Cipher;
-
-import static android.content.ContentValues.TAG;
 
 
 @SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored"})
@@ -245,7 +243,7 @@ public class Utils {
 
     static void sendNotification(Context context, String notificationDetails) {
 
-        Intent notificationIntent = new Intent(context, ProfileLocSourceAct.class);
+        Intent notificationIntent = new Intent(context, MapPanoramaStVAct.class);
 
         notificationIntent.putExtra("from_notification", true);
 
@@ -253,7 +251,7 @@ public class Utils {
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
 
 
-        stackBuilder.addParentStack(ProfileLocSourceAct.class);
+        stackBuilder.addParentStack(MapPanoramaStVAct.class);
 
         // Push the content Intent onto the stack.
         stackBuilder.addNextIntent(notificationIntent);
@@ -1220,7 +1218,7 @@ public class Utils {
                     alertBuilder.setCancelable(true);
                     alertBuilder.setTitle("Permission necessary");
                     alertBuilder.setMessage("SMS permission is necessary");
-                    alertBuilder.setPositiveButton("yes to Skylight", new DialogInterface.OnClickListener() {
+                    alertBuilder.setPositiveButton("yes to Awajima", new DialogInterface.OnClickListener() {
                         @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                         public void onClick(DialogInterface dialog, int which) {
                             ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.SEND_SMS}, MY_PERMISSIONS_REQUEST_SEND_SMS);

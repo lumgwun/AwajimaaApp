@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.multidex.MultiDexApplication;
 
@@ -97,6 +98,8 @@ public class AppController extends MultiDexApplication {
 
 
     private SharedPreferences sharedPreferences;
+    public static String DAY_NIGHT_MODE = "dayNightMode";
+
 
 
     public static DatabaseHelper getDatabaseHelper() {
@@ -117,6 +120,7 @@ public class AppController extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
+        initDayNight();
         initializeFirebase();
         ProcessLifecycleOwner.get().getLifecycle().addObserver(new BackgroundListener());
         //initializeSQLite();
@@ -125,6 +129,14 @@ public class AppController extends MultiDexApplication {
         if (PreferenceHelper.getPrefernceHelperInstace().getBoolean(
                 this, PreferenceHelper.SUBMIT_LOGS, true)) {
             ACRA.init(this);
+        }
+    }
+    public void initDayNight(){
+        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        if(sharedPreferences.getBoolean(DAY_NIGHT_MODE,false)){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
     private SharedPreferences.Editor getEditor() {

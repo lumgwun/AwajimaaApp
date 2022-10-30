@@ -4,15 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.Window;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -21,7 +18,7 @@ import com.skylightapp.Adapters.MySavingsCodeAdapter;
 import com.skylightapp.Adapters.SkyLightPackageAdapter;
 import com.skylightapp.Adapters.StandingOrderAdapter;
 import com.skylightapp.Adapters.SuperSavingsAdapter;
-import com.skylightapp.Adapters.TransactionAdapter;
+import com.skylightapp.Adapters.TranxAdminA;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.PaymentCode;
@@ -53,15 +50,13 @@ import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.Database.WorkersDAO;
 import com.skylightapp.R;
-import com.skylightapp.SuperAdmin.TellerCashList;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class AdminPackageActivity extends AppCompatActivity implements SkyLightPackageAdapter.OnItemsClickListener,SuperSavingsAdapter.OnItemsClickListener, MySavingsCodeAdapter.OnItemsClickListener,TransactionAdapter.OnItemsClickListener,StandingOrderAdapter.OnItemsClickListener,AccountAdapter2.OnItemsClickListener {
+public class AdminPackageActivity extends AppCompatActivity implements SkyLightPackageAdapter.OnItemsClickListener,SuperSavingsAdapter.OnItemsClickListener, MySavingsCodeAdapter.OnItemsClickListener, TranxAdminA.OnItemsClickListener,StandingOrderAdapter.OnItemsClickListener,AccountAdapter2.OnItemsClickListener {
     private SharedPreferences userPreferences;
     PrefManager prefManager;
     private Gson gson;
@@ -73,7 +68,7 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
     //CustomerTabAdapter adapter;
     private List<CustomerDailyReport> customerDailyReports;
     private StandingOrderAdapter standingOrderAdapter;
-    private TransactionAdapter transactionAdapter;
+    private TranxAdminA tranxAdminA;
     private AccountAdapter2 accountAdapter;
     private MySavingsCodeAdapter codeAdapter;
     private SuperSavingsAdapter savingsAdapter;
@@ -111,6 +106,8 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
     private StockTransferDAO stockTransferDAO;
     private OfficeBranchDAO officeBranchDAO;
     private BirthdayDAO birthdayDAO;
+    SharedPreferences sharedpreferences;
+    private static final String PREF_NAME = "skylight";
 
 
     @Override
@@ -118,6 +115,12 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_admin_package);
         setTitle("PACKAGES INSIGHTS");
+        sharedpreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        final Calendar c = Calendar.getInstance();
+        userProfile= new Profile();
+        gson = new Gson();
+        json = sharedpreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
         Calendar calendar = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         todayDate = sdf.format(calendar.getTime().getDate());
@@ -313,9 +316,9 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        transactionAdapter = new TransactionAdapter(AdminPackageActivity.this,transactions2);
+        tranxAdminA = new TranxAdminA(AdminPackageActivity.this,transactions2);
         //rcyclerTransactions.setHasFixedSize(true);
-        rcyclerTransactions.setAdapter(transactionAdapter);
+        rcyclerTransactions.setAdapter(tranxAdminA);
         rcyclerTransactions.setItemAnimator(new DefaultItemAnimator());
 
         //SnapHelper snapHelperTransaction = new PagerSnapHelper();
@@ -401,6 +404,11 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
 
     @Override
     public void onItemClick(Account account) {
+
+    }
+
+    @Override
+    public void onListItemClick(int index) {
 
     }
 

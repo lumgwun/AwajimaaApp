@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-import static com.google.firebase.crashlytics.internal.common.CommonUtils.SHARED_PREFS_NAME;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 import static com.skylightapp.Classes.Profile.PROFILE_USERNAME;
 import static com.skylightapp.Classes.Profile.PROFILE_EMAIL;
@@ -452,7 +451,7 @@ public class PrefManager {
 
     public PrefManager() {
         instance = this;
-        sharedPreferences = AppController.getInstance().getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
+        sharedPreferences = AppController.getInstance().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
     }
 
     public void delete(String key) {

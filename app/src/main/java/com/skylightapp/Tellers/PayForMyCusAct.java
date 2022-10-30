@@ -394,7 +394,7 @@ public class PayForMyCusAct extends AppCompatActivity {
 
     }
     private void parseResponse (String transactionReference){
-        String message = "Skylight Payment Successful - " + transactionReference;
+        String message = "Awajima Payment Successful - " + transactionReference;
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         startActivity(new Intent(PayForMyCusAct.this, LoginDirAct.class));
 

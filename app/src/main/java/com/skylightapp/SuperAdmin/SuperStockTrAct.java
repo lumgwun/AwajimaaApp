@@ -33,17 +33,21 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.OfficeBranch;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.MarketBizDAO;
 import com.skylightapp.Database.OfficeBranchDAO;
 import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.Database.StockTransferDAO;
 import com.skylightapp.Database.StocksDAO;
-import com.skylightapp.Database.TranXDAO;
+import com.skylightapp.Database.WorkersDAO;
 import com.skylightapp.Inventory.StockTransfer;
 import com.skylightapp.Inventory.StockTransferAdapter;
 import com.skylightapp.Inventory.Stocks;
 import com.skylightapp.Inventory.StocksArrayAdapter;
 import com.skylightapp.LoginDirAct;
+import com.skylightapp.MarketClasses.MarketBizArrayAdapter;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
 import com.skylightapp.Tellers.TellerHomeChoices;
 
@@ -59,10 +63,10 @@ public class SuperStockTrAct extends AppCompatActivity {
     PreferenceManager preferenceManager;
     SharedPreferences userPreferences;
     Profile managerProfile,recipientProfile;
-    Gson gson,gson2;
-    String json,json2;
+    Gson gson,gson2,gson3;
+    String json,json2,json3;
     Profile userProfile;
-    Skylight skylight;
+    Awajima awajima;
     DBHelper dbHelper;
     private ArrayList<Stocks> stocksArrayListTeller;
     private ArrayList<Stocks> stocksListBranch;
@@ -105,10 +109,24 @@ public class SuperStockTrAct extends AppCompatActivity {
     LinearLayoutCompat layoutCompatCus,layoutCompatTeller,layoutCompatBranch;
     String machine,selectedOffice;
     OfficeBranch officeBranch;
-    private int recipientStockQty;
+    private int recipientStockQty,selectedBizIndex;
     private OfficeAdapter officeAdapter;
-    String from,to;
+    String from,to,bizPhoneNo,json1,userRole,bizName;
+    private long bizID;
     private SQLiteDatabase sqLiteDatabase;
+    private static final String PREF_NAME = "skylight";
+    private MarketBusiness marketBiz;
+    private MarketBizArrayAdapter mBizAdapter;
+    private  ArrayList<MarketBusiness> marketBusinessList;
+    private  ArrayList<MarketBusiness> marketBizOld;
+    private MarketBizDAO marketBizDAO;
+    private Spinner spnBiz;
+    private StocksDAO stocksDAO;
+    private WorkersDAO workersDAO;
+    private StockTransferDAO stockTransferDAO;
+    private OfficeBranchDAO officeBranchDAO;
+    private CusDAO cusDAO;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +136,11 @@ public class SuperStockTrAct extends AppCompatActivity {
         dbHelper= new DBHelper(this);
         gson = new Gson();
         gson2 = new Gson();
+        gson3= new Gson();
+        cusDAO= new CusDAO(this);
+        marketBiz= new MarketBusiness();
+        stockTransferDAO= new StockTransferDAO(this);
+        stocksDAO= new StocksDAO(this);
         recipientStock = new Stocks();
         officeBranch= new OfficeBranch();
         selectedCustomer=new Customer();
@@ -125,14 +148,17 @@ public class SuperStockTrAct extends AppCompatActivity {
         stockTransferArrayList =new ArrayList<>();
         stocksListBranch =new ArrayList<>();
         stocksArraySkylight =new ArrayList<>();
+        officeBranchDAO= new OfficeBranchDAO(this);
         stocksArrayList =new ArrayList<>();
         tellers =new ArrayList<>();
         customers =new ArrayList<>();
         branches =new ArrayList<>();
         stocksArrayListForRecipient =new ArrayList<>();
         customerManager = new CustomerManager();
-        skylight = new Skylight();
+        awajima = new Awajima();
         officeBranchArrayList = new ArrayList<OfficeBranch>();
+        marketBizDAO=new MarketBizDAO(this);
+        marketBiz= new MarketBusiness();
         recipientProfile = new Profile();
         userProfile= new Profile();
         calendar = Calendar.getInstance();
@@ -144,85 +170,181 @@ public class SuperStockTrAct extends AppCompatActivity {
         spnCus = findViewById(R.id.spn_CusSuper);
         spnTeller = findViewById(R.id.spn_SuperTeller);
         spnBranch = findViewById(R.id.spnSuperBranch);
+        spnBiz = findViewById(R.id.spn_SuperS_BizS);
         btnTranxToCus = findViewById(R.id.super_buttonCusStocks);
         btnTranxToTeller = findViewById(R.id.super_buttonTeller);
         btnTranxToBranch = findViewById(R.id.super_buttonBranchStocks);
         layoutCompatCus = findViewById(R.id.layoutSuperCus);
         layoutCompatTeller = findViewById(R.id.layoutSuperTeller);
         layoutCompatBranch = findViewById(R.id.layoutSuperBranch);
-        userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
-        json = userPreferences.getString("LastProfileUsed", "");
-        skylight = gson.fromJson(json, Skylight.class);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+
+        json = userPreferences.getString("LastAwajimaUsed", "");
+        awajima = gson.fromJson(json, Awajima.class);
+        userRole = userPreferences.getString("machine", "");
+
+        json2 = userPreferences.getString("LastMarketBusinessUsed", "");
+        marketBiz = gson2.fromJson(json2, MarketBusiness.class);
+
         ran = new Random();
         random = new SecureRandom();
         spnReceipient = findViewById(R.id.gender);
         transferID = random.nextInt((int) (Math.random() * 250) + 111);
         newStockId = random.nextInt((int) (Math.random() * 150) + 1015);
         transferCode = (long) random.nextInt((int) (Math.random() * 101) + 101);
-        from="Skylight";
+        if(marketBiz !=null){
+            bizID=marketBiz.getBusinessID();
+        }
+
+        mBizAdapter = new MarketBizArrayAdapter(SuperStockTrAct.this,R.layout.item_market_biz, marketBusinessList);
+        spnBiz.setAdapter(mBizAdapter);
+        spnBiz.setSelection(0);
+        selectedBizIndex = spnBiz.getSelectedItemPosition();
+
+        try {
+            marketBiz = marketBusinessList.get(selectedBizIndex);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Oops!");
+        }
+        if(marketBiz !=null){
+            stocksArrayList=marketBiz.getmBStockList();
+            officeBranchArrayList=marketBiz.getOfficeBranches();
+            bizID=marketBiz.getBusinessID();
+            bizPhoneNo=marketBiz.getBizPhoneNo();
+            bizName=marketBiz.getBizBrandname();
+
+        }
+
+        if(userRole !=null){
+            if(userRole.equalsIgnoreCase("AwajimaSuperAdmin")){
+
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    try {
+                        stocksArrayList=stocksDAO.getALLStocksSuper();
+                    } catch (Exception e) {
+                        System.out.println("Oops!");
+                    }
+
+
+                }
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    try {
+                        customers=cusDAO.getAwajimaCusRole("awajima");
+                    } catch (Exception e) {
+                        System.out.println("Oops!");
+                    }
+
+
+                }
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    try {
+                        officeBranchArrayList=officeBranchDAO.getAllOfficeBranches("awajima");
+                    } catch (Exception e) {
+                        System.out.println("Oops!");
+                    }
+
+
+                }
+
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    try {
+                        marketBusinessList=marketBizDAO.getAllBusinesses();
+                    } catch (Exception e) {
+                        System.out.println("Oops!");
+                    }
+
+
+                }
+                from="Awajima";
+
+            }
+            if(userRole.equalsIgnoreCase("AwajimaAdmin")){
+
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    try {
+                        stocksArrayList=stocksDAO.getALLStocksSuper();
+                    } catch (Exception e) {
+                        System.out.println("Oops!");
+                    }
+
+
+                }
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    try {
+                        customers=cusDAO.getAwajimaCusRole("awajima");
+                    } catch (Exception e) {
+                        System.out.println("Oops!");
+                    }
+
+
+                }
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    try {
+                        officeBranchArrayList=officeBranchDAO.getAllOfficeBranches("awajima");
+                    } catch (Exception e) {
+                        System.out.println("Oops!");
+                    }
+
+
+                }
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    try {
+                        marketBusinessList=marketBizDAO.getAllBusinesses();
+                    } catch (Exception e) {
+                        System.out.println("Oops!");
+                    }
+
+
+                }
+                from="Awajima";
+
+            }
+
+
+
+
+        }
+        OfficeBranchDAO branchDAO = new OfficeBranchDAO(this);
+
+
+        officeAdapter = new OfficeAdapter(SuperStockTrAct.this, officeBranchArrayList);
+        spnBranch.setAdapter(officeAdapter);
+        spnBranch.setSelection(0);
+
+        spnBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedBranch = (OfficeBranch) parent.getSelectedItem();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
 
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
         transferDate = mdformat.format(calendar.getTime());
-        if(skylight !=null){
-            userProfile=skylight.getSkyProfile();
+        if(awajima !=null){
+            userProfile= awajima.getSkyProfile();
         }
         itemBundle=getIntent().getExtras();
         if(itemBundle !=null){
             userProfile=itemBundle.getParcelable("Profile");
         }
-        OfficeBranchDAO branchDAO = new OfficeBranchDAO(this);
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            dbHelper= new DBHelper(this);
-            officeBranchArrayList=dbHelper.getAllBranchOffices();
-        }
 
-
-        if(userProfile !=null){
-            transferer=userProfile.getProfileLastName()+","+userProfile.getProfileFirstName();
-            profileID=userProfile.getPID();
-        }
-
-        try {
-            if(officeBranchArrayList.size()==0){
-                spnBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        selectedOffice = spnBranch.getSelectedItem().toString();
-                        selectedOffice = (String) parent.getSelectedItem();
-                        Toast.makeText(SuperStockTrAct.this, "Office Branch Selected: " + selectedOffice, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });
-
-
-            }else {
-                officeAdapter = new OfficeAdapter(SuperStockTrAct.this, officeBranchArrayList);
-                spnBranch.setAdapter(officeAdapter);
-                spnBranch.setSelection(0);
-
-                spnBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        selectedBranch = (OfficeBranch) parent.getSelectedItem();
-
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });
-                if(selectedBranch !=null){
-                    selectedOffice=selectedBranch.getOfficeBranchName();
-                }
-            }
-        } catch (NullPointerException e) {
-            System.out.println("Oops!");
+        if(selectedBranch !=null){
+            selectedOffice=selectedBranch.getOfficeBranchName();
         }
 
         if(selectedBranch !=null){
@@ -316,7 +438,7 @@ public class SuperStockTrAct extends AppCompatActivity {
                 if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                     dbHelper.openDataBase();
                     sqLiteDatabase = dbHelper.getReadableDatabase();
-                    tellers=profDAO.getTellersFromMachine(machine);
+                    tellers=profDAO.getTellersFromMachineAndBiz(machine,bizID);
                 }
                 profileAdapter = new ProfileSimpleAdapter(SuperStockTrAct.this, android.R.layout.simple_spinner_item, tellers);
                 spnTeller.setAdapter(profileAdapter);
@@ -373,7 +495,7 @@ public class SuperStockTrAct extends AppCompatActivity {
                 if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                     dbHelper.openDataBase();
                     sqLiteDatabase = dbHelper.getReadableDatabase();
-                    branches=officeBranchDAO.getBranchFromMachine(machine);
+                    branches=officeBranchDAO.getBizProfiles(bizID);
 
                 }
                 profileAdapter = new ProfileSimpleAdapter(SuperStockTrAct.this, android.R.layout.simple_spinner_item, branches);

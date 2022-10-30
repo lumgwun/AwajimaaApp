@@ -3,6 +3,8 @@
     <string name="title_activity_settings">SettingsActivity</string>
 
     <string name="messages_header">Messages</string>
+    <string name="follow_summary_not_following">Not Following</string>
+    <string name="follow_summary_following">Following</string>
 
     <string name="sync_header">Sync</string>
 
@@ -1217,7 +1219,7 @@
     <string name="D">D</string>
     <string name="SM">SM</string>
     <string name="file_path_name">/sdcard/skylightApp.pdf</string>
-    <string name="channel_description">skylight message</string>
+    <string name="channel_description">awajima message</string>
     <string name="savings_alert">new  Savings Alert</string>
     <string name="savings_msg">Super Admin, please be informed of a new Savings</string>
     <string name="package_msg">Super Admin, please be informed of a new Package</string>
@@ -1228,7 +1230,7 @@
     <string name="teller_msg">Super Admin, please be informed of a new Teller</string>
     <string name="admin_signup">Super Admin, please be informed of a new Admin onboard</string>
     <string name="admin_msg">Super Admin, please be informed of a new Admin onboard</string>
-    <string name="tellerReport">Super Admin, please be ware of a Newly submitted Report by a Skylight Teller</string>
+    <string name="tellerReport">Super Admin, please be ware of a Newly submitted Report by a Awajima Teller</string>
     <string name="tellerReportAlert">Teller Report Submission Alert</string>
     <string name="loanAlert">Loan application Alert</string>
     <string name="loanAlertDetails">Please be informed of a new Loan application</string>
@@ -1415,7 +1417,7 @@
     <string name="new_pair">You\'ve got new pair!</string>
     <string name="matched_users">Matched users</string>
     <string name="matched_messages">Messages</string>
-    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh augue, suscipit a, scelerisque sed, lacinia in, mi.</string>
+    <string name="lorem_ipsum">do as i say.</string>
 
     <string name="pref_header_general">General</string>
 
@@ -2005,6 +2007,24 @@
     <string name="top_list">Top Stocks</string>
     <string name="user_list">Our Users</string>
     <string name="my_messages">My Com.</string>
+    <string name="add_new_location">Add new location</string>
+    <string name="location_list">Locations</string>
+    <string name="need_location_permission_message">You need to enable location permissions first</string>
+    <string name="location_permissions_granted_message">Location Permissions Granted</string>
+    <string name="setting_enabled" translatable="false">EnabledSetting</string>
+    <string name="settings_label">Settings</string>
+    <string name="location_permissions">Location Permissions</string>
+    <string name="enable_geofences">Enable Geofences</string>
+    <string name="privacy">http://www.google.com/policies/privacy</string>
+    <string name="ringer_permissions">Ringer Permissions</string>
+    <string name="silent_mode_activated">Silent mode activated</string>
+    <string name="touch_to_relaunch">Touch to launch the app.</string>
+    <string name="back_to_normal">Back to normal</string>
+    <string name="permission_terms">Tracking permission!</string>
+    <string name="tracking">By sending in reports, you have given us the permission to track you.</string>
+    <string name="title_activity_resp_team_pref">RespTeamPrefAct</string>
+    <string name="fui_phone_hint">Phone Number</string>
+    <string name="title_activity_biz_type_select">BizTypeSelectAct</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 

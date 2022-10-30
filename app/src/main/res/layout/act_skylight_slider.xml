@@ -13,6 +13,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+            <com.denzcoskun.imageslider.ImageSlider
+                android:id="@+id/sliderPAC"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="300dp" />
+
+        </RelativeLayout>
+
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:textStyle="bold"
@@ -124,32 +138,6 @@
             android:layout_marginTop="5dp"
             android:background="@color/black" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white">
-
-            <com.smarteist.autoimageslider.SliderView
-                android:id="@+id/sliderPAC"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_centerInParent="true"
-                app:sliderAnimationDuration="600"
-                app:sliderAutoCycleDirection="back_and_forth"
-                app:sliderIndicatorAnimationDuration="600"
-                app:sliderIndicatorEnabled="true"
-                app:sliderIndicatorGravity="center_horizontal|bottom"
-                app:sliderIndicatorMargin="15dp"
-                app:sliderIndicatorOrientation="horizontal"
-                app:sliderIndicatorPadding="3dp"
-                app:sliderIndicatorRadius="2dp"
-                app:sliderIndicatorSelectedColor="@android:color/black"
-                app:sliderIndicatorUnselectedColor="#FFF"
-                app:sliderScrollTimeInSec="1" />
-
-
-
-        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"

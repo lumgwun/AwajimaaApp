@@ -277,7 +277,7 @@ public class MobileMoneyTransfer extends AppCompatActivity {
                 ArrayList<Transaction> transactions = tranXDAO.getAllTransactionAdmin();
                 boolean loanTaken = false;
                 for (int iTransaction = 0; iTransaction < transactions.size(); iTransaction++) {
-                    if (valueOf(amountRequested).equals(valueOf((transactions.get(iTransaction).getRecordAmount()))) && momoTransferDate.equals(transactions.get(iTransaction).getTranxDate())) {
+                    if (valueOf(amountRequested).equals(valueOf((transactions.get(iTransaction).getTranxAmount()))) && momoTransferDate.equals(transactions.get(iTransaction).getTranxDate())) {
 
                         Toast.makeText(this, "a very similar Transfer with same date already exist!", Toast.LENGTH_LONG).show();
                     }
@@ -325,7 +325,7 @@ public class MobileMoneyTransfer extends AppCompatActivity {
                         transferPayload.setBeneficiary_name(momoPhoneNO);
                         transferPayload.setAccount_number(borrowerNo);
                         transferPayload.setAmount(String.valueOf(amountRequested));
-                        transferPayload.setNarration("Skylight Mobile Money Transfer");
+                        transferPayload.setNarration("Awajima Mobile Money Transfer");
                         transferPayload.setReference(borrowingId);
                         transferPayload.setCurrency("NGN");
                         transferPayload.setSeckey(SkylightConfig.SECRET_KEY);

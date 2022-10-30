@@ -6,71 +6,90 @@
     android:orientation="vertical"
     android:theme="@style/NoActionBar"
     android:layout_height="match_parent"
-    android:background="@drawable/rect_their_message"
-    tools:context="com.skylightapp.Customers.NewSOPaymentPlan">
-    <include layout="@layout/tool_bar11d"/>
+    android:background="@drawable/sky4"
+    tools:context="com.skylightapp.JoinThisGrpSavAct">
+    <include layout="@layout/tool_bar10"/>
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:textAlignment="center"
-        android:padding="30dp"
+        android:padding="10dp"
+        android:textSize="20sp"
+        android:id="@+id/grp_t"
         android:layout_marginTop="20dp"
-        android:textColor="@color/colorPrimaryDark"
-        android:background="@drawable/rect6e"
+        android:textColor="@color/white"
         android:text="Group Acct Tittle:"
         android:layout_height="wrap_content"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:textAlignment="center"
-        android:padding="30dp"
+        android:padding="10dp"
+        android:id="@+id/grp_p"
+        android:textSize="20sp"
         android:layout_marginTop="20dp"
-        android:textColor="@color/colorPrimaryDark"
-        android:background="@drawable/rect6e"
-        android:text="Group Account ID:"
+        android:textColor="@color/white"
+        android:text="Group Purpose:"
         android:layout_height="wrap_content"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatEditText
+            android:layout_width="match_parent"
+            android:inputType="number"
+            android:textAlignment="center"
+            android:padding="20dp"
+            android:background="@drawable/shape_layer"
+            android:id="@+id/grpNewFN"
+            android:gravity="center_horizontal"
+            android:hint="New Saver First Name"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatEditText
+            android:layout_width="match_parent"
+            android:inputType="number"
+            android:textAlignment="center"
+            android:padding="20dp"
+            android:background="@drawable/shape_layer"
+            android:id="@+id/grpALN"
+            android:gravity="center_horizontal"
+            android:hint="New Saver LastName"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
         android:layout_height="wrap_content">
         <androidx.appcompat.widget.AppCompatEditText
             android:layout_width="match_parent"
             android:inputType="number"
             android:background="@drawable/shape_layer"
             android:textAlignment="center"
-            android:padding="30dp"
-            android:id="@+id/grpAcctUserID"
+            android:padding="20dp"
+            android:id="@+id/grpAcctNewUID"
             android:gravity="center_horizontal"
             android:hint="New User Profile ID:"
             android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_marginTop="20dp"
-        android:layout_height="wrap_content">
-        <androidx.appcompat.widget.AppCompatEditText
-            android:layout_width="match_parent"
-            android:inputType="number"
-            android:textAlignment="center"
-            android:padding="30dp"
-            android:background="@drawable/shape_layer"
-            android:id="@+id/grpAcctUserPhone"
-            android:gravity="center_horizontal"
-            android:hint="New User Phone Number"
-            android:layout_height="wrap_content"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"
-        android:padding="50dp"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/colorPrimaryDark"
-        android:background="@drawable/rect6e"
+        android:padding="30dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/red_brown_dark"
+        android:background="@drawable/rect6h"
         android:textStyle="bold"
+        android:onClick="doAddProfToGrp"
         android:textSize="20sp"
-        android:id="@+id/grpAcctBtn"
+        android:id="@+id/grpAcctDoBtn"
         android:text="Add New Saver to the Group"
         android:layout_height="wrap_content"/>
 
@@ -80,7 +99,7 @@
         android:padding="30dp"
         android:layout_marginTop="40dp"
         android:textColor="@color/colorPrimaryDark"
-        android:background="@drawable/rect_their_message"
+        android:background="@drawable/rect_their2"
         android:text="Powered by Lumgwun Solutions"
         android:layout_height="wrap_content"/>
 

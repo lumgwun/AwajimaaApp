@@ -3,8 +3,8 @@ package com.skylightapp.MarketClasses;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Markets.MarketTranx;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class MarketCustomer implements Serializable, Parcelable {
     private int marketCusID;
     private Profile marketCusProf;
+    private Customer mCus;
     private String marketCusStatus;
     private ArrayList<Market> marketCusMarkets;
     private ArrayList<BusinessOthers> marketCusBizS;
@@ -156,5 +157,13 @@ public class MarketCustomer implements Serializable, Parcelable {
         parcel.writeTypedList(marketCusBizDealLoans);
         parcel.writeTypedList(marketCusRemitances);
         parcel.writeTypedList(marketCusBizDealAccts);
+    }
+
+    public Customer getmCus() {
+        return mCus;
+    }
+
+    public void setmCus(Customer mCus) {
+        this.mCus = mCus;
     }
 }

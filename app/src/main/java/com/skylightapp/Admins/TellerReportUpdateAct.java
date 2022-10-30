@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
@@ -22,8 +23,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.skylightapp.Accountant.BranchMPayments;
+import com.skylightapp.Adapters.OfficeAdapter;
 import com.skylightapp.Classes.AdminUser;
+import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerManager;
+import com.skylightapp.Classes.OfficeBranch;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.TellerReport;
@@ -31,6 +36,7 @@ import com.skylightapp.Classes.Utils;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.TReportDAO;
 import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
 import com.skylightapp.SMSAct;
 
@@ -79,7 +85,7 @@ public class TellerReportUpdateAct extends AppCompatActivity {
     String SharedPrefUserPassword;
     String phone_number;
     String tellerString;
-    String stringNoOfSavings;
+    String stringNoOfCusString;
     String officeBranch;
     String dateOfReport;
     String cmFirstName;
@@ -88,18 +94,29 @@ public class TellerReportUpdateAct extends AppCompatActivity {
     String SharedPrefUserMachine;
     String phoneNo;
     String SharedPrefUserName;
-    int SPAdminProfileID;
+    int SPAdminProfileID,selectedOfficeIndex;
     private TReportDAO tReportDAO;
     private TimeLineClassDAO timeLineClassDAO;
-    String adminName;
+    String adminName, bizName;
+    private ArrayList<MarketBusiness> marketBizS;
+    private MarketBusiness marketBusiness;
+    private Customer customer;
+    private ArrayList<OfficeBranch> bizOffices;
+    SQLiteDatabase sqLiteDatabase;
+    private OfficeBranch officeB;
+    private OfficeAdapter officeBranchAdapter;
+    Gson gson2,gson3;
+    String json2,json3;
+    private long bizID;
+    private MarketBusiness marketBiz;
     Spinner.OnItemSelectedListener spnClickListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
             if (adapterView.getId() == spnNoOfClients.getId()) {
                 selectedNoIndex = i;
                 try {
-                    stringNoOfSavings = (String) adapterView.getSelectedItem();
-                    noOfCustomers =Integer.parseInt(stringNoOfSavings);
+                    stringNoOfCusString = (String) adapterView.getSelectedItem();
+                    noOfCustomers =Integer.parseInt(stringNoOfCusString);
 
                     try {
                         if(selectedNoIndex==0){
@@ -111,23 +128,11 @@ public class TellerReportUpdateAct extends AppCompatActivity {
                 } catch (IndexOutOfBoundsException e) {
                     System.out.println("Oops!");
                 }
-                stringNoOfSavings = (String) adapterView.getSelectedItem();
-                noOfCustomers =Integer.parseInt(stringNoOfSavings);
+                stringNoOfCusString = (String) adapterView.getSelectedItem();
+                noOfCustomers =Integer.parseInt(stringNoOfCusString);
 
             }
-            else if (adapterView.getId() == spnReportOffice.getId()) {
-                officeBranch = (String) adapterView.getSelectedItem();
-                if(officeBranch.equalsIgnoreCase("Trans-Amadi")){
-                    officeBranchID=200;
-                }
-                if(officeBranch.equalsIgnoreCase("Elelenwo")){
-                    officeBranchID=201;
-                }
-                if(officeBranch.equalsIgnoreCase("Wimpey")){
-                    officeBranchID=202;
-                }
-                Toast.makeText(TellerReportUpdateAct.this, "Office Branch: "  + officeBranch, Toast.LENGTH_SHORT).show();
-            }
+
         }
 
         @Override
@@ -144,7 +149,7 @@ public class TellerReportUpdateAct extends AppCompatActivity {
                 public void onActivityResult(ActivityResult result) {
                     switch (result.getResultCode()) {
                         case Activity.RESULT_OK:
-                            doReportUpdate(adminUser, dateOfReport, SPAdminProfileID,userProfile,tellerReport,officeBranchID, noOfCustomers,teller,managerID,tellerProfile,adminID,balance,superAdminCode, phone_number);
+                            doReportUpdate(adminUser, dateOfReport, SPAdminProfileID,userProfile,tellerReport,officeBranchID, noOfCustomers,teller,managerID,tellerProfile,adminID,balance,superAdminCode, phone_number, bizID);
                             Toast.makeText(TellerReportUpdateAct.this, "Permission Code rhymed", Toast.LENGTH_SHORT).show();
                             break;
                         case Activity.RESULT_CANCELED:
@@ -163,12 +168,20 @@ public class TellerReportUpdateAct extends AppCompatActivity {
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         gson1 = new Gson();
+        gson2= new Gson();
         userProfile=new Profile();
         currentDate= new Date();
         adminUser= new AdminUser();
+        marketBusiness= new MarketBusiness();
         teller= new CustomerManager();
+        customer= new Customer();
         tellerProfile= new Profile();
+        bizOffices= new ArrayList<>();
         tellerReports=new ArrayList<>();
+        marketBizS=new ArrayList<>();
+        officeB= new OfficeBranch();
+        marketBiz= new MarketBusiness();
+
         ran = new Random();
         random = new SecureRandom();
         SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
@@ -177,9 +190,18 @@ public class TellerReportUpdateAct extends AppCompatActivity {
         SPAdminProfileID =userPreferences.getInt("PROFILE_ID", 0);
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
-        phone_number ="08069524599";
+        phone_number ="07038843102";
         json1 = userPreferences.getString("LastAdminProfileUsed", "");
-        adminUser = gson1.fromJson(json, AdminUser.class);
+        adminUser = gson1.fromJson(json1, AdminUser.class);
+
+        json2 = userPreferences.getString("LastMarketBusinessUsed", "");
+        marketBiz = gson2.fromJson(json2, MarketBusiness.class);
+
+        if(marketBiz !=null){
+            bizID=marketBiz.getBusinessID();
+            bizOffices=marketBiz.getOfficeBranches();
+        }
+
         updateBundle=getIntent().getExtras();
         Calendar calendar = Calendar.getInstance();
         currentDate = calendar.getTime();
@@ -193,14 +215,27 @@ public class TellerReportUpdateAct extends AppCompatActivity {
 
         } catch (ParseException ignored) {
         }
+        marketBizS=adminUser.getAdminMarketBizArrayList();
 
         if(updateBundle !=null){
             tellerReport=updateBundle.getParcelable("TellerReport");
             teller=updateBundle.getParcelable("CustomerManager");
-            tellerReportID=tellerReport.getTellerReportID();
-            tellerString=tellerReport.getTrManager();
+            customer=updateBundle.getParcelable("Customer");
+            marketBusiness=updateBundle.getParcelable("MarketBusiness");
+
+
+        }
+        if(marketBusiness !=null){
+            bizOffices=marketBusiness.getOfficeBranches();
+        }
+        if(teller !=null){
             managerID=teller.getTellerProfile().getPID();
             tellerProfile=teller.getTellerProfile();
+
+        }
+        if(tellerReport !=null){
+            tellerReportID=tellerReport.getTellerReportID();
+            tellerString=tellerReport.getTrManager();
             balance=tellerReport.getTr_Balance();
 
         }
@@ -210,8 +245,26 @@ public class TellerReportUpdateAct extends AppCompatActivity {
             cmName=cmLastName+""+cmFirstName;
             adminID=adminUser.getAdminID();
         }
-        amountExpected=applicationDb.getTotalSavingsTodayForTeller(managerID,today);
-        noOfCustomers =applicationDb.getSavingsCusCountTodayForTeller(managerID,today);
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            sqLiteDatabase = applicationDb.getReadableDatabase();
+            try {
+                amountExpected=applicationDb.getTotalSavingsTodayForTeller(managerID,today);
+            } catch (Exception e) {
+                System.out.println("Oops!");
+            }
+
+
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            sqLiteDatabase = applicationDb.getReadableDatabase();
+            try {
+                noOfCustomers =applicationDb.getSavingsCusCountTodayForTeller(managerID,today);
+            } catch (Exception e) {
+                System.out.println("Oops!");
+            }
+
+
+        }
 
 
         btnConfirmUpdate = findViewById(R.id.confirmReportUpdate);
@@ -228,35 +281,28 @@ public class TellerReportUpdateAct extends AppCompatActivity {
         edxtamtPaid = findViewById(R.id.onlineAmount);
         picker = findViewById(R.id.update_date_Report);
 
-        spnReportOffice.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        officeBranchAdapter = new OfficeAdapter(TellerReportUpdateAct.this, bizOffices);
+        spnReportOffice.setAdapter(officeBranchAdapter);
+        spnReportOffice.setSelection(0);
+        selectedOfficeIndex = spnReportOffice.getSelectedItemPosition();
 
-                officeBranch = (String) parent.getSelectedItem();
-                if(officeBranch.equalsIgnoreCase("Trans-Amadi")){
-                    officeBranchID=200;
-                }
-                if(officeBranch.equalsIgnoreCase("Elelenwo")){
-                    officeBranchID=201;
-                }
-                if(officeBranch.equalsIgnoreCase("Wimpey")){
-                    officeBranchID=202;
-                }
-                Toast.makeText(TellerReportUpdateAct.this, "Office Branch: "  + officeBranch, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        try {
+            officeB = bizOffices.get(selectedOfficeIndex);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Oops!");
+        }
+        if(officeB !=null){
+            officeBranch=officeB.getOfficeBranchName();
+            officeBranchID=officeB.getOfficeBranchID();
+        }
 
         spnNoOfClients.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedNoIndex = position;
                 try {
-                    stringNoOfSavings = (String) parent.getSelectedItem();
-                    noOfCustomers =Integer.parseInt(stringNoOfSavings);
+                    stringNoOfCusString = (String) parent.getSelectedItem();
+                    noOfCustomers =Integer.parseInt(stringNoOfCusString);
 
                     try {
                         if(selectedNoIndex==0){
@@ -268,8 +314,8 @@ public class TellerReportUpdateAct extends AppCompatActivity {
                 } catch (IndexOutOfBoundsException e) {
                     System.out.println("Oops!");
                 }
-                stringNoOfSavings = (String) parent.getSelectedItem();
-                noOfCustomers =Integer.parseInt(stringNoOfSavings);
+                stringNoOfCusString = (String) parent.getSelectedItem();
+                noOfCustomers =Integer.parseInt(stringNoOfCusString);
                 Toast.makeText(TellerReportUpdateAct.this, "No. of Clients: "  + officeBranch, Toast.LENGTH_SHORT).show();
             }
 
@@ -294,7 +340,7 @@ public class TellerReportUpdateAct extends AppCompatActivity {
                 superAdminCode = random.nextInt((int) (Math.random() * 12398) + 14281);
                 updateCount=updateCount+1;
                 if(updateCount==1) {
-                    doReportUpdate(adminUser, dateOfReport, SPAdminProfileID,userProfile,tellerReport,officeBranchID, noOfCustomers,teller,managerID,tellerProfile,adminID,balance,superAdminCode,phone_number);
+                    doReportUpdate(adminUser, dateOfReport, SPAdminProfileID,userProfile,tellerReport,officeBranchID, noOfCustomers,teller,managerID,tellerProfile,adminID,balance,superAdminCode,phone_number,bizID);
 
                     Toast.makeText(TellerReportUpdateAct.this,"Button clicked first time!", Toast.LENGTH_LONG).show();
                 }
@@ -332,7 +378,7 @@ public class TellerReportUpdateAct extends AppCompatActivity {
         Bundle smsBundle = new Bundle();
         superAdminCode = random.nextInt((int) (Math.random() * 12398) + 14281);
         String reportCode="Teller Report Update Code is:"+superAdminCode;
-        this.phone_number ="08069524599";
+        this.phone_number ="07038843102";
         smsBundle.putString(PROFILE_PHONE, phone_number);
         smsBundle.putString("USER_PHONE", phone_number);
         smsBundle.putString("smsMessage", reportCode);
@@ -350,8 +396,13 @@ public class TellerReportUpdateAct extends AppCompatActivity {
 
     }
 
-    private void doReportUpdate(AdminUser adminUser, String dateOfReport, int sharedPrefProfileID, Profile userProfile, TellerReport tellerReport, int officeBranchID, int noOfSavings, CustomerManager teller, int managerID, Profile tellerProfile, int adminID, double balance, long superAdminCode, String phone_number) {
-        tellerID=teller.getTID();
+    private void doReportUpdate(AdminUser adminUser, String dateOfReport, int sharedPrefProfileID, Profile userProfile, TellerReport tellerReport, int officeBranchID, int noOfSavings, CustomerManager teller, int managerID, Profile tellerProfile, int adminID, double balance, long superAdminCode, String phone_number, long bizID) {
+
+        if(teller !=null){
+            tellerID=teller.getTID();
+
+        }
+
         superAdminCode = random.nextInt((int) (Math.random() * 12398) + 14281);
         try {
             tellerReport.setTr_SuperCode(superAdminCode);
@@ -404,10 +455,13 @@ public class TellerReportUpdateAct extends AppCompatActivity {
         tReportDAO= new TReportDAO(this);
         tellerReports=tReportDAO.getTellerReportsAll();
        if(tellerReport !=null){
+           bizName=tellerReport.getTr_BizName();
            tellerReportID=tellerReport.getTellerReportID();
            tellerProfile.addPTimeLine(timelineTittle2,timelineDetailsTeller);
 
-           tellerProfile.addPTellerReport(tellerReportID,officeBranch,amountEntered, noOfCustomers,dateOfReport);
+
+
+           //tellerProfile.uPdatePTellerReport(tellerReportID,bizName,officeBranch,amountEntered, noOfCustomers,dateOfReport);
 
        }
 
@@ -424,10 +478,10 @@ public class TellerReportUpdateAct extends AppCompatActivity {
             if (adminUser != null) {
                 adminUser.addTimeLine(timelineTittle3,timelineDetailAdmin);
                 tReportDAO= new TReportDAO(this);
-                adminUser.addTellerReport(tellerReportID,officeBranch,amountEntered,amountExpected, this.noOfCustomers,dateOfReport,status);
+                adminUser.addTellerReport(tellerReportID,bizID,officeBranch,amountEntered,amountExpected, noOfCustomers,dateOfReport,status);
             }
             timeLineClassDAO= new TimeLineClassDAO(this);
-            tReportDAO.updateTellerReport(tellerReportID,tellerID,adminName,this.noOfCustomers,amountExpected,amountEntered,dateOfReport,status);
+            tReportDAO.updateTellerReport(tellerReportID,tellerID,adminName,noOfCustomers,amountExpected,amountEntered,dateOfReport,status);
             timeLineClassDAO.insertTimeLine(timelineTittle,timelineDetails,dateOfReport,location);
             Toast.makeText(TellerReportUpdateAct.this, "Report Update was successful" , Toast.LENGTH_LONG).show();
 

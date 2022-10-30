@@ -14,7 +14,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
-            android:text="Teller Items Transfer"
+            android:text="Stock Items Transfer"
             android:layout_marginTop="10dp"
             android:textColor="@color/colorPrimaryDark"
             android:textAlignment="center"
@@ -25,65 +25,105 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
-            android:text="Give Item to:"
+            android:text="Send Item to:"
             android:textColor="@color/colorPrimaryDark"
             android:textAlignment="center"
-            android:textSize="20sp"
+            android:textSize="25sp"
             android:textStyle="bold"
             android:layout_marginBottom="10dp"
             android:layout_height="wrap_content"/>
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             app:cardCornerRadius="2dp"
             app:cardElevation="2dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="5dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             app:cardPreventCornerOverlap="false"
             app:contentPadding="0dp">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:text="Select Stocks Receiver"
+                android:textColor="@color/colorPrimaryDark"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="3"
                 android:clickable="false">
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="0dp"
-                    android:background="@drawable/rect_their4c"
-                    android:layout_weight="1"
-                    android:id="@+id/btn_Teller"
-                    android:onClick="catchTeller"
-                    android:text="fellow Teller"
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:id="@+id/spn_receiver"
+                    android:padding="30dp"
+                    android:entries="@array/UserReceiver"
+                    android:paddingLeft="10dp"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textColorHint="@android:color/holo_red_dark"
+                    android:textSize="20sp"
+                    android:layout_gravity="center_vertical|start"
+                    android:gravity="center_vertical|start"
+                    android:clickable="false"
+                    android:background="@drawable/shape_rect12a"
+                    android:drawableStart="@drawable/ic_icon_foreground"
                     android:layout_height="wrap_content"/>
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/rect_their4c"
-                    android:text="Branch"
-                    android:onClick="catchBranch"
-                    android:id="@+id/btn_Branch"
-                    android:layout_height="wrap_content"/>
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="0dp"
-                    android:id="@+id/btn_Customer"
-                    android:layout_weight="1"
-                    android:onClick="catchCustomer"
-                    android:background="@drawable/rect_their4c"
-                    android:text="Customer"
-                    android:layout_height="wrap_content"/>
-
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
+
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_marginBottom="10dp"
             android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="2dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                app:cardPreventCornerOverlap="false"
+                app:contentPadding="0dp">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:text="Select Business Profile"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:clickable="false">
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:id="@+id/spn_biz_alto"
+                        android:padding="30dp"
+                        android:paddingLeft="10dp"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textColorHint="@android:color/holo_red_dark"
+                        android:textSize="20sp"
+                        android:layout_gravity="center_vertical|start"
+                        android:gravity="center_vertical|start"
+                        android:clickable="false"
+                        android:background="@drawable/shape_rect12a"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:text="Select Stocks to Transfer"
@@ -155,8 +195,7 @@
                 android:textSize="15sp"
                 android:gravity="center_vertical|start"
                 android:clickable="false"
-                android:layout_gravity="center_vertical|left"
-                />
+                android:layout_gravity="center_vertical|left" />
 
         </androidx.cardview.widget.CardView>
 
@@ -165,6 +204,7 @@
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:id="@+id/layoutCus"
+
             android:layout_marginBottom="10dp"
             android:layout_height="wrap_content">
             <androidx.cardview.widget.CardView
@@ -208,24 +248,6 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:text="Transfer to the Customer"
-                android:textSize="17sp"
-                android:padding="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_weight="1"
-                android:onClick="doCustomer"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:textStyle="bold"
-                android:id="@+id/buttonCustomerStocks"
-                android:textColor="@android:color/holo_red_dark"
-                android:background="@drawable/rect_their_message"
-                android:gravity="center_horizontal"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content"/>
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -279,24 +301,6 @@
 
             </androidx.cardview.widget.CardView>
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:text="Transfer to the Teller"
-                android:textSize="17sp"
-                android:padding="20dp"
-                android:layout_weight="1"
-                android:onClick="doTeller"
-                android:layout_marginBottom="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:textStyle="bold"
-                android:id="@+id/buttonTeller"
-                android:textColor="@android:color/holo_red_dark"
-                android:background="@drawable/rect_their_message"
-                android:gravity="center_horizontal"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content"/>
-
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
@@ -348,7 +352,6 @@
                             android:paddingLeft="10dp"
                             android:background="@drawable/shape_rect12a"
                             android:drawableStart="@drawable/ic_icon_foreground"
-                            android:entries="@array/officeBranch33"
                             android:padding="30dp"
                             android:textColor="@android:color/holo_red_dark"
                             android:textColorHint="@android:color/holo_red_dark"
@@ -362,25 +365,26 @@
 
             </androidx.cardview.widget.CardView>
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:text="Transfer to the Branch"
-                android:textSize="17sp"
-                android:padding="20dp"
-                android:layout_weight="1"
-                android:onClick="doBranch"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:textStyle="bold"
-                android:id="@+id/buttonBranchStocks"
-                android:textColor="@android:color/holo_red_dark"
-                android:background="@drawable/rect_their_message"
-                android:gravity="center_horizontal"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content"/>
-
-
         </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:text="Do Stocks Transfer"
+            android:textSize="17sp"
+            android:padding="20dp"
+            android:layout_weight="1"
+            android:onClick="doRunTransfer"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textStyle="bold"
+            android:id="@+id/button_Run_Transfer"
+            android:textColor="@android:color/holo_red_dark"
+            android:background="@drawable/rect_their_message"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"/>
+
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

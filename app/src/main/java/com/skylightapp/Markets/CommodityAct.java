@@ -21,29 +21,35 @@ import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.constants.ActionTypes;
+import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.interfaces.ItemClickListener;
+import com.denzcoskun.imageslider.interfaces.TouchListener;
+import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.material.snackbar.Snackbar;
 import com.skylightapp.Classes.SwipeToDeleteCallback;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.MarketClasses.Commodity;
+import com.skylightapp.MarketClasses.MarketCommodity;
 import com.skylightapp.MarketClasses.CommodityAdater;
 import com.skylightapp.R;
-import com.smarteist.autoimageslider.SliderView;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommodityAct extends AppCompatActivity implements CommodityAdater.OnItemsClickListener,SearchView.OnQueryTextListener{
+public class CommodityAct extends AppCompatActivity implements CommodityAdater.OnCommodityClickListener,SearchView.OnQueryTextListener{
     RecyclerView recyclerView;
     CommodityAdater mAdapter,sliderAdapter,searchComAdapter;
-    ArrayList<Commodity> commodityArrayList;
-    ArrayList<Commodity> commoditySearchList;
-    List<Commodity> commodityList;
+    ArrayList<MarketCommodity> marketCommodityArrayList;
+    ArrayList<MarketCommodity> marketCommoditySearchList;
+    List<MarketCommodity> marketCommodityList;
     ScrollView scrollView;
     private Bundle bundle;
     private int marketID;
     private DBHelper dbHelper;
     private SearchView iSearchView;
-    private Commodity commodity;
+    private MarketCommodity marketCommodity;
 
     private SearchManager manager;
     private androidx.appcompat.widget.SearchView searchView;
@@ -53,7 +59,8 @@ public class CommodityAct extends AppCompatActivity implements CommodityAdater.O
     private TextView tv_languages;
     private RelativeLayout lout_2,lout_1;
     private String keyWord;
-    private CommodityAdater.OnItemsClickListener listener;
+    private CommodityAdater.OnCommodityClickListener listener;
+    private ArrayList<SlideModel> slideModels;
 
 
     @Override
@@ -71,6 +78,7 @@ public class CommodityAct extends AppCompatActivity implements CommodityAdater.O
         recyclerView = findViewById(R.id.recyComm);
         scrollView = findViewById(R.id.cordComm);
         populateRecyclerView();
+        slideModels= new ArrayList<>();
         bundle= new Bundle();
         enableSwipeToDeleteAndUndo();
         bundle=getIntent().getExtras();
@@ -78,44 +86,60 @@ public class CommodityAct extends AppCompatActivity implements CommodityAdater.O
             marketID=bundle.getInt("MarketID");
         }
         listeners();
-        commodityArrayList = new ArrayList<>();
-        commoditySearchList = new ArrayList<>();
-        commodity= new Commodity();
-        SliderView sliderView = findViewById(R.id.commodity_Slider);
+        marketCommodityArrayList = new ArrayList<>();
+        marketCommoditySearchList = new ArrayList<>();
+        marketCommodity = new MarketCommodity();
+
+        ImageSlider sliderView = findViewById(R.id.commodity_Slider);
         manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        sliderAdapter = new CommodityAdater(CommodityAct.this, commoditySearchList,listener);
-        sliderView.setAutoCycleDirection(SliderView.LAYOUT_DIRECTION_LTR);
-
-        sliderView.setScrollTimeInSec(3);
-
-        sliderView.setAutoCycle(true);
-        sliderView.startAutoCycle();
-        sliderAdapter.notifyDataSetChanged();
+        sliderAdapter = new CommodityAdater(CommodityAct.this, marketCommoditySearchList,listener);
         etSearch.setActivated(true);
+        sliderView.setImageList(slideModels);
+        sliderView.startSliding(3000);
+        sliderView.setImageList(slideModels, ScaleTypes.CENTER_CROP);
+        sliderView.animate();
+
+        sliderView.setItemClickListener(new ItemClickListener() {
+            @Override
+            public void onItemSelected(int i) {
+
+            }
+        });
+        sliderView.setTouchListener(new TouchListener() {
+            @Override
+            public void onTouched(@NonNull ActionTypes actionTypes) {
+                if (actionTypes == ActionTypes.DOWN){
+                    sliderView.stopSliding();
+                } else if (actionTypes == ActionTypes.UP ) {
+                    sliderView.startSliding(1000);
+                }
+
+            }
+        });
 
 
     }
     private void populateRecyclerView() {
-        commodityArrayList = new ArrayList<>();
+        marketCommodityArrayList = new ArrayList<>();
         dbHelper= new DBHelper(this);
-        commodityArrayList.add(new Commodity("Yam","White Yam","it is rich in carbohydrate",R.drawable.ic__category));
-        commodityArrayList.add(new Commodity("Onions","","it is rich in carbohydrate",R.drawable.ic__category));
-        commodityArrayList.add(new Commodity("Green","White Yam","it is rich in carbohydrate",R.drawable.ic__category));
-        commodityArrayList.add(new Commodity("Rice","White Yam","it is rich in carbohydrate",R.drawable.ic__category));
-        commodityArrayList.add(new Commodity("Garlic","White Yam","it is rich in carbohydrate",R.drawable.ic__category));
-        commodityArrayList.add(new Commodity("Gorontola","Native","it is rich in carbohydrate",R.drawable.ic__category));
+        marketCommodityArrayList.add(new MarketCommodity("Yam","White Yam","it is rich in carbohydrate",R.drawable.ic__category));
+        marketCommodityArrayList.add(new MarketCommodity("Onions","","it is rich in carbohydrate",R.drawable.ic__category));
+        marketCommodityArrayList.add(new MarketCommodity("Green","White Yam","it is rich in carbohydrate",R.drawable.ic__category));
+        marketCommodityArrayList.add(new MarketCommodity("Rice","White Yam","it is rich in carbohydrate",R.drawable.ic__category));
+        marketCommodityArrayList.add(new MarketCommodity("Garlic","White Yam","it is rich in carbohydrate",R.drawable.ic__category));
+        marketCommodityArrayList.add(new MarketCommodity("Gorontola","Native","it is rich in carbohydrate",R.drawable.ic__category));
 
 
         /*for (int i = 0; i < 10; i++) {
-            commodityArrayList.add(i+" -- \n"+getString(R.string.lorem_1));
+            marketCommodityArrayList.add(i+" -- \n"+getString(R.string.lorem_1));
         }*/
 
-        mAdapter = new CommodityAdater(commodityArrayList);
+        mAdapter = new CommodityAdater(marketCommodityArrayList);
         recyclerView.setAdapter(mAdapter);
 
     }
     private void listeners() {
-        commoditySearchList = new ArrayList<>();
+        marketCommoditySearchList = new ArrayList<>();
         etSearch = findViewById(R.id.et_searchCom);
         btn_close1 = findViewById(R.id.btn_close1);
         btn_close2 = findViewById(R.id.btn_close2);
@@ -141,7 +165,7 @@ public class CommodityAct extends AppCompatActivity implements CommodityAdater.O
                 keyWord = s.toString();
 
                 if (keyWord.isEmpty()) {
-                    searchComAdapter.updateItems(commoditySearchList);
+                    searchComAdapter.updateItems(marketCommoditySearchList);
                 } else {
                     searchCommodities();
                 }
@@ -172,9 +196,9 @@ public class CommodityAct extends AppCompatActivity implements CommodityAdater.O
             }
         });
         if(searchComAdapter !=null){
-            searchComAdapter.setWhenClickListener(new CommodityAdater.OnItemsClickListener() {
+            searchComAdapter.setWhenClickListener(new CommodityAdater.OnCommodityClickListener() {
                 @Override
-                public void onItemClick(Commodity commodity) {
+                public void onCommodityClick(MarketCommodity marketCommodity) {
 
                 }
             });
@@ -186,22 +210,22 @@ public class CommodityAct extends AppCompatActivity implements CommodityAdater.O
 
 
     private void searchCommodities() {
-        if(commoditySearchList !=null){
-            commoditySearchList.clear();
+        if(marketCommoditySearchList !=null){
+            marketCommoditySearchList.clear();
 
         }
 
 
-        for (int i = 0; i < commoditySearchList.size(); i++) {
+        for (int i = 0; i < marketCommoditySearchList.size(); i++) {
 
-            if (commoditySearchList.get(i).getCommodityName().toLowerCase().contains(keyWord)) {
-                Commodity commodity = new Commodity();
-                commodity.setCommodityName(commoditySearchList.get(i).getCommodityName());
-                commodity.setCommodityID(commoditySearchList.get(i).getCommodityID());
-                searchComAdapter.addItem(commodity);
+            if (marketCommoditySearchList.get(i).getCommodityName().toLowerCase().contains(keyWord)) {
+                MarketCommodity marketCommodity = new MarketCommodity();
+                marketCommodity.setCommodityName(marketCommoditySearchList.get(i).getCommodityName());
+                marketCommodity.setCommodityID(marketCommoditySearchList.get(i).getCommodityID());
+                searchComAdapter.addItem(marketCommodity);
             }
         }
-        searchComAdapter.updateItems(commoditySearchList);
+        searchComAdapter.updateItems(marketCommoditySearchList);
     }
 
     private void enableSwipeToDeleteAndUndo() {
@@ -211,7 +235,7 @@ public class CommodityAct extends AppCompatActivity implements CommodityAdater.O
 
 
                 final int position = viewHolder.getAdapterPosition();
-                final Commodity item = mAdapter.getData().get(position);
+                final MarketCommodity item = mAdapter.getData().get(position);
 
                 mAdapter.removeItem(position);
                 Snackbar snackbar = Snackbar
@@ -294,7 +318,7 @@ public class CommodityAct extends AppCompatActivity implements CommodityAdater.O
     }
 
     @Override
-    public void onItemClick(Commodity commodity) {
+    public void onCommodityClick(MarketCommodity marketCommodity) {
 
     }
 }

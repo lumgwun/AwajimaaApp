@@ -7,23 +7,6 @@
             app:icon="@drawable/ic_icon2"
             android:summary=" App User Name"
             android:key="USERNAME"/>
-        <ListPreference
-            android:title="Location"
-            android:summary="State of Residence"
-            android:key="USER_STATE"
-            app:icon="@drawable/ic_icon2"
-            android:defaultValue="1"
-            android:entries="@array/state"
-            android:entryValues="@array/stateValues" />
-        <ListPreference
-            android:title="Our App Office Branch"
-            android:summary="Select Your Nearest Office Branch"
-            android:key="USER_OFFICE"
-            app:icon="@drawable/ic_icon2"
-            android:defaultValue="1"
-            android:entries="@array/officeBranch33"
-            android:entryValues="@array/officeBranch33" />
-
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Bank Payment" >

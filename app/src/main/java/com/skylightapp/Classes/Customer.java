@@ -62,12 +62,14 @@ public class Customer  implements Parcelable, Serializable {
     public static final String CUSTOMER_MARKET_ID = "customer_Market_ID";
     public static final String CUSTOMER_COUNTRY = "customer_Country";
     public static final String CUS_DB_ID = "customer_DB_ID";
+    public static final String CUSTOMER_ROLE = "customer_Role";
+    public static final String CUSTOMER_BIZ_STATUS = "customer_BIZ_Status";
 
 
     public static final String CREATE_CUSTOMERS_TABLE = "CREATE TABLE IF NOT EXISTS " + CUSTOMER_TABLE + " ( " + CUSTOMER_ID + " INTEGER  , " + CUS_CUS_LOCID + " INTEGER , " + CUSTOMER_PROF_ID + " INTEGER  , " +
             CUSTOMER_SURNAME + " TEXT, " + CUSTOMER_FIRST_NAME + " TEXT, " + CUSTOMER_PHONE_NUMBER + " TEXT, " + CUSTOMER_EMAIL_ADDRESS + " TEXT, " + CUSTOMER_NIN + " TEXT, " +
             CUSTOMER_DOB + " TEXT, " + CUSTOMER_GENDER + " TEXT, " + CUSTOMER_ADDRESS + " TEXT, " + CUSTOMER_USER_NAME + " TEXT, " + CUSTOMER_PASSWORD + " TEXT, " +
-            CUSTOMER_OFFICE + " TEXT, " + CUSTOMER_DATE_JOINED + " TEXT, " + CUSTOMER_STATUS + " TEXT, "+ CUSTOMER_COUNTRY + " TEXT, "+ CUS_BIZ_ID1 + " TEXT, "+ CUSTOMER_MARKET_ID + " TEXT, "+ CUS_DB_ID + " TEXT, "+ "FOREIGN KEY(" + CUS_BIZ_ID1 + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+ "FOREIGN KEY(" + CUSTOMER_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+ "FOREIGN KEY(" + CUS_CUS_LOCID + ") REFERENCES " + CUSTOMER_LOCATION_TABLE + "(" + CUSTOMER_LOC_ID + "),"+ "FOREIGN KEY(" + CUSTOMER_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + CUS_DB_ID  + "))";
+            CUSTOMER_OFFICE + " TEXT, " + CUSTOMER_DATE_JOINED + " TEXT, " + CUSTOMER_STATUS + " TEXT, "+ CUSTOMER_COUNTRY + " TEXT, "+ CUS_BIZ_ID1 + " TEXT, "+ CUSTOMER_MARKET_ID + " TEXT, "+ CUS_DB_ID + " TEXT, "+ CUSTOMER_ROLE + " TEXT, "+ CUSTOMER_BIZ_STATUS + " TEXT, "+ "FOREIGN KEY(" + CUS_BIZ_ID1 + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+ "FOREIGN KEY(" + CUSTOMER_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+ "FOREIGN KEY(" + CUS_CUS_LOCID + ") REFERENCES " + CUSTOMER_LOCATION_TABLE + "(" + CUSTOMER_LOC_ID + "),"+ "FOREIGN KEY(" + CUSTOMER_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + CUS_DB_ID  + "))";
 
 
     public static final String CREATE_CUSTOMER_LOCATION_TABLE = "CREATE TABLE IF NOT EXISTS " + CUSTOMER_LOCATION_TABLE + " ( " + CUSTOMER_LOC_ID + " INTEGER  , " + CUS_LOC_CUS_ID + " INTEGER  , " +
@@ -110,6 +112,9 @@ public class Customer  implements Parcelable, Serializable {
     ArrayList<TransactionGranting> transactionGrantingArrayList;
     ArrayList<Loan> loans;
     private int payoutNo;
+    private String customerRole;
+    private String cusBizStatus;
+    private ArrayList<String> cusRoleList;
 
     ArrayList<SkyLightPackage> skyLightPackages;
     ArrayList<SkylightPackageModel> skylightPackageModelArrayList;
@@ -463,6 +468,11 @@ public class Customer  implements Parcelable, Serializable {
         transactionArrayList.add(transaction);
 
     }
+    public void addCusTransactions(Transaction transaction) {
+        transactions= new ArrayList<>();
+        transactions.add(transaction);
+
+    }
     public void addCusMessages(int keyExtraMessageId, String selectedPurpose, String message, String sender, String time) {
         keyExtraMessageId = messages.size() + 1;
         supportMessage = new Message(keyExtraMessageId,selectedPurpose, message,sender,time);
@@ -633,6 +643,30 @@ public class Customer  implements Parcelable, Serializable {
 
     public void setCusMarketBusinesses(ArrayList<MarketBusiness> cusMarketBusinesses) {
         this.cusMarketBusinesses = cusMarketBusinesses;
+    }
+
+    public String getCusBizStatus() {
+        return cusBizStatus;
+    }
+
+    public void setCusBizStatus(String cusBizStatus) {
+        this.cusBizStatus = cusBizStatus;
+    }
+
+    public ArrayList<String> getCusRoleList() {
+        return cusRoleList;
+    }
+
+    public void setCusRoleList(ArrayList<String> cusRoleList) {
+        this.cusRoleList = cusRoleList;
+    }
+
+    public String getCustomerRole() {
+        return customerRole;
+    }
+
+    public void setCustomerRole(String customerRole) {
+        this.customerRole = customerRole;
     }
 
 

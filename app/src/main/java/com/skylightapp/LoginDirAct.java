@@ -6,12 +6,8 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.CursorIndexOutOfBoundsException;
 import android.net.Uri;
 import android.os.Bundle;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.skylightapp.Accountant.AcctantBackOffice;
 import com.skylightapp.Admins.AdminDrawerActivity;
 import com.skylightapp.Customers.NewCustomerDrawer;
@@ -19,6 +15,7 @@ import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.GroupAccountDAO;
 import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.Interfaces.ProfileDao;
+import com.skylightapp.MapAndLoc.ResponseTeamOffice;
 import com.skylightapp.Markets.BizRegulOffice;
 import com.skylightapp.Markets.MarketAdminOffice;
 import com.skylightapp.Markets.MarketBizDonorOffice;
@@ -51,7 +48,7 @@ public class LoginDirAct extends AppCompatActivity {
     Uri pictureLink;
     SharedPreferences sharedPref;
     Bundle userExtras;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private DBHelper dbHelper;
     String machineUser,userName, office,state,role,dbRole,joinedDate,password,surname, email,phoneNO, firstName, dob,gender,address;
 
@@ -83,22 +80,9 @@ public class LoginDirAct extends AppCompatActivity {
 
         machinePref = sharedPref.getString("Machine", "");
         profileID = sharedPref.getInt("PROFILE_ID", 0);
-        userName = sharedPref.getString("USER_NAME", "");
-        office = sharedPref.getString("USER_OFFICE", "");
-        state = sharedPref.getString("USER_STATE", "");
-        role = sharedPref.getString("USER_ROLE", "");
         ProfDAO profileDao= new ProfDAO(LoginDirAct.this);
 
-        joinedDate = sharedPref.getString("USER_DATE_JOINED", "");
-        password = sharedPref.getString("USER_PASSWORD", "");
-        surname = sharedPref.getString("USER_SURNAME", "");
         email = sharedPref.getString("EMAIL_ADDRESS", "");
-        phoneNO = sharedPref.getString("USER_PHONE", "");
-        firstName = sharedPref.getString("USER_FIRSTNAME", "");
-        dob = sharedPref.getString("USER_DOB", "");
-        customerID = sharedPref.getInt("CUSTOMER_ID", 0);
-        gender = sharedPref.getString("USER_GENDER", "");
-        address = sharedPref.getString("USER_ADDRESS", "");
         pictureLink = Uri.parse(sharedPref.getString("PICTURE_URI", ""));
         dbRole=profileDao.getProfileRoleByUserNameAndPassword(userName,password);
 
@@ -141,22 +125,6 @@ public class LoginDirAct extends AppCompatActivity {
                     tellerIntent.putExtra(PROFILE_GENDER, gender);
                     tellerIntent.putExtra(PROFILE_ADDRESS, address);
                     tellerIntent.putExtra(PICTURE_URI, pictureLink);
-
-                    tellerIntent.putExtra("USER_NAME", userName);
-                    tellerIntent.putExtra("USER_PASSWORD", password);
-                    tellerIntent.putExtra("USER_OFFICE", office);
-                    tellerIntent.putExtra("USER_STATE", state);
-                    tellerIntent.putExtra("USER_ROLE", role);
-                    tellerIntent.putExtra("USER_DATE_JOINED", joinedDate);
-                    tellerIntent.putExtra("EMAIL_ADDRESS", email);
-                    tellerIntent.putExtra("USER_PHONE", phoneNO);
-                    tellerIntent.putExtra("USER_FIRSTNAME", firstName);
-                    tellerIntent.putExtra("USER_SURNAME", surname);
-                    tellerIntent.putExtra("USER_DOB", dob);
-                    tellerIntent.putExtra("USER_DATE_JOINED", joinedDate);
-                    tellerIntent.putExtra("CUSTOMER_ID", customerID);
-                    tellerIntent.putExtra("USER_GENDER", gender);
-                    tellerIntent.putExtra("USER_ADDRESS", address);
                     tellerIntent.putExtra("PICTURE_URI", pictureLink);
                     startActivity(tellerIntent);
                 }
@@ -197,22 +165,6 @@ public class LoginDirAct extends AppCompatActivity {
                     tellerIntent.putExtra(PROFILE_GENDER, gender);
                     tellerIntent.putExtra(PROFILE_ADDRESS, address);
                     tellerIntent.putExtra(PICTURE_URI, pictureLink);
-
-                    tellerIntent.putExtra("USER_NAME", userName);
-                    tellerIntent.putExtra("USER_PASSWORD", password);
-                    tellerIntent.putExtra("USER_OFFICE", office);
-                    tellerIntent.putExtra("USER_STATE", state);
-                    tellerIntent.putExtra("USER_ROLE", role);
-                    tellerIntent.putExtra("USER_DATE_JOINED", joinedDate);
-                    tellerIntent.putExtra("EMAIL_ADDRESS", email);
-                    tellerIntent.putExtra("USER_PHONE", phoneNO);
-                    tellerIntent.putExtra("USER_FIRSTNAME", firstName);
-                    tellerIntent.putExtra("USER_SURNAME", surname);
-                    tellerIntent.putExtra("USER_DOB", dob);
-                    tellerIntent.putExtra("USER_DATE_JOINED", joinedDate);
-                    tellerIntent.putExtra("CUSTOMER_ID", customerID);
-                    tellerIntent.putExtra("USER_GENDER", gender);
-                    tellerIntent.putExtra("USER_ADDRESS", address);
                     tellerIntent.putExtra("PICTURE_URI", pictureLink);
                     startActivity(tellerIntent);
                 }
@@ -254,21 +206,6 @@ public class LoginDirAct extends AppCompatActivity {
                     tellerIntent.putExtra(PROFILE_ADDRESS, address);
                     tellerIntent.putExtra(PICTURE_URI, pictureLink);
 
-                    tellerIntent.putExtra("USER_NAME", userName);
-                    tellerIntent.putExtra("USER_PASSWORD", password);
-                    tellerIntent.putExtra("USER_OFFICE", office);
-                    tellerIntent.putExtra("USER_STATE", state);
-                    tellerIntent.putExtra("USER_ROLE", role);
-                    tellerIntent.putExtra("USER_DATE_JOINED", joinedDate);
-                    tellerIntent.putExtra("EMAIL_ADDRESS", email);
-                    tellerIntent.putExtra("USER_PHONE", phoneNO);
-                    tellerIntent.putExtra("USER_FIRSTNAME", firstName);
-                    tellerIntent.putExtra("USER_SURNAME", surname);
-                    tellerIntent.putExtra("USER_DOB", dob);
-                    tellerIntent.putExtra("USER_DATE_JOINED", joinedDate);
-                    tellerIntent.putExtra("CUSTOMER_ID", customerID);
-                    tellerIntent.putExtra("USER_GENDER", gender);
-                    tellerIntent.putExtra("USER_ADDRESS", address);
                     tellerIntent.putExtra("PICTURE_URI", pictureLink);
                     startActivity(tellerIntent);
                 }
@@ -310,22 +247,7 @@ public class LoginDirAct extends AppCompatActivity {
                     tellerIntent.putExtra("PROFILE_ADDRESS", address);
                     tellerIntent.putExtra("PICTURE_URI", pictureLink);
 
-                    tellerIntent.putExtra("USER_NAME", userName);
                     tellerIntent.putExtra("PROFILE_ID", profileID);
-                    tellerIntent.putExtra("USER_PASSWORD", password);
-                    tellerIntent.putExtra("USER_OFFICE", office);
-                    tellerIntent.putExtra("USER_STATE", state);
-                    tellerIntent.putExtra("USER_ROLE", role);
-                    tellerIntent.putExtra("USER_DATE_JOINED", joinedDate);
-                    tellerIntent.putExtra("EMAIL_ADDRESS", email);
-                    tellerIntent.putExtra("USER_PHONE", phoneNO);
-                    tellerIntent.putExtra("USER_FIRSTNAME", firstName);
-                    tellerIntent.putExtra("USER_SURNAME", surname);
-                    tellerIntent.putExtra("USER_DOB", dob);
-                    tellerIntent.putExtra("USER_DATE_JOINED", joinedDate);
-                    tellerIntent.putExtra("CUSTOMER_ID", customerID);
-                    tellerIntent.putExtra("USER_GENDER", gender);
-                    tellerIntent.putExtra("USER_ADDRESS", address);
                     tellerIntent.putExtra("PICTURE_URI", pictureLink);
                     startActivity(tellerIntent);
                 }
@@ -366,23 +288,7 @@ public class LoginDirAct extends AppCompatActivity {
                     adminIntent.putExtra("PROFILE_ADDRESS", address);
                     adminIntent.putExtra("PROFILE_ADDRESS", address);
                     adminIntent.putExtra("PICTURE_URI", pictureLink);
-
-                    adminIntent.putExtra("USER_NAME", userName);
                     adminIntent.putExtra("PROFILE_ID", profileID);
-                    adminIntent.putExtra("USER_PASSWORD", password);
-                    adminIntent.putExtra("USER_OFFICE", office);
-                    adminIntent.putExtra("USER_STATE", state);
-                    adminIntent.putExtra("USER_ROLE", role);
-                    adminIntent.putExtra("USER_DATE_JOINED", joinedDate);
-                    adminIntent.putExtra("EMAIL_ADDRESS", email);
-                    adminIntent.putExtra("USER_PHONE", phoneNO);
-                    adminIntent.putExtra("USER_FIRSTNAME", firstName);
-                    adminIntent.putExtra("USER_SURNAME", surname);
-                    adminIntent.putExtra("USER_DOB", dob);
-                    adminIntent.putExtra("USER_DATE_JOINED", joinedDate);
-                    adminIntent.putExtra("CUSTOMER_ID", customerID);
-                    adminIntent.putExtra("USER_GENDER", gender);
-                    adminIntent.putExtra("USER_ADDRESS", address);
                     adminIntent.putExtra("PICTURE_URI", pictureLink);
                     startActivity(adminIntent);
 
@@ -425,23 +331,7 @@ public class LoginDirAct extends AppCompatActivity {
                     customerIntent.putExtra("PROFILE_ADDRESS", address);
                     customerIntent.putExtra("PROFILE_ADDRESS", address);
                     customerIntent.putExtra("PICTURE_URI", pictureLink);
-
-                    customerIntent.putExtra("USER_NAME", userName);
                     customerIntent.putExtra("PROFILE_ID", profileID);
-                    customerIntent.putExtra("USER_PASSWORD", password);
-                    customerIntent.putExtra("USER_OFFICE", office);
-                    customerIntent.putExtra("USER_STATE", state);
-                    customerIntent.putExtra("USER_ROLE", role);
-                    customerIntent.putExtra("USER_DATE_JOINED", joinedDate);
-                    customerIntent.putExtra("EMAIL_ADDRESS", email);
-                    customerIntent.putExtra("USER_PHONE", phoneNO);
-                    customerIntent.putExtra("USER_FIRSTNAME", firstName);
-                    customerIntent.putExtra("USER_SURNAME", surname);
-                    customerIntent.putExtra("USER_DOB", dob);
-                    customerIntent.putExtra("USER_DATE_JOINED", joinedDate);
-                    customerIntent.putExtra("CUSTOMER_ID", customerID);
-                    customerIntent.putExtra("USER_GENDER", gender);
-                    customerIntent.putExtra("USER_ADDRESS", address);
                     customerIntent.putExtra("PICTURE_URI", pictureLink);
                     startActivity(customerIntent);
                 }
@@ -483,23 +373,7 @@ public class LoginDirAct extends AppCompatActivity {
                     adminIntent.putExtra("PROFILE_ADDRESS", address);
                     adminIntent.putExtra("PROFILE_ADDRESS", address);
                     adminIntent.putExtra("PICTURE_URI", pictureLink);
-
-                    adminIntent.putExtra("USER_NAME", userName);
                     adminIntent.putExtra("PROFILE_ID", profileID);
-                    adminIntent.putExtra("USER_PASSWORD", password);
-                    adminIntent.putExtra("USER_OFFICE", office);
-                    adminIntent.putExtra("USER_STATE", state);
-                    adminIntent.putExtra("USER_ROLE", role);
-                    adminIntent.putExtra("USER_DATE_JOINED", joinedDate);
-                    adminIntent.putExtra("EMAIL_ADDRESS", email);
-                    adminIntent.putExtra("USER_PHONE", phoneNO);
-                    adminIntent.putExtra("USER_FIRSTNAME", firstName);
-                    adminIntent.putExtra("USER_SURNAME", surname);
-                    adminIntent.putExtra("USER_DOB", dob);
-                    adminIntent.putExtra("USER_DATE_JOINED", joinedDate);
-                    adminIntent.putExtra("CUSTOMER_ID", customerID);
-                    adminIntent.putExtra("USER_GENDER", gender);
-                    adminIntent.putExtra("USER_ADDRESS", address);
                     adminIntent.putExtra("PICTURE_URI", pictureLink);
                     startActivity(adminIntent);
 
@@ -543,22 +417,7 @@ public class LoginDirAct extends AppCompatActivity {
                     adminIntent.putExtra("PROFILE_ADDRESS", address);
                     adminIntent.putExtra("PICTURE_URI", pictureLink);
 
-                    adminIntent.putExtra("USER_NAME", userName);
                     adminIntent.putExtra("PROFILE_ID", profileID);
-                    adminIntent.putExtra("USER_PASSWORD", password);
-                    adminIntent.putExtra("USER_OFFICE", office);
-                    adminIntent.putExtra("USER_STATE", state);
-                    adminIntent.putExtra("USER_ROLE", role);
-                    adminIntent.putExtra("USER_DATE_JOINED", joinedDate);
-                    adminIntent.putExtra("EMAIL_ADDRESS", email);
-                    adminIntent.putExtra("USER_PHONE", phoneNO);
-                    adminIntent.putExtra("USER_FIRSTNAME", firstName);
-                    adminIntent.putExtra("USER_SURNAME", surname);
-                    adminIntent.putExtra("USER_DOB", dob);
-                    adminIntent.putExtra("USER_DATE_JOINED", joinedDate);
-                    adminIntent.putExtra("CUSTOMER_ID", customerID);
-                    adminIntent.putExtra("USER_GENDER", gender);
-                    adminIntent.putExtra("USER_ADDRESS", address);
                     adminIntent.putExtra("PICTURE_URI", pictureLink);
                     startActivity(adminIntent);
 
@@ -601,23 +460,7 @@ public class LoginDirAct extends AppCompatActivity {
                     adminIntent.putExtra("PROFILE_ADDRESS", address);
                     adminIntent.putExtra("PROFILE_ADDRESS", address);
                     adminIntent.putExtra("PICTURE_URI", pictureLink);
-
-                    adminIntent.putExtra("USER_NAME", userName);
                     adminIntent.putExtra("PROFILE_ID", profileID);
-                    adminIntent.putExtra("USER_PASSWORD", password);
-                    adminIntent.putExtra("USER_OFFICE", office);
-                    adminIntent.putExtra("USER_STATE", state);
-                    adminIntent.putExtra("USER_ROLE", role);
-                    adminIntent.putExtra("USER_DATE_JOINED", joinedDate);
-                    adminIntent.putExtra("EMAIL_ADDRESS", email);
-                    adminIntent.putExtra("USER_PHONE", phoneNO);
-                    adminIntent.putExtra("USER_FIRSTNAME", firstName);
-                    adminIntent.putExtra("USER_SURNAME", surname);
-                    adminIntent.putExtra("USER_DOB", dob);
-                    adminIntent.putExtra("USER_DATE_JOINED", joinedDate);
-                    adminIntent.putExtra("CUSTOMER_ID", customerID);
-                    adminIntent.putExtra("USER_GENDER", gender);
-                    adminIntent.putExtra("USER_ADDRESS", address);
                     adminIntent.putExtra("PICTURE_URI", pictureLink);
                     startActivity(adminIntent);
 
@@ -659,23 +502,7 @@ public class LoginDirAct extends AppCompatActivity {
                     adminIntent.putExtra("PROFILE_ADDRESS", address);
                     adminIntent.putExtra("PROFILE_ADDRESS", address);
                     adminIntent.putExtra("PICTURE_URI", pictureLink);
-
-                    adminIntent.putExtra("USER_NAME", userName);
                     adminIntent.putExtra("PROFILE_ID", profileID);
-                    adminIntent.putExtra("USER_PASSWORD", password);
-                    adminIntent.putExtra("USER_OFFICE", office);
-                    adminIntent.putExtra("USER_STATE", state);
-                    adminIntent.putExtra("USER_ROLE", role);
-                    adminIntent.putExtra("USER_DATE_JOINED", joinedDate);
-                    adminIntent.putExtra("EMAIL_ADDRESS", email);
-                    adminIntent.putExtra("USER_PHONE", phoneNO);
-                    adminIntent.putExtra("USER_FIRSTNAME", firstName);
-                    adminIntent.putExtra("USER_SURNAME", surname);
-                    adminIntent.putExtra("USER_DOB", dob);
-                    adminIntent.putExtra("USER_DATE_JOINED", joinedDate);
-                    adminIntent.putExtra("CUSTOMER_ID", customerID);
-                    adminIntent.putExtra("USER_GENDER", gender);
-                    adminIntent.putExtra("USER_ADDRESS", address);
                     adminIntent.putExtra("PICTURE_URI", pictureLink);
                     startActivity(adminIntent);
 
@@ -717,23 +544,92 @@ public class LoginDirAct extends AppCompatActivity {
                     adminIntent.putExtra("PROFILE_ADDRESS", address);
                     adminIntent.putExtra("PROFILE_ADDRESS", address);
                     adminIntent.putExtra("PICTURE_URI", pictureLink);
-
-                    adminIntent.putExtra("USER_NAME", userName);
                     adminIntent.putExtra("PROFILE_ID", profileID);
-                    adminIntent.putExtra("USER_PASSWORD", password);
-                    adminIntent.putExtra("USER_OFFICE", office);
-                    adminIntent.putExtra("USER_STATE", state);
-                    adminIntent.putExtra("USER_ROLE", role);
-                    adminIntent.putExtra("USER_DATE_JOINED", joinedDate);
-                    adminIntent.putExtra("EMAIL_ADDRESS", email);
-                    adminIntent.putExtra("USER_PHONE", phoneNO);
-                    adminIntent.putExtra("USER_FIRSTNAME", firstName);
-                    adminIntent.putExtra("USER_SURNAME", surname);
-                    adminIntent.putExtra("USER_DOB", dob);
-                    adminIntent.putExtra("USER_DATE_JOINED", joinedDate);
+                    adminIntent.putExtra("PICTURE_URI", pictureLink);
+                    startActivity(adminIntent);
+
+                }
+                if (dbRole.equalsIgnoreCase("ResponseTeam")) {
+                    Intent adminIntent = new Intent(this, ResponseTeamOffice.class);
+
+                    adminIntent.putExtra(PROFILE_ID, profileID);
+                    adminIntent.putExtra(PROFILE_USERNAME, userName);
+                    adminIntent.putExtra(PROFILE_PASSWORD, password);
+                    adminIntent.putExtra(PROFILE_OFFICE, office);
+                    adminIntent.putExtra(PROFILE_STATE, state);
+                    adminIntent.putExtra(PROFILE_ROLE, role);
+                    adminIntent.putExtra(PROFILE_DATE_JOINED, joinedDate);
+                    adminIntent.putExtra(PROFILE_PHONE, phoneNO);
+                    adminIntent.putExtra(PROFILE_FIRSTNAME, firstName);
+                    adminIntent.putExtra(PROFILE_SURNAME, surname);
+                    adminIntent.putExtra(PROFILE_DOB, dob);
+                    adminIntent.putExtra(PROFILE_DATE_JOINED, joinedDate);
+                    adminIntent.putExtra(CUSTOMER_ID, customerID);
+                    adminIntent.putExtra(PROFILE_GENDER, gender);
+                    adminIntent.putExtra(PROFILE_ADDRESS, address);
+                    adminIntent.putExtra(PICTURE_URI, pictureLink);
+                    adminIntent.putExtra("PROFILE_ID", profileID);
+                    adminIntent.putExtra("PROFILE_USERNAME", userName);
+                    adminIntent.putExtra("PROFILE_PASSWORD", password);
+                    adminIntent.putExtra("PROFILE_OFFICE", office);
+                    adminIntent.putExtra("PROFILE_STATE", state);
+                    adminIntent.putExtra("PROFILE_ROLE", role);
+                    adminIntent.putExtra("PROFILE_DATE_JOINED", joinedDate);
+                    adminIntent.putExtra("PROFILE_EMAIL", email);
+                    adminIntent.putExtra("PROFILE_PHONE", phoneNO);
+                    adminIntent.putExtra("PROFILE_FIRSTNAME", firstName);
+                    adminIntent.putExtra("PROFILE_SURNAME", surname);
+                    adminIntent.putExtra("PROFILE_DOB", dob);
+                    adminIntent.putExtra("PROFILE_DATE_JOINED", joinedDate);
                     adminIntent.putExtra("CUSTOMER_ID", customerID);
-                    adminIntent.putExtra("USER_GENDER", gender);
-                    adminIntent.putExtra("USER_ADDRESS", address);
+                    adminIntent.putExtra("PROFILE_GENDER", gender);
+                    adminIntent.putExtra("PROFILE_ADDRESS", address);
+                    adminIntent.putExtra("PROFILE_ADDRESS", address);
+                    adminIntent.putExtra("PICTURE_URI", pictureLink);
+                    adminIntent.putExtra("PROFILE_ID", profileID);
+                    adminIntent.putExtra("PICTURE_URI", pictureLink);
+                    startActivity(adminIntent);
+
+                }
+
+                if (dbRole.equalsIgnoreCase("AwajimaSuperAdmin")) {
+                    Intent adminIntent = new Intent(this, SuperAdminOffice.class);
+
+                    adminIntent.putExtra(PROFILE_ID, profileID);
+                    adminIntent.putExtra(PROFILE_USERNAME, userName);
+                    adminIntent.putExtra(PROFILE_PASSWORD, password);
+                    adminIntent.putExtra(PROFILE_OFFICE, office);
+                    adminIntent.putExtra(PROFILE_STATE, state);
+                    adminIntent.putExtra(PROFILE_ROLE, role);
+                    adminIntent.putExtra(PROFILE_DATE_JOINED, joinedDate);
+                    adminIntent.putExtra(PROFILE_PHONE, phoneNO);
+                    adminIntent.putExtra(PROFILE_FIRSTNAME, firstName);
+                    adminIntent.putExtra(PROFILE_SURNAME, surname);
+                    adminIntent.putExtra(PROFILE_DOB, dob);
+                    adminIntent.putExtra(PROFILE_DATE_JOINED, joinedDate);
+                    adminIntent.putExtra(CUSTOMER_ID, customerID);
+                    adminIntent.putExtra(PROFILE_GENDER, gender);
+                    adminIntent.putExtra(PROFILE_ADDRESS, address);
+                    adminIntent.putExtra(PICTURE_URI, pictureLink);
+                    adminIntent.putExtra("PROFILE_ID", profileID);
+                    adminIntent.putExtra("PROFILE_USERNAME", userName);
+                    adminIntent.putExtra("PROFILE_PASSWORD", password);
+                    adminIntent.putExtra("PROFILE_OFFICE", office);
+                    adminIntent.putExtra("PROFILE_STATE", state);
+                    adminIntent.putExtra("PROFILE_ROLE", role);
+                    adminIntent.putExtra("PROFILE_DATE_JOINED", joinedDate);
+                    adminIntent.putExtra("PROFILE_EMAIL", email);
+                    adminIntent.putExtra("PROFILE_PHONE", phoneNO);
+                    adminIntent.putExtra("PROFILE_FIRSTNAME", firstName);
+                    adminIntent.putExtra("PROFILE_SURNAME", surname);
+                    adminIntent.putExtra("PROFILE_DOB", dob);
+                    adminIntent.putExtra("PROFILE_DATE_JOINED", joinedDate);
+                    adminIntent.putExtra("CUSTOMER_ID", customerID);
+                    adminIntent.putExtra("PROFILE_GENDER", gender);
+                    adminIntent.putExtra("PROFILE_ADDRESS", address);
+                    adminIntent.putExtra("PROFILE_ADDRESS", address);
+                    adminIntent.putExtra("PICTURE_URI", pictureLink);
+                    adminIntent.putExtra("PROFILE_ID", profileID);
                     adminIntent.putExtra("PICTURE_URI", pictureLink);
                     startActivity(adminIntent);
 
@@ -805,33 +701,5 @@ public class LoginDirAct extends AppCompatActivity {
             }
 
         }
-        /*else {
-            mAuthListener = new FirebaseAuth.AuthStateListener() {
-                @Override
-                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                    user = firebaseAuth.getInstance().getCurrentUser();
-                    if (user != null) {
-                        SharedPreferences sharedPreferences=getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-                        SharedPreferences.Editor editor=sharedPreferences.edit();
-                        editor.putString("Machine",machinePref);
-                        editor.putInt("PROFILE_ID",profileID);
-                        editor.putString("USER_NAME",userName);
-                        editor.putString("USER_OFFICE",office);
-                        editor.putString("USER_ROLE",role);
-                        editor.putString("USER_STATE",state);
-                        editor.putString("TOKEN",user.getUid());
-                        editor.apply();
-                        Intent intent=new Intent(LoginDirectorActivity.this,LoginDirectorActivity.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Intent intent=new Intent(LoginDirectorActivity.this,SignTabMainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-
-                }
-            };
-        }*/
     }
 }

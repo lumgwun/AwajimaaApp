@@ -12,8 +12,7 @@ import androidx.preference.PreferenceManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
 import com.google.gson.Gson;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.ProfDAO;
@@ -60,14 +59,6 @@ public class ProfileManager extends FirebaseListenersManager {
         this.context = context;
         databaseHelper = AppController.getDatabaseHelper();
         //dbHelper=AppController.getInstance().initializeSQLite();
-    }
-
-    public Profile buildProfile(FirebaseUser firebaseUser, String largeAvatarURL) {
-        userProfile = new Profile(firebaseUser.getUid());
-        userProfile.setProfileEmail(firebaseUser.getEmail());
-        userProfile.setProfileUserName(firebaseUser.getDisplayName());
-        userProfile.setProfilePicture(Uri.parse(largeAvatarURL != null ? largeAvatarURL : firebaseUser.getPhotoUrl().toString()));
-        return userProfile;
     }
 
 
@@ -127,7 +118,7 @@ public class ProfileManager extends FirebaseListenersManager {
     }
 
     public ProfileStatus checkProfileFireBase() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Profile user = new Profile();
 
         if (user == null) {
             return ProfileStatus.NOT_AUTHORIZED;

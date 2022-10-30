@@ -12,6 +12,8 @@ import android.telephony.SmsManager;
 import android.util.Base64;
 import android.widget.Toast;
 
+import com.klinker.android.send_message.Settings;
+import com.klinker.android.send_message.Transaction;
 import com.skylightapp.Classes.AppConstants;
 import com.skylightapp.Classes.TwilloMessage;
 import com.skylightapp.Classes.TwilloMessageSenderService;
@@ -72,6 +74,7 @@ public class SMSAct extends AppCompatActivity {
     private String TWILLO_PHONE_NO= TWILLO_NO;
     String from = TWILLO_NO;
     String password= BuildConfig.SKYLIGHT_EMAIL_PASSWORD;
+    private static final String PREF_NAME = "awajima";
 
     TwilioRestClient client;
     TwilloMessage twilloMessage;
@@ -81,6 +84,7 @@ public class SMSAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_smsact);
+
         twilloMessage= new TwilloMessage(phoneNumber,smsMessage);
         twilloMessageSenderService= new TwilloMessageSenderService();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -141,6 +145,15 @@ public class SMSAct extends AppCompatActivity {
             subject=smsBundle.getString("subject");
 
         }
+        Settings sendSettings = new Settings();
+        sendSettings.setUseSystemSending(true);
+        Transaction  transaction = new Transaction(SMSAct.this, sendSettings);
+        com.klinker.android.send_message.Message message = new com.klinker.android.send_message.Message(smsMessage, phoneNumber);
+        //message.setImage(mBitmap);
+        transaction.sendNewMessage(message, Transaction.NO_THREAD_ID);
+        //BroadcastUtils.sendExplicitBroadcast(this, new Intent(), "pdus");
+
+
         twilloMessageSenderService.sendMessage(twilloMessage);
         sendEmail(smsMessage,cusEmail,subject,mimeMessage);
         sendTextMessage(phoneNumber,smsMessage,from,to);
@@ -159,7 +172,7 @@ public class SMSAct extends AppCompatActivity {
             public void run() {
                 try {
 
-                    mimeMessage.setFrom(new InternetAddress("Skylight Coop."));
+                    mimeMessage.setFrom(new InternetAddress("Awajima Coop."));
                     //DataHandler handler = new DataHandler(new ByteArrayDataSource(body.getBytes(), "text/plain"));
                     mimeMessage.setSubject(subject);
                     mimeMessage.setText(smsMessage);
@@ -224,7 +237,7 @@ public class SMSAct extends AppCompatActivity {
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body= RequestBody.Companion.create("{ \"body\": smsMessage,\"to\":phoneNumber,\"from\": from}", MediaType.parse("image/*"));
-        //RequestBody body = RequestBody.create(mediaType, "{ \"body\": \"smsMessage\",\"to\" : \"+phoneNumber\",\"from\": \"Skylight\"}");
+        //RequestBody body = RequestBody.create(mediaType, "{ \"body\": \"smsMessage\",\"to\" : \"+phoneNumber\",\"from\": \"Awajima\"}");
         Request request = new Request.Builder()
                 .url("https://connect.routee.net/sms")
                 .post(body)

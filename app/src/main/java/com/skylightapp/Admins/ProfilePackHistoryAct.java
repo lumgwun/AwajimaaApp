@@ -16,7 +16,7 @@ import com.skylightapp.Adapters.MySavingsCodeAdapter;
 import com.skylightapp.Adapters.SkyLightPackageAdapter;
 import com.skylightapp.Adapters.StandingOrderAdapter;
 import com.skylightapp.Adapters.SuperSavingsAdapter;
-import com.skylightapp.Adapters.TransactionAdapter;
+import com.skylightapp.Adapters.TranxAdminA;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerDailyReport;
@@ -39,10 +39,10 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLightPackageAdapter.OnItemsClickListener, SuperSavingsAdapter.OnItemsClickListener, MySavingsCodeAdapter.OnItemsClickListener, TransactionAdapter.OnItemsClickListener, StandingOrderAdapter.OnItemsClickListener, AccountAdapter2.OnItemsClickListener{
+public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLightPackageAdapter.OnItemsClickListener, SuperSavingsAdapter.OnItemsClickListener, MySavingsCodeAdapter.OnItemsClickListener, TranxAdminA.OnItemsClickListener, StandingOrderAdapter.OnItemsClickListener, AccountAdapter2.OnItemsClickListener{
     private SharedPreferences userPreferences;
     PrefManager prefManager;
-    private Gson gson;
+    private Gson gson,gson1;
     private String json;
 
     private Profile userProfile;
@@ -51,7 +51,7 @@ public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLight
     public static final String AUTH_TOKEN = System.getenv("0d5cbd54456dd0764786db0c37212578");
     private List<CustomerDailyReport> customerDailyReports;
     private StandingOrderAdapter standingOrderAdapter;
-    private TransactionAdapter transactionAdapter;
+    private TranxAdminA tranxAdminA;
     private AccountAdapter2 accountAdapter;
     private MySavingsCodeAdapter codeAdapter;
     private SuperSavingsAdapter savingsAdapter;
@@ -73,6 +73,9 @@ public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLight
     private LoanDAO loanDAO;
     private AcctDAO acctDAO;
     private CodeDAO codeDAO;
+    private String json1;
+    private static final String PREF_NAME = "skylight";
+    SharedPreferences sharedpreferences;
 
 
 
@@ -86,6 +89,11 @@ public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLight
         codeDAO= new CodeDAO(this);
         loanDAO= new LoanDAO(this);
         acctDAO= new AcctDAO(this);
+        gson1= new Gson();
+        gson= new Gson();
+        userProfile= new Profile();
+        customer= new Customer();
+        sharedpreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         RecyclerView recyclerPackages = findViewById(R.id.recyclerViewPackages22);
         RecyclerView recyclerSavings = findViewById(R.id.recyclerViewSavings422);
         RecyclerView recyclerCodes = findViewById(R.id.recyclerViewCodes22);
@@ -95,8 +103,17 @@ public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLight
         txtCusName = findViewById(R.id.adminUserProf);
 
         userBundle=getIntent().getExtras();
-        userProfile=userBundle.getParcelable("Profile");
-        customer=userBundle.getParcelable("Customer");
+        if(userBundle !=null){
+            userProfile=userBundle.getParcelable("Profile");
+            customer=userBundle.getParcelable("Customer");
+
+        }else {
+            json = sharedpreferences.getString("LastProfileUsed", "");
+            userProfile = gson.fromJson(json, Profile.class);
+            json1 = sharedpreferences.getString("LastCustomerUsed", "");
+            customer = gson1.fromJson(json1, Customer.class);
+        }
+
         dbHelper= new DBHelper(this);
         if(customer !=null){
             customerID=customer.getCusUID();
@@ -138,9 +155,9 @@ public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLight
 
             rcyclerTransactions.setLayoutManager(layoutManager3);
             transactions2 = tranXDAO.getAllTransactionProfile(profileID);
-            transactionAdapter = new TransactionAdapter(ProfilePackHistoryAct.this,transactions2);
+            tranxAdminA = new TranxAdminA(ProfilePackHistoryAct.this,transactions2);
             //rcyclerTransactions.setHasFixedSize(true);
-            rcyclerTransactions.setAdapter(transactionAdapter);
+            rcyclerTransactions.setAdapter(tranxAdminA);
             rcyclerTransactions.setItemAnimator(new DefaultItemAnimator());
 
 
@@ -180,6 +197,11 @@ public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLight
 
 
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
 
     @Override
     public void onItemClick(Transaction transaction) {
@@ -193,6 +215,11 @@ public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLight
 
     @Override
     public void onItemClick(Account account) {
+
+    }
+
+    @Override
+    public void onListItemClick(int index) {
 
     }
 

@@ -4,6 +4,10 @@ buildscript {
         google()
         mavenCentral()
         mavenLocal()
+        jcenter()
+        maven {
+            url 'https://jitpack.io'
+        }
         maven {
             url "https://maven.java.net/content/groups/public/"
         }
@@ -78,7 +82,7 @@ buildscript {
         room_version = "2.3.0"
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.1'
+        classpath 'com.android.tools.build:gradle:4.2.0'
         classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
         //classpath 'com.google.gms:google-services:4.3.0'
         classpath 'com.google.gms:google-services:4.3.13'

@@ -29,12 +29,12 @@ public class AdminStocksTab extends TabActivity {
     PrefManager prefManager;
     private Gson gson;
     private String json;
-
     private Profile userProfile;
     private String profileID;
     Intent data;
     private AppBarLayout appBarLayout;
     FloatingActionButton floatingActionButton,floatingActionButton2;
+    private static final String PREF_NAME = "skylight";
 
 
     @Override

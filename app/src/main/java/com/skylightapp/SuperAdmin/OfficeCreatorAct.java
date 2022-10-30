@@ -6,6 +6,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.cardview.widget.CardView;
 import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.preference.PreferenceManager;
 
@@ -20,12 +21,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
+
 import com.google.gson.Gson;
 import com.klinker.android.send_message.BroadcastUtils;
 import com.skylightapp.Adapters.OfficeAdapter;
@@ -44,6 +46,7 @@ import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.GrpProfileDAO;
 import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MarketBizDAO;
 import com.skylightapp.Database.MessageDAO;
 import com.skylightapp.Database.OfficeBranchDAO;
 import com.skylightapp.Database.PaymDocDAO;
@@ -59,7 +62,13 @@ import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.Database.TransactionGrantingDAO;
 import com.skylightapp.Database.WorkersDAO;
+import com.skylightapp.Inventory.InStocksAct;
+import com.skylightapp.Inventory.Stocks;
+import com.skylightapp.LoginDirAct;
+import com.skylightapp.MarketClasses.MarketBizArrayAdapter;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
+import com.skylightapp.SMSAct;
 
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
@@ -70,6 +79,7 @@ import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.skylightapp.Classes.Profile.PROFILE_PHONE;
 import static com.skylightapp.Database.DBHelper.DATABASE_NAME;
 
 public class OfficeCreatorAct extends AppCompatActivity {
@@ -86,7 +96,7 @@ public class OfficeCreatorAct extends AppCompatActivity {
     String uPhoneNumber;
     private ProgressDialog progressDialog;
     int superID, tellerID;
-    private FirebaseAuth mAuth;
+    //private FirebaseAuth mAuth;
     private ProgressBar loadingPB;
     String superSurname;
     String superUserName;
@@ -96,9 +106,9 @@ public class OfficeCreatorAct extends AppCompatActivity {
 
     int virtualAccountNumber;
     int customerID;
-    int profileID1;
+    int profileID1,selectedOfficeIndex;
 
-    AppCompatSpinner spnOffice;
+    AppCompatSpinner  spnBiz;
     DBHelper dbHelper;
 
     public static final String ACCOUNT_SID = System.getenv("ACb6e4c829a5792a4b744a3e6bd1cf2b4e");
@@ -108,8 +118,8 @@ public class OfficeCreatorAct extends AppCompatActivity {
     @SuppressLint("SimpleDateFormat")
     SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
     String timeLineTime = mdformat.format(calendar.getTime());
-    Profile managerProfile;
-    AppCompatButton btnCreateNewOffice,btnAddNewEdt,btnRegisterNewOffice;
+    Profile superProfile;
+    AppCompatButton btnSubmitNewOffice,btnAddNewEdt,btnRegisterNewOffice,btn_Office_update;
     AccountTypes accountTypeStr;
     ContentLoadingProgressBar progressBar;
     Gson gson, gson1;
@@ -121,7 +131,7 @@ public class OfficeCreatorAct extends AppCompatActivity {
     SharedPreferences.Editor editor;
     Uri selectedImage;
     String userType, userRole;
-    ArrayList<OfficeBranch> officeBranchArrayList;
+
     CircleImageView profilePix;
     AppCompatImageView imgGreetings;
     private UserSuperAdmin userSuperAdmin;
@@ -131,29 +141,31 @@ public class OfficeCreatorAct extends AppCompatActivity {
     private OfficeBranch selectedBranch,officeBranch;
     private static final String PREF_NAME = "skylight";
     private SQLiteDatabase sqLiteDatabaseObj;
-    private SODAO sodao;
-    private TranXDAO tranXDAO;
+
     private MessageDAO messageDAO;
-    private LoanDAO loanDAO;
-    private AcctDAO acctDAO;
     private CodeDAO codeDAO;
     private PaymDocDAO paymDocDAO;
     private CusDAO cusDAO;
     private PaymentCodeDAO paymentCodeDAO;
     private ProfDAO profileDao;
-    private TCashDAO cashDAO;
-    private TReportDAO tReportDAO;
-    private PaymentDAO paymentDAO;
-    private AdminBalanceDAO adminBalanceDAO;
     private TimeLineClassDAO timeLineClassDAO;
     private GrpProfileDAO grpProfileDAO;
-    private StocksDAO stocksDAO;
-    private WorkersDAO workersDAO;
-    private StockTransferDAO stockTransferDAO;
     private OfficeBranchDAO officeBranchDAO;
-    private BirthdayDAO birthdayDAO;
-    private TransactionGrantingDAO grantingDAO;
-    private AwardDAO awardDAO;
+    private ArrayList<MarketBusiness> marketBizS;
+    private ArrayList<OfficeBranch> bizOffices;
+
+    private MarketBizArrayAdapter mBizAdapter;
+    private int branchID,profileID,selectedBizIndex;
+    private long bizID;
+    private MarketBizDAO marketBizDao;
+    private MarketBusiness marketBusiness;
+    private SQLiteDatabase sqLiteDatabase;
+    private String bizPhoneNo,officeName,officeAddress;
+    private DBHelper applicationDb;
+    private CardView cardSelect,cardSelMain;
+    private  AppCompatSpinner spnOfficeB;
+
+
 
     @SuppressLint("SimpleDateFormat")
     @Override
@@ -161,49 +173,42 @@ public class OfficeCreatorAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_office_creator);
         progressBar = findViewById(R.id.progressBar);
+        spnBiz = findViewById(R.id.oelection_Biz);
+        spnOfficeB = findViewById(R.id.officeSetion);
+        cardSelect = findViewById(R.id.cSelectn);
+        cardSelMain = findViewById(R.id.offSen);
+
         checkInternetConnection();
+        applicationDb= new DBHelper(this);
         gson1 = new Gson();
         gson = new Gson();
+        random= new SecureRandom();
+        marketBusiness= new MarketBusiness();
+        marketBizDao= new MarketBizDAO(this);
         dbHelper= new DBHelper(this);
         officeBranch=new OfficeBranch();
-        workersDAO= new WorkersDAO(this);
-        awardDAO= new AwardDAO(this);
-        grantingDAO= new TransactionGrantingDAO(this);
-        stocksDAO= new StocksDAO(this);
-        cusDAO= new CusDAO(this);
-        birthdayDAO= new BirthdayDAO(this);
+        marketBizS= new ArrayList<>();
+        bizOffices= new ArrayList<>();
         officeBranchDAO= new OfficeBranchDAO(this);
-        stockTransferDAO= new StockTransferDAO(this);
-
         paymentCodeDAO= new PaymentCodeDAO(this);
         profileDao= new ProfDAO(this);
-        cashDAO= new TCashDAO(this);
-        paymDocDAO= new PaymDocDAO(this);
-        tReportDAO= new TReportDAO(this);
-        paymentDAO= new PaymentDAO(this);
-        adminBalanceDAO= new AdminBalanceDAO(this);
         timeLineClassDAO= new TimeLineClassDAO(this);
-        grpProfileDAO= new GrpProfileDAO(this);
-
-        sodao= new SODAO(this);
-        tranXDAO= new TranXDAO(this);
         messageDAO= new MessageDAO(this);
-        loanDAO= new LoanDAO(this);
-
-        codeDAO= new CodeDAO(this);
-        acctDAO= new AcctDAO(this);
+        btnRegisterNewOffice = findViewById(R.id.button_Create_Office);
         btnAddNewEdt = findViewById(R.id.btnAddNewEdt);
-        edtOfficeName = findViewById(R.id.officeName);
-        spnOffice = findViewById(R.id.officeSelection);
-        edtAddress = findViewById(R.id.officeAddress);
-        btnCreateNewOffice = findViewById(R.id.submitNewOffice);
 
-        managerProfile = new Profile();
+        edtOfficeName = findViewById(R.id.officehhName);
+        edtAddress = findViewById(R.id.officeAddress2w);
+
+        btnSubmitNewOffice = findViewById(R.id.submitNewOffice);
+        btn_Office_update = findViewById(R.id.btn_Office_update);
+
+        superProfile = new Profile();
         userSuperAdmin = new UserSuperAdmin();
         superAdmin = new UserSuperAdmin();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
-        managerProfile = gson.fromJson(json, Profile.class);
+        superProfile = gson.fromJson(json, Profile.class);
         json1 = userPreferences.getString("LastSuperProfileUsed", "");
         userSuperAdmin = gson1.fromJson(json, UserSuperAdmin.class);
         ran = new Random();
@@ -211,28 +216,96 @@ public class OfficeCreatorAct extends AppCompatActivity {
         dbHelper = new DBHelper(this);
         imgGreetings = findViewById(R.id.GreetingsOffice);
         customerID = random.nextInt((int) (Math.random() * 1203) + 1101);
-        if(managerProfile !=null){
-            userSuperAdmin=managerProfile.getProfile_SuperAdmin();
+        if(superProfile !=null){
+            userSuperAdmin= superProfile.getProfile_SuperAdmin();
+
+            profileID=superProfile.getPID();
+            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                sqLiteDatabase = applicationDb.getReadableDatabase();
+                try {
+                    marketBizS=marketBizDao.getAllBusinessesForProfile(profileID);
+                } catch (Exception e) {
+                    System.out.println("Oops!");
+                }
+
+
+            }
+
+        }
+        mBizAdapter = new MarketBizArrayAdapter(OfficeCreatorAct.this,R.layout.item_market_biz, marketBizS);
+        spnBiz.setAdapter(mBizAdapter);
+        spnBiz.setSelection(0);
+        selectedBizIndex = spnBiz.getSelectedItemPosition();
+
+        try {
+            marketBusiness = marketBizS.get(selectedBizIndex);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Oops!");
+        }
+        if(marketBusiness !=null){
+            //bizOffices=marketBusiness.getOfficeBranches();
+            bizID=marketBusiness.getBusinessID();
+            bizPhoneNo=marketBusiness.getBizPhoneNo();
+
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            sqLiteDatabase = applicationDb.getReadableDatabase();
+            try {
+                bizOffices=officeBranchDAO.getOfficesForBusiness(profileID);
+            } catch (Exception e) {
+                System.out.println("Oops!");
+            }
+
 
         }
         if(userSuperAdmin !=null){
             superAdminID=userSuperAdmin.getSuperID();
         }
-        officeBranchArrayList = new ArrayList<>();
 
-        btnCreateNewOffice.setOnClickListener(this::doOfficeReg);
+
+        officeAdapter = new OfficeAdapter(OfficeCreatorAct.this, R.layout.stock_row2,bizOffices);
+        spnOfficeB.setAdapter(officeAdapter);
+        spnOfficeB.setSelection(0);
+        selectedOfficeIndex = spnOfficeB.getSelectedItemPosition();
+
+        try {
+            officeBranch = bizOffices.get(selectedOfficeIndex);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Oops!");
+        }
+        if(officeBranch !=null){
+            bizID=officeBranch.getOfficeBranchID();
+        }
+
+        btnSubmitNewOffice.setOnClickListener(this::doOfficeReg);
         btnAddNewEdt.setOnClickListener(this::showAddNewOffice);
+        btnRegisterNewOffice.setOnClickListener(this::addNewOB);
+        btnRegisterNewOffice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cardSelect.setVisibility(View.GONE);
+                cardSelMain.setVisibility(View.GONE);
+                btnAddNewEdt.setActivated(false);
+
+
+            }
+        });
+
 
         btnAddNewEdt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                edtOfficeName.setVisibility(View.VISIBLE);
+                cardSelect.setVisibility(View.VISIBLE);
+                cardSelMain.setVisibility(View.VISIBLE);
+                btn_Office_update.setActivated(false);
+
             }
         });
+
         Calendar calendar = Calendar.getInstance();
         mdformat = new SimpleDateFormat("yyyy-MM-dd");
         String currentDate = mdformat.format(calendar.getTime());
-        officeBranchArrayList = dbHelper.getAllBranchOffices();
+
 
         if (userSuperAdmin != null) {
             superSurname = userSuperAdmin.getSSurname();
@@ -243,54 +316,9 @@ public class OfficeCreatorAct extends AppCompatActivity {
 
         virtualAccountNumber = random.nextInt((int) (Math.random() * 102000) + 100876);
         officeID = random.nextInt((int) (Math.random() * 10319) + 1113);
-        try {
-            if(officeBranchArrayList.size()==0){
-                spnOffice.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        selectedOffice = spnOffice.getSelectedItem().toString();
-                        selectedOffice = (String) parent.getSelectedItem();
-                        Toast.makeText(OfficeCreatorAct.this, "Office Branch Selected: " + selectedOffice, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });
 
 
-            }else {
-                officeAdapter = new OfficeAdapter(OfficeCreatorAct.this, android.R.layout.simple_spinner_item, officeBranchArrayList);
-                spnOffice.setAdapter(officeAdapter);
-                spnOffice.setSelection(0);
-
-                spnOffice.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        selectedBranch = (OfficeBranch) parent.getSelectedItem();
-
-                        //transferAccepter=selectedBranch;
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });
-                if(selectedBranch !=null){
-                    selectedOffice=selectedBranch.getOfficeBranchName();
-                }
-            }
-            if(selectedBranch !=null){
-                selectedOffice=selectedBranch.getOfficeBranchName();
-            }
-        } catch (NullPointerException e) {
-            System.out.println("Oops!");
-
-        }
-
-
-
-        btnCreateNewOffice.setOnClickListener(view -> {
+        btnSubmitNewOffice.setOnClickListener(view -> {
             if(selectedOffice==null){
                 try {
                     selectedOffice = edtOfficeName.getText().toString().trim();
@@ -306,23 +334,55 @@ public class OfficeCreatorAct extends AppCompatActivity {
                 edtAddress.requestFocus();
             }
 
-            startProfileActivity(selectedOffice,uAddress ,officeID,userSuperAdmin,virtualAccountNumber,currentDate);
+            startProfileActivity(selectedOffice,uAddress ,officeID,userSuperAdmin,virtualAccountNumber,currentDate,bizID,bizOffices);
 
+        });
+        btn_Office_update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    selectedOffice = edtOfficeName.getText().toString().trim();
+                } catch (Exception e) {
+                    System.out.println("Oops!");
+                }
+                try {
+                    uAddress = edtAddress.getText().toString();
+                } catch (Exception e) {
+                    System.out.println("Oops!");
+                    edtAddress.requestFocus();
+                }
+                if(TextUtils.isEmpty(uAddress)){
+                    if(TextUtils.isEmpty(selectedOffice)){
+                        edtAddress.setFocusable(true);
+                        edtOfficeName.setFocusable(true);
+                        return;
+
+                    }
+                } else {
+                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                        sqLiteDatabase = applicationDb.getReadableDatabase();
+                        try {
+                            officeBranchDAO.updateOfficeBranch(bizID,selectedOffice,uAddress);
+                        } catch (Exception e) {
+                            System.out.println("Oops!");
+                        }
+
+
+                    }
+                }
+
+            }
         });
 
     }
-    public void startProfileActivity(String selectedOffice, String uAddress, int officeID, UserSuperAdmin userSuperAdmin, int virtualAccountNumber, String currentDate) {
+    public void startProfileActivity(String selectedOffice, String uAddress, int officeID, UserSuperAdmin userSuperAdmin, int virtualAccountNumber, String currentDate, long bizID, ArrayList<OfficeBranch> bizOffices) {
         ran = new Random();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         random = new SecureRandom();
         dbHelper = new DBHelper(this);
         sqLiteDatabaseObj = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
-        virtualAccountNumber = random.nextInt((int) (Math.random() * 12304) + 10012);
-        customerID = random.nextInt((int) (Math.random() * 1203) + 1101);
         accountTypeStr = null;
         dbHelper = new DBHelper(this);
-        dbHelper= new DBHelper(this);
-        officeBranchArrayList = dbHelper.getAllBranchOffices();
         //superAdminArrayList = dbHelper.getAllCustomersManagers();
         if (userSuperAdmin != null) {
             superSurname = userSuperAdmin.getSSurname();
@@ -333,15 +393,23 @@ public class OfficeCreatorAct extends AppCompatActivity {
             userRole = userSuperAdmin.getSAdminRole();
 
         }
+        String name =superSurname+","+ superFirstName;
 
         Calendar calendar = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String joinedDate = mdformat.format(calendar.getTime());
+        AcctDAO acctDAO= new AcctDAO(this);
+        accountTypeStr = AccountTypes.EWALLET;
+        String interestRate = "0.0";
+
+        double accountBalance = 0.00;
+        Account account= new Account(virtualAccountNumber,selectedOffice,0.00, accountTypeStr);
+        long dbId=0;
 
 
-        for (int i = 0; i < officeBranchArrayList.size(); i++) {
+        for (int i = 0; i < bizOffices.size(); i++) {
             try {
-                if (officeBranchArrayList.get(i).getOfficeBranchName().equalsIgnoreCase(selectedOffice)) {
+                if (bizOffices.get(i).getOfficeBranchName().equalsIgnoreCase(selectedOffice)) {
                     Toast.makeText(OfficeCreatorAct.this, "A similar office Branch, already exist", Toast.LENGTH_LONG).show();
                     return;
 
@@ -349,9 +417,29 @@ public class OfficeCreatorAct extends AppCompatActivity {
                     if (sqLiteDatabaseObj == null || !sqLiteDatabaseObj.isOpen()) {
                         sqLiteDatabaseObj = dbHelper.getWritableDatabase();
 
-                        acctDAO.insertAccount(profileID1, customerID, "Skylight", selectedOffice, virtualAccountNumber, 0.00, accountTypeStr);
-                        officeBranchDAO.insertOfficeBranch(officeID,superAdminID,selectedOffice,joinedDate,uAddress,"Super Admin","Approved");
-                        Toast.makeText(OfficeCreatorAct.this, "Data insertion ,successful", Toast.LENGTH_LONG).show();
+                        acctDAO.insertAccount(officeID, 0, "", selectedOffice, virtualAccountNumber, 0.00, accountTypeStr);
+                        dbId=officeBranchDAO.insertOfficeBranch(officeID,superAdminID,bizID,selectedOffice,joinedDate,uAddress,name,"Approved");
+                        Profile officeProfile= new Profile(profileID1,selectedOffice,"Branch");
+
+                        if(dbId>0){
+                            officeBranch =  new OfficeBranch(officeID,selectedOffice,"Approved");
+                            if(officeBranch !=null){
+                                officeBranch.setAccountNumber(virtualAccountNumber);
+                                officeBranch.setAccountBalance(0.00);
+                                officeBranch.setOfficeBranchID(officeID);
+                                officeBranch.setAccount(account);
+                                officeBranch.setProfile(officeProfile);
+                            }
+                            Toast.makeText(OfficeCreatorAct.this, "Office Creation ,successful", Toast.LENGTH_LONG).show();
+
+                        }else {
+                            Toast.makeText(OfficeCreatorAct.this, "Office Creation ,Failed", Toast.LENGTH_LONG).show();
+                        }
+
+                        Intent otpIntent = new Intent(OfficeCreatorAct.this, LoginDirAct.class);
+                        otpIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(otpIntent);
+
 
                     }
 
@@ -364,26 +452,8 @@ public class OfficeCreatorAct extends AppCompatActivity {
         }
 
 
-        BroadcastUtils.sendExplicitBroadcast(this, new Intent(), "skylight Account Sign up action");
+        BroadcastUtils.sendExplicitBroadcast(this, new Intent(), "Awajima Branch Sign up action");
 
-
-        accountTypeStr = AccountTypes.EWALLET;
-        String interestRate = "0.0";
-
-        Random random = new Random();
-        double accountBalance = 0.00;
-        officeBranch =  new OfficeBranch(officeID,selectedOffice,"Approved");
-
-        Account newAccount = new Account("Skylight", selectedOffice, virtualAccountNumber, accountBalance, accountTypeStr);
-        Profile officeProfile= new Profile(profileID1,selectedOffice,"Branch");
-
-        if(officeBranch !=null){
-            officeBranch.setAccountNumber(virtualAccountNumber);
-            officeBranch.setAccountBalance(0.00);
-            officeBranch.setOfficeBranchID(officeID);
-            officeBranch.setAccount(newAccount);
-            officeBranch.setProfile(officeProfile);
-        }
     }
     public boolean hasInternetConnection() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -409,6 +479,11 @@ public class OfficeCreatorAct extends AppCompatActivity {
 
     public void showAddNewOffice(View view) {
     }
+    public void addNewOB(View view) {
+    }
+    public void updateOffice(View view) {
+    }
+
 
     public void doOfficeReg(View view) {
     }

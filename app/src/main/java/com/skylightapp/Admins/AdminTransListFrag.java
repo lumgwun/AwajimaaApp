@@ -42,7 +42,6 @@ public class AdminTransListFrag extends Fragment {
     private String mParam1;
     private String mParam2;
     private static final String TAG = AdminTransListFrag.class.getSimpleName();
-    private static final String URL = "https://skylightciacs.com";
 
     private RecyclerView recyclerView;
     private List<Transaction> transactionList;
@@ -169,7 +168,7 @@ public class AdminTransListFrag extends Fragment {
             final Transaction transaction = transactions.get(position);
             final Customer customer = new Customer();
             holder.transactionId.setText(transaction.getTransactionID());
-            holder.amount.setText(valueOf(transaction.getRecordAmount()));
+            holder.amount.setText(valueOf(transaction.getTranxAmount()));
             holder.type.setText(valueOf(transaction.getTranXType()));
             holder.destinationAccount.setText(transaction.getTranxDestAcct());
             holder.name.setText(String.format("%s%s", customer.getCusSurname().substring(1, 0), customer.getCusFirstName()));

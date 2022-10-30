@@ -66,7 +66,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.ui.auth.ui.phone.SpacedEditText;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -88,7 +87,6 @@ import com.google.android.gms.tasks.CancellationTokenSource;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.klinker.android.send_message.BroadcastUtils;
 import com.skylightapp.BuildConfig;
@@ -108,8 +106,6 @@ import com.skylightapp.Classes.ImportantDates;
 import com.skylightapp.Classes.PinEntryView;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.StandingOrderAcct;
-import com.skylightapp.Classes.TimeLine;
-import com.skylightapp.Classes.User;
 import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Database.AcctDAO;
 import com.skylightapp.Database.AdminUserDAO;
@@ -122,7 +118,8 @@ import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.Database.SODAO;
 import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.Database.WorkersDAO;
-import com.skylightapp.MapAndLoc.ProfileLocSourceAct;
+import com.skylightapp.MapAndLoc.MapPanoramaStVAct;
+import com.skylightapp.MarketClasses.Market;
 import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.NewLocAct;
 import com.skylightapp.R;
@@ -172,75 +169,54 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
     String formattedDaysRem;
     Random ran;
     SecureRandom random;
-    Context context;
     String dateOfBirth;
-    PreferenceManager preferenceManager;
-    private Bundle bundle;
     String uPhoneNumber;
     private ProgressDialog progressDialog;
     int superID,tellerID;
-    private FirebaseAuth mAuth;
-    FirebaseAuth.AuthStateListener mAuthListner;
-    private ProgressBar loadingPB;
+
     String superSurname;
     String superFirstName, uPassword;
     String superPhoneNumber;
     String superEmailAddress;
-    String managerAddress;
     String superUserName;
-    String mLastUpdateTime, selectedGender, selectedOffice, selectedState;
+    String  selectedGender, selectedOffice, selectedState;
     Birthday birthday;
-    AppCompatButton dob1;
     String userType;
     String userRole,sponsorIDString;
-    String selectedUser;
     int sponsorID;
     String address;
-    Spinner spnUsers;
-    Location customerLoc;
     LatLng userLocation;
     int daysInBetween;
-    File destination;
     LatLng cusLatLng;
     double latitude = 0;
     double longitude = 0;
     Geocoder geocoder;
-    Bundle userLocBundle;
     ArrayList<Profile> profiles;
     ArrayList<Customer> customers;
     CircleImageView profilePix;
     AppCompatImageView imgGreetings;
-    private CustomerManager customerManager,customerManager2;
+    private CustomerManager customerManager2;
     ArrayList<CustomerManager> tellers;
     ArrayList<AdminUser> adminUserArrayList;
     ArrayList<UserSuperAdmin> superAdminArrayList;
 
     private Uri mImageUri;
-    //private ProgressBar uploadProgressBar;
     ContentLoadingProgressBar progressBar;
 
-    private int managerProfileID;
-
     List<Address> addresses;
-    String SharedPrefState,otpMessage,smsMessage;
-    private User user;
-    //private OtpTextView otpTextView;
+    String otpMessage,smsMessage;
     private AppCompatButton btnVerifyOTPAndSignUp;
     private int otpDigit;
     String otpPhoneNumber;
-    PinEntryView pinEntry;
-    SpacedEditText edtOtp1,edtOtp2,edtOtp3,edtOtp4;
     private LinearLayoutCompat layoutOTP,layoutPreOTP;
-    private EditText[] editTexts;
+
     private Button btnSendOTP;
     Location location;
-    private View mapView;
     AppCompatTextView txtLoc;
     private LocationRequest request;
     Marker now;
-    private boolean mRequestingLocationUpdates;
     private CancellationTokenSource cancellationTokenSource;
-    CameraUpdate cLocation;
+
     TextView otpTxt;
     String uFirstName, uEmail, uSurname, uAddress, uUserName;
 
@@ -248,14 +224,12 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
     int customerID1 ;
     int profileID1 ;
     private boolean locationPermissionGranted;
-    private Account account;
     SQLiteDatabase sqLiteDatabase;
     Date date;
 
     AccountTypes accountTypeStr;
-    private StandingOrderAcct standingOrderAcct;
     private FusedLocationProviderClient fusedLocationClient;
-    private TimeLine timeLine;
+
     Location mCurrentLocation = null;
     AccountInvestment accountInvestment;
     AccountItemPurchase accountItemPurchase;
@@ -264,7 +238,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
     GoogleMap googleMap;
     String joinedDate,customerName;
     String code;
-    Profile userProfile1,userProfile2,userProfile3;
+    Profile userProfile1,userProfile2;
     private static final int REQUEST_CHECK_SETTINGS = 1000;
 
     AppCompatSpinner state, office, spnGender;
@@ -275,7 +249,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
     Calendar calendar = Calendar.getInstance();
     @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
     String timeLineTime = mdformat.format(calendar.getTime());
     Profile superAdminProfile;
     private static final int RESULT_LOAD_IMAGE = 1;
@@ -285,8 +259,8 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
     int daysBTWN;
 
     String acct;
-    Gson gson,gson1,gson2,gson3,gson4;
-    String json,json1,json2,json3,json4,nIN;
+    Gson gson,gson1,gson2;
+    String json,json1,json2,nIN;
     Profile userProfile;
     String pix;
 
@@ -294,16 +268,8 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
     int comAcctID;
     int investmentAcctID,savingsAcctID,itemPurchaseAcctID,promoAcctID,packageAcctID;
 
-    int  birthdayID;
-
-    //daysRemaining = birthday.g(currentDate, dateOfBirth);
-    //daysBTWN = birthday.getDaysInBetween(currentDate, dateOfBirth);
-    SharedPreferences.Editor editor ;
-    AppController appController;
+    int  birthdayID,managerProfileID,marketID;
     private static boolean isPersistenceEnabled = false;
-    DBHelper applicationDb;
-    //DatePicker picker;
-    String userProfileType;
     Customer customer;
     Uri selectedImage;
     AppCompatTextView dobText;
@@ -314,7 +280,8 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
     String selectedUserType, selectedAdminType;
     private UserSuperAdmin userSuperAdmin;
     private CustomerManager teller;
-    private  AdminUser adminUser,adminUser2;
+    private StandingOrderAcct standingOrderAcct;
+    private  AdminUser adminUser2;
     private  Spinner spnUserType;
     Profile newUserProfileL;
     private  UserSuperAdmin superAdmin;
@@ -325,12 +292,13 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     private AdminUser.ADMIN_TYPE admin_type;
     private long bizID;
-    private int marketID;
-    private int officeID;
+
 
     LinearLayoutCompat layoutAdminType;
     private MarketBusiness marketBusiness;
     private int marketBizID;
+    private Account account;
+    private Market market;
 
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {
@@ -343,7 +311,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
             Manifest.permission.CAMERA,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION,
             android.Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,Manifest.permission.SEND_SMS
     };
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     ProfDAO profDAO= new ProfDAO(this);
 
 
@@ -487,6 +455,10 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
         layoutPreOTP = findViewById(R.id.layoutPreO);
         otpTxt = findViewById(R.id.super_textOTP);
         layoutAdminType = findViewById(R.id.admin_layout_type);
+        teller= new CustomerManager();
+        standingOrderAcct= new StandingOrderAcct();
+        account= new Account();
+        market= new Market();
 
         pinEntryView = (PinEntryView) findViewById(R.id.super_pin_entry);
         btnVerifyOTPAndSignUp = findViewById(R.id.BtnVerifySuper);
@@ -611,7 +583,6 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
         btnVerifyOTPAndSignUp = findViewById(R.id.BtnVerifySuper);
         progressBar = findViewById(R.id.progressBar);
         customer=new Customer();
-        adminUser=new AdminUser();
         adminUser2=new AdminUser();
         superAdminProfile =new Profile();
         birthday= new Birthday();
@@ -634,8 +605,19 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
         if(marketBusiness !=null){
             bizID=marketBusiness.getBusinessID();
             marketBizID=marketBusiness.getBizMarketID();
+            market=marketBusiness.getBizMarket();
 
         }
+        if(market !=null){
+            marketID=market.getMarketID();
+
+        }
+
+        if(superAdminProfile !=null){
+            managerProfileID= superAdminProfile.getPID();
+
+        }
+
         birthday= new Birthday();
         dbHelper = new DBHelper(this);
         profiles=new ArrayList<Profile>();
@@ -847,7 +829,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedOffice = office.getSelectedItem().toString();
-                selectedOffice = (String) parent.getSelectedItem();
+                //selectedOffice = (String) parent.getSelectedItem();
             }
 
             @Override
@@ -975,7 +957,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                 if (code.equals(String.valueOf(otpDigit))) {
                     Toast.makeText(SuperUserCreator.this, "OTP verification, a Success", Toast.LENGTH_SHORT).show();
-                    startNewProfileActivity(sponsorID,cusLatLng,account,standingOrderAcct,joinedDate,uFirstName,uSurname,uPhoneNumber,uAddress,uUserName,uPassword,customer,newUserProfileL,nIN, superAdminProfile,dateOfBirth,selectedGender,selectedOffice,selectedState,birthday,customerManager,dateOfBirth,profileID1,virtualAccountNumber,soAccountNumber, customerID,birthdayID, investmentAcctID,itemPurchaseAcctID,promoAcctID,packageAcctID,customers,selectedUserType,admin_type,bizID);
+                    startNewProfileActivity(sponsorID,cusLatLng,account,standingOrderAcct,joinedDate,uFirstName,uSurname,uPhoneNumber,uAddress,uUserName,uPassword,customer,newUserProfileL,nIN, superAdminProfile,dateOfBirth,selectedGender,selectedOffice,selectedState,birthday,teller,dateOfBirth,profileID1,virtualAccountNumber,soAccountNumber, customerID,birthdayID, investmentAcctID,itemPurchaseAcctID,promoAcctID,packageAcctID,customers,selectedUserType,admin_type,bizID);
 
                 } else {
                     Toast.makeText(SuperUserCreator.this, "FAIL", Toast.LENGTH_SHORT).show();
@@ -999,7 +981,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
         smsBundle.putString(PROFILE_PHONE, otpPhoneNumber);
         smsBundle.putString("USER_PHONE", otpPhoneNumber);
         smsBundle.putString("smsMessage", otpMessage);
-        smsBundle.putString("from","Skylight");
+        smsBundle.putString("from","Awajima");
         smsBundle.putString("to", otpPhoneNumber);
         Intent otpIntent = new Intent(SuperUserCreator.this, SMSAct.class);
         otpIntent.putExtras(smsBundle);
@@ -1019,7 +1001,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
         smsBundle.putString(PROFILE_PHONE, uPhoneNumber);
         smsBundle.putString("USER_PHONE", uPhoneNumber);
         smsBundle.putString("smsMessage", smsMessage);
-        smsBundle.putString("from","Skylight Coop.");
+        smsBundle.putString("from","Awajima Coop.");
         smsBundle.putString("to", uPhoneNumber);
         Intent otpIntent = new Intent(SuperUserCreator.this, SMSAct.class);
         otpIntent.putExtras(smsBundle);
@@ -1288,7 +1270,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
         dbHelper = new DBHelper(this);
         random = new SecureRandom();
         //user= new User(profileID1,"Ezekiel", "Gwun-orene", "07038843102", "lumgwun1@gmail.com", "25/04/1983", "male", "Ilabuchi", "","Rivers", "Elelenwo", "19/04/2022","SuperAdmin", "Lumgwun", "@Awajima1","Confirmed","");
-        userProfile1= new Profile(profileID1,"Emma", "Uja", "08069524599", "urskylight@gmail.com", "25/04/1983", "female", "Skylight", "","Rivers", "Elelenwo", "19/04/2022","SuperAdmin", "Skylight4ever", "@Awajima2","Confirmed","");
+        userProfile1= new Profile(profileID1,"Emma", "Uja", "08069524599", "urskylight@gmail.com", "25/04/1983", "female", "Awajima", "","Rivers", "Elelenwo", "19/04/2022","SuperAdmin", "Skylight4ever", "@Awajima2","Confirmed","");
         //user=new User(profileID1, "Ezekiel", "Gwun-orene", "07038843102", "lumgwun1@gmail.com", "25/04/1983", "male", "Ilabuchi", "", "Rivers", "Elelenwo", "19/04/2022", "SuperAdmin", "Lumgwun", "@Awajima1", "Confirmed", "");
 
 
@@ -1785,7 +1767,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                     if (selectedUserType != null) {
                         if (selectedUserType.equalsIgnoreCase("Customer")) {
-                            String timelineDetailCus = uSurname + "," + uFirstName + "was added as a Customer" + "by" + "Skylight Alpha" + "@" + timeLineTime;
+                            String timelineDetailCus = uSurname + "," + uFirstName + "was added as a Customer" + "by" + "Awajima Alpha" + "@" + timeLineTime;
                             String tittleTCus = "Customer Sign Up Alert!";
                             String timelineDetailsTMyCus = "You added" + uSurname + "," + uFirstName + "as a Customer" + "on" + timeLineTime;
 
@@ -1866,7 +1848,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                             String tittleAdmin = "Admin User Sign Up Alert!";
                             String timelineDetMe = "You added" + uSurname + "," + uFirstName + "as an Admin User" + "on" + timeLineTime;
                             superAdminProfile.addPTimeLine(tittleAdmin, timelineDetMe);
-                            adminUser = new AdminUser(profileID2, uSurname, uFirstName, uPhoneNumber, dateOfBirth, uEmail, uAddress, selectedGender, selectedOffice, selectedState, selectedImage, joinedDate, uUserName, uPassword);
+                            adminUser2 = new AdminUser(profileID2, uSurname, uFirstName, uPhoneNumber, dateOfBirth, uEmail, uAddress, selectedGender, selectedOffice, selectedState, selectedImage, joinedDate, uUserName, uPassword);
 
 
                             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
@@ -1895,7 +1877,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
 
                         }
                         if (selectedUserType.equalsIgnoreCase("Accountant")) {
-                            String timelineDAd = uSurname + "," + uFirstName + "was added as an Accountant" + "by" + "Skylight Alpha" + "@" + timeLineTime;
+                            String timelineDAd = uSurname + "," + uFirstName + "was added as an Accountant" + "by" + "Awajima Alpha" + "@" + timeLineTime;
                             String tittleAcct = "Account Sign Up Alert!";
                             String superAcctantNames = superSurname + "," + superFirstName;
 
@@ -1964,8 +1946,6 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                                 dbHelper.openDataBase();
                                 dbHelper.insertCustomer11(profileID1, customerID, bizID, marketID, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedState, "", joinedDate, uUserName, uPassword, mImageUri, "Customer");
-
-
 
                             }
 
@@ -2065,7 +2045,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                     Intent intent = new Intent();
                     intent.setAction(
                             Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    Uri uri = Uri.fromParts("Skylight App",
+                    Uri uri = Uri.fromParts("Awajima App",
                             BuildConfig.APPLICATION_ID, null);
                     intent.setData(uri);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -2124,7 +2104,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                     Intent intent = new Intent();
                     intent.setAction(
                             Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    Uri uri = Uri.fromParts("Skylight App",
+                    Uri uri = Uri.fromParts("Awajima App",
                             BuildConfig.APPLICATION_ID, null);
                     intent.setData(uri);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -2162,7 +2142,7 @@ public class SuperUserCreator extends AppCompatActivity implements LocationListe
                             case 0:
 
                                 Toast.makeText(SuperUserCreator.this, "Getting this location details", Toast.LENGTH_SHORT).show();
-                                mRegUserLoc.launch(new Intent(SuperUserCreator.this, ProfileLocSourceAct.class));
+                                mRegUserLoc.launch(new Intent(SuperUserCreator.this, MapPanoramaStVAct.class));
 
                                 break;
                             case 1:

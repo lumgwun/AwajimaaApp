@@ -1244,6 +1244,7 @@ public class TrackWorkersAct extends FragmentActivity implements OnStreetViewPan
             return;
         }
         map.setMyLocationEnabled(true);
+        addMarker();
     }
 
 }

@@ -1,12 +1,17 @@
 package com.skylightapp;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -44,7 +49,10 @@ import java.util.Random;
 
 public class GrpProfileTraxs extends AppCompatActivity implements  GrpTranxAdapter.OnItemsClickListener{
     private GrpTranxAdapter grpTranxAdapter;
+    private GrpTranxAdapter grpTranxAdap;
+
     private ArrayList<Transaction> transactionArrayList;
+    private ArrayList<Transaction> tranxArrayList;
 
     DBHelper dbHelper;
     private SharedPreferences userPreferences;
@@ -57,70 +65,106 @@ public class GrpProfileTraxs extends AppCompatActivity implements  GrpTranxAdapt
     Random ran ;
     AppCompatTextView txtNoGrpSavingsUsers;
     private GroupAccount groupAccount;
-    private SODAO sodao;
     private TranXDAO tranXDAO;
-    private MessageDAO messageDAO;
-    private LoanDAO loanDAO;
-    private AcctDAO acctDAO;
-    private CodeDAO codeDAO;
-    private PaymDocDAO paymDocDAO;
-    private CusDAO cusDAO;
-    private PaymentCodeDAO paymentCodeDAO;
-    private ProfDAO profileDao;
-    private TCashDAO cashDAO;
-    private TReportDAO tReportDAO;
-    private PaymentDAO paymentDAO;
-    private AdminBalanceDAO adminBalanceDAO;
-    private TimeLineClassDAO timeLineClassDAO;
-    private static final String PREF_NAME = "skylight";
+    private  int tranxCount;
+    private static final String PREF_NAME = "awajima";
+    private RecyclerView recyclerView;
+    private SQLiteDatabase sqLiteDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_grp_profile_traxs);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        checkInternetConnection();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_GrpSTx);
+        txtNoGrpSavingsUsers =  findViewById(R.id.noGrpSavingsTx);
 
         gson = new Gson();
         userProfile=new Profile();
         random= new SecureRandom();
-        cusDAO= new CusDAO(this);
-        paymentCodeDAO= new PaymentCodeDAO(this);
-        profileDao= new ProfDAO(this);
-        cashDAO= new TCashDAO(this);
-        paymDocDAO= new PaymDocDAO(this);
-        tReportDAO= new TReportDAO(this);
-        paymentDAO= new PaymentDAO(this);
-        adminBalanceDAO= new AdminBalanceDAO(this);
-        timeLineClassDAO= new TimeLineClassDAO(this);
-
-        sodao= new SODAO(this);
         tranXDAO= new TranXDAO(this);
-        sodao= new SODAO(this);
-        messageDAO= new MessageDAO(this);
-        loanDAO= new LoanDAO(this);
-
-        codeDAO= new CodeDAO(this);
-        acctDAO= new AcctDAO(this);
-        json = userPreferences.getString("LastProfileUsed", "");
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        Bundle bundle = getIntent().getExtras() ;
+        transactionArrayList= new ArrayList<>();
+        tranxArrayList= new ArrayList<>();
         dbHelper = new DBHelper(this);
+        json = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
+
+        Bundle bundle = getIntent().getExtras() ;
+
+        if(dbHelper !=null){
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            tranxArrayList = tranXDAO.getAllTransactionAdmin();
+
+        }
+        grpTranxAdap = new GrpTranxAdapter(GrpProfileTraxs.this, tranxArrayList);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_GrpSTx);
+        txtNoGrpSavingsUsers =  findViewById(R.id.noGrpSavingsTx);
+        final CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addOnScrollListener(new CenterScrollListener());
+        layoutManager.setPostLayoutListener(new CarouselZoomPostLayoutListener());
+
+        recyclerView.setAdapter(grpTranxAdap);
+        recyclerView.setClickable(true);
+
+        if(grpTranxAdap !=null){
+            tranxCount =grpTranxAdap.getItemCount();
+
+        }
+        if(tranxCount==0){
+            txtNoGrpSavingsUsers.setVisibility(View.VISIBLE);
+            txtNoGrpSavingsUsers.setText("Sorry no Group Transactions, yet!");
+            recyclerView.setVisibility(View.GONE);
+
+        }
+        if(tranxCount>0){
+            txtNoGrpSavingsUsers.setVisibility(View.VISIBLE);
+            txtNoGrpSavingsUsers.setText("Group Tranx:"+tranxCount);
+            recyclerView.setVisibility(View.VISIBLE);
+
+        }
+
+
+
+
         if(bundle !=null){
             groupAccount = bundle.getParcelable("GroupAccount");
             grpAcctID=groupAccount.getGrpAcctNo();
-            transactionArrayList = tranXDAO.getAllGrpAcctTranxs(grpAcctID);
+            if(dbHelper !=null){
+                sqLiteDatabase = dbHelper.getReadableDatabase();
+                transactionArrayList = tranXDAO.getAllGrpAcctTranxs(grpAcctID);
+
+            }
+
             grpTranxAdapter = new GrpTranxAdapter(GrpProfileTraxs.this, transactionArrayList);
-            final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_GrpSTx);
+            recyclerView = (RecyclerView) findViewById(R.id.recycler_GrpSTx);
             txtNoGrpSavingsUsers =  findViewById(R.id.noGrpSavingsTx);
-            final CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true);
-            recyclerView.setLayoutManager(layoutManager);
-            //recyclerView.setHasFixedSize(true);
+            final CarouselLayoutManager layoutManagerCar = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true);
+            recyclerView.setLayoutManager(layoutManagerCar);
             recyclerView.addOnScrollListener(new CenterScrollListener());
             layoutManager.setPostLayoutListener(new CarouselZoomPostLayoutListener());
 
             recyclerView.setAdapter(grpTranxAdapter);
+            recyclerView.setClickable(true);
+            if(grpTranxAdapter !=null){
+                tranxCount =grpTranxAdapter.getItemCount();
 
+            }
+            if(tranxCount==0){
+                txtNoGrpSavingsUsers.setVisibility(View.VISIBLE);
+                txtNoGrpSavingsUsers.setText("Sorry no Group Transactions for this User, yet!");
+                recyclerView.setVisibility(View.GONE);
+
+            }
+            if(tranxCount>0){
+                txtNoGrpSavingsUsers.setVisibility(View.VISIBLE);
+                txtNoGrpSavingsUsers.setText("Group Tranx:"+tranxCount);
+                recyclerView.setVisibility(View.VISIBLE);
+
+            }
             recyclerView.addOnItemTouchListener(new MyTouchListener(this,
                     recyclerView,
                     new MyTouchListener.OnTouchActionListener() {
@@ -137,16 +181,6 @@ public class GrpProfileTraxs extends AppCompatActivity implements  GrpTranxAdapt
                         }
                     }));
 
-            try {
-                if(transactionArrayList.size()==0){
-                    txtNoGrpSavingsUsers.setVisibility(View.VISIBLE);
-                    txtNoGrpSavingsUsers.setText("Sorry no Group Transactions for this User, yet!");
-                    recyclerView.setVisibility(View.GONE);
-
-                }
-            } catch (NullPointerException e) {
-                System.out.println("Oops!");
-            }
 
         }
 
@@ -156,7 +190,7 @@ public class GrpProfileTraxs extends AppCompatActivity implements  GrpTranxAdapt
     }
 
     public void goHome(View view) {
-        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
         bundle.putLong("ProfileID", profileID);
@@ -171,7 +205,7 @@ public class GrpProfileTraxs extends AppCompatActivity implements  GrpTranxAdapt
 
     @Override
     public void onItemClick(Transaction transaction) {
-        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
         bundle.putLong("ProfileID", profileID);
@@ -181,5 +215,25 @@ public class GrpProfileTraxs extends AppCompatActivity implements  GrpTranxAdapt
         intent.putExtras(bundle);
         startActivity(intent);
 
+    }
+    public boolean hasInternetConnection() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
+    public boolean checkInternetConnection() {
+        boolean hasInternetConnection = hasInternetConnection();
+        if (!hasInternetConnection) {
+            showWarningDialog("Internet connection failed");
+        }
+
+        return hasInternetConnection;
+    }
+    public void showWarningDialog(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.setPositiveButton(R.string.button_ok, null);
+        builder.show();
     }
 }

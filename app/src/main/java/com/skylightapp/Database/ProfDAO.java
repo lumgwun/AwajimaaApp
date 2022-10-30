@@ -23,6 +23,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.skylightapp.Classes.CustomerManager.WORKER_BIZ_ID;
 import static com.skylightapp.Classes.GroupAccount.GRP_PROFILE_TABLE;
 import static com.skylightapp.Classes.Profile.CUS_ID_PIX_KEY;
 import static com.skylightapp.Classes.Profile.PASSWORD;
@@ -50,6 +51,7 @@ import static com.skylightapp.Classes.Profile.PROFILE_STATE;
 import static com.skylightapp.Classes.Profile.PROFILE_STATUS;
 import static com.skylightapp.Classes.Profile.PROFILE_SURNAME;
 import static com.skylightapp.Classes.Profile.PROFILE_USERNAME;
+import static com.skylightapp.Classes.Profile.PROF_BUSINESS_ID;
 import static com.skylightapp.Classes.Profile.PROF_ID_FOREIGN_KEY_PASSWORD;
 import static com.skylightapp.Classes.Profile.PROF_REF_LINK;
 import static com.skylightapp.Classes.Profile.SPONSOR_REFERER;
@@ -262,9 +264,9 @@ public class ProfDAO extends DBHelperDAO{
         }
         return userModelArrayList;
     }
-    public ArrayList<Profile> getTellersFromMachine(String Teller) {
+    public ArrayList<Profile> getTellersFromMachineAndBiz(String Teller,long bizID) {
         ArrayList<Profile> profileArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = PROFILE_ROLE + "=?";
         String[] selectionArgs = new String[]{String.valueOf(Teller)};
         Cursor cursor = db.query(PROFILES_TABLE, null,  selection, selectionArgs, null,
@@ -284,23 +286,47 @@ public class ProfDAO extends DBHelperDAO{
         return profileArrayList;
 
     }
-    public ArrayList<Profile> getBranchFromMachine(String Branch) {
+    public ArrayList<Profile> getBizProfiles(long bizID) {
         ArrayList<Profile> profileArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
-        String selection = PROFILE_ROLE + "=?";
-        String[] selectionArgs = new String[]{Branch};
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = PROF_BUSINESS_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(bizID)};
         Cursor cursor = db.query(PROFILES_TABLE, null,  selection, selectionArgs, null,
                 null, null);
-        if (cursor != null)
+
+        if (cursor == null){
+            return null;
+        }else {
             if (cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 getSimpleProfileFromCursor(profileArrayList, cursor);
                 cursor.close();
             }
 
-        db.close();
+            db.close();
 
+        }
         return profileArrayList;
+
+        //Cursor cursor=null;
+        //String selection = PROF_BUSINESS_ID + "=? AND " + PROFILE_PASSWORD + "=?";
+        //String[] selectionArgs = new String[]{valueOf(bizID), valueOf(branch)};
+
+        /*try {
+            cursor = db.rawQuery("Select PROFILE_ROLE from PROFILES_TABLE INNER JOIN WORKER_TABLE ON PROFILE_ID=WORKER_TELLER_PROF_ID WHERE PROF_BUSINESS_ID='" + WORKER_BIZ_ID + "'", null);
+
+
+
+
+        } catch (Exception e) {
+            Log.e("tle99", e.getMessage());
+        }
+
+        db.close();*/
+
+
+
+
     }
     public Cursor getSimpleProfileFromCursor(ArrayList<Profile> profileArrayList, Cursor cursor) {
         while (cursor.moveToNext()) {
@@ -560,7 +586,7 @@ public class ProfDAO extends DBHelperDAO{
     }
     public ArrayList<Profile> getAllProfiles() {
         ArrayList<Profile> profiles = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(PROFILES_TABLE, null, null, null, null,
                 null, null);
         getProfilesFromCursor(profiles, cursor);
@@ -741,7 +767,7 @@ public class ProfDAO extends DBHelperDAO{
     public ArrayList<Profile> getAllGrpAcctProfiles(long GRPA_ID) {
 
         ArrayList<Profile> profileArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(GRP_PROFILE_TABLE, null, GRPA_ID + "=?",
                 new String[]{String.valueOf(GRPA_ID)}, null, null,
                 null, null);
@@ -768,7 +794,7 @@ public class ProfDAO extends DBHelperDAO{
 
     public List<String> getAllUsers(){
         List<String> listUsers = new ArrayList<String>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {PROFILE_SURNAME, PROFILE_FIRSTNAME};
         Cursor c=null;
 
@@ -914,7 +940,7 @@ public class ProfDAO extends DBHelperDAO{
         //long rv = -1;
         Profile profile = null;
         Cursor csr = null;
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 
         String selection = PROFILE_USERNAME + "=? AND " + PROFILE_PASSWORD + "=?";
         String[] selectionArgs = new String[]{userName, password};

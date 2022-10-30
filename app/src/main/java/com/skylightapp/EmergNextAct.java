@@ -17,7 +17,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.skylightapp.Classes.DirectionsJSONParser;
-import com.skylightapp.Classes.EmergencyReport;
+import com.skylightapp.MapAndLoc.EmergencyReport;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.EmergReportDAO;
 import com.skylightapp.Database.EmergReportNextDAO;

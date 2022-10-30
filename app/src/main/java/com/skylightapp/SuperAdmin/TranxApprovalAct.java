@@ -500,7 +500,7 @@ public class TranxApprovalAct extends AppCompatActivity {
                             MessageDAO messageDAO= new MessageDAO(this);
                             TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(this);
                             TransactionGrantingDAO grantingDAO= new TransactionGrantingDAO(this);
-                            transaction= new Transaction(payoutID,loanProfileID,customerID,acctNo,todayDate,"Skylight",acctNo,acctName,customerName,amountRequested,paymentType,"PayStack Transfer",officeBranch,txApprover,todayDate,response);
+                            transaction= new Transaction(payoutID,loanProfileID,customerID,acctNo,todayDate,"Awajima",acctNo,acctName,customerName,amountRequested,paymentType,"PayStack Transfer",officeBranch,txApprover,todayDate,response);
 
 
 
@@ -552,7 +552,7 @@ public class TranxApprovalAct extends AppCompatActivity {
         smsBundle.putString(PROFILE_PHONE, otpPhoneNumber);
         smsBundle.putString("USER_PHONE", otpPhoneNumber);
         smsBundle.putString("smsMessage", smsMessage);
-        smsBundle.putString("from","Skylight");
+        smsBundle.putString("from","Awajima");
         smsBundle.putString("to", otpPhoneNumber);
         Intent itemPurchaseIntent = new Intent(TranxApprovalAct.this, SMSAct.class);
         itemPurchaseIntent.putExtras(smsBundle);

@@ -115,7 +115,7 @@ public class BusinessSMSAct extends AppCompatActivity {
             }
             CodeDAO codeDAO = new CodeDAO(this);
             Twilio.init(TWILLO_ACCOUNT_SID, TWILLO_AUTH_TOKEN);
-            smsCustomer="Skylight"+ random.nextInt((int) (Math.random() * 2) + 1039);
+            smsCustomer="Awajima"+ random.nextInt((int) (Math.random() * 2) + 1039);
             savingsCode=random.nextInt((int) (Math.random() * 2) + 1039);
             smsToC = "This"+""+savingsCode + ", is your Awajima  code for Savings:"+ ""+ savingsID;
             PaymentCode paymentCode= new PaymentCode(customerID,savingsID,savingsCode,CODE_DATE);
@@ -128,7 +128,7 @@ public class BusinessSMSAct extends AppCompatActivity {
             bundle.putString("Message",messageToSend);
             bundle.putString("emailAddress",cusEmail);
             bundle.putString("EmailMessage",emailMessage);
-            bundle.putString("from","Skylight");
+            bundle.putString("from","Awajima");
             bundle.putString("to",cusEmail);
             bundle.putString("Purpose",purpose);
             bundle.putString("Business",businessName);

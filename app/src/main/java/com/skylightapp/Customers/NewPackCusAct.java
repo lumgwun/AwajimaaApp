@@ -44,7 +44,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.AccountTypes;
@@ -209,15 +208,14 @@ public class NewPackCusAct extends AppCompatActivity {
     long skylightCode,tellerCashCode;
     String noOfDaysString,officeBranch;
 
-    private FirebaseAuth mAuth;
-    FirebaseAuth.AuthStateListener mAuthListner;
+
     com.skylightapp.Classes.Transaction Skylightransaction;
     AppCommission appCommission;
     String transactionID,tellerSurName,selectedItem,tellerOffice,tellerFirstName,tellerName;
     TellerCash tellerCash;
     AppCompatSpinner spnSavingsPlan, spnFoodAndItem, spnInvestment,spnTypeOfPackage,spnPromo;
     LinearLayoutCompat layoutSavings,layoutDuration;
-    private FirebaseAuth.AuthStateListener mAuthListener;
+
     private static final String PREF_NAME = "skylight";
     com.skylightapp.Classes.Transaction.TRANSACTION_TYPE transaction_type;
     String investStringEndDate,selectedPromoPack,packageEndDate,invMaturityDate,newPackageType,selectedFoodStuff,selectedItemType,finalItemType,selectedInvestmentType;
@@ -370,7 +368,6 @@ public class NewPackCusAct extends AppCompatActivity {
         Date newDate = calendar.getTime();
         String savingsEndDate = sdf.format(newDate);
 
-        mAuth = FirebaseAuth.getInstance();
 
         try {
             profileID = userPreferences.getInt("PROFILE_ID", 0);
@@ -601,7 +598,7 @@ public class NewPackCusAct extends AppCompatActivity {
 
                 }
                 if(packageType.equalsIgnoreCase("Investment")){
-                    transaction_type= Transaction.TRANSACTION_TYPE.IVESTMENT;
+                    transaction_type= Transaction.TRANSACTION_TYPE.INVESTMENT;
 
                 }
                 Skylightransaction= new com.skylightapp.Classes.Transaction();
@@ -690,7 +687,7 @@ public class NewPackCusAct extends AppCompatActivity {
 
                 }
                 if(packageType.equalsIgnoreCase("Investment")){
-                    transaction_type= Transaction.TRANSACTION_TYPE.IVESTMENT;
+                    transaction_type= Transaction.TRANSACTION_TYPE.INVESTMENT;
 
                 }
                 Skylightransaction= new com.skylightapp.Classes.Transaction();
@@ -886,7 +883,7 @@ public class NewPackCusAct extends AppCompatActivity {
         emailAddress = customer.getCusEmailAddress();
         String managerName = userProfile.getProfileLastName() + "," + userProfile.getProfileFirstName();
         skylightCode = random.nextInt((int) (Math.random() * 20089) + 22341);
-        String transactionID="Skylight"+skylightCode;
+        String transactionID="Awajima"+skylightCode;
 
         String tittle = "New Package Alert" + "from" + managerName;
         String details = managerName + "added a new package of NGN" + newTotal + "for" + customerName + "on" + reportDate;
@@ -908,7 +905,7 @@ public class NewPackCusAct extends AppCompatActivity {
         if(userProfile !=null){
             userProfile.addPNewSkylightPackage(profileID, customerID, packageID, packageType, savingsAmount, this.packageDuration, reportDate, grandTotal, "","just stated");
         }
-        //Skylightransaction= new com.skylightapp.Classes.Transaction(transactionID, accountNo, this.reportDate, "Skylight", String.valueOf(account1), "Skylight", customerNames, this.totalAmountSum, transaction_type, "",officeBranch, "", "", "");
+        //Skylightransaction= new com.skylightapp.Classes.Transaction(transactionID, accountNo, this.reportDate, "Awajima", String.valueOf(account1), "Awajima", customerNames, this.totalAmountSum, transaction_type, "",officeBranch, "", "", "");
 
         sendSMSMessage(customerNames,amountContributedSoFar,skylightCode);
 
@@ -922,7 +919,7 @@ public class NewPackCusAct extends AppCompatActivity {
             sqLiteDatabase = dbHelper.getWritableDatabase();
             timeLineClassDAO.insertTimeLine(tittle, details, reportDate, mCurrentLocation);
             timeLineClassDAO.insertTimeLine(timelineTittle3, details, reportDate, mCurrentLocation);
-            tranXDAO.saveNewTransaction(profileID, customerID,Skylightransaction, acctID, "Skylight", customerNames,transaction_type, totalAmountSum, reportID, officeBranch, reportDate);
+            tranXDAO.saveNewTransaction(profileID, customerID,Skylightransaction, acctID, "Awajima", customerNames,transaction_type, totalAmountSum, reportID, officeBranch, reportDate);
             dbHelper.insertNewPackage(userProfile, customer,  skyLightPackage1);
             balanceDAO.saveNewAdminBalance(acctID, profileID, customerID, packageID, savingsAmount, reportDate,"Unconfirmed");
             dbHelper.insertDailyReport(packageID,reportID, profileID, customerID, reportDate, savingsAmount,numberOfDays,newTotal,newAmountContributedSoFar,newAmountRemaining,newDaysRemaining,"First Report");

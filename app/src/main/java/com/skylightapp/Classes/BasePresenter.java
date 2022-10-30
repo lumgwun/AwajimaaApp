@@ -7,8 +7,6 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import com.skylightapp.Enums.ProfileStatus;
@@ -70,8 +68,6 @@ public class BasePresenter<T extends BaseView & MvpView> extends MvpBasePresente
         }
     }
 
-    protected String getCurrentUserId(String phoneNo) throws FirebaseAuthException {
-        return FirebaseAuth.getInstance().getUid();
-    }
+
 
 }

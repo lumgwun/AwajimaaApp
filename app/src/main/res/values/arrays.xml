@@ -12,6 +12,31 @@
         <item>To</item>
         <item>From</item>
     </string-array>
+    <string-array name="BizCategory">
+        <item>Insurance Org.</item>
+        <item>Logistics Org.</item>
+        <item>Environmental Report Response Org.</item>
+        <item>Emergencies Report Response Org</item>
+        <item>Crimes Report Response Org</item>
+        <item>Regulator</item>
+        <item>Donor</item>
+        <item>Small Biz.</item>
+        <item>Investor</item>
+        <item>Partner</item>
+    </string-array>
+
+    <string-array name="BizCat_Values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+    </string-array>
     <string-array name="tranx_type">
         <item>Cash</item>
         <item>Deposit</item>
@@ -22,6 +47,7 @@
         <item>Trade by Barter</item>
         <item>Debt Reduction</item>
     </string-array>
+
     <string-array name="Awajima_To_type">
         <item>Market</item>
         <item>Business Deal Partner</item>
@@ -52,7 +78,6 @@
 
 
     </string-array>
-
 
 
     <string-array name="Admin_Type">
@@ -163,7 +188,6 @@
     </string-array>
 
 
-
     <string-array name="purposeOfMessage">
         <item></item>
         <item>Reply</item>
@@ -183,6 +207,15 @@
         <item>Admin User</item>
         <item>Accountant</item>
         <item>Super Admin</item>
+    </string-array>
+
+    <string-array name="UserReceiver">
+        <item></item>
+        <item>Teller</item>
+        <item>Customer</item>
+        <item>Business</item>
+        <item>Branch Office</item>
+        <item>Awajima</item>
     </string-array>
     <string-array name="user_Status">
         <item></item>
@@ -208,23 +241,23 @@
 
     <array name="array_dot_active">
 
-    <item>@color/dot_light_screen1</item>
+        <item>@color/dot_light_screen1</item>
 
-    <item>@color/dot_light_screen2</item>
+        <item>@color/dot_light_screen2</item>
 
     </array>
 
 
-    -<array name="array_dot_inactive">
+    -
+    <array name="array_dot_inactive">
 
-    <item>@color/dot_dark_screen1</item>
+        <item>@color/dot_dark_screen1</item>
 
-    <item>@color/dot_dark_screen2</item>
+        <item>@color/dot_dark_screen2</item>
 
-</array>
+    </array>
 
     <string-array name="EmergencyReport">
-        <item></item>
         <item>Building Collapse</item>
         <item>Rape</item>
         <item>Flooding</item>
@@ -234,6 +267,24 @@
         <item>Road Accident</item>
         <item>Air Accident</item>
         <item>Water Accident</item>
+        <item>Gun Men Attack</item>
+        <item>Kidnapping</item>
+        <item>Robbery</item>
+        <item>Domestic Violence</item>
+        <item>Fake Products</item>
+        <item>Money Laundering</item>
+        <item>Strange Faces</item>
+        <item>Suicide</item>
+        <item>Murder</item>
+        <item>Child Abuse</item>
+    </string-array>
+
+    <string-array name="EmergencyCategory">
+        <item>Environmental Issues</item>
+        <item>Crimes</item>
+        <item>Emergencies</item>
+        <item>Oil Spillage</item>
+        <item>All</item>
     </string-array>
 
     <string-array name="Frequency_Of_Plan">
@@ -260,7 +311,6 @@
     </string-array>
 
 
-
     <string-array name="CrimesReport">
         <item></item>
         <item>Robbery</item>
@@ -277,6 +327,17 @@
         <item>Weekly</item>
         <item>Monthly</item>
         <item>Yearly</item>
+    </string-array>
+
+    <string-array name="New_Awajima_Branch">
+        <item>Ene-Awaji </item>
+        <item>Ugwem</item>
+        <item>Nkakere</item>
+        <item>Emiyarei</item>
+        <item>Enema</item>
+        <item>Ugbana</item>
+        <item>Egbe</item>
+        <item>Gogo-Ogwute</item>
     </string-array>
 
     <string-array name="RV_LGA">
@@ -379,6 +440,7 @@
         <item>Family</item>
         <item>Upkeep</item>
         <item>Others</item>
+        <item>Medical</item>
     </string-array>
     <string-array name="mobile_money">
         <item></item>
@@ -421,25 +483,14 @@
 
     <string-array name="means_of_identification">
         <item>BVN</item>
+        <item>Passport Number</item>
+        <item>Voters Card</item>
+        <item>National ID No.</item>
+        <item>Drivers Licence</item>
     </string-array>
 
     <string-array name="School">
-        <item>ADORABLE FOUNDATION FOR EDU. DEV</item>
-        <item>VERITAS UNIVERSITY</item>
-        <item>SUREFOOT AMERICAN INTL SCHOOL</item>
-        <item>STELLA MARIS COLLEGE</item>
-        <item>OXBRIDGE COLLEGE</item>
-        <item>LARIKEN SCHOOLS</item>
-        <item>LANDMARK UNIVERSITY OMU-ARAN</item>
-        <item>AIR FORCE SEC. SCHOOL PH</item>
-        <item>BARBARA COX COLLEGE</item>
-        <item>BERETON MONTESSORI</item>
-        <item>BINGHAM UNIVERSITY</item>
-        <item>CORONA SCHOOL LEKKI</item>
-        <item>CHIRST THE KING INTL SCHOOL</item>
-        <item>DEEPER LIFE HIGH SCHOOL-ABUJA</item>
-        <item>LAGOS BUSINESS SCHOOL</item>
-        <item>TENDERTOUCH COLLEGE</item>
+        <item></item>
     </string-array>
 
     <string-array name="country">
@@ -465,13 +516,7 @@
     </string-array>
 
     <string-array name="Internet_Providers">
-        <item>Smile</item>
-        <item>Spectranet</item>
-        <item>SWIFT TOP UP</item>
-        <item>TOP UP ACCOUNT</item>
-        <item>ipNX Family Plan</item>
-        <item>Starter Basic Plan</item>
-        <item>Unlimited Starter Plan</item>
+        <item></item>
 
     </string-array>
 
@@ -518,55 +563,18 @@
         <item>KES</item>
     </string-array>
     <string-array name="glo_9ja_data">
-        <item>35mb, 1 day, N100</item>
-        <item>100mb, N200</item>
-        <item>920mb, N500</item>
-        <item>1.8GB, 30 days,N1,000</item>
-        <item>4.5GB,  N2,000</item>
-        <item>7.2GB,  N2,500</item>
-        <item>8.75GB,  N3,000</item>
-        <item>12.5GB, N4,000</item>
-        <item>15.6GB, N5,000</item>
-        <item>32.5GB, N10,000</item>
-        <item>52.5GB,  N15,000</item>
-        <item>62.5GB,  N18,000</item>
+        <item></item>
     </string-array>
 
 
     <string-array name="mtn_data">
-        <item>100mb, 1 day, N100</item>
-        <item>200mb, N200</item>
-        <item>350mb, 7 days,N300</item>
-        <item>750mb, 7 days,N500</item>
-        <item>1GB, 1 day, N350</item>
-        <item>1GB, 7 days, N500</item>
-        <item>1.5GB,30days, N1000</item>
-        <item>2GB,30 days,N1,200</item>
-        <item>2.5GB,2 days,N500</item>
-        <item>3GB,30 days,N1,500</item>
-        <item>4.5GB, 30 days,N2000</item>
-        <item>6GB, 7 day, N1,500</item>
-        <item>8GB data, 30 days,N3000</item>
-        <item>10GB ,30days, N3,500</item>
-        <item>15GB ,30 days,N5,000</item>
-        <item>40GB ,30 days,N10,000</item>
-        <item>75GB ,30 days,N20,000</item>
-        <item>120 GB, N30,000</item>
+        <item></item>
 
 
     </string-array>
     <string-array name="nine_mobile_data">
-        <item>650MB,  N200</item>
-        <item>1.5GB,  N1,000</item>
-        <item>4.5GB, N2,000</item>
-        <item>4GB, N3,000</item>
-        <item>11.5GB, N4000</item>
-        <item>15GB,  N5,000</item>
-        <item>27.5GB,  N18,000</item>
-        <item>30GB, N27,500</item>
-        <item>60GB, N55,000</item>
-    </string-array>
 
+    </string-array>
 
 
     <string-array name="type_Of_Biz">
@@ -579,6 +587,19 @@
         <item>Wholesale Biz</item>
         <item>Boole Joint</item>
         <item>Fitness Center</item>
+        <item>Insurance Company</item>
+        <item>Organization</item>
+        <item>Church</item>
+        <item>NGO</item>
+        <item>Retail Trade</item>
+        <item>Consulting</item>
+        <item>Eatery</item>
+        <item>Hotel</item>
+        <item>Transport Company</item>
+        <item>School</item>
+        <item>Barbing Saloon</item>
+        <item>Fashion Business</item>
+        <item>Printing Press</item>
     </string-array>
     <string-array name="PropertySearchParam">
         <item></item>
@@ -593,7 +614,6 @@
     </string-array>
 
 
-
     <string-array name="DSTV_Type">
         <item>DSTV</item>
         <item>DSTV BOX OFFICE</item>
@@ -601,41 +621,11 @@
 
 
     <string-array name="AirTel_Data">
-        <item>40mb, 1 day, N100</item>
-        <item>100mb, N100</item>
-        <item>350mb, 7 days,N300</item>
-        <item>200mb, N200</item>
-        <item>350MB,  N300</item>
-        <item>750MB,  N500</item>
-        <item>1.5GB ,N1500</item>
-        <item>6GB,30 days,N2,500</item>
-        <item>8GB,N3,000</item>
-        <item>11GB, N4,000</item>
-        <item>15GB, N5000</item>
-        <item>40GB,  N10,000</item>
-        <item>75GB,  N15,000</item>
+        <item></item>
     </string-array>
 
     <string-array name="DSTV_Nig_Packages">
-        <item>DSTV Premium(N16,200 + N100)/Month</item>
-        <item>DSTV Compact Plus (N10,925 + N100)/Month</item>
-        <item>DSTV Confam(N4,615 + N100)/Month</item>
-        <item>DSTV Yanga Bouquet(N2,565 + N100)/Month</item>
-        <item>DSTV Padi Bouquet(N1,850 + N100)/Month</item>
-        <item>DSTV French Plus(N16,520 + N100)/Month</item>
-        <item>French Touch(N2300 + N100)/Month</item>
-        <item>HDPVR Access/Extraview(N2500 + N100)/Month</item>
-        <item>DSTV Compact Plus (N10,925 + N100)/Month</item>
-        <item>Confam + Xtraview(N7115 + N100)/Month</item>
-        <item>Yanga + Xtraview(N5065 + N100)/Month</item>
-        <item>Padi + Xtraview(N4350 + N100)/Month</item>
-        <item>Premium(N18400 + N100)/Month</item>
-        <item>Premium Asia + HD/ExtraView(N23000 + N100)/Month</item>
-        <item>Premium + Asia(N20500 + N100)/Month</item>
-        <item>Premium + Xtraview(N20900 + N100)/Month</item>
-        <item>Premium + French(N25550 + N100)/Month</item>
-        <item>Premium + French + Xtraview(N28050 + N100)/Month</item>
-        <item>Xtraview Access(N2500 + N100)/Month</item>
+        <item></item>
     </string-array>
 
     <string-array name="DSTV_UG_Packages">
@@ -660,26 +650,7 @@
 
     </string-array>
     <string-array name="Smile_packages">
-        <item>SMILE 21GB BUNDLE</item>
-        <item>SMILE LITE 1.5GB BUNDLE</item>
-        <item>SMILE 7GB BUNDLE</item>
-        <item>SMILE 15GB DATA BUNDLE</item>
-        <item>SMILE 1GB Flexi Daily Data Plan 1 Day</item>
-        <item>MILE 2GB Flexi Weekly Data Plan 7 Days</item>
-        <item>SMILE 30GB Bumpa Data Plan 60 Days</item>
-        <item>SMILE 60GB BumpaValue Data Plan 90 Days</item>
-        <item>SMILE 80GB BumpaValue Plan 120 Days</item>
-        <item>SMILE 2GB MidNite Plan</item>
-        <item>SMILE 3GB MidNite Plan</item>
-        <item>SMILE Smile 3GB Data Bundle</item>
-        <item>SMILE 3GB Weekend Plan</item>
-        <item>SMILE 10GB Data Bundle</item>
-        <item>SMILE 50GB Data Bundle</item>
-        <item>Smile UnlimitedLite Plan</item>
-        <item>Unlimited Access Bundle</item>
-        <item>SMILE - Unlimited Premium</item>
-        <item>SMILE - 100GB Data Bundle</item>
-        <item>200GB Data Bundle</item>
+        <item></item>
     </string-array>
 
     <string-array name="startTimes_Country">
@@ -689,27 +660,8 @@
     </string-array>
 
 
-    <string-array
-        name="StartTimes_Nig_Packages">
-        <item>SUPER - One Week</item>
-        <item>UNIQUE - One Month</item>
-        <item>SUPER - One Month</item>
-        <item>SUPER - One Day</item>
-        <item>UNIQUE - One Week</item>
-        <item>UNIQUE - One Day</item>
-        <item>CLASSIC - One month</item>
-        <item>CLASSIC - One Week</item>
-        <item>CLASSIC - One Day</item>
-        <item>SMART - One Month</item>
-        <item>SMART - One Week</item>
-        <item>SMART - One Day</item>
-        <item>BASIC - One Month</item>
-        <item>BASIC - One Week</item>
-        <item>BASIC - One Day</item>
-        <item>NOVA - One Month</item>
-        <item>NOVA - One Week</item>
-        <item>NOVA - One Day</item>
-
+    <string-array name="StartTimes_Nig_Packages">
+        <item></item>
     </string-array>
 
     <string-array name="StarTimes_Kenya">
@@ -746,20 +698,11 @@
     </string-array>
 
 
-
     <string-array name="GOTV_Packages">
-        <item>GOTV MAX (N3,600 + N100), 75+ Channels</item>
-        <item>GOTV Jolli(N2,460 +N100),68 Channels+</item>
-        <item>GOTV Jinja(N1,640 +N100),47+ Channels</item>
-        <item>GOTV Smallie Monthly(N800 +100)</item>
-        <item>GOTV Smallie Annually(N6,200+ N100),30+ Channels</item>
-        <item>GOTV Smallie quarterly(N2,100+N100),30+</item>
+        <item></item>
     </string-array>
     <string-array name="GOTV_UG_Packages">
-        <item>GOTV Light (Monthly)(11000+100)</item>
-        <item>GOTV PLUS (28000+100)</item>
-        <item>GOTV MAX (39000+100)</item>
-        <item>Gotv Value (16000+100)</item>
+
 
     </string-array>
     <string-array name="GOTV_Kenya_Packages">
@@ -767,14 +710,7 @@
     </string-array>
 
     <string-array name="GOTV_Nigeria_Packages">
-        <item>GOTV MAX (N3,600 + N100), 75+ Channels</item>
-        <item>GOTV LIGHT</item>
-        <item>GOTV Jolli(N2,460 +N100),68 Channels+</item>
-        <item>GOTV Jolli(N2,460 +N100),68 Channels+</item>
-        <item>GOTV Jinja(N1,640 +N100),47+ Channels</item>
-        <item>GOTV Smallie Monthly(N800 +100)</item>
-        <item>GOTV Smallie Annually(N6,200+ N100),30+ Channels</item>
-        <item>GOTV Smallie quarterly(N2,100+N100),30+</item>
+
     </string-array>
     <string-array name="Power_Country">
         <item>Kenya</item>
@@ -797,16 +733,8 @@
     </string-array>
 
     <string-array name="other_Bills">
-        <item>Kenyan Prepaid</item>
-        <item>Kenyan Postpaid</item>
-        <item>Kenyan KPLC</item>
-        <item>NAIROBI WATER</item>
-        <item>Uganda NWSC Top up</item>
-        <item>Uganda Prepaid Topup</item>
-        <item>LCC Top payment</item>
-        <item>Lekki Concession Company (Lekki - Epe Expressway)</item>
-        <item>Uganda PostPaid Top up</item>
-        <item>Uganda PostPaid Top up</item>
+        <item></item>
+
 
     </string-array>
 
@@ -816,15 +744,9 @@
     </string-array>
 
 
-
-
     <string-array name="otherBills_Type">
-        <item>Uganda PostPaid Top up</item>
-        <item>Uganda Prepaid Topup</item>
-        <item>Uganda PostPaid Top up</item>
-        <item>Uganda Prepaid Topup</item>
 
-
+        <item></item>
     </string-array>
 
     <string-array name="EKEDCPaid_Type">
@@ -907,7 +829,6 @@
         <item>Uganda</item>
         <item>Ghana</item>
         <item>Kenya</item>
-
 
 
     </string-array>
@@ -1017,7 +938,6 @@
         <item>QRCode</item>
         <item>Mobile Money</item>
     </string-array>
-
 
 
     <string-array name="months">
@@ -1516,7 +1436,6 @@
     </string-array>
 
 
-
     <string-array name="packages">
         <item></item>
         <item>Package A</item>
@@ -1583,7 +1502,6 @@
         <item>NGN1,000,000</item>
         <item>NGN10,000,000</item>
     </string-array>
-
 
 
     <string-array name="plans">
@@ -1829,8 +1747,6 @@
     </string-array>
 
 
-
-
     <string-array name="planValues">
         <item></item>
         <item>1</item>
@@ -1930,7 +1846,6 @@
         <item>11</item>
         <item>12</item>
     </string-array>
-
 
 
     <string-array name="number_of_day_spinner">
@@ -2041,101 +1956,25 @@
         <item>Pagatech</item>
     </string-array>
 
-    <string-array name="office">
-        <item></item>
-        <item>Trans-Amadi</item>
-        <item>University of Edu. Road</item>
-        <item>Ogoni Affiliate Center</item>
-        <item>Ahoada Affiliate Center</item>
-        <item>Ndoni Affiliate Center</item>
-        <item>Bayelsa Affiliate Center</item>
-        <item>Delta Affiliate Center</item>
-        <item>Edo Affiliate Center</item>
-        <item>Andoni Affiliate Center</item>
-        <item>Imo Affiliate Center</item>
-        <item>Abia Affiliate Center</item>
-    </string-array>
-
-    <string-array name="officeBranch">
-        <item></item>
-        <item>Port Harcourt</item>
-        <item>Lagos</item>
-        <item>Abuja</item>
-        <item>Soweto</item>
-        <item>Accra</item>
-        <item>Ebonyi</item>
-        <item>Uyo</item>
-        <item>Kaduna</item>
-    </string-array>
 
     <string-array name="statusOfDeposit">
         <item></item>
         <item>Verified</item>
         <item>UnVerified</item>
     </string-array>
-    <string-array name="officeBranch33">
-        <item></item>
-        <item>Trans-Amadi</item>
-        <item>Wimpey</item>
-        <item>Elelenwo</item>
-        <item>Ozuoba</item>
-        <item>Eleme</item>
-        <item>Iriebe</item>
-        <item>Onne</item>
-        <item>Rumuomasi</item>
-    </string-array>
 
-    <string-array name="officeWareHouse">
-        <item></item>
-        <item>Skylight Warehouse</item>
-        <item>Trans-Amadi</item>
-        <item>Wimpey</item>
-        <item>Elelenwo</item>
-        <item>Ozuoba</item>
-        <item>Eleme</item>
-        <item>Iriebe</item>
-        <item>Onne</item>
-        <item>Rumuomasi</item>
-        <item>Others</item>
-    </string-array>
-
-    <string-array name="skylight_packages">
+    <string-array name="awajima_packages">
         <item></item>
         <item>Savings</item>
         <item>Item Purchase</item>
         <item>Promo</item>
         <item>Investment</item>
+        <item>Low cost Housing</item>
+        <item>Japa Package</item>
+        <item>Rent Package</item>
+        <item>Business Start-Up</item>
+        <item>Business Expansion</item>
     </string-array>
-
-    <string-array name="Stock_Office_Branch">
-        <item></item>
-        <item>Soweto Warehouse</item>
-        <item>Ugama</item>
-        <item>Unyeada</item>
-        <item>Abuja</item>
-        <item>Lagos</item>
-        <item>Accra</item>
-        <item>Kenya</item>
-        <item>USA</item>
-        <item>Canada</item>
-        <item>Australia</item>
-        <item>Germany</item>
-    </string-array>
-
-    <string-array name="Stock_Office_Branches">
-        <item></item>
-        <item>Skylight Warehouse</item>
-        <item>Trans-Amadi</item>
-        <item>Wimpey</item>
-        <item>Elelenwo</item>
-        <item>Ozuoba</item>
-        <item>Eleme</item>
-        <item>Iriebe</item>
-        <item>Onne</item>
-        <item>Rumuomasi</item>
-    </string-array>
-
-
 
 
     <string-array name="item_menu_array">
@@ -2196,7 +2035,7 @@
 
 
     <string-array name="state">
-        <item></item>
+        <item>Rivers State</item>
         <item>Outside Nigeria</item>
         <item>Abia</item>
         <item>Adamawa State</item>
@@ -2212,6 +2051,7 @@
         <item>Edo State</item>
         <item>Ekiti State</item>
         <item>Enugu State</item>
+        <item>FCT</item>
         <item>Gombe State</item>
         <item>Imo State</item>
         <item>Jigawa State</item>
@@ -2229,11 +2069,11 @@
         <item>Osun State</item>
         <item>Oyo State</item>
         <item>Plateau State</item>
-        <item>Rivers State</item>
         <item>Sokoto State</item>
         <item>Taraba State</item>
         <item>Yobe State</item>
         <item>Zamfara State</item>
+        <item>All</item>
     </string-array>
 
     <string-array name="Package_Item_Purchase">
@@ -2298,7 +2138,6 @@
         <item>Others</item>
 
     </string-array>
-
 
 
     <string-array name="promo">
@@ -2419,7 +2258,6 @@
         <item>Plan 2, N1,350, @ 5% Yearly</item>
         <item>Plan 3, N2,700, @5% Yearly</item>
     </string-array>
-
 
 
     <string-array name="Package_Collectable">

@@ -18,7 +18,6 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
-import com.firebase.ui.auth.ui.phone.SpacedEditText;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.OfficeBranch;
 import com.skylightapp.Classes.Profile;
@@ -40,7 +39,6 @@ public class BranchStockOv extends AppCompatActivity implements MyInventAdapter.
     DatePicker picker;
     String selectedStatus,dateOfApproval,superAdminName,tellerConfirmationCode, officeBranch;
     int selectedDepositIndex;
-    SpacedEditText edtCode;
     DBHelper dbHelper;
     int branchID,stocksBranchCount;
     Bundle userBundle;
@@ -160,7 +158,7 @@ public class BranchStockOv extends AppCompatActivity implements MyInventAdapter.
 
         }else{
             if(totalSC ==0){
-                txtTotalSCTotal.setText("Oops! no Skylight Stocks for this Branch");
+                txtTotalSCTotal.setText("Oops! no Awajima Stocks for this Branch");
 
             }
 
@@ -170,7 +168,7 @@ public class BranchStockOv extends AppCompatActivity implements MyInventAdapter.
 
         }else{
             if(totalSCForToday ==0){
-                txtTotalSCForToday.setText("Oops! no Skylight Stocks for Today");
+                txtTotalSCForToday.setText("Oops! no Awajima Stocks for Today");
 
             }
 
@@ -180,7 +178,7 @@ public class BranchStockOv extends AppCompatActivity implements MyInventAdapter.
 
         }else{
             if(totalSCForDate ==0){
-                txtTotalSCForDate.setText("Oops! no Skylight Stocks for the Date");
+                txtTotalSCForDate.setText("Oops! no Awajima Stocks for the Date");
 
             }
 

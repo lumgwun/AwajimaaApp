@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:itemTextAppearance="@style/TextAppearance.AppCompat.Widget.PopupMenu.Header"
+    tools:showIn="navigation_view">
+    <item android:title="Subscriptions">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_biz_Subscriptions"
+                    android:icon="@drawable/ic_icon2"
+                    android:title="Our Subscriptions" />
+            </group>
+        </menu>
+    </item>
+    <item android:title="General">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_biz_d"
+                    android:icon="@drawable/ic_dashboard_black_24dp"
+                    android:title="My Dashboard" />
+
+                <item
+                    android:id="@+id/biz_timeline"
+                    android:icon="@drawable/ic_icon2"
+                    android:title="Biz Deal Timeline" />
+
+                <item
+                    android:id="@+id/nav_biz_cus"
+                    android:icon="@drawable/ic_icon2"
+                    android:title="Customers" />
+                <item
+                    android:id="@+id/nav_suppliers_biz"
+                    android:icon="@drawable/ic_icon2"
+                    android:title="Suppliers" />
+
+                <item
+                    android:id="@+id/nav_inv_biz"
+                    android:icon="@drawable/ic_icon2"
+                    android:title="Investors" />
+
+                <item
+                    android:id="@+id/nav_regulators_biz"
+                    android:icon="@drawable/ic_icon2"
+                    android:title="My Biz Regulators" />
+
+                <item
+                    android:id="@+id/nav_deals_biz"
+                    android:icon="@drawable/ic_icon2"
+                    android:title="My Biz Deals" />
+                <item
+                    android:id="@+id/nav_workers"
+                    android:icon="@drawable/ic_icon2"
+                    android:title="Workers" />
+
+                <item
+                    android:id="@+id/nav_branches_B"
+                    android:icon="@drawable/ic_icon2"
+                    android:title="Offices" />
+            </group>
+        </menu>
+    </item>
+
+    <group android:checkableBehavior="single"
+        android:menuCategory="system">
+
+
+        <item android:title="Transaction">
+            <menu>
+                <group android:checkableBehavior="single">
+
+                    <item
+                        android:id="@+id/nav_dep_cash"
+                        android:icon="@drawable/ic_icon2"
+                        android:title="Cash Deposits" />
+                    <item
+                        android:id="@+id/nav_Grp_Savings"
+                        android:icon="@drawable/ic_icon2"
+                        android:title="Group Savings" />
+
+                    <item
+                        android:id="@+id/nav_biz_t"
+                        android:icon="@drawable/ic_icon2"
+                        android:title="My Transactions" />
+                    <item
+                        android:id="@+id/loan_nav_biz"
+                        android:icon="@drawable/ic_icon2"
+                        android:title="My Loans" />
+                    <item
+                        android:id="@+id/nav_grant_biz"
+                        android:icon="@drawable/ic_icon2"
+                        android:title="Grants" />
+
+
+                </group>
+            </menu>
+
+        </item>
+
+        <item android:title="Market">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_market_biz"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Emergencies" />
+                </group>
+            </menu>
+        </item>
+
+
+        <item android:title="Support">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_support_biz"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Support Tab" />
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="Inventory">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_inventory_b"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Biz Inventory" />
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="Emergencies">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_report_Emerg"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Emergencies" />
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="Settings">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_biz_Type_settings"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Biz Settings" />
+                </group>
+            </menu>
+        </item>
+
+
+
+        <item android:title="Logout">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_biz_logout"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Logout" />
+                </group>
+            </menu>
+        </item>
+
+    </group>
+
+</menu>

@@ -14,7 +14,7 @@ import com.skylightapp.Adapters.LoanAdapter;
 import com.skylightapp.Adapters.SavingsAdapter;
 import com.skylightapp.Adapters.SkyLightPackageAdapter;
 import com.skylightapp.Adapters.StandingOrderAdapterC;
-import com.skylightapp.Adapters.TransactionAdapter;
+import com.skylightapp.Adapters.TranxAdminA;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.Loan;
@@ -42,7 +42,7 @@ public class CustomerDetailAct extends AppCompatActivity {
     private Customer customer;
     private int customerID;
     private List<Transaction> transactionList;
-    private TransactionAdapter transactionAdapter;
+    private TranxAdminA tranxAdminA;
     private ArrayList<Transaction> transactionArrayList;
     private ArrayList<Payment> paymentArrayList;
     private ArrayList<StandingOrder> standingOrderArrayList;
@@ -230,8 +230,8 @@ public class CustomerDetailAct extends AppCompatActivity {
                 = new LinearLayoutManager(CustomerDetailAct.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerViewTX.setLayoutManager(layoutManagerT);
         //recyclerViewTX.setHasFixedSize(true);
-        transactionAdapter = new TransactionAdapter(CustomerDetailAct.this,transactionArrayList);
-        recyclerViewTX.setAdapter(transactionAdapter);
+        tranxAdminA = new TranxAdminA(CustomerDetailAct.this,transactionArrayList);
+        recyclerViewTX.setAdapter(tranxAdminA);
         DividerItemDecoration dividerItemDecorationT = new DividerItemDecoration(recyclerViewTX.getContext(),
                 layoutManagerC.getOrientation());
         recyclerViewTX.addItemDecoration(dividerItemDecorationT);

@@ -540,7 +540,7 @@ public class OldPackCusAct extends AppCompatActivity {
                                     dbHelper.updatePackage(customerID, oldPackageId, 0, "Completed");
                                     dbHelper.getPackageReminder(String.valueOf(oldPackageId));
 
-                                    String paymentMessage = "Skylight! your package :" + oldPackageId + "" + "is Complete";
+                                    String paymentMessage = "Awajima! your package :" + oldPackageId + "" + "is Complete";
                                     Twilio.init("ACb6e4c829a5792a4b744a3e6bd1cf2b4e", "0d5cbd54456dd0764786db0c37212578");
                                     Message message = Message.creator(
                                             new com.twilio.type.PhoneNumber(phoneNo),

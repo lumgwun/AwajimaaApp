@@ -52,6 +52,7 @@
             android:layout_height="fill_parent"
             android:padding="5dp" />
     </LinearLayout>
+    <include layout="@layout/grp_s_tab_bottom" />
 
     <com.github.clans.fab.FloatingActionButton
         android:layout_width="match_parent"

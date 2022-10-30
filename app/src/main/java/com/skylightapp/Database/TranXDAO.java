@@ -9,18 +9,20 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.skylightapp.Classes.ChartData;
 import com.skylightapp.Classes.Customer;
+import com.skylightapp.Classes.GroupAccount;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Transaction;
+import com.skylightapp.MarketClasses.MarketTranx;
 
 import java.util.ArrayList;
 
-import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
-import static com.skylightapp.Classes.CustomerDailyReport.DAILY_REPORT_TABLE;
-import static com.skylightapp.Classes.CustomerDailyReport.REPORT_CUS_ID_FK;
-import static com.skylightapp.Classes.CustomerDailyReport.REPORT_DATE;
-import static com.skylightapp.Classes.CustomerDailyReport.REPORT_ID;
-import static com.skylightapp.Classes.CustomerDailyReport.REPORT_PROF_ID_FK;
-import static com.skylightapp.Classes.GroupAccount.GRPA_ID;
+import static com.skylightapp.Classes.GroupAccount.GRPA_AMT;
+import static com.skylightapp.Classes.GroupAccount.GRPA_DURATION;
+import static com.skylightapp.Classes.GroupAccount.GRP_ACCT_ID;
+import static com.skylightapp.Classes.GroupAccount.GRP_ACCT_TABLE;
+import static com.skylightapp.Classes.GroupSavings.GROUP_SAVINGS_DATE;
+import static com.skylightapp.Classes.GroupSavings.GROUP_SAVINGS_PROF_ID;
+import static com.skylightapp.Classes.GroupSavings.GS_GRP_ACCT_ID;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 import static com.skylightapp.Classes.StandingOrder.SO_ID;
 import static com.skylightapp.Classes.Transaction.GRP_TRANX_TABLE;
@@ -28,10 +30,12 @@ import static com.skylightapp.Classes.Transaction.TRANSACTIONS_TABLE;
 import static com.skylightapp.Classes.Transaction.TRANSACTIONS_TYPE;
 import static com.skylightapp.Classes.Transaction.TRANSACTION_ACCT_ID;
 import static com.skylightapp.Classes.Transaction.TRANSACTION_AMOUNT;
+import static com.skylightapp.Classes.Transaction.TRANSACTION_BIZ_ID;
 import static com.skylightapp.Classes.Transaction.TRANSACTION_CUS_ID;
 import static com.skylightapp.Classes.Transaction.TRANSACTION_DATE;
 import static com.skylightapp.Classes.Transaction.TRANSACTION_DEST_ACCT;
 import static com.skylightapp.Classes.Transaction.TRANSACTION_ID;
+import static com.skylightapp.Classes.Transaction.TRANSACTION_MARKET_ID;
 import static com.skylightapp.Classes.Transaction.TRANSACTION_METHOD_OF_PAYMENT;
 import static com.skylightapp.Classes.Transaction.TRANSACTION_OFFICE_BRANCH;
 import static com.skylightapp.Classes.Transaction.TRANSACTION_PAYEE;
@@ -70,6 +74,56 @@ public class TranXDAO extends DBHelperDAO{
         return dataList;
 
     }
+    private Cursor getTransactionsFromCursorSimple( ArrayList<Transaction> transactions, Cursor cursor) {
+        while (cursor.moveToNext()) {
+
+            int transactionID = cursor.getInt(0);
+            int profileID = cursor.getInt(1);
+            int customerID = cursor.getInt(2);
+            int accountNo=cursor.getInt(3);
+            String timestamp = cursor.getString(4);
+            String sendingAccount = cursor.getString(5);
+            String destinationAccount = cursor.getString(6);
+            String payee = cursor.getString(7);
+            String payer = cursor.getString(8);
+            double amount = cursor.getDouble(9);
+            Transaction.TRANSACTION_TYPE transactionType = Transaction.TRANSACTION_TYPE.valueOf(cursor.getString(10));
+            String method = cursor.getString(11);
+            String officeBranch = cursor.getString(12);
+            String approver = cursor.getString(13);
+            String approvalDate = cursor.getString(14);
+            String status = cursor.getString(15);
+            transactions.add(new Transaction(transactionID, timestamp,payee,payer, amount,transactionType, method,officeBranch,status));
+        }return  cursor;
+    }
+
+
+
+
+    private Cursor getTransactionsFromCursor( ArrayList<Transaction> transactions, Cursor cursor) {
+        while (cursor.moveToNext()) {
+
+            int transactionID = cursor.getInt(0);
+            int profileID = cursor.getInt(1);
+            int customerID = cursor.getInt(2);
+            int accountNo=cursor.getInt(3);
+            String timestamp = cursor.getString(4);
+            int sendingAccount = cursor.getInt(5);
+            int destinationAccount = cursor.getInt(6);
+            String payee = cursor.getString(7);
+            String payer = cursor.getString(8);
+            double amount = cursor.getDouble(9);
+            Transaction.TRANSACTION_TYPE transactionType = Transaction.TRANSACTION_TYPE.valueOf(cursor.getString(10));
+            String method = cursor.getString(11);
+            String officeBranch = cursor.getString(12);
+            String approver = cursor.getString(13);
+            String approvalDate = cursor.getString(14);
+            String status = cursor.getString(15);
+
+            transactions.add(new Transaction(transactionID, profileID,customerID,accountNo,timestamp,sendingAccount, destinationAccount,payee,payer, amount,transactionType, method,officeBranch,approver,approvalDate,status));
+        }return  cursor;
+    }
+
     @SuppressLint("Range")
     public ArrayList<ChartData> getTranxChartByTellerID(int tellerID){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -360,54 +414,33 @@ public class TranXDAO extends DBHelperDAO{
         return transactions;
 
     }
-    private Cursor getTransactionsFromCursorSimple( ArrayList<Transaction> transactions, Cursor cursor) {
-        while (cursor.moveToNext()) {
 
-            int transactionID = cursor.getInt(0);
-            int profileID = cursor.getInt(1);
-            int customerID = cursor.getInt(2);
-            int accountNo=cursor.getInt(3);
-            String timestamp = cursor.getString(4);
-            String sendingAccount = cursor.getString(5);
-            String destinationAccount = cursor.getString(6);
-            String payee = cursor.getString(7);
-            String payer = cursor.getString(8);
-            double amount = cursor.getDouble(9);
-            Transaction.TRANSACTION_TYPE transactionType = Transaction.TRANSACTION_TYPE.valueOf(cursor.getString(10));
-            String method = cursor.getString(11);
-            String officeBranch = cursor.getString(12);
-            String approver = cursor.getString(13);
-            String approvalDate = cursor.getString(14);
-            String status = cursor.getString(15);
-            transactions.add(new Transaction(transactionID, timestamp,payee,payer, amount,transactionType, method,officeBranch,status));
-        }return  cursor;
-    }
+    public ArrayList<Transaction> getBizTranxForDate(int bizID, String date) {
+        ArrayList<Transaction> transactionArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = TRANSACTION_BIZ_ID + "=? AND " + TRANSACTION_DATE + "=?";
+        String[] selectionArgs = new String[]{valueOf(bizID), valueOf(date)};
 
+        String substrgDate = "substr(" + TRANSACTION_DATE + ",7,2)||substr(" + TRANSACTION_DATE + ",4,2)";
+        String subToday = "substr(" + date + ",7,2)||substr(" + date + ",4,2)";
 
+        String select = TRANSACTION_BIZ_ID + "=? AND " + substrgDate + "=?";
 
+        String[] selArgs = new String[] {valueOf(bizID),subToday};
 
-    private Cursor getTransactionsFromCursor( ArrayList<Transaction> transactions, Cursor cursor) {
-        while (cursor.moveToNext()) {
+        Cursor cursor = db.query(TRANSACTIONS_TABLE, null, selection, selectionArgs, null,
+                null, null);
+        if (null != cursor)
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                getTransactionsFromCursor(transactionArrayList,cursor);
+            }
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
 
-            int transactionID = cursor.getInt(0);
-            int profileID = cursor.getInt(1);
-            int customerID = cursor.getInt(2);
-            int accountNo=cursor.getInt(3);
-            String timestamp = cursor.getString(4);
-            int sendingAccount = cursor.getInt(5);
-            int destinationAccount = cursor.getInt(6);
-            String payee = cursor.getString(7);
-            String payer = cursor.getString(8);
-            double amount = cursor.getDouble(9);
-            Transaction.TRANSACTION_TYPE transactionType = Transaction.TRANSACTION_TYPE.valueOf(cursor.getString(10));
-            String method = cursor.getString(11);
-            String officeBranch = cursor.getString(12);
-            String approver = cursor.getString(13);
-            String approvalDate = cursor.getString(14);
-            String status = cursor.getString(15);
-
-            transactions.add(new Transaction(transactionID, profileID,customerID,accountNo,timestamp,sendingAccount, destinationAccount,payee,payer, amount,transactionType, method,officeBranch,approver,approvalDate,status));
-        }return  cursor;
+        return transactionArrayList;
     }
     public int getTellerTxForToday(int tellerID,String txDate) {
 
@@ -505,7 +538,7 @@ public class TranXDAO extends DBHelperDAO{
         try {
             ArrayList<Transaction> transactions = new ArrayList<>();
             SQLiteDatabase db = this.getWritableDatabase();
-            Cursor cursor = db.query(GRP_TRANX_TABLE, null,  GRPA_ID
+            Cursor cursor = db.query(GRP_TRANX_TABLE, null,  GRP_ACCT_ID
                             + " = " + grpAcctID, null, null,
                     null, null);
             if (cursor != null)
@@ -527,6 +560,7 @@ public class TranXDAO extends DBHelperDAO{
 
         return null;
     }
+
     public ArrayList<Transaction> getAllTransactionProfile(int profileID) {
         ArrayList<Transaction> transactions = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
@@ -546,6 +580,66 @@ public class TranXDAO extends DBHelperDAO{
         }
 
         return transactions;
+    }
+    public ArrayList<Transaction> getAllTranxForMarket(int marketID) {
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = TRANSACTION_MARKET_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(marketID)};
+
+        Cursor cursor = db.query(TRANSACTIONS_TABLE, null,  selection, selectionArgs, null,
+                null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getTransactionsFromCursorAdmin(transactions, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        return transactions;
+    }
+    public ArrayList<Transaction> getAllTranxForBiz(long marketBizID) {
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = TRANSACTION_BIZ_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(marketBizID)};
+
+        Cursor cursor = db.query(TRANSACTIONS_TABLE, null,  selection, selectionArgs, null,
+                null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getTransactionsFromCursorAdmin(transactions, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        return transactions;
+    }
+    public ArrayList<Transaction> getTranxForBizForDate(long marketBizID,String dateOfTranx) {
+        String selection = TRANSACTION_BIZ_ID + "=? AND " + TRANSACTION_DATE + "=?";
+        String[] selectionArgs = new String[]{valueOf(marketBizID), valueOf(dateOfTranx)};
+        ArrayList<Transaction> transactionArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.query(TRANSACTIONS_TABLE, null, selection, selectionArgs, null,
+                null, null);
+        if (null != cursor)
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                getTransactionsFromCursorAdmin(transactionArrayList,cursor);
+            }
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        return transactionArrayList;
     }
     public ArrayList<Transaction> getAllTransactionAdmin() {
         try {
@@ -820,10 +914,10 @@ public class TranXDAO extends DBHelperDAO{
         cv.put(TRANSACTION_DATE, date);
 
         if (transaction.getTranXType() == Transaction.TRANSACTION_TYPE.MANUAL_WITHDRAWAL) {
-            cv.put(TRANSACTION_SENDING_ACCT, "Skylight");
+            cv.put(TRANSACTION_SENDING_ACCT, "Awajima");
             cv.put(TRANSACTION_DEST_ACCT, transaction.getTranxDestAcct());
         } else if (transaction.getTranXType() == Transaction.TRANSACTION_TYPE.LOAN) {
-            cv.put(TRANSACTION_SENDING_ACCT, "Skylight");
+            cv.put(TRANSACTION_SENDING_ACCT, "Awajima");
             cv.put(TRANSACTION_DEST_ACCT, transaction.getTranxDestAcct());
             cv.put(TRANSACTION_PAYEE, transaction.getTranxPayee());
         } else if (transaction.getTranXType() == Transaction.TRANSACTION_TYPE.GROUP_SAVINGS_WITHDRAWAL) {
@@ -843,7 +937,7 @@ public class TranXDAO extends DBHelperDAO{
             //cv.putNull(DESTINATION_ACCOUNT);
             //cv.putNull(TRANSACTION_PAYEE);
         }
-        cv.put(TRANSACTION_AMOUNT, transaction.getRecordAmount());
+        cv.put(TRANSACTION_AMOUNT, transaction.getTranxAmount());
         cv.put(TRANS_TYPE, transaction.getTranXType().toString());
 
         db.insert(TRANSACTIONS_TABLE, null, cv);
@@ -897,5 +991,8 @@ public class TranXDAO extends DBHelperDAO{
 
         return count;
     }
+
+
+
 
 }

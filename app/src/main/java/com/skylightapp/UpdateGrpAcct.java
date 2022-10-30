@@ -36,12 +36,14 @@ public class UpdateGrpAcct extends AppCompatActivity {
     DatePicker picker;
     Random ran ;
     DBHelper dbHelper;
-    long profileID,grpAcctID;
+    long profileID;
+    int grpAcctID;
     AppCompatTextView txtTittle,txtPurpose;
     private GroupAccount groupAccount;
     private AppCompatEditText edtSurname,edtFirstName,edtPhone;
     AppCompatButton btnUpdate;
     String details,managerName;
+    private static final String PREF_NAME = "awajima";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,9 @@ public class UpdateGrpAcct extends AppCompatActivity {
             txtPurpose.setText(MessageFormat.format("Grp Purpose:{0}", groupAccount.getGrpPurpose()));
 
         }
+        if(groupAccount !=null){
+            grpAcctID=groupAccount.getGrpAcctNo();
+        }
         TimeLineClassDAO timeLineClassDAO = new TimeLineClassDAO(this);
         GroupAccountDAO groupAccountDAO = new GroupAccountDAO(this);
         btnUpdate.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +85,7 @@ public class UpdateGrpAcct extends AppCompatActivity {
                     managerName=userProfile.getProfileLastName()+""+userProfile.getProfileFirstName();
                 }
                 Calendar calendar = Calendar.getInstance();
-                @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 String updateDate = mdformat.format(calendar.getTime());
                 details=managerName+""+"updated some details of group Acct."+groupAccount.getGrpAcctNo();
                 grpAcctID=groupAccount.getGrpAcctNo();

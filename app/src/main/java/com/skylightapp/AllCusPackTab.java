@@ -37,7 +37,7 @@ public class  AllCusPackTab extends TabActivity {
     Gson gson;
     String json;
     private static boolean isPersistenceEnabled = false;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

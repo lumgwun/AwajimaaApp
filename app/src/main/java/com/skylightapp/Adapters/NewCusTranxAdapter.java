@@ -182,7 +182,7 @@ public class NewCusTranxAdapter extends RecyclerView.Adapter<NewCusTranxAdapter.
         final Customer customer = new Customer();
         final Payment payee = new Payment();
         holder.txtTransactionTitle.setText(MessageFormat.format("Type: {0}{1}", transaction.getTranXType(), transaction.getTransactionID()));
-        holder.txtTransactionAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", transaction.getRecordAmount())));
+        holder.txtTransactionAmount.setText(MessageFormat.format("Amount: NGN{0}", String.format("%.2f", transaction.getTranxAmount())));
         holder.destinationAccount.setText(MessageFormat.format("Destination Acct: {0}", transaction.getTranxDestAcct()));
         holder.txtTransactionTimestamp.setText(MessageFormat.format("Date: {0}", transaction.getTranxDate()));
         holder.tx_ApprovalDate.setText(MessageFormat.format("Ref ID: {0}", transaction.getTxApprovalDate()));

@@ -16,7 +16,7 @@ import com.skylightapp.R;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-
+import java.util.List;
 
 
 public class AccountAdapter2 extends RecyclerView.Adapter<AccountAdapter2.RecyclerViewHolder> {
@@ -26,6 +26,8 @@ public class AccountAdapter2 extends RecyclerView.Adapter<AccountAdapter2.Recycl
     int resources;
     FragmentActivity activity;
     private OnItemsClickListener listener;
+    private int mNumberItems = 0;
+    private List<Account> mAccountList;
 
     public AccountAdapter2(ArrayList<Account> recyclerDataArrayList, Context mcontext) {
         this.accountArrayList = recyclerDataArrayList;
@@ -46,6 +48,18 @@ public class AccountAdapter2 extends RecyclerView.Adapter<AccountAdapter2.Recycl
         this.mcontext = context;
 
     }
+    public AccountAdapter2(OnItemsClickListener itemClickListener) {
+        listener = itemClickListener;
+    }
+    public void setAccountList(List<Account> accountList) {
+        mAccountList = accountList;
+        mNumberItems = mAccountList.size();
+        notifyDataSetChanged();
+    }
+
+    public Account getAccount(int i) {
+        return mAccountList.get(i);
+    }
 
     public AccountAdapter2(FragmentActivity activity, ArrayList<Account> accountArrayList) {
         this.accountArrayList = accountArrayList;
@@ -56,6 +70,7 @@ public class AccountAdapter2 extends RecyclerView.Adapter<AccountAdapter2.Recycl
     @Override
     public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Inflate Layout
+        boolean shouldAttachToParentImmediately = false;
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.account_list_row, parent, false);
         return new RecyclerViewHolder(view);
     }
@@ -78,7 +93,7 @@ public class AccountAdapter2 extends RecyclerView.Adapter<AccountAdapter2.Recycl
         return (null != accountArrayList ? accountArrayList.size() : 0);
     }
 
-    public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
+    public  class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView txtAccountName;
         private TextView txtAccountID;
@@ -98,10 +113,23 @@ public class AccountAdapter2 extends RecyclerView.Adapter<AccountAdapter2.Recycl
             txtAccountID = itemView.findViewById(R.id.account_id4);
             txtAccountBalance = itemView.findViewById(R.id.account_balance4);
             userPicture = itemView.findViewById(R.id.img_account4);
+            itemView.setOnClickListener(this);
 
+
+        }
+        void bind(Account account) {
+            txtAccountName.setText(account.getAccountName());
+            txtAccountBank.setText(account.getBankName());
+            txtAccountNo.setText(account.getBankAcct_No());
+        }
+        @Override
+        public void onClick(View view) {
+            int clickedPosition = getAdapterPosition();
+            listener.onListItemClick(clickedPosition);
         }
     }
     public interface OnItemsClickListener{
         void onItemClick(Account account);
+        void onListItemClick(int index);
     }
 }

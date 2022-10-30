@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="@drawable/rect_their_message"
     android:layout_height="match_parent"
-    tools:context="com.skylightapp.MapAndLoc.ProfileLocSourceAct">
+    tools:context="com.skylightapp.MapAndLoc.MapPanoramaStVAct">
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:orientation="vertical"
@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"/>
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="65dp"
+            android:layout_height="wrap_content"
             app:cardCornerRadius="2dp"
             app:cardElevation="2dp"
             android:layout_marginBottom="5dp"
@@ -52,7 +52,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="65dp"
+            android:layout_height="wrap_content"
             app:cardCornerRadius="2dp"
             app:cardElevation="2dp"
             android:layout_marginBottom="5dp"
@@ -80,7 +80,7 @@
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="65dp"
+            android:layout_height="wrap_content"
             app:cardCornerRadius="2dp"
             app:cardElevation="2dp"
             android:layout_marginBottom="5dp"
@@ -105,78 +105,21 @@
                 />
 
         </androidx.cardview.widget.CardView>
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/map2"
-            android:background="@drawable/shape_rect11"
-            android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:name="com.google.android.gms.maps.SupportMapFragment" />
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/map"
+            android:id="@+id/streetviewpanorama"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:background="@drawable/sky4"
             android:name="com.google.android.gms.maps.StreetViewPanoramaFragment" />
 
-
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:cardCornerRadius="2dp"
-            app:cardElevation="2dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp"
-            app:cardPreventCornerOverlap="false"
-            app:contentPadding="0dp">
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:padding="20dp"
-                android:visibility="gone"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/rect6g"
-                android:layout_height="wrap_content">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/p_text_sign"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:textSize="15sp"
-                    android:focusable="false"
-                    android:drawableStart="@drawable/ic_icon_foreground"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center_vertical|left"
-                    android:gravity="center_vertical|left"
-                    android:background="@null"
-                    android:text="Select the Emergency type" />
-                <androidx.appcompat.widget.AppCompatSpinner
-                    android:id="@+id/purpose_spn_"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:textSize="15sp"
-                    android:focusable="false"
-                    android:paddingStart="150dp"
-                    android:entries="@array/EmergencyType"
-                    android:backgroundTintMode="src_in"
-                    android:drawableStart="@drawable/ic_icon_foreground"
-                    android:spinnersShown="true"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center_horizontal" />
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="wrap_content"
             app:cardCornerRadius="2dp"
             app:cardElevation="2dp"
             android:gravity="end"
+            android:visibility="gone"
             android:layout_gravity="end"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="2dp"
@@ -192,7 +135,7 @@
                     android:text="Send Report"
                     android:textSize="20sp"
                     android:padding="20dp"
-                    android:onClick="updateButtonOnclick"
+                    android:onClick="startGeofenceAdditionOnclick"
                     android:layout_weight="1"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
@@ -271,7 +214,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
             app:cardCornerRadius="2dp"
             app:cardElevation="2dp"
             android:gravity="end"

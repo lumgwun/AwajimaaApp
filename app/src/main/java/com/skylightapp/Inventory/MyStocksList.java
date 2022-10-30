@@ -2,6 +2,7 @@ package com.skylightapp.Inventory;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -19,7 +20,6 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
-import com.firebase.ui.auth.ui.phone.SpacedEditText;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.AdminUser;
 import com.skylightapp.Classes.CustomerManager;
@@ -37,24 +37,16 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class MyStocksList extends AppCompatActivity implements MyInventAdapter.OnItemsClickListener{
-    Bundle bundle;
-    AppCash appCash;
-    private AppCompatButton btnRunUpdate;
+
     DatePicker picker;
     String selectedStatus,dateOfApproval,superAdminName,tellerConfirmationCode, officeBranch;
-    int selectedDepositIndex;
-    SpacedEditText edtCode;
     DBHelper dbHelper;
     int profileID;
-    TextView txtDepositID;
     Bundle userBundle;
-    PreferenceManager preferenceManager;
     SharedPreferences userPreferences;
     Profile managerProfile;
     Gson gson,gson1;
     String json,json1,dateOfCash;
-    Profile userProfile;
-    String machine;
     private CustomerManager customerManager;
     private UserSuperAdmin superAdmin;
     private AdminUser adminUser;
@@ -66,7 +58,7 @@ public class MyStocksList extends AppCompatActivity implements MyInventAdapter.O
     private ArrayList<Stocks> stocksListDate;
     private ArrayList<Stocks> stocksArrayAll;
     private AppCompatButton btnByDate;
-    TextView txtTotalStocksForDate, txtTotalStocksForToday, txtTotalStocksTotal;
+    AppCompatTextView txtTotalStocksForDate, txtTotalStocksForToday, txtTotalStocksTotal;
     double totalSCForDate,totalSCForToday,totalSC;
     private static final String PREF_NAME = "skylight";
     SQLiteDatabase sqLiteDatabase;
@@ -97,8 +89,8 @@ public class MyStocksList extends AppCompatActivity implements MyInventAdapter.O
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
         managerProfile = gson.fromJson(json, Profile.class);
-        json1 = userPreferences.getString("LastTellerProfileUsed", "");
-        customerManager = gson1.fromJson(json, CustomerManager.class);
+        json1 = userPreferences.getString("LastCustomerManagerUsed", "");
+        customerManager = gson1.fromJson(json1, CustomerManager.class);
         dateOfCash = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
         userBundle= new Bundle();
 
@@ -165,7 +157,7 @@ public class MyStocksList extends AppCompatActivity implements MyInventAdapter.O
 
         }else{
             if(totalSC ==0){
-                txtTotalStocksTotal.setText("Oops! no Skylight Stocks for this profile");
+                txtTotalStocksTotal.setText("Oops! no Awajima Stocks for this profile");
 
             }
 
@@ -175,7 +167,7 @@ public class MyStocksList extends AppCompatActivity implements MyInventAdapter.O
 
         }else{
             if(totalSCForToday ==0){
-                txtTotalStocksForToday.setText("Oops! no Skylight Stocks for Today");
+                txtTotalStocksForToday.setText("Oops! no Awajima Stocks for Today");
 
             }
 
@@ -185,7 +177,7 @@ public class MyStocksList extends AppCompatActivity implements MyInventAdapter.O
 
         }else{
             if(totalSCForDate ==0){
-                txtTotalStocksForDate.setText("Oops! no Skylight Stocks for the Date");
+                txtTotalStocksForDate.setText("Oops! no Awajima Stocks for the Date");
 
             }
 

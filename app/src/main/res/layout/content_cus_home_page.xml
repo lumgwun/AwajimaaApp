@@ -16,26 +16,26 @@
         android:id="@+id/linearGrid"
         android:weightSum="25">
 
-        <GridLayout
+        <androidx.gridlayout.widget.GridLayout
             android:id="@+id/ViewCus"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="25"
-            android:alignmentMode="alignMargins"
-            android:columnCount="2"
-            android:columnOrderPreserved="false"
+            app:alignmentMode="alignMargins"
+            app:columnCount="2"
+            app:columnOrderPreserved="false"
             android:paddingTop="14dp"
-            android:rowCount="2">
+            app:rowCount="2">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardCusPackages"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_columnWeight="1"
+                app:layout_columnWeight="1"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_rowWeight="1"
+                app:layout_rowWeight="1"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 app:cardBackgroundColor="#BA55D3"
@@ -49,7 +49,7 @@
                     android:layout_margin="16dp"
                     android:orientation="vertical">
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Packages"
@@ -67,11 +67,11 @@
                 android:id="@+id/cardHistoryCus"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_columnWeight="1"
+                app:layout_columnWeight="1"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_rowWeight="1"
+                app:layout_rowWeight="1"
                 app:cardCornerRadius="8dp"
                 app:cardBackgroundColor="#42C0FB"
                 app:cardElevation="8dp">
@@ -83,7 +83,7 @@
                     android:layout_margin="16dp"
                     android:orientation="vertical">
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="History"
@@ -100,11 +100,11 @@
                 android:id="@+id/cardGrpSavings"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_columnWeight="1"
+                app:layout_columnWeight="1"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_rowWeight="1"
+                app:layout_rowWeight="1"
                 app:cardBackgroundColor="#ff0000"
                 app:cardCornerRadius="8dp"
 
@@ -117,7 +117,7 @@
                     android:layout_margin="16dp"
                     android:orientation="vertical">
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Customer Pay"
@@ -134,11 +134,11 @@
                 android:id="@+id/cardStandingOrdersCus"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_columnWeight="1"
+                app:layout_columnWeight="1"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_rowWeight="1"
+                app:layout_rowWeight="1"
                 app:cardBackgroundColor="#ffae19"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="8dp">
@@ -150,7 +150,7 @@
                     android:layout_margin="16dp"
                     android:orientation="vertical">
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Standing Orders"
@@ -166,11 +166,11 @@
                 android:id="@+id/cardOrdersCus"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_columnWeight="1"
+                app:layout_columnWeight="1"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_rowWeight="1"
+                app:layout_rowWeight="1"
                 app:cardCornerRadius="8dp"
                 app:cardBackgroundColor="#42C0FB"
                 app:cardElevation="8dp">
@@ -182,7 +182,7 @@
                     android:layout_margin="16dp"
                     android:orientation="vertical">
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Orders"
@@ -198,11 +198,11 @@
                 android:id="@+id/cardCusHelp"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_columnWeight="1"
+                app:layout_columnWeight="1"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_rowWeight="1"
+                app:layout_rowWeight="1"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 app:cardBackgroundColor="#ff0000"
@@ -216,7 +216,7 @@
                     android:layout_margin="16dp"
                     android:orientation="vertical">
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="My Packages"
@@ -233,11 +233,11 @@
                 android:id="@+id/cardSubTab"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_columnWeight="1"
+                app:layout_columnWeight="1"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_rowWeight="1"
+                app:layout_rowWeight="1"
                 app:cardBackgroundColor="#ffae19"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="8dp">
@@ -249,7 +249,7 @@
                     android:layout_margin="16dp"
                     android:orientation="vertical">
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="My Sub. Tab"
@@ -266,11 +266,11 @@
                 android:id="@+id/cardPList"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_columnWeight="1"
+                app:layout_columnWeight="1"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_rowWeight="1"
+                app:layout_rowWeight="1"
                 app:cardBackgroundColor="#BA55D3"
                 app:cardCornerRadius="8dp"
 
@@ -283,7 +283,7 @@
                     android:layout_margin="16dp"
                     android:orientation="vertical">
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="My Package List"
@@ -296,9 +296,147 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardMy_Stocks"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_columnWeight="1"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                app:layout_rowWeight="1"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="#42C0FB"
+                app:cardElevation="8dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_margin="16dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="My Stocks"
+                        android:drawableTint="@color/app_color"
+                        android:drawableTop="@drawable/ic_menu_gallery"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardGrpS"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_columnWeight="1"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                app:layout_rowWeight="1"
+                app:cardBackgroundColor="#ff0000"
+                app:cardCornerRadius="8dp"
+
+                app:cardElevation="8dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_margin="16dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Group Savings"
+                        android:drawableTint="@color/white"
+                        android:drawableTop="@drawable/users_fg"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
 
-        </GridLayout>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardLive_Sessions"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_columnWeight="1"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                app:layout_rowWeight="1"
+                app:cardBackgroundColor="#ffae19"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_margin="16dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Live Sessions"
+                        android:drawableTint="@color/white"
+                        android:drawableTop="@drawable/ic_menu_gallery"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardReportEmerg"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_columnWeight="1"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                app:layout_rowWeight="1"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardBackgroundColor="#BA55D3"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_margin="16dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="My Emergency"
+                        android:drawableTint="@color/white"
+                        android:drawableTintMode="src_in"
+                        android:drawableTop="@drawable/ic_menu_gallery"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+
+        </androidx.gridlayout.widget.GridLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -326,7 +464,7 @@
                         android:background="#42C0FB"
                         android:layout_marginTop="5dp">
 
-                        <Button
+                        <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btnStatementMy"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -335,8 +473,9 @@
                             android:onClick="getAcctStatement"
                             android:text="Statement"
                             android:background="#42C0FB"
-                            android:textColor="#ffff"/>
-                        <Button
+                            android:textColor="#ffff"
+                            style="?android:attr/buttonBarButtonStyle" />
+                        <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btnMyLoans"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -346,7 +485,7 @@
                             android:text="Loans"
                             android:background="#42C0FB"
                             android:textColor="#ffff"/>
-                        <Button
+                        <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/buttonSupprt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

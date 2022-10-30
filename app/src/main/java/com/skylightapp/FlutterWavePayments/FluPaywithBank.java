@@ -198,7 +198,7 @@ public class FluPaywithBank extends AppCompatActivity implements PaymentResultLi
         transactionID = random.nextInt((int) (Math.random() * 900) + 100);
         refID = "SkyLightT/"+ random.nextInt((int) (Math.random() * 900000) + 100000);
         code=((1 + random.nextInt(2)) * 10000 + random.nextInt(10000));
-        codeSMS="Here is your Skylight payment verification code"+code;
+        codeSMS="Here is your Awajima payment verification code"+code;
         totalBundle = getIntent().getExtras().getBundle("paymentBundle") ;
         totalBundle = getIntent().getExtras().getBundle("finalTotalBundle") ;
         if(totalBundle !=null){

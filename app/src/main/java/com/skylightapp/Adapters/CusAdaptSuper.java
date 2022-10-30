@@ -22,7 +22,7 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Markets.SendCusMessAct;
 import com.skylightapp.R;
 import com.skylightapp.SuperAdmin.CusByPackAct;
-import com.skylightapp.SuperAdmin.SuperAdminCountAct;
+import com.skylightapp.SuperAdmin.BizSuperAdminAllView;
 import com.skylightapp.Tellers.MyCusList;
 
 import java.text.MessageFormat;
@@ -70,8 +70,8 @@ public class CusAdaptSuper extends RecyclerView.Adapter<CusAdaptSuper.RecyclerVi
 
     }
 
-    public CusAdaptSuper(SuperAdminCountAct superAdminCountAct, ArrayList<Customer> customersNewToday) {
-        this.mContext = superAdminCountAct;
+    public CusAdaptSuper(BizSuperAdminAllView bizSuperAdminAllView, ArrayList<Customer> customersNewToday) {
+        this.mContext = bizSuperAdminAllView;
         this.customers = customersNewToday;
     }
 

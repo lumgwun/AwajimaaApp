@@ -403,7 +403,7 @@ public class OurAppBankTransfer extends AppCompatActivity {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date newDate = calendar.getTime();
         transferDate = sdf.format(newDate);
-        bankTransferMessage="You have requested for the transfer of NGN"+ depositAmount +"from your Skylight Acct. @"+transferDate;
+        bankTransferMessage="You have requested for the transfer of NGN"+ depositAmount +"from your Awajima Acct. @"+transferDate;
 
         newAccountBalance=depositAmount+account.getAccountBalance();
         createTransferRecepient(bankAcctNumber,bankAcctName,accountbank,depositAmount);

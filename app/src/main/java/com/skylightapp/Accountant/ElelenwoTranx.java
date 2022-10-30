@@ -11,14 +11,17 @@ import androidx.recyclerview.widget.SnapHelper;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
-import com.skylightapp.Adapters.TransactionAdapter;
+import com.google.gson.Gson;
+import com.skylightapp.Adapters.TranxAdminA;
 import com.skylightapp.Adapters.TranxSimpleAdapter;
+import com.skylightapp.Classes.OfficeBranch;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.AcctDAO;
@@ -27,6 +30,7 @@ import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.LoanDAO;
 import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.OfficeBranchDAO;
 import com.skylightapp.Database.PaymDocDAO;
 import com.skylightapp.Database.PaymentCodeDAO;
 import com.skylightapp.Database.ProfDAO;
@@ -34,20 +38,20 @@ import com.skylightapp.Database.SODAO;
 import com.skylightapp.Database.TCashDAO;
 import com.skylightapp.Database.TReportDAO;
 import com.skylightapp.Database.TranXDAO;
+import com.skylightapp.MarketClasses.MarketBizArrayAdapter;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
 import com.skylightapp.SuperAdmin.UpdateTranxAct;
 
 import java.text.MessageFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class ElelenwoTranx extends AppCompatActivity implements TransactionAdapter.OnItemsClickListener{
+public class ElelenwoTranx extends AppCompatActivity implements TranxAdminA.OnItemsClickListener{
     private TranxSimpleAdapter transactionAdapter;
 
     private ArrayList<Transaction> transactionArrayList;
@@ -55,19 +59,12 @@ public class ElelenwoTranx extends AppCompatActivity implements TransactionAdapt
     int branchTranxCount;
     private DBHelper dbHelper;
     String currentDate;
-    Date tomorrowDate;
-    Date twoDaysDate;
-    Date sevenDaysDate;
     Date customDayDate;
-    private Profile userProfile;
-    String SharedPrefUserPassword;
-    long reportTime;
-    int noOfDay;
     String officeBranch;
 
     TextView txtTransactionCount4theDay,txtTransactionTotal4theDay;
     private AppCompatButton btnSearchDB;
-    String dateOfToday,dateOfCustomDays,dateOfTransaction;
+    String dateOfTransaction;
     DatePicker picker;
     double transactionTotal;
     protected DatePickerDialog datePickerDialog;
@@ -84,12 +81,36 @@ public class ElelenwoTranx extends AppCompatActivity implements TransactionAdapt
     private ProfDAO profileDao;
     private TCashDAO cashDAO;
     private TReportDAO tReportDAO;
+    private static final String PREF_NAME = "skylight";
+    private MarketBusiness marketBiz;
+    private OfficeBranch office;
+    private long bizID;
+    Gson gson3,gson2,gson;
+    String json3,json2;
+    private OfficeBranchDAO officeBranchDAO;
+    private String userRole;
+    private SharedPreferences userPreferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_elelenwo_tranx);
-        setTitle("Elelenwo Transactions");
+        setTitle("Transactions");
+        gson = new Gson();
+        gson2 = new Gson();
+        gson3= new Gson();
+        office= new OfficeBranch();
+        officeBranchDAO= new OfficeBranchDAO(this);
+        marketBiz= new MarketBusiness();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+
+        userRole = userPreferences.getString("machine", "");
+
+        json2 = userPreferences.getString("LastMarketBusinessUsed", "");
+        marketBiz = gson2.fromJson(json2, MarketBusiness.class);
+        json3 = userPreferences.getString("LastOfficeBranchUsed", "");
+        office = gson3.fromJson(json3, OfficeBranch.class);
         transactionArrayList = new ArrayList<Transaction>();
         customTransactionArrayList = new ArrayList<Transaction>();
         RecyclerView recyclerView = findViewById(R.id.recyclerViewTXElelenwo);
@@ -99,6 +120,9 @@ public class ElelenwoTranx extends AppCompatActivity implements TransactionAdapt
         txtTransactionTotal4theDay =findViewById(R.id.txAmountElelenwo);
         dbHelper=new DBHelper(this);
         cusDAO= new CusDAO(this);
+        if(office !=null){
+            officeBranch=office.getOfficeBranchName();
+        }
         paymentCodeDAO= new PaymentCodeDAO(this);
         profileDao= new ProfDAO(this);
         cashDAO= new TCashDAO(this);
@@ -122,7 +146,7 @@ public class ElelenwoTranx extends AppCompatActivity implements TransactionAdapt
         });
         dateOfTransaction = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
         SnapHelper snapHelper = new PagerSnapHelper();
-        officeBranch="Trans-Amadi";
+        officeBranch=officeBranch;
         //Wimpey   ,   Elelenwo
         btnSearchDB = findViewById(R.id.btnSearchTXDBElelenwo);
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
@@ -132,7 +156,7 @@ public class ElelenwoTranx extends AppCompatActivity implements TransactionAdapt
         currentDate = dateFormat.format(calendar.getTime());
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper = new DBHelper(this);
-            sqLiteDatabase = dbHelper.getWritableDatabase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
             try {
                 transactionArrayList = tranXDAO.getTransactionsForBranchAtDate(officeBranch,currentDate);
                 branchTranxCount =tranXDAO.getTransactionCountForBranchAtDate(officeBranch,currentDate);
@@ -142,6 +166,15 @@ public class ElelenwoTranx extends AppCompatActivity implements TransactionAdapt
             {
                 e.printStackTrace();
             }
+
+
+
+
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper = new DBHelper(this);
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+
             try {
                 transactionArrayList = tranXDAO.getTransactionsForBranchAtDate(officeBranch,dateOfTransaction);
                 transactionTotal=tranXDAO.getTotalTransactionForBranchAtDate(officeBranch,dateOfTransaction);

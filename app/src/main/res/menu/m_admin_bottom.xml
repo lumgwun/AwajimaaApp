@@ -17,8 +17,8 @@
         android:icon="@drawable/ic_home_black_24dp"/>
 
     <item
-        android:id="@+id/ma_topStat"
-        android:title="Top Stat"
+        android:id="@+id/m_dTabs"
+        android:title="Deposit Tabs"
         app:cnb_iconTintMode="src_in"
         app:cnb_iconColor="#F44336"
         android:icon="@drawable/ic_add_business"/>

@@ -7,17 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.mikepenz.materialdrawer.view.BezelImageView;
-import com.skylightapp.Adapters.ProfileSimpleAdapter;
 import com.skylightapp.R;
-import com.skylightapp.SuperAdmin.SuperAdminCountAct;
 
 import java.util.ArrayList;
 

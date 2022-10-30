@@ -23,16 +23,16 @@
 -dontwarn com.flutterwave.raveandroid.card.CardFragment
 -keep
 
-class com
-
-.blongho.** {
+class com.blongho.** {
     *;
 }
+
 -keep
 
-interface com
+interface com.blongho.**
+-keep
 
-.blongho.**
+interface com.blongho.**
 #
 
 # hide the original source file name.
@@ -40,9 +40,12 @@ interface com
 -keeppackagenames com.blongho.country_data
 -keepclassmembers
 
-class com
-
-.blongho.country_data.* {
+class com.blongho.country_data.* {
     public *;
+}
+-keep
+
+class com.blongho.country_data.R$* {
+    *;
 }
 

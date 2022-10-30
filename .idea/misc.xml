@@ -3,13 +3,81 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/drawable/button_selector.xml" value="0.213" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/drawable/rect66.xml" value="0.213" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/drawable/rect6d.xml" value="0.213" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_add_new_grps_profile.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_admin_dashboard_tab.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_admin_tab.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_biz_logistics_office.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_biz_office_drawer.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_biz_sub_option.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_biz_trans.xml" value="0.15833333333333333" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_coach_office.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_face_detector.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_follw_pref.xml" value="0.21510416666666668" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_google_pay.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_gsavings_match.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_hqlogistics_office.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_insur_users.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_insurance_office.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_insurance_trans.xml" value="0.1" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_insurance_users.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_market_admin_office.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_market_biz_office.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_market_details.xml" value="0.11122345803842265" />
         <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_market_inv_tab.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_miz_sub_list.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_my_market_tranx.xml" value="0.2" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_my_new_grp_savings.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_my_stocks_list.xml" value="0.1349279362158847" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_new_cus_drawer.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_prof_history_tab.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_resp_device_loc.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_sub3_months.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_sub6_months.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_sub_manual.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_supplier_office.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_test.xml" value="0.2" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/act_user_emerg.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/add_to_g_wallet_btn.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/app_bar_biz.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/app_bar_cus.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/biz_header.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/buy_with_googlepay_button.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/commodity_row.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/content_cus_home_page.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/customer_header.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/history_bottom.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/ins_list_view.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/ins_row.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/insurance_bottom.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/inv_row.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/inv_tab_bottom.xml" value="0.2" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/item_announce.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/item_commodity.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/list_currency.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/list_item_user22.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/lst_accounts.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/market_admin_bottom.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/market_list_row.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/report_more_recyler.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/slider_announce.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/supplier_bottom.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/tool_bar_11c.xml" value="0.2" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/toolbar_hq_logistics.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/trans_list_row.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/trans_row.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/tranx_item.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/welcome_slide1.xml" value="0.2" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/layout/welcome_slide2.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/menu/biz_drawer_menu.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/menu/cus_bottom_menu.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/menu/customer_main_menu.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/menu/history_menu.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/menu/m_admin_bottom.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/menu/supplier_bottom_m.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/user/SkylightAppProject/SkylightApp8/app/src/main/res/xml/root_preferences.xml" value="0.22916666666666666" />
       </map>
     </option>
   </component>

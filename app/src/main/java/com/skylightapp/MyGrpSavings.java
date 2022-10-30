@@ -38,28 +38,27 @@ public class MyGrpSavings extends AppCompatActivity implements GroupAcctAdapter.
     String json,tittle,purpose,firstName,surname,phoneNo,emailAddress,machine,bundleID,bundleMachine;
     SecureRandom random;
     DatePicker picker;
-    long profileID;
+    int profileID;
     Random ran ;
     AppCompatTextView txtNoGrpSavingsAcct;
+    private static final String PREF_NAME = "awajima";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_my_grp_savings);
         dbHelper = new DBHelper(this);
-        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-        getActionBar().hide();
         groupAccountArrayList = new ArrayList<>();
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_GrpAcct);
         txtNoGrpSavingsAcct =  findViewById(R.id.noGrpSavingsAcct);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        //userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
         gson = new Gson();
         userProfile=new Profile();
         random= new SecureRandom();
         GroupAccountDAO groupAccountDAO= new GroupAccountDAO(this);
         json = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
         final CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true);
         groupAccountArrayList = groupAccountDAO.getGrpAcctsForCurrentProfile(profileID);
         groupAcctAdapter = new GroupAcctAdapter(groupAccountArrayList, R.layout.grp_acct_row, this);
@@ -106,12 +105,16 @@ public class MyGrpSavings extends AppCompatActivity implements GroupAcctAdapter.
 
     }
     public void goHome(View view) {
-        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        gson = new Gson();
+        userProfile=new Profile();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
+        json = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
         Bundle bundle = new Bundle();
         bundle.putLong("ProfileID", profileID);
         bundle.putString(machine, machine);
-        //bundle.putString("machine", "machine");
+        bundle.putParcelable("Profile", userProfile);
         //bundle.putString("FirstName", profileFirstName);
         Intent intent = new Intent(this, LoginDirAct.class);
         intent.putExtras(bundle);

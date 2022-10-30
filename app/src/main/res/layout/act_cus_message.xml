@@ -23,20 +23,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <com.scwang.wave.MultiWaveHeader
-                android:id="@+id/waveHeader66"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:scaleY="1"
-                app:mwhVelocity="2.5"
-                app:mwhProgress="1"
-                app:mwhStartColor="@color/colorPrimaryDark"
-                app:mwhCloseColor="@color/gray_10"
-                app:mwhIsRunning="true"
-                app:mwhGradientAngle="360"
-                app:mwhWaveHeight="50dp"
-                app:mwhColorAlpha="0.2"
-                app:mwhWaves="MultiWave"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txt_name_cu"

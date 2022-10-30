@@ -418,13 +418,13 @@ public class SendCusMessAct extends AppCompatActivity implements AdapterView.OnI
         String tittleT1 = "Message Alert!";
         Location mCurrentLocation=null;
         String timelineDetails = "You sent" + sendee + "a message" + "on" + time;
-        String timelineCus = "Skylight"+""+senderFullNames + "sent you a message" + "on" + time;
+        String timelineCus = "Awajima"+""+senderFullNames + "sent you a message" + "on" + time;
 
         Message message2= new Message(KEY_EXTRA_MESSAGE_ID,adminName,sendeeProfileID,customerID,selectedPurpose,message,time);
         int id = sendeeProfile.leaveMessage(message, customerID);
         messageDAO= new MessageDAO(this);
-        customer.addCusMessages(KEY_EXTRA_MESSAGE_ID,selectedPurpose,message,"Skylight"+""+senderFullNames,time);
-        messageDAO.insertNewMessage(KEY_EXTRA_MESSAGE_ID,sendeeProfileID,customerID, SharedPrefAdminID, adminName, selectedPurpose, message,"Skylight Admin",sendee, time);
+        customer.addCusMessages(KEY_EXTRA_MESSAGE_ID,selectedPurpose,message,"Awajima"+""+senderFullNames,time);
+        messageDAO.insertNewMessage(KEY_EXTRA_MESSAGE_ID,sendeeProfileID,customerID, SharedPrefAdminID, adminName, selectedPurpose, message,"Awajima Admin",sendee, time);
         try {
             timeLineClassDAO= new TimeLineClassDAO(this);
 

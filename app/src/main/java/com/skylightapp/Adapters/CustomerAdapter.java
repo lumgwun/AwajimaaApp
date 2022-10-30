@@ -15,8 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.InsuranceUsersAct;
 import com.skylightapp.R;
-import com.skylightapp.SuperAdmin.SuperAdminCountAct;
+import com.skylightapp.SuperAdmin.BizSuperAdminAllView;
 import com.skylightapp.Tellers.MyCusList;
 
 import java.text.MessageFormat;
@@ -69,9 +70,14 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Recycl
 
     }
 
-    public CustomerAdapter(SuperAdminCountAct superAdminCountAct, ArrayList<Customer> customersNewToday) {
-        this.mcontext = superAdminCountAct;
+    public CustomerAdapter(BizSuperAdminAllView bizSuperAdminAllView, ArrayList<Customer> customersNewToday) {
+        this.mcontext = bizSuperAdminAllView;
         this.customers = customersNewToday;
+    }
+
+    public CustomerAdapter(InsuranceUsersAct insuranceUsersAct, ArrayList<Customer> customerArrayList) {
+        this.customers = customerArrayList;
+        this.mcontext = insuranceUsersAct;
     }
 
     @NonNull

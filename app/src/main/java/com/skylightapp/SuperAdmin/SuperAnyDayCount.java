@@ -16,16 +16,21 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.skylightapp.Adapters.OfficeAdapter;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerManager;
+import com.skylightapp.Classes.OfficeBranch;
 import com.skylightapp.Classes.PaymentCode;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.OfficeBranchDAO;
 import com.skylightapp.Database.PaymentDAO;
 import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.Database.SODAO;
 import com.skylightapp.Database.TranXDAO;
+import com.skylightapp.Inventory.InStocksAct;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -41,7 +46,7 @@ public class SuperAnyDayCount extends AppCompatActivity {
     TextView  txtTotalPaymentToday, countManualPaymentToday, txtNewCusToday;
     SharedPreferences sharedpreferences;
     protected DBHelper dbHelper;
-    Gson gson;
+    Gson gson,gson2,gson3;
     ArrayAdapter<CustomerManager> managerArrayAdapter;
     ArrayList<CustomerManager> customerManagerArrayList;
     ArrayAdapter<Customer> customerArrayAdapter;
@@ -50,7 +55,8 @@ public class SuperAnyDayCount extends AppCompatActivity {
     ArrayAdapter<Profile> profileArrayAdapter2;
     ArrayList<Profile> profileArrayList;
     ArrayList<Profile> profileArrayList2;
-    String json, branchName, branchName1, todayDate, dateOf,tellerMachine, customerMachine, stringTeller, stringCustomer, branchName2, tellerIDString, tellerIDString1, tellerIDString2, customerIDString;
+    ArrayList<OfficeBranch> officeBranches;
+    String json,json1,json2, branchName, branchName1, todayDate, dateOf,tellerMachine, customerMachine, stringTeller, stringCustomer, branchName2, tellerIDString, tellerIDString1, tellerIDString2, customerIDString;
     double totalSavings2Today33;
     int totalSavingsToday, soCount, selectedTellerIndex, cusCountForOffice, selectedCusIndex, countToday, countPackageToday, customerCountToday, customersForTeller;
     private Profile userProfile;
@@ -68,9 +74,15 @@ public class SuperAnyDayCount extends AppCompatActivity {
 
     private Spinner spnPaymentBranchT, spnCusDetails, spnTellersDetails;
     String finalTodayDate;
+    private int selectedOfficeIndex;
     private TextView txtTellerPaymentT, txtCustomersforBranch, txtCustomerPaymentToday, txtBranchPaymentToday, txtTellerTotalPayment, txtBranchTotalPayment, txtTellerNewCus;
     private AppCompatButton btnGetCusDetails, btnGetTellerDetails, btnGetBranchDetails;
     private static final String PREF_NAME = "skylight";
+    private OfficeAdapter officeAdapter;
+    private OfficeBranchDAO officeDAO;
+    private OfficeBranch officeB;
+    private long bizID;
+    private MarketBusiness marketBiz;
     private double paymentForTellerToday, paymentForCusToday, paymentTotalForTeller, paymentForBranchToday, paymentForBranchTotal;
 
     @SuppressLint("SimpleDateFormat")
@@ -81,12 +93,18 @@ public class SuperAnyDayCount extends AppCompatActivity {
         setTitle("Selected Day Details");
         sharedpreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
+        gson2= new Gson();
+        gson3= new Gson();
         dbHelper = new DBHelper(this);
         userProfile=new Profile();
+        officeB= new OfficeBranch();
+        marketBiz= new MarketBusiness();
         profileArrayList = new ArrayList<>();
         customerArrayList = new ArrayList<>();
+        officeBranches= new ArrayList<>();
+        officeDAO= new OfficeBranchDAO(this);
         customerManagerArrayList = new ArrayList<>();
-        tellerMachine = "Teller";
+
         PaymentCode paymentCode = new PaymentCode();
         picker=(DatePicker)findViewById(R.id.count_date_Super);
         picker.setOnClickListener(new View.OnClickListener() {
@@ -98,9 +116,16 @@ public class SuperAnyDayCount extends AppCompatActivity {
         dateOf = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
         json = sharedpreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
+
+        json2 = sharedpreferences.getString("LastMarketBusinessUsed", "");
+        marketBiz = gson2.fromJson(json2, MarketBusiness.class);
+
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
         sdf = new SimpleDateFormat("yyyy-MM-dd");
         //calendar.add(Calendar.DAY_OF_YEAR, 31);
+        if(marketBiz !=null){
+            bizID=marketBiz.getBusinessID();
+        }
         todayDate = sdf.format(calendar.getTime());
         try {
             date=sdf.parse(todayDate);
@@ -122,7 +147,6 @@ public class SuperAnyDayCount extends AppCompatActivity {
         spnPaymentBranchT = findViewById(R.id.spnBranchT);
         btnGetBranchDetails = findViewById(R.id.btnPBranchT);
 
-
         countManualPaymentToday = findViewById(R.id.countManualPayments);
         txtTotalPaymentToday = findViewById(R.id.TotalPayments);
 
@@ -136,21 +160,29 @@ public class SuperAnyDayCount extends AppCompatActivity {
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
 
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            profileArrayList = profDAO.getTellersFromMachine(tellerMachine);
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            profileArrayList = profDAO.getTellersFromMachineAndBiz(tellerMachine,bizID);
         }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            officeBranches = officeDAO.getOfficesForBusiness(bizID);
+        }
+
+
 
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            customerArrayList = cusDAO.getAllCustomerSpinner();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            customerArrayList = cusDAO.getAllCustomerSpinner(bizID);
         }
 
         spnTellersDetails = findViewById(R.id.spnTellerPayment);
         spnCusDetails = findViewById(R.id.spnCusPayment);
 
-
+//tellerMachine = "Teller";
 
         try {
             customerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, customerArrayList);
@@ -191,19 +223,20 @@ public class SuperAnyDayCount extends AppCompatActivity {
             tellerID = teller.getPID();
         }
 
+        officeAdapter = new OfficeAdapter(SuperAnyDayCount.this, R.layout.office_row,officeBranches);
+        spnPaymentBranchT.setAdapter(officeAdapter);
+        spnPaymentBranchT.setSelection(0);
+        selectedOfficeIndex = spnPaymentBranchT.getSelectedItemPosition();
 
-        spnPaymentBranchT.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //branchName1 = spnPaymentBranchT.getSelectedItem().toString();
-                branchName1 = (String) parent.getSelectedItem();
-            }
+        try {
+            officeB = officeBranches.get(selectedOfficeIndex);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Oops!");
+        }
+        if(officeB !=null){
+            branchName1=officeB.getOfficeBranchName();
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
+        }
 
         btnGetCusDetails.setOnClickListener(this::getCusPaymentToday);
         btnGetCusDetails.setOnClickListener(new View.OnClickListener() {
@@ -211,7 +244,7 @@ public class SuperAnyDayCount extends AppCompatActivity {
             public void onClick(View view) {
                 if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                     dbHelper.openDataBase();
-                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
                     paymentForCusToday = paymentDAO.getTotalPaymentTodayForCustomer(customerID, dateOf);
                 }
 
@@ -227,21 +260,21 @@ public class SuperAnyDayCount extends AppCompatActivity {
             public void onClick(View view) {
                 if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                     dbHelper.openDataBase();
-                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
                     paymentForTellerToday = paymentDAO.getTotalPaymentTodayForTeller1(tellerID1, dateOf);
                 }
 
 
                 if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                     dbHelper.openDataBase();
-                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
                     paymentTotalForTeller = paymentDAO.getTotalPaymentForTeller(tellerID);
                 }
 
 
                 if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                     dbHelper.openDataBase();
-                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
                     customersForTeller = cusDAO.getNewCustomersCountForTodayTeller(tellerID2, dateOf);
                 }
 
@@ -264,41 +297,41 @@ public class SuperAnyDayCount extends AppCompatActivity {
         });
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
             soCount = sodao.getStandingOrderCountToday(dateOf);
         }
 
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
             totalSavingsToday = dbHelper.getSavingsCountToday(dateOf);
         }
 
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
             totalSavings2Today33 = dbHelper.getTotalSavingsToday(dateOf);
         }
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
             customerCountToday = cusDAO.getAllNewCusCountForToday(dateOf);
 
         }
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
             countPackageToday = dbHelper.getNewPackageCountToday(dateOf);
         }
         TranXDAO tranXDAO = new TranXDAO(this);
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
             countToday = tranXDAO.getAllTxCountForToday(dateOf);
         }
 

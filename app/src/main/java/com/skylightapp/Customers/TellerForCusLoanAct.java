@@ -183,7 +183,7 @@ public class TellerForCusLoanAct extends AppCompatActivity {
         grantingID = ThreadLocalRandom.current().nextInt(1025, 10410);
         borrowingId= "SKY_Loan/"+tXID;
         code=((1 + ran.nextInt(2)) * 105 + ran.nextInt(10020));
-        codeSms="Your Skylight New Loan confirmation code is:"+code;
+        codeSms="Your Awajima New Loan confirmation code is:"+code;
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
@@ -1115,7 +1115,7 @@ public class TellerForCusLoanAct extends AppCompatActivity {
                         String status = "Being processed";
                         Location location=null;
                         String details = customerNames + "just applied to borrow NGN" + amountToBorrow;
-                        String details1 = "A loan request of NGN" + amountToBorrow + "was initiated on your Skylight account" + String.valueOf(accountNo) + "on" + borrowingDate;
+                        String details1 = "A loan request of NGN" + amountToBorrow + "was initiated on your Awajima account" + String.valueOf(accountNo) + "on" + borrowingDate;
                         double balanceAfterBorrowing = accountBalance - amountToBorrow;
                         acctOfCustomer.setAccountBalance(balanceAfterBorrowing);
                         userProfile.addPBorrowingTranx(acctOfCustomer, amountToBorrow);
@@ -1163,7 +1163,7 @@ public class TellerForCusLoanAct extends AppCompatActivity {
         smsBundle.putString(PROFILE_PHONE, otpPhoneNumber);
         smsBundle.putString("USER_PHONE", otpPhoneNumber);
         smsBundle.putString("smsMessage", smsMessage);
-        smsBundle.putString("from","Skylight");
+        smsBundle.putString("from","Awajima");
         smsBundle.putString("to", otpPhoneNumber);
         Intent itemPurchaseIntent = new Intent(TellerForCusLoanAct.this, SMSAct.class);
         itemPurchaseIntent.putExtras(smsBundle);

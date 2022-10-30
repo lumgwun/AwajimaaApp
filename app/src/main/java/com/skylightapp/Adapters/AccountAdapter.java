@@ -10,9 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.FragmentActivity;
 
 import com.blongho.country_data.Currency;
+import com.google.android.material.card.MaterialCardView;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.R;
@@ -61,16 +63,23 @@ public class AccountAdapter extends ArrayAdapter<Account> {
         }
         currencyCode=currency.getCode();
         currencySymbol=currency.getSymbol();
+        MaterialCardView cardView = convertView.findViewById(R.id.card_l1);
+        AppCompatTextView txtAccountID = convertView.findViewById(R.id.account_id3);
+        AppCompatTextView txtAccountBank = convertView.findViewById(R.id.account_bank1);
+        AppCompatTextView txtAccountBalance = convertView.findViewById(R.id.account_balance2);
 
-        TextView txtAccountName = convertView.findViewById(R.id.txt_account_name);
-        TextView txtAccountCurrency = convertView.findViewById(R.id.account_currency);
-        assert account != null;
-        txtAccountName.setText(account.getAccountName());
-        TextView txtAccountNo = convertView.findViewById(R.id.txt_acc_no);
-        txtAccountCurrency.setText(String.format("%s %s", "", currencySymbol));
-        txtAccountNo.setText(String.format("%s %s", context.getString(R.string.account_no), account.getAwajimaAcctNo()));
-        TextView txtAccountBalance = convertView.findViewById(R.id.txt_balance);
-        txtAccountBalance.setText(MessageFormat.format("Account balance:", currencySymbol+String.format("%.2f", account.getAccountBalance())));
+        AppCompatTextView txtAccountName = convertView.findViewById(R.id.account_name2);
+        AppCompatTextView txtAccountCurrency = convertView.findViewById(R.id.account_currency);
+        AppCompatTextView txtAccountNo = convertView.findViewById(R.id.account_no2);
+        if (account != null) {
+            txtAccountName.setText(account.getAccountName());
+            txtAccountCurrency.setText(String.format("%s %s", "", currencySymbol));
+            txtAccountID.setText(MessageFormat.format("", account.getAwajimaAcctNo()));
+            txtAccountBank.setText(MessageFormat.format("Bank:{0}", account.getBankName()));
+            txtAccountBalance.setText(MessageFormat.format("Account balance:", currencySymbol+String.format("%.2f", account.getAccountBalance())));
+            txtAccountNo.setText(String.format("%s %s", context.getString(R.string.account_no), account.getAwajimaAcctNo()));
+
+        }
 
         return convertView;
     }

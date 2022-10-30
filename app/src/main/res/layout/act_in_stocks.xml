@@ -8,7 +8,8 @@
     android:theme="@style/NoActionBarTheme"
     android:fitsSystemWindows="true"
     android:background="@drawable/rect_their_message"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="com.skylightapp.Inventory.InStocksAct">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -41,6 +42,60 @@
                 android:gravity="center_horizontal"
                 android:layout_height="wrap_content"/>
 
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rect6g"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/of_stocks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center_vertical|left"
+                    android:gravity="center_vertical|left"
+                    android:background="@null"
+                    android:text="Select Business" />
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/StockBusinessP"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="10dp"
+                        android:background="@drawable/shape_rect12a"
+                        style="@style/Widget.AppCompat.Spinner.DropDown"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:padding="30dp"
+                        android:textColorHint="@android:color/holo_red_dark"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textSize="20sp"
+                        android:layout_gravity="center_vertical|start"
+                        android:gravity="center_vertical|start"
+                        android:clickable="false" />
+
+                </androidx.cardview.widget.CardView>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -48,7 +103,7 @@
                 android:layout_height="wrap_content">
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="65dp"
+                    android:layout_height="wrap_content"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="2dp"
                     android:layout_marginBottom="5dp"
@@ -59,7 +114,7 @@
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/StockItemName"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:hint="Item Name"
                         android:background="@drawable/shape_rect12a"
@@ -76,7 +131,7 @@
                 </androidx.cardview.widget.CardView>
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="wrap_content"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="2dp"
                     android:layout_marginBottom="10dp"
@@ -95,7 +150,7 @@
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/spnPackage"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:textSize="15sp"
                             android:focusable="false"
@@ -107,7 +162,7 @@
                             android:text="Select Stock Item" />
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
-                            android:layout_height="60dp"
+                            android:layout_height="wrap_content"
                             app:cardCornerRadius="2dp"
                             app:cardElevation="2dp"
                             android:layout_marginBottom="5dp"
@@ -118,14 +173,13 @@
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/StockPackageName"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:paddingLeft="10dp"
                                 android:background="@drawable/shape_rect12a"
                                 style="@style/Widget.AppCompat.Spinner.DropDown"
                                 android:drawableStart="@drawable/ic_icon_foreground"
-                                android:entries="@array/Package_Collectable"
-                                android:padding="20dp"
+                                android:padding="30dp"
                                 android:textColorHint="@android:color/holo_red_dark"
                                 android:textColor="@android:color/holo_red_dark"
                                 android:textSize="20sp"
@@ -143,7 +197,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="65dp"
+                    android:layout_height="wrap_content"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="2dp"
                     android:layout_marginBottom="5dp"
@@ -154,7 +208,7 @@
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/StockItemModel"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:focusable="true"
                         android:drawableStart="@drawable/ic_icon_foreground"
                         android:hint="Model"
@@ -172,7 +226,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="65dp"
+                    android:layout_height="wrap_content"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="2dp"
                     android:visibility="gone"
@@ -185,7 +239,7 @@
                         android:id="@+id/StockItemType"
                         android:layout_width="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:focusable="true"
                         android:textSize="15sp"
                         android:background="@drawable/shape_rect12a"
@@ -201,7 +255,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="65dp"
+                    android:layout_height="wrap_content"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="2dp"
                     android:visibility="gone"
@@ -214,7 +268,7 @@
                         android:id="@+id/StockItemColor"
                         android:layout_width="match_parent"
                         android:layout_weight="1"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:focusable="true"
                         android:hint="Color"
                         android:background="@drawable/shape_rect12a"
@@ -231,7 +285,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="65dp"
+                    android:layout_height="wrap_content"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="2dp"
                     android:layout_marginTop="10dp"
@@ -244,7 +298,7 @@
                         android:textStyle="bold"
                         android:focusable="true"
                         android:inputType="number"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/shape_rect12a"
                         android:textSize="15sp"
@@ -254,14 +308,13 @@
                         android:drawableStart="@drawable/ic_icon_foreground"
                         android:textColor="@color/colorPrimaryDark"
                         android:layout_gravity="center_vertical|start"
-                        android:gravity="center_vertical|start"
-                        />
+                        android:gravity="center_vertical|start" />
 
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="65dp"
+                    android:layout_height="wrap_content"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="2dp"
                     android:padding="20dp"
@@ -283,7 +336,7 @@
                             android:padding="20dp"
                             android:gravity="start"
                             android:focusable="true"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:textSize="15sp"
                             android:clickable="false"
@@ -293,18 +346,71 @@
                             android:drawableStart="@drawable/ic_icon_foreground"
                             android:textColor="@color/colorPrimaryDark"
                             android:layout_gravity="center_vertical|start"
-                            android:background="@drawable/rect6g"
-
-                            />
+                            android:background="@drawable/rect6g" />
 
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </androidx.cardview.widget.CardView>
 
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/rect6g"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/spnPackage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="15sp"
+                        android:focusable="false"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center_vertical|left"
+                        android:gravity="center_vertical|left"
+                        android:background="@null"
+                        android:text="Select Item Currency" />
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="2dp"
+                        app:cardElevation="2dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp"
+                        app:cardPreventCornerOverlap="false"
+                        app:contentPadding="0dp">
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/StockItenCurre"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="10dp"
+                            android:background="@drawable/shape_rect12a"
+                            style="@style/Widget.AppCompat.Spinner.DropDown"
+                            android:drawableStart="@drawable/ic_icon_foreground"
+                            android:padding="30dp"
+                            android:textColorHint="@android:color/holo_red_dark"
+                            android:textColor="@android:color/holo_red_dark"
+                            android:textSize="20sp"
+                            android:layout_gravity="center_vertical|start"
+                            android:gravity="center_vertical|start"
+                            android:clickable="false"
+                            />
+
+                    </androidx.cardview.widget.CardView>
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="wrap_content"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="2dp"
                     android:layout_marginBottom="5dp"
@@ -323,7 +429,7 @@
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/date_text_stock"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:textSize="15sp"
                             android:focusable="false"
@@ -336,7 +442,7 @@
                         <DatePicker
                             android:id="@+id/stock_date_"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:textSize="15sp"
                             android:focusable="false"
@@ -356,7 +462,7 @@
                 </androidx.cardview.widget.CardView>
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="65dp"
+                    android:layout_height="wrap_content"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="2dp"
                     android:layout_marginTop="10dp"
@@ -372,7 +478,7 @@
                         android:textSize="15sp"
                         android:focusable="true"
                         android:drawableStart="@drawable/ic_icon_foreground"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
                         android:clickable="false"
@@ -386,7 +492,7 @@
                 </androidx.cardview.widget.CardView>
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="wrap_content"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="2dp"
                     android:layout_marginBottom="5dp"
@@ -405,7 +511,7 @@
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/office_Destination"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:textSize="15sp"
                             android:focusable="false"
@@ -417,7 +523,7 @@
                             android:text="Select Office Destination" />
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
-                            android:layout_height="60dp"
+                            android:layout_height="wrap_content"
                             app:cardCornerRadius="2dp"
                             app:cardElevation="2dp"
                             android:layout_marginBottom="5dp"
@@ -428,21 +534,19 @@
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/StockBranch"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:paddingLeft="10dp"
                                 android:background="@drawable/shape_rect12a"
                                 style="@style/Widget.AppCompat.Spinner.DropDown"
                                 android:drawableStart="@drawable/ic_icon_foreground"
-                                android:entries="@array/officeWareHouse"
-                                android:padding="20dp"
+                                android:padding="30dp"
                                 android:textColorHint="@android:color/holo_red_dark"
                                 android:textColor="@android:color/holo_red_dark"
                                 android:textSize="20sp"
                                 android:layout_gravity="center_vertical|start"
                                 android:gravity="center_vertical|start"
-                                android:clickable="false"
-                                />
+                                android:clickable="false" />
 
                         </androidx.cardview.widget.CardView>
 
@@ -454,7 +558,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="70dp"
+                    android:layout_height="wrap_content"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="2dp"
                     android:gravity="end"
@@ -503,7 +607,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
+                    android:layout_height="wrap_content"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="2dp"
                     android:gravity="end"

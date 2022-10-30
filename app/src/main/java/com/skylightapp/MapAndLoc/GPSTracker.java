@@ -1,11 +1,15 @@
 package com.skylightapp.MapAndLoc;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.IntentService;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -19,6 +23,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.location.LocationListener;
 import com.skylightapp.R;
@@ -31,6 +36,8 @@ import java.util.Locale;
 
 
 public class GPSTracker extends Service implements LocationListener {
+    private static final String TAG = GPSTracker.class.getSimpleName();
+    //private static String TAG = GPSTracker.class.getName();
 
 
     private static final String ACTION_FOO = "com.skylightapp.MapAndLoc.action.FOO";
@@ -38,7 +45,6 @@ public class GPSTracker extends Service implements LocationListener {
 
     private static final String EXTRA_PARAM1 = "com.skylightapp.MapAndLoc.extra.PARAM1";
     private static final String EXTRA_PARAM2 = "com.skylightapp.MapAndLoc.extra.PARAM2";
-    private static String TAG = GPSTracker.class.getName();
 
     private Context mContext;
 
@@ -274,6 +280,35 @@ public class GPSTracker extends Service implements LocationListener {
     public IBinder onBind(Intent intent) {
         return null;
     }
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        buildNotification();
+    }
+    private void buildNotification() {
+        String stop = "stop";
+        registerReceiver(stopReceiver, new IntentFilter(stop));
+        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent broadcastIntent = PendingIntent.getBroadcast(
+                this, 0, new Intent(stop), PendingIntent.FLAG_UPDATE_CURRENT);
+        // Create the persistent notification
+        @SuppressLint("LaunchActivityFromNotification") NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setContentTitle(getString(R.string.app_name))
+                .setContentText(getString(R.string.notification_text))
+                .setOngoing(true)
+                .setContentIntent(broadcastIntent)
+                .setSmallIcon(R.drawable.ic_loc);
+        startForeground(1, builder.build());
+    }
+
+    protected BroadcastReceiver stopReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "received stop broadcast");
+            // Stop the service when the notification is tapped
+            unregisterReceiver(stopReceiver);
+            stopSelf();
+        }
+    };
 
 
 

@@ -2,6 +2,7 @@ package com.skylightapp.Tellers;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.preference.PreferenceManager;
 
 import android.annotation.SuppressLint;
@@ -14,7 +15,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.ui.auth.ui.phone.SpacedEditText;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.Profile;
@@ -33,10 +33,8 @@ public class UpdateTellerCashAct extends AppCompatActivity {
     AppCash appCash;
     private AppCompatButton btnRunUpdate;
     DatePicker picker;
-    String selectedStatus,dateOfApproval,superAdminName,tellerConfirmationCode, officeBranch;
+    String superAdminName,tellerConfirmationCode, officeBranch;
     Spinner spnDepositStatus;
-    int selectedDepositIndex;
-    SpacedEditText edtCode;
     DBHelper dbHelper;
     int tellerCashID;
     long code;
@@ -45,13 +43,13 @@ public class UpdateTellerCashAct extends AppCompatActivity {
     long tellerCashProfileID;
     TextView txtDepositID;
     Bundle userBundle;
-    PreferenceManager preferenceManager;
     SharedPreferences userPreferences;
     Profile managerProfile;
     Gson gson,gson1;
     String json,json1,nIN;
-    Profile userProfile;
     CustomerManager customerManager;
+    private AppCompatEditText edtCode;
+    private static final String PREF_NAME = "awajima";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +59,12 @@ public class UpdateTellerCashAct extends AppCompatActivity {
         managerProfile= new Profile();
         customerManager=new CustomerManager();
         dbHelper= new DBHelper(this);
-        userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        //userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
         json = userPreferences.getString("LastProfileUsed", "");
         managerProfile = gson.fromJson(json, Profile.class);
-        json1 = userPreferences.getString("LastTellerProfileUsed", "");
-        customerManager = gson1.fromJson(json, CustomerManager.class);
+        json1 = userPreferences.getString("LastCustomerManagerUsed", "");
+        customerManager = gson1.fromJson(json1, CustomerManager.class);
         userBundle= new Bundle();
         spnDepositStatus = findViewById(R.id.spinnerUpdateS);
         edtCode = findViewById(R.id.code_edict_);
@@ -74,7 +73,7 @@ public class UpdateTellerCashAct extends AppCompatActivity {
         btnRunUpdate.setOnClickListener(this::getSubmitCode);
         superAdminName="Super Admin";
         Calendar calendar1 = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String todayDate = sdf.format(calendar1.getTime());
         if(managerProfile !=null){
             profileID=managerProfile.getPID();

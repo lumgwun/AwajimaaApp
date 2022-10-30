@@ -143,7 +143,7 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
     private String phoneNo;
 
     DatePickerDialog datePickerDialog;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     Calendar dateCalendar;
     private Customer lastCustomerProfileUsed;
     private final int MY_LOCATION_REQUEST_CODE = 100;
@@ -630,7 +630,7 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
                             } catch (SQLiteException e) {
                                 System.out.println("Oops!");
                             }
-                            String paymentMessage = "Skylight! your package :" + oldPackageId + "" + "is Complete";
+                            String paymentMessage = "Awajima! your package :" + oldPackageId + "" + "is Complete";
                             Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
                             Message message = Message.creator(
                                     new com.twilio.type.PhoneNumber(phoneNo),
@@ -655,7 +655,7 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.mipmap.ic_launcher_round)
-                        .setContentTitle("Skylight Message")
+                        .setContentTitle("Awajima Message")
                         .setContentText("Start a New Package");
 
         Intent notificationIntent = new Intent(this, LoginDirAct.class);

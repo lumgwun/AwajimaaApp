@@ -46,7 +46,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.AdminBalanceDAO;
@@ -228,15 +227,13 @@ public class MyCusNewPackAct extends AppCompatActivity implements View.OnClickLi
     TellerCash tellerCash;
     AppCompatSpinner spnSavingsPlan, spnFoodAndItem, spnInvestment,spnTypeOfPackage,spnPromo;
     LinearLayoutCompat layoutSavings;
-    private FirebaseAuth.AuthStateListener mAuthListener;
+
     private DatePickerDialog.OnDateSetListener mDateSetListener;
-    private FirebaseAuth mAuth;
-    FirebaseAuth.AuthStateListener mAuthListner;
     com.skylightapp.Classes.Transaction Skylightransaction;
     AppCompatButton btnAddNewCus;
     LatLng cusLatLng;
     double tellerAmount;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private SQLiteDatabase sqLiteDatabase;
     String investStringEndDate,selectedPromoPack,invMaturityDate,invDates,newPackageType,selectedFoodStuff,selectedItemType,finalItemType,selectedInvestmentType;
     LinearLayoutCompat layoutInvestment, layoutFoodItemPurchase,layoutPackageType,layoutPromo;
@@ -358,7 +355,6 @@ public class MyCusNewPackAct extends AppCompatActivity implements View.OnClickLi
         String savingsEndDate = sdf.format(newDate);
 
         customer= new Customer();
-        mAuth = FirebaseAuth.getInstance();
         //mauthListener();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
@@ -848,7 +844,7 @@ public class MyCusNewPackAct extends AppCompatActivity implements View.OnClickLi
 
         }
 
-        transactionID="Skylight"+packageID;
+        transactionID="Awajima"+packageID;
         double adminCommission= appCommission.getAdminReceivedBalance();
         //double skylightCommission=100;
         double initialDeposit=totalAmountSum-savingsAmount;
@@ -901,7 +897,7 @@ public class MyCusNewPackAct extends AppCompatActivity implements View.OnClickLi
                 String timelineDetails5 = "A new package of NGN" + grandTotal + "was started" + "on" + reportDate;
 
                 String customerName = surName + "," + firstName ;
-                //Skylightransaction= new com.skylightapp.Classes.Transaction(packageID, accountNo, reportDate, "Skylight", String.valueOf(account1), "Skylight", customerNames, initialDeposit, transaction_type, "",officeBranch, "", "", "");
+                //Skylightransaction= new com.skylightapp.Classes.Transaction(packageID, accountNo, reportDate, "Awajima", String.valueOf(account1), "Awajima", customerNames, initialDeposit, transaction_type, "",officeBranch, "", "", "");
 
                 if(customer !=null){
                     cusLatLng=customer.getCusLocation();
@@ -978,7 +974,7 @@ public class MyCusNewPackAct extends AppCompatActivity implements View.OnClickLi
                         timeLineClassDAO.insertTimeLine(tittle, details, reportDate, mCurrentLocation);                    }
                     if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                         dbHelper.openDataBase();
-                        tranXDAO.saveNewTransaction(profileID, customerID,Skylightransaction, acctID, "Skylight", customerName,transaction_type,initialDeposit, reportID, officeBranch, reportDate);
+                        tranXDAO.saveNewTransaction(profileID, customerID,Skylightransaction, acctID, "Awajima", customerName,transaction_type,initialDeposit, reportID, officeBranch, reportDate);
                     }
                     if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                         dbHelper.openDataBase();

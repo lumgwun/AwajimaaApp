@@ -33,6 +33,10 @@ import java.util.Random;
 public class GroupSavingsAcctList extends AppCompatActivity implements GroupAcctAdapter.ItemListener {
     private GroupAcctAdapter groupAcctAdapter;
     private ArrayList<GroupAccount> groupAccountArrayList;
+    private ArrayList<GroupAccount> groupAccountAmtRange;
+    private ArrayList<GroupAccount> groupAccountDuration;
+    private GroupAcctAdapter groupAcctAmtAdapter;
+    private GroupAcctAdapter groupAcctDurationAdapter;
     private SharedPreferences userPreferences;
     Profile userProfile;
     Gson gson;
@@ -41,8 +45,10 @@ public class GroupSavingsAcctList extends AppCompatActivity implements GroupAcct
     DatePicker picker;
     Random ran ;
     DBHelper dbHelper;
-    long profileID;
+    int profileID;
     AppCompatTextView txtNoSavings;
+    private static final String PREF_NAME = "awajima";
+    private  long minDuration, maxDuration,minAmount,maxAmount,maxElapseMonth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,23 +56,70 @@ public class GroupSavingsAcctList extends AppCompatActivity implements GroupAcct
         setContentView(R.layout.act_grp_savings_acct);
         dbHelper = new DBHelper(this);
         groupAccountArrayList = new ArrayList<>();
+        groupAccountAmtRange= new ArrayList<>();
+        groupAccountDuration= new ArrayList<>();
         userProfile=new Profile();
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_GrpSavingsAcct);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_GrpSavingsAcct);
+        RecyclerView recyclerD = (RecyclerView) findViewById(R.id.recycler_GrpSavingsAcct);
         txtNoSavings =  findViewById(R.id.noGrpSavingsAcct2);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        //userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
         gson = new Gson();
         random= new SecureRandom();
         GroupAccountDAO groupAccountDAO= new GroupAccountDAO(this);
+        minDuration= userPreferences.getLong("minDuration", 0);
+        maxDuration= userPreferences.getLong("maxDuration", 0);
+        minAmount = userPreferences.getLong("minMatchAmount", 0);
+        maxAmount = userPreferences.getLong("maxMatchAmount", 0);
+        //maxElapseMonth = userPreferences.getLong("maxElapseMonth", 0);
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
+
+        if(minAmount >0){
+            if(maxAmount>0){
+                groupAccountAmtRange=groupAccountDAO.getGrpAccountForAmtRange(minAmount,maxAmount);
+
+            }
+        }else {
+            Intent myIntent = new Intent(GroupSavingsAcctList.this, GSavingsMatchAct.class);
+            overridePendingTransition(R.anim.slide_in_right,
+                    R.anim.slide_out_left);
+            myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(myIntent);
+
+        }
+        if(minDuration >0){
+            if(maxDuration>0){
+                groupAccountDuration=groupAccountDAO.getGrpAccountDurationRange(minDuration,maxDuration);
+
+            }
+        }else {
+            Intent myIntent = new Intent(GroupSavingsAcctList.this, GSavingsMatchAct.class);
+            overridePendingTransition(R.anim.slide_in_right,
+                    R.anim.slide_out_left);
+            myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(myIntent);
+
+        }
+        groupAccountAmtRange.addAll(groupAccountDuration);
+
+        final CarouselLayoutManager layoutD = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true);
+        groupAcctAmtAdapter = new GroupAcctAdapter(groupAccountAmtRange, R.layout.grp_acct_row, this);
+        recyclerD.setAdapter(groupAcctAmtAdapter);
+        recyclerD.setLayoutManager(layoutD);
+        recyclerD.addOnScrollListener(new CenterScrollListener());
+        layoutD.setPostLayoutListener(new CarouselZoomPostLayoutListener());
+
+
         final CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true);
         groupAccountArrayList = groupAccountDAO.getGrpAcctsForCurrentProfile(profileID);
         groupAcctAdapter = new GroupAcctAdapter(groupAccountArrayList, R.layout.grp_acct_row, this);
         recyclerView.setAdapter(groupAcctAdapter);
         recyclerView.setLayoutManager(layoutManager);
-        //recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener(new CenterScrollListener());
         layoutManager.setPostLayoutListener(new CarouselZoomPostLayoutListener());
         try {
@@ -106,7 +159,7 @@ public class GroupSavingsAcctList extends AppCompatActivity implements GroupAcct
 
     @Override
     public void onItemClick(GroupAccount groupAccount) {
-        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
         bundle.putLong("ProfileID", profileID);
@@ -117,7 +170,8 @@ public class GroupSavingsAcctList extends AppCompatActivity implements GroupAcct
     }
 
     private void doMoreDialog(GroupAccount groupAccount) {
-        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        //userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
         bundle.putLong("ProfileID", profileID);
@@ -134,7 +188,7 @@ public class GroupSavingsAcctList extends AppCompatActivity implements GroupAcct
                             case 0:
 
                                 Toast.makeText(GroupSavingsAcctList.this, "Add new Group Saver, selected", Toast.LENGTH_SHORT).show();
-                                Intent savingsIntent = new Intent(GroupSavingsAcctList.this, AddNewGrpSavProfile.class);
+                                Intent savingsIntent = new Intent(GroupSavingsAcctList.this, JoinThisGrpSavAct.class);
                                 savingsIntent.putExtras(bundle);
                                 savingsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 break;
@@ -218,7 +272,7 @@ public class GroupSavingsAcctList extends AppCompatActivity implements GroupAcct
     }
 
     public void goHome(View view) {
-        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
         bundle.putLong("ProfileID", profileID);

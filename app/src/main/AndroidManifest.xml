@@ -15,7 +15,6 @@
     <uses-permission
         android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -27,12 +26,14 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_MMS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.provider.Telephony.SMS_RECEIVED" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission
         android:name="android.permission.STATUS_BAR_SERVICE"
         tools:ignore="ProtectedPermissions" />
@@ -60,7 +61,7 @@
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.WRITE_SOCIAL_STREAM" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -79,12 +80,88 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
-        tools:remove="android:icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.OurCApp"
         android:value="androidx.core.app.CoreComponentFactory"
         tools:ignore="GoogleAppIndexingWarning"
-        tools:node="merge" >
+        tools:node="merge"
+        tools:remove="android:icon"
+        tools:replace="android:allowBackup" >
+        <activity
+            android:name=".GooglePayAct"
+            android:exported="false" />
+        <activity
+            android:name=".Sub6MonthsAct"
+            android:exported="false" />
+        <activity
+            android:name=".Sub3MonthsAct"
+            android:exported="false" />
+        <activity
+            android:name=".SubManualAct"
+            android:exported="false" />
+        <activity
+            android:name=".BizSubList"
+            android:exported="false" />
+        <activity
+            android:name=".BizSubQTOptionAct"
+            android:exported="false" />
+        <activity
+            android:name=".Markets.BizTypeSelectAct"
+            android:exported="false"
+            android:label="@string/title_activity_biz_type_select" />
+        <activity
+            android:name=".Markets.SupplierOffice"
+            android:exported="false" />
+        <activity
+            android:name=".MapAndLoc.FaceDetAndAudioAct"
+            android:exported="false" />
+        <activity
+            android:name=".GrpSavingsOptionAct"
+            android:exported="false" >
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".GroupAcctDetailsAct"
+            android:exported="false" >
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".Markets.MyMarketAct"
+            android:exported="false" />
+        <activity
+            android:name=".Markets.MarketDetailsAct"
+            android:exported="false" />
+        <activity
+            android:name=".GSavingsMatchAct"
+            android:exported="false" />
+        <activity
+            android:name=".BusinessTransXAct"
+            android:exported="false" />
+        <activity
+            android:name=".InsuranceUsersAct"
+            android:exported="false" />
+        <activity
+            android:name=".CoachOffice"
+            android:exported="false" />
+        <activity
+            android:name=".InsuranceOffice"
+            android:exported="false" />
+        <activity
+            android:name=".HQLogisticsOffice"
+            android:exported="false" />
+        <activity
+            android:name=".BizLogisticsOffice"
+            android:exported="false" />
+        <activity
+            android:name=".FollowingPrefAct"
+            android:exported="false" />
+        <activity
+            android:name=".ProfHistoryTab"
+            android:exported="false" />
         <activity
             android:name=".Markets.SendMultiSendeeMAct"
             android:exported="false" >
@@ -92,8 +169,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".Markets.MarketBizListAct" >
-        </activity>
+        <activity android:name=".Markets.MarketBizListAct" />
         <activity android:name=".Markets.MarketBizDonorOffice" />
         <activity android:name=".Markets.MarketAdminOffice" />
         <activity android:name=".Markets.MarketBizPOffice" />
@@ -235,7 +311,7 @@
             android:name=".SignUpAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".Tellers.TellerEmergAct"
+            android:name=".MapAndLoc.UserReportEmergAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <receiver
@@ -254,7 +330,7 @@
         <activity android:name=".MyInvAct" />
         <activity android:name=".SuperAdmin.UpdateSTCode" />
         <activity android:name=".SuperAdmin.SuperAllSTList" />
-        <activity android:name=".SuperAdmin.HelpersLocation" />
+        <activity android:name=".MapAndLoc.ResponseTeamOffice" />
         <activity android:name=".SuperAdmin.SuperStockTrAct" />
         <activity android:name=".SuperAdmin.CreationTab" />
         <activity android:name=".SuperAdmin.OfficeCreatorAct" />
@@ -268,7 +344,7 @@
         <activity android:name=".SuperAdmin.AppCashList" />
         <activity android:name=".SuperAdmin.UpDateDeposit" />
         <activity android:name=".SuperAdmin.ADepositList" />
-        <activity android:name=".LocationUpdateAct" />
+        <activity android:name=".MapAndLoc.LocationUpdateAct" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -286,6 +362,9 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="face" />
 
         <service
             android:name=".MapAndLoc.GetAddressIntentService"
@@ -328,8 +407,8 @@
         <activity android:name=".SuperAdmin.UpDateSO" />
         <activity android:name=".Accountant.AcctantBackOffice" />
         <activity android:name=".SuperAdmin.UpdatePackageAct" />
-        <activity android:name=".SuperAdmin.SuperEmergList" />
-        <activity android:name=".SuperAdmin.WorkersLocationAct" />
+        <activity android:name=".MapAndLoc.StateEmergList" />
+        <activity android:name=".MapAndLoc.ESiteGeoFenAct" />
         <activity android:name=".VoiceActionAct" />
         <activity android:name=".Admins.TellerReportUpdateConf" />
         <activity android:name=".SuperAdmin.SuperUnconfirmedSavings" />
@@ -357,7 +436,7 @@
 
         <activity android:name=".NotificationAct" />
         <activity
-            android:name=".SuperAdmin.SuperAdminCountAct"
+            android:name=".SuperAdmin.BizSuperAdminAllView"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Customers.AcctStatmOptions"
@@ -454,8 +533,23 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".UpdateGrpAcct" />
         <activity
-            android:name=".AddNewGrpSavProfile"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:name=".JoinThisGrpSavAct"
+            android:exported="true"
+            android:label="Add New Profile to Group "
+            android:theme="@style/TeliverTheme" >
+            <intent-filter android:autoVerify="true" >
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="skylightbizapp.page.link/gs"
+                    android:pathPrefix="/id"
+                    android:scheme="https" />
+            </intent-filter>
+            <!-- android:pathPrefix="/signUp" -->
+        </activity>
         <activity
             android:name=".MyNewGrpSavings"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -495,7 +589,7 @@
             android:name=".Admins.SkylightHistoryAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".UserLocatorAct"
+            android:name=".MapAndLoc.UserLocatorAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".FingerprintAct" />
         <activity
@@ -536,7 +630,7 @@
             android:name=".Admins.CusPackHistoryAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".UserLocTrackingAct"
+            android:name=".MapAndLoc.UserLocTrackingAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Tellers.MyCusNewPackAct"
@@ -643,6 +737,7 @@
         <activity android:name=".ConfirmationActivity" />
         <activity
             android:name=".WelcomeActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="true"
             tools:ignore="IntentFilterExportedReceiver" >
             <intent-filter>
@@ -652,7 +747,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MapAndLoc.ListingFiltersActivity"
+            android:name=".MapAndLoc.HotEmergAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".MapAndLoc.MapSettingsActivity" />
         <activity android:name=".MapAndLoc.GoogleMapActivity" />
@@ -677,7 +772,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".LoanDetailsActivity" />
         <activity
-            android:name=".Transactions.CashOutDetailsActivity"
+            android:name=".Markets.CashOutDetailsActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Transactions.DataDetailsActivity"
@@ -707,8 +802,8 @@
         <receiver
             android:name=".Classes.NotificationBuilderReceiver"
             android:enabled="true"
-            android:exported="true" />
-
+            android:exported="true"
+            android:taskAffinity="com.klinker.android.messaging.MMS_SENT" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -724,6 +819,11 @@
             android:authorities="${applicationId}.UserContentProvider"
             android:enabled="true"
             android:exported="false" />
+
+        <receiver
+            android:name=".MapAndLoc.GeofenceBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true" />
 
         <service
             android:name=".Classes.SetAlarmsService"
@@ -746,7 +846,7 @@
             android:value="true" />
 
         <activity
-            android:name=".Transactions.CardDepositActivity"
+            android:name=".Markets.CardDepositActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Transactions.OurAppBankTransfer"
@@ -774,7 +874,7 @@
         <activity
             android:name=".PayNowActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".MapAndLoc.ProfileLocSourceAct" />
+        <activity android:name=".MapAndLoc.MapPanoramaStVAct" />
         <activity
             android:name=".Admins.SevenDayBD"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -819,6 +919,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name="com.android.mms.transaction.TransactionService" />
+
+        <receiver
+            android:name="com.klinker.android.send_message.SentReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:taskAffinity="${applicationId}.SMS_SENT" />
+        <receiver
+            android:name="com.klinker.android.send_message.DeliveredReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:taskAffinity="${applicationId}.SMS_DELIVERED" />
     </application>
 
 </manifest>

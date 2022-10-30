@@ -20,7 +20,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -37,8 +36,6 @@ import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 import com.skylightapp.Admins.BirthdayTab;
 import com.skylightapp.AllCusPackTab;
@@ -71,7 +68,7 @@ import com.skylightapp.MyInvAct;
 import com.skylightapp.R;
 import com.skylightapp.SignTabMainActivity;
 import com.skylightapp.SkylightSliderAct;
-import com.skylightapp.SuperAdmin.WorkersLocationAct;
+import com.skylightapp.MapAndLoc.ESiteGeoFenAct;
 import com.skylightapp.UserPrefActivity;
 import com.skylightapp.UserTimeLineAct;
 import com.squareup.picasso.Picasso;
@@ -95,14 +92,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class TellerDrawerAct extends AppCompatActivity {
     private static final String TAG = TellerDrawerAct.class.getSimpleName();
 
-    private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle xToggle;
-    //private FirebaseAuth xAuth;
-    //private NavigationView navView;
     private Toolbar toolbar;
-    private ActionBarDrawerToggle toggle;
 
-    private SharedPreferences userPreferences;
+
     private Gson gson,gson1;
     private String json,json1;
 
@@ -115,22 +107,15 @@ public class TellerDrawerAct extends AppCompatActivity {
     int soS,noOfSavings,noOfCustomers,noOfPackages;
     private AppCompatTextView txtWelcomeName, txtTellerBalance,standingOrders, txtTellerID,txtGrpSavings,packages,customers,txtSavings;
 
-    long packageCount;
     int profileId;
-    ViewPager viewPager;
     CardView cardViewMyCusPackges,cardViewGrpSavings, cardViewAllCusPacks, cardViewTellerWeb, cardViewOrders, cardViewSupport;
 
-    Bundle bundle;
-
-    public static final int REQUEST_IMAGE = 100;
-    public static final String INTENT_IMAGE_PICKER_OPTION = "image_picker_option";
 
     DBHelper applicationDb;
-    Customer customer;
     Account acct;
     double acctBalance;
     GridLayout maingrid;
-    Button btnUtility, btnOurPrivacyPolicy,btnInvestment;
+    Button btnUtility, btnOurPrivacyPolicy;
 
     String SharedPrefUserName;
     SharedPreferences sharedPreferences;
@@ -142,7 +127,6 @@ public class TellerDrawerAct extends AppCompatActivity {
     String SharedPrefAddress;
     String SharedPrefJoinedDate;
     String SharedPrefGender;
-    String name;
     String SharedPrefRole;
     String SharedPrefDOB;
     String SharedPrefPhone;
@@ -160,22 +144,13 @@ public class TellerDrawerAct extends AppCompatActivity {
             ;
 
     DBHelper dbHelper;
-    DrawerLayout drawer;
     AppCompatImageButton profileImage;
-    //private SectionsPagerAdapter mSectionsPagerAdapter;
-    long tellerID;
-
-    //ArcNavigationView navigationView;
     FrameLayout frameLayout;
     FloatingActionButton fab;
     private Button btnUtils,btnSupport, btnLogOut;
-    private double tellerTodayBalance,tellerTotalCash,tellerTotalPayment,skylightTotalCashForToday;
+    private double tellerTodayBalance,tellerTotalCash,skylightTotalCashForToday;
     private TellerCash tellerCash;
     private Payment payment;
-    AppCash appCash;
-    private FirebaseAuth mAuth;
-    FirebaseAuth.AuthStateListener mAuthListner;
-    private FirebaseAuth.AuthStateListener mAuthListener;
     private static boolean isPersistenceEnabled = false;
     private Date dateToday;
     private String tellerName;
@@ -196,7 +171,7 @@ public class TellerDrawerAct extends AppCompatActivity {
     private TReportDAO tReportDAO;
     private PaymentDAO paymentDAO;
     private TCashDAO tCashDAO;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     AppCompatTextView txtTellerTodaySavings,txtTellerSkylightCashToday,txtTellerPaymentToday,txtTellerProfileBalance;
 
     ActivityResultLauncher<Intent> startTellerPictureActivityForResult = registerForActivityResult(
@@ -246,13 +221,6 @@ public class TellerDrawerAct extends AppCompatActivity {
                                 e.printStackTrace();
                             }
 
-
-                            //Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-
-                            /*if (data != null) {
-                                pictureUri = data.getData();
-                                Picasso.get().load(pictureUri).into(photoPrOP);
-                            }*/
                             Toast.makeText(TellerDrawerAct.this, "successful ", Toast.LENGTH_SHORT).show();
                             finish();
                             break;
@@ -341,13 +309,8 @@ public class TellerDrawerAct extends AppCompatActivity {
             acctBalance=tellerAccount.getAccountBalance();
         }
         fragmentManager = getSupportFragmentManager();
-        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        mAuth = FirebaseAuth.getInstance();
         mauthListener();
 
-        //NavigationView navigationView = findViewById(R.id.tellerNav);
-        //View header = navigationView.getHeaderView(0);
-        //navigationView.setNavigationItemSelectedListener(this);
         tellerCash= new TellerCash();
         payment= new Payment();
         btnLogOut = findViewById(R.id.btnLogout);
@@ -436,11 +399,11 @@ public class TellerDrawerAct extends AppCompatActivity {
 
         }
         if(skylightTotalCashForToday>0){
-            txtTellerSkylightCashToday.setText("Cash from Skylight:N"+skylightTotalCashForToday);
+            txtTellerSkylightCashToday.setText("Cash from Awajima:N"+skylightTotalCashForToday);
 
 
         }else {
-            txtTellerSkylightCashToday.setText("Cash from Skylight:N"+0);
+            txtTellerSkylightCashToday.setText("Cash from Awajima:N"+0);
 
 
         }
@@ -595,18 +558,7 @@ public class TellerDrawerAct extends AppCompatActivity {
 
     }
     private void mauthListener() {
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
 
-            }
-        };
     }
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -664,9 +616,9 @@ public class TellerDrawerAct extends AppCompatActivity {
                         startActivity(intent);
                     }
                     else if(finalI==2) {
-                        tosend = "Skylight Packages";
+                        tosend = "Awajima Packages";
                         Intent intent=new Intent(TellerDrawerAct.this, SkylightSliderAct.class);
-                        intent.putExtra("Skylight Packages",tosend);
+                        intent.putExtra("Awajima Packages",tosend);
                         startActivity(intent);
                     }
                     else if(finalI==3) {
@@ -753,7 +705,7 @@ public class TellerDrawerAct extends AppCompatActivity {
                     }
                     else if(finalI==16) {
                         tosend = "Emergency";
-                        Intent intent=new Intent(TellerDrawerAct.this, WorkersLocationAct.class);
+                        Intent intent=new Intent(TellerDrawerAct.this, ESiteGeoFenAct.class);
                         intent.putExtra("Emergency",tosend);
                         startActivity(intent);
                     }

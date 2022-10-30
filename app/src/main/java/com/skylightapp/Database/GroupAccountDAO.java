@@ -9,6 +9,7 @@ import android.net.Uri;
 
 import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.GroupAccount;
+import com.skylightapp.Classes.GroupSavings;
 import com.skylightapp.Classes.Profile;
 
 import java.text.ParseException;
@@ -17,27 +18,37 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import static com.skylightapp.Classes.Bookings.BOOKING_ID;
+import static com.skylightapp.Classes.GroupAccount.GRPA_LINK;
+import static com.skylightapp.Classes.GroupAccount.GRPA_AMT;
 import static com.skylightapp.Classes.GroupAccount.GRPA_BALANCE;
+import static com.skylightapp.Classes.GroupAccount.GRPA_CURRENCY_CODE;
+import static com.skylightapp.Classes.GroupAccount.GRPA_DURATION;
 import static com.skylightapp.Classes.GroupAccount.GRPA_EMAIL;
 import static com.skylightapp.Classes.GroupAccount.GRPA_END_DATE;
 import static com.skylightapp.Classes.GroupAccount.GRPA_FIRSTNAME;
-import static com.skylightapp.Classes.GroupAccount.GRPA_ID;
+
+import static com.skylightapp.Classes.GroupAccount.GRPA_FREQ;
 import static com.skylightapp.Classes.GroupAccount.GRPA_PHONE;
+import static com.skylightapp.Classes.GroupAccount.GRPA_PROFILE_ID;
 import static com.skylightapp.Classes.GroupAccount.GRPA_PURPOSE;
+import static com.skylightapp.Classes.GroupAccount.GRPA_SCORE;
 import static com.skylightapp.Classes.GroupAccount.GRPA_START_DATE;
 import static com.skylightapp.Classes.GroupAccount.GRPA_STATUS;
 import static com.skylightapp.Classes.GroupAccount.GRPA_SURNAME;
 import static com.skylightapp.Classes.GroupAccount.GRPA_TITTLE;
+import static com.skylightapp.Classes.GroupAccount.GRP_ACCT_ID;
 import static com.skylightapp.Classes.GroupAccount.GRP_ACCT_TABLE;
-import static com.skylightapp.Classes.GroupSavings.GROUP_AMOUNT;
+import static com.skylightapp.Classes.GroupAccount.GRP_ASSIGNED_ID;
+import static com.skylightapp.Classes.GroupSavings.GROUP_SAVINGS_AMOUNT;
+import static com.skylightapp.Classes.GroupSavings.GROUP_SAVINGS_PROF_ID;
 import static com.skylightapp.Classes.GroupSavings.GROUP_SAVINGS_TABLE;
+import static com.skylightapp.Classes.GroupSavings.GS_GRP_ACCT_ID;
+import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
-import static com.skylightapp.Classes.Profile.PROFILE_PIC_ID;
 import static java.lang.String.valueOf;
 
 public class GroupAccountDAO extends DBHelperDAO{
-    private static final String WHERE_ID_EQUALS = GRPA_ID
+    private static final String WHERE_ID_EQUALS = GRP_ACCT_ID
             + " =?";
     public GroupAccountDAO(Context context) {
         super(context);
@@ -45,7 +56,7 @@ public class GroupAccountDAO extends DBHelperDAO{
     private static final SimpleDateFormat formatter = new SimpleDateFormat(
             "yyyy-MM-dd", Locale.ENGLISH);
 
-    public void updateGrpAcct(long grpAcctID, String tittle, String purpose, String surname, String firstName, String phoneNo) {
+    public void updateGrpAcct(int grpAcctID, String tittle, String purpose, String surname, String firstName, String phoneNo) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues savingsUpdateValues = new ContentValues();
         CustomerDailyReport customerDailyReport = new CustomerDailyReport();
@@ -55,17 +66,17 @@ public class GroupAccountDAO extends DBHelperDAO{
         savingsUpdateValues.put(GRPA_FIRSTNAME, firstName);
         savingsUpdateValues.put(GRPA_PHONE, phoneNo);
         //db.update(GROUP_SAVINGS_TABLE, savingsUpdateValues, GS_ID + " = ?", new String[]{valueOf(grpSavingsID)});
-        db.update(GRP_ACCT_TABLE, savingsUpdateValues, GRPA_ID + " = ?", new String[]{valueOf(grpAcctID)});
+        db.update(GRP_ACCT_TABLE, savingsUpdateValues, GRP_ACCT_ID + " = ?", new String[]{valueOf(grpAcctID)});
         db.close();
 
     }
 
 
-    public long insertGroupAccount(long grpAccountNo, long profileID, String tittle, String purpose, String firstName, String lastName, String phoneNo, String emailAddress, Date startDate, double accountBalance, Date endDate, String status) {
+    public long insertGroupAccount(int grpAccountNo, int profileID, String tittle, String purpose, String firstName, String lastName, String phoneNo, String emailAddress, Date startDate, double accountBalance, Date endDate, String status) {
         try {
             SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
-            contentValues.put(GRPA_ID, grpAccountNo);
+            contentValues.put(GRP_ACCT_ID, grpAccountNo);
             contentValues.put(PROFILE_ID, profileID);
             contentValues.put(GRPA_TITTLE, tittle);
             contentValues.put(GRPA_PURPOSE, purpose);
@@ -86,11 +97,199 @@ public class GroupAccountDAO extends DBHelperDAO{
 
         return grpAccountNo;
     }
+    public long insertGroupAccount(int grpAccountNo, int profileID, String tittle, String purpose, String firstName, String lastName,String managerPhoneNumber,String managerEmail,  String startDate,double amount, String currencyCode, int selectedFreq, int selectedDuration, double accountBalance, Uri grpLink,String endDate, String status) {
+        try {
+            SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(GRP_ACCT_ID, grpAccountNo);
+            contentValues.put(GRPA_PROFILE_ID, profileID);
+            contentValues.put(GRPA_TITTLE, tittle);
+            contentValues.put(GRPA_PURPOSE, purpose);
+            contentValues.put(GRPA_SURNAME, lastName);
+            contentValues.put(GRPA_FIRSTNAME, firstName);
+            contentValues.put(GRPA_PHONE, managerPhoneNumber);
+            contentValues.put(GRPA_EMAIL, managerEmail);
+            contentValues.put(GRPA_AMT, amount);
+            contentValues.put(GRPA_CURRENCY_CODE, currencyCode);
+            contentValues.put(GRPA_FREQ, selectedFreq);
+            contentValues.put(GRPA_DURATION, selectedDuration);
+            contentValues.put(GRPA_LINK, String.valueOf(grpLink));
+            contentValues.put(GRPA_START_DATE, startDate);
+            contentValues.put(GRPA_BALANCE, accountBalance);
+            contentValues.put(GRPA_END_DATE, endDate);
+            contentValues.put(GRPA_STATUS, status);
+            sqLiteDatabase.insert(GRP_ACCT_TABLE, null, contentValues);
 
-    public Cursor getAllGroupProfiles(long grpAcctID) {
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return grpAccountNo;
+    }
+    private void getGrpAcctCursorAll(ArrayList<GroupAccount> groupAccounts, Cursor cursor) {
+        while (cursor.moveToNext()) {
+            int acctID = cursor.getInt(0);
+            int profID = cursor.getInt(1);
+            String tittle = cursor.getString(2);
+            String purpose = cursor.getString(3);
+            String name = cursor.getString(4)+""+cursor.getString(5);
+            String grpSavingsDate = cursor.getString(8);
+            String endDate = cursor.getString(9);
+            String status = cursor.getString(11);
+            String link = cursor.getString(15);
+            int selectedFreq = cursor.getInt(16);
+            int selectedDuration = cursor.getInt(17);
+            double amount = cursor.getDouble(18);
+
+            String currencyCode = cursor.getString(19);
+            int remDuration = cursor.getInt(20);
+            groupAccounts.add(new GroupAccount(profID,acctID,tittle,purpose,name,grpSavingsDate, amount,currencyCode,  selectedFreq,selectedDuration,remDuration,endDate,link,status));
+        }
+
+
+    }
+    public ArrayList<GroupAccount> getGrpAccountForProf(int profID) {
+        ArrayList<GroupAccount> groupAccountArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = GRPA_PROFILE_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(profID)};
+
+        Cursor cursor = db.query(GRP_ACCT_TABLE, null, selection, selectionArgs, null,
+                null, null);
+        if (null != cursor)
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                getGrpAcctCursorAll(groupAccountArrayList,cursor);
+            }
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        return groupAccountArrayList;
+    }
+
+    public ArrayList<GroupAccount> getGrpAccountForAmount(double amount) {
+        ArrayList<GroupAccount> groupAccountArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = GRPA_AMT + "=?";
+        String[] selectionArgs = new String[]{valueOf(amount)};
+
+        Cursor cursor = db.query(GRP_ACCT_TABLE, null, selection, selectionArgs, null,
+                null, null);
+        if (null != cursor)
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                getGrpAcctCursorAll(groupAccountArrayList,cursor);
+            }
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        return groupAccountArrayList;
+    }
+    public ArrayList<GroupAccount> getGrpAccountForAmtRange(long minAmount,long maxAmount) {
+        ArrayList<GroupAccount> groupAccountArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String whereClause = GRPA_AMT + " BETWEEN " + minAmount + " AND " + maxAmount;
+        Cursor cursor = database.query(GRP_ACCT_TABLE, null, whereClause, null, null, null, GRPA_FREQ + " ASC");
+        while (cursor.moveToNext()) {
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                getGrpAcctCursorAll(groupAccountArrayList,cursor);
+            }
+
+        }
+        db.close();
+        cursor.close();
+
+        return groupAccountArrayList;
+    }
+    public ArrayList<GroupAccount> getGrpAccountDurationRange(long minDuration,long maxDuration) {
+        ArrayList<GroupAccount> groupAccountArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String whereClause = GRPA_DURATION + " BETWEEN " + minDuration + " AND " + maxDuration;
+        Cursor cursor = database.query(GRP_ACCT_TABLE, null, whereClause, null, null, null, GRPA_FREQ + " ASC");
+        while (cursor.moveToNext()) {
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                getGrpAcctCursorAll(groupAccountArrayList,cursor);
+            }
+
+        }
+        db.close();
+        cursor.close();
+
+        return groupAccountArrayList;
+    }
+    public ArrayList<GroupAccount> getGrpAccountForDuration(int duration) {
+        ArrayList<GroupAccount> groupAccountArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = GRPA_DURATION + "=?";
+        String[] selectionArgs = new String[]{valueOf(duration)};
+
+        Cursor cursor = db.query(GRP_ACCT_TABLE, null, selection, selectionArgs, null,
+                null, null);
+        if (null != cursor)
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                getGrpAcctCursorAll(groupAccountArrayList,cursor);
+            }
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        return groupAccountArrayList;
+    }
+    public ArrayList<GroupAccount> getGrpAccountForScore(int score) {
+        ArrayList<GroupAccount> groupAccountArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = GRPA_SCORE + "=?";
+        String[] selectionArgs = new String[]{valueOf(score)};
+
+        Cursor cursor = db.query(GRP_ACCT_TABLE, null, selection, selectionArgs, null,
+                null, null);
+        if (null != cursor)
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                getGrpAcctCursorAll(groupAccountArrayList,cursor);
+            }
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        return groupAccountArrayList;
+    }
+    public ArrayList<GroupAccount> getGrpAccountForAmountAndDuration(double amount, int duration) {
+        ArrayList<GroupAccount> groupAccountArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = GRPA_AMT + "=? AND " + GRPA_DURATION + "=?";
+        String[] selectionArgs = new String[]{valueOf(amount), valueOf(duration)};
+        Cursor cursor = db.query(GRP_ACCT_TABLE, null, selection, selectionArgs, null,
+                null, null);
+        if (null != cursor)
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                getGrpAcctCursorAll(groupAccountArrayList,cursor);
+            }
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        return groupAccountArrayList;
+    }
+
+
+
+    public Cursor getAllGroupProfiles(int grpAcctID) {
         try {
             SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-            return sqLiteDatabase.rawQuery("SELECT * FROM GRP_PROFILE_TABLE WHERE GRPA_ID = ?",
+            return sqLiteDatabase.rawQuery("SELECT * FROM GRP_ACCT_TABLE WHERE GRP_ACCT_ID = ?",
                     new String[]{valueOf(grpAcctID)});
 
         }catch (SQLException e)
@@ -100,18 +299,18 @@ public class GroupAccountDAO extends DBHelperDAO{
 
         return null;
     }
-    public Cursor getAllGroupSavingsForProfile(long profileID) {
+    public Cursor getAllGroupSavingsForAcct(int grpAcctID) {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-        return sqLiteDatabase.rawQuery("SELECT * FROM GROUP_SAVINGS_TABLE WHERE PROFILE_ID = ?",
-                new String[]{valueOf(profileID)});
+        return sqLiteDatabase.rawQuery("SELECT * FROM GRP_ACCT_TABLE WHERE GRP_ACCT_ID = ?",
+                new String[]{valueOf(grpAcctID)});
     }
-    public double getGrpSavingsTotal(long grpAcctID) {
+    public double getGrpAccountTotal(int grpAcctID) {
         try {
             GroupAccount groupAccount = new GroupAccount();
             grpAcctID=groupAccount.getGrpAcctNo();
             SQLiteDatabase db = this.getWritableDatabase();
 
-            try (Cursor cursor = db.rawQuery("SELECT SUM(" + GROUP_AMOUNT + ") as Total FROM " + GROUP_SAVINGS_TABLE, new String[]{" WHERE GRPA_ID=?",String.valueOf(grpAcctID)})){
+            try (Cursor cursor = db.rawQuery("SELECT SUM(" + GRPA_AMT + ") as Total FROM " + GRP_ACCT_TABLE, new String[]{" WHERE GRP_ACCT_ID=?",String.valueOf(grpAcctID)})){
 
                 if (cursor.moveToFirst()) {
 
@@ -130,63 +329,37 @@ public class GroupAccountDAO extends DBHelperDAO{
 
         return 0;
     }
-    public double getGrpSavingsForProfile(long profileID) {
-        try {
-            Profile profile = new Profile();
-            profileID=profile.getPID();
-            SQLiteDatabase db = this.getWritableDatabase();
 
-            try (Cursor cursor = db.rawQuery("SELECT SUM(" + GROUP_AMOUNT + ") as Total FROM " + GROUP_SAVINGS_TABLE, new String[]{" WHERE PROFILE_ID=?",String.valueOf(profileID)})){
-
-                if (cursor.moveToFirst()) {
-
-                    return Double.parseDouble(String.valueOf(cursor.getCount()));
-
-
-                }
-            }
-
-            return 0;
-
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-
-        return 0;
-    }
-    public ArrayList<GroupAccount> getGrpAcctsForCurrentProfile(long profileID) {
+    public ArrayList<GroupAccount> getGrpAcctsForCurrentProfile(int profileID) {
         try {
             ArrayList<GroupAccount> groupAccounts = new ArrayList<>();
             SQLiteDatabase db = this.getWritableDatabase();
-            try (Cursor cursor = db.rawQuery("SELECT * FROM " + GRP_ACCT_TABLE, new String[]{" WHERE PROFILE_ID=?",String.valueOf(profileID)})){
+            try (Cursor cursor = db.rawQuery("SELECT * FROM " + GRP_ACCT_TABLE, new String[]{" WHERE GRPA_PROFILE_ID=?",String.valueOf(profileID)})){
 
                 if (cursor.moveToFirst()) {
 
                     do {
                         GroupAccount groupAccount = new GroupAccount();
-                        groupAccount.setGrpAcctNo(Long.parseLong(cursor.getString(0)));
-                        groupAccount.setGrpTittle(cursor.getString(1));
-                        groupAccount.setGrpPurpose(cursor.getString(2));
-                        groupAccount.setGrpLastName(cursor.getString(3));
-                        groupAccount.setGrpFirstName(cursor.getString(4));
-                        groupAccount.seGrpPhoneNo(cursor.getString(5));
+                        groupAccount.setGrpAcctNo(cursor.getInt(0));
+                        groupAccount.setGrpTittle(cursor.getString(2));
+                        groupAccount.setGrpPurpose(cursor.getString(3));
+                        groupAccount.setGrpLastName(cursor.getString(4));
+                        groupAccount.setGrpFirstName(cursor.getString(5));
+                        groupAccount.setGrpStartDate(cursor.getString(8));
+                        groupAccount.setGrpEndDate(cursor.getString(9));
+                        groupAccount.setGrpLink(cursor.getString(15));
+                        groupAccount.setGrpFreqNo(cursor.getInt(16));
+                        groupAccount.setGrpDuration(cursor.getInt(17));
+                        groupAccount.setGrpAmt(cursor.getDouble(18));
+                        groupAccount.setGrpCurrencyCode(cursor.getString(19));
+                        groupAccount.setGrpCountry(cursor.getString(20));
 
-
-                        try {
-                            groupAccount.setGrpStartDate(formatter.parse(cursor.getString(6)));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        groupAccount.setGrpEndDate(formatter.parse(cursor.getString(7)));
                         groupAccounts.add(groupAccount);
                     } while (cursor.moveToNext());
 
 
                 }
                 return groupAccounts;
-            } catch (ParseException e) {
-                e.printStackTrace();
             }
 
             //return profiles;
@@ -234,53 +407,44 @@ public class GroupAccountDAO extends DBHelperDAO{
         return null;
     }
     public ArrayList<GroupAccount> getAllGroupAcctList() {
-        try {
-            ArrayList<GroupAccount> groupAccountsList = new ArrayList<>();
+        ArrayList<GroupAccount> groupAccountsList = new ArrayList<>();
 
-            // Select all Query
-            String selectQuery = "SELECT * FROM " + GRP_ACCT_TABLE;
+        SQLiteDatabase db = this.getWritableDatabase();
+        try (Cursor cursor = db.rawQuery("SELECT * FROM " + GRP_ACCT_TABLE, null)){
 
-            SQLiteDatabase db = this.getWritableDatabase();
-            try (Cursor cursor = db.rawQuery(selectQuery, null)) {
+            if (cursor.moveToFirst()) {
 
-                if (cursor.moveToFirst()) {
-                    do {
-                        GroupAccount groupAccount = new GroupAccount();
-                        groupAccount.setGrpAcctNo(Long.parseLong(cursor.getString(0)));
-                        groupAccount.setGrpProfileID(Long.parseLong(cursor.getString(1)));
-                        groupAccount.setGrpPurpose(cursor.getString(3));
-                        groupAccount.setGrpAcctBalance(Double.parseDouble(cursor.getString(10)));
-                        try {
-                            groupAccount.setGrpStartDate(formatter.parse(cursor.getString(8)));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            groupAccount.setGrpEndDate(formatter.parse(cursor.getString(9)));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        groupAccount.setIsComplete(Boolean.parseBoolean(cursor.getString(11)));
+                do {
+                    GroupAccount groupAccount = new GroupAccount();
+                    groupAccount.setGrpAcctNo(cursor.getInt(0));
+                    groupAccount.setGrpTittle(cursor.getString(2));
+                    groupAccount.setGrpPurpose(cursor.getString(3));
+                    groupAccount.setGrpLastName(cursor.getString(4));
+                    groupAccount.setGrpFirstName(cursor.getString(5));
+                    groupAccount.setGrpStartDate(cursor.getString(8));
+                    groupAccount.setGrpEndDate(cursor.getString(9));
+                    groupAccount.setGrpLink(cursor.getString(15));
+                    groupAccount.setGrpFreqNo(cursor.getInt(16));
+                    groupAccount.setGrpDuration(cursor.getInt(17));
+                    groupAccount.setGrpAmt(cursor.getDouble(18));
+                    groupAccount.setGrpCurrencyCode(cursor.getString(19));
+                    groupAccount.setGrpCountry(cursor.getString(20));
+
+                    groupAccountsList.add(groupAccount);
+                } while (cursor.moveToNext());
 
 
-                        groupAccountsList.add(groupAccount);
-                    } while (cursor.moveToNext());
-                }
             }
             return groupAccountsList;
-
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
         }
 
-        return null;
+
     }
 
     public void deleteGroupAcct(long grpAcctID) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
-            db.delete(GRP_ACCT_TABLE, GRPA_ID + "=?",
+            db.delete(GRP_ACCT_TABLE, GRP_ACCT_ID + "=?",
                     new String[]{String.valueOf(grpAcctID)});
             db.close();
 
@@ -290,39 +454,30 @@ public class GroupAccountDAO extends DBHelperDAO{
         }
 
     }
-    public GroupAccount getGrpAcct(String grpID) {
+    public GroupAccount getGrpAcct(int grpAcctID,int grpProfID) {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
+            String selection = GRP_ACCT_ID + "=? AND " + GRP_ASSIGNED_ID + "=?";
+            String[] selectionArgs = new String[]{valueOf(grpAcctID), valueOf(grpProfID)};
+            try (Cursor cursor = db.query(GRP_ACCT_TABLE, null, selection, selectionArgs, null, null, null, null)) {
 
-            GroupAccount groupAccount;
-            try (Cursor cursor = db.query(GRP_ACCT_TABLE, new String[]
-                            {
-                                    GRPA_ID,
-                                    PROFILE_ID,
-                                    GRPA_TITTLE,
-                                    GRPA_PURPOSE,
-                                    GRPA_FIRSTNAME,
-                                    GRPA_START_DATE,GRPA_BALANCE,GRPA_STATUS
-                            }, BOOKING_ID + "=?",
-
-                    new String[]{String.valueOf(grpID)}, null, null, null, null)) {
-
-                if (cursor != null)
-                    cursor.moveToFirst();
-
-                groupAccount = null;
                 if (cursor != null) {
-                    try {
-                        groupAccount = new GroupAccount(Integer.parseInt(cursor.getString(0)),Long.parseLong(cursor.getString(1)), cursor.getString(2),
-                                cursor.getString(3), cursor.getString(4),Double.parseDouble(cursor.getString(5)),formatter.parse(cursor.getString(6)),
-                                cursor.getString(7));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+                    GroupAccount groupAccount = new GroupAccount();
+                    groupAccount.setGrpAcctNo(cursor.getInt(0));
+                    groupAccount.setGrpTittle(cursor.getString(2));
+                    groupAccount.setGrpPurpose(cursor.getString(3));
+                    groupAccount.setGrpLastName(cursor.getString(4));
+                    groupAccount.setGrpFirstName(cursor.getString(5));
+                    groupAccount.setGrpStartDate(cursor.getString(8));
+                    groupAccount.setGrpEndDate(cursor.getString(9));
+                    groupAccount.setGrpLink(cursor.getString(15));
+                    groupAccount.setGrpFreqNo(cursor.getInt(16));
+                    groupAccount.setGrpDuration(cursor.getInt(17));
+                    groupAccount.setGrpAmt(cursor.getDouble(18));
+                    groupAccount.setGrpCurrencyCode(cursor.getString(19));
+                    groupAccount.setGrpCountry(cursor.getString(20));
                 }
             }
-
-            return groupAccount;
 
         }catch (SQLException e)
         {
@@ -331,5 +486,23 @@ public class GroupAccountDAO extends DBHelperDAO{
 
 
         return null;
+    }
+    public void updateGrpAcctStatus(int grpAccountNo,int profileID,double accountBalance,String status) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues savingsUpdateValues = new ContentValues();
+            savingsUpdateValues.put(GRPA_BALANCE, accountBalance);
+            savingsUpdateValues.put(GRPA_STATUS, status);
+            db.update(PROFILES_TABLE, savingsUpdateValues, PROFILE_ID + " = ?", new String[]{valueOf(profileID)});
+            db.update(GRP_ACCT_TABLE, savingsUpdateValues, GRP_ACCT_ID + " = ?", new String[]{valueOf(grpAccountNo)});
+            db.close();
+
+
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+
     }
 }

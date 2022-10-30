@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
     android:background="?android:attr/activatedBackgroundIndicator">
 
@@ -80,7 +81,6 @@
                 android:text=" Commodity Market , 200 "
                 android:id="@+id/type_market"
                 android:textStyle="bold"
-                android:textSize="17sp"
                 android:gravity="center_horizontal"
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="20dp"
@@ -92,5 +92,45 @@
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/option_market"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:padding="20dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginEnd="6dp"
+        android:background="@drawable/rect6b"
+        android:elevation="3dp"
+        android:weightSum="2"
+        android:orientation="horizontal"
+        android:visibility="gone">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/textView28"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:layout_weight="1"
+            android:paddingTop="6dp"
+            android:layout_marginEnd="10dp"
+            android:paddingBottom="6dp"
+            android:text="Edit"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/textView29"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:layout_weight="1"
+            android:paddingTop="6dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="6dp"
+            android:text="Remove"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

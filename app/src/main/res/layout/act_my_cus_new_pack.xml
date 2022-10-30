@@ -130,7 +130,7 @@
                     android:textStyle="bold"
                     android:textAlignment="center"
                     android:gravity="center_horizontal"
-                    android:entries="@array/skylight_packages"
+                    android:entries="@array/awajima_packages"
                     android:textColor="@color/colorPrimary"
                     android:id="@+id/pack_Type"
                     android:padding="40dp"

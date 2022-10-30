@@ -69,7 +69,7 @@ import com.skylightapp.R;
 import com.skylightapp.SignTabMainActivity;
 import com.skylightapp.SignUpAct;
 import com.skylightapp.SkylightSliderAct;
-import com.skylightapp.SuperAdmin.SuperEmergList;
+import com.skylightapp.MapAndLoc.StateEmergList;
 import com.skylightapp.Tellers.AllCusLoanRepayment;
 import com.skylightapp.Tellers.LoanRepaymentTab;
 import com.skylightapp.Tellers.MyCusList;
@@ -280,7 +280,7 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
             String username = userProfile.getProfileUserName();
             txtAdminUserName2.setText(MessageFormat.format("Admin UserName:{0}", username));
             txtProfileID.setText(MessageFormat.format("Profile ID:{0}", userProfile.getPID()));
-            txtGrpSavings.setText(MessageFormat.format("Grp Savings:{0}", userProfile.getProfile_GroupSavings().size()));
+            txtGrpSavings.setText(MessageFormat.format("Grp Savings:{0}", userProfile.getProf_GrpSavings().size()));
 
         }
 
@@ -452,7 +452,7 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
                             break;
 
                         case 11:
-                            Intent emergIntent = new Intent(AdminDrawerActivity.this, SuperEmergList.class);
+                            Intent emergIntent = new Intent(AdminDrawerActivity.this, StateEmergList.class);
                             emergIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                     Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(emergIntent);

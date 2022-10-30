@@ -5,11 +5,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.skylightapp.Classes.Account;
+import com.skylightapp.MapAndLoc.EmergencyReport;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Markets.MarketTranx;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.skylightapp.Classes.Account.ACCOUNTS_TABLE;
 import static com.skylightapp.Classes.Account.ACCOUNT_NO;
@@ -62,17 +63,28 @@ public class Market implements Serializable, Parcelable {
     private double marketRevenue;
     private String marketStatus;
     private Account marketAccount;
-    private ArrayList<Commodity> commodityArrayList;
+    private ArrayList<MarketCommodity> marketCommodityArrayList;
     private ArrayList<MarketDays> marketMDaysArrayList;
-    private ArrayList<BusinessOthers> marketBizArrayList;
+    private ArrayList<MarketAnnouncement> marketAnnouncements;
+    private ArrayList<MarketBizDonor> marketBizDonors;
+    private ArrayList<String> marketDayStrings;
+    private ArrayList<EmergencyReport> marketEmergReports;
+    private ArrayList<MarketBusiness> marketBizArrayList;
     private ArrayList<BusinessDeal> marketBizDealList;
     private ArrayList<BizDealAccount> marketBizDealAcctList;
     private ArrayList<MarketCustomer> marketCustomers;
     private ArrayList<MarketAdmin> marketAdminArrayList;
     private ArrayList<MarketTranx> marketTranxArrayList;
+    private ArrayList<Farm> marketFarms;
+    private ArrayList<InsuranceCompany> marketInsurances;
+    private ArrayList<MarketBizRegulator> marketBizRegulators;
+    private ArrayList<MarketBizSubScription> marketBizSubScriptions;
 
     private ArrayList<Long> marketBizIDList;
     private Profile marketProf;
+    private ArrayList<LogisticEntity> marketLogisticE;
+    private List<Uri> marketPhotos;
+    private boolean selected;
 
     public Market () {
         super();
@@ -100,7 +112,7 @@ public class Market implements Serializable, Parcelable {
         marketLat = in.readDouble();
         commodityCount = in.readInt();
         marketLogo = in.readInt();
-        marketBizArrayList = in.createTypedArrayList(BusinessOthers.CREATOR);
+        marketBizArrayList = in.createTypedArrayList(MarketBusiness.CREATOR);
         marketBizDealList = in.createTypedArrayList(BusinessDeal.CREATOR);
         marketBizDealAcctList = in.createTypedArrayList(BizDealAccount.CREATOR);
     }
@@ -156,37 +168,7 @@ public class Market implements Serializable, Parcelable {
 
 
 
-    public ArrayList<Commodity> getCommodityArrayList() {
-        return commodityArrayList;
-    }
 
-    public void setCommodityArrayList(ArrayList<Commodity> commodityArrayList) {
-        this.commodityArrayList = commodityArrayList;
-    }
-
-    public ArrayList<MarketDays> getMarketMDaysArrayList() {
-        return marketMDaysArrayList;
-    }
-
-    public void setMarketMDaysArrayList(ArrayList<MarketDays> marketMDaysArrayList) {
-        this.marketMDaysArrayList = marketMDaysArrayList;
-    }
-
-    public ArrayList<MarketCustomer> getMarketCustomers() {
-        return marketCustomers;
-    }
-
-    public void setMarketCustomers(ArrayList<MarketCustomer> marketCustomers) {
-        this.marketCustomers = marketCustomers;
-    }
-
-    public ArrayList<MarketAdmin> getMarketAdminArrayList() {
-        return marketAdminArrayList;
-    }
-
-    public void setMarketAdminArrayList(ArrayList<MarketAdmin> marketAdminArrayList) {
-        this.marketAdminArrayList = marketAdminArrayList;
-    }
 
     public int getMarketLogo() {
         return marketLogo;
@@ -276,14 +258,6 @@ public class Market implements Serializable, Parcelable {
         this.marketID = marketID;
     }
 
-    public ArrayList<MarketTranx> getMarketTranxArrayList() {
-        return marketTranxArrayList;
-    }
-
-    public void setMarketTranxArrayList(ArrayList<MarketTranx> marketTranxArrayList) {
-        this.marketTranxArrayList = marketTranxArrayList;
-    }
-
     public int getMarketProfID() {
         return marketProfID;
     }
@@ -292,29 +266,7 @@ public class Market implements Serializable, Parcelable {
         this.marketProfID = marketProfID;
     }
 
-    public ArrayList<BusinessDeal> getMarketBizDealList() {
-        return marketBizDealList;
-    }
 
-    public void setMarketBizDealList(ArrayList<BusinessDeal> marketBizDealList) {
-        this.marketBizDealList = marketBizDealList;
-    }
-
-    public ArrayList<BusinessOthers> getMarketBizArrayList() {
-        return marketBizArrayList;
-    }
-
-    public void setMarketBizArrayList(ArrayList<BusinessOthers> marketBizArrayList) {
-        this.marketBizArrayList = marketBizArrayList;
-    }
-
-    public ArrayList<BizDealAccount> getMarketBizDealAcctList() {
-        return marketBizDealAcctList;
-    }
-
-    public void setMarketBizDealAcctList(ArrayList<BizDealAccount> marketBizDealAcctList) {
-        this.marketBizDealAcctList = marketBizDealAcctList;
-    }
 
     @Override
     public int describeContents() {
@@ -402,5 +354,219 @@ public class Market implements Serializable, Parcelable {
 
     public void setMarketBizIDList(ArrayList<Long> marketBizIDList) {
         this.marketBizIDList = marketBizIDList;
+    }
+
+    public ArrayList<MarketAnnouncement> getMarketAnnouncements() {
+        return marketAnnouncements;
+    }
+
+    public void setMarketAnnouncements(ArrayList<MarketAnnouncement> marketAnnouncements) {
+        this.marketAnnouncements = marketAnnouncements;
+    }
+
+    public ArrayList<String> getMarketDayStrings() {
+        return marketDayStrings;
+    }
+
+    public void setMarketDayStrings(ArrayList<String> marketDayStrings) {
+        this.marketDayStrings = marketDayStrings;
+    }
+
+    public ArrayList<EmergencyReport> getMarketEmergReports() {
+        return marketEmergReports;
+    }
+
+    public void setMarketEmergReports(ArrayList<EmergencyReport> marketEmergReports) {
+        this.marketEmergReports = marketEmergReports;
+    }
+
+    public ArrayList<MarketBizDonor> getMarketBizDonors() {
+        return marketBizDonors;
+    }
+
+    public void setMarketBizDonors(ArrayList<MarketBizDonor> marketBizDonors) {
+        this.marketBizDonors = marketBizDonors;
+    }
+
+    public ArrayList<Farm> getMarketFarms() {
+        return marketFarms;
+    }
+
+    public void setMarketFarms(ArrayList<Farm> marketFarms) {
+        this.marketFarms = marketFarms;
+    }
+
+    public ArrayList<InsuranceCompany> getMarketInsurances() {
+        return marketInsurances;
+    }
+
+    public void setMarketInsurances(ArrayList<InsuranceCompany> marketInsurances) {
+        this.marketInsurances = marketInsurances;
+    }
+
+    public ArrayList<MarketBizRegulator> getMarketBizRegulators() {
+        return marketBizRegulators;
+    }
+
+    public void setMarketBizRegulators(ArrayList<MarketBizRegulator> marketBizRegulators) {
+        this.marketBizRegulators = marketBizRegulators;
+    }
+
+    public ArrayList<MarketBizSubScription> getMarketBizSubScriptions() {
+        return marketBizSubScriptions;
+    }
+
+    public void setMarketBizSubScriptions(ArrayList<MarketBizSubScription> marketBizSubScriptions) {
+        this.marketBizSubScriptions = marketBizSubScriptions;
+    }
+
+    public ArrayList<LogisticEntity> getMarketLogisticE() {
+        return marketLogisticE;
+    }
+
+    public void setMarketLogisticE(ArrayList<LogisticEntity> marketLogisticE) {
+        this.marketLogisticE = marketLogisticE;
+    }
+    public void addMSubscription(MarketBizSubScription marketBizSubScription) {
+        marketBizSubScriptions = new ArrayList<>();
+        marketBizSubScriptions.add(marketBizSubScription);
+    }
+    public void addMRegulator(MarketBizRegulator marketBizRegulator) {
+        marketBizRegulators = new ArrayList<>();
+        marketBizRegulators.add(marketBizRegulator);
+    }
+    public void addMInsuranceC(InsuranceCompany insuranceCompany) {
+        marketInsurances = new ArrayList<>();
+        marketInsurances.add(insuranceCompany);
+    }
+    public void addMFarm(Farm farm) {
+        marketFarms = new ArrayList<>();
+        marketFarms.add(farm);
+    }
+    public void addMEmergencyReport(EmergencyReport emergencyReport) {
+        marketEmergReports = new ArrayList<>();
+        marketEmergReports.add(emergencyReport);
+    }
+    public void addMarketDay(String marketDay) {
+        marketDayStrings = new ArrayList<>();
+        marketDayStrings.add(marketDay);
+    }
+    public void addMAnnouncement(MarketAnnouncement announcement) {
+        marketAnnouncements = new ArrayList<>();
+        marketAnnouncements.add(announcement);
+    }
+    public void addMLogisticE(LogisticEntity logisticEntity) {
+        marketLogisticE = new ArrayList<>();
+        marketLogisticE.add(logisticEntity);
+    }
+    public ArrayList<MarketTranx> getMarketTranxArrayList() {
+        return marketTranxArrayList;
+    }
+
+    public void setMarketTranxArrayList(ArrayList<MarketTranx> marketTranxArrayList) {
+        this.marketTranxArrayList = marketTranxArrayList;
+    }
+    public ArrayList<MarketCommodity> getCommodityArrayList() {
+        return marketCommodityArrayList;
+    }
+
+    public void setCommodityArrayList(ArrayList<MarketCommodity> marketCommodityArrayList) {
+        this.marketCommodityArrayList = marketCommodityArrayList;
+    }
+
+    public ArrayList<MarketDays> getMarketMDaysArrayList() {
+        return marketMDaysArrayList;
+    }
+
+    public void setMarketMDaysArrayList(ArrayList<MarketDays> marketMDaysArrayList) {
+        this.marketMDaysArrayList = marketMDaysArrayList;
+    }
+
+    public ArrayList<MarketCustomer> getMarketCustomers() {
+        return marketCustomers;
+    }
+
+    public void setMarketCustomers(ArrayList<MarketCustomer> marketCustomers) {
+        this.marketCustomers = marketCustomers;
+    }
+    public ArrayList<BusinessDeal> getMarketBizDealList() {
+        return marketBizDealList;
+    }
+
+    public void setMarketBizDealList(ArrayList<BusinessDeal> marketBizDealList) {
+        this.marketBizDealList = marketBizDealList;
+    }
+
+    public ArrayList<MarketBusiness> getMarketBizArrayList() {
+        return marketBizArrayList;
+    }
+
+    public void setMarketBizArrayList(ArrayList<MarketBusiness> marketBizArrayList) {
+        this.marketBizArrayList = marketBizArrayList;
+    }
+
+    public ArrayList<BizDealAccount> getMarketBizDealAcctList() {
+        return marketBizDealAcctList;
+    }
+
+    public void setMarketBizDealAcctList(ArrayList<BizDealAccount> marketBizDealAcctList) {
+        this.marketBizDealAcctList = marketBizDealAcctList;
+    }
+
+    public ArrayList<MarketAdmin> getMarketAdminArrayList() {
+        return marketAdminArrayList;
+    }
+
+    public void setMarketAdminArrayList(ArrayList<MarketAdmin> marketAdminArrayList) {
+        this.marketAdminArrayList = marketAdminArrayList;
+    }
+    public void addMarketTranx(MarketTranx marketTranx) {
+        marketTranxArrayList = new ArrayList<>();
+        marketTranxArrayList.add(marketTranx);
+    }
+    public void addMCommodity(MarketCommodity marketCommodity) {
+        marketCommodityArrayList = new ArrayList<>();
+        marketCommodityArrayList.add(marketCommodity);
+    }
+    public void addMarketDays(MarketDays marketDays) {
+        marketMDaysArrayList = new ArrayList<>();
+        marketMDaysArrayList.add(marketDays);
+    }
+    public void addMarketCustomer(MarketCustomer marketCustomer) {
+        marketCustomers = new ArrayList<>();
+        marketCustomers.add(marketCustomer);
+    }
+    public void addBusinessDeal(BusinessDeal businessDeal) {
+        marketBizDealList = new ArrayList<>();
+        marketBizDealList.add(businessDeal);
+    }
+    public void addMarketBusiness(MarketBusiness marketBusiness) {
+        marketBizArrayList = new ArrayList<>();
+        marketBizArrayList.add(marketBusiness);
+    }
+    public void addMBizDealAccount(BizDealAccount bizDealAccount) {
+        marketBizDealAcctList = new ArrayList<>();
+        marketBizDealAcctList.add(bizDealAccount);
+    }
+    public void addMarketAdmin(MarketAdmin marketAdmin) {
+        marketAdminArrayList = new ArrayList<>();
+        marketAdminArrayList.add(marketAdmin);
+    }
+
+
+    public List<Uri> getMarketPhotos() {
+        return marketPhotos;
+    }
+
+    public void setMarketPhotos(List<Uri> marketPhotos) {
+        this.marketPhotos = marketPhotos;
+    }
+
+    public boolean getSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

@@ -22,11 +22,15 @@ import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Inventory.StockTransfer;
 import com.skylightapp.Inventory.Stocks;
 
+import com.skylightapp.MapAndLoc.EmergReportNext;
+import com.skylightapp.MapAndLoc.EmergResponse;
+import com.skylightapp.MapAndLoc.EmergencyReport;
 import com.skylightapp.MarketClasses.BusinessOthers;
+import com.skylightapp.MarketClasses.InsuranceCompany;
 import com.skylightapp.MarketClasses.Market;
 import com.skylightapp.MarketClasses.MarketAdmin;
 import com.skylightapp.MarketClasses.MarketBusiness;
-import com.skylightapp.SuperAdmin.Skylight;
+import com.skylightapp.SuperAdmin.Awajima;
 import com.skylightapp.Tellers.TellerCash;
 
 import java.io.Serializable;
@@ -35,6 +39,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
@@ -44,6 +49,7 @@ import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_ID;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TABLE;
 
 //@Entity(tableName = "RoomProfileTable")
+//@Entity
 public class Profile implements Parcelable, Serializable, BaseColumns {
     //@Ignore
     public static final String PROFILE_SURNAME = "P_surname";
@@ -151,8 +157,11 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     //@Ignore
     public static final String PROF_ID_FOREIGN_KEY_PASSWORD = "prof_ID_FkeyPassW";
     public static final String PROF_BUSINESS_ID = "prof_BizID";
-    public static final String PROF_MARKET_ID = "market_ID";
-    public static final String PROF_ADMIN_TYPE = "market_Admin_Type";
+    public static final String PROF_MARKET_ID = "profmarket_ID8234";
+    public static final String PROF_ADMIN_TYPE = "prof_Admin_Type";
+    public static final String PROF_ROLE_TYPE = "prof_Role_Type";
+
+    public static final String PROF_DB_ID = "prof_DB_ID";
 
 
     //@Ignore
@@ -163,25 +172,25 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
             PASSWORD + " TEXT , " + CUS_ID_PASS_KEY + " INTEGER , " +"FOREIGN KEY(" + PROF_ID_FOREIGN_KEY_PASSWORD  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +
             "FOREIGN KEY(" + CUS_ID_PASS_KEY + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
-    public static final String CREATE_PROFILES_TABLE = "CREATE TABLE " + PROFILES_TABLE + " (" + PROFILE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PROFILE_SURNAME + " TEXT, " + PROFILE_FIRSTNAME + " TEXT, " + PROFILE_PHONE + " TEXT, " + PROFILE_EMAIL + " TEXT, " + PROFILE_DOB + " TEXT, " + PROFILE_GENDER + " TEXT, " +
-            PROFILE_ADDRESS + " TEXT, " + PROFILE_NIN + " TEXT, " + PROFILE_UNIT + " TEXT, " + PROFILE_WARD + " TEXT, " + PROFILE_TOWN + " TEXT, " + PROFILE_STATE + " TEXT, " + PROFILE_COUNTRY + " TEXT, " + PROFILE_OFFICE + " TEXT, " + PROFILE_DATE_JOINED + " TEXT, " + PROFILE_ROLE + " TEXT, " + PROFILE_USERNAME + " TEXT, " + PROFILE_PASSWORD + " TEXT, " + PROFILE_STATUS + " TEXT, " + PROFILE_NEXT_OF_KIN + " TEXT,"+ PROFILE_SPONSOR_ID + " TEXT,"+ PROFILE_CUS_ID_KEY + " INTEGER,"+ PROF_BUSINESS_ID + " TEXT,"+ PROF_MARKET_ID + " TEXT,"+ PROF_REF_LINK + " REAL," + "FOREIGN KEY(" + PROF_BUSINESS_ID + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+ "FOREIGN KEY(" + PROF_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+ "FOREIGN KEY(" + PROFILE_CUS_ID_KEY + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+    public static final String CREATE_PROFILES_TABLE = "CREATE TABLE " + PROFILES_TABLE + " (" + PROFILE_ID + " INTEGER , " + PROFILE_SURNAME + " TEXT, " + PROFILE_FIRSTNAME + " TEXT, " + PROFILE_PHONE + " TEXT, " + PROFILE_EMAIL + " TEXT, " + PROFILE_DOB + " TEXT, " + PROFILE_GENDER + " TEXT, " +
+            PROFILE_ADDRESS + " TEXT, " + PROFILE_NIN + " TEXT, " + PROFILE_UNIT + " TEXT, " + PROFILE_WARD + " TEXT, " + PROFILE_TOWN + " TEXT, " + PROFILE_STATE + " TEXT, " + PROFILE_COUNTRY + " TEXT, " + PROFILE_OFFICE + " TEXT, " + PROFILE_DATE_JOINED + " TEXT, " + PROFILE_ROLE + " TEXT, " + PROFILE_USERNAME + " TEXT, " + PROFILE_PASSWORD + " TEXT, " + PROFILE_STATUS + " TEXT, " + PROFILE_NEXT_OF_KIN + " TEXT,"+ PROFILE_SPONSOR_ID + " TEXT,"+ PROFILE_CUS_ID_KEY + " INTEGER,"+ PROF_BUSINESS_ID + " TEXT,"+ PROF_MARKET_ID + " TEXT,"+ PROF_REF_LINK + " REAL," + PROF_ADMIN_TYPE + " TEXT, " + PROF_ROLE_TYPE + " TEXT, "+ PROF_DB_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ "FOREIGN KEY(" + PROF_BUSINESS_ID + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+ "FOREIGN KEY(" + PROF_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+ "FOREIGN KEY(" + PROFILE_CUS_ID_KEY + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
     //@Ignore
-    public static final String CREATE_SPONSOR_TABLE = "CREATE TABLE " + SPONSOR_TABLE + " (" + SPONSOR_TABLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + SPONSOR_TABLE_CUS_ID + " INTEGER, " + SPONSOR_TABLE_PROF_ID + " INTEGER, " + SPONSOR_TABLE_PHONE + " TEXT, " + SPONSOR_TABLE_EMAIL + " TEXT, "+ SPONSOR_REFERER + " TEXT, "+ SPONSOR_REFERRER_CODE + " TEXT, "+ SPONSOR_REFERRER_USER + " TEXT, "+ SPONSOR_REF_COUNT + " INTEGER, "+ SPONSOR_REF_COUNT + " SPONSOR_REF_REWARD_COUNT21, " + "FOREIGN KEY(" + SPONSOR_TABLE_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+    public static final String CREATE_SPONSOR_TABLE = "CREATE TABLE " + SPONSOR_TABLE + " (" + SPONSOR_TABLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + SPONSOR_TABLE_CUS_ID + " INTEGER, " + SPONSOR_TABLE_PROF_ID + " INTEGER, " + SPONSOR_TABLE_PHONE + " TEXT, " + SPONSOR_TABLE_EMAIL + " TEXT, "+ SPONSOR_REFERER + " TEXT, "+ SPONSOR_REFERRER_CODE + " TEXT, "+ SPONSOR_REFERRER_USER + " TEXT, "+ SPONSOR_REF_COUNT + " INTEGER, "+  SPONSOR_REF_REWARD_COUNT21 + " INTEGER, " + "FOREIGN KEY(" + SPONSOR_TABLE_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
     //@Ignore
     private Profile profile;
-    @Ignore
+
     private Payment profile_Payment;
-    @Ignore
+
     private String profile_Identity, businessName, profile_Unit, profile_Ward, profile_Town;
-    @Ignore
+
 
     private OfficeBranch profile_OfficeBranch;
 
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = PROFILE_ID)
-    private int pID =10152;
+    private int pID ;
 
     @ColumnInfo(name = PROFILE_SURNAME)
     private String profileLastName;
@@ -264,7 +273,11 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     private QBUser profQbUser;
     private QBEntity profQbEntity;
     private AdminUser.ADMIN_TYPE profileAdmin_type;
-    private ArrayList<CustomerManager> profileTellers;
+
+
+
+    private String profileAdminType;
+    private String profileRoleType;
 
 
     public void setProfilePassword(String profilePassword)   {
@@ -280,18 +293,10 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
 
 
-
-
-
-    @Ignore
-
     private String pin;
 
-    @Ignore
     protected User.User_Type type;
 
-
-    @Ignore
     private String profile_Machine;
 
 
@@ -299,6 +304,24 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     @TypeConverters
     @ColumnInfo(name = PICTURE_URI)
     private Uri profilePicture;
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o)
+            return true;
+        if (!(o instanceof Profile))
+            return false;
+        Profile profile = (Profile) o;
+        return Objects.equals(this.pID, profile.pID) && Objects.equals(this.profileFirstName, profile.profileFirstName)
+                && Objects.equals(this.profileRole, profile.profileRole);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.pID, this.profileFirstName, this.profileRole);
+    }
+
 
 
 
@@ -373,7 +396,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     //@Ignore
     public ArrayList<Address> getProfileAddresses() { return profile_Addresses; }
     //@Ignore
-    AdminUser adminUser2;
+
 
 
     //@Ignore
@@ -389,24 +412,25 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     //@Ignore
     private ArrayList<Customer> profile_Customers;
     //@Ignore
-    private ArrayList<MarketBusiness> marketBusinessArrayList;
+
     //@Ignore
     private ArrayList<CustomerDailyReport> profile_DailyReports;
-    @Ignore
+
     private ArrayList<SkyLightPackage> profile_SkyLightPackages;
-    @Ignore
+
     private ArrayList<Loan> profile_Loans;
-    @Ignore
+
     private ArrayList<Payment> profile_PaymentArrayList;
-    @Ignore
+
     private ArrayList<PaymentCode> profile_PaymentCodeArrayList;
-    @Ignore
+
     private ArrayList<PaymentDoc> profile_PaymentDocArrayList;
-    //@Ignore
+
 
     private ArrayList<CustomerManager> profile_CustomerManagers;
-    //@Ignore
     private ArrayList<AdminUser> adminUsers;
+
+
     @Ignore
     private ArrayList<AdminBankDeposit> profile_AdminBankDeposits;
     @Ignore
@@ -416,7 +440,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     @Ignore
     private ArrayList<StandingOrder> profile_StandingOrders;
     @Ignore
-    private ArrayList<SavingsGroup> profile_SavingsGroups;
+    private ArrayList<ProjectSavingsGroup> profile_Project_SavingsGroups;
     @Ignore
     private ArrayList<GroupAccount> profile_GroupAccounts;
     @Ignore
@@ -432,7 +456,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     @Ignore
     private ArrayList<SmsMessage.MessageClass> messageClasses;
     @Ignore
-    private ArrayList<GroupSavings> profile_GroupSavings;
+    private ArrayList<GroupSavings> prof_GrpSavings;
 
     @Ignore
     private Transaction profile_Tranx;
@@ -442,52 +466,54 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     private Birthday profile_Birthday;
     @Ignore
     private MarketBusiness profile_Biz;
-    @Ignore
+
     private GroupAccount profile_GroupAcct;
-    @Ignore
+
     private String profile_AuthenticationKey;
-    @Ignore
+
     Context context;
-    @Ignore
+
     protected transient boolean profile_Authenticated = false;
-    @Ignore
+
     protected RolesEnumMap enumMap = new RolesEnumMap(context);
-    @Ignore
-    private Skylight profile_Skylight;
-    @Ignore
-    private SavingsGroup profile_SavingsGroup;
-    @Ignore
+
+    private Awajima profile_Awajima;
+
+    private ProjectSavingsGroup profile_Project_SavingsGroup;
+
     StandingOrderAcct profile_SOAcct;
-    @Ignore
+
     private StandingOrder profile_StandingOrder;
-    @Ignore
+
     private CustomerDailyReport profile_CusDailyReport;
-    @Ignore
+
     private SkyLightPackage profile_SkyLightPackage;
-    @Ignore
+
     private Payee profile_Payee;
-    @Ignore
+
     private AdminUser profile_AdminUser;
-    @Ignore
+
+
+
     private CustomerManager profile_CustomerManager;
-    @Ignore
+
     private UserSuperAdmin profile_SuperAdmin;
-    @Ignore
+
     SmsMessage.MessageClass messageClass;
-    @Ignore
+
     private Customer profile_Customer;
-    @Ignore
+
     Account profile_Account;
-    @Ignore
+
     private  LatLng profile_LastLocation;
-    @Ignore
+
     DBHelper dbHelper;
 
-    @Ignore
+
     String profile_AccountBalance;
-    @Ignore
+
     private int payoutNo;
-    @Ignore
+
     int profileNo;
     private ArrayList<Integer> profile_bizIDs;
     private ArrayList<Integer> profile_acctIDs;
@@ -495,8 +521,178 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     private ArrayList<Integer> profBusinessIDs;
     private ArrayList<BusinessOthers> profBizOthers;
     private ArrayList<MarketBusiness> profMarketBizs;
+    private ArrayList<MarketBusiness> marketBusinessArrayList;
     private ArrayList<Market> profMarketArrayList;
     private ArrayList<MarketAdmin> profMarketAdmins;
+    private ArrayList<InsuranceCompany> insuranceCompanies;
+    private ArrayList<EmergencyReport> profileEmergReports;
+    private ArrayList<EmergReportNext> profileEmergRNextS;
+    private ArrayList<EmergResponse> profileEmergResponses;
+
+    @Ignore
+    protected Profile(Parcel in) {
+        super();
+        pID = in.readInt();
+        profCusID = in.readInt();
+        profileFirstName = in.readString();
+        profileLastName = in.readString();
+        profileState = in.readString();
+        profileUserName = in.readString();
+        profilePassword = in.readString();
+        profileEmail = in.readString();
+        profileDob = in.readString();
+        profileSponsorID = in.readInt();
+        profileGender = in.readString();
+        profileAddress = in.readString();
+        profileOffice = in.readString();
+        profilePhoneNumber = in.readString();
+        profileDateJoined = in.readString();
+        profile_Machine = in.readString();
+        profile_Payment = in.readParcelable(Payment.class.getClassLoader());
+        profile_PaymentArrayList = in.createTypedArrayList(Payment.CREATOR);
+
+
+        profile_Transactions = in.createTypedArrayList(Transaction.CREATOR);
+        profile_Tranx = in.readParcelable(Transaction.class.getClassLoader());
+
+
+        profile_Identity = in.readString();
+        businessName = in.readString();
+        profile_Unit = in.readString();
+        profile_Ward = in.readString();
+        profile_Town = in.readString();
+        profilePicture = in.readParcelable(Uri.class.getClassLoader());
+        profile_OfficeBranch = in.readParcelable(OfficeBranch.class.getClassLoader());
+        profile_Nin = in.readString();
+        profileRole = in.readString();
+        profile_Accounts = in.createTypedArrayList(Account.CREATOR);
+        profile_Stocks = in.createTypedArrayList(Stocks.CREATOR);
+        profile_Addresses = in.createTypedArrayList(Address.CREATOR);
+        profile_Payees = in.createTypedArrayList(Payee.CREATOR);
+        //timeLines = in.createTypedArrayList(TimeLine.CREATOR);
+        profile_Customers = in.createTypedArrayList(Customer.CREATOR);
+        //businesses = in.createTypedArrayList(Business.CREATOR);
+        profile_DailyReports = in.createTypedArrayList(CustomerDailyReport.CREATOR);
+        profile_SkyLightPackages = in.createTypedArrayList(SkyLightPackage.CREATOR);
+        //loans = in.createTypedArrayList(Loan.CREATOR);
+
+        profile_PaymentCodeArrayList = in.createTypedArrayList(PaymentCode.CREATOR);
+        profile_PaymentDocArrayList = in.createTypedArrayList(PaymentDoc.CREATOR);
+        adminUsers = in.createTypedArrayList(AdminUser.CREATOR);
+        profile_AdminBankDeposits = in.createTypedArrayList(AdminBankDeposit.CREATOR);
+        profile_StockTransferArrayList = in.createTypedArrayList(StockTransfer.CREATOR);
+
+        profile_Loan = in.readParcelable(Loan.class.getClassLoader());
+        profile_Birthday = in.readParcelable(Birthday.class.getClassLoader());
+        profile_Biz = in.readParcelable(MarketBusiness.class.getClassLoader());
+        profile_GroupAcct = in.readParcelable(GroupAccount.class.getClassLoader());
+        profile_Project_SavingsGroup = in.readParcelable(ProjectSavingsGroup.class.getClassLoader());
+        profile_Project_SavingsGroups = in.createTypedArrayList(ProjectSavingsGroup.CREATOR);
+        profile_GroupAccounts = in.createTypedArrayList(GroupAccount.CREATOR);
+        profile_SOAcct = in.readParcelable(StandingOrderAcct.class.getClassLoader());
+        profile_TellerCashes = in.createTypedArrayList(TellerCash.CREATOR);
+        //standingOrders = in.createTypedArrayList(StandingOrder.CREATOR);
+        profile_StandingOrder = in.readParcelable(StandingOrder.class.getClassLoader());
+        profile_CusDailyReport = in.readParcelable(CustomerDailyReport.class.getClassLoader());
+        profile_SkyLightPackage = in.readParcelable(SkyLightPackage.class.getClassLoader());
+        profile_Payee = in.readParcelable(Payee.class.getClassLoader());
+        profile_AdminUser = in.readParcelable(AdminUser.class.getClassLoader());
+        profile_CustomerManager = in.readParcelable(CustomerManager.class.getClassLoader());
+        profile_SuperAdmin = in.readParcelable(UserSuperAdmin.class.getClassLoader());
+        profile_Customer = in.readParcelable(Customer.class.getClassLoader());
+        profile_Account = in.readParcelable(Account.class.getClassLoader());
+
+
+
+        //timeLineArrayList = in.createTypedArrayList(TimeLine.CREATOR);
+        profile_LatLngs = in.createTypedArrayList(LatLng.CREATOR);
+        profile_LastLocation = in.readParcelable(LatLng.class.getClassLoader());
+        pID = in.readInt();
+        profileStatus = in.readString();
+        prof_GrpSavings = in.createTypedArrayList(GroupSavings.CREATOR);
+        profile_AccountBalance = in.readString();
+        profileNo = in.readInt();
+        ptellerReportArrayList = in.createTypedArrayList(TellerReport.CREATOR);
+    }
+
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(pID);
+        parcel.writeLong(profCusID);
+        parcel.writeString(profileFirstName);
+        parcel.writeString(profileLastName);
+        parcel.writeString(profileState);
+        parcel.writeString(profileUserName);
+        parcel.writeString(profilePassword);
+        parcel.writeString(profileEmail);
+        parcel.writeString(profileDob);
+        parcel.writeLong(profileSponsorID);
+        parcel.writeString(profileGender);
+        parcel.writeString(profileAddress);
+        parcel.writeString(profileOffice);
+        parcel.writeString(profilePhoneNumber);
+        parcel.writeString(profileDateJoined);
+        parcel.writeString(profile_Machine);
+        parcel.writeParcelable(profile_Payment, i);
+        parcel.writeString(profile_Identity);
+        parcel.writeString(businessName);
+        parcel.writeString(profile_Unit);
+        parcel.writeString(profile_Ward);
+        parcel.writeString(profile_Town);
+        parcel.writeParcelable(profilePicture, i);
+        parcel.writeParcelable(profile_OfficeBranch, i);
+        parcel.writeString(profile_Nin);
+        parcel.writeString(profileRole);
+        parcel.writeTypedList(profile_Accounts);
+        parcel.writeTypedList(profile_Stocks);
+        parcel.writeTypedList(profile_Addresses);
+        parcel.writeTypedList(profile_Payees);
+        parcel.writeTypedList(profile_TimeLines);
+        parcel.writeTypedList(profile_Customers);
+        parcel.writeTypedList(marketBusinessArrayList);
+        parcel.writeTypedList(profile_DailyReports);
+        parcel.writeTypedList(profile_SkyLightPackages);
+        parcel.writeTypedList(profile_Loans);
+        parcel.writeTypedList(profile_PaymentArrayList);
+        parcel.writeTypedList(profile_PaymentCodeArrayList);
+        parcel.writeTypedList(profile_PaymentDocArrayList);
+        parcel.writeTypedList(profile_CustomerManagers);
+        parcel.writeTypedList(adminUsers);
+        parcel.writeTypedList(profile_AdminBankDeposits);
+        parcel.writeTypedList(profile_StockTransferArrayList);
+        parcel.writeParcelable(profile_Tranx, i);
+        parcel.writeParcelable(profile_Loan, i);
+        parcel.writeParcelable(profile_Birthday, i);
+        parcel.writeParcelable(profile_Biz, i);
+        parcel.writeParcelable(profile_GroupAcct, i);
+        parcel.writeParcelable(profile_Project_SavingsGroup, i);
+        parcel.writeTypedList(profile_Project_SavingsGroups);
+        parcel.writeTypedList(profile_GroupAccounts);
+        parcel.writeParcelable(profile_SOAcct, i);
+        parcel.writeTypedList(profile_TellerCashes);
+        parcel.writeTypedList(profile_StandingOrders);
+        parcel.writeParcelable(profile_StandingOrder, i);
+        parcel.writeParcelable(profile_CusDailyReport, i);
+        parcel.writeParcelable(profile_SkyLightPackage, i);
+        parcel.writeParcelable(profile_Payee, i);
+        parcel.writeParcelable(profile_AdminUser, i);
+        parcel.writeParcelable(profile_CustomerManager, i);
+        parcel.writeParcelable(profile_SuperAdmin, i);
+        parcel.writeParcelable(profile_Customer, i);
+        parcel.writeParcelable(profile_Account, i);
+        parcel.writeTypedList(profile_Transactions);
+        parcel.writeTypedList(profile_TimeLineArrayList);
+        parcel.writeTypedList(profile_LatLngs);
+        parcel.writeParcelable(profile_LastLocation, i);
+        parcel.writeLong(pID);
+        parcel.writeString(profileStatus);
+        parcel.writeTypedList(prof_GrpSavings);
+        parcel.writeString(profile_AccountBalance);
+        parcel.writeInt(profileNo);
+        parcel.writeTypedList(ptellerReportArrayList);
+    }
+
 
 
     public Profile(int profile_id, String surName, String profileFirstName, String phone, String profileEmail, String profileDob, String profileGender, String profileAddress, String s, String profileState, String profile_OfficeBranch, String joinedDate, String profileRole, String userName, String profilePassword, String profileStatus) {
@@ -577,83 +773,6 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         this.profileRole = branch;
     }
 
-    @Ignore
-    protected Profile(Parcel in) {
-        super();
-        pID = in.readInt();
-        profCusID = in.readInt();
-        profileFirstName = in.readString();
-        profileLastName = in.readString();
-        profileState = in.readString();
-        profileUserName = in.readString();
-        profilePassword = in.readString();
-        profileEmail = in.readString();
-        profileDob = in.readString();
-        profileSponsorID = in.readInt();
-        profileGender = in.readString();
-        profileAddress = in.readString();
-        profileOffice = in.readString();
-        profilePhoneNumber = in.readString();
-        profileDateJoined = in.readString();
-        profile_Machine = in.readString();
-        profile_Payment = in.readParcelable(Payment.class.getClassLoader());
-        profile_Identity = in.readString();
-        businessName = in.readString();
-        profile_Unit = in.readString();
-        profile_Ward = in.readString();
-        profile_Town = in.readString();
-        profilePicture = in.readParcelable(Uri.class.getClassLoader());
-        profile_OfficeBranch = in.readParcelable(OfficeBranch.class.getClassLoader());
-        profile_Nin = in.readString();
-        profileRole = in.readString();
-        profile_Accounts = in.createTypedArrayList(Account.CREATOR);
-        profile_Stocks = in.createTypedArrayList(Stocks.CREATOR);
-        profile_Addresses = in.createTypedArrayList(Address.CREATOR);
-        profile_Payees = in.createTypedArrayList(Payee.CREATOR);
-        //timeLines = in.createTypedArrayList(TimeLine.CREATOR);
-        profile_Customers = in.createTypedArrayList(Customer.CREATOR);
-        //businesses = in.createTypedArrayList(Business.CREATOR);
-        profile_DailyReports = in.createTypedArrayList(CustomerDailyReport.CREATOR);
-        profile_SkyLightPackages = in.createTypedArrayList(SkyLightPackage.CREATOR);
-        //loans = in.createTypedArrayList(Loan.CREATOR);
-        profile_PaymentArrayList = in.createTypedArrayList(Payment.CREATOR);
-        //paymentCodeArrayList = in.createTypedArrayList(PaymentCode.CREATOR);
-        //paymentDocumentArrayList = in.createTypedArrayList(PaymentDocument.CREATOR);
-        //customerManagers = in.createTypedArrayList(CustomerManager.CREATOR);
-        //adminUsers = in.createTypedArrayList(AdminUser.CREATOR);
-        profile_AdminBankDeposits = in.createTypedArrayList(AdminBankDeposit.CREATOR);
-        profile_StockTransferArrayList = in.createTypedArrayList(StockTransfer.CREATOR);
-        profile_Tranx = in.readParcelable(Transaction.class.getClassLoader());
-        profile_Loan = in.readParcelable(Loan.class.getClassLoader());
-        profile_Birthday = in.readParcelable(Birthday.class.getClassLoader());
-        profile_Biz = in.readParcelable(MarketBusiness.class.getClassLoader());
-        profile_GroupAcct = in.readParcelable(GroupAccount.class.getClassLoader());
-        profile_SavingsGroup = in.readParcelable(SavingsGroup.class.getClassLoader());
-        profile_SavingsGroups = in.createTypedArrayList(SavingsGroup.CREATOR);
-        profile_GroupAccounts = in.createTypedArrayList(GroupAccount.CREATOR);
-        profile_SOAcct = in.readParcelable(StandingOrderAcct.class.getClassLoader());
-        profile_TellerCashes = in.createTypedArrayList(TellerCash.CREATOR);
-        //standingOrders = in.createTypedArrayList(StandingOrder.CREATOR);
-        profile_StandingOrder = in.readParcelable(StandingOrder.class.getClassLoader());
-        profile_CusDailyReport = in.readParcelable(CustomerDailyReport.class.getClassLoader());
-        profile_SkyLightPackage = in.readParcelable(SkyLightPackage.class.getClassLoader());
-        profile_Payee = in.readParcelable(Payee.class.getClassLoader());
-        profile_AdminUser = in.readParcelable(AdminUser.class.getClassLoader());
-        profile_CustomerManager = in.readParcelable(CustomerManager.class.getClassLoader());
-        profile_SuperAdmin = in.readParcelable(UserSuperAdmin.class.getClassLoader());
-        profile_Customer = in.readParcelable(Customer.class.getClassLoader());
-        profile_Account = in.readParcelable(Account.class.getClassLoader());
-        profile_Transactions = in.createTypedArrayList(Transaction.CREATOR);
-        //timeLineArrayList = in.createTypedArrayList(TimeLine.CREATOR);
-        profile_LatLngs = in.createTypedArrayList(LatLng.CREATOR);
-        profile_LastLocation = in.readParcelable(LatLng.class.getClassLoader());
-        pID = in.readInt();
-        profileStatus = in.readString();
-        profile_GroupSavings = in.createTypedArrayList(GroupSavings.CREATOR);
-        profile_AccountBalance = in.readString();
-        profileNo = in.readInt();
-        ptellerReportArrayList = in.createTypedArrayList(TellerReport.CREATOR);
-    }
 
     public static final Creator<Profile> CREATOR = new Creator<Profile>() {
         @Override
@@ -768,13 +887,6 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public int getProfileID() {
         return profileID;
     }*/
-    public ArrayList<CustomerManager> getProfile_Teller() {
-        return profileTellers;
-    }
-
-    public void setProfile_Tellers(ArrayList<CustomerManager> profileTellers) {
-        this.profileTellers = profileTellers;
-    }
 
 
     //@Ignore
@@ -784,12 +896,12 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     //@Ignore
     public ArrayList<Payment> getProfilePayments() { return profile_PaymentArrayList;
     }
-    //@Ignore
     public void setProfilePaymentCodes(ArrayList<PaymentCode> paymentCodeArrayList) {
         this.profile_PaymentCodeArrayList = paymentCodeArrayList;
     }
     //@Ignore
-    public ArrayList<PaymentCode> getProfilePaymentCodes() { return profile_PaymentCodeArrayList;
+    public ArrayList<PaymentCode> getProfilePaymentCodes()
+    { return profile_PaymentCodeArrayList;
     }
     //@Ignore
     public void setUserPaymentDocuments(ArrayList<PaymentDoc> paymentDocArrayList) {
@@ -797,6 +909,9 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     }
     @Ignore
     public ArrayList<PaymentDoc> getProfilePaymentDocuments() { return profile_PaymentDocArrayList; }
+
+    //@Ignore
+
 
     public Profile(int profileNo, int pID, String profileStatus) {
         super();
@@ -871,14 +986,6 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     }
     @Ignore
     public void setProfileTown(String town) { this.profile_Town = town; }
-
-
-
-
-
-
-
-
     @Ignore
     public StandingOrderAcct getProfileSOAcct() { return profile_SOAcct; }
     @Ignore
@@ -887,10 +994,10 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     @Ignore
     public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     @Ignore
-    public Skylight getProfileSkylight() { return profile_Skylight;
+    public Awajima getProfileAwajima() { return profile_Awajima;
     }
     @Ignore
-    public void setProfileSkylight(Skylight skylight) { this.profile_Skylight = skylight;
+    public void setProfileSkylight(Awajima awajima) { this.profile_Awajima = awajima;
     }
 
 
@@ -923,12 +1030,12 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public Birthday getProfileBirthday() { return profile_Birthday; }
     public void setProfileBirthday(Birthday birthday) { this.profile_Birthday = birthday; }
     @Ignore
-    public GroupAccount getGroupAccount(long grpAcctID) { return profile_GroupAcct; }
+    public GroupAccount getGroupAccount(int grpAcctID) { return profile_GroupAcct; }
     public void setProfile_GroupAcct(GroupAccount profile_GroupAcct) { this.profile_GroupAcct = profile_GroupAcct; }
     @Ignore
-    public SavingsGroup getProfile_SavingsGroup() { return profile_SavingsGroup; }
+    public ProjectSavingsGroup getProject_SavingsGroup() { return profile_Project_SavingsGroup; }
     @Ignore
-    public void setProfile_SavingsGroup(SavingsGroup profile_SavingsGroup) { this.profile_SavingsGroup = profile_SavingsGroup; }
+    public void setProject_SavingsGroup(ProjectSavingsGroup profile_Project_SavingsGroup) { this.profile_Project_SavingsGroup = profile_Project_SavingsGroup; }
 
     @Ignore
     public boolean profileAuthenticate(String password, String phoneNumber) {
@@ -945,13 +1052,8 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         }
         return businessName;
     }
-    @Ignore
-    public void setProfileBusinessName(String businessName) { this.profileEmail = businessName;
-    }
-    public void addPTellerReport(int bizID, int officeBranchID, double amountEntered, int noOfSavings, String dateSting) {
 
 
-    }
 
 
     public Profile (int userID, String profileFirstName, String profileLastName, String phone, String profileEmail, String username, String profilePassword, String profile_Machine, Uri profilePicture) {
@@ -1078,25 +1180,33 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         this.profile_Biz = marketBusiness;
 
     }
-    @Ignore
+    //@Ignore
 
-    public ArrayList<SavingsGroup> getProfile_SavingsGroups() { return profile_SavingsGroups; }
+   /* public ArrayList<ProjectSavingsGroup> getProfile_SavingsGroups() { return profile_Project_SavingsGroups; }
     @Ignore
-    public void setProfile_SavingsGroups(ArrayList<SavingsGroup> profile_SavingsGroups) {
-        this.profile_SavingsGroups = profile_SavingsGroups;
+    public void setProfile_SavingsGroups(ArrayList<ProjectSavingsGroup> profile_Project_SavingsGroups) {
+        this.profile_Project_SavingsGroups = profile_Project_SavingsGroups;
+
+    }*/
+
+    public ArrayList<GroupSavings> getProf_GrpSavings() { return prof_GrpSavings;
+    }
+
+    public void setProf_GrpSavings(ArrayList<GroupSavings> prof_GrpSavings) {
+        this.prof_GrpSavings = prof_GrpSavings;
 
     }
-    @Ignore
-    public ArrayList<GroupSavings> getProfile_GroupSavings() { return profile_GroupSavings;
+    public ArrayList<CustomerManager> getProfile_CustomerManagers() { return profile_CustomerManagers;
     }
-    @Ignore
-    public void setProfile_GroupSavings(ArrayList<GroupSavings> profile_GroupSavings) {
-        this.profile_SavingsGroups = profile_SavingsGroups;
+
+    public void setProfile_CustomerManagers(ArrayList<CustomerManager> profile_CustomerManagers) {
+        this.profile_CustomerManagers = profile_CustomerManagers;
 
     }
-    @Ignore
+
+    //@Ignore
     public ArrayList<GroupAccount> getProfile_GroupAccounts() { return profile_GroupAccounts; }
-    @Ignore
+    //@Ignore
     public void setProfile_GroupAccounts(ArrayList<GroupAccount> profile_GroupAccounts) {
         this.profile_GroupAccounts = profile_GroupAccounts;
 
@@ -1119,7 +1229,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     @Ignore
     public ArrayList<MarketBusiness> getProfile_Businesses() { return marketBusinessArrayList; }
     @Ignore
-    public void setProfile_Businesses(ArrayList<MarketBusiness> profile_Other_Businesses) { this.marketBusinessArrayList = profile_Other_Businesses; }
+    public void setProfile_Businesses(ArrayList<MarketBusiness> profile_Businesses) { this.marketBusinessArrayList = profile_Businesses; }
     @Ignore
 
     public ArrayList<SkyLightPackage> getProfileSkylightPackages() { return profile_SkyLightPackages; }
@@ -1146,10 +1256,6 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public void setProfileOfficeBranch(OfficeBranch officeBranch) {
         this.profile_OfficeBranch = officeBranch;
     }
-
-
-
-
 
 
     public Payee getProfilePayee() { return profile_Payee; }
@@ -1253,269 +1359,6 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public ArrayList<LatLng> getProfileLocations() {
         return profile_LatLngs;
     }
-    /*public long getDbId() {
-        return dbId;
-    }
-    public void setDbId(long profileID) { this.profileID = profileID; }*/
-    /*public void addAccount(Account account) throws ConnectionFailedException {
-        if (account != null && !this.accounts.contains(account)) {
-            this.accounts.add(account);
-            // add the user account in the database if it is not already there
-            if (!DBHelper.getAccountIds(this.getuID()).contains(account.getId())) {
-                //DatabaseInsertHelper.insertAccount(this.getuID(), account.getId());
-            }
-        }
-    }
-    @Ignore
-    public final boolean authenticateProfile(String password) throws ConnectionFailedException {
-        if (DBHelper.getPassword(this.pID) != null) {
-            this.authenticated = PasswordHelpers.comparePassword(Objects.requireNonNull(DBHelper.getPassword(this.pID)),
-                    password);
-        }
-        return this.authenticated;
-    }*/
-    @Ignore
-
-    public String toString() {
-        return "ID: " + String.valueOf(this.pID) + "\nlastName: " + this.profileFirstName + "\nphoneNumber: "
-                + String.valueOf(this.profileEmail) + "\ndob: " + this.profileAddress + "\njoinedDate: " + this.profileGender;
-    }
-    public void addMarketAdmin(MarketAdmin marketAdmin) {
-        profMarketAdmins = new ArrayList<>();
-        profMarketAdmins.add(marketAdmin);
-    }
-    public void addMarketID(int marketID) {
-        profMarketIDs = new ArrayList<>();
-        profMarketIDs.add(marketID);
-    }
-    /*public void addBusinessOthers(BusinessOthers businessOthers) {
-        profBizOthers = new ArrayList<>();
-        profBizOthers.add(businessOthers);
-    }*/
-    public void addMarketBusiness(MarketBusiness marketBusiness) {
-        profMarketBizs = new ArrayList<>();
-        profMarketBizs.add(marketBusiness);
-    }
-    public void addMarket(Market market) {
-        profMarketArrayList = new ArrayList<>();
-        profMarketArrayList.add(market);
-    }
-    public void addBusinessID(int businessID) {
-        profBusinessIDs = new ArrayList<>();
-        profBusinessIDs.add(businessID);
-    }
-
-    public void addProfBizID(int prodileBizID) {
-        profile_bizIDs = new ArrayList<>();
-        profile_bizIDs.add(prodileBizID);
-    }
-    public void addProfileAcctID(int profileAcctID) {
-        profile_acctIDs = new ArrayList<>();
-        profile_acctIDs.add(profileAcctID);
-    }
-    public void addProfileMarketID(int profileMarketID) {
-        ArrayList<Integer> profileMarketIDs = new ArrayList<>();
-        profileMarketIDs.add(profileMarketID);
-    }
-    public void addPPaymentDocument(int id, String title, int customerId, int reportId, Uri documentLink, String status) {
-        profile_PaymentDocArrayList = new ArrayList<>();
-        String docNo = "Doc" + (profile_PaymentDocArrayList.size() + 1);
-        PaymentDoc paymentDoc = new PaymentDoc(id,title, customerId, reportId,documentLink,status);
-        profile_PaymentDocArrayList.add(paymentDoc);
-    }
-    //@Ignore
-
-    public void addPAddress(Locale address) {
-        profile_Addresses = new ArrayList<>();
-        String addressNo = "No:" + (profile_Addresses.size() + 1);
-        Address address1 = new Address(address);
-        profile_Addresses.add(address1);
-    }
-    //@Ignore
-
-
-    public void addMarketBusiness(long businessID, long profileID, String businessName, String bizEmail, String bizAddress, String bizPhoneNo, String bizType, String bizRegNo, String dateOfJoin, String status) {
-        marketBusinessArrayList = new ArrayList<>();
-        String bizNo = "Biz:" + (marketBusinessArrayList.size() + 1);
-        MarketBusiness marketBusiness = new MarketBusiness(businessID,profileID, businessName, bizEmail, bizAddress, bizPhoneNo,  bizType,  bizRegNo,dateOfJoin,status);
-        marketBusinessArrayList.add(marketBusiness);
-    }
-    //@Ignore
-    public void addPSOAcct(int soNo, double expectedAmount) {
-        profile_StandingOrders = new ArrayList<>();
-        soNo = profile_StandingOrders.size() + 1;
-        StandingOrder business = new StandingOrder(soNo,expectedAmount);
-        profile_StandingOrders.add(business);
-
-    }
-    //@Ignore
-
-    public void addPCode(int PROFILE_ID, String CODE_OWNER_PHONE, long CODE_PIN, String CODE_DATE, String CODE_STATUS, String CODE_MANAGER) {
-        profile_PaymentCodeArrayList = new ArrayList<>();
-        String codeNo = "Code" + (profile_PaymentCodeArrayList.size() + 1);
-        PaymentCode paymentCode = new PaymentCode(PROFILE_ID,CODE_OWNER_PHONE,CODE_PIN, CODE_DATE, CODE_STATUS,CODE_MANAGER);
-        profile_PaymentCodeArrayList.add(paymentCode);
-    }
-    //@Ignore
-    public void addPAccount(String accountBank, String accountName, int accountNumber, double accountBalance, AccountTypes accountTypes) {
-        profile_Accounts = new ArrayList<>();
-        String accNo = "A" + (profile_Accounts.size() + 1);
-        Account account = new Account(accountBank,accountName, accountNumber, accountBalance,accountTypes);
-        profile_Accounts.add(account);
-
-    }
-    //@Ignore
-    public void addPAccount(int virtualAccountID, String customerBank, String customerNames, long accountNo, double accountBalance, AccountTypes accountTypes) {
-        profile_Accounts = new ArrayList<>();
-        String accNo = "A" + (profile_Accounts.size() + 1);
-        Account account = new Account(virtualAccountID,customerBank,customerNames, String.valueOf(accountNo), accountBalance,accountTypes);
-        profile_Accounts.add(account);
-    }
-    //@Ignore
-    public void addPSavingsGrp(int gsID, String groupName, String adminName, String purpose, double amount, Date startDate, Date endDate, String status) {
-        profile_SavingsGroups = new ArrayList<>();
-        String GSNo = "A" + (profile_SavingsGroups.size() + 1);
-        SavingsGroup savingsGroup = new SavingsGroup(gsID,groupName,adminName, purpose, amount,startDate,endDate,status);
-        profile_SavingsGroups.add(savingsGroup);
-    }
-    /*@Ignore
-    public void addInvAcct(int comAcctID, double v, String zero_interest, String currentDate) {
-
-    }*/
-
-    //@Ignore
-
-    public void addPTellerReport(int dbaseID, int reportID, String date, double balance, String status) {
-        ArrayList<TellerReport> tellerReports = null;
-        reportID = ptellerReportArrayList.size() + 1;
-        TellerReport dailyReport = new TellerReport(reportID, dbaseID,date,balance,status);
-        ptellerReportArrayList.add(dailyReport);
-    }
-    //@Ignore
-    public void addPTellerReport(int keyExtraReportId, String officeBranch, double amountEntered, int noOfCustomers, String reportDate) {
-        ArrayList<TellerReport> tellerReports = null;
-        keyExtraReportId = ptellerReportArrayList.size() + 1;
-        TellerReport dailyReport = new TellerReport(keyExtraReportId, officeBranch,amountEntered,noOfCustomers,reportDate);
-        ptellerReportArrayList.add(dailyReport);
-    }
-    //@Ignore
-    public void addPPayment(String type, double totalToWithdraw, Date date, long paymentCode, String acctType, String office, String status) {
-        ArrayList<Payment> paymentArrayList = null;
-        if (paymentArrayList != null) {
-            String paymentNo = "Payment:" + (paymentArrayList.size() + 1);
-        }
-        profile_Payment = new Payment(type,totalToWithdraw, date,paymentCode,acctType,office,status);
-        paymentArrayList.add(profile_Payment);
-
-    }
-    //@Ignore
-
-    public void addPReport(int count, int customerID, String customerName, int packageID, int reportID, double savingsAmount, int numberOfDays, double totalAmountSum, int daysRemaining, double amountRemaining, String reportDate, String status) {
-        count = profile_DailyReports.size() + 1;
-        CustomerDailyReport dailyReport = new CustomerDailyReport( count,customerID,customerName,packageID, reportID, savingsAmount, numberOfDays, totalAmountSum, daysRemaining, amountRemaining,  reportDate, status);
-        profile_DailyReports.add(dailyReport);
-    }
-    //@Ignore
-    public void addPGroupSavings(int GSNo, String groupName, double amount, Date savingsDate, String status) {
-        profile_SavingsGroups = new ArrayList<>();
-        GSNo = profile_GroupSavings.size() + 1;
-        GroupSavings groupSavings1 = new GroupSavings(GSNo,groupName,amount, savingsDate, status);
-        profile_GroupSavings.add(groupSavings1);
-    }
-    //@Ignore
-    public void addPCustomer(int uID, String surname, String firstName, String customerPhoneNumber, String customerEmailAddress, String customerAddress, String customerGender, String customerOffice, String customerState, Uri profilePicture, String dateJoined, String userName, String password) {
-        profile_Customers = new ArrayList<>();
-        String CusNo = "C" + (profile_Customers.size() + 1);
-        Customer customer = new Customer(uID,surname, firstName, customerPhoneNumber,customerEmailAddress,customerAddress,customerGender,customerOffice,customerState,profilePicture,dateJoined,userName,password);
-        profile_Customers.add(customer);
-
-    }
-    //@Ignore
-    public void addPCustomerManager(int uID, String surname, String firstName, String customerPhoneNumber, String dateOfBirth, String customerEmailAddress, String customerAddress, String customerGender, String customerOffice, String customerState, Uri profilePicture, String dateJoined, String userName, String password) {
-        profile_CustomerManagers = new ArrayList<>();
-        String CMNo = "C" + (profile_CustomerManagers.size() + 1);
-        CustomerManager customer = null;
-        customer = new CustomerManager(uID,surname, firstName, customerPhoneNumber, dateOfBirth,customerEmailAddress,customerAddress,customerGender,customerOffice,customerState,profilePicture,dateJoined,userName,password);
-        profile_CustomerManagers.add(customer);
-
-
-    }
-    //@Ignore
-    public void addPCustomerManager1(int uID, String surname, String firstName, String managerGender, String managerOffice) {
-        profile_CustomerManagers = new ArrayList<>();
-        String CMNo = "C" + (profile_CustomerManagers.size() + 1);
-        CustomerManager customerManager = null;
-        customerManager = new CustomerManager(uID,surname, firstName, managerGender,managerOffice);
-        profile_CustomerManagers.add(customerManager);
-
-
-    }
-
-    //@Ignore
-    public void addPSavings(int profileId, int customerId, int newRecordID, double packageAmount, int numberOfDaysConverted, double totalForTheDay, int newNumberOfDaysRem, double newAmountRemaining, String reportDate, String status) {
-        profile_DailyReports = new ArrayList<>();
-        String savingsCount = "C" + (profile_DailyReports.size() + 1);
-        CustomerDailyReport customerDailyReport = new CustomerDailyReport(profileId,customerId, newRecordID, packageAmount,numberOfDaysConverted,totalForTheDay,newNumberOfDaysRem,newAmountRemaining,reportDate,status);
-        profile_DailyReports.add(customerDailyReport);
-    }
-    //@Ignore
-    public void addPLoans(int loanId, double amount, String loanStartDate, String status, String loanEndDate, double interest1) {
-        profile_Loans = new ArrayList<>();
-        int loanNumber = Integer.parseInt(("Loan" + (profile_Loans.size() + 1)));
-        Loan loan = new Loan(loanNumber, amount,loanStartDate,status,loanEndDate,interest1);
-        profile_Loans.add(loan);
-    }
-    //@Ignore
-    public void addPTimeLine(String tittle, String timelineDetails) {
-        profile_TimeLines = new ArrayList<>();
-        String history = "History" + (profile_TimeLines.size() + 1);
-        TimeLine timeLine = new TimeLine(tittle,timelineDetails);
-        profile_TimeLines.add(timeLine);
-    }
-    //@Ignore
-    public void setProfile_Accounts(ArrayList<Account> accounts) {
-        this.profile_Accounts = accounts;
-    }
-    //@Ignore
-    public void addPTransaction(long transactionId, String surname, String firstName, String customerPhoneNumber, double amount, String accountNumber, String description, String date, String type) {
-        profile_Transactions = new ArrayList<>();
-        String transactionCount = "C" + (profile_Transactions.size() + 1);
-        Transaction transaction1 = new Transaction(transactionId,surname, firstName, customerPhoneNumber,amount,accountNumber,description,date,type);
-        profile_Transactions.add(transaction1);
-    }
-    //@Ignore
-
-    public void addPTransferTranX(Account sendingAcc, Account receivingAcc, double transferAmount) {
-
-        sendingAcc.setAccountBalance(sendingAcc.getAccountBalance() - transferAmount);
-        receivingAcc.setAccountBalance(receivingAcc.getAccountBalance() + transferAmount);
-
-        int sendingAccTransferCount = 0;
-        int receivingAccTransferCount = 0;
-        for (int i = 0; i < sendingAcc.getTransactions1().size(); i ++) {
-            if (sendingAcc.getTransactions1().get(i).getTranXType() == Transaction.TRANSACTION_TYPE.TRANSFER) {
-                sendingAccTransferCount++;
-            }
-        }
-        for (int i = 0; i < receivingAcc.getTransactions1().size(); i++) {
-            if (receivingAcc.getTransactions1().get(i).getTranXType() == Transaction.TRANSACTION_TYPE.TRANSFER) {
-                receivingAccTransferCount++;
-            }
-        }
-
-        //sendingAcc.getTransactions1().add(new Transaction(Integer.parseInt("T" + (sendingAcc.getTransactions1().size() + 1) + "-T" + (sendingAccTransferCount+1)), sendingAcc.toTransactionString(), receivingAcc.toTransactionString(), transferAmount));
-        //receivingAcc.getTransactions1().add(new Transaction(Integer.parseInt("T" + (receivingAcc.getTransactions1().size() + 1) + "-T" + (receivingAccTransferCount+1)), sendingAcc.toTransactionString(), receivingAcc.toTransactionString(), transferAmount));
-    }
-    //@Ignore
-
-    public void addPPayee(String payeeName) {
-        profile_Payees = new ArrayList<>();
-        int payeeID = profile_Payees.size() + 1;
-        Payee payee = new Payee(payeeID, payeeName);
-        profile_Payees.add(payee);
-    }
-    //@Ignore
-
     public void setProfile_Payees(ArrayList<Payee> payees) {
         this.profile_Payees = payees;
     }
@@ -1523,154 +1366,6 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public void setProfile_Customers(ArrayList<Customer> customers) {
         this.profile_Customers = customers;
     }
-    //@Ignore
-
-    public void addPBorrowingTranx(Account receivingAccount, double amountToBorrow) {
-        receivingAccount.setAccountBalance(receivingAccount.getAccountBalance() - amountToBorrow);
-
-        int receivingAccBorrowingCount = 0;
-        for (int i = 0; i < receivingAccount.getTransactions1().size(); i ++) {
-            if (receivingAccount.getTransactions1().get(i).getTranXType() == Transaction.TRANSACTION_TYPE.BORROWING) {
-                receivingAccBorrowingCount++;
-            }
-        }
-
-
-        //receivingAccount.getTransactions1().add(new Transaction("T" + (receivingAccount.getTransactions1().size() + 1) + "-T" + (receivingAccBorrowingCount+1), receivingAccount.toTransactionString(), receivingAccount.toTransactionString(), amountToBorrow));
-
-    }
-    //@Ignore
-
-
-    public int leaveMessage(String message, int userId) {
-        return 0;
-    }
-    //@Ignore
-
-    public void addPNewSkylightPackage(int profileID, int customerID, int packageID, String packageType, double savingsAmount, int packageDuration, String startDate, double grandTotal, String endDate, String just_stated) {
-        profile_SkyLightPackages = new ArrayList<>();
-        String packageNo = "Package:" + (profile_SkyLightPackages.size() + 1);
-        profile_SkyLightPackage = new SkyLightPackage(profileID,customerID, packageID, SkyLightPackage.SkylightPackage_Type.valueOf(packageType),savingsAmount,packageDuration,startDate,grandTotal,endDate, profileStatus);
-        profile_SkyLightPackages.add(profile_SkyLightPackage);
-    }
-    //@Ignore
-
-
-    public void addPStocksAll(int stocksID, String selectedStockPackage, String uStockType, String uStockModel, String uStockColor, String uStockSize, int uStockQuantity, String selectedOfficeBranch, double uStockPricePerUnit, String stockDate) {
-        profile_Stocks = new ArrayList<>();
-        int  stocksNo = profile_Stocks.size() + 1;
-        Stocks stocks1 = new Stocks(stocksID,selectedStockPackage, uStockType,uStockModel,uStockColor,uStockSize,uStockQuantity,selectedOfficeBranch,uStockPricePerUnit,stockDate);
-        profile_Stocks.add(stocks1);
-
-    }
-    //@Ignore
-    public void addPStocks(int stocksID, String stocksName, String uStockType, int uStockQuantity, long stockCode, String selectedOfficeBranch, String stockDate, String status) {
-        profile_Stocks = new ArrayList<>();
-        int  stocksNo = profile_Stocks.size() + 1;
-        Stocks stocks1 = new Stocks(stocksID,stocksName,uStockType,uStockQuantity,stockCode,stockDate,status);
-        profile_Stocks.add(stocks1);
-
-    }
-
-    //@Ignore
-    public void addPTellerCash(int reportID, int packageID, String finalItemType, double tellerAmount, String tellerName, String officeBranch, String packageStartDate) {
-        profile_TellerCashes = new ArrayList<>();
-        int  stocksNo = profile_TellerCashes.size() + 1;
-        TellerCash tellerCash = new TellerCash(reportID,packageID,finalItemType,tellerAmount,tellerName,officeBranch,packageStartDate);
-        profile_TellerCashes.add(tellerCash);
-
-    }
-    //@Ignore
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-    //@Ignore
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeLong(pID);
-        parcel.writeLong(profCusID);
-        parcel.writeString(profileFirstName);
-        parcel.writeString(profileLastName);
-        parcel.writeString(profileState);
-        parcel.writeString(profileUserName);
-        parcel.writeString(profilePassword);
-        parcel.writeString(profileEmail);
-        parcel.writeString(profileDob);
-        parcel.writeLong(profileSponsorID);
-        parcel.writeString(profileGender);
-        parcel.writeString(profileAddress);
-        parcel.writeString(profileOffice);
-        parcel.writeString(profilePhoneNumber);
-        parcel.writeString(profileDateJoined);
-        parcel.writeString(profile_Machine);
-        parcel.writeParcelable(profile_Payment, i);
-        parcel.writeString(profile_Identity);
-        parcel.writeString(businessName);
-        parcel.writeString(profile_Unit);
-        parcel.writeString(profile_Ward);
-        parcel.writeString(profile_Town);
-        parcel.writeParcelable(profilePicture, i);
-        parcel.writeParcelable(profile_OfficeBranch, i);
-        parcel.writeString(profile_Nin);
-        parcel.writeString(profileRole);
-        parcel.writeParcelable(adminUser2, i);
-        parcel.writeTypedList(profile_Accounts);
-        parcel.writeTypedList(profile_Stocks);
-        parcel.writeTypedList(profile_Addresses);
-        parcel.writeTypedList(profile_Payees);
-        parcel.writeTypedList(profile_TimeLines);
-        parcel.writeTypedList(profile_Customers);
-        parcel.writeTypedList(marketBusinessArrayList);
-        parcel.writeTypedList(profile_DailyReports);
-        parcel.writeTypedList(profile_SkyLightPackages);
-        parcel.writeTypedList(profile_Loans);
-        parcel.writeTypedList(profile_PaymentArrayList);
-        parcel.writeTypedList(profile_PaymentCodeArrayList);
-        parcel.writeTypedList(profile_PaymentDocArrayList);
-        parcel.writeTypedList(profile_CustomerManagers);
-        parcel.writeTypedList(adminUsers);
-        parcel.writeTypedList(profile_AdminBankDeposits);
-        parcel.writeTypedList(profile_StockTransferArrayList);
-        parcel.writeParcelable(profile_Tranx, i);
-        parcel.writeParcelable(profile_Loan, i);
-        parcel.writeParcelable(profile_Birthday, i);
-        parcel.writeParcelable(profile_Biz, i);
-        parcel.writeParcelable(profile_GroupAcct, i);
-        parcel.writeParcelable(profile_SavingsGroup, i);
-        parcel.writeTypedList(profile_SavingsGroups);
-        parcel.writeTypedList(profile_GroupAccounts);
-        parcel.writeParcelable(profile_SOAcct, i);
-        parcel.writeTypedList(profile_TellerCashes);
-        parcel.writeTypedList(profile_StandingOrders);
-        parcel.writeParcelable(profile_StandingOrder, i);
-        parcel.writeParcelable(profile_CusDailyReport, i);
-        parcel.writeParcelable(profile_SkyLightPackage, i);
-        parcel.writeParcelable(profile_Payee, i);
-        parcel.writeParcelable(profile_AdminUser, i);
-        parcel.writeParcelable(profile_CustomerManager, i);
-        parcel.writeParcelable(profile_SuperAdmin, i);
-        parcel.writeParcelable(profile_Customer, i);
-        parcel.writeParcelable(profile_Account, i);
-        parcel.writeTypedList(profile_Transactions);
-        parcel.writeTypedList(profile_TimeLineArrayList);
-        parcel.writeTypedList(profile_LatLngs);
-        parcel.writeParcelable(profile_LastLocation, i);
-        parcel.writeLong(pID);
-        parcel.writeString(profileStatus);
-        parcel.writeTypedList(profile_GroupSavings);
-        parcel.writeString(profile_AccountBalance);
-        parcel.writeInt(profileNo);
-        parcel.writeTypedList(ptellerReportArrayList);
-    }
-
-    @Ignore
-    public void addPTranxGranding(int tranxPayoutID, int customerID, String customerName, double amountRequested, String acctBank, String bankName, String acctBankNo, String s, String requestDate) {
-        payoutNo = profile_TranxGrantings.size() + 1;
-        TransactionGranting transactionGranting = new TransactionGranting(tranxPayoutID,customerID,customerName,amountRequested,acctBank,bankName,acctBankNo,s,requestDate);
-        profile_TranxGrantings.add(transactionGranting);
-    }
-    @Ignore
 
     public int getProfPassID() {
         return profPassID;
@@ -1743,6 +1438,424 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
     public void setProfOfficeID(int profOfficeID) {
         this.profOfficeID = profOfficeID;
+    }
+
+
+    public ArrayList<InsuranceCompany> getInsuranceCompanies() {
+        return insuranceCompanies;
+    }
+
+    public void setInsuranceCompanies(ArrayList<InsuranceCompany> insuranceCompanies) {
+        this.insuranceCompanies = insuranceCompanies;
+    }
+
+
+    public String getProfileAdminType() {
+        return profileAdminType;
+    }
+
+    public void setProfileAdminType(String profileAdminType) {
+        this.profileAdminType = profileAdminType;
+    }
+
+    public String getProfileRoleType() {
+        return profileRoleType;
+    }
+
+    public void setProfileRoleType(String profileRoleType) {
+        this.profileRoleType = profileRoleType;
+    }
+
+    public ArrayList<EmergencyReport> getProfileEmergReports() {
+        return profileEmergReports;
+    }
+
+    public void setProfileEmergReports(ArrayList<EmergencyReport> profileEmergReports) {
+        this.profileEmergReports = profileEmergReports;
+    }
+
+    public ArrayList<EmergReportNext> getProfileEmergRNextS() {
+        return profileEmergRNextS;
+    }
+
+    public void setProfileEmergRNextS(ArrayList<EmergReportNext> profileEmergRNextS) {
+        this.profileEmergRNextS = profileEmergRNextS;
+    }
+
+    public ArrayList<EmergResponse> getProfileEmergResponses() {
+        return profileEmergResponses;
+    }
+
+    public void setProfileEmergResponses(ArrayList<EmergResponse> profileEmergResponses) {
+        this.profileEmergResponses = profileEmergResponses;
+    }
+
+    /*public long getDbId() {
+        return dbId;
+    }
+    public void setDbId(long profileID) { this.profileID = profileID; }*/
+    /*public void addAccount(Account account) throws ConnectionFailedException {
+        if (account != null && !this.accounts.contains(account)) {
+            this.accounts.add(account);
+            // add the user account in the database if it is not already there
+            if (!DBHelper.getAccountIds(this.getuID()).contains(account.getId())) {
+                //DatabaseInsertHelper.insertAccount(this.getuID(), account.getId());
+            }
+        }
+    }
+    @Ignore
+    public final boolean authenticateProfile(String password) throws ConnectionFailedException {
+        if (DBHelper.getPassword(this.pID) != null) {
+            this.authenticated = PasswordHelpers.comparePassword(Objects.requireNonNull(DBHelper.getPassword(this.pID)),
+                    password);
+        }
+        return this.authenticated;
+    }*/
+    @Ignore
+
+    public String toString() {
+        return "ID: " + String.valueOf(this.pID) + "\nlastName: " + this.profileFirstName + "\nphoneNumber: "
+                + String.valueOf(this.profileEmail) + "\ndob: " + this.profileAddress + "\njoinedDate: " + this.profileGender;
+    }
+    public void addMarketAdmin(MarketAdmin marketAdmin) {
+        profMarketAdmins = new ArrayList<>();
+        profMarketAdmins.add(marketAdmin);
+    }
+    public void addInsuranceCompany(InsuranceCompany insuranceCompany) {
+        insuranceCompanies = new ArrayList<>();
+        insuranceCompanies.add(insuranceCompany);
+    }
+
+    public void addMarketID(int marketID) {
+        profMarketIDs = new ArrayList<>();
+        profMarketIDs.add(marketID);
+    }
+    /*public void addBusinessOthers(BusinessOthers businessOthers) {
+        profBizOthers = new ArrayList<>();
+        profBizOthers.add(businessOthers);
+    }*/
+    public void addMarketBusiness(MarketBusiness marketBusiness) {
+        profMarketBizs = new ArrayList<>();
+        profMarketBizs.add(marketBusiness);
+    }
+    public void addMarket(Market market) {
+        profMarketArrayList = new ArrayList<>();
+        profMarketArrayList.add(market);
+    }
+    public void addBusinessID(int businessID) {
+        profBusinessIDs = new ArrayList<>();
+        profBusinessIDs.add(businessID);
+    }
+
+    public void addProfBizID(int prodileBizID) {
+        profile_bizIDs = new ArrayList<>();
+        profile_bizIDs.add(prodileBizID);
+    }
+    public void addProfileAcctID(int profileAcctID) {
+        profile_acctIDs = new ArrayList<>();
+        profile_acctIDs.add(profileAcctID);
+    }
+    public void addProfileMarketID(int profileMarketID) {
+        ArrayList<Integer> profileMarketIDs = new ArrayList<>();
+        profileMarketIDs.add(profileMarketID);
+    }
+    public void addPCode(int PROFILE_ID, String CODE_OWNER_PHONE, long CODE_PIN, String CODE_DATE, String CODE_STATUS, String CODE_MANAGER) {
+        profile_PaymentCodeArrayList = new ArrayList<>();
+        String codeNo = "Code" + (profile_PaymentCodeArrayList.size() + 1);
+        PaymentCode paymentCode = new PaymentCode(PROFILE_ID,CODE_OWNER_PHONE,CODE_PIN, CODE_DATE, CODE_STATUS,CODE_MANAGER);
+        profile_PaymentCodeArrayList.add(paymentCode);
+    }
+    public void addPPaymentDocument(int id, String title, int customerId, int reportId, Uri documentLink, String status) {
+        profile_PaymentDocArrayList = new ArrayList<>();
+        String docNo = "Doc" + (profile_PaymentDocArrayList.size() + 1);
+        PaymentDoc paymentDoc = new PaymentDoc(id,title, customerId, reportId,documentLink,status);
+        profile_PaymentDocArrayList.add(paymentDoc);
+    }
+
+    //@Ignore
+
+    public void addPAddress(Locale address) {
+        profile_Addresses = new ArrayList<>();
+        String addressNo = "No:" + (profile_Addresses.size() + 1);
+        Address address1 = new Address(address);
+        profile_Addresses.add(address1);
+    }
+    //@Ignore
+
+
+    public void addMarketBusiness(long businessID, long profileID, String businessName, String bizEmail, String bizAddress, String bizPhoneNo, String bizType, String bizRegNo, String dateOfJoin, String status) {
+        marketBusinessArrayList = new ArrayList<>();
+        String bizNo = "Biz:" + (marketBusinessArrayList.size() + 1);
+        MarketBusiness marketBusiness = new MarketBusiness(businessID,profileID, businessName, bizEmail, bizAddress, bizPhoneNo,  bizType,  bizRegNo,dateOfJoin,status);
+        marketBusinessArrayList.add(marketBusiness);
+    }
+    //@Ignore
+    public void addPSOAcct(int soNo, double expectedAmount) {
+        profile_StandingOrders = new ArrayList<>();
+        soNo = profile_StandingOrders.size() + 1;
+        StandingOrder business = new StandingOrder(soNo,expectedAmount);
+        profile_StandingOrders.add(business);
+
+    }
+    //@Ignore
+
+
+
+    //@Ignore
+    public void addPAccount(String accountBank, String accountName, int accountNumber, double accountBalance, AccountTypes accountTypes) {
+        profile_Accounts = new ArrayList<>();
+        String accNo = "A" + (profile_Accounts.size() + 1);
+        Account account = new Account(accountBank,accountName, accountNumber, accountBalance,accountTypes);
+        profile_Accounts.add(account);
+
+    }
+    //@Ignore
+    public void addPSavingsGrpAcct(GroupAccount groupAccount) {
+        profile_GroupAccounts= new ArrayList<>();
+        profile_GroupAccounts.add(groupAccount);
+    }
+    public void addPGrpSavings(GroupSavings groupSavings) {
+        prof_GrpSavings= new ArrayList<>();
+        prof_GrpSavings.add(groupSavings);
+    }
+
+    public void addPAccount(Account account) {
+        profile_Accounts = new ArrayList<>();
+        profile_Accounts.add(account);
+    }
+    public void addPAccount(int virtualAccountID, String customerBank, String customerNames, long accountNo, double accountBalance, AccountTypes accountTypes) {
+        profile_Accounts = new ArrayList<>();
+        String accNo = "A" + (profile_Accounts.size() + 1);
+        Account account = new Account(virtualAccountID,customerBank,customerNames, String.valueOf(accountNo), accountBalance,accountTypes);
+        profile_Accounts.add(account);
+    }
+    /*@Ignore
+    public void addInvAcct(int comAcctID, double v, String zero_interest, String currentDate) {
+
+    }*/
+
+    //@Ignore
+
+    public void addPTellerReport(int dbaseID, int reportID, String date, double balance, String status) {
+        ArrayList<TellerReport> tellerReports = null;
+        reportID = ptellerReportArrayList.size() + 1;
+        TellerReport dailyReport = new TellerReport(reportID, dbaseID,date,balance,status);
+        ptellerReportArrayList.add(dailyReport);
+    }
+
+    public void addPTellerReport(int keyExtraReportId, String bizName, String officeBranch, double amountEntered, int noOfCustomers, String dateOfReport) {
+        ArrayList<TellerReport> tellerReports = null;
+        keyExtraReportId = ptellerReportArrayList.size() + 1;
+        TellerReport dailyReport = new TellerReport(keyExtraReportId, bizName,officeBranch,amountEntered,noOfCustomers,dateOfReport);
+        ptellerReportArrayList.add(dailyReport);
+    }
+    //@Ignore
+    public void addPPayment(String type, double totalToWithdraw, Date date, long paymentCode, String acctType, String office, String status) {
+        ArrayList<Payment> paymentArrayList = null;
+        if (paymentArrayList != null) {
+            String paymentNo = "Payment:" + (paymentArrayList.size() + 1);
+        }
+        profile_Payment = new Payment(type,totalToWithdraw, date,paymentCode,acctType,office,status);
+        paymentArrayList.add(profile_Payment);
+
+    }
+    //@Ignore
+
+    public void addPReport(int count, int customerID, String customerName, int packageID, int reportID, double savingsAmount, int numberOfDays, double totalAmountSum, int daysRemaining, double amountRemaining, String reportDate, String status) {
+        count = profile_DailyReports.size() + 1;
+        CustomerDailyReport dailyReport = new CustomerDailyReport( count,customerID,customerName,packageID, reportID, savingsAmount, numberOfDays, totalAmountSum, daysRemaining, amountRemaining,  reportDate, status);
+        profile_DailyReports.add(dailyReport);
+    }
+
+
+    //@Ignore
+    public void addPCustomer(int uID, String surname, String firstName, String customerPhoneNumber, String customerEmailAddress, String customerAddress, String customerGender, String customerOffice, String customerState, Uri profilePicture, String dateJoined, String userName, String password) {
+        profile_Customers = new ArrayList<>();
+        String CusNo = "C" + (profile_Customers.size() + 1);
+        Customer customer = new Customer(uID,surname, firstName, customerPhoneNumber,customerEmailAddress,customerAddress,customerGender,customerOffice,customerState,profilePicture,dateJoined,userName,password);
+        profile_Customers.add(customer);
+
+    }
+    //@Ignore
+    public void addPCustomerManager(int uID, String surname, String firstName, String customerPhoneNumber, String dateOfBirth, String customerEmailAddress, String customerAddress, String customerGender, String customerOffice, String customerState, Uri profilePicture, String dateJoined, String userName, String password) {
+        profile_CustomerManagers = new ArrayList<>();
+        String CMNo = "C" + (profile_CustomerManagers.size() + 1);
+        CustomerManager customer = null;
+        customer = new CustomerManager(uID,surname, firstName, customerPhoneNumber, dateOfBirth,customerEmailAddress,customerAddress,customerGender,customerOffice,customerState,profilePicture,dateJoined,userName,password);
+        profile_CustomerManagers.add(customer);
+
+
+    }
+    //@Ignore
+    public void addPCustomerManager1(int uID, String surname, String firstName, String managerGender, String managerOffice) {
+        profile_CustomerManagers = new ArrayList<>();
+        String CMNo = "C" + (profile_CustomerManagers.size() + 1);
+        CustomerManager customerManager = null;
+        customerManager = new CustomerManager(uID,surname, firstName, managerGender,managerOffice);
+        profile_CustomerManagers.add(customerManager);
+
+
+    }
+
+    //@Ignore
+    public void addPSavings(int profileId, int customerId, int newRecordID, double packageAmount, int numberOfDaysConverted, double totalForTheDay, int newNumberOfDaysRem, double newAmountRemaining, String reportDate, String status) {
+        profile_DailyReports = new ArrayList<>();
+        String savingsCount = "C" + (profile_DailyReports.size() + 1);
+        CustomerDailyReport customerDailyReport = new CustomerDailyReport(profileId,customerId, newRecordID, packageAmount,numberOfDaysConverted,totalForTheDay,newNumberOfDaysRem,newAmountRemaining,reportDate,status);
+        profile_DailyReports.add(customerDailyReport);
+    }
+    //@Ignore
+    public void addPLoans(int loanId, double amount, String loanStartDate, String status, String loanEndDate, double interest1) {
+        profile_Loans = new ArrayList<>();
+        int loanNumber = Integer.parseInt(("Loan" + (profile_Loans.size() + 1)));
+        Loan loan = new Loan(loanNumber, amount,loanStartDate,status,loanEndDate,interest1);
+        profile_Loans.add(loan);
+    }
+    //@Ignore
+    public void addPTimeLine(String tittle, String timelineDetails) {
+        profile_TimeLines = new ArrayList<>();
+        String history = "History" + (profile_TimeLines.size() + 1);
+        TimeLine timeLine = new TimeLine(tittle,timelineDetails);
+        profile_TimeLines.add(timeLine);
+    }
+    public void addPTimeLine(TimeLine timeLine) {
+        profile_TimeLines = new ArrayList<>();
+        profile_TimeLines.add(timeLine);
+    }
+    public void addPTellerReport(TellerReport tellerReport) {
+        ptellerReportArrayList= new ArrayList<>();
+        ptellerReportArrayList.add(tellerReport);
+
+
+
+    }
+
+    //@Ignore
+    public void setProfile_Accounts(ArrayList<Account> accounts) {
+        this.profile_Accounts = accounts;
+    }
+    //@Ignore
+    public void addPTransaction(long transactionId, String surname, String firstName, String customerPhoneNumber, double amount, String accountNumber, String description, String date, String type) {
+        profile_Transactions = new ArrayList<>();
+        String transactionCount = "C" + (profile_Transactions.size() + 1);
+        Transaction transaction1 = new Transaction(transactionId,surname, firstName, customerPhoneNumber,amount,accountNumber,description,date,type);
+        profile_Transactions.add(transaction1);
+    }
+    //@Ignore
+
+    public void addPTransferTranX(Account sendingAcc, Account receivingAcc, double transferAmount) {
+
+        sendingAcc.setAccountBalance(sendingAcc.getAccountBalance() - transferAmount);
+        receivingAcc.setAccountBalance(receivingAcc.getAccountBalance() + transferAmount);
+
+        int sendingAccTransferCount = 0;
+        int receivingAccTransferCount = 0;
+        for (int i = 0; i < sendingAcc.getTransactions1().size(); i ++) {
+            if (sendingAcc.getTransactions1().get(i).getTranXType() == Transaction.TRANSACTION_TYPE.TRANSFER) {
+                sendingAccTransferCount++;
+            }
+        }
+        for (int i = 0; i < receivingAcc.getTransactions1().size(); i++) {
+            if (receivingAcc.getTransactions1().get(i).getTranXType() == Transaction.TRANSACTION_TYPE.TRANSFER) {
+                receivingAccTransferCount++;
+            }
+        }
+
+        //sendingAcc.getTransactions1().add(new Transaction(Integer.parseInt("T" + (sendingAcc.getTransactions1().size() + 1) + "-T" + (sendingAccTransferCount+1)), sendingAcc.toTransactionString(), receivingAcc.toTransactionString(), transferAmount));
+        //receivingAcc.getTransactions1().add(new Transaction(Integer.parseInt("T" + (receivingAcc.getTransactions1().size() + 1) + "-T" + (receivingAccTransferCount+1)), sendingAcc.toTransactionString(), receivingAcc.toTransactionString(), transferAmount));
+    }
+    //@Ignore
+
+    public void addPPayee(String payeeName) {
+        profile_Payees = new ArrayList<>();
+        int payeeID = profile_Payees.size() + 1;
+        Payee payee = new Payee(payeeID, payeeName);
+        profile_Payees.add(payee);
+    }
+    //@Ignore
+
+
+    //@Ignore
+
+    public void addPBorrowingTranx(Account receivingAccount, double amountToBorrow) {
+        receivingAccount.setAccountBalance(receivingAccount.getAccountBalance() - amountToBorrow);
+
+        int receivingAccBorrowingCount = 0;
+        for (int i = 0; i < receivingAccount.getTransactions1().size(); i ++) {
+            if (receivingAccount.getTransactions1().get(i).getTranXType() == Transaction.TRANSACTION_TYPE.BORROWING) {
+                receivingAccBorrowingCount++;
+            }
+        }
+
+
+        //receivingAccount.getTransactions1().add(new Transaction("T" + (receivingAccount.getTransactions1().size() + 1) + "-T" + (receivingAccBorrowingCount+1), receivingAccount.toTransactionString(), receivingAccount.toTransactionString(), amountToBorrow));
+
+    }
+    //@Ignore
+
+
+    public int leaveMessage(String message, int userId) {
+        return 0;
+    }
+    //@Ignore
+
+
+    public void addPNewSkylightPackage(int profileID, int customerID, int packageID, String packageType, double savingsAmount, int packageDuration, String startDate, double grandTotal, String endDate, String just_stated) {
+        profile_SkyLightPackages = new ArrayList<>();
+        String packageNo = "Package:" + (profile_SkyLightPackages.size() + 1);
+        profile_SkyLightPackage = new SkyLightPackage(profileID,customerID, packageID, SkyLightPackage.SkylightPackage_Type.valueOf(packageType),savingsAmount,packageDuration,startDate,grandTotal,endDate, profileStatus);
+        profile_SkyLightPackages.add(profile_SkyLightPackage);
+    }
+    //@Ignore
+
+
+    public void addPStocksAll(int stocksID, String selectedStockPackage, String uStockType, String uStockModel, String uStockColor, String uStockSize, int uStockQuantity, String selectedOfficeBranch, double uStockPricePerUnit, String stockDate) {
+        profile_Stocks = new ArrayList<>();
+        int  stocksNo = profile_Stocks.size() + 1;
+        Stocks stocks1 = new Stocks(stocksID,selectedStockPackage, uStockType,uStockModel,uStockColor,uStockSize,uStockQuantity,selectedOfficeBranch,uStockPricePerUnit,stockDate);
+        profile_Stocks.add(stocks1);
+
+    }
+    //@Ignore
+    public void addPStocks(int stocksID, String stocksName, String uStockType, int uStockQuantity, long stockCode, String selectedOfficeBranch, String stockDate, String status) {
+        profile_Stocks = new ArrayList<>();
+        int  stocksNo = profile_Stocks.size() + 1;
+        Stocks stocks1 = new Stocks(stocksID,stocksName,uStockType,uStockQuantity,stockCode,stockDate,status);
+        profile_Stocks.add(stocks1);
+
+    }
+
+
+    //@Ignore
+    public void addPTellerCash(int reportID, int packageID, String finalItemType, double tellerAmount, String tellerName, String officeBranch, String packageStartDate) {
+        profile_TellerCashes = new ArrayList<>();
+        int  stocksNo = profile_TellerCashes.size() + 1;
+        TellerCash tellerCash = new TellerCash(reportID,packageID,finalItemType,tellerAmount,tellerName,officeBranch,packageStartDate);
+        profile_TellerCashes.add(tellerCash);
+
+    }
+    public void addPTranxGranding(int tranxPayoutID, int customerID, String customerName, double amountRequested, String acctBank, String bankName, String acctBankNo, String s, String requestDate) {
+        payoutNo = profile_TranxGrantings.size() + 1;
+        TransactionGranting transactionGranting = new TransactionGranting(tranxPayoutID,customerID,customerName,amountRequested,acctBank,bankName,acctBankNo,s,requestDate);
+        profile_TranxGrantings.add(transactionGranting);
+    }
+    public void addProfEmergResponse(EmergResponse emergResponse) {
+        profileEmergResponses = new ArrayList<>();
+        profileEmergResponses.add(emergResponse);
+    }
+    public void addMarketID(EmergReportNext emergReportNext) {
+        profileEmergRNextS = new ArrayList<>();
+        profileEmergRNextS.add(emergReportNext);
+    }
+    public void addMarketID(EmergencyReport emergencyReport) {
+        profileEmergReports = new ArrayList<>();
+        profileEmergReports.add(emergencyReport);
+    }
+
+    //@Ignore
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
 

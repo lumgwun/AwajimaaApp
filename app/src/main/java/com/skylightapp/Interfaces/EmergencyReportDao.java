@@ -5,7 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Update;
 
-import com.skylightapp.Classes.EmergencyReport;
+import com.skylightapp.MapAndLoc.EmergencyReport;
 import com.skylightapp.Classes.Profile;
 
 import java.util.List;

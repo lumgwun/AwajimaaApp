@@ -896,7 +896,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/skylight" />
+                android:src="@drawable/awajima" />
 
 
 

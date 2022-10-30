@@ -7,7 +7,7 @@
     android:background="@drawable/shape_rect14"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.skylightapp.SuperAdmin.SuperEmergList">
+    tools:context="com.skylightapp.MapAndLoc.StateEmergList">
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
@@ -34,7 +34,7 @@
         android:id="@+id/_EmergencyList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/timeline_row_user"
+        tools:listitem="@layout/emergency_row"
         android:clipToPadding="false"
         android:scrollbars="vertical" />
 

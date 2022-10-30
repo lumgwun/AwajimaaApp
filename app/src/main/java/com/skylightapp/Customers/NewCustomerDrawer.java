@@ -13,6 +13,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.gridlayout.widget.GridLayout;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -28,39 +29,40 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.GridLayout;
+
+
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.blongho.country_data.Country;
 import com.blongho.country_data.Currency;
-import com.github.clans.fab.FloatingActionButton;
+import com.blongho.country_data.World;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.rom4ek.arcnavigationview.ArcNavigationView;
 import com.skylightapp.Adapters.AccountAdapter;
+import com.skylightapp.Adapters.CurrAdapter;
 import com.skylightapp.CameraActivity;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
-import com.skylightapp.Classes.Loan;
-import com.skylightapp.Classes.PrefManager;
+
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.StandingOrderAcct;
 import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.LoginActivity;
+import com.skylightapp.Markets.MarketChatTab;
 import com.skylightapp.Markets.MarketTab;
+import com.skylightapp.MyGrpSavingsTab;
 import com.skylightapp.MyTimelineAct;
 import com.skylightapp.PasswordRecovAct;
 import com.skylightapp.PrivacyPolicy_Web;
 import com.skylightapp.R;
 import com.skylightapp.SignTabMainActivity;
 import com.skylightapp.SkylightSliderAct;
-import com.skylightapp.Tellers.MyCusLoanRepayment;
+import com.skylightapp.MapAndLoc.UserReportEmergAct;
 import com.skylightapp.UserPrefActivity;
 import com.skylightapp.UserTimeLineAct;
 import com.squareup.picasso.Picasso;
@@ -73,6 +75,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -80,9 +83,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class NewCustomerDrawer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     public static final String KEY = "NewCustomerDrawer.KEY";
     GridLayout maingrid;
-    Button btnUtility, btnOurPrivacyPolicy,btnInvestment;
     private SharedPreferences userPreferences;
-    PrefManager prefManager;
     private Gson gson,gson1;
     private String json,json1;
     private LinearLayout linearLayout;
@@ -91,19 +92,14 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
 
     private Profile userProfile;
     private int profileID;
-    Button btnMore;
-    //drawLinechart(yValues,xValues);
     float yValues[]={10,20,30,0,40,60};
     CardView cardViewPackges,cardViewGrpSavings,cardViewHistory, cardViewStandingOrders, cardViewOrders, cardViewSupport;
 
-    AppCompatTextView extName, textID,textAcctNo,textBalance, textInvestments,textSavings;
-    FrameLayout frameLayout1,frameLayout2;
+    AppCompatTextView extName, textID,textAcctNo,textBalance,textSavings;
     CircleImageView profileImage;
     private Profile profile;
 
-    private AppCompatTextView txtMessage,txtBankName, balance, sPackages, accountNo,txtSO, grpSavings, txtUserName, reports;
-    private Intent data;
-    private FloatingActionButton floatingActionButton;
+    private AppCompatTextView txtBankName, balance, sPackages, accountNo,txtSO,  txtUserName;
     private Customer customer;
     private Toolbar toolbar;
     private DrawerLayout drawer;
@@ -115,9 +111,8 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
     private double accountBalance;
     CircleImageView imgProfilePic;
     private  int SOCount,customerID,loanCount,txCount;
-    private Button btnUtils,btnLoans,btnSupport;
     private StandingOrderAcct standingOrderAcct;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     AppCompatButton btnToPacks;
     private Bundle homeBundle;
     private Spinner spnAccounts;
@@ -125,9 +120,13 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
     private ArrayList<Account> accountArrayList;
     private AppCompatTextView txtBankAcctBalance;
     ChipNavigationBar chipNavigationBar;
-    String acctBalance;
     private Currency currency;
     private String currencySymbol;
+    private List<Country> countries;
+    private List<Currency> currencies;
+    private World world;
+    private CurrAdapter currencyAdapter;
+
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
     ActivityResultLauncher<Intent> startCusPictureActivityForResult = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -200,8 +199,13 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
         toolbar = (Toolbar) findViewById(R.id.toolbar_cus);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
+        World.init(this);
+        homeBundle= new Bundle();
+        countries=new ArrayList<>();
         accountArrayList= new ArrayList<>();
         gson1 = new Gson();
+        countries=World.getAllCountries();
+        currencies= new ArrayList<>();
         //currency= new Currency();
         userProfile=new Profile();
         customer=new Customer();
@@ -222,12 +226,37 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
         txtUserName = findViewById(R.id.cus_username);
         txtBankAcctBalance = findViewById(R.id._BankBalance4);
         spnAccounts = findViewById(R.id.spnA);
+        txtSO = findViewById(R.id.savingsToday);
+        extName = findViewById(R.id.cus_name3);
+        textID = findViewById(R.id.cus_id2);
+        textAcctNo = findViewById(R.id.allCus_Super);
+        textBalance = findViewById(R.id.balance_normalCus);
+        textSavings = findViewById(R.id.savingsCus);
+        txtBankName = findViewById(R.id.cus_BankN);
+        balance = findViewById(R.id.cus_BankBalance4444);
+        accountNo = findViewById(R.id.cus_BankNo33);
+
+        imgProfilePic = findViewById(R.id.profile_image_cus);
+        cardViewPackges=findViewById(R.id.cardCusPackages);
+        cardViewHistory=findViewById(R.id.cardHistoryCus);
+        cardViewGrpSavings=findViewById(R.id.cardGrpSavings);
+        cardViewStandingOrders =findViewById(R.id.cardStandingOrdersCus);
+        cardViewOrders =findViewById(R.id.cardOrdersCus);
+        cardViewSupport =findViewById(R.id.cardCusHelp);
+        linearLayout=findViewById(R.id.linearGrid);
+        maingrid=(GridLayout) findViewById(R.id.ViewCus);
+        imgTime = findViewById(R.id.cusGreetings);
+
+        //currencies=World.getAllCurrencies();
+
         if(userProfile ==null){
             if(homeBundle !=null){
                 userProfile=homeBundle.getParcelable("Profile");
 
             }
-            accountArrayList=userProfile.getProfileAccounts();
+            if (userProfile != null) {
+                accountArrayList=userProfile.getProfileAccounts();
+            }
             accountArrayAdapter = new AccountAdapter(NewCustomerDrawer.this, android.R.layout.simple_spinner_item, accountArrayList);
             accountArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spnAccounts.setAdapter(accountArrayAdapter);
@@ -254,7 +283,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
             currencySymbol=currency.getSymbol();
         }
         if(account !=null){
-            txtBankAcctBalance.setText("Balance"+currencySymbol+account.getAccountBalance());
+            txtBankAcctBalance.setText(""+currencySymbol+account.getAccountBalance());
 
         }
 
@@ -324,17 +353,8 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                     }
                 });
 
-        txtSO = findViewById(R.id.savingsToday);
-        extName = findViewById(R.id.cus_name3);
-        textID = findViewById(R.id.cus_id2);
-        textAcctNo = findViewById(R.id.allCus_Super);
-        textBalance = findViewById(R.id.balance_normalCus);
-        textSavings = findViewById(R.id.savingsCus);
-        txtBankName = findViewById(R.id.cus_BankN);
-        balance = findViewById(R.id.cus_BankBalance4444);
-        accountNo = findViewById(R.id.cus_BankNo33);
 
-        imgProfilePic = findViewById(R.id.profile_image_cus);
+
         ProfDAO applicationDb = new ProfDAO(this);
         if(userProfile !=null){
             profileID=userProfile.getPID();
@@ -397,7 +417,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                 sPackages.setText(MessageFormat.format("No of Packages{0}", skPackages));
             }
             if (skPackages == 0) {
-                sPackages.setText("You do not have any packages yet");
+                sPackages.setText("You do not have any packs yet");
 
             }
 
@@ -418,15 +438,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic__category);
 
 
-        cardViewPackges=findViewById(R.id.cardCusPackages);
-        cardViewHistory=findViewById(R.id.cardHistoryCus);
-        cardViewGrpSavings=findViewById(R.id.cardGrpSavings);
-        cardViewStandingOrders =findViewById(R.id.cardStandingOrdersCus);
-        cardViewOrders =findViewById(R.id.cardOrdersCus);
-        cardViewSupport =findViewById(R.id.cardCusHelp);
-        linearLayout=findViewById(R.id.linearGrid);
-        maingrid=(GridLayout) findViewById(R.id.ViewCus);
-        imgTime = findViewById(R.id.cusGreetings);
+
         setSingleEvent(maingrid);
         StringBuilder welcomeString = new StringBuilder();
 
@@ -479,7 +491,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                 break;
         }
         welcomeString.append(", ")
-                .append("Skylight Customer")
+                .append("Awajima Customer")
                 .append("How are you? ")
                 .append(getString(R.string.happy))
                 .append(dow);
@@ -488,6 +500,11 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
         setupHeader();
 
 
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -705,7 +722,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         json1 = userPreferences.getString("LastCustomerUsed", "");
-        customer = gson.fromJson(json1, Customer.class);
+        customer = gson1.fromJson(json1, Customer.class);
 
         ProfDAO applicationDb = new ProfDAO(this);
         if(userProfile !=null){
@@ -714,6 +731,8 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
             CircleImageView imgProfilePic = headerView.findViewById(R.id.profile_image_cus);
             imgProfilePic.setImageBitmap(bitmap);
         }
+        Currency currency=null;
+        String acctCurrency=null;
         if(customer !=null){
             surname= customer.getCusSurname();
             firstName= customer.getCusFirstName();
@@ -725,14 +744,22 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
             if(account !=null){
                 accountBalance = account.getAccountBalance();
                 accountN = account.getAwajimaAcctNo();
+                currency=account.getCurrency();
+
 
             }
+            if(currency !=null){
+                acctCurrency=currency.getSymbol();
+
+            }else {
+                acctCurrency="NGN";
+            }
             if (accountBalance == 0.00) {
-                balance.setText("NGN" + 0.00);
+                balance.setText(acctCurrency + 0.00);
 
             }
             if(accountBalance>0){
-                balance.setText("NGN" + accountBalance);
+                balance.setText(acctCurrency + accountBalance);
             }
             if(accountN>0){
                 accountNo.setText("E-wallet No" + accountN);
@@ -753,14 +780,15 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
 
             }
 
+
             if(accountBalance>0){
-                balance.setText(MessageFormat.format("NGN{0}", accountBalance));
+                balance.setText(MessageFormat.format(acctCurrency, accountBalance));
 
             }if (accountBalance <0) {
-                balance.setText(MessageFormat.format("NGN-{0}", accountBalance));
+                balance.setText(MessageFormat.format(acctCurrency, accountBalance));
 
             }else if(accountBalance==0){
-                balance.setText("NGN" + "0.00");
+                balance.setText(acctCurrency + "0.00");
 
             }
 
@@ -829,7 +857,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                     {
                         tosend="Customer Pay";
                         Intent intent=new Intent(NewCustomerDrawer.this, CustomerPayAct.class);
-                        intent.putExtra("Customer Pay",tosend);
+                        intent.putExtra("info",tosend);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         overridePendingTransition(R.anim.slide_in_right,
@@ -839,7 +867,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                     else if(finalI==3) {
                         tosend = "Standing Orders";
                         Intent intent=new Intent(NewCustomerDrawer.this, SOTab.class);
-                        intent.putExtra("Standing Orders",tosend);
+                        intent.putExtra("info",tosend);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         overridePendingTransition(R.anim.slide_in_right,
@@ -849,7 +877,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                     else if(finalI==4) {
                         tosend = "Orders";
                         Intent intent=new Intent(NewCustomerDrawer.this, CusOrderTab.class);
-                        intent.putExtra("Orders",tosend);
+                        intent.putExtra("info",tosend);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         overridePendingTransition(R.anim.slide_in_right,
@@ -859,7 +887,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                     else if(finalI==5) {
                         tosend = "My Package";
                         Intent intent=new Intent(NewCustomerDrawer.this, PackageTab.class);
-                        intent.putExtra("Support",tosend);
+                        intent.putExtra("info",tosend);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         overridePendingTransition(R.anim.slide_in_right,
@@ -869,7 +897,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                     else if(finalI==6) {
                         tosend = "My Sub. Packs";
                         Intent intent=new Intent(NewCustomerDrawer.this, CusSubPackTab.class);
-                        intent.putExtra("My Sub. Packs",tosend);
+                        intent.putExtra("info",tosend);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         overridePendingTransition(R.anim.slide_in_right,
@@ -879,7 +907,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                     else if(finalI==7) {
                         tosend = "Pack List";
                         Intent intent=new Intent(NewCustomerDrawer.this, PackListTab.class);
-                        intent.putExtra("Pack List",tosend);
+                        intent.putExtra("info",tosend);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         overridePendingTransition(R.anim.slide_in_right,
@@ -889,16 +917,43 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                     else if(finalI==8) {
                         tosend = "Items List";
                         Intent intent=new Intent(NewCustomerDrawer.this, CusStocksListAct.class);
-                        intent.putExtra("Items List",tosend);
+                        intent.putExtra("info",tosend);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         overridePendingTransition(R.anim.slide_in_right,
                                 R.anim.slide_out_left);
                         startActivity(intent);
                     }
-
-
-
+                    else if(finalI==9) {
+                        tosend = "Group Savings";
+                        Intent intent=new Intent(NewCustomerDrawer.this, MyGrpSavingsTab.class);
+                        intent.putExtra("info",tosend);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        overridePendingTransition(R.anim.slide_in_right,
+                                R.anim.slide_out_left);
+                        startActivity(intent);
+                    }
+                    else if(finalI==10) {
+                        tosend = "My Sessions";
+                        Intent intent=new Intent(NewCustomerDrawer.this, MarketChatTab.class);
+                        intent.putExtra("info",tosend);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        overridePendingTransition(R.anim.slide_in_right,
+                                R.anim.slide_out_left);
+                        startActivity(intent);
+                    }
+                    else if(finalI==10) {
+                        tosend = "Emergency Sessions";
+                        Intent intent=new Intent(NewCustomerDrawer.this, UserReportEmergAct.class);
+                        intent.putExtra("info",tosend);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        overridePendingTransition(R.anim.slide_in_right,
+                                R.anim.slide_out_left);
+                        startActivity(intent);
+                    }
 
 
                 }

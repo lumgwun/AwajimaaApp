@@ -93,7 +93,7 @@ public class TellerSendEmailAct extends AppCompatActivity {
             public void run() {
                 try {
 
-                    mimeMessage.setFrom(new InternetAddress("Skylight Coop."));
+                    mimeMessage.setFrom(new InternetAddress("Awajima Coop."));
 
                     //DataHandler handler = new DataHandler(new ByteArrayDataSource(body.getBytes(), "text/plain"));
                     mimeMessage.setSubject(subject);

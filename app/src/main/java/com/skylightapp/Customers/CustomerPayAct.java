@@ -32,7 +32,7 @@ import com.flutterwave.raveandroid.RavePayInitializer;
 import com.flutterwave.raveandroid.RavePayManager;
 import com.flutterwave.raveandroid.rave_java_commons.RaveConstants;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
+
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.AppController;
@@ -144,8 +144,7 @@ public class CustomerPayAct extends AppCompatActivity {
     AppController appController;
     private static boolean isPersistenceEnabled = false;
     private Uri mImageUri;
-    private FirebaseAuth mAuth;
-    FirebaseAuth.AuthStateListener mAuthListner;
+
     private ProgressDialog progressDialog;
     private String picturePath;
     private static final int RESULT_LOAD_IMAGE = 1;
@@ -464,7 +463,7 @@ public class CustomerPayAct extends AppCompatActivity {
         smsBundle.putString(PROFILE_PHONE,profilePhone);
         smsBundle.putString("USER_PHONE",profilePhone);
         smsBundle.putString("smsMessage",smsMessage);
-        smsBundle.putString("from","Skylight");
+        smsBundle.putString("from","Awajima");
         smsBundle.putString("to",profilePhone);
         Intent itemPurchaseIntent = new Intent(CustomerPayAct.this, SMSAct.class);
         itemPurchaseIntent.putExtras(smsBundle);
@@ -605,7 +604,7 @@ public class CustomerPayAct extends AppCompatActivity {
         charge.setCard(loadCardFromForm());
 
         dialog = new ProgressDialog(CustomerPayAct.this);
-        dialog.setMessage("Performing Skylight transaction... please wait");
+        dialog.setMessage("Performing Awajima transaction... please wait");
         dialog.show();
         if (local) {
 
@@ -614,7 +613,7 @@ public class CustomerPayAct extends AppCompatActivity {
             charge.setCard(card1);
             charge.setReference(refID);
             try {
-                charge.putCustomField("Charged From", "Skylight App");
+                charge.putCustomField("Charged From", "Awajima App");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -676,7 +675,7 @@ public class CustomerPayAct extends AppCompatActivity {
                 JSONObject object = new JSONObject();
                 try {
                     // to put name
-                    object.put("name", "Skylight payment");
+                    object.put("name", "Awajima payment");
 
                     // put description
                     //object.put("description", "Test payment");
@@ -746,7 +745,7 @@ public class CustomerPayAct extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
 
 
-        transaction.setRecordAmount(totalToday);
+        transaction.setTranxAmount(totalToday);
         gson = new Gson();
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
@@ -775,14 +774,14 @@ public class CustomerPayAct extends AppCompatActivity {
         String details = managerName + "paid" + "NGN" + totalToday + "for" + customerName;
         userProfile.addPTransaction( transactionId, customerName, "", customerPhoneNo, totalToday, String.valueOf(AccountID),  "",currentDateAndTime, "type");
         DBHelper applicationDb = new DBHelper (this);
-        Skylightransaction= new com.skylightapp.Classes.Transaction(transactionID, AccountID, currentDateAndTime, 1001001, AccountID, "Skylight", customerName, totalToday, transaction_type, "Online",officeBranch, "", "", "");
+        Skylightransaction= new com.skylightapp.Classes.Transaction(transactionID, AccountID, currentDateAndTime, 1001001, AccountID, "Awajima", customerName, totalToday, transaction_type, "Online",officeBranch, "", "", "");
 
         customer.addCusTransactions(totalToday);
         customer.addCusTimeLine(tittle1,details);
         parseResponse(transaction.getTranxReceiptId());
         newAccountBalance = accountBalance+totalToday;
         customer.getCusAccount().setAccountBalance(newAccountBalance);
-        Skylightransaction.setRecordAmount(totalToday);
+        Skylightransaction.setTranxAmount(totalToday);
         Skylightransaction.setTranxAcctId(AccountID);
         Skylightransaction.setTranxCusID(customerID);
         Skylightransaction.setTranxCurrency(Currency.getInstance("NGN"));
@@ -794,11 +793,11 @@ public class CustomerPayAct extends AppCompatActivity {
 
 
         timeLineDao.insertTimeLine(tittle,details,currentDateAndTime,mCurrentLocation);
-        tranXDAO.saveNewTransaction(profileID, customerID,Skylightransaction, AccountID, "Skylight", customerName,transaction_type,totalToday, reportID, officeBranch, currentDateAndTime);
+        tranXDAO.saveNewTransaction(profileID, customerID,Skylightransaction, AccountID, "Awajima", customerName,transaction_type,totalToday, reportID, officeBranch, currentDateAndTime);
 
     }
     private void parseResponse (String transactionReference){
-        String message = "Skylight Payment Successful - " + transactionReference;
+        String message = "Awajima Payment Successful - " + transactionReference;
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         startActivity(new Intent(CustomerPayAct.this, LoginDirAct.class));
 

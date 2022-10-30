@@ -460,7 +460,7 @@ public class MyCustOldPackAct extends AppCompatActivity implements View.OnClickL
                             } catch (SQLiteException e) {
                                 System.out.println("Oops!");
                             }
-                            String paymentMessage = "Skylight! your package :" + oldPackageId + "" + "is Complete";
+                            String paymentMessage = "Awajima! your package :" + oldPackageId + "" + "is Complete";
                             sendSMSMessage(paymentMessage,phoneNo);
 
                         }

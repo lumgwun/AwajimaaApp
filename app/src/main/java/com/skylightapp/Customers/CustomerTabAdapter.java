@@ -41,6 +41,6 @@ public class CustomerTabAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 7;
+        return 5;
     }
 }

@@ -1,5 +1,7 @@
 package com.skylightapp;
 
+import static com.skylightapp.Classes.AppConstants.RECURRENT_SUB;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -12,7 +14,6 @@ import android.widget.TextView;
 public class PlanPaymentActivity extends AppCompatActivity {
     private WebView mywebView;
     private TextView txtRate;
-    private static final String QUICKTELLER_PAY = "https://business.quickteller.com/link/pay/LumgwunMa0s9";
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -26,7 +27,7 @@ public class PlanPaymentActivity extends AppCompatActivity {
         WebSettings webViewSettings = mywebView.getSettings();
         webViewSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         webViewSettings.setJavaScriptEnabled(true);
-        mywebView.loadUrl(QUICKTELLER_PAY);
+        mywebView.loadUrl(RECURRENT_SUB);
         mywebView.setWebViewClient(new WebViewClient());
     }
 

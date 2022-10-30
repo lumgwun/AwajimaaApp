@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 public class MultiSelCommoditySpn extends AppCompatSpinner implements DialogInterface.OnMultiChoiceClickListener {
 
-    ArrayList<Commodity> items = null;
+    ArrayList<MarketCommodity> items = null;
 
     boolean[] selection = null;
 
@@ -140,7 +140,7 @@ public class MultiSelCommoditySpn extends AppCompatSpinner implements DialogInte
 
 
 
-    public void setItems(ArrayList<Commodity> items) {
+    public void setItems(ArrayList<MarketCommodity> items) {
 
         this.items = items;
 
@@ -156,7 +156,7 @@ public class MultiSelCommoditySpn extends AppCompatSpinner implements DialogInte
 
 
 
-    public void setSelection(ArrayList<Commodity> selection) {
+    public void setSelection(ArrayList<MarketCommodity> selection) {
 
         for (int i = 0; i < this.selection.length; i++) {
 
@@ -166,7 +166,7 @@ public class MultiSelCommoditySpn extends AppCompatSpinner implements DialogInte
 
 
 
-        for (Commodity sel : selection) {
+        for (MarketCommodity sel : selection) {
 
             for (int j = 0; j < items.size(); ++j) {
 
@@ -228,9 +228,9 @@ public class MultiSelCommoditySpn extends AppCompatSpinner implements DialogInte
 
 
 
-    public ArrayList<Commodity> getSelectedItems() {
+    public ArrayList<MarketCommodity> getSelectedItems() {
 
-        ArrayList<Commodity> selectedItems = new ArrayList<>();
+        ArrayList<MarketCommodity> selectedItems = new ArrayList<>();
 
 
 

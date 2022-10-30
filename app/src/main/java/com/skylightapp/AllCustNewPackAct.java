@@ -50,8 +50,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
 
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Transaction;
@@ -59,6 +58,7 @@ import com.skylightapp.Database.CodeDAO;
 import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.TCashDAO;
 import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.MapAndLoc.UserLocTrackingAct;
 import com.skylightapp.SuperAdmin.AppCommission;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.AccountTypes;
@@ -210,7 +210,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
     private Marker m;
     CustomerDailyReport customerDailyReport;
     Bundle paymentBundle;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     SQLiteDatabase sqLiteDatabase;
     int selectedCustomerIndex,selectedPackageIndex;
     Button btn_MyCustomers, btn_AllOurCustomers,useDateToday;
@@ -234,10 +234,10 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
     boolean isOnTextChanged = true;
     CardView cardViewSelect;
 
-    private FirebaseAuth mAuth;
+
     TextWatcher textWatcherDuration;
-    FirebaseAuth.AuthStateListener mAuthListner;
-    private FirebaseAuth.AuthStateListener mAuthListener;
+
+
     int durationInDays;
     TextView txtDurationInDays;
     private Bundle extras;
@@ -621,7 +621,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
             profileUID2= userProfile.getPID();
 
         }
-        mAuth = FirebaseAuth.getInstance();
+
         mauthListener();
 
         tellerName=ManagerSurname+","+managerFirstName;
@@ -847,7 +847,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
                     }).start();
 
 
-                    //Skylightransaction= new com.skylightapp.Classes.Transaction(transactionID, accountNo, reportDate, 1001001, acctID, "Skylight", customerNames, initialDeposit, transaction_type, "",officeBranch, "", "", "");
+                    //Skylightransaction= new com.skylightapp.Classes.Transaction(transactionID, accountNo, reportDate, 1001001, acctID, "Awajima", customerNames, initialDeposit, transaction_type, "",officeBranch, "", "", "");
 
 
                     try {
@@ -857,7 +857,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
 
                         //dbHelper.insertTimeLine(tittle, details, reportDate, mCurrentLocation);
                         timeLineClassDAO.insertTimeLine(timelineTittle3, details, reportDate, mCurrentLocation);
-                        //dbHelper.saveNewTransaction(profileID, customerID,Skylightransaction, acctID, "Skylight", customerNames,transaction_type, initialDeposit, reportID, officeBranch, reportDate);
+                        //dbHelper.saveNewTransaction(profileID, customerID,Skylightransaction, acctID, "Awajima", customerNames,transaction_type, initialDeposit, reportID, officeBranch, reportDate);
                         dbHelper.insertNewPackage(this.profileID, customerID,packageID, skylightCode, finalItemType,this.packageType, this.packageDuration,savingsAmount,  reportDate, grandTotal, this.packageEndDate, "fresh");
                         //dbHelper.insertNewPackage(userProfile, customer, skyLightPackage1);
                         codeDAO.insertSavingsCode(paymentCode);
@@ -922,18 +922,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
 
     }
     private void mauthListener() {
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
 
-            }
-        };
     }
     private void chooseDate() {
         dateOfSavings = savings_date_.getDayOfMonth()+"/"+ (savings_date_.getMonth() + 1)+"/"+savings_date_.getYear();
@@ -1276,7 +1265,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
         smsBundle.putString(PROFILE_PHONE,phoneNumber1);
         smsBundle.putString("USER_PHONE",phoneNumber1);
         smsBundle.putString("smsMessage",smsMessage);
-        smsBundle.putString("from","Skylight");
+        smsBundle.putString("from","Awajima");
         smsBundle.putString("to",phoneNumber1);
         Intent itemPurchaseIntent = new Intent(AllCustNewPackAct.this, SMSAct.class);
         itemPurchaseIntent.putExtras(smsBundle);

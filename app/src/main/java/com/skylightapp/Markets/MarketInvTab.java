@@ -1,7 +1,5 @@
 package com.skylightapp.Markets;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.app.TabActivity;
 import android.content.Intent;
@@ -70,7 +68,7 @@ public class MarketInvTab extends TabActivity {
                                 myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(myIntent);
 
-                            case R.id.ma_topStat:
+                            case R.id.m_dTabs:
                                 Intent chat = new Intent(MarketInvTab.this, TopStatsAct.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);

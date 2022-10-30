@@ -47,6 +47,7 @@ public class UserSearchAct extends AppCompatActivity {
     private FirstNameFilter firstNameFilter;
     ArrayList<Profile> profiles;
     private DBHelper dbHelper;
+    private static final String PREF_NAME = "awajima";
     ArrayAdapter<Customer> customerArrayAdapter;
     ArrayAdapter<CustomerManager> customerManagerArrayAdapter;
     public enum UserTypeFilter {
@@ -158,7 +159,8 @@ public class UserSearchAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_user_search);
         dbHelper= new DBHelper(this);
-        userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+       // userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
         Gson gson = new Gson();
         userProfile= new Profile();
         customer=new Customer();

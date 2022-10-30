@@ -31,7 +31,7 @@ import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.UserLocatorAct;
+import com.skylightapp.MapAndLoc.UserLocatorAct;
 import com.skylightapp.PackageDetailsActivity;
 import com.skylightapp.R;
 

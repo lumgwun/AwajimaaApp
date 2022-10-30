@@ -1,35 +1,13 @@
 package com.skylightapp.Classes;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.location.Address;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.telephony.SmsMessage;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
-
-import com.google.android.gms.maps.model.LatLng;
-import com.skylightapp.Admins.AdminBankDeposit;
-import com.skylightapp.Database.DBHelper;
-import com.skylightapp.Inventory.StockTransfer;
-import com.skylightapp.Inventory.Stocks;
-
-import com.skylightapp.SuperAdmin.Skylight;
-import com.skylightapp.Tellers.TellerCash;
-
-import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.UUID;
 
 @Entity(tableName = User.USER_TABLE)
 public class User implements Parcelable, Serializable {
@@ -276,11 +254,11 @@ public class User implements Parcelable, Serializable {
     @Ignore
     private GroupAccount groupAccount;
     @Ignore
-    private Skylight skylight;
+    private Awajima skylight;
     @Ignore
-    private SavingsGroup savingsGroup;
+    private ProjectSavingsGroup savingsGroup;
     @Ignore
-    private ArrayList<SavingsGroup> savingsGroups;
+    private ArrayList<ProjectSavingsGroup> savingsGroups;
     @Ignore
     private ArrayList<GroupAccount> groupAccounts;
     @Ignore
@@ -377,10 +355,10 @@ public class User implements Parcelable, Serializable {
     @Ignore
     @SuppressLint("SimpleDateFormat")
     public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    public Skylight getUSkylight() { return skylight;
+    public Awajima getUSkylight() { return skylight;
     }
     @Ignore
-    public void setUSkylight(Skylight skylight) { this.skylight = skylight;
+    public void setUSkylight(Awajima skylight) { this.skylight = skylight;
     }
     @Ignore
     public void setUDateJoined(String dateJoined) {

@@ -117,7 +117,7 @@ public class StocksOverview extends AppCompatActivity {
 
         }else{
             if(totalDBStocks ==0){
-                txtTotalStocksTotal.setText("Oops! no Skylight Stocks");
+                txtTotalStocksTotal.setText("Oops! no Awajima Stocks");
 
             }
 
@@ -127,7 +127,7 @@ public class StocksOverview extends AppCompatActivity {
 
         }else{
             if(totalStocksForToday ==0){
-                txtTotalStocksForToday.setText("Oops! no Skylight Stocks for Today");
+                txtTotalStocksForToday.setText("Oops! no Awajima Stocks for Today");
 
             }
 
@@ -137,7 +137,7 @@ public class StocksOverview extends AppCompatActivity {
 
         }else{
             if(totalStocksForDate ==0){
-                txtTotalStocksForDate.setText("Oops! no Skylight Stocks for the Date");
+                txtTotalStocksForDate.setText("Oops! no Awajima Stocks for the Date");
 
             }
 

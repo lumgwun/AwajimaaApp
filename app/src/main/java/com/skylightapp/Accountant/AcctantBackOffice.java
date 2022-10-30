@@ -365,7 +365,7 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
                 break;
         }
         welcomeString.append(", ")
-                .append("Skylight Accountant")
+                .append("Awajima Accountant")
                 .append("How are you? ")
                 .append(getString(R.string.happy))
                 .append(dow);

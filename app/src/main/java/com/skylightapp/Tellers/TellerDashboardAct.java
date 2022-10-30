@@ -331,7 +331,7 @@ public class TellerDashboardAct extends AppCompatActivity {
                 startActivity(intentPolicy);
                 break;
             case R.id.nav_web_shop1:
-                Toast.makeText(this, "Taking you to the Skylight Web App", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Taking you to the Awajima Web App", Toast.LENGTH_SHORT).show();
                 Intent intentWebStore = new Intent(this, StoreManagerWeb.class);
                 intentWebStore.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intentWebStore);

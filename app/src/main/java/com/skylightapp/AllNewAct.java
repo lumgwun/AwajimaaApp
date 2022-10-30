@@ -36,7 +36,7 @@ public class AllNewAct extends TabActivity {
     SharedPreferences sharedPreferences;
     private Gson gson;
     private String json;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
 
 
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,

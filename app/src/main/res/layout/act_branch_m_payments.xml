@@ -60,7 +60,6 @@
             android:id="@+id/SpnPayment"
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
-            android:entries="@array/officeBranch"
             android:layout_height="wrap_content"/>
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"

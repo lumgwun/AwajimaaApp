@@ -11,6 +11,8 @@ import static com.skylightapp.Classes.Account.ACCOUNT_NO;
 
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
+import static com.skylightapp.Classes.GroupAccount.GRPA_PROFILE_ID;
+import static com.skylightapp.Classes.GroupAccount.GRP_ACCT_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 import static com.skylightapp.MarketClasses.BusinessOthers.BUSINESS_COUNTRY;
@@ -26,15 +28,19 @@ import static com.skylightapp.MarketClasses.BusinessOthers.BUSINESS_TABLE22;
 import static com.skylightapp.MarketClasses.BusinessOthers.BUSINESS_TYPE;
 import static java.lang.String.valueOf;
 
+import com.skylightapp.Classes.GroupAccount;
+import com.skylightapp.MarketClasses.MarketTranx;
+
+import java.util.ArrayList;
+
 public class MarketTranXDAO extends DBHelperDAO{
-    private static final String WHERE_ID_EQUALS = CUSTOMER_ID
-            + " =?";
+
     private SQLiteDatabase readableDatabase;
     private ContentResolver myCR;
     public static final String MARKET_TX_TABLE = "m_trans_Table";
     public static final String MARKET_TXM_ID = "m_trans_id";
-    public static final String MARKT_TX_SENDN_ACCT = "m_trans_sending_acct";
-    public static final String MARKET_TX_DEST_ACCT = "m_trans_dest_acct";
+    public static final String MARKT_TX_SENDN_ACCT = "m_trans_sending_acct99";
+    public static final String MARKET_TX_DEST_ACCT = "m_trans_dest_acct99";
     public static final String MARKET_TX_PAYEE = "m_trans_payee";
     public static final String MARKET_TRANX_PAYER = "m_trans_payer";
     public static final String MARKET_TRANX_STATUS = "m_trans_status";
@@ -45,20 +51,25 @@ public class MarketTranXDAO extends DBHelperDAO{
     public static final String MARKET_TX_SENDER_ID = "m_trans_sender_id";
     public static final String MARKET_TRANX_PAYMENT_METHOD = "m_trans_payment_id";
     public static final String MARKET_TX_MARKET_ID = "m_trans_market_id";
-    public static final String MARKET_TRANX_APPROVER = "m_trans_approver";
-    public static final String MARKET_TRANX_APPROVAL_DATE = "m_trans_approval_Date";
+    public static final String MARKET_TRANX_APPROVER = "m_trans_approvertr";
+    public static final String MARKET_TRANX_APPROVAL_DATE = "m_trans_app_Date84";
     public static final String MARKET_TX_PROF_ID = "m_trans_Prof_ID";
     public static final String MARKET_TX_BUS_ID = "m_trans_Biz_ID";
     public static final String MARKET_TX_CODE = "m_trans_Code";
     public static final String MARKET_TRANX_CURRENCY = "m_trans_Currency";
     public static final String MARKET_TX_RECEIVER_ID = "m_trans_receiver_ID";
     public static final String MARKET_TX_CUS_ID = "m_trans_Cus_ID";
+    public static final String MARKET_TX_TITTLE = "m_trans_Tittle09";
+    public static final String MARKET_TX_OFFICE = "m_trans_09_Office";
+
+    private static final String WHERE_ID_EQUALS = MARKET_TXM_ID
+            + " =?";
 
 
     public static final String CREATE_MARKET_TX_TABLE_TABLE = "CREATE TABLE IF NOT EXISTS " + MARKET_TX_TABLE + " (" + MARKET_TXM_ID + " INTEGER, " + MARKET_TX_PROF_ID + " INTEGER , " +
             MARKET_TX_BUS_ID + " INTEGER , " + MARKET_TX_MARKET_ID + " INTEGER , " + MARKET_TX_SENDER_ID + " INTEGER, " + MARKET_TX_RECEIVER_ID + " INTEGER, " +
             MARKET_TRANX_PAYER + " TEXT, " + MARKET_TX_PAYEE + " TEXT, " + MARKET_TRANX_AMOUNT + " REAL, " + MARKET_TRANX_TYPE + " TEXT, " +
-            MARKET_TRANX_DATE + " TEXT, " + MARKET_TRANX_PAYMENT_METHOD + " TEXT, " + MARKT_TX_SENDN_ACCT + " INTEGER, "+ MARKET_TX_DEST_ACCT +" INTEGER, " + MARKET_TRANX_CURRENCY + " TEXT, "+  MARKET_TX_CODE + " TEXT, "+ MARKET_TRANX_APPROVER + " TEXT, "+ MARKET_TRANX_APPROVAL_DATE + " TEXT, "+ MARKET_TRANX_STATUS + " TEXT, "+ MARKET_TX_CUS_ID + " INTEGER, " + "PRIMARY KEY(" +MARKET_TXM_ID + "), "+"FOREIGN KEY(" + MARKET_TX_CUS_ID  + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "),"+"FOREIGN KEY(" + MARKET_TX_RECEIVER_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + MARKT_TX_SENDN_ACCT  + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," +"FOREIGN KEY(" + MARKET_TX_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + MARKET_TX_DEST_ACCT  + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," +"FOREIGN KEY(" + MARKET_TX_BUS_ID + ") REFERENCES " + BUSINESS_TABLE22 + "(" + BUSINESS_ID33 + "))";
+            MARKET_TRANX_DATE + " TEXT, " + MARKET_TRANX_PAYMENT_METHOD + " TEXT, " + MARKT_TX_SENDN_ACCT + " INTEGER, "+ MARKET_TX_DEST_ACCT +" INTEGER, " + MARKET_TRANX_CURRENCY + " TEXT, "+  MARKET_TX_CODE + " TEXT, "+ MARKET_TRANX_APPROVER + " TEXT, "+ MARKET_TRANX_APPROVAL_DATE + " TEXT, "+ MARKET_TRANX_STATUS + " TEXT, "+ MARKET_TX_CUS_ID + " INTEGER, "+ MARKET_TX_TITTLE + " TEXT, "+ MARKET_TX_OFFICE + " TEXT, " + "PRIMARY KEY(" +MARKET_TXM_ID + "), "+"FOREIGN KEY(" + MARKET_TX_CUS_ID  + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "),"+"FOREIGN KEY(" + MARKET_TX_RECEIVER_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + MARKT_TX_SENDN_ACCT  + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," +"FOREIGN KEY(" + MARKET_TX_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + MARKET_TX_DEST_ACCT  + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," +"FOREIGN KEY(" + MARKET_TX_BUS_ID + ") REFERENCES " + BUSINESS_TABLE22 + "(" + BUSINESS_ID33 + "))";
 
 
     public MarketTranXDAO(Context context) {
@@ -71,6 +82,132 @@ public class MarketTranXDAO extends DBHelperDAO{
         cursor = db.rawQuery(Query,null);
         return  cursor;
     }
+    private void getMarketTranxCursor(ArrayList<MarketTranx> tranxArrayList, Cursor cursor) {
+        while (cursor.moveToNext()) {
+            int tranxID = cursor.getInt(0);
+            int profID = cursor.getInt(1);
+            int bizID = cursor.getInt(2);
+            int marketID = cursor.getInt(3);
+            String payer = cursor.getString(6);
+            String payee = cursor.getString(7);
+            double amount = cursor.getDouble(8);
+            String tranxType = cursor.getString(9);
+            String tranxDate = cursor.getString(10);
+            String modeOfPayment = cursor.getString(11);
+            String currencyCode = cursor.getString(14);
+            String approver = cursor.getString(16);
+            String status = cursor.getString(18);
+            String tranxTittle = cursor.getString(20);
+            String office = cursor.getString(21);
+            tranxArrayList.add(new MarketTranx(profID,bizID,tranxID,marketID,tranxTittle,modeOfPayment,payer,payee,tranxDate, amount,currencyCode,  approver,tranxType,office,status));
+        }
+
+
+    }
+    public ArrayList<MarketTranx> getMarketTranxForProf(int profID) {
+        ArrayList<MarketTranx> marketTranxes = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = MARKET_TX_PROF_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(profID)};
+
+        Cursor cursor = db.query(MARKET_TX_TABLE, null, selection, selectionArgs, null,
+                null, null);
+        if (null != cursor)
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                getMarketTranxCursor(marketTranxes,cursor);
+            }
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        return marketTranxes;
+    }
+    public ArrayList<MarketTranx> getMarketTranxForBiz(long bizID) {
+        ArrayList<MarketTranx> marketTranxes = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = MARKET_TX_BUS_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(bizID)};
+
+        Cursor cursor = db.query(MARKET_TX_TABLE, null, selection, selectionArgs, null,
+                null, null);
+        if (null != cursor)
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                getMarketTranxCursor(marketTranxes,cursor);
+            }
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        return marketTranxes;
+    }
+    public ArrayList<MarketTranx> getMarketTranxForBizForDate(long bizID,String dateOfTranx) {
+        String selection = MARKET_TX_BUS_ID + "=? AND " + MARKET_TRANX_DATE + "=?";
+        String[] selectionArgs = new String[]{valueOf(bizID), valueOf(dateOfTranx)};
+        ArrayList<MarketTranx> marketTranxes = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.query(MARKET_TX_TABLE, null, selection, selectionArgs, null,
+                null, null);
+        if (null != cursor)
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                getMarketTranxCursor(marketTranxes,cursor);
+            }
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        return marketTranxes;
+    }
+
+
+
+    public ArrayList<MarketTranx> getMarketTranxForProfForDate(int profileUID, String dateOfTranx) {
+        String selection = MARKET_TX_PROF_ID + "=? AND " + MARKET_TRANX_DATE + "=?";
+        String[] selectionArgs = new String[]{valueOf(profileUID), valueOf(dateOfTranx)};
+        ArrayList<MarketTranx> marketTranxes = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.query(MARKET_TX_TABLE, null, selection, selectionArgs, null,
+                null, null);
+        if (null != cursor)
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                getMarketTranxCursor(marketTranxes,cursor);
+            }
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        return marketTranxes;
+    }
+    public ArrayList<MarketTranx> getMarketTranxForCus(int cusID) {
+        ArrayList<MarketTranx> marketTranxes = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = MARKET_TX_CUS_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(cusID)};
+
+        Cursor cursor = db.query(MARKET_TX_TABLE, null, selection, selectionArgs, null,
+                null, null);
+        if (null != cursor)
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                getMarketTranxCursor(marketTranxes,cursor);
+            }
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        return marketTranxes;
+    }
+
     public boolean storeNewDebitMarketTranx(int businessID, int cus_id, String transaction_balance, String transaction_reason, String transaction_date){
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -123,7 +260,7 @@ public class MarketTranXDAO extends DBHelperDAO{
         return  cursor;
     }
 
-    public double debit_transaction_amount(int businessID,String debit){
+    public double Total_Tranx_Type_Amount_For_Biz(int businessID, String debit){
         double amount=0.00;
         SQLiteDatabase db = this.getReadableDatabase();
         String selection = MARKET_TX_BUS_ID + "=? AND " + MARKET_TRANX_TYPE + "=?";
@@ -190,6 +327,7 @@ public class MarketTranXDAO extends DBHelperDAO{
         }
         return  cursor;
     }
+
 
     Cursor debit_transaction(int businessID){
         int status = 2;
@@ -279,4 +417,6 @@ public class MarketTranXDAO extends DBHelperDAO{
         cursor = db.rawQuery(Query,null);
         return  cursor;
     }
+
+
 }

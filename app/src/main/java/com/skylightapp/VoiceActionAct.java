@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 public class VoiceActionAct extends AppCompatActivity {
+    private static final String PREF_NAME = "awajima";
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE,

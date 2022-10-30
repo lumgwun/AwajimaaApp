@@ -13,11 +13,11 @@
 
         <item
             android:id="@+id/help44"
-            android:icon="@drawable/skylight"
+            android:icon="@drawable/awajima"
             android:title="My Messages" />
         <item
             android:id="@+id/timeline_cus2"
-            android:icon="@drawable/skylight"
+            android:icon="@drawable/awajima"
             android:title="My Timeline" />
 
 
@@ -26,36 +26,36 @@
                 <group android:checkableBehavior="single">
                     <item
                         android:id="@+id/nav_act_package4"
-                        android:icon="@drawable/skylight"
+                        android:icon="@drawable/awajima"
                         android:title="Packages" />
                     <item
                         android:id="@+id/nav_so099"
-                        android:icon="@drawable/skylight"
+                        android:icon="@drawable/awajima"
                         android:title="Use Standing Order" />
                     <item
                         android:id="@+id/nav_savings_2"
-                        android:icon="@drawable/skylight"
+                        android:icon="@drawable/awajima"
                         android:title="My Saving" />
                     <item
                         android:id="@+id/nav_codes5"
-                        android:icon="@drawable/skylight"
+                        android:icon="@drawable/awajima"
                         android:title="My Savings Codes" />
 
                     <item
                         android:id="@+id/nav_doc77"
-                        android:icon="@drawable/skylight"
+                        android:icon="@drawable/awajima"
                         android:title="My Documents" />
                     <item
                         android:id="@+id/nav_tx5"
-                        android:icon="@drawable/skylight"
+                        android:icon="@drawable/awajima"
                         android:title="My Transactions" />
                     <item
                         android:id="@+id/nav_loan35"
-                        android:icon="@drawable/skylight"
+                        android:icon="@drawable/awajima"
                         android:title="My Loans" />
                     <item
                         android:id="@+id/nav_borrow6"
-                        android:icon="@drawable/skylight"
+                        android:icon="@drawable/awajima"
                         android:title="Borrow" />
 
 

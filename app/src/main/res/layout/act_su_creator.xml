@@ -35,7 +35,6 @@
                 android:clickable="false" />
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
-                android:background="@drawable/fui_ic_check_circle_black_128dp"
                 android:layout_marginBottom="10dp"
                 android:layout_height="wrap_content">
                 <androidx.appcompat.widget.AppCompatImageView
@@ -465,7 +464,7 @@
                         android:padding="30dp"
                         android:background="@drawable/shape_layer_3b"
                         android:drawableStart="@drawable/ic_icon_foreground"
-                        android:entries="@array/officeBranch33"
+                        android:entries="@array/New_Awajima_Branch"
                         android:textColor="@android:color/holo_red_dark"
                         android:textColorHint="@android:color/holo_red_dark"
                         android:textSize="20sp"

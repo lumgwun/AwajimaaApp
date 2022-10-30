@@ -11,17 +11,13 @@ import androidx.recyclerview.widget.SnapHelper;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
-import com.skylightapp.Adapters.TransactionAdapter;
+import com.skylightapp.Adapters.TranxAdminA;
 import com.skylightapp.Adapters.TranxSimpleAdapter;
-import com.skylightapp.Classes.Message;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
@@ -30,7 +26,6 @@ import com.skylightapp.R;
 import com.skylightapp.SuperAdmin.UpdateTranxAct;
 
 import java.text.MessageFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,10 +34,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import static com.skylightapp.Classes.Message.MESSAGE_TABLE;
-import static com.skylightapp.Classes.Profile.PROFILE_ID;
-
-public class TransAmadiTranx extends AppCompatActivity implements TransactionAdapter.OnItemsClickListener{
+public class TransAmadiTranx extends AppCompatActivity implements TranxAdminA.OnItemsClickListener{
     private List<Transaction> transactionList;
     private TranxSimpleAdapter transactionAdapter;
 

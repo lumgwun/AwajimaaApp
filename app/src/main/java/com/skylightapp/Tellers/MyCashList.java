@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
-import com.firebase.ui.auth.ui.phone.SpacedEditText;
 import com.google.gson.Gson;
 import com.skylightapp.Adapters.MySkylightCashA;
 import com.skylightapp.Classes.AdminUser;
@@ -38,28 +37,16 @@ import java.util.TimeZone;
 public class MyCashList extends AppCompatActivity implements MyTellerCashAdapter.OnItemClickListener{
     Bundle bundle;
     AppCash appCash;
-    private AppCompatButton btnRunUpdate;
     DatePicker picker;
-    String selectedStatus,dateOfApproval,superAdminName,tellerConfirmationCode, officeBranch;
-    int selectedDepositIndex;
-    SpacedEditText edtCode;
     DBHelper dbHelper;
-    long tellerCashID;
     long code;
-    long tellerCashCode;
     int profileID;
-    TextView txtDepositID;
     Bundle userBundle;
-    PreferenceManager preferenceManager;
     SharedPreferences userPreferences;
     Profile managerProfile;
     Gson gson,gson1;
     String json,json1,dateOfCash;
-    Profile userProfile;
-    String machine;
     private CustomerManager customerManager;
-    private UserSuperAdmin superAdmin;
-    private AdminUser adminUser;
     private RecyclerView recyclerViewToday,recyclerViewCustomDate,recyclerViewAll,recyclerMyTellerCash;
     private MySkylightCashA adapterToday;
     private MySkylightCashA adapterDate;
@@ -72,6 +59,7 @@ public class MyCashList extends AppCompatActivity implements MyTellerCashAdapter
     MyTellerCashAdapter myTellerCashAdapter;
     TextView txtTotalSCForDate,txtTotalSCForToday,txtTotalSCTotal;
     double totalSCForDate,totalSCForToday,totalSC;
+    private static final String PREF_NAME = "awajima";
 
 
     @Override
@@ -99,11 +87,11 @@ public class MyCashList extends AppCompatActivity implements MyTellerCashAdapter
         managerProfile= new Profile();
         customerManager=new CustomerManager();
         dbHelper= new DBHelper(this);
-        userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
         managerProfile = gson.fromJson(json, Profile.class);
-        json1 = userPreferences.getString("LastTellerProfileUsed", "");
-        customerManager = gson1.fromJson(json, CustomerManager.class);
+        json1 = userPreferences.getString("LastCustomerManagerUsed", "");
+        customerManager = gson1.fromJson(json1, CustomerManager.class);
         userBundle= new Bundle();
 
         if(managerProfile !=null){
@@ -118,7 +106,7 @@ public class MyCashList extends AppCompatActivity implements MyTellerCashAdapter
         });
 
         dateOfCash = picker.getDayOfMonth()+"/"+ (picker.getMonth() + 1)+"/"+picker.getYear();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String todayDate = sdf.format(calendar1.getTime());
         if(dateOfCash ==null){
             dateOfCash=todayDate;
@@ -137,7 +125,7 @@ public class MyCashList extends AppCompatActivity implements MyTellerCashAdapter
 
         }else{
             if(totalSC ==0){
-                txtTotalSCTotal.setText("Oops! no Skylight Cash for this profile");
+                txtTotalSCTotal.setText("Oops! no Awajima Cash for this profile");
 
             }
 
@@ -147,7 +135,7 @@ public class MyCashList extends AppCompatActivity implements MyTellerCashAdapter
 
         }else{
             if(totalSCForToday ==0){
-                txtTotalSCForToday.setText("Oops! no Skylight Cash for Today");
+                txtTotalSCForToday.setText("Oops! no Awajima Cash for Today");
 
             }
 
@@ -157,7 +145,7 @@ public class MyCashList extends AppCompatActivity implements MyTellerCashAdapter
 
         }else{
             if(totalSCForDate ==0){
-                txtTotalSCForDate.setText("Oops! no Skylight Cash for the Date");
+                txtTotalSCForDate.setText("Oops! no Awajima Cash for the Date");
 
             }
 

@@ -151,7 +151,7 @@
                 android:layout_height="wrap_content">
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="0dp"
-                    android:text="From Skylight"
+                    android:text="From Awajima"
                     android:textSize="15sp"
                     android:padding="15dp"
                     android:onClick="revealFromSkylightLayout"
@@ -554,7 +554,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:entries="@array/officeBranch33"
                     android:textSize="15sp"
                     android:focusable="false"
                     android:paddingStart="150dp"
@@ -836,7 +835,7 @@
                 android:layout_gravity="center"
                 android:background="@drawable/rect6b"
                 android:textColorHint="@color/colorPrimary"
-                android:text="ST for Skylight:" />
+                android:text="Stocks Transfers:" />
 
         </LinearLayout>
 
@@ -871,7 +870,7 @@
                 android:layout_height="wrap_content">
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="match_parent"
-                    android:text="Search Database by Skylight"
+                    android:text="Search Database"
                     android:textSize="17sp"
                     android:padding="20dp"
                     android:layout_weight="1"

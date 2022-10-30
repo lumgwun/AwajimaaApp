@@ -13,12 +13,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 
+import com.denzcoskun.imageslider.ImageSlider;
 import com.skylightapp.Classes.SkyLightPackModel;
 import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.MarketClasses.AwajimaSlider;
+import com.skylightapp.MarketClasses.MarketAnnounceAdapt;
 import com.skylightapp.R;
-import com.smarteist.autoimageslider.SliderViewAdapter;
+
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -26,7 +32,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPackageSliderAdapter.SliderAdapterVH> implements View.OnClickListener, Filterable {
+public class SkylightPackageSliderAdapter extends RecyclerView.Adapter<SkylightPackageSliderAdapter.SliderAdapterVH> implements View.OnClickListener, Filterable {
 
     private Context context;
 
@@ -90,90 +96,6 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
         this.callback = callback;
     }
 
-    @Override
-    public SliderAdapterVH onCreateViewHolder(ViewGroup parent) {
-        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.image_slider_layout, null);
-        return new SliderAdapterVH(inflate);
-    }
-
-    @Override
-    public void onBindViewHolder(SliderAdapterVH viewHolder, final int position) {
-
-        SkyLightPackModel sliderItem = mSliderItems.get(position);
-        if(sliderItem !=null){
-            tittle=sliderItem.getpMItemName();
-            type=sliderItem.getpMType();
-            duration=sliderItem.getpMDuration();
-            durationPrice=sliderItem.getpMPrice();
-            grandTotal=duration*durationPrice;
-            id=sliderItem.getpModeID();
-            imageLink=sliderItem.getpMItemImage();
-
-        }
-        context = viewHolder.itemView.getContext();
-        //context = viewHolder.imageItem.getContext();
-
-        viewHolder.tittle.setText(MessageFormat.format("Item Name.:{0}", sliderItem.getpMItemName()));
-        viewHolder.textViewDescription.setText(MessageFormat.format("Desc.:{0}", sliderItem.getpMdesc()));
-        viewHolder.price.setText(MessageFormat.format("Price.:N{0}", sliderItem.getpMPrice()));
-        viewHolder.duration.setText(MessageFormat.format("Duration.:{0}", sliderItem.getpMDuration()));
-        Glide.with(context).load(imageLink).fitCenter().into(viewHolder.imageItem);
-
-        final SkyLightPackage skyLightPackage = new SkyLightPackage(id,0,tittle,durationPrice,grandTotal,type,duration);
-        sliderItem.setSkyLightPackage(skyLightPackage);
-        viewHolder.motherLayoutView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(callback != null){
-                    callback.onItemClick(position);
-                }
-            }
-        });
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int id = v.getId();
-                if (id == R.id.iv_auto_image_slider) {
-                    if (callback != null) {
-
-                        callback.onItemClick(position);
-                    }
-                    if (callback != null) {
-                        callback.onItemClick(position);
-                    }
-                }
-
-                if (id == R.id.tittle4) {
-                    if (callback != null) {
-                        callback.onItemClick(position);
-                    }
-                }
-
-                if (id == R.id.image_slider_price) {
-                    if (callback != null) {
-                        callback.onItemClick(position);
-                    }
-                }
-                if (id == R.id.duration_image_slider) {
-                    if (callback != null) {
-                        callback.onItemClick(position);
-                    }
-                }
-                if (id == R.id.tv_auto_image_slider) {
-                    if (callback != null) {
-                        callback.onItemClick(position);
-                    }
-                }
-            }
-        };
-
-    }
-
-    @Override
-    public int getCount() {
-        return (null != mSliderItems ? mSliderItems.size() : 0);
-    }
-
     public void filter(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
         itemsListFilter.clear();
@@ -232,22 +154,107 @@ public class SkylightPackageSliderAdapter extends SliderViewAdapter<SkylightPack
 
     }
 
-     class SliderAdapterVH extends SliderViewAdapter.ViewHolder implements View.OnClickListener,View.OnContextClickListener,View.OnLongClickListener,View.OnTouchListener {
+    @NonNull
+    @Override
+    public SliderAdapterVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.image_slider_layout, null);
+        return new SliderAdapterVH(inflate);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull SliderAdapterVH viewHolder, int position) {
+        SkyLightPackModel sliderItem = mSliderItems.get(position);
+        if(sliderItem !=null){
+            tittle=sliderItem.getpMItemName();
+            type=sliderItem.getpMType();
+            duration=sliderItem.getpMDuration();
+            durationPrice=sliderItem.getpMPrice();
+            grandTotal=duration*durationPrice;
+            id=sliderItem.getpModeID();
+            imageLink=sliderItem.getpMItemImage();
+
+        }
+        context = viewHolder.itemView.getContext();
+        //context = viewHolder.imageItem.getContext();
+
+        viewHolder.tittle.setText(MessageFormat.format("Item Name.:{0}", sliderItem.getpMItemName()));
+        viewHolder.textViewDescription.setText(MessageFormat.format("Desc.:{0}", sliderItem.getpMdesc()));
+        viewHolder.price.setText(MessageFormat.format("Price.:N{0}", sliderItem.getpMPrice()));
+        viewHolder.duration.setText(MessageFormat.format("Duration.:{0}", sliderItem.getpMDuration()));
+        //Glide.with(context).load(imageLink).fitCenter().into(viewHolder.imageItem);
+
+        final SkyLightPackage skyLightPackage = new SkyLightPackage(id,0,tittle,durationPrice,grandTotal,type,duration);
+        sliderItem.setSkyLightPackage(skyLightPackage);
+        viewHolder.motherLayoutView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(callback != null){
+                    callback.onItemClick(position);
+                }
+            }
+        });
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int id = v.getId();
+                if (id == R.id.iv_auto_image_slider) {
+                    if (callback != null) {
+
+                        callback.onItemClick(position);
+                    }
+                    if (callback != null) {
+                        callback.onItemClick(position);
+                    }
+                }
+
+                if (id == R.id.tittle4) {
+                    if (callback != null) {
+                        callback.onItemClick(position);
+                    }
+                }
+
+                if (id == R.id.image_slider_price) {
+                    if (callback != null) {
+                        callback.onItemClick(position);
+                    }
+                }
+                if (id == R.id.duration_image_slider) {
+                    if (callback != null) {
+                        callback.onItemClick(position);
+                    }
+                }
+                if (id == R.id.tv_auto_image_slider) {
+                    if (callback != null) {
+                        callback.onItemClick(position);
+                    }
+                }
+            }
+        };
+
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return (null != mSliderItems ? mSliderItems.size() : 0);
+    }
+
+    class SliderAdapterVH extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnContextClickListener,View.OnLongClickListener,View.OnTouchListener {
 
         View itemView;
         TextView tittle;
-        ImageView imageItem;
         TextView textViewDescription;
         TextView price;
         TextView duration;
         OnItemsClickListener listener;
         SkyLightPackModel skyLightPackModel;
         public LinearLayout motherLayoutView;
+        ImageSlider sliderView;
+        AwajimaSlider awajimaSlider;
 
         public SliderAdapterVH(View itemView) {
             super(itemView);
-
-            imageItem = itemView.findViewById(R.id.iv_auto_image_slider);
+            sliderView = itemView.findViewById(R.id.iv_auto_image_slider);
             motherLayoutView = itemView.findViewById(R.id.productLayout);
             tittle = itemView.findViewById(R.id.tittle4);
             price = itemView.findViewById(R.id.image_slider_price);

@@ -1,6 +1,5 @@
 package com.skylightapp.Interfaces;
 
-import com.google.firebase.auth.AuthCredential;
 
 public interface LoginView extends BaseView {
     void startCreateProfileActivity();

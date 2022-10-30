@@ -104,7 +104,7 @@ public class NewLocAct extends AppCompatActivity implements LocationListener, Go
     GoogleMap googleMap,mMap;
     Geocoder geocoder;
     private  Bundle userLocBundle;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     SupportMapFragment mapFragment;
 
     int PERMISSION_ALL = 1;
@@ -154,7 +154,6 @@ public class NewLocAct extends AppCompatActivity implements LocationListener, Go
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
 
         cancellationTokenSource = new CancellationTokenSource();
 
@@ -434,7 +433,7 @@ public class NewLocAct extends AppCompatActivity implements LocationListener, Go
                     Intent intent = new Intent();
                     intent.setAction(
                             Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    Uri uri = Uri.fromParts("Skylight App",
+                    Uri uri = Uri.fromParts("Awajima App",
                             BuildConfig.APPLICATION_ID, null);
                     intent.setData(uri);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -496,7 +495,7 @@ public class NewLocAct extends AppCompatActivity implements LocationListener, Go
                     Intent intent = new Intent();
                     intent.setAction(
                             Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    Uri uri = Uri.fromParts("Skylight App",
+                    Uri uri = Uri.fromParts("Awajima App",
                             BuildConfig.APPLICATION_ID, null);
                     intent.setData(uri);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -535,7 +534,7 @@ public class NewLocAct extends AppCompatActivity implements LocationListener, Go
         LatLng skylight = new LatLng(4.52871, 7.44507);
         mMap.addMarker(new MarkerOptions()
                 .position(skylight)
-                .title("Marker in Skylight"));
+                .title("Marker in Awajima"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 new LatLng(4.52871,
                         7.44507), 10));

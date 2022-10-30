@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:background="?android:attr/activatedBackgroundIndicator">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="50dp"
+        android:id="@+id/card_l1"
+        app:cardBackgroundColor="#f3f5f7"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/id_l1"
+            android:padding="20dp"
+            android:orientation="vertical"
+            android:background="@drawable/rect_their_black"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/img_ann"
+                    android:layout_width="58dp"
+                    android:layout_height="55dp"
+                    android:layout_gravity="center_horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_notification_icon"
+                    android:contentDescription="Announcement" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:text=" Announcement"
+                    android:id="@+id/m_announce"
+                    android:layout_marginEnd="20dp"
+                    android:padding="15dp"
+                    android:typeface="serif"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:gravity="center_horizontal"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="20dp"
+                    android:textColor="@color/black"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:text=" Tittle"
+                android:id="@+id/m_title_annouce"
+                android:layout_marginEnd="20dp"
+                android:textStyle="bold"
+                android:gravity="start"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/red_brown_dark"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:text=" Message"
+                android:id="@+id/m_message_announce"
+                android:layout_marginEnd="20dp"
+                android:textStyle="bold"
+                android:gravity="start"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/red_brown_dark"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:text=" Announcer"
+                android:id="@+id/m_announcer"
+                android:layout_marginEnd="20dp"
+                android:textStyle="bold"
+                android:gravity="start"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/red_brown_dark"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="50dp"
+        android:id="@+id/card_Slider"
+        app:cardBackgroundColor="@color/black_black"
+        android:layout_height="250dp">
+
+
+        <com.denzcoskun.imageslider.ImageSlider
+            android:id="@+id/m_a_slider"
+            android:layout_width="wrap_content"
+            android:layout_height="250dp" />
+
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/anounce_option_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:padding="20dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginEnd="6dp"
+        android:background="@drawable/rect6b"
+        android:elevation="3dp"
+        android:weightSum="2"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textEdit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:layout_weight="1"
+            android:paddingTop="6dp"
+            android:layout_marginEnd="10dp"
+            android:paddingBottom="6dp"
+            android:text="Edit"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textRemove"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:layout_weight="1"
+            android:paddingTop="6dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="6dp"
+            android:text="Remove"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

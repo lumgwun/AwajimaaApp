@@ -97,7 +97,7 @@
                     app:contentPadding="0dp">
                     <TextView
                         android:layout_width="match_parent"
-                        android:text="Select Office"
+                        android:text="Select Business"
                         android:gravity="center_horizontal"
                         android:layout_height="wrap_content"/>
 
@@ -105,7 +105,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="wrap_content"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="2dp"
                     android:layout_marginBottom="10dp"
@@ -114,15 +114,121 @@
                     app:cardPreventCornerOverlap="false"
                     app:contentPadding="0dp">
                     <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/officeSelection"
+                        android:id="@+id/oelection_Biz"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:paddingLeft="10dp"
                         android:foregroundGravity="center_horizontal"
                         android:background="@drawable/shape_rect12a"
                         android:drawableStart="@drawable/ic_icon_foreground"
-                        android:entries="@array/officeBranch33"
+                        android:padding="30dp"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textColorHint="@android:color/holo_red_dark"
+                        android:textSize="20sp"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:clickable="false" />
+
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:gravity="end"
+                    android:id="@+id/cardTC"
+                    app:cardBackgroundColor="@color/white"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="end"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:weightSum="2"
+                        android:layout_height="wrap_content">
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="0dp"
+                            android:text="Add New"
+                            android:textSize="17sp"
+                            android:padding="20dp"
+                            android:layout_weight="1"
+                            android:onClick="addNewOB"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:textStyle="bold"
+                            android:id="@+id/button_Create_Office"
+                            android:textColor="@android:color/holo_red_dark"
+                            android:background="@drawable/rect_their_message"
+                            android:gravity="center_horizontal"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_height="wrap_content"/>
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="0dp"
+                            android:text="Edit Office"
+                            android:textSize="17sp"
+                            android:padding="20dp"
+                            android:layout_weight="1"
+                            android:id="@+id/btnAddNewEdt"
+                            android:onClick="showAddNewOffice"
+                            android:background="@drawable/rect_their4"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/holo_red_dark"
+                            android:gravity="center_horizontal"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_height="wrap_content"/>
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:id="@+id/cSelectn"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:text="Select Office"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:id="@+id/offSen"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/officeSetion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="10dp"
+                        android:foregroundGravity="center_horizontal"
+                        android:background="@drawable/shape_rect12a"
+                        android:drawableStart="@drawable/ic_icon_foreground"
                         android:padding="20dp"
                         android:textAlignment="center"
                         android:textColor="@android:color/holo_red_dark"
@@ -130,51 +236,10 @@
                         android:textSize="20sp"
                         android:layout_gravity="center_horizontal"
                         android:gravity="center_horizontal"
-                        android:clickable="false"
-                        />
-
-                </androidx.cardview.widget.CardView>
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="2dp"
-                    app:cardElevation="2dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    app:cardPreventCornerOverlap="false"
-                    app:contentPadding="0dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:text="or"
-                        android:textSize="20sp"
-                        android:gravity="center_horizontal"
-                        android:layout_height="wrap_content"/>
+                        android:clickable="false" />
 
                 </androidx.cardview.widget.CardView>
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    app:cardCornerRadius="2dp"
-                    app:cardElevation="2dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    app:cardPreventCornerOverlap="false"
-                    app:contentPadding="0dp">
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:layout_width="match_parent"
-                        android:text="Add New Office"
-                        android:padding="20dp"
-                        android:onClick="showAddNewOffice"
-                        android:textSize="17sp"
-                        android:id="@+id/btnAddNewEdt"
-                        android:background="@drawable/rect_their4"
-                        android:gravity="center_horizontal"
-                        android:layout_height="wrap_content"/>
-
-                </androidx.cardview.widget.CardView>
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -196,7 +261,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="65dp"
+                    android:layout_height="wrap_content"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="2dp"
                     android:layout_marginBottom="5dp"
@@ -205,9 +270,9 @@
                     app:cardPreventCornerOverlap="false"
                     app:contentPadding="0dp">
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/officeName"
+                        android:id="@+id/officehhName"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:hint="Office Name"
                         android:background="@drawable/rect_their4"
@@ -243,18 +308,18 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="65dp"
+                    android:layout_height="wrap_content"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="2dp"
                     android:layout_marginBottom="5dp"
                     app:cardPreventCornerOverlap="false"
                     app:contentPadding="0dp">
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/officeAddress"
+                        android:id="@+id/officeAddress2w"
                         android:layout_width="match_parent"
                         android:textStyle="bold"
                         android:focusable="true"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/rect_their4"
                         android:textSize="15sp"
@@ -286,13 +351,15 @@
 
                 </androidx.cardview.widget.CardView>
 
-
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="70dp"
+                    android:layout_height="wrap_content"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="2dp"
                     android:gravity="end"
+                    android:id="@+id/cardTC"
+                    app:cardBackgroundColor="@color/white"
+                    android:layout_marginTop="10dp"
                     android:layout_gravity="end"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="2dp"
@@ -301,17 +368,17 @@
                     app:contentPadding="0dp">
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
-                        android:weightSum="1"
+                        android:weightSum="2"
                         android:layout_height="wrap_content">
                         <androidx.appcompat.widget.AppCompatButton
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:text="Register"
                             android:textSize="20sp"
                             android:padding="20dp"
                             android:onClick="doOfficeReg"
                             android:layout_weight="1"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginEnd="20dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
                             android:textStyle="bold"
                             android:id="@+id/submitNewOffice"
                             android:textColor="@android:color/holo_red_dark"
@@ -320,9 +387,28 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_height="wrap_content"/>
 
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="0dp"
+                            android:text="Update Office"
+                            android:textSize="17sp"
+                            android:padding="20dp"
+                            android:layout_weight="1"
+                            android:id="@+id/btn_Office_update"
+                            android:onClick="updateOffice"
+                            android:background="@drawable/rect_their4"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/holo_red_dark"
+                            android:gravity="center_horizontal"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_height="wrap_content"/>
+
+
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
                 </androidx.cardview.widget.CardView>
+
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

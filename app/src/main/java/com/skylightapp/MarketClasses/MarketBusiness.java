@@ -19,19 +19,22 @@ import com.skylightapp.Classes.Payee;
 import com.skylightapp.Classes.PaymentCode;
 import com.skylightapp.Classes.PaymentDoc;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SavingsGroup;
+import com.skylightapp.Classes.ProjectSavingsGroup;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.StandingOrder;
 import com.skylightapp.Classes.TimeLine;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.Markets.MarketTranx;
+import com.skylightapp.Inventory.Stocks;
+import com.skylightapp.MapAndLoc.EmergencyReport;
+import com.skylightapp.SuperAdmin.Awajima;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
@@ -114,8 +117,8 @@ public class MarketBusiness implements Parcelable, Serializable {
     DBHelper dbHelper;
     private ArrayList<PaymentDoc> paymentDocArrayList;
 
-    private SavingsGroup mBSavingsGroup;
-    private ArrayList<SavingsGroup> savingsGroups;
+    private ProjectSavingsGroup mBProjectSavingsGroup;
+    private ArrayList<ProjectSavingsGroup> projectSavingsGroups;
     private ArrayList<GroupAccount> groupAccounts;
     private ArrayList<StandingOrder> mBStandingOrders;
     private Profile mBusOwner;
@@ -126,13 +129,13 @@ public class MarketBusiness implements Parcelable, Serializable {
     private ArrayList<MarketAdmin> mBusMarketAdminS;
     private ArrayList<BusinessDeal> mBusBizDeals;
     private ArrayList<MarketTranx> mBusMarketTranxS;
-    private ArrayList<MarketCustomer> busCusS;
     private ArrayList<MarketCommodity> bizMarketCommodities;
     private ArrayList<MarketAnnouncement> bizMarketAnnouncements;
     private ArrayList<MarketBizSubScription> bizMarketBizSubs;
     private ArrayList<MarketInventory> bizMarketInvTs;
     private ArrayList<MarketStock> bizMarketStocks;
     private ArrayList<BizDealAccount> bizDealAccountArrayList;
+    private ArrayList<Stocks> mBStockList;
 
     private ArrayList<Integer> marketBiz_acctIDs;
     private ArrayList<OfficeBranch> officeBranches;
@@ -141,6 +144,15 @@ public class MarketBusiness implements Parcelable, Serializable {
     private Currency marketBizCurrency;
     private UserSuperAdmin mBSuperAdmin;
     private ArrayList<CustomerManager> bizTellers;
+    private OfficeBranch MBBranchOffice;
+    private ArrayList<Customer> MBCustomers;
+    private ArrayList<MarketBusiness> mBMarketBusinesses;
+    private Awajima marketBizAwajima;
+    private Profile mBusProfile;
+    private ArrayList<Profile> bizProfileList;
+    private ArrayList<EmergencyReport> marketBizEmergL;
+    private Market bizMarket;
+    private Set<String> mBTypes;
 
 
     public MarketBusiness(long businessID) {
@@ -148,6 +160,7 @@ public class MarketBusiness implements Parcelable, Serializable {
         this.businessID=businessID;
 
     }
+
 
     public MarketBusiness(long biZID, long profileID, String name, String brandName, String typeBiz, String bizEmail, String bizAddress, String ph_no, String state, String regNo) {
         super();
@@ -225,8 +238,8 @@ public class MarketBusiness implements Parcelable, Serializable {
         mBTimeLineArrayList = in.createTypedArrayList(TimeLine.CREATOR);
         mBPaymentCodeArrayList = in.createTypedArrayList(PaymentCode.CREATOR);
         paymentDocArrayList = in.createTypedArrayList(PaymentDoc.CREATOR);
-        mBSavingsGroup = in.readParcelable(SavingsGroup.class.getClassLoader());
-        savingsGroups = in.createTypedArrayList(SavingsGroup.CREATOR);
+        mBProjectSavingsGroup = in.readParcelable(ProjectSavingsGroup.class.getClassLoader());
+        projectSavingsGroups = in.createTypedArrayList(ProjectSavingsGroup.CREATOR);
         groupAccounts = in.createTypedArrayList(GroupAccount.CREATOR);
         mBStandingOrders = in.createTypedArrayList(StandingOrder.CREATOR);
         mBusOwner = in.readParcelable(Profile.class.getClassLoader());
@@ -236,7 +249,6 @@ public class MarketBusiness implements Parcelable, Serializable {
         mBusCusS = in.createTypedArrayList(MarketCustomer.CREATOR);
         mBusBizDeals = in.createTypedArrayList(BusinessDeal.CREATOR);
         mBusMarkets = in.createTypedArrayList(Market.CREATOR);
-        busCusS = in.createTypedArrayList(MarketCustomer.CREATOR);
         mBusBizDeals = in.createTypedArrayList(BusinessDeal.CREATOR);
         bizMarketAnnouncements = in.createTypedArrayList(MarketAnnouncement.CREATOR);
         bizDealAccountArrayList = in.createTypedArrayList(BizDealAccount.CREATOR);
@@ -260,6 +272,11 @@ public class MarketBusiness implements Parcelable, Serializable {
         bizDealAccountArrayList = new ArrayList<>();
         bizDealAccountArrayList.add(account);
     }
+    public void addSubscription(MarketBizSubScription subScription) {
+        bizMarketBizSubs= new ArrayList<>();
+        bizMarketBizSubs.add(subScription);
+
+    }
     public void addBizTeller(CustomerManager teller) {
         bizTellers = new ArrayList<>();
         bizTellers.add(teller);
@@ -279,13 +296,6 @@ public class MarketBusiness implements Parcelable, Serializable {
         profileMarketIDs.add(profileMarketID);
     }
 
-    public ArrayList<MarketCustomer> getBusCusS() {
-        return busCusS;
-    }
-
-    public void setBusCusS(ArrayList<MarketCustomer> busCusS) {
-        this.busCusS = busCusS;
-    }
 
     public ArrayList<MarketCommodity> getBizMarketCommodities() {
         return bizMarketCommodities;
@@ -330,9 +340,9 @@ public class MarketBusiness implements Parcelable, Serializable {
 
 
 
-    public ArrayList<SavingsGroup> getProfile_SavingsGroups() { return savingsGroups; }
-    public void setProfile_SavingsGroups(ArrayList<SavingsGroup> profile_SavingsGroups) {
-        this.savingsGroups = profile_SavingsGroups;
+    public ArrayList<ProjectSavingsGroup> getProfile_SavingsGroups() { return projectSavingsGroups; }
+    public void setProfile_SavingsGroups(ArrayList<ProjectSavingsGroup> profile_Project_SavingsGroups) {
+        this.projectSavingsGroups = profile_Project_SavingsGroups;
 
     }
 
@@ -349,10 +359,10 @@ public class MarketBusiness implements Parcelable, Serializable {
     }
 
     public void addPSavingsGrp(int gsID, String groupName, String adminName, String purpose, double amount, Date startDate, Date endDate, String status) {
-        savingsGroups= new ArrayList<>();
-        String GSNo = "A" + (savingsGroups.size() + 1);
-        SavingsGroup savingsGroup = new SavingsGroup(gsID,groupName,adminName, purpose, amount,startDate,endDate,status);
-        savingsGroups.add(savingsGroup);
+        projectSavingsGroups = new ArrayList<>();
+        String GSNo = "A" + (projectSavingsGroups.size() + 1);
+        ProjectSavingsGroup projectSavingsGroup = new ProjectSavingsGroup(gsID,groupName,adminName, purpose, amount,startDate,endDate,status);
+        projectSavingsGroups.add(projectSavingsGroup);
     }
 
     public MarketBusiness(long id, String name, List nominations, boolean isAwardOrganization, int numberOfNominations) {
@@ -527,12 +537,12 @@ public class MarketBusiness implements Parcelable, Serializable {
         this.mBStandingOrders = mBStandingOrders;
     }
 
-    public SavingsGroup getmBSavingsGroup() {
-        return mBSavingsGroup;
+    public ProjectSavingsGroup getmBSavingsGroup() {
+        return mBProjectSavingsGroup;
     }
 
-    public void setmBSavingsGroup(SavingsGroup mBSavingsGroup) {
-        this.mBSavingsGroup = mBSavingsGroup;
+    public void setmBSavingsGroup(ProjectSavingsGroup mBProjectSavingsGroup) {
+        this.mBProjectSavingsGroup = mBProjectSavingsGroup;
     }
 
     public ArrayList<TimeLine> getmBTimeLineArrayList() {
@@ -609,8 +619,8 @@ public class MarketBusiness implements Parcelable, Serializable {
         parcel.writeTypedList(mBTimeLineArrayList);
         parcel.writeTypedList(mBPaymentCodeArrayList);
         parcel.writeTypedList(paymentDocArrayList);
-        parcel.writeParcelable(mBSavingsGroup, i);
-        parcel.writeTypedList(savingsGroups);
+        parcel.writeParcelable(mBProjectSavingsGroup, i);
+        parcel.writeTypedList(projectSavingsGroups);
         parcel.writeTypedList(groupAccounts);
         parcel.writeTypedList(mBStandingOrders);
         parcel.writeParcelable(mBusOwner, i);
@@ -619,7 +629,6 @@ public class MarketBusiness implements Parcelable, Serializable {
         parcel.writeTypedList(mBusLocS);
         parcel.writeTypedList(mBusCusS);
         parcel.writeTypedList(mBusBizDeals);
-        parcel.writeTypedList(busCusS);
         parcel.writeTypedList(bizMarketAnnouncements);
         parcel.writeTypedList(bizDealAccountArrayList);
     }
@@ -679,4 +688,88 @@ public class MarketBusiness implements Parcelable, Serializable {
     public void setBizTellers(ArrayList<CustomerManager> bizTellers) {
         this.bizTellers = bizTellers;
     }
+
+    public OfficeBranch getMBBranchOffice() {
+        return MBBranchOffice;
+    }
+
+    public void setMBBranchOffice(OfficeBranch mbBranchOffice) {
+        this.MBBranchOffice = mbBranchOffice;
+    }
+
+    public ArrayList<Customer> getMBCustomers() {
+        return MBCustomers;
+    }
+
+    public void setMBCustomers(ArrayList<Customer> mbCustomers) {
+        this.MBCustomers = mbCustomers;
+    }
+
+    public ArrayList<Stocks> getmBStockList() {
+        return mBStockList;
+    }
+
+    public void setmBStockList(ArrayList<Stocks> mBStockList) {
+        this.mBStockList = mBStockList;
+    }
+
+
+
+    public Awajima getMarketBizAwajima() {
+        return marketBizAwajima;
+    }
+
+    public void setMarketBizAwajima(Awajima marketBizAwajima) {
+        this.marketBizAwajima = marketBizAwajima;
+    }
+
+    public ArrayList<MarketBusiness> getmBMarketBusinesses() {
+        return mBMarketBusinesses;
+    }
+
+    public void setmBMarketBusinesses(ArrayList<MarketBusiness> mBMarketBusinesses) {
+        this.mBMarketBusinesses = mBMarketBusinesses;
+    }
+
+    public Profile getmBusProfile() {
+        return mBusProfile;
+    }
+
+    public void setmBusProfile(Profile mBusProfile) {
+        this.mBusProfile = mBusProfile;
+    }
+
+    public ArrayList<Profile> getBizProfileList() {
+        return bizProfileList;
+    }
+
+    public void setBizProfileList(ArrayList<Profile> bizProfileList) {
+        this.bizProfileList = bizProfileList;
+    }
+
+    public ArrayList<EmergencyReport> getMarketBizEmergL() {
+        return marketBizEmergL;
+    }
+
+    public void setMarketBizEmergL(ArrayList<EmergencyReport> marketBizEmergL) {
+        this.marketBizEmergL = marketBizEmergL;
+    }
+
+    public Market getBizMarket() {
+        return bizMarket;
+    }
+
+    public void setBizMarket(Market bizMarket) {
+        this.bizMarket = bizMarket;
+    }
+
+    public Set<String> getmBTypes() {
+        return mBTypes;
+    }
+
+    public void setmBTypes(Set<String> mBTypes) {
+        this.mBTypes = mBTypes;
+    }
+
+
 }

@@ -12,20 +12,6 @@
         android:background="@color/white"
         android:id="@+id/layout">
 
-        <com.scwang.wave.MultiWaveHeader
-            android:id="@+id/waveHeader"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_250sdp"
-            android:scaleY="1"
-            app:mwhVelocity="2.5"
-            app:mwhProgress="1"
-            app:mwhIsRunning="true"
-            app:mwhGradientAngle="360"
-            app:mwhWaveHeight="50dp"
-            app:mwhColorAlpha="0.2"
-            app:mwhStartColor="@color/colorPrimaryDark"
-            app:mwhCloseColor="@color/colorPrimaryLight"
-            app:mwhWaves="MultiWave"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:clickable="true"

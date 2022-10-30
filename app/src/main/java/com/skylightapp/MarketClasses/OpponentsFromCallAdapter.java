@@ -81,12 +81,11 @@ public class OpponentsFromCallAdapter extends RecyclerView.Adapter<OpponentsFrom
         userInList.setFullName(user.getFullName());
         notifyItemChanged(position);
     }
-
-
     @Override
     public int getItemCount() {
-        return opponents.size();
+        return (null != opponents ? opponents.size() : 0);
     }
+
 
     public Integer getItem(int position) {
         return opponents.get(position).getId();

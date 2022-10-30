@@ -17,8 +17,6 @@ public class PrivacyPolicy_Web extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*().requestFeature(Window.FEATURE_ACTION_BAR);
-        getActionBar().hide();*/
         setContentView(R.layout.act_privacy_policy);
         mywebView =  findViewById(R.id.webview_privacy_policy);
         mywebView.setWebViewClient(new WebViewClient());
@@ -27,11 +25,9 @@ public class PrivacyPolicy_Web extends AppCompatActivity {
         webViewSettings.setJavaScriptEnabled(true);
         webViewSettings.setPluginState(WebSettings.PluginState.ON);
         mywebView.loadUrl("https://skylightciacs.com/privacy-policy/");
-// Line of Code for opening links in app
         mywebView.setWebViewClient(new WebViewClient());
     }
 
-    //Code For Back Button
     @Override
     public void onBackPressed() {
         if(mywebView.canGoBack())

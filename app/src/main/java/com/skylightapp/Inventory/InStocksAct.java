@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
 import androidx.core.widget.ContentLoadingProgressBar;
@@ -38,22 +39,32 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.blongho.country_data.Currency;
+import com.blongho.country_data.World;
 import com.google.gson.Gson;
 import com.klinker.android.send_message.BroadcastUtils;
+import com.skylightapp.Adapters.CurrAdapter;
+import com.skylightapp.Adapters.OfficeAdapter;
+import com.skylightapp.Admins.TellerReportUpdateAct;
 import com.skylightapp.CameraActivity;
 import com.skylightapp.Classes.AccountTypes;
 import com.skylightapp.Classes.AdminUser;
 import com.skylightapp.Classes.Birthday;
 import com.skylightapp.Classes.Customer;
+import com.skylightapp.Classes.OfficeBranch;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Classes.Utils;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.MarketBizDAO;
+import com.skylightapp.Database.OfficeBranchDAO;
 import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.Database.StocksDAO;
 import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.LoginDirAct;
+import com.skylightapp.MarketClasses.MarketBizArrayAdapter;
+import com.skylightapp.MarketClasses.MarketBusiness;
+import com.skylightapp.MarketClasses.MarketStocksAd;
 import com.skylightapp.R;
 import com.skylightapp.SMSAct;
 import com.twilio.Twilio;
@@ -65,6 +76,7 @@ import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
@@ -85,30 +97,18 @@ public class InStocksAct extends AppCompatActivity {
     AppCompatEditText edtStockPricePU;
     AppCompatEditText edtStockSize;
     AppCompatEditText edtStockQty;
-    String formattedDaysRem;
     protected DatePickerDialog datePickerDialog;
     Random ran;
     SecureRandom random;
-    Context context;
     String stockDate;
-    PreferenceManager preferenceManager;
-    private Bundle bundle;
+
     String uStockType;
-    private ProgressDialog progressDialog;
     int superID;
-    long tellerID;
-    private FirebaseAuth mAuth;
-    FirebaseAuth.AuthStateListener mAuthListner;
-    private ProgressBar loadingPB;
     String superSurname;
     String superFirstName, uStockSize;
     String superPhoneNumber;
     String superEmailAddress;
-    String managerAddress;
     String superUserName;
-    String mLastUpdateTime, selectedGender, selectedOffice, selectedState;
-    Birthday birthday;
-    AppCompatButton dob1;
     String uStockModel, uStockColor, uStockName,stockerName;
     double uStockPricePerUnit;
 
@@ -119,23 +119,17 @@ public class InStocksAct extends AppCompatActivity {
     public static final String ACCOUNT_SID = System.getenv("ACb6e4c829a5792a4b744a3e6bd1cf2b4e");
     public static final String AUTH_TOKEN = System.getenv("0d5cbd54456dd0764786db0c37212578");
 
-    Profile stockManager;
+    Profile stockProfile;
     AppCompatButton btnDoStockProcessing;
-    Location mCurrentLocation = null;
-    String daysRemaining;
-    int daysBTWN;
 
-    String acct;
     SQLiteDatabase sqLiteDatabase;
 
-    AccountTypes accountTypeStr;
+
     ContentLoadingProgressBar progressBar;
     Gson gson,gson1;
-    String json,json1,nIN;
-    Profile userProfile;
-    String pix;
+    String json,json1;
 
-    Long profileID2,comAcctID,profileFId,birthdayFID,acctFID;
+
     SharedPreferences.Editor editor ;
     private static boolean isPersistenceEnabled = false;
     DBHelper applicationDb;
@@ -151,11 +145,28 @@ public class InStocksAct extends AppCompatActivity {
     CircleImageView stocksPix;
     private UserSuperAdmin userSuperAdmin;
     private AdminUser adminUser;
-    int stocksID;
-    private  Spinner spnStockBranch,spnStockPackage;
+    int stocksID,selectedCurrencyIndex,selectedStocksIndex,selectedBizIndex,selectedOfficeIndex;
+    private AppCompatSpinner spnStockBranch,spnStockPackage,spnStockBiz,spnCurencies;
     String todayDate,name;
-    private static final String PREF_NAME = "skylight";
-
+    private static final String PREF_NAME = "awajima";
+    private ArrayList<MarketBusiness> marketBizS;
+    private MarketBusiness marketBusiness;
+    private ArrayList<OfficeBranch> bizOffices;
+    private OfficeBranch officeB;
+    private OfficeAdapter officeBranchAdapter;
+    private Currency currency;
+    private List<Currency> currenyList;
+    private CurrAdapter currencyAdapter;
+    private  StocksArrayAdapter stocksAdapter;
+    private MarketStocksAd marketStocksAd;
+    private MarketBizArrayAdapter mBizAdapter;
+    private  Stocks stocks;
+    private int branchID,profileID;
+    private long bizID;
+    private StocksDAO stockDao;
+    private MarketBizDAO marketBizDao;
+    private OfficeBranchDAO officeBranchDao;
+    private String currencyCode, bizPhoneNo,SharedPrefUserMachine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,19 +176,31 @@ public class InStocksAct extends AppCompatActivity {
         checkInternetConnection();
         btnDoStockProcessing = findViewById(R.id.submitStocks);
         adminUser=new AdminUser();
+        marketBizDao= new MarketBizDAO(this);
         gson1 = new Gson();
         gson = new Gson();
+        officeB= new OfficeBranch();
+        stockProfile= new Profile();
+        World.init(this);
+        stocks= new Stocks();
+        stockDao= new StocksDAO(this);
+        officeBranchDao= new OfficeBranchDAO(this);
         progressBar = findViewById(R.id.progressBarStocks);
         userSuperAdmin =new UserSuperAdmin();
         stocksArrayList = new ArrayList<>();
+        marketBizS=new ArrayList<>();
+        marketBusiness= new MarketBusiness();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
-        stockManager = gson.fromJson(json, Profile.class);
-        json1 = userPreferences.getString("LastSuperProfileUsed", "");
-        userSuperAdmin = gson1.fromJson(json, UserSuperAdmin.class);
+        stockProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastUserSuperAdminUsed", "");
+        userSuperAdmin = gson1.fromJson(json1, UserSuperAdmin.class);
+        SharedPrefUserMachine=userPreferences.getString("machine", "");
+
         ran = new Random();
         random = new SecureRandom();
         dbHelper = new DBHelper(this);
+        currenyList=World.getAllCurrencies();
         stocksPix = findViewById(R.id.image_Stocks);
         picker=(DatePicker)findViewById(R.id.stock_date_);
         edtStockName = findViewById(R.id.StockItemName);
@@ -188,30 +211,138 @@ public class InStocksAct extends AppCompatActivity {
         edtStockPricePU = findViewById(R.id.StockItemPrice);
         edtStockSize = findViewById(R.id.stock_Size);
 
-        stockManager =new Profile();
+        stockProfile =new Profile();
         profiles=new ArrayList<Profile>();
         btnDoStockProcessing.setOnClickListener(this::submitStocks);
         spnStockBranch = findViewById(R.id.StockBranch);
         spnStockPackage = findViewById(R.id.StockPackageName);
+        spnStockBiz = findViewById(R.id.StockBusinessP);
+        spnCurencies = findViewById(R.id.StockItenCurre);
+
+
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
         stocksID = random.nextInt((int) (Math.random() * 101) + 110);
+        if(stockProfile !=null){
+            profileID=stockProfile.getPID();
+            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                sqLiteDatabase = applicationDb.getReadableDatabase();
+                try {
+                    marketBizS=marketBizDao.getAllBusinessesForProfile(profileID);
+                } catch (Exception e) {
+                    System.out.println("Oops!");
+                }
+
+
+            }
+            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                sqLiteDatabase = applicationDb.getReadableDatabase();
+                try {
+                    stocksArrayList=stockDao.getAllStocksForProfile(profileID);
+                } catch (Exception e) {
+                    System.out.println("Oops!");
+                }
+
+
+            }
+
+        }
+        if(SharedPrefUserMachine !=null){
+            if(SharedPrefUserMachine.equalsIgnoreCase("AwajimaSuperAdmin")){
+
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    sqLiteDatabase = applicationDb.getReadableDatabase();
+                    try {
+                        stocksArrayList=stockDao.getALLStocksSuper();
+                    } catch (Exception e) {
+                        System.out.println("Oops!");
+                    }
+
+
+                }
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    sqLiteDatabase = applicationDb.getReadableDatabase();
+                    try {
+                        bizOffices=officeBranchDao.getAllOfficeBranches();
+                    } catch (Exception e) {
+                        System.out.println("Oops!");
+                    }
+
+
+                }
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    sqLiteDatabase = applicationDb.getReadableDatabase();
+                    try {
+                        marketBizS=marketBizDao.getAllBusinesses();
+                    } catch (Exception e) {
+                        System.out.println("Oops!");
+                    }
+
+
+                }
+
+            }
+            if(SharedPrefUserMachine.equalsIgnoreCase("AwajimaAdmin")){
+
+            }
+
+        }
 
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
         todayDate = mdformat.format(calendar.getTime());
 
-        spnStockPackage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedStockPackage = spnStockPackage.getSelectedItem().toString();
-                selectedStockPackage = (String) parent.getSelectedItem();
-                Toast.makeText(InStocksAct.this, "Package: "+ selectedStockPackage,Toast.LENGTH_SHORT).show();
-            }
+        mBizAdapter = new MarketBizArrayAdapter(InStocksAct.this,R.layout.item_market_biz, marketBizS);
+        spnStockBiz.setAdapter(mBizAdapter);
+        spnStockBiz.setSelection(0);
+        selectedBizIndex = spnStockBiz.getSelectedItemPosition();
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        try {
+            marketBusiness = marketBizS.get(selectedBizIndex);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Oops!");
+        }
+        if(marketBusiness !=null){
+            stocksArrayList=marketBusiness.getmBStockList();
+            bizOffices=marketBusiness.getOfficeBranches();
+            bizID=marketBusiness.getBusinessID();
+            bizPhoneNo=marketBusiness.getBizPhoneNo();
+
+        }
+
+        stocksAdapter = new StocksArrayAdapter(InStocksAct.this, R.layout.stock_row2,stocksArrayList);
+        spnStockPackage.setAdapter(stocksAdapter);
+        spnStockPackage.setSelection(0);
+        selectedStocksIndex = spnStockPackage.getSelectedItemPosition();
+
+        try {
+            stocks = stocksArrayList.get(selectedStocksIndex);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Oops!");
+        }
+        if(stocks !=null){
+            selectedStockPackage=stocks.getStockName();
+
+        }
+
+
+
+
+        currencyAdapter = new CurrAdapter(InStocksAct.this,R.layout.list_currency, currenyList);
+        spnCurencies.setAdapter(currencyAdapter);
+        spnCurencies.setSelection(0);
+        selectedCurrencyIndex = spnCurencies.getSelectedItemPosition();
+
+        try {
+            currency = currenyList.get(selectedCurrencyIndex);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Oops!");
+        }
+        if(currency !=null){
+            currencyCode=currency.getCode();
+
+        }
+
+
         if(selectedStockPackage !=null){
             edtStockModel.setVisibility(View.GONE);
             edtStockPricePU.setVisibility(View.GONE);
@@ -228,58 +359,42 @@ public class InStocksAct extends AppCompatActivity {
             edtStockSize.setVisibility(View.VISIBLE);
 
         }
-        spnStockBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedOfficeBranch = spnStockBranch.getSelectedItem().toString();
-                selectedOfficeBranch = (String) parent.getSelectedItem();
-                Toast.makeText(InStocksAct.this, "Stock Office: "+ selectedOfficeBranch,Toast.LENGTH_SHORT).show();
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        if(userSuperAdmin !=null){
-            superSurname = userSuperAdmin.getSSurname();
-            superFirstName = userSuperAdmin.getSFirstName();
-            superID = userSuperAdmin.getSuperID();
-            //profileID1=profileID;
-            superPhoneNumber = userSuperAdmin.getsPhoneNumber();
-            superEmailAddress = userSuperAdmin.getSEmailAddress();
-            superUserName = userSuperAdmin.getSuperUserName();
-            userType = userSuperAdmin.getSAdminRole();
-            userRole = userSuperAdmin.getSAdminRole();
+        officeBranchAdapter = new OfficeAdapter(InStocksAct.this, R.layout.office_row,bizOffices);
+        spnStockBranch.setAdapter(officeBranchAdapter);
+        spnStockBranch.setSelection(0);
+        selectedOfficeIndex = spnStockBranch.getSelectedItemPosition();
 
-        }else {
-            if(stockManager !=null){
-                superSurname = stockManager.getProfileLastName();
-                superFirstName = stockManager.getProfileFirstName();
-                superID = stockManager.getPID();
-                //profileID1=profileID;
-                superPhoneNumber = stockManager.getProfilePhoneNumber();
-                superEmailAddress = stockManager.getProfileEmail();
-                superUserName = stockManager.getProfileUserName();
-                userType = stockManager.getProfileMachine();
-                userRole = stockManager.getProfileRole();
-
-            }
+        try {
+            officeB = bizOffices.get(selectedOfficeIndex);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Oops!");
+        }
+        if(stocks !=null){
+            selectedStockPackage=stocks.getStockName();
 
         }
-        name=superSurname +""+superFirstName;
-
-        if(stockManager !=null){
-            superSurname = stockManager.getProfileLastName();
-            superFirstName = stockManager.getProfileFirstName();
-            superID = stockManager.getPID();
-            //profileID1=profileID;
-            superPhoneNumber = stockManager.getProfilePhoneNumber();
-            superEmailAddress = stockManager.getProfileEmail();
-            superUserName = stockManager.getProfileUserName();
-            userType = stockManager.getProfileMachine();
-            userRole = stockManager.getProfileRole();
+        if(officeB !=null){
+            selectedOfficeBranch=officeB.getOfficeBranchName();
+            branchID=officeB.getOfficeBranchID();
 
         }
+
+        if(stockProfile !=null){
+            superSurname = stockProfile.getProfileLastName();
+            superFirstName = stockProfile.getProfileFirstName();
+            superID = stockProfile.getPID();
+            //profileID1=profileID;
+            superPhoneNumber = stockProfile.getProfilePhoneNumber();
+            superEmailAddress = stockProfile.getProfileEmail();
+            superUserName = stockProfile.getProfileUserName();
+            userType = stockProfile.getProfileMachine();
+            userRole = stockProfile.getProfileRole();
+
+        }
+
+        name=superSurname +","+superFirstName;
+
 
         picker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -299,7 +414,8 @@ public class InStocksAct extends AppCompatActivity {
         }
 
         btnDoStockProcessing.setOnClickListener(view -> {
-            startStockingActivity(selectedOfficeBranch, stockManager,stocksArrayList, stockDate,userSuperAdmin, selectedStockPackage, (int) stocksID);
+
+            startStockingActivity(selectedOfficeBranch, stockProfile,stocksArrayList, stockDate,userSuperAdmin, selectedStockPackage,  stocksID,branchID,currencyCode,bizID,bizPhoneNo);
 
         });
 
@@ -312,15 +428,15 @@ public class InStocksAct extends AppCompatActivity {
 
     }
     public void submitStocks(View view) {
-        startStockingActivity(selectedOfficeBranch, stockManager, stocksArrayList, stockDate,userSuperAdmin, selectedStockPackage, (int) stocksID);
+        startStockingActivity(selectedOfficeBranch, stockProfile, stocksArrayList, stockDate,userSuperAdmin, selectedStockPackage, stocksID, branchID, currencyCode, bizID, bizPhoneNo);
     }
     public void sendTextMessage(String name) {
         Bundle smsBundle = new Bundle();
         String theMessage="New Stocks have been added"+""+"by"+name;
-        smsBundle.putString(PROFILE_PHONE, "234806952459");
-        smsBundle.putString("USER_PHONE", "234806952459");
+        smsBundle.putString(PROFILE_PHONE, bizPhoneNo);
+        smsBundle.putString("USER_PHONE", bizPhoneNo);
         smsBundle.putString("smsMessage", theMessage);
-        smsBundle.putString("to", "234806952459");
+        smsBundle.putString("to", bizPhoneNo);
         Intent otpIntent = new Intent(InStocksAct.this, SMSAct.class);
         otpIntent.putExtras(smsBundle);
         otpIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -330,7 +446,7 @@ public class InStocksAct extends AppCompatActivity {
     }
 
 
-    public void startStockingActivity(String selectedOfficeBranch, Profile stockManager, ArrayList<Stocks> stocksArrayList, String stockDate, UserSuperAdmin userSuperAdmin, String selectedStockPackage, int stocksID) {
+    public void startStockingActivity(String selectedOfficeBranch, Profile stockManager, ArrayList<Stocks> stocksArrayList, String stockDate, UserSuperAdmin userSuperAdmin, String selectedStockPackage, int stocksID, int branchID, String currencyCode, long bizID, String bizPhoneNo) {
         userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
         ran = new Random();
         random = new SecureRandom();

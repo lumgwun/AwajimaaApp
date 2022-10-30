@@ -4,21 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.scwang.wave.MultiWaveHeader
-        android:id="@+id/waveHeader"
-        android:layout_width="match_parent"
-        android:layout_height="225dp"
-        android:scaleY="1"
-        app:mwhCloseColor="@color/white"
-        app:mwhColorAlpha="0.2"
-        app:mwhGradientAngle="360"
-        app:mwhIsRunning="true"
-        app:mwhProgress="1"
-        app:mwhStartColor="@color/colorPrimaryLight2"
-        app:mwhVelocity="2.5"
-        app:mwhWaveHeight="50dp"
-        app:mwhWaves="MultiWave" />
-
     <TextView
         android:id="@+id/no_dialogs_message"
         android:layout_width="wrap_content"

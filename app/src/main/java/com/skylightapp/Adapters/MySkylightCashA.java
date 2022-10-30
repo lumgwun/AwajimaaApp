@@ -105,7 +105,7 @@ public class MySkylightCashA extends RecyclerView.Adapter<MySkylightCashA.Recycl
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         holder.itemView.setLongClickable(true);
         AppCash appCash = this.appCashArrayList.get(position);
-        holder.skylightCashID.setText(MessageFormat.format("Skylight Cash ID:{0}", String.valueOf(appCash.getSkylightCashID())));
+        holder.skylightCashID.setText(MessageFormat.format("Awajima Cash ID:{0}", String.valueOf(appCash.getSkylightCashID())));
         holder.skylightCashDate.setText(MessageFormat.format("Collection date:{0}", appCash.getSkylightCashDate()));
         holder.cashAmount.setText(MessageFormat.format("Amount : NGN{0}", String.format("%.2f", appCash.getSkylightCashAmount())));
         holder.status.setText(MessageFormat.format("Status:{0}", appCash.getSkylightCashStatus()));

@@ -7,7 +7,6 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -17,7 +16,6 @@ import static com.skylightapp.Classes.Account.ACCOUNTS_TABLE;
 import static com.skylightapp.Classes.Account.ACCOUNT_NO;
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
-import static com.skylightapp.Classes.GroupAccount.GRPA_ID;
 import static com.skylightapp.Classes.GroupAccount.GRP_ACCT_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
@@ -35,14 +33,15 @@ public class Transaction implements Parcelable, Serializable {
     public static final String TRANSACTION_PAYEE = "transaction_payee";
     public static final String TRANSACTION_PAYER = "transaction_payer";
     public static final String TRANSACTION_STATUS = "transaction_status";
-    public static final String TRANS_TYPE = "Type";
+    public static final String TRANS_TYPE = "transfer_Type90";
     public static final String TRANSACTIONS_TYPE = "transaction_type";
     public static final String TRANSACTION_AMOUNT = "transaction_amount";
     public static final String TRANSACTION_DATE = "transaction_date";
     //public static final String TABLE_USER_TRANSACTIONS = "users_transactions";
-    public static final String GRP_TRANX_TABLE = "grpTranX";
+    public static final String GRP_TRANX_TABLE = "grpTranX_Table";
     public static final String GRP_TRANX_ID = "grp_tX_id";
-    public static final String GRP_PAYMENT_METHOD = "grp_tX_payment_id";
+    public static final String GRP_TRANX_DB_ID = "grp_tX_DB_id";
+    public static final String GRP_PAYMENT_METHOD = "grp_tX_payment_method";
     public static final String TRANSACTION_OFFICE_BRANCH = "transaction_office_branch";
     public static final String TRANSACTION_APPROVER = "transaction_approver";
     public static final String TRANSACTION_APPROVAL_DATE = "transaction_approval_Date";
@@ -51,17 +50,30 @@ public class Transaction implements Parcelable, Serializable {
     public static final String GRP_TRANX_PROF_ID = "grp_tX_Prof_ID";
     public static final String TRANSACTION_CUS_ID = "transaction_Cus_ID";
     public static final String TRANSACTION_ACCT_ID = "transaction_Acct_ID";
+    public static final String TRANSACTION_BIZ_ID = "transaction_Biz_ID";
+    public static final String TRANSACTION_MARKET_ID = "transaction_Market_ID";
+    public static final String TRANSACTION_DB_ID = "transaction_DB_ID";
+
+    public static final String GRP_TRANX_TYPE = "grp_tX_Type";
+    public static final String GRP_TRANX_AMT = "grp_tX_AMT";
+    public static final String GRP_TRANX_DATE = "grp_tX_Date";
+    public static final String GRP_TRANX_SENDING_ACCT = "grp_tX_Sender_Acct";
+    public static final String GRP_TRANX_RECEIVING_ACCT = "grp_tX_Receiving_Acct";
+    public static final String GRP_TRANX_STATUS = "grp_tX_Status";
+    public static final String GRP_TRANX_ACCT_ID = "grp_tX_Acct_id";
 
 
     public static final String CREATE_TRANSACTIONS_TABLE = "CREATE TABLE IF NOT EXISTS " + TRANSACTIONS_TABLE + " (" + TRANSACTION_ID + " INTEGER, " + TRANSACTION_PROF_ID + " INTEGER , " +
             TRANSACTION_CUS_ID + " INTEGER , " + TRANSACTION_ACCT_ID + " INTEGER , " + TRANSACTION_DATE + " TEXT, " + TRANSACTION_SENDING_ACCT + " TEXT, " +
             TRANSACTION_DEST_ACCT + " TEXT, " + TRANSACTION_PAYEE + " TEXT, " + TRANSACTION_PAYER + " TEXT, " + TRANSACTION_AMOUNT + " REAL, " +
-            TRANSACTIONS_TYPE + " TEXT, " + TRANSACTION_METHOD_OF_PAYMENT + " TEXT, " + TRANSACTION_OFFICE_BRANCH + " TEXT, "+ TRANSACTION_APPROVER + " TEXT, " +TRANSACTION_APPROVAL_DATE + " TEXT, "+  TRANSACTION_STATUS + " TEXT, " + "PRIMARY KEY(" +TRANSACTION_ID + "), " +"FOREIGN KEY(" + TRANSACTION_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + TRANSACTION_ACCT_ID  + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," +"FOREIGN KEY(" + TRANSACTION_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+            TRANSACTIONS_TYPE + " TEXT, " + TRANSACTION_METHOD_OF_PAYMENT + " TEXT, " + TRANSACTION_OFFICE_BRANCH + " TEXT, "+ TRANSACTION_APPROVER + " TEXT, " +TRANSACTION_APPROVAL_DATE + " TEXT, "+  TRANSACTION_STATUS + " TEXT, " + TRANSACTION_BIZ_ID + " INTEGER, " + TRANSACTION_MARKET_ID + " INTEGER, " + TRANSACTION_DB_ID + " INTEGER, " + "PRIMARY KEY(" +TRANSACTION_DB_ID + "), " +"FOREIGN KEY(" + TRANSACTION_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + TRANSACTION_ACCT_ID  + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," +"FOREIGN KEY(" + TRANSACTION_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
     
 
     public static final String CREATE_GRP_TX_TABLE = "CREATE TABLE IF NOT EXISTS " + GRP_TRANX_TABLE + " (" + GRP_TRANX_ID + " INTEGER, " + GRP_TRANX_PROF_ID + " INTEGER , " +
-            GRPA_ID + " INTEGER NOT NULL, " + TRANS_TYPE + " TEXT, " + TRANSACTION_AMOUNT + " REAL, " + TRANSACTION_DATE + " TEXT, " + GRP_PAYMENT_METHOD + " TEXT, " + TRANSACTION_SENDING_ACCT + " REAL, " +
-            TRANSACTION_DEST_ACCT + " INTEGER, " + TRANSACTION_STATUS + " TEXT, " + "PRIMARY KEY(" +GRP_TRANX_ID + "), " +"FOREIGN KEY(" + GRP_TRANX_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + GRPA_ID + ") REFERENCES " + GRP_ACCT_TABLE + "(" + GRPA_ID + "))";
+            GRP_TRANX_ACCT_ID + " INTEGER NOT NULL, " + GRP_TRANX_TYPE + " TEXT, " + GRP_TRANX_AMT + " REAL, " + GRP_TRANX_DATE + " TEXT, " + GRP_PAYMENT_METHOD + " TEXT, " + GRP_TRANX_SENDING_ACCT + " REAL, " +
+            GRP_TRANX_RECEIVING_ACCT + " INTEGER, " + GRP_TRANX_STATUS + " TEXT, "+ GRP_TRANX_DB_ID + " TEXT, " + "PRIMARY KEY(" +GRP_TRANX_DB_ID + "), " +"FOREIGN KEY(" + GRP_TRANX_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + GRP_TRANX_ACCT_ID + ") REFERENCES " + GRP_ACCT_TABLE + "(" + GRP_TRANX_ACCT_ID + "))";
+
+
     private String tranxPayer;
     private String tranxBankAcct;
     private String tranxBankAccName;
@@ -69,6 +81,61 @@ public class Transaction implements Parcelable, Serializable {
     private CustomerDailyReport tranxCusDailyReport;
     private int tranxProfID;
     private int tranxRecordID;
+    private String tranxExtraInfo;
+
+    public Transaction(double totalBundleString) {
+        this.tranxAmount = totalBundleString;
+
+    }
+
+    public int getTranxBizID() {
+        return tranxBizID;
+    }
+
+    public void setTranxBizID(int tranxBizID) {
+        this.tranxBizID = tranxBizID;
+    }
+
+    public int getTranxMarketID() {
+        return tranxMarketID;
+    }
+
+    public void setTranxMarketID(int tranxMarketID) {
+        this.tranxMarketID = tranxMarketID;
+    }
+
+
+    public enum TRANSACTION_TYPE {
+        PAYMENT, TRANSFER, DEPOSIT,MANUAL_WITHDRAWAL, SAVINGS,LOAN,STANDING_ORDER,
+        REFERRALS,BORROWING,GROUP_SAVINGS_DEPOSIT,GROUP_SAVINGS_WITHDRAWAL,WITHDRAWALTX,PROMO,ITEM_PURCHASE,
+        RETURNS, INVESTMENT,APP_SUBSCRIPTION,INSURANCE,BIZ_DEAL,SESSION_PAYMENT,DONATION,BUSINESS_SUPPORT;
+    }
+    @SuppressLint("SimpleDateFormat")
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd - hh:mm a");
+
+    //@PrimaryKey(autoGenerate = true)
+    private int transactionID=10101;
+    //private String timestamp;
+    private int tranxSendingAcct;
+    private String tranxBranchOffice;
+    private String tranxApprover;
+    private String tranxApprovalDate;
+    private int tranxDestAcct;
+    private String tranxPayee;
+    private double tranxAmount;
+    private TRANSACTION_TYPE tranXType;
+
+    int tranxCusID;
+    int tranxAcctId;
+    String tranxDate;
+    Currency tranxCurrency;
+    int transferId;
+    String tranxReceiptId;
+    String transactionId;
+    String tranxStatus;
+    String tranxMethodOfPay;
+    private int tranxBizID;
+    private int tranxMarketID;
 
 
     public Transaction(int transactionID, Double amountOfGS, String names, String type, String tranxMethodOfPay, String tranxDate, String tranxStatus) {
@@ -185,10 +252,6 @@ public class Transaction implements Parcelable, Serializable {
 
     }
 
-    public Transaction(double totalBundleString) {
-        this.tranxAmount = totalBundleString;
-
-    }
 
     public Transaction() {
         super();
@@ -252,39 +315,18 @@ public class Transaction implements Parcelable, Serializable {
     public void setTranxRecordID(int tranxRecordID) {
         this.tranxRecordID = tranxRecordID;
     }
+
+    public String getTranxExtraInfo() {
+        return tranxExtraInfo;
+    }
+
+    public void setTranxExtraInfo(String tranxExtraInfo) {
+        this.tranxExtraInfo = tranxExtraInfo;
+    }
            /*
             "FOREIGN KEY(" + ACCOUNT_NO + ") REFERENCES " + ACCOUNTS_TABLE + "("+ ACCOUNT_NO + ")," + */
 
 
-    public enum TRANSACTION_TYPE {
-        PAYMENT, TRANSFER, DEPOSIT,MANUAL_WITHDRAWAL, SAVINGS,LOAN,STANDING_ORDER,
-        REFERRALS,BORROWING,GROUP_SAVINGS_DEPOSIT,GROUP_SAVINGS_WITHDRAWAL,WITHDRAWALTX,PROMO,ITEM_PURCHASE,
-        RETURNS, IVESTMENT;
-    }
-    @SuppressLint("SimpleDateFormat")
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd - hh:mm a");
-
-    @PrimaryKey(autoGenerate = true)
-    private int transactionID=10101;
-    //private String timestamp;
-    private int tranxSendingAcct;
-    private String tranxBranchOffice;
-    private String tranxApprover;
-    private String tranxApprovalDate;
-    private int tranxDestAcct;
-    private String tranxPayee;
-    private double tranxAmount;
-    private TRANSACTION_TYPE tranXType;
-
-    int tranxCusID;
-    int tranxAcctId;
-    String tranxDate;
-    Currency tranxCurrency;
-    int transferId;
-    String tranxReceiptId;
-    String transactionId;
-    String tranxStatus;
-    String tranxMethodOfPay;
 
 
     public void setTransactionStatus(String status) {
@@ -444,11 +486,11 @@ public class Transaction implements Parcelable, Serializable {
         this.tranxAcctId = tranxAcctId;
     }
 
-    public Double getRecordAmount() {
+    public Double getTranxAmount() {
         return tranxAmount;
     }
 
-    public void setRecordAmount(double recordAmount) {
+    public void setTranxAmount(double recordAmount) {
         this.tranxAmount = recordAmount;
     }
 

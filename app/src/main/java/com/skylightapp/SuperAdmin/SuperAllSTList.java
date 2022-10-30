@@ -17,6 +17,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -41,6 +42,7 @@ import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.GrpProfileDAO;
 import com.skylightapp.Database.LoanDAO;
+import com.skylightapp.Database.MarketBizDAO;
 import com.skylightapp.Database.MessageDAO;
 import com.skylightapp.Database.OfficeBranchDAO;
 import com.skylightapp.Database.PaymDocDAO;
@@ -57,6 +59,8 @@ import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.Database.WorkersDAO;
 import com.skylightapp.Inventory.StockTransfer;
 import com.skylightapp.Inventory.StockTransferAdapter;
+import com.skylightapp.MarketClasses.MarketBizArrayAdapter;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
 
 import java.text.SimpleDateFormat;
@@ -134,7 +138,7 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
     Gson gson,gson2;
     String json,json2;
     Profile userProfile;
-    private  Skylight skylight;
+    private Awajima awajima;
     PreferenceManager preferenceManager;
     SharedPreferences userPreferences;
     private SODAO sodao;
@@ -158,6 +162,18 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
     private WorkersDAO workersDAO;
     private StockTransferDAO stockTransferDAO;
     private OfficeBranchDAO officeBranchDAO;
+    String from,to,bizPhoneNo,json1,userRole,bizName;
+    private long bizID;
+    Gson gson3;
+    String json3;
+
+    private SQLiteDatabase sqLiteDatabase;
+    private static final String PREF_NAME = "skylight";
+    private MarketBusiness marketBiz;
+    private MarketBizArrayAdapter mBizAdapter;
+    private  ArrayList<MarketBusiness> marketBusinessList;
+    private  ArrayList<MarketBusiness> marketBizOld;
+    private MarketBizDAO marketBizDAO;
 
     LinearLayout layoutCustomDate, layoutFromTeller, layoutAllST, layoutSkylightTittle, layoutToCustomers, layoutFromBranch;
     CardView dateCard, cardTellerBtn, allTCCard, cardLayoutSkylight, cardLayoutToCus, cardBtnToCus, cardBtnSkyLayout, dateCardBtn, cardLayoutBtnBranch, cardLayoutFromBranch, cardTellerLayout;
@@ -168,11 +184,12 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_super_all_stlist);
         datePicker = findViewById(R.id.stocksT_datePicker);
-        skylight= new Skylight();
+        awajima = new Awajima();
         gson = new Gson();
         gson2 = new Gson();
+        gson3= new Gson();
         officeBranchDAO= new OfficeBranchDAO(this);
-        workersDAO= new WorkersDAO(this);
+
         stockTransferDAO= new StockTransferDAO(this);
         stocksDAO= new StocksDAO(this);
         cusDAO= new CusDAO(this);
@@ -185,6 +202,7 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
         adminBalanceDAO= new AdminBalanceDAO(this);
         timeLineClassDAO= new TimeLineClassDAO(this);
         grpProfileDAO= new GrpProfileDAO(this);
+        marketBiz= new MarketBusiness();
 
         sodao= new SODAO(this);
         tranXDAO= new TranXDAO(this);
@@ -195,11 +213,15 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
         codeDAO= new CodeDAO(this);
         acctDAO= new AcctDAO(this);
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String todayDate = sdf.format(calendar.getTime());
-        userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
-        json = userPreferences.getString("LastProfileUsed", "");
-        skylight = gson.fromJson(json, Skylight.class);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        userRole = userPreferences.getString("machine", "");
+
+        json2 = userPreferences.getString("LastMarketBusinessUsed", "");
+        marketBiz = gson2.fromJson(json2, MarketBusiness.class);
+        json = userPreferences.getString("LastAwajimaUsed", "");
+        awajima = gson.fromJson(json, Awajima.class);
 
         datePicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -239,7 +261,7 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
                 arrayListAllST=stockTransferDAO.getAllStocksTransfers();
                 //arrayListAllSTWithDate=dbHelper.getStocksTransferWithDate(dateOfST);
                 branchSTArrayList=stockTransferDAO.getStocksTransferFromBranch("Branch");
-                skylightSTArrayList=stockTransferDAO.getStocksTransferFromSkylight("Skylight");
+                skylightSTArrayList=stockTransferDAO.getStocksTransferFromSkylight("Awajima");
                 sTCustomDateArrayList=stockTransferDAO.getStocksTransferAtDate(dateOfST);
                 toCustomerArrayList=stockTransferDAO.getStocksToCustomer("Customer");
                 todaySTAmount =dbHelper.getAllSkylightCashCountForDate(todayDate);
@@ -532,56 +554,28 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
             System.out.println("Oops!");
         }
 
+        officeAdapter = new OfficeAdapter(SuperAllSTList.this, officeBranchArrayList);
+        spnBranch.setAdapter(officeAdapter);
+        spnBranch.setSelection(0);
 
-
-
-
-        try {
-            if(officeBranchArrayList.size()==0){
-                spnBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        selectedOffice = spnBranch.getSelectedItem().toString();
-                        selectedOffice = (String) parent.getSelectedItem();
-                        Toast.makeText(SuperAllSTList.this, "Office Branch Selected: " + selectedOffice, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });
-
-
-            }else if(officeBranchArrayList.size()>0){
-                    officeAdapter = new OfficeAdapter(SuperAllSTList.this, officeBranchArrayList);
-                    spnBranch.setAdapter(officeAdapter);
-                    spnBranch.setSelection(0);
-
-                    spnBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            selectedBranch = (OfficeBranch) parent.getSelectedItem();
-
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-                        }
-                    });
-                    if(selectedBranch !=null){
-                        selectedOffice=selectedBranch.getOfficeBranchName();
-                    }
-
-
+        spnBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedBranch = (OfficeBranch) parent.getSelectedItem();
 
             }
-        } catch (NullPointerException e) {
-            System.out.println("Oops!");
-        }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
         if(selectedBranch !=null){
             selectedOffice=selectedBranch.getOfficeBranchName();
         }
+        if(selectedBranch !=null){
+            selectedOffice=selectedBranch.getOfficeBranchName();
+        }
+
 
         try {
 
@@ -731,6 +725,7 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
         SnapHelper snapHelperT = new PagerSnapHelper();
         snapHelperT.attachToRecyclerView(recyclerViewAll);
 
+
     }
     private void chooseDate(String dateOfST) {
         dateOfST = datePicker.getDayOfMonth()+"/"+ (datePicker.getMonth() + 1)+"/"+ datePicker.getYear();
@@ -858,3 +853,4 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
     public void getSkylightST(View view) {
     }
 }
+

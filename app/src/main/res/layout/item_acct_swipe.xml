@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/gs_l"
+    android:layout_height="match_parent"
+    android:background="?android:attr/activatedBackgroundIndicator">
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="50dp"
+        android:id="@+id/card_l1"
+        app:cardBackgroundColor="#f3f5f7"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/id_l1"
+            android:padding="20dp"
+            android:orientation="vertical"
+            android:background="@drawable/rect_their_black"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/img_acct_g"
+                    android:layout_width="58dp"
+                    android:layout_height="55dp"
+                    android:layout_gravity="center_horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_notification_icon"
+                    android:contentDescription="Announcement" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:text=" Tittle"
+                    android:id="@+id/gtittle"
+                    android:layout_marginEnd="20dp"
+                    android:padding="15dp"
+                    android:typeface="serif"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:gravity="center_horizontal"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="20dp"
+                    android:textColor="@color/black"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:text=" Amount"
+                android:id="@+id/gAmt"
+                android:layout_marginEnd="20dp"
+                android:textStyle="bold"
+                android:gravity="start"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/red_brown_dark"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:text=" Duration"
+                android:id="@+id/duration_ga"
+                android:layout_marginEnd="20dp"
+                android:textStyle="bold"
+                android:gravity="start"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/red_brown_dark"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:text=" Duration Rem"
+                android:id="@+id/rem_duration"
+                android:layout_marginEnd="20dp"
+                android:textStyle="bold"
+                android:gravity="start"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/red_brown_dark"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:text=" Amount so Far"
+                android:id="@+id/amt_so_far"
+                android:layout_marginEnd="20dp"
+                android:textStyle="bold"
+                android:gravity="start"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/red_brown_dark"
+                android:layout_height="wrap_content"/>
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:text=" End Date"
+                android:id="@+id/end_Date_ga"
+                android:layout_marginEnd="20dp"
+                android:textStyle="bold"
+                android:gravity="start"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/red_brown_dark"
+                android:layout_height="wrap_content"/>
+
+
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

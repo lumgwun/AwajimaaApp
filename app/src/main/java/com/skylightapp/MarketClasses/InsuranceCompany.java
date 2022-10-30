@@ -3,7 +3,11 @@ package com.skylightapp.MarketClasses;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.skylightapp.Classes.Customer;
+import com.skylightapp.Classes.Transaction;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class InsuranceCompany implements Serializable, Parcelable {
     private int insComID;
@@ -13,6 +17,9 @@ public class InsuranceCompany implements Serializable, Parcelable {
     private String insComPhoneNO;
     private String insComRegYear;
     private String insComStatus;
+    private ArrayList<Customer> insCustomers;
+    private ArrayList<MarketTranx> marketTranx;
+    private ArrayList<Transaction> transactions;
 
     public InsuranceCompany () {
         super();
@@ -111,5 +118,41 @@ public class InsuranceCompany implements Serializable, Parcelable {
         parcel.writeString(insComPhoneNO);
         parcel.writeString(insComRegYear);
         parcel.writeString(insComStatus);
+    }
+
+    public ArrayList<Customer> getInsCustomers() {
+        return insCustomers;
+    }
+
+    public void setInsCustomers(ArrayList<Customer> insCustomers) {
+        this.insCustomers = insCustomers;
+    }
+    public void addInsCustomer(Customer customer) {
+        insCustomers = new ArrayList<>();
+        insCustomers.add(customer);
+    }
+    public void addMarketTranx(MarketTranx m) {
+        marketTranx = new ArrayList<>();
+        marketTranx.add(m);
+    }
+    public void addTransaction(Transaction m) {
+        transactions = new ArrayList<>();
+        transactions.add(m);
+    }
+
+    public ArrayList<MarketTranx> getMarketTranx() {
+        return marketTranx;
+    }
+
+    public void setMarketTranx(ArrayList<MarketTranx> marketTranx) {
+        this.marketTranx = marketTranx;
+    }
+
+    public ArrayList<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(ArrayList<Transaction> transactions) {
+        this.transactions = transactions;
     }
 }

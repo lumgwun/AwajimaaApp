@@ -1,7 +1,7 @@
 package com.skylightapp.Interfaces;
 
-import com.skylightapp.Classes.EmergReportNext;
-import com.skylightapp.Classes.EmergencyReport;
+import com.skylightapp.MapAndLoc.EmergReportNext;
+import com.skylightapp.MapAndLoc.EmergencyReport;
 import com.skylightapp.MarketClasses.BizLoan;
 import com.skylightapp.MarketClasses.Market;
 import com.skylightapp.MarketClasses.MarketAdmin;
@@ -14,7 +14,7 @@ import com.skylightapp.MarketClasses.MarketCustomer;
 import com.skylightapp.MarketClasses.MarketDays;
 import com.skylightapp.MarketClasses.MarketInventory;
 import com.skylightapp.MarketClasses.MarketStock;
-import com.skylightapp.Markets.MarketTranx;
+import com.skylightapp.MarketClasses.MarketTranx;
 
 import java.util.ArrayList;
 

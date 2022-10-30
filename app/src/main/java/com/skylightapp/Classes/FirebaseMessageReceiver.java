@@ -29,7 +29,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
-                .setContentTitle("Skylight cloud messaging")
+                .setContentTitle("Awajima cloud messaging")
                 .setContentText(msg)
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

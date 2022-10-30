@@ -13,14 +13,10 @@
         android:id="@+id/productLayout"
         android:background="@drawable/shape_rect14"
         android:layout_height="wrap_content">
-        <ImageView
+        <com.denzcoskun.imageslider.ImageSlider
             android:id="@+id/iv_auto_image_slider"
-            android:layout_centerInParent="true"
             android:layout_width="400dp"
-            android:layout_height="310dp"
-            android:layout_centerHorizontal="true"
-            android:contentDescription="@string/app_name"
-            android:scaleType="fitXY" />
+            android:layout_height="310dp" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

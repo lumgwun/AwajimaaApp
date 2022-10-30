@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import static com.skylightapp.Classes.Customer.CUSTOMER_ADDRESS;
+import static com.skylightapp.Classes.Customer.CUSTOMER_BIZ_STATUS;
 import static com.skylightapp.Classes.Customer.CUSTOMER_DATE_JOINED;
 import static com.skylightapp.Classes.Customer.CUSTOMER_EMAIL_ADDRESS;
 import static com.skylightapp.Classes.Customer.CUSTOMER_FIRST_NAME;
@@ -28,6 +29,7 @@ import static com.skylightapp.Classes.Customer.CUSTOMER_OFFICE;
 import static com.skylightapp.Classes.Customer.CUSTOMER_PASSWORD;
 import static com.skylightapp.Classes.Customer.CUSTOMER_PHONE_NUMBER;
 import static com.skylightapp.Classes.Customer.CUSTOMER_PROF_ID;
+import static com.skylightapp.Classes.Customer.CUSTOMER_ROLE;
 import static com.skylightapp.Classes.Customer.CUSTOMER_STATUS;
 import static com.skylightapp.Classes.Customer.CUSTOMER_SURNAME;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
@@ -71,6 +73,52 @@ public class CusDAO extends DBHelperDAO{
 
         String selection = CUSTOMER_PROF_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(profileID)};
+
+        Cursor cursor = db.query(CUSTOMER_TABLE, null,  selection, selectionArgs, null, null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getCustomerFromCursor(customerArrayList, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+        db.close();
+
+        cursor.close();
+
+        return customerArrayList;
+    }
+    public ArrayList<Customer> getAwajimaCus_RB(String awajima,String bizStatus) {
+        ArrayList<Customer> customerArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String selection = CUSTOMER_ROLE + "=? AND " + CUSTOMER_BIZ_STATUS + "=?";
+        String[] selectionArgs = new String[]{valueOf(awajima), valueOf(bizStatus)};
+
+        Cursor cursor = db.query(CUSTOMER_TABLE, null,  selection, selectionArgs, null, null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getCustomerFromCursor(customerArrayList, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+        db.close();
+
+        cursor.close();
+
+        return customerArrayList;
+    }
+    public ArrayList<Customer> getAwajimaCusRole(String awajima) {
+        ArrayList<Customer> customerArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String selection = CUSTOMER_ROLE + "=?";
+        String[] selectionArgs = new String[]{valueOf(awajima)};
 
         Cursor cursor = db.query(CUSTOMER_TABLE, null,  selection, selectionArgs, null, null, null);
         if(cursor!=null && cursor.getCount() > 0) {
@@ -1147,13 +1195,25 @@ public class CusDAO extends DBHelperDAO{
 
 
     public ArrayList<Customer> getCusForBiz(long bizID) {
-        Customer customer = new Customer();
+
         ArrayList<Customer> customers = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         String[] columns = {CUSTOMER_SURNAME,CUSTOMER_FIRST_NAME,CUSTOMER_OFFICE,CUSTOMER_ID,CUSTOMER_DATE_JOINED,CUS_BIZ_ID1};
         String selection = CUS_BIZ_ID1 + "=?";
         String[] selectionArgs = new String[]{String.valueOf(bizID)};
         Cursor cursor = db.query(CUSTOMER_TABLE, columns, selection, selectionArgs, null, null, null);
+        getCustomerFromCursor(customers, cursor);
+        cursor.close();
+        db.close();
+        return customers;
+    }
+
+    public ArrayList<Customer> getAllCustomerSpinner(long bizID) {
+        ArrayList<Customer> customers = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = CUS_BIZ_ID1 + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(bizID)};
+        Cursor cursor = db.query(CUSTOMER_TABLE, null, selection, selectionArgs, null, null, null);
         getCustomerFromCursor(customers, cursor);
         cursor.close();
         db.close();

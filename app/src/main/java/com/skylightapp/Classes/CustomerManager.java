@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_ID;
+import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
@@ -65,10 +67,10 @@ public class CustomerManager  implements Parcelable, Serializable , BaseColumns 
     public static final String CUSTOMER_TELLER_PROF_ID = "teller_Prof_ID";
     public static final String CUSTOMER_TELLER_BIZ_ID = "teller_BIZ_ID";
     public static final String CUSTOMER_TELLER_DB_ID = "teller_DB_ID";
+    public static final String CUSTOMER_TELLER_MARKET_ID = "teller_Market_ID";
 
     //@Ignore
     public static final String WORKER_TELLER_PROF_ID = "worker_Prof_ID";
-
 
     //@Ignore
     public static final String CUSTOMER_TELLER_TABLE = "tellers_table";
@@ -79,16 +81,18 @@ public class CustomerManager  implements Parcelable, Serializable , BaseColumns 
     //@Ignore
     public static final String WORKER_ID = "worker_id";
     public static final String WORKER_DB_ID = "worker_DB_id";
+    public static final String WORKER_BIZ_ID = "worker_Biz_id";
+    public static final String WORKER_BIZ_BRANCH_ID = "worker_Branch_id";
     //@Ignore
 
     public static final String CREATE_WORKERS_TABLE = "CREATE TABLE IF NOT EXISTS " + WORKER_TABLE + " ( " + WORKER_ID + " INTEGER ,  " + WORKER + " TEXT  , "+ WORKER_DB_ID + " TEXT, " +
-            WORKER_TELLER_PROF_ID + " INTEGER, " + "FOREIGN KEY(" + WORKER_TELLER_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + WORKER_DB_ID  + "))";
+            WORKER_TELLER_PROF_ID + " INTEGER, " + WORKER_BIZ_ID + " INTEGER,"+ WORKER_BIZ_BRANCH_ID + " INTEGER," + "FOREIGN KEY(" + WORKER_BIZ_BRANCH_ID + ") REFERENCES " + OFFICE_BRANCH_TABLE + "(" + OFFICE_BRANCH_ID + "),"+  "FOREIGN KEY(" + WORKER_TELLER_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + WORKER_DB_ID  + "))";
 
     //@Ignore
     public static final String CREATE_CUSTOMERS_TELLER_TABLE = "CREATE TABLE IF NOT EXISTS " + CUSTOMER_TELLER_TABLE + " ( " + CUSTOMER_TELLER_ID + " INTEGER   ,  " + CUSTOMER_TELLER_PROF_ID + " INTEGER  , " +
             CUSTOMER_TELLER_SURNAME + " TEXT, " + CUSTOMER_TELLER_FIRST_NAME + " TEXT, " + CUSTOMER_TELLER_PHONE_NUMBER + " TEXT, " + CUSTOMER_TELLER_EMAIL_ADDRESS + " TEXT, " + CUSTOMER_TELLER_USER_NAME + " TEXT, " +
             CUSTOMER_TELLER_DOB + " TEXT, " + CUSTOMER_TELLER_GENDER + " TEXT, " + CUSTOMER_TELLER_ADDRESS + " TEXT, " + CUSTOMER_TELLER_OFFICE + " TEXT, " + CUSTOMER_TELLER_DATE_JOINED + " TEXT, " +
-            CUSTOMER_TELLER_PASSWORD + " TEXT, " + CUSTOMER_TELLER_NIN + " TEXT," + CUSTOMER_TELLER_PIX + " TEXT," + CUSTOMER_TELLER_STATUS + " TEXT, "+ CUSTOMER_TELLER_BIZ_ID + " TEXT, "+ CUSTOMER_TELLER_DB_ID + " TEXT, " + "FOREIGN KEY(" + CUSTOMER_TELLER_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + CUSTOMER_TELLER_DB_ID  + "))";
+            CUSTOMER_TELLER_PASSWORD + " TEXT, " + CUSTOMER_TELLER_NIN + " TEXT," + CUSTOMER_TELLER_PIX + " TEXT," + CUSTOMER_TELLER_STATUS + " TEXT, "+ CUSTOMER_TELLER_BIZ_ID + " TEXT, "+ CUSTOMER_TELLER_DB_ID + " TEXT, "+ CUSTOMER_TELLER_MARKET_ID + " TEXT," + "FOREIGN KEY(" + CUSTOMER_TELLER_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + CUSTOMER_TELLER_DB_ID  + "))";
     //@Ignore
     private static final long serialVersionUID = 8924708152697574031L;
     @SuppressLint("SimpleDateFormat")
@@ -138,6 +142,7 @@ public class CustomerManager  implements Parcelable, Serializable , BaseColumns 
     private Uri tPhoto;
     private int tellerProfileID;
     private long tellerMarketBizID;
+    private int tellerProfMarketID;
     private String TGender;
     private ArrayList<Long> tellerMarketBizIDs;
     private MarketBusiness tellerMarketBiz;
@@ -316,15 +321,15 @@ public class CustomerManager  implements Parcelable, Serializable , BaseColumns 
         transactions = in.createTypedArrayList(Transaction.CREATOR);
     }
 
-    public static final Creator<Customer> CREATOR = new Creator<Customer>() {
+    public static final Creator<CustomerManager> CREATOR = new Creator<CustomerManager>() {
         @Override
-        public Customer createFromParcel(Parcel in) {
-            return new Customer(in);
+        public CustomerManager createFromParcel(Parcel in) {
+            return new CustomerManager(in);
         }
 
         @Override
-        public Customer[] newArray(int size) {
-            return new Customer[size];
+        public CustomerManager[] newArray(int size) {
+            return new CustomerManager[size];
         }
     };
 
@@ -634,6 +639,14 @@ public class CustomerManager  implements Parcelable, Serializable , BaseColumns 
         this.tellerMarketBizIDs = tellerMarketBizIDs;
     }
 
+    public int getTellerProfMarketID() {
+        return tellerProfMarketID;
+    }
+
+    public void setTellerProfMarketID(int tellerProfMarketID) {
+        this.tellerProfMarketID = tellerProfMarketID;
+    }
+
 
     public static class CustomerItem {
         public final String id;
@@ -652,28 +665,35 @@ public class CustomerManager  implements Parcelable, Serializable , BaseColumns 
             return content;
         }
     }
-    @Ignore
+
     public void addTellerReport(int dbaseID, int reportID, String date, double balance, String status) {
         ArrayList<TellerReport> tellerReports = null;
         reportID = tellerReportArrayList.size() + 1;
         TellerReport dailyReport = new TellerReport(reportID, dbaseID,date,balance,status);
         tellerReportArrayList.add(dailyReport);
     }
-    @Ignore
-    public void addTellerReport(int keyExtraReportId, String officeBranch, double amountEntered, int noOfCustomers, String reportDate) {
+
+
+    public void addTellerReport(int keyExtraReportId, String bizName,String officeBranch, double amountEntered, int noOfCustomers, String reportDate) {
         ArrayList<TellerReport> tellerReports = null;
         keyExtraReportId = tellerReportArrayList.size() + 1;
-        TellerReport dailyReport = new TellerReport(keyExtraReportId, officeBranch,amountEntered,noOfCustomers,reportDate);
+        TellerReport dailyReport = new TellerReport(keyExtraReportId, bizName, officeBranch,amountEntered,noOfCustomers,reportDate);
         tellerReportArrayList.add(dailyReport);
     }
-    @Ignore
+    public void addTellerReport(int keyExtraReportId, long bizId,String officeBranch, double amountEntered, int noOfCustomers, String reportDate) {
+        ArrayList<TellerReport> tellerReports = null;
+        keyExtraReportId = tellerReportArrayList.size() + 1;
+        TellerReport dailyReport = new TellerReport(keyExtraReportId, bizId, officeBranch,amountEntered,noOfCustomers,reportDate);
+        tellerReportArrayList.add(dailyReport);
+    }
+
 
     public void addReport(int count,int customerID,String customerName,int packageID, int reportID, double savingsAmount, int numberOfDays, double totalAmountSum, int daysRemaining, double amountRemaining, String reportDate, String status) {
         count = dailyReports.size() + 1;
         CustomerDailyReport dailyReport = new CustomerDailyReport( count,customerID,customerName,packageID, reportID, savingsAmount, numberOfDays, totalAmountSum, daysRemaining, amountRemaining,  reportDate, status);
         dailyReports.add(dailyReport);
     }
-    @Ignore
+
 
     public void addCustomer(int count,int customerID,String customerName,String customerPhoneNo, String dateJoined, String customerStatus) {
         count = customerArrayList.size() + 1;

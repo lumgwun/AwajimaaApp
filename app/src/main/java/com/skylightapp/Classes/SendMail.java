@@ -48,7 +48,7 @@ public class SendMail extends AsyncTask {
         try {
             MimeMessage mm = new MimeMessage(session);
             //DataHandler handler = new DataHandler(new ByteArrayDataSource(body.getBytes(), "text/plain"));
-            mm.setFrom(new InternetAddress("Skylight Coop."));
+            mm.setFrom(new InternetAddress("Awajima Coop."));
             //mm.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
             mm.setSubject(subject);
             mm.setText(message);

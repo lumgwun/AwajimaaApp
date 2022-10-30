@@ -9,6 +9,11 @@ import java.io.Serializable;
 import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_ID;
 import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
+import static com.skylightapp.Classes.Profile.PROFILE_ID;
+import static com.skylightapp.MarketClasses.Market.MARKET_ID;
+import static com.skylightapp.MarketClasses.Market.MARKET_TABLE;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_ID;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TABLE;
 
 public class Stocks implements Parcelable, Serializable {
     public static final String STOCKS_TABLE = "Stock_Table";
@@ -34,10 +39,13 @@ public class Stocks implements Parcelable, Serializable {
     public static final String STOCK_PROFILE_ID = "Stock_ProfileID";
     public static final String STOCK_BRANCH_ID = "Stock_BranchID";
     public static final String STOCK_ACCEPTANCE_DATE = "Stock_Acceptance_Date";
+    public static final String STOCK_BIZ_ID = "Stock_BIZ_ID";
+    public static final String STOCK_MARKET_ID = "Stock_Market_ID";
+    public static final String STOCK_ROLE = "Stock_Role";
 
     public static final String CREATE_STOCK_TABLE = "CREATE TABLE " + STOCKS_TABLE + " (" + STOCK_ID + " INTEGER PRIMARY KEY, " + STOCK_ITEM_NAME + " TEXT, " +
             STOCK_TYPE + " TEXT, " + STOCK_MODEL + " TEXT, "+ STOCK_COLOR + " TEXT, " +  STOCK_SIZE + " TEXT, " + STOCK_OFFICE + " TEXT, " +STOCK_QTY + " INTEGER, " + STOCK_DATE + " TEXT, " +
-            STOCK_40_DATE + " TEXT, " + STOCK_20_DATE + " TEXT, " + STOCK_10_DATE + " TEXT, " + STOCK_5_DATE + " TEXT, " + STOCK_DEFECTIVE + " TEXT, " +STOCK_OUT_DATE + " TEXT, " + STOCK_ACCEPTER + " TEXT, " + STOCK_ACCEPTANCE_DATE + " TEXT, " + STOCK_MANAGER + " TEXT,"+ STOCK_STATUS + " TEXT,"+ STOCK_PROFILE_ID + " INTEGER,"+ STOCK_CODE + " REAL,"+ STOCK_BRANCH_ID + " INTEGER," + "FOREIGN KEY(" + STOCK_BRANCH_ID + ") REFERENCES " + OFFICE_BRANCH_TABLE + "(" + OFFICE_BRANCH_ID + "),"+"FOREIGN KEY(" + STOCK_PROFILE_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + STOCK_PROFILE_ID + "))";
+            STOCK_40_DATE + " TEXT, " + STOCK_20_DATE + " TEXT, " + STOCK_10_DATE + " TEXT, " + STOCK_5_DATE + " TEXT, " + STOCK_DEFECTIVE + " TEXT, " +STOCK_OUT_DATE + " TEXT, " + STOCK_ACCEPTER + " TEXT, " + STOCK_ACCEPTANCE_DATE + " TEXT, " + STOCK_MANAGER + " TEXT,"+ STOCK_STATUS + " TEXT,"+ STOCK_PROFILE_ID + " INTEGER,"+ STOCK_CODE + " REAL,"+ STOCK_BRANCH_ID + " INTEGER," + STOCK_BIZ_ID + " INTEGER,"+ STOCK_MARKET_ID + " INTEGER,"+ STOCK_ROLE + " TEXT,"+ "FOREIGN KEY(" + STOCK_BIZ_ID + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+ "FOREIGN KEY(" + STOCK_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+ "FOREIGN KEY(" + STOCK_BRANCH_ID + ") REFERENCES " + OFFICE_BRANCH_TABLE + "(" + OFFICE_BRANCH_ID + "),"+"FOREIGN KEY(" + STOCK_PROFILE_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
 
     private long stockCode;
@@ -58,6 +66,7 @@ public class Stocks implements Parcelable, Serializable {
     private int stockDefective;
     private String stockAccepter;
     private String stockStatus;
+    private String stocksRole;
 
 
     public Stocks(Parcel in) {
@@ -312,4 +321,11 @@ public class Stocks implements Parcelable, Serializable {
     public String getStock10percentDate() { return stock10percentDate; }
 
 
+    public String getStocksRole() {
+        return stocksRole;
+    }
+
+    public void setStocksRole(String stocksRole) {
+        this.stocksRole = stocksRole;
+    }
 }

@@ -10,6 +10,12 @@ import java.io.Serializable;
 
 import static com.skylightapp.Classes.UserSuperAdmin.SUPER_ADMIN_ID;
 import static com.skylightapp.Classes.UserSuperAdmin.SUPER_ADMIN_TABLE;
+import static com.skylightapp.MarketClasses.Market.MARKET_ID;
+import static com.skylightapp.MarketClasses.Market.MARKET_TABLE;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_ID;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TABLE;
+
+import com.skylightapp.SuperAdmin.Awajima;
 
 @Entity(tableName = OfficeBranch.OFFICE_BRANCH_TABLE)
 public class OfficeBranch implements Parcelable, Serializable{
@@ -21,9 +27,13 @@ public class OfficeBranch implements Parcelable, Serializable{
     public static final String OFFICE_BRANCH_APPROVER = "office_branch_approver";
     public static final String OFFICE_BRANCH_STATUS = "office_branch_status";
     public static final String OFFICE_SUPERADMIN_ID = "officeS_superAdmin_id";
+    public static final String OFFICE_BRANCH_BIZ_ID = "office_BranchBiz_id";
+    public static final String OFFICE_BRANCH_MARKET_ID = "office_BMarket_id";
+    public static final String OFFICE_BRANCH_DB_ID = "office_BDB_id";
+    public static final String OFFICE_BRANCH_ROLE = "office_B_Role";
 
-    public static final String CREATE_OFFICE_BRANCH = "CREATE TABLE IF NOT EXISTS " + OFFICE_BRANCH_TABLE + " (" + OFFICE_BRANCH_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + OFFICE_SUPERADMIN_ID + " INTEGER , " +
-            OFFICE_BRANCH_NAME + " TEXT , " + OFFICE_BRANCH_DATE + " TEXT, " + OFFICE_BRANCH_ADDRESS + " TEXT, " + OFFICE_BRANCH_APPROVER + " TEXT, " + OFFICE_BRANCH_STATUS + " TEXT, " + "FOREIGN KEY(" + OFFICE_SUPERADMIN_ID + ") REFERENCES " + SUPER_ADMIN_TABLE + "(" + SUPER_ADMIN_ID + "))";
+    public static final String CREATE_OFFICE_BRANCH = "CREATE TABLE IF NOT EXISTS " + OFFICE_BRANCH_TABLE + " (" + OFFICE_BRANCH_ID + " INTEGER , " + OFFICE_SUPERADMIN_ID + " INTEGER , " +
+            OFFICE_BRANCH_NAME + " TEXT , " + OFFICE_BRANCH_DATE + " TEXT, " + OFFICE_BRANCH_ADDRESS + " TEXT, " + OFFICE_BRANCH_APPROVER + " TEXT, " + OFFICE_BRANCH_STATUS + " TEXT, "+ OFFICE_BRANCH_BIZ_ID + " INTEGER, "+ OFFICE_BRANCH_MARKET_ID + " INTEGER, "+ OFFICE_BRANCH_DB_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + OFFICE_BRANCH_ROLE + " INTEGER, "+ "FOREIGN KEY(" + OFFICE_BRANCH_BIZ_ID + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+ "FOREIGN KEY(" + OFFICE_BRANCH_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+ "FOREIGN KEY(" + OFFICE_SUPERADMIN_ID + ") REFERENCES " + SUPER_ADMIN_TABLE + "(" + SUPER_ADMIN_ID + "))";
     private Account account;
 
     public OfficeBranch(Parcel in) {
@@ -99,6 +109,38 @@ public class OfficeBranch implements Parcelable, Serializable{
         this.profile = profile;
     }
 
+    public int getOfficeBranchBizID() {
+        return officeBranchBizID;
+    }
+
+    public void setOfficeBranchBizID(int officeBranchBizID) {
+        this.officeBranchBizID = officeBranchBizID;
+    }
+
+    public int getOfficeBranchMarketID() {
+        return officeBranchMarketID;
+    }
+
+    public void setOfficeBranchMarketID(int officeBranchMarketID) {
+        this.officeBranchMarketID = officeBranchMarketID;
+    }
+
+    public String getOfficeBranchRole() {
+        return officeBranchRole;
+    }
+
+    public void setOfficeBranchRole(String officeBranchRole) {
+        this.officeBranchRole = officeBranchRole;
+    }
+
+    public Awajima getAwajimaProfile() {
+        return awajimaProfile;
+    }
+
+    public void setAwajimaProfile(Awajima awajimaProfile) {
+        this.awajimaProfile = awajimaProfile;
+    }
+
 
     public enum TRANSACTION_TYPE {
         BRANCH_OFFICE, AFFILIATE_CENTER;
@@ -115,6 +157,10 @@ public class OfficeBranch implements Parcelable, Serializable{
     private  Profile profile;
     private AdminUser adminUser;
     long accountNumber;
+    private int officeBranchBizID;
+    private int officeBranchMarketID;
+    private String officeBranchRole;
+    private Awajima awajimaProfile;
 
     public int getOfficeBranchID() { return officeBranchID; }
     public String getOfficeBranchName() { return officeBranchName; }

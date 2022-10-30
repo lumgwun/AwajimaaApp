@@ -39,7 +39,6 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.quickblox.auth.session.QBSettings;
 import com.quickblox.chat.QBChatService;
@@ -184,7 +183,6 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     String json, json1, nIN;
     Profile userProfile,  lastProfileUsed;
     private QBUser qbUser;
-    private  FirebaseAuth firebaseAuth;
     TextInputWatcher textInputWatcher;
     private FloatActionButton fabMilestones,fabAddMembers,fabTranx,fabTimelines,fabControl;
 
@@ -218,7 +216,6 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
         qbUser= new QBUser();
         userProfile= new Profile();
         textInputWatcher= new TextInputWatcher();
-        firebaseAuth = FirebaseAuth.getInstance();
         cal = Calendar.getInstance();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");

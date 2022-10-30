@@ -26,7 +26,7 @@ import com.skylightapp.Adapters.MySavingsCodeAdapter;
 import com.skylightapp.Adapters.SkyLightPackageAdapter;
 import com.skylightapp.Adapters.StandingOrderAdapter;
 import com.skylightapp.Adapters.SuperSavingsAdapter;
-import com.skylightapp.Adapters.TransactionAdapter;
+import com.skylightapp.Adapters.TranxAdminA;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerDailyReport;
@@ -39,7 +39,6 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.StandingOrder;
 import com.skylightapp.Classes.Transaction;
-import com.skylightapp.Classes.TransactionGranting;
 import com.skylightapp.Database.AcctDAO;
 import com.skylightapp.Database.AdminBalanceDAO;
 import com.skylightapp.Database.AwardDAO;
@@ -88,7 +87,7 @@ public class AdminCusActionView extends AppCompatActivity {
     public static final String AUTH_TOKEN = System.getenv("0d5cbd54456dd0764786db0c37212578");
     private List<CustomerDailyReport> customerDailyReports;
     private StandingOrderAdapter standingOrderAdapter;
-    private TransactionAdapter transactionAdapter;
+    private TranxAdminA tranxAdminA;
     private AccountAdapter2 accountAdapter;
     private MySavingsCodeAdapter codeAdapter;
     private  MessageAdapter  messageAdapter;
@@ -368,9 +367,9 @@ public class AdminCusActionView extends AppCompatActivity {
 
                     rcyclerTransactions.setLayoutManager(layoutManager3);
                     transactions2 = tranXDAO.getAllTransactionCustomer(customerID);
-                    transactionAdapter = new TransactionAdapter(AdminCusActionView.this, transactions2);
+                    tranxAdminA = new TranxAdminA(AdminCusActionView.this, transactions2);
                     //rcyclerTransactions.setHasFixedSize(true);
-                    rcyclerTransactions.setAdapter(transactionAdapter);
+                    rcyclerTransactions.setAdapter(tranxAdminA);
                     rcyclerTransactions.setItemAnimator(new DefaultItemAnimator());
                     SnapHelper snapHelper = new PagerSnapHelper();
                     snapHelper.attachToRecyclerView(rcyclerTransactions);

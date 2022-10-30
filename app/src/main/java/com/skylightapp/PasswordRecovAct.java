@@ -46,12 +46,12 @@ public class PasswordRecovAct extends AppCompatActivity {
     //Profile profile = new Profile();
     //String uid = UUID.randomUUID().toString();
     LinearLayout linearLayout1, linearLayout2;
-    String sender = "Your Skylight Coop." ;
+    String sender = "Your Awajima Coop." ;
     public static final String ACCOUNT_SID = System.getenv(TWILIO_ACCOUNT_SID);
     public static final String AUTH_TOKEN = System.getenv(TWILIO_AUTH_TOKEN);
     Message message;
     Gson gson;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     int profileID;
     long codeID;
     Profile userProfile;
@@ -116,7 +116,7 @@ public class PasswordRecovAct extends AppCompatActivity {
             bioLayout.setVisibility(View.GONE);
 
         }
-        textMessage = "Your Skylight Password Modification Code is "+codeID;
+        textMessage = "Your Awajima Password Modification Code is "+codeID;
 
 
         fab = findViewById(R.id.homeward);

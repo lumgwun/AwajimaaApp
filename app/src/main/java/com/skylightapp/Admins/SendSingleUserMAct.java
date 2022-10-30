@@ -443,7 +443,7 @@ public class SendSingleUserMAct extends AppCompatActivity implements TextWatcher
 
             }
             if(userProfile !=null){
-                customerManagerArrayList=userProfile.getProfile_Teller();
+                customerManagerArrayList=userProfile.getProfile_CustomerManagers();
                 myMarketBizs=userProfile.getProfile_Businesses();
 
             }

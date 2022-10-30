@@ -313,7 +313,7 @@ public class CusLoanRepaymentAct extends AppCompatActivity {
         });
     }
     protected void sendSMSMessage() {
-        String welcomeMessage = "Skylight appreciates your efforts in repaying  your loan";
+        String welcomeMessage = "Awajima appreciates your efforts in repaying  your loan";
         phone_number = findViewById(R.id.phone_number);
         uPhoneNumber = Objects.requireNonNull(phone_number.getText()).toString();
         Twilio.init("ACb6e4c829a5792a4b744a3e6bd1cf2b4e", "0d5cbd54456dd0764786db0c37212578");

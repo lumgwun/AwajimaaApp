@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,6 +24,7 @@ import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.GroupSavingsDAO;
 
 import java.security.SecureRandom;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -36,35 +38,48 @@ public class MyGrpSavingsList extends AppCompatActivity implements GroupSavingsA
     SecureRandom random;
     DatePicker picker;
     Random ran ;
-    GroupSavingsDAO dbHelper;
-    long profileID;
+    GroupSavingsDAO groupSavingsDAO;
+    private DBHelper dbHelper;
+    int profileID;
     AppCompatTextView txtNoSavings;
+    private static final String PREF_NAME = "awajima";
+    private SQLiteDatabase sqLiteDatabase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_my_grp_savings_list);
-        dbHelper = new GroupSavingsDAO(this);
-        /*getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-        getActionBar().hide();*/
+        groupSavingsDAO = new GroupSavingsDAO(this);
+        dbHelper= new DBHelper(this);
         groupSavingsArrayList = new ArrayList<>();
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_GrpS);
         txtNoSavings =  findViewById(R.id.noGrpSavings);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        setTitle("My Group Savings");
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         userProfile=new Profile();
         random= new SecureRandom();
         json = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
         final LinearLayoutManager layoutManager = new LinearLayoutManager( this);
-        groupSavingsArrayList = dbHelper.getGrpSavingsForCurrentProfile(profileID);
-        txtNoSavings.setText("Sorry no Group Savings for this profile yet!");
+        if(userProfile !=null){
+            profileID= userProfile.getPID();
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = groupSavingsDAO.getWritableDatabase();
+            groupSavingsArrayList = groupSavingsDAO.getGrpSavingsForCurrentProfile(profileID);
+
+        }
+
+
 
         groupSavingsAdapter = new GroupSavingsAdapter(groupSavingsArrayList, R.layout.grp_savings_row, this);
         recyclerView.setAdapter(groupSavingsAdapter);
         recyclerView.setLayoutManager(layoutManager);
-        //recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener(new CenterScrollListener());
         //layoutManager.setPostLayoutListener(new CarouselZoomPostLayoutListener());
         try {
@@ -73,6 +88,9 @@ public class MyGrpSavingsList extends AppCompatActivity implements GroupSavingsA
                 txtNoSavings.setVisibility(View.VISIBLE);
                 txtNoSavings.setText("Sorry no Group Savings for this profile yet!");
                 recyclerView.setVisibility(View.GONE);
+
+            }else {
+                txtNoSavings.setText(MessageFormat.format("No of Grp Savings:{0}", groupSavingsArrayList.size()));
 
             }
         } catch (NullPointerException e) {

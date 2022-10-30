@@ -125,7 +125,7 @@ public class AdminUser  implements Parcelable, Serializable {
     private int adminBusinessID;
     private int adminMarketID;
     private ArrayList<Integer> adminMarketIDList;
-    private ArrayList<Integer> adminBusinessIDList;
+    private ArrayList<Long> adminBusinessIDList;
     private ArrayList<BusinessOthers> adminBusinessOthersArrayList;
     private ArrayList<MarketBusiness> adminMarketBizArrayList;
     private ArrayList<Market> adminMarketArrayList;
@@ -188,8 +188,8 @@ public class AdminUser  implements Parcelable, Serializable {
         adminMarketArrayList = new ArrayList<>();
         adminMarketArrayList.add(market);
     }
-    public void addBusinessID(int businessID) {
-        adminBusinessIDList = new ArrayList<>();
+    public void addBusinessID(long businessID) {
+        adminBusinessIDList = new ArrayList<Long>();
         adminBusinessIDList.add(businessID);
     }
     public static final Creator<AdminUser> CREATOR = new Creator<AdminUser>() {
@@ -491,10 +491,10 @@ public class AdminUser  implements Parcelable, Serializable {
         tellerReportArrayList.add(dailyReport);
     }
     @Ignore
-    public void addTellerReport(int keyExtraReportId, int tellerReportID, String officeBranch, double amountEntered, double amountExpected, int noOfSavings, String reportDate, String status) {
+    public void addTellerReport(int keyExtraReportId, long bizID,String bizName, String officeBranch, double amountEntered, double amountExpected, int noOfSavings, String reportDate, String status) {
         ArrayList<TellerReport> tellerReports = null;
         keyExtraReportId = tellerReportArrayList.size() + 1;
-        TellerReport dailyReport = new TellerReport(keyExtraReportId, officeBranch,amountEntered,noOfSavings,reportDate);
+        TellerReport dailyReport = new TellerReport(keyExtraReportId, bizID, officeBranch,amountEntered,noOfSavings,reportDate);
         tellerReportArrayList.add(dailyReport);
     }
     @Ignore
@@ -516,10 +516,10 @@ public class AdminUser  implements Parcelable, Serializable {
     }
     @Ignore
 
-    public void addTellerReport(int tellerReportID, String officeBranch, double amountEntered, double amountExpected, int noOfSavings, String reportDate, String status) {
+    public void addTellerReport(int tellerReportID, long bizName,String officeBranch, double amountEntered, double amountExpected, int noOfSavings, String reportDate, String status) {
         ArrayList<TellerReport> tellerReports = null;
         int keyExtraReportId = tellerReportArrayList.size() + 1;
-        TellerReport dailyReport = new TellerReport(keyExtraReportId, officeBranch,amountEntered,noOfSavings,reportDate);
+        TellerReport dailyReport = new TellerReport(keyExtraReportId, bizName, officeBranch,amountEntered,noOfSavings,reportDate);
         tellerReportArrayList.add(dailyReport);
     }
     @Ignore
@@ -599,11 +599,11 @@ public class AdminUser  implements Parcelable, Serializable {
         this.adminMarketIDList = adminMarketIDList;
     }
 
-    public ArrayList<Integer> getAdminBusinessIDList() {
+    public ArrayList<Long> getAdminBusinessIDList() {
         return adminBusinessIDList;
     }
 
-    public void setAdminBusinessIDList(ArrayList<Integer> adminBusinessIDList) {
+    public void setAdminBusinessIDList(ArrayList<Long> adminBusinessIDList) {
         this.adminBusinessIDList = adminBusinessIDList;
     }
 

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.card.MaterialCardView;
+import com.skylightapp.Markets.MarketDetailsAct;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -27,7 +28,7 @@ public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.MyViewHolder> 
 
 
     private ArrayList<Farm> data;
-    private OnItemsClickListener listener;
+    private OnFarmClickListener listener;
     private List<Farm> theSlideItemsModelClassList = new ArrayList<>();
     private List<Farm> itemsListFilter = new ArrayList<>();
     String farmName;
@@ -42,6 +43,10 @@ public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.MyViewHolder> 
     private Farm farm;
     protected AlphaAnimation fadeOut = new AlphaAnimation( 1.0f , 0.0f );
     protected AlphaAnimation fadeIn = new AlphaAnimation( 0.0f , 1.0f );
+
+    public FarmAdapter(MarketDetailsAct marketDetailsAct, ArrayList<Farm> farmArrayList) {
+
+    }
 
 
     public void filter(String charText) {
@@ -96,7 +101,7 @@ public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.MyViewHolder> 
     @Override
     public void onClick(View view) {
         if (listener != null) {
-            listener.onItemClick(farm);
+            listener.onFarmClick(farm);
         }
 
     }
@@ -123,7 +128,7 @@ public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.MyViewHolder> 
         this.data.add(sliderItem);
         notifyDataSetChanged();
     }
-    public void setCallback(OnItemsClickListener callback) {
+    public void setCallback(OnFarmClickListener callback) {
         this.listener = callback;
     }
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -199,7 +204,7 @@ public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.MyViewHolder> 
     public int getItemCount() {
         return (null != data ? data.size() : 0);
     }
-    public void setWhenClickListener(OnItemsClickListener listener){
+    public void setWhenClickListener(OnFarmClickListener listener){
         this.listener = listener;
     }
 
@@ -219,7 +224,7 @@ public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.MyViewHolder> 
     public ArrayList<Farm> getData() {
         return data;
     }
-    public interface OnItemsClickListener{
-        void onItemClick(Farm farm);
+    public interface OnFarmClickListener {
+        void onFarmClick(Farm farm);
     }
 }

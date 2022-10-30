@@ -500,7 +500,7 @@
                                 android:paddingLeft="10dp"
                                 android:background="@drawable/shape_rect12"
                                 android:drawableStart="@drawable/ic_icon_foreground"
-                                android:entries="@array/officeBranch33"
+                                android:entries="@array/New_Awajima_Branch"
                                 android:padding="20dp"
                                 android:textColor="@android:color/holo_red_dark"
                                 android:textColorHint="@android:color/holo_red_dark"

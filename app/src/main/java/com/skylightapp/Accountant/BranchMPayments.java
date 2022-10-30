@@ -28,8 +28,12 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.melnykov.fab.FloatingActionButton;
+import com.skylightapp.Adapters.OfficeAdapter;
 import com.skylightapp.Adapters.PaymentAdapterSuper;
+import com.skylightapp.Classes.Customer;
+import com.skylightapp.Classes.OfficeBranch;
 import com.skylightapp.Classes.Payment;
+import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.AcctDAO;
 import com.skylightapp.Database.CodeDAO;
@@ -45,6 +49,8 @@ import com.skylightapp.Database.SODAO;
 import com.skylightapp.Database.TCashDAO;
 import com.skylightapp.Database.TReportDAO;
 import com.skylightapp.Database.TranXDAO;
+import com.skylightapp.MarketClasses.InsuranceCompany;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
 
 import java.text.SimpleDateFormat;
@@ -72,7 +78,7 @@ public class BranchMPayments extends AppCompatActivity implements  PaymentAdapte
 
     DBHelper dbHelper;
     String json,dateOfPayment,officeBranch,selectedOffice;
-    long profileID;
+    int profileID,officeID;
     private AppCompatButton btnSearch;
     protected DatePickerDialog datePickerDialog;
     private SimpleDateFormat dateFormat;
@@ -94,6 +100,17 @@ public class BranchMPayments extends AppCompatActivity implements  PaymentAdapte
     private TCashDAO cashDAO;
     private TReportDAO tReportDAO;
     private PaymentDAO paymentDAO;
+    private static final String PREF_NAME = "skylight";
+    PrefManager prefManager;
+    private Gson gson1,gson2;
+    private String json1,json2,SharedPrefUserName,SharedPrefUserPassword,SharedPrefRole,SharedPrefUserMachine;
+    private ArrayList<OfficeBranch> bizOffices;
+    private MarketBusiness marketBiz;
+    private Customer customer;
+    private int SharedPrefCusID,SharedPrefProfileID;
+    private int selectedOfficeIndex;
+    private OfficeBranch officeB;
+    private OfficeAdapter officeBranchAdapter;
 
     @SuppressLint("SimpleDateFormat")
     @Override
@@ -103,7 +120,29 @@ public class BranchMPayments extends AppCompatActivity implements  PaymentAdapte
         setTitle("Branch Manual Payment");
         calendar=Calendar.getInstance();
         cusDAO= new CusDAO(this);
+        bizOffices= new ArrayList<>();
+        gson = new Gson();
+        gson1 = new Gson();
+        gson2 = new Gson();
+        userProfile=new Profile();
+        marketBiz=new MarketBusiness();
+        customer=new Customer();
+        officeB= new OfficeBranch();
+
         paymentCodeDAO= new PaymentCodeDAO(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
+        SharedPrefCusID=userPreferences.getInt("CUSTOMER_ID", 0);
+        SharedPrefUserMachine=userPreferences.getString("machine", "");
+        SharedPrefRole = userPreferences.getString("PROFILE_ROLE", "");
+        SharedPrefProfileID=userPreferences.getInt("PROFILE_ID", 0);
+        json = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastCustomerUsed", "");
+        customer = gson1.fromJson(json1, Customer.class);
+        json2 = userPreferences.getString("LastMarketBusinessUsed", "");
+        marketBiz = gson2.fromJson(json2, MarketBusiness.class);
         profileDao= new ProfDAO(this);
         cashDAO= new TCashDAO(this);
         paymDocDAO= new PaymDocDAO(this);
@@ -114,6 +153,10 @@ public class BranchMPayments extends AppCompatActivity implements  PaymentAdapte
         sodao= new SODAO(this);
         messageDAO= new MessageDAO(this);
         loanDAO= new LoanDAO(this);
+        if(marketBiz !=null){
+            bizOffices=marketBiz.getOfficeBranches();
+
+        }
 
         codeDAO= new CodeDAO(this);
         acctDAO= new AcctDAO(this);
@@ -127,18 +170,25 @@ public class BranchMPayments extends AppCompatActivity implements  PaymentAdapte
         paymentArrayList = new ArrayList<Payment>();
         paymentArrayList2 = new ArrayList<Payment>();
         dbHelper=new DBHelper(this);
-        spnPaymentOffice.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedOffice = spnPaymentOffice.getSelectedItem().toString();
-                selectedOffice = (String) parent.getSelectedItem();
-                Toast.makeText(BranchMPayments.this, "Office Branch: "+ selectedOffice,Toast.LENGTH_SHORT).show();
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        officeBranchAdapter = new OfficeAdapter(BranchMPayments.this, bizOffices);
+        spnPaymentOffice.setAdapter(officeBranchAdapter);
+        spnPaymentOffice.setSelection(0);
+        selectedOfficeIndex = spnPaymentOffice.getSelectedItemPosition();
+
+        try {
+            officeB = bizOffices.get(selectedOfficeIndex);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Oops!");
+        }
+        if(officeB !=null){
+            selectedOffice=officeB.getOfficeBranchName();
+            officeID=officeB.getOfficeBranchID();
+        }
+        if(bizOffices.size()==0){
+            officeB=marketBiz.getMBBranchOffice();
+        }
+
         Calendar calendar = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String dateString = mdformat.format(calendar.getTime());
@@ -176,8 +226,9 @@ public class BranchMPayments extends AppCompatActivity implements  PaymentAdapte
         }
         mAdapter = new PaymentAdapterSuper(this, R.layout.super_payment_row, paymentArrayList);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
         recyclerView.setNestedScrollingEnabled(false);
@@ -186,7 +237,8 @@ public class BranchMPayments extends AppCompatActivity implements  PaymentAdapte
 
 
         mAdapter2 = new PaymentAdapterSuper(this, R.layout.super_payment_row, paymentArrayList2);
-        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager2
+                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerViewAll.setLayoutManager(linearLayoutManager2);
         recyclerViewAll.setItemAnimator(new DefaultItemAnimator());
         recyclerViewAll.setAdapter(mAdapter2);
@@ -205,7 +257,8 @@ public class BranchMPayments extends AppCompatActivity implements  PaymentAdapte
                 }
                 mAdapter = new PaymentAdapterSuper(BranchMPayments.this, R.layout.super_payment_row, paymentArrayList);
 
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(BranchMPayments.this);
+                LinearLayoutManager linearLayoutManager
+                        = new LinearLayoutManager(BranchMPayments.this, LinearLayoutManager.HORIZONTAL, false);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(mAdapter);

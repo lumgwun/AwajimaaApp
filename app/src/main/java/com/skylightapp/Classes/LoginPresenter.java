@@ -3,7 +3,7 @@ package com.skylightapp.Classes;
 import android.content.Context;
 
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+
 import com.skylightapp.Interfaces.LoginView;
 import com.skylightapp.R;
 
@@ -75,18 +75,5 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     }*/
 
 
-    public void handleAuthError(Task<AuthResult> task) {
-        Exception exception = task.getException();
-        LogUtil.logError(TAG, "signInWithCredential", exception);
 
-        ifViewAttached(view -> {
-            if (exception != null) {
-                view.showWarningDialog(exception.getMessage());
-            } else {
-                view.showSnackBar(R.string.error);
-            }
-
-            view.hideProgress();
-        });
-    }
 }

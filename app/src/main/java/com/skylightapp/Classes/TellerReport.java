@@ -7,7 +7,6 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import static com.skylightapp.Classes.AdminUser.ADMIN_ID;
 import static com.skylightapp.Classes.AdminUser.ADMIN_TABLE;
@@ -37,12 +36,13 @@ public class TellerReport  implements Serializable, Parcelable {
     public static final String TELLER_REPORT_ADMIN_ID = "t_R_AdminID";
     public static final String TELLER_REPORT_OFFICE_ID = "t_R_OfficeID";
     public static final String TELLER_REPORT_NO_OF_CUS = "t_R_No_Of_Cus";
+    public static final String TELLER_REPORT_BIZ_NAME = "t_R_Biz_Name";
 
 
     public static final String CREATE_TELLER_REPORT_TABLE = "CREATE TABLE IF NOT EXISTS " + TELLER_REPORT_TABLE + " (" + TELLER_REPORT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TELLER_REPORT_OFFICE_ID + " INTEGER , " + TELLER_REPORT_ADMIN_ID + " INTEGER , " + TELLER_REPORT_PROF_ID + " INTEGER , " +
             TELLER_REPORT_DATE + " TEXT, " + TELLER_REPORT_AMOUNT_SUBMITTED + " REAL , " + TELLER_REPORT_NO_OF_SAVINGS + " TEXT, " + TELLER_REPORT_BALANCE + " REAL, " +
             TELLER_REPORT_AMT_PAID + " REAL, " + TELLER_REPORT_EXPECTED_AMT + " REAL, " + TELLER_REPORT_BRANCH + " REAL, " +
-            TELLER_REPORT_ADMIN + " TEXT, " + TELLER_REPORT_MARKETER + " TEXT, " + TELLER_REPORT_APPROVAL_DATE + " TEXT," + TELLER_REPORT_STATUS + " TEXT,"+ TELLER_REPORT_NO_OF_CUS + " TEXT," + "FOREIGN KEY(" + TELLER_REPORT_OFFICE_ID  + ") REFERENCES " + OFFICE_BRANCH_TABLE + "(" + OFFICE_BRANCH_ID + ")," +"FOREIGN KEY(" + TELLER_REPORT_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + TELLER_REPORT_ADMIN_ID + ") REFERENCES " + ADMIN_TABLE + "(" + ADMIN_ID + "))";
+            TELLER_REPORT_ADMIN + " TEXT, " + TELLER_REPORT_MARKETER + " TEXT, " + TELLER_REPORT_APPROVAL_DATE + " TEXT," + TELLER_REPORT_STATUS + " TEXT,"+ TELLER_REPORT_NO_OF_CUS + " TEXT,"+ TELLER_REPORT_BIZ_NAME + " TEXT," + "FOREIGN KEY(" + TELLER_REPORT_OFFICE_ID  + ") REFERENCES " + OFFICE_BRANCH_TABLE + "(" + OFFICE_BRANCH_ID + ")," +"FOREIGN KEY(" + TELLER_REPORT_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + TELLER_REPORT_ADMIN_ID + ") REFERENCES " + ADMIN_TABLE + "(" + ADMIN_ID + "))";
 
 
 
@@ -63,6 +63,7 @@ public class TellerReport  implements Serializable, Parcelable {
     private int trNoOfCus;
     private String tr_ApprovalDate;
     private String tr_AdminName;
+    private String tr_BizName;
     private long tr_SuperCode;
 
     public TellerReport(int reportID, int tr_DbaseID, String date, String status) {
@@ -81,7 +82,7 @@ public class TellerReport  implements Serializable, Parcelable {
 
     }
 
-    public TellerReport(int keyExtraReportId, String officeBranch, double amountEntered, int trNoOfSavings, String reportDate) {
+    public TellerReport(int keyExtraReportId, long bizName, String officeBranch, double amountEntered, int trNoOfSavings, String reportDate) {
         this.tellerReportID = keyExtraReportId;
         this.tr_AmtSubmitted = amountEntered;
         this.tellerReportDate = reportDate;
@@ -99,6 +100,15 @@ public class TellerReport  implements Serializable, Parcelable {
         this.tr_AmtPaid = amountPaid;
         this.tr_AmtExpected = expectedAmount;
         this.trMarketer = marketer;
+    }
+    public TellerReport(int keyExtraReportId, String bizName, String officeBranch, double amountEntered, int noOfCustomers, String dateOfReport) {
+        this.tellerReportID = keyExtraReportId;
+        this.tr_BizName = bizName;
+        this.tr_Office_Branch = officeBranch;
+        this.tr_AmtSubmitted = amountEntered;
+        this.trNoOfSavings = noOfCustomers;
+        this.tellerReportDate = dateOfReport;
+
     }
     public TellerReport(int tellerReportId,  double amountPaid, String marketer) {
         this.tellerReportID = tellerReportId;
@@ -139,6 +149,8 @@ public class TellerReport  implements Serializable, Parcelable {
     public TellerReport() {
         super();
     }
+
+
 
     public int getTellerReportID() { return tellerReportID; }
     public void setTellerReportID(int tellerReportID) {
@@ -288,5 +300,13 @@ public class TellerReport  implements Serializable, Parcelable {
 
     public void setTrNoOfCus(int trNoOfCus) {
         this.trNoOfCus = trNoOfCus;
+    }
+
+    public String getTr_BizName() {
+        return tr_BizName;
+    }
+
+    public void setTr_BizName(String tr_BizName) {
+        this.tr_BizName = tr_BizName;
     }
 }

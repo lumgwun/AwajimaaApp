@@ -37,7 +37,7 @@ public class SignTabMainActivity extends TabActivity {
     String json,machine;
     int profileUID;
     Bundle bundle;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

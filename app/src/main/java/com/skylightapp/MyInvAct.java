@@ -29,7 +29,7 @@ import com.skylightapp.Inventory.StockTransfer;
 import com.skylightapp.Inventory.StockTransferAdapter;
 import com.skylightapp.Inventory.Stocks;
 import com.skylightapp.Inventory.StocksArrayAdapter;
-import com.skylightapp.SuperAdmin.Skylight;
+import com.skylightapp.SuperAdmin.Awajima;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class MyInvAct extends AppCompatActivity {
     Gson gson,gson2;
     String json,json2;
     Profile userProfile;
-    Skylight skylight;
+    Awajima awajima;
     DBHelper dbHelper;
     private ArrayList<Stocks> stocksArrayListTeller;
     private ArrayList<Stocks> stocksListBranch;

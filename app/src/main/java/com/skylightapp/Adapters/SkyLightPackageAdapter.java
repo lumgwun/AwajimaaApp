@@ -1,8 +1,6 @@
 package com.skylightapp.Adapters;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.view.GestureDetector;
@@ -12,10 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.cardview.widget.CardView;
@@ -33,10 +29,9 @@ import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.SkyLightPackModel;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Interfaces.SkylightPackageListener;
-import com.skylightapp.PayNowActivity;
 import com.skylightapp.R;
 import com.skylightapp.SkyLightPackageActivity;
-import com.skylightapp.SuperAdmin.SuperAdminCountAct;
+import com.skylightapp.SuperAdmin.BizSuperAdminAllView;
 import com.skylightapp.Tellers.CustomerDetailAct;
 import com.skylightapp.Tellers.MyProfilePackList;
 
@@ -119,8 +114,8 @@ public class SkyLightPackageAdapter extends RecyclerView.Adapter<SkyLightPackage
 
     }
 
-    public SkyLightPackageAdapter(SuperAdminCountAct superAdminCountAct, ArrayList<SkyLightPackage> skyLightPackages) {
-        this.context=superAdminCountAct;
+    public SkyLightPackageAdapter(BizSuperAdminAllView bizSuperAdminAllView, ArrayList<SkyLightPackage> skyLightPackages) {
+        this.context= bizSuperAdminAllView;
         this.packageList=skyLightPackages;
 
     }

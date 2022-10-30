@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="@drawable/shape_rect14"
     android:layout_height="match_parent"
-    tools:context="com.skylightapp.Transactions.CardDepositActivity">
+    tools:context="com.skylightapp.Markets.CardDepositActivity">
     <TextView
         android:layout_width="match_parent"
         android:text="Select Skylight Account"

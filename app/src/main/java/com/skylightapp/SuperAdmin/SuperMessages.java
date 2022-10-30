@@ -24,15 +24,19 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.skylightapp.Adapters.MessageAdapter;
+import com.skylightapp.Adapters.OfficeAdapter;
 import com.skylightapp.Classes.Message;
+import com.skylightapp.Classes.OfficeBranch;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.MarketBizDAO;
 import com.skylightapp.Database.MessageDAO;
+import com.skylightapp.Database.OfficeBranchDAO;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -66,6 +70,19 @@ public class SuperMessages extends AppCompatActivity implements  MessageAdapter.
     AppCompatSpinner spnOfficeBranch;
     private SQLiteDatabase sqLiteDatabase;
     private MessageDAO messageDAO;
+    private Awajima awajima;
+    OfficeBranch officeBranch;
+    Gson gson3;
+    String json3;
+    private ArrayList<OfficeBranch> officeBranchArrayList;
+    private MarketBusiness marketBiz;
+    private MarketBizDAO marketBizDAO;
+    OfficeBranch selectedBranch;
+    private OfficeAdapter officeAdapter;
+    private long bizID;
+    private OfficeBranchDAO officeDAO;
+
+    String machine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,14 +92,20 @@ public class SuperMessages extends AppCompatActivity implements  MessageAdapter.
         dbHelper= new DBHelper(this);
         setContentView(R.layout.act_admin_support);
         userProfile= new Profile();
+        officeDAO= new OfficeBranchDAO(this);
         superAdmin = new UserSuperAdmin();
         userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         gson = new Gson();
+        officeBranchArrayList= new ArrayList<>();
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         gson1 = new Gson();
+        gson2=new Gson();
+        marketBiz= new MarketBusiness();
         json1 = userPreferences.getString("LastAdminUserProfileUsed", "");
         superAdmin = gson1.fromJson(json1, UserSuperAdmin.class);
+        json2 = userPreferences.getString("LastMarketBusinessUsed", "");
+        marketBiz = gson2.fromJson(json2, MarketBusiness.class);
         btnSearchMessages = findViewById(R.id.btnSearchMessagesSuper);
         spnOfficeBranch = findViewById(R.id.spnOfficeMessages);
         btnSearchByOffice = findViewById(R.id.btnSearchOfficeSuper);
@@ -91,25 +114,39 @@ public class SuperMessages extends AppCompatActivity implements  MessageAdapter.
         recyclerViewToday = findViewById(R.id.recycler_view_SuperToday);
         messages = new ArrayList<Message>();
         messagesToday = new ArrayList<Message>();
+
+        if(marketBiz !=null){
+            bizID=marketBiz.getBusinessID();
+        }
+
         picker=(DatePicker)findViewById(R.id.messageSuperDatePicker);
         Calendar calendar = Calendar.getInstance();
-        try {
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
 
-            spnOfficeBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    selectedOffice = spnOfficeBranch.getSelectedItem().toString();
-                    //selectedOffice = (String) parent.getSelectedItem();
-                    Toast.makeText(SuperMessages.this, "Office Branch Selected: "+ selectedOffice,Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                }
-            });
-        } catch (NullPointerException e) {
-            System.out.println("Oops!");
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            officeBranchArrayList = officeDAO.getOfficesForBusiness(bizID);
         }
+
+        officeAdapter = new OfficeAdapter(SuperMessages.this, officeBranchArrayList);
+        spnOfficeBranch.setAdapter(officeAdapter);
+        spnOfficeBranch.setSelection(0);
+
+        spnOfficeBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedBranch = (OfficeBranch) parent.getSelectedItem();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        if(selectedBranch !=null){
+            selectedOffice=selectedBranch.getOfficeBranchName();
+        }
+
 
         try {
 

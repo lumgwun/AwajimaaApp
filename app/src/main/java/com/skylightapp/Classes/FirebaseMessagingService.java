@@ -17,8 +17,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
 import com.google.firebase.messaging.RemoteMessage;
 import com.skylightapp.Admins.AdminDashboardTab;
 import com.skylightapp.LoanDetailsActivity;
@@ -27,7 +26,7 @@ import com.skylightapp.PackageDetailsActivity;
 import com.skylightapp.PlanPaymentActivity;
 import com.skylightapp.R;
 import com.skylightapp.SavingDetailsActivity;
-import com.skylightapp.Transactions.CashOutDetailsActivity;
+import com.skylightapp.Markets.CashOutDetailsActivity;
 import com.skylightapp.Transactions.GOTVDetailsActivity;
 import com.skylightapp.Transactions.StarTimeDetailsActivity;
 
@@ -170,11 +169,7 @@ public class FirebaseMessagingService  extends Service {
     }
 
     private void handleNewPackageCreatedAction(RemoteMessage remoteMessage) {
-        String postAuthorId = remoteMessage.getData().get(AUTHOR_ID_KEY);
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser != null && !firebaseUser.getUid().equals(postAuthorId)) {
-            PackageManager.getInstance(this.getApplicationContext()).incrementNewPackageCounter();
-        }
+
     }
     private void parseSavings(Channel channel, RemoteMessage remoteMessage) {
         String notificationTitle = remoteMessage.getData().get(TITLE_KEY);

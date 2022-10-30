@@ -1,0 +1,18 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:enabled="true">
+    <PreferenceCategory app:title="Biz Type Preferences">
+
+        <MultiSelectListPreference
+            app:allowDividerBelow="true"
+            app:negativeButtonText="Cancel"
+            app:positiveButtonText="Ok"
+            app:defaultValue="Biz"
+            app:entries="@array/BizCategory"
+            app:entryValues="@array/BizCat_Values"
+            app:key="BIZ_TYPE"
+            app:title="Biz Types Selection"
+            app:useSimpleSummaryProvider="true">
+        </MultiSelectListPreference>
+    </PreferenceCategory>
+</PreferenceScreen>

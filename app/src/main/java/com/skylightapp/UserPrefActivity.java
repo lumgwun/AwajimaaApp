@@ -31,7 +31,7 @@ import static com.skylightapp.BuildConfig.QUICKBLOX_SECRET_KEY;
 
 public class UserPrefActivity extends AppCompatActivity {
     private static final String TITLE_TAG = "UserPrefActivity Title";
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private static final String APPLICATION_ID = QUICKBLOX_APP_ID;   //QUICKBLOX_APP_ID
     private static final String AUTH_KEY = QUICKBLOX_AUTH_KEY;
     private static final String AUTH_SECRET = QUICKBLOX_SECRET_KEY;

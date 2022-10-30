@@ -212,7 +212,6 @@
                     android:layout_marginTop="10dp"
                     android:hint="Chosen Office"
                     android:id="@+id/office11"
-                    android:entries="@array/office"
                     android:padding="20dp"
                     android:layout_width="80dp"
                     android:textAlignment="viewEnd"

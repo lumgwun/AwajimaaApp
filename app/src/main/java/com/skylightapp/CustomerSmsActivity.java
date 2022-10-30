@@ -144,7 +144,7 @@ public class CustomerSmsActivity extends AppCompatActivity {
         //smsManager = SmsManager.getDefault();
         confirmButton = findViewById(R.id.confirm_customer0);
 
-        //BroadcastUtils.sendExplicitBroadcast(this, new Intent(), "skylight sms action");
+        //BroadcastUtils.sendExplicitBroadcast(this, new Intent(), "awajima sms action");
         //smsManager = SmsManager.getDefault();
 
         /*Intent mIntent = getIntent();
@@ -222,7 +222,7 @@ public class CustomerSmsActivity extends AppCompatActivity {
                         Toast.makeText(this, "Savings status has been updated Successfully", Toast.LENGTH_SHORT).show();
 
                     }else {
-                        Toast.makeText(this, "Skylight-Customer security code is not correct", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Awajima-Customer security code is not correct", Toast.LENGTH_SHORT).show();
 
 
                     }

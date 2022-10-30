@@ -20,6 +20,7 @@ import static com.skylightapp.Inventory.Stocks.STOCK_40_DATE;
 import static com.skylightapp.Inventory.Stocks.STOCK_5_DATE;
 import static com.skylightapp.Inventory.Stocks.STOCK_ACCEPTANCE_DATE;
 import static com.skylightapp.Inventory.Stocks.STOCK_ACCEPTER;
+import static com.skylightapp.Inventory.Stocks.STOCK_BIZ_ID;
 import static com.skylightapp.Inventory.Stocks.STOCK_BRANCH_ID;
 import static com.skylightapp.Inventory.Stocks.STOCK_CODE;
 import static com.skylightapp.Inventory.Stocks.STOCK_COLOR;
@@ -32,6 +33,7 @@ import static com.skylightapp.Inventory.Stocks.STOCK_MODEL;
 import static com.skylightapp.Inventory.Stocks.STOCK_OFFICE;
 import static com.skylightapp.Inventory.Stocks.STOCK_PROFILE_ID;
 import static com.skylightapp.Inventory.Stocks.STOCK_QTY;
+import static com.skylightapp.Inventory.Stocks.STOCK_ROLE;
 import static com.skylightapp.Inventory.Stocks.STOCK_SIZE;
 import static com.skylightapp.Inventory.Stocks.STOCK_STATUS;
 import static com.skylightapp.Inventory.Stocks.STOCK_TYPE;
@@ -58,6 +60,28 @@ public class StocksDAO extends DBHelperDAO{
 
 
 
+    }
+    public ArrayList<Stocks> getStocksForBusiness(int bizID) {
+        ArrayList<Stocks> stocksArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = STOCK_BIZ_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(bizID)};
+
+        Cursor cursor = db.query(STOCKS_TABLE, null, selection, selectionArgs, null,
+                null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getStocksFromCursorProfile(stocksArrayList, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        db.close();
+
+        return stocksArrayList;
     }
     public int getStockItemCountForBranch(String packageName, String officeBranch) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -645,6 +669,52 @@ public class StocksDAO extends DBHelperDAO{
         }
 
     }
+    public ArrayList<Stocks> getALLStocksSuperAwajima(String awajima) {
+        ArrayList<Stocks> stocksArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = STOCK_ROLE + "=?";
+        String[] selectionArgs = new String[]{valueOf(awajima)};
+
+        Cursor cursor = db.query(STOCKS_TABLE, null, selection, selectionArgs, null,
+                null, null);
+
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getStocksNameFromCursor3(stocksArrayList, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        db.close();
+
+        return stocksArrayList;
+    }
+    public ArrayList<Stocks> getALLStocksSuperState(String state) {
+        ArrayList<Stocks> stocksArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = STOCK_ROLE + "=?";
+        String[] selectionArgs = new String[]{valueOf(state)};
+
+        Cursor cursor = db.query(STOCKS_TABLE, null, selection, selectionArgs, null,
+                null, null);
+
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getStocksNameFromCursor3(stocksArrayList, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        db.close();
+
+        return stocksArrayList;
+    }
 
     public ArrayList<Stocks> getStocksForTeller3(int profileID) {
         ArrayList<Stocks> stocksArrayList = new ArrayList<>();
@@ -764,4 +834,6 @@ public class StocksDAO extends DBHelperDAO{
 
         return stocksArrayList;
     }
+
+
 }

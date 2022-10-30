@@ -193,7 +193,7 @@ public class PayNowActivity extends AppCompatActivity  {
     LinearLayoutCompat layoutPaystack;
     com.skylightapp.Classes.Transaction Skylightransaction;
     Button btnLayoutFlutter, btnLayoutPaystack;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     RavePayInitializer ravePayInitializer;
     SQLiteDatabase sqLiteDatabase;
 
@@ -603,7 +603,7 @@ public class PayNowActivity extends AppCompatActivity  {
                 newAccountBalance = accountBalance+totalToday;
                 userProfile.addPTimeLine(tittle1,detail);
                 customer.getCusAccount().setAccountBalance(newAccountBalance);
-                Skylightransaction= new com.skylightapp.Classes.Transaction(transactionID, accountID, currentDateAndTime, accountID, AccountID, "Skylight", customerName, totalToday, Transaction.TRANSACTION_TYPE.DEPOSIT, "FlutterWave",officeBranch, "", "", "");
+                Skylightransaction= new com.skylightapp.Classes.Transaction(transactionID, accountID, currentDateAndTime, accountID, AccountID, "Awajima", customerName, totalToday, Transaction.TRANSACTION_TYPE.DEPOSIT, "FlutterWave",officeBranch, "", "", "");
 
                 skyLightPackage.addPSavings(profileID,customerId8,newSavingsID,packageAmount,selectedNumberOfDays,totalToday,numberOfDaysRemaining,amountRemaining,currentDateAndTime,"paid");
                 saveToDB(tittle,tittle1,details,skyLightPackage,customer,profileID,customerPhoneNo,customerId8,PackageName,packageAmount,newAccountBalance,newSavingsID,packageAmount,transactionID,currentDateAndTime,accountID,customerName,selectedNumberOfDays,totalToday,numberOfDaysRemaining,amountRemaining,currentDateAndTime);
@@ -644,7 +644,7 @@ public class PayNowActivity extends AppCompatActivity  {
             sqLiteDatabase = dbHelper.getWritableDatabase();
             TranXDAO tranXDAO= new TranXDAO(this);
             dbHelper.openDataBase();
-            tranXDAO.saveNewTransaction(profileID, customerId8,Skylightransaction, accountID, "Skylight", customerName, Transaction.TRANSACTION_TYPE.DEPOSIT, totalToday, transactionID, officeBranch, currentDateAndTime);
+            tranXDAO.saveNewTransaction(profileID, customerId8,Skylightransaction, accountID, "Awajima", customerName, Transaction.TRANSACTION_TYPE.DEPOSIT, totalToday, transactionID, officeBranch, currentDateAndTime);
 
 
 
@@ -811,7 +811,7 @@ public class PayNowActivity extends AppCompatActivity  {
         charge.setCard(loadCardFromForm());
 
         dialog = new ProgressDialog(PayNowActivity.this);
-        dialog.setMessage("Performing Skylight transaction... please wait");
+        dialog.setMessage("Performing Awajima transaction... please wait");
         dialog.show();
         if (local) {
 
@@ -822,7 +822,7 @@ public class PayNowActivity extends AppCompatActivity  {
             charge.setPlan(planCode);
             charge.setAccessCode(accessCode);
             try {
-                charge.putCustomField("Charged From", "Skylight  App");
+                charge.putCustomField("Charged From", "Awajima  App");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -1007,7 +1007,7 @@ public class PayNowActivity extends AppCompatActivity  {
 
         transaction.setTransactionId(transactionID);
 
-        transaction.setRecordAmount(totalToday);
+        transaction.setTranxAmount(totalToday);
         //long profileID =userProfile.getuID();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         String currentDateAndTime = sdf.format(new Date());
@@ -1049,7 +1049,7 @@ public class PayNowActivity extends AppCompatActivity  {
         if (customer != null) {
             customer.getCusAccount().setAccountBalance(newAccountBalance);
         }
-        Skylightransaction= new com.skylightapp.Classes.Transaction(transactionID, AccountID, currentDateAndTime, 1001001, AccountID, "Skylight", customerName, totalToday, transaction_type, "",officeBranch, "", "", "");
+        Skylightransaction= new com.skylightapp.Classes.Transaction(transactionID, AccountID, currentDateAndTime, 1001001, AccountID, "Awajima", customerName, totalToday, transaction_type, "",officeBranch, "", "", "");
 
         applicationDb.insertDailyReport(packageID,newSavingsID,profileID, customerId8,currentDateAndTime,packageAmount,selectedNumberOfDays,totalToday,amountSoFar+totalToday,amountRemaining,numberOfDaysRemaining,"paid");
         if (skyLightPackage != null) {
@@ -1069,7 +1069,7 @@ public class PayNowActivity extends AppCompatActivity  {
             TranXDAO tranXDAO= new TranXDAO(this);
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            tranXDAO.saveNewTransaction(profileID, customerId8,Skylightransaction, AccountID, "Skylight", customerName,transaction_type,totalToday, transactionID, officeBranch, currentDateAndTime);
+            tranXDAO.saveNewTransaction(profileID, customerId8,Skylightransaction, AccountID, "Awajima", customerName,transaction_type,totalToday, transactionID, officeBranch, currentDateAndTime);
 
 
         }
@@ -1078,7 +1078,7 @@ public class PayNowActivity extends AppCompatActivity  {
         startActivity(new Intent(PayNowActivity.this, LoginDirAct.class));
     }
     private void parseResponse (String transactionReference){
-        String message = "Skylight Payment Successful - " + transactionReference;
+        String message = "Awajima Payment Successful - " + transactionReference;
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         startActivity(new Intent(PayNowActivity.this, LoginDirAct.class));
 

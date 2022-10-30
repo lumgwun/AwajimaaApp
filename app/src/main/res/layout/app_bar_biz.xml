@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    style="@style/TextAppearance.AppCompat">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:background="@drawable/shape_layer_3"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:id="@+id/toolbar_cus"
+                android:layout_height="wrap_content"/>
+
+            <FrameLayout
+                android:id="@+id/frameContainer_biz"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <FrameLayout
+                android:layout_height="match_parent"
+                android:id="@+id/frameCont_b"
+                android:layout_width="match_parent">
+
+                <LinearLayout
+                    android:layout_height="350dp"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/shape_layer"
+                    android:layout_gravity="top">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/mb_Greetings"
+                        android:layout_width="250dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/good_morn1"
+                        android:layout_marginTop="5dp"
+                        android:backgroundTint="@color/yellow_intense"
+                        android:layout_gravity="center"
+                        android:padding="11dp"
+                        android:background="@drawable/shape_layer_3"
+                        android:stateListAnimator="@animator/nav_default_pop_enter_anim"
+                        app:civ_border_width="1dp"
+                        app:civ_border_color="#ffffff"/>
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/biz_logo"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/ic_add_media"
+                        android:layout_gravity="center_horizontal"
+                        android:padding="5dp"
+                        android:stateListAnimator="@animator/nav_default_pop_enter_anim"
+                        app:civ_border_width="1dp"
+                        app:civ_border_color="#ffffff"/>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp"
+                        android:weightSum="2"
+                        android:layout_height="wrap_content">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/n_bizBrand"
+                            android:layout_weight="1"
+                            android:textAllCaps="true"
+                            android:fontFamily="@font/gilroy_black"
+                            android:layout_marginStart="17dp"
+                            android:layout_marginEnd="2dp"
+                            android:textAlignment="center"
+                            android:textSize="15sp"
+                            android:textColor="@color/red_brown_dark"
+                            android:text="Biz: Akura Ltd."/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/id_of_biz"
+                            android:layout_weight="1"
+                            android:textAllCaps="true"
+                            android:fontFamily="@font/gilroy_black"
+                            android:layout_marginEnd="2dp"
+                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:textSize="15sp"
+                            android:textColor="@color/red_brown_dark"
+                            android:text="ID:0976"/>
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <com.balysv.materialripple.MaterialRippleLayout
+                        android:id="@+id/acct2_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:mrl_rippleAlpha="0.2"
+                        app:mrl_rippleColor="@color/blue1"
+                        app:mrl_rippleHover="true"
+                        app:mrl_rippleOverlay="false">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2"
+                            android:padding="30dp"
+                            android:layout_marginEnd="50dp"
+                            android:layout_marginStart="50dp"
+                            android:clickable="false">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/wallet_biz_acct"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Wallet ID:29745L"
+                                android:textColor="@color/red_brown_dark"
+                                android:padding="10dp"
+                                android:layout_marginEnd="2dp"
+                                android:textSize="15sp"
+                                android:layout_gravity="center_vertical|start"
+                                android:gravity="center_vertical|start"
+                                android:clickable="false"
+                                />
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/balance_BIZ_Balance"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:paddingLeft="10dp"
+                                android:text="Balance: NGN30 M"
+                                android:textColor="@color/red_brown_dark"
+                                android:padding="10dp"
+                                android:textSize="15sp"
+                                android:layout_gravity="center_vertical|end"
+                                android:gravity="center_vertical|end"
+                                android:clickable="false"
+                                />
+
+                        </LinearLayout>
+
+                    </com.balysv.materialripple.MaterialRippleLayout>
+
+
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="2dp"
+                    android:visibility="visible"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="5dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="2dp">
+
+                    <com.balysv.materialripple.MaterialRippleLayout
+                        android:id="@+id/profile_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:mrl_rippleAlpha="0.2"
+                        app:mrl_rippleColor="@color/blue1"
+                        app:mrl_rippleHover="true"
+                        app:mrl_rippleOverlay="false">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2"
+                            android:clickable="false">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/mbCus"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:text="Customers: 20"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:padding="10dp"
+                                android:textSize="15sp"
+                                android:layout_gravity="center_vertical|start"
+                                android:gravity="center_vertical|start"
+                                android:clickable="false" />
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/mb_tranx"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:text="TX: N200M"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:padding="10dp"
+                                android:textSize="15sp"
+                                android:layout_gravity="center_vertical|start"
+                                android:gravity="center_vertical|end"
+                                android:clickable="false" />
+
+                        </LinearLayout>
+
+                    </com.balysv.materialripple.MaterialRippleLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </FrameLayout>
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/black"/>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/shape_layer_3b"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/other_BankText"
+                android:textAllCaps="true"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="2dp"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:textColor="@android:color/holo_red_dark"
+                android:text="Account Overview :"/>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/selectAcct"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:background="@drawable/shape_layer_3"
+                    android:gravity="center_horizontal"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="2dp"
+                    android:textAlignment="center"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/white"
+                    android:text="Select Currency Account :"/>
+
+                <Spinner
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/mb_Acct_Spn"
+                    android:background="@drawable/shape_layer_3"
+                    android:textAllCaps="true"
+                    android:padding="20dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="2dp"
+                    android:textAlignment="center"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/holo_orange_dark" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/spn_biz_balance"
+                android:textAllCaps="true"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="2dp"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@android:color/holo_red_dark"
+                android:text="USD 0.00 :"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@drawable/rect_my_message"/>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="5dp"
+            android:visibility="visible"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/shape_layer_3b"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cus_BankText"
+                android:textAllCaps="true"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="2dp"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:textColor="@android:color/holo_red_dark"
+                android:text="Today Outlook:"/>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cus_mbNew_Today"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="2dp"
+                    android:textAlignment="center"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/holo_orange_dark"
+                    android:text="New Cus: 40"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/mb_support_m_today"
+                    android:textAllCaps="true"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="2dp"
+                    android:textAlignment="center"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/holo_orange_dark"
+                    android:text="Messages : 500"/>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/today_orders_biz"
+                android:textAllCaps="true"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="2dp"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:textColor="@android:color/holo_red_dark"
+                android:text="Orders: 4567 :"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <include layout="@layout/content_cus_home_page" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</ScrollView>

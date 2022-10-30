@@ -87,7 +87,6 @@ import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.android.installreferrer.api.ReferrerDetails;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.firebase.ui.auth.ui.phone.SpacedEditText;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationListener;
@@ -103,8 +102,6 @@ import com.google.android.gms.tasks.CancellationTokenSource;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.gson.Gson;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
@@ -328,8 +325,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     private int managerProfileID;
 
     List<Address> addresses;
-    private FirebaseAuth mAuth;
-    FirebaseAuth.AuthStateListener mAuthListner;
+
     private Calendar cal;
     AppController appController;
     private static boolean isPersistenceEnabled = false;
@@ -356,7 +352,6 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     private int otpDigit;
     String otpPhoneNumber;
     PinEntryView pinEntry;
-    SpacedEditText edtOtp1, edtOtp2, edtOtp3, edtOtp4;
     private LinearLayoutCompat layoutOTP, layoutPreOTP;
     private EditText[] editTexts;
     private Button btnSendOTP;
@@ -383,24 +378,16 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     private String bankAcctNumber;
     SupportSQLiteDatabase supportSQLiteDatabase;
 
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private LocationManager locationManager;
-    private SODAO sodao;
     private TranXDAO tranXDAO;
     private MessageDAO messageDAO;
-    private LoanDAO loanDAO;
     private AcctDAO acctDAO;
-    private CodeDAO codeDAO;
-    private PaymDocDAO paymDocDAO;
+
     private CusDAO cusDAO;
-    private PaymentCodeDAO paymentCodeDAO;
     private ProfDAO profileDao;
-    private TCashDAO cashDAO;
-    private TReportDAO tReportDAO;
-    private PaymentDAO paymentDAO;
-    private AdminBalanceDAO adminBalanceDAO;
+
     private BirthdayDAO birthdayDAO;
-    private AdminBDepositDAO depositDAO;
     private TimeLineClassDAO timeLineClassDAO;
     private Customer lastCustomerUsed;
     private static final String APPLICATION_ID = QUICKBLOX_APP_ID;   //QUICKBLOX_APP_ID
@@ -417,7 +404,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                     + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
                     + "([a-zA-Z]+[w-]+.)+[a-zA-Z]{2,4})$";
 
-    private FirebaseAuth.AuthStateListener mAuthListener;
+
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private Bundle bizNameBundle;
@@ -566,28 +553,19 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         bizNameBundle=getIntent().getExtras();
         createLocationRequest();
         cusDAO= new CusDAO(this);
-        paymentCodeDAO= new PaymentCodeDAO(this);
+
         profileDao= new ProfDAO(this);
-        cashDAO= new TCashDAO(this);
-        paymDocDAO= new PaymDocDAO(this);
-        tReportDAO= new TReportDAO(this);
-        paymentDAO= new PaymentDAO(this);
         birthdayDAO= new BirthdayDAO(this);
-        adminBalanceDAO= new AdminBalanceDAO(this);
-        depositDAO= new AdminBDepositDAO(this);
+
         timeLineClassDAO= new TimeLineClassDAO(this);
         if(bizNameBundle !=null){
             bizID=bizNameBundle.getInt("MARKET_BIZ_ID");
             marketID=bizNameBundle.getInt("MARKET_ID");
         }
 
-        sodao= new SODAO(this);
         tranXDAO= new TranXDAO(this);
-        sodao= new SODAO(this);
         messageDAO= new MessageDAO(this);
-        loanDAO= new LoanDAO(this);
 
-        codeDAO= new CodeDAO(this);
         acctDAO= new AcctDAO(this);
 
         referrerClient = InstallReferrerClient.newBuilder(this).build();
@@ -752,7 +730,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         loadProfiles(dbHelper);
         otpDigit = ThreadLocalRandom.current().nextInt(122, 1631);
         messageID = ThreadLocalRandom.current().nextInt(1125, 10400);
-        otpMessage = "&message=" + "Hello Skylight, Your OTP Code is " + otpDigit;
+        otpMessage = "&message=" + "Hello Awajima, Your OTP Code is " + otpDigit;
 
         profileID1 = random.nextInt((int) (Math.random() * 1400) + 1115);
         virtualAccountNumber = random.nextInt((int) (Math.random() * 123045) + 100123);
@@ -1092,7 +1070,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                             startActivityForResult(i, RESULT_LOAD_IMAGE);
                         }
                         if (item.getItemId() == R.id.cancel_action) {
-                            setTitle("Skylight onBoarding");
+                            setTitle("Awajima onBoarding");
                         }
 
                         return true;
@@ -1122,7 +1100,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         }
         if(dbHelper !=null){
             SQLiteDataBaseBuild();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
             customers = cusDAO.getAllCustomers11();
 
         }
@@ -1487,6 +1465,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
             sqLiteDatabase = dbHelper.getWritableDatabase();
             timeLineClassDAO.insertTimeLine(tittleT1, timelineDetailsTD, timeLineTime, mCurrentLocation);
         }
+        SODAO sodao= new SODAO(this);
 
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
@@ -1701,7 +1680,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                 R.anim.slide_out_left);
 
         Toast.makeText(SignUpAct.this, "Thank you" + "" +
-                "for Signing up " + "" + uFirstName + "" + "on the Skylight. App", Toast.LENGTH_LONG).show();
+                "for Signing up " + "" + uFirstName + "" + "on the Awajima. App", Toast.LENGTH_LONG).show();
         setResult(Activity.RESULT_OK, new Intent());
         finish();
     }
@@ -1843,7 +1822,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
     public void loadProfiles(DBHelper dbHelper) {
 
-        userProfile1 = new Profile(10000, "Emmanuel", "Becky", "08069524599", "urskylight@gmail.com", "1980-04-19", "female", "Skylight", "", "Rivers", "Elelenwo", "2022-04-19", "SuperAdmin", "Skylight4ever", "@Awajima2", "Confirmed", "");
+        userProfile1 = new Profile(10000, "Emmanuel", "Becky", "08069524599", "urskylight@gmail.com", "1980-04-19", "female", "Awajima", "", "Rivers", "Elelenwo", "2022-04-19", "SuperAdmin", "Skylight4ever", "@Awajima2", "Confirmed", "");
         userProfile2= new Profile(1000,"Benedict", "Benedict", "08059250176", "bener@gmail.com", "25/04/1989", "male", "PH", "","Rivers", "Elelenwo", "19/04/2022","Customer", "Lumgwun", "@Awajima3","Confirmed","");
 
 
@@ -1866,7 +1845,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
             messageDAO.saveNewMessage(supportMessage);
-            //dbHelper.insertMessage(profileID, customerID, messageID, otpMessage, "Skylight", customerName, selectedOffice, joinedDate);
+            //dbHelper.insertMessage(profileID, customerID, messageID, otpMessage, "Awajima", customerName, selectedOffice, joinedDate);
 
         }
 
@@ -1975,7 +1954,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         smsBundle.putString("PROFILE_PHONE", otpPhoneNumber);
         smsBundle.putString("USER_PHONE", otpPhoneNumber);
         smsBundle.putString("smsMessage", otpMessage);
-        //smsBundle.putString("from", "Skylight");
+        //smsBundle.putString("from", "Awajima");
         smsBundle.putString("to", otpPhoneNumber);
         Intent otpIntent = new Intent(SignUpAct.this, SMSAct.class);
         otpIntent.putExtras(smsBundle);
@@ -1992,7 +1971,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
     private void PrePopulateDB() {
         dbHelper = new DBHelper(this);
-        userProfile1 = new Profile(234, "Emmanuel", "Becky", "08069524599", "urskylight@gmail.com", "1980-04-19", "female", "Skylight", "", "Rivers", "Elelenwo", "2022-04-19", "SuperAdmin", "Skylight4ever", "@Awajima2", "Confirmed", "");
+        userProfile1 = new Profile(234, "Emmanuel", "Becky", "08069524599", "urskylight@gmail.com", "1980-04-19", "female", "Awajima", "", "Rivers", "Elelenwo", "2022-04-19", "SuperAdmin", "Skylight4ever", "@Awajima2", "Confirmed", "");
         userProfile2= new Profile(432,"Benedict", "Benedict", "08059250176", "bener@gmail.com", "25/04/1989", "male", "PH", "","Rivers", "Elelenwo", "19/04/2022","Customer", "Lumgwun", "@Awajima3","Confirmed","");
 
         sqLiteDatabase = dbHelper.getWritableDatabase();
@@ -2016,7 +1995,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
     private void PostRoomCode() {
         dbHelper=new DBHelper(this);
-        userProfile1 = new Profile(0, "Emmanuel", "Becky", "08069524599", "urskylight@gmail.com", "1980-04-19", "female", "Skylight", "", "Rivers", "Elelenwo", "2022-04-19", "SuperAdmin", "Skylight4ever", "@Awajima2", "Confirmed", "");
+        userProfile1 = new Profile(0, "Emmanuel", "Becky", "08069524599", "urskylight@gmail.com", "1980-04-19", "female", "Awajima", "", "Rivers", "Elelenwo", "2022-04-19", "SuperAdmin", "Skylight4ever", "@Awajima2", "Confirmed", "");
         userProfile2= new Profile(0,"Benedict", "Benedict", "08059250176", "bener@gmail.com", "25/04/1989", "male", "PH", "","Rivers", "Elelenwo", "19/04/2022","Customer", "Lumgwun", "@Awajima3","Confirmed","");
 
 
@@ -2078,11 +2057,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
 
         }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            cashDAO.insertTellerCash(109,193,193,"TestItem",500.00,"2022-05-23","Uche","Elelenwo",8903,"new");
 
-        }
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             profileDao.insertProfile(profile33);
@@ -2099,7 +2074,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         smsBundle.putString(PROFILE_PHONE, uPhoneNumber);
         smsBundle.putString("USER_PHONE", uPhoneNumber);
         smsBundle.putString("smsMessage", smsMessage);
-        //smsBundle.putString("from", "Skylight Coop.");
+        //smsBundle.putString("from", "Awajima Coop.");
         smsBundle.putString("to", uPhoneNumber);
         Intent otpIntent = new Intent(SignUpAct.this, SMSAct.class);
         otpIntent.putExtras(smsBundle);
@@ -2115,7 +2090,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         smsBundle.putString(PROFILE_PHONE, uPhoneNumber);
         smsBundle.putString("USER_PHONE", uPhoneNumber);
         smsBundle.putString("smsMessage", smsMessage);
-        //smsBundle.putString("from", "Skylight Coop.");
+        //smsBundle.putString("from", "Awajima Coop.");
         smsBundle.putString("to", uPhoneNumber);
         Intent otpIntent = new Intent(SignUpAct.this, SMSAct.class);
         otpIntent.putExtras(smsBundle);
@@ -2438,7 +2413,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                     Intent intent = new Intent();
                     intent.setAction(
                             Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    Uri uri = Uri.fromParts("Skylight App",
+                    Uri uri = Uri.fromParts("Awajima App",
                             BuildConfig.APPLICATION_ID, null);
                     intent.setData(uri);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -2498,7 +2473,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                     Intent intent = new Intent();
                     intent.setAction(
                             Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    Uri uri = Uri.fromParts("Skylight App",
+                    Uri uri = Uri.fromParts("Awajima App",
                             BuildConfig.APPLICATION_ID, null);
                     intent.setData(uri);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -2591,7 +2566,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                 .asBitmap()
                 .load(destination)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .error(R.drawable.ic_alert)
+                .error(R.drawable.ic_notification_icon)
                 //.listener(listener)
                 .skipMemoryCache(true)
                 .fitCenter()
@@ -2601,11 +2576,11 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
     protected void sendSMSMessage() {
         Bundle smsBundle = new Bundle();
-        String smsMessage = uFirstName + "" + "Welcome to the Skylight  App, may you have the best experience";
+        String smsMessage = uFirstName + "" + "Welcome to the Awajima  App, may you have the best experience";
         smsBundle.putString(PROFILE_PHONE, otpPhoneNumber);
         smsBundle.putString("USER_PHONE", otpPhoneNumber);
         smsBundle.putString("smsMessage", smsMessage);
-        smsBundle.putString("from", "Skylight");
+        smsBundle.putString("from", "Awajima");
         smsBundle.putString("to", otpPhoneNumber);
         Intent itemPurchaseIntent = new Intent(SignUpAct.this, SMSAct.class);
         itemPurchaseIntent.putExtras(smsBundle);

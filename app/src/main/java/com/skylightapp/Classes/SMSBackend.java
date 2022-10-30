@@ -15,7 +15,7 @@ import static spark.Spark.post;
 
 public class SMSBackend {
     public static void main(String[] args) {
-        get("/", (req, res) -> "Skylight");
+        get("/", (req, res) -> "Awajima");
 
         String TWILLO_ACCOUNT_SID= T_ACCT_SID;
         String TWILLO_AUTH_TOKEN= T_AUTH_TOKEN;

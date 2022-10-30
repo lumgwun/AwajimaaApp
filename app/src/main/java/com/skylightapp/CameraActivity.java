@@ -98,7 +98,7 @@ public class CameraActivity extends AppCompatActivity {
     };
 
     protected ImageView photo;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     String userChoosenTask;
     View view;
     Context context;

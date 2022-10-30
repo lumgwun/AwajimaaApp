@@ -13,14 +13,21 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.blongho.country_data.Currency;
+import com.blongho.country_data.World;
 import com.google.gson.Gson;
+import com.skylightapp.Adapters.CurrAdapter;
+import com.skylightapp.Classes.GroupAccount;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.GroupAccountDAO;
@@ -32,11 +39,14 @@ import com.twilio.rest.api.v2010.account.Message;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.TimeZone;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
@@ -46,11 +56,12 @@ import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 public class MyNewGrpSavings extends AppCompatActivity {
     Profile userProfile;
-    long profileUID;
-    long id,grpAcctNo;
+    int profileUID;
+    long id;
+    int grpAcctNo;
     private SharedPreferences userPreferences;
     AppCompatEditText edtTittle,edtPurpose,edtFirstName,edtSurName,edtAmount,edtEmail,edtPhoneNo;
-    String ManagerSurname,managerFirstName,managerPhoneNumber1,managerEmail, managerNIN,managerUserName;
+    String ManagerSurname,grpDateDate,managerFirstName,managerPhoneNumber1,managerEmail, managerNIN,managerUserName;
 
     private Calendar calendar;
     protected DBHelper dbHelper;
@@ -60,27 +71,37 @@ public class MyNewGrpSavings extends AppCompatActivity {
     DatePicker picker;
     Random ran ;
     private  double amount;
-    AppCompatSpinner spnFrequency;
+    AppCompatSpinner spnFrequency,spnDuration;
     AppCompatButton btnCreateGroup;
     Bundle userBundle;
     private String TWILLO_ACCOUNT_SID= BuildConfig.T_ACCT_SID;
     private String TWILLO_AUTH_TOKEN= BuildConfig.T_AUTH_TOKEN;
     private SODAO sodao;
-
-
+    private static final String PREF_NAME = "awajima";
+    private int selectedCurrencyIndex;
+    private AppCompatSpinner spnCurrency;
+    private List<Currency>currencyList;
+    private com.blongho.country_data.Currency currency;
+    private String currencyCode,selectedFreq,selectedDuration;
+    private CurrAdapter currencyAdapter;
+    private SQLiteDatabase sqLiteDatabase;
+    private int freqInt,durationInt;
+    private Uri grpLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_my_new_grp_savings);
-        dbHelper=new DBHelper(this);
-
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        setContentView(R.layout.act_my_new_grp_savings);
+        dbHelper=new DBHelper(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
+        World.init(this);
         userProfile=new Profile();
         random= new SecureRandom();
+
+        currencyList= new ArrayList<>();
         json = userPreferences.getString("LastProfileUsed", "");
         edtTittle =  findViewById(R.id.grpTittle);
         edtPurpose =  findViewById(R.id.grpPurpose);
@@ -89,10 +110,54 @@ public class MyNewGrpSavings extends AppCompatActivity {
         edtAmount =  findViewById(R.id.grpAmount);
         edtEmail =  findViewById(R.id.grpEmail);
         edtPhoneNo =  findViewById(R.id.grpPhoneNo);
-        //spnFrequency =  findViewById(R.id.grpFreq);
+        spnFrequency =  findViewById(R.id.grpFreq);
+        spnCurrency =  findViewById(R.id.grpCurrency);
+        spnDuration =  findViewById(R.id.grp_Duration);
         btnCreateGroup =  findViewById(R.id.grpCreateGrp);
+
         userProfile = gson.fromJson(json, Profile.class);
         userBundle=new Bundle();
+
+        spnFrequency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //selectedOffice = office.getSelectedItem().toString();
+                selectedFreq = (String) parent.getSelectedItem();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        spnDuration.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //selectedOffice = office.getSelectedItem().toString();
+                selectedDuration = (String) parent.getSelectedItem();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        currencyList= World.getAllCurrencies();
+        currencyAdapter = new CurrAdapter(this, R.layout.list_currency, currencyList);
+        spnCurrency.setAdapter(currencyAdapter);
+        spnCurrency.setSelection(0);
+        spnCurrency.setSelection(currencyAdapter.getPosition(currency));
+
+        selectedCurrencyIndex = spnCurrency.getSelectedItemPosition();
+        try {
+            currency = currencyList.get(selectedCurrencyIndex);
+
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Oops!");
+        }
+        if(currency !=null){
+            currencyCode=currency.getCode();
+        }
 
         if(userProfile !=null){
             ManagerSurname = userProfile.getProfileLastName();
@@ -107,11 +172,12 @@ public class MyNewGrpSavings extends AppCompatActivity {
             userBundle.putString("Machine",machine);
 
         }
-        try {
-            dbHelper.createDataBase();
-        } catch (IOException e) {
-            e.printStackTrace();
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+
         }
+        grpAcctNo = ThreadLocalRandom.current().nextInt(1125, 10490);
         btnCreateGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,8 +197,8 @@ public class MyNewGrpSavings extends AppCompatActivity {
 
                 }
                 calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-                @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy");
-                String grpDateDate = mdformat.format(calendar.getTime());
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
+                grpDateDate = mdformat.format(calendar.getTime());
                 Date currentDate = calendar.getTime();
 
 
@@ -148,17 +214,17 @@ public class MyNewGrpSavings extends AppCompatActivity {
                 }
 
 
-                try {
+                /*try {
                     firstName = edtFirstName.getText().toString();
                 } catch (NullPointerException e) {
                     System.out.println("Oops!");
-                }
+                }*/
                 try {
                     amount = Double.parseDouble(edtAmount.getText().toString());
                 } catch (NumberFormatException e) {
                     System.out.println("Oops!");
                 }
-                try {
+                /*try {
                     surname = edtSurName.getText().toString();
                 } catch (NullPointerException e) {
                     System.out.println("Oops!");
@@ -172,7 +238,7 @@ public class MyNewGrpSavings extends AppCompatActivity {
                     phoneNo = edtPhoneNo.getText().toString();
                 } catch (NullPointerException e) {
                     System.out.println("Oops!");
-                }
+                }*/
                 try {
                     grpAcctNo = random.nextInt((int) (Math.random() * 902304) + 136197);
 
@@ -186,32 +252,40 @@ public class MyNewGrpSavings extends AppCompatActivity {
 
 
                     }
-                    if (String.valueOf(firstName).isEmpty()) {
+                    /*if (String.valueOf(firstName).isEmpty()) {
                         Toast.makeText(MyNewGrpSavings.this, "First Name can not be left empty", Toast.LENGTH_LONG).show();
-                    }
+                    }*/
                     if (String.valueOf(amount).isEmpty()) {
                         Toast.makeText(MyNewGrpSavings.this, "Amount can not be left empty", Toast.LENGTH_LONG).show();
                     }
-                    if (String.valueOf(surname).isEmpty()) {
+                    /*if (String.valueOf(surname).isEmpty()) {
                         Toast.makeText(MyNewGrpSavings.this, "Surname can not be left empty", Toast.LENGTH_LONG).show();
 
 
-                    }else {
+                    }*/else {
                         String status3 = "Subscription in progress";
                         String status1 = "Savings Unconfirmed";
+
+                        try {
+                            freqInt= Integer.parseInt(selectedFreq);
+                            durationInt= Integer.parseInt(selectedDuration);
+
+                        } catch (NumberFormatException e) {
+                            System.out.println("Oops!");
+                        }
                         grpDateDate = mdformat.format(calendar.getTime());
                         String tittle = "New Group Savings alert";
-                        String timelineDetails1 = "A new Group savings of NGN" + amount + "was started @"+""+currentDate;
-                        String timelineDetails = "A new Group savings of NGN" + amount + "was started";
-                        int grpNo=0;
+                        String timelineDetails1 = "A new Group savings of "+currencyCode+ amount + "was started @"+""+currentDate;
+                        String timelineDetails = "A new Group savings of " +currencyCode+ amount + "was started";
                         TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(MyNewGrpSavings.this);
                         GroupAccountDAO groupAccountDAO= new GroupAccountDAO(MyNewGrpSavings.this);
+                        GroupAccount groupAccount= new GroupAccount(grpAcctNo,profileUID, tittle,purpose,managerFirstName,ManagerSurname,managerPhoneNumber1,managerEmail,grpDateDate,amount,currencyCode,freqInt,durationInt,0.00);
 
 
                         try {
 
                             timeLineClassDAO.insertTimeLine(tittle, timelineDetails, grpDateDate, null);
-                            groupAccountDAO.insertGroupAccount(grpAcctNo, profileUID, tittle, purpose,firstName,surname,phoneNo,emailAddress,currentDate,0.00,null,"new");
+                            groupAccountDAO.insertGroupAccount(grpAcctNo, profileUID, tittle, purpose,managerFirstName,ManagerSurname,managerPhoneNumber1,managerEmail,grpDateDate,amount,currencyCode,freqInt,durationInt,0.00,grpLink,null,"new");
                             doNotification();
 
                         } catch (SQLiteException e) {
@@ -220,13 +294,13 @@ public class MyNewGrpSavings extends AppCompatActivity {
 
                         if(userProfile !=null){
                             userProfile.addPTimeLine(tittle,timelineDetails1);
-                            userProfile.addPSavingsGrp(grpNo, tittle,surname+","+ firstName,purpose,amount, currentDate, null,"New");
+                            userProfile.addPSavingsGrpAcct(groupAccount);
 
 
                         }
 
 
-                        String paymentMessage = "Congratulations" + surname+","+ firstName + " a new Group Savings on the Skylight App,is for You";
+                        String paymentMessage = "Congratulations" + surname+","+ firstName + " a new Group Savings on the Awajima App,is for You";
 
                         Twilio.init(TWILLO_ACCOUNT_SID, TWILLO_AUTH_TOKEN);
                         Message message = Message.creator(
@@ -248,6 +322,7 @@ public class MyNewGrpSavings extends AppCompatActivity {
 
             }
         });
+        btnCreateGroup.setOnClickListener(this::DoGrpAcctCreation);
     }
     private void doNotification() {
         NotificationCompat.Builder builder =
@@ -265,5 +340,8 @@ public class MyNewGrpSavings extends AppCompatActivity {
 
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(0, builder.build());
+    }
+
+    public void DoGrpAcctCreation(View view) {
     }
 }

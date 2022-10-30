@@ -10,33 +10,30 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
+import com.skylightapp.Adapters.OfficeAdapter;
 import com.skylightapp.Adapters.ProfileSimpleAdapter;
 import com.skylightapp.Adapters.ProfileSpinnerAdapter;
-import com.skylightapp.Adapters.StandingOrderAdapter;
 import com.skylightapp.Adapters.TellerCashAdapter;
-import com.skylightapp.Admins.AdminPackageActivity;
-import com.skylightapp.Classes.CusSimpleAdapter;
-import com.skylightapp.Classes.Customer;
+import com.skylightapp.Classes.OfficeBranch;
+import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.MarketBizDAO;
 import com.skylightapp.Database.TCashDAO;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
-import com.skylightapp.Tellers.MyTellerCashAdapter;
 import com.skylightapp.Tellers.TellerCash;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class TellerCashList extends AppCompatActivity implements TellerCashAdapter.OnItemClickListener{
     private RecyclerView mRecyclerView,mRecyclerViewBranch,mRecyclerViewTeller;
@@ -56,12 +53,29 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
     ProfileSimpleAdapter arrayAdapterBranch;
     SharedPreferences sharedpreferences;
     protected DBHelper dbHelper;
+    private ArrayList<OfficeBranch> officeBranchArrayList;
     Gson gson;
     TellerCash tellerCash;
     AppCompatButton btnSelectBranch,btnSelectTeller;
     Spinner spnTeller,spnBranch;
     private String branchByName,tellerByName;
     LinearLayout layoutSpn,layoutBranch;
+    private long bizID;
+    private SQLiteDatabase sqLiteDatabase;
+    private static final String PREF_NAME = "skylight";
+    private OfficeAdapter officeAdapter;
+
+    String machine,selectedOffice;
+    private Awajima awajima;
+    OfficeBranch officeBranch;
+    Profile userProfile;
+    Gson gson2,gson3;
+    String json,json2,json3,userRole;
+    private MarketBusiness marketBiz;
+    private MarketBizDAO marketBizDAO;
+    OfficeBranch selectedBranch;
+    private SharedPreferences userPreferences;
+
     private void openDetailActivity(String[] data){
         /*Intent intent = new Intent(this, DetailsActivity.class);
         intent.putExtra("TELLER_CASH_TELLER_NAME",data[0]);
@@ -75,11 +89,21 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_teller_cash_list);
         dbHelper = new DBHelper(this);
+        gson = new Gson();
+        gson2 = new Gson();
+        gson3= new Gson();
+        awajima = new Awajima();
+        officeBranch= new OfficeBranch();
+        marketBizDAO=new MarketBizDAO(this);
+        marketBiz= new MarketBusiness();
+        userProfile= new Profile();
+        selectedBranch= new OfficeBranch();
         mRecyclerView = findViewById(R.id.mRecyclerView);
         mRecyclerViewBranch = findViewById(R.id.mRecyclerViewBranch);
         mRecyclerViewTeller = findViewById(R.id.mRecyclerViewTeller);
         tellerCashArrayListBranches= new ArrayList<>();
         tellerCashArrayListTeller= new ArrayList<>();
+        officeBranchArrayList = new ArrayList<OfficeBranch>();
         spnTeller = findViewById(R.id.spnTellerCash);
         spnBranch = findViewById(R.id.spnBranchTC);
         btnSelectBranch = findViewById(R.id.buttonBranchTC);
@@ -87,6 +111,16 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
         layoutSpn = findViewById(R.id.grp_Teller);
         layoutBranch = findViewById(R.id.layout5);
         tellerCashList = new ArrayList<>();
+        json = userPreferences.getString("LastAwajimaUsed", "");
+        awajima = gson.fromJson(json, Awajima.class);
+        userRole = userPreferences.getString("machine", "");
+
+        json2 = userPreferences.getString("LastMarketBusinessUsed", "");
+        marketBiz = gson2.fromJson(json2, MarketBusiness.class);
+        if(marketBiz !=null){
+            bizID=marketBiz.getBusinessID();
+            officeBranchArrayList=marketBiz.getOfficeBranches();
+        }
 
 
         LinearLayoutManager layoutManager
@@ -168,17 +202,26 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
             System.out.println("Oops!");
         }
 
+        officeAdapter = new OfficeAdapter(TellerCashList.this, officeBranchArrayList);
+        spnBranch.setAdapter(officeAdapter);
+        spnBranch.setSelection(0);
+
         spnBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //branchName1 = spnPaymentBranchT.getSelectedItem().toString();
-                branchByName = (String) parent.getSelectedItem();
+                selectedBranch = (OfficeBranch) parent.getSelectedItem();
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        if(selectedBranch !=null){
+            selectedOffice=selectedBranch.getOfficeBranchName();
+        }
+
+        branchByName=selectedOffice;
         tellerCashArrayListBranches=tCashDAO.getTellerCashForBranch(branchByName);
 
         btnSelectBranch.setOnClickListener(new View.OnClickListener() {

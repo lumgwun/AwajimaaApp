@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:weightSum="2"
                 android:layout_height="wrap_content">
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="0dp"
                     android:text=" Currency"
                     android:layout_marginBottom="10dp"
@@ -39,7 +39,7 @@
                     android:textColor="@color/colorPrimary"
                     android:layout_height="wrap_content"/>
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="0dp"
                     android:text=" ID"
                     android:layout_marginBottom="10dp"
@@ -51,7 +51,7 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:text=" Bank Name"
                 android:id="@+id/account_bank1"
@@ -59,7 +59,7 @@
                 android:layout_marginBottom="10dp"
                 android:textColor="@color/colorPrimary"
                 android:layout_height="wrap_content"/>
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:text=" AccountName"
                 android:layout_marginBottom="10dp"
@@ -67,7 +67,7 @@
                 android:layout_marginEnd="5dp"
                 android:textColor="@color/colorPrimary"
                 android:layout_height="wrap_content"/>
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:text=" Account No."
                 android:id="@+id/account_no2"
@@ -76,9 +76,10 @@
                 android:textColor="@color/colorPrimary"
                 android:layout_height="wrap_content"/>
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:text=" Balance."
+                android:visibility="gone"
                 android:layout_marginBottom="10dp"
                 android:id="@+id/account_balance2"
                 android:layout_marginEnd="5dp"
@@ -90,11 +91,12 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/txt_account_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginBottom="20dp"
@@ -102,22 +104,24 @@
         app:layout_constraintStart_toEndOf="@+id/img_account"
         tools:text="ACCOUNT NAME" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/txt_acc_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:visibility="gone"
         android:layout_marginBottom="20dp"
         android:textAppearance="@android:style/TextAppearance.Holo.Medium"
         app:layout_constraintStart_toEndOf="@+id/img_account"
         app:layout_constraintTop_toBottomOf="@+id/txt_balance"
         tools:text="ACCOUNT NO: " />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/txt_balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:visibility="gone"
         android:layout_marginBottom="20dp"
         android:textAppearance="@android:style/TextAppearance.Holo.Medium"
         android:textColor="@android:color/holo_green_dark"
@@ -126,10 +130,11 @@
         app:layout_constraintTop_toBottomOf="@+id/txt_account_name"
         tools:text="CURRENT BALANCE:" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_account"
         android:layout_width="58dp"
         android:layout_height="55dp"
+        android:visibility="gone"
         android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

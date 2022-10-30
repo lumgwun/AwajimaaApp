@@ -367,8 +367,8 @@ public class LoanApprovalAct extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy");
         paymentDate = mdformat.format(calendar.getTime());
-        String narration="Skylight Loan disbursement!";
-        String paymentMessage="Your Loan of NGN"+loanAmt+""+"has been approved by the Skylight Admin,and you will be credited now";
+        String narration="Awajima Loan disbursement!";
+        String paymentMessage="Your Loan of NGN"+loanAmt+""+"has been approved by the Awajima Admin,and you will be credited now";
 
 
         @SuppressLint("StaticFieldLeak")
@@ -433,7 +433,7 @@ public class LoanApprovalAct extends AppCompatActivity {
 
 
     private  void approvalMessage(double loanAmt,String customerPhone){
-        String paymentMessage="Your Loan of NGN"+loanAmt+""+"has been approved by the Skylight Admin,and you will be credited now";
+        String paymentMessage="Your Loan of NGN"+loanAmt+""+"has been approved by the Awajima Admin,and you will be credited now";
         Twilio.init(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
         Message message = Message.creator(
                 new com.twilio.type.PhoneNumber(customerPhone),

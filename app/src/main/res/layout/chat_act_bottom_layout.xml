@@ -23,8 +23,7 @@
 
 
         <View
-            android:id="@+id/divider_chat_attachments"
-            style="@style/MultiWaveHeader" />
+            android:id="@+id/divider_chat_attachments" />
 
         <com.skylightapp.MarketClasses.AttachmentPreviewAdapterView
             android:id="@+id/adapter_attachment_preview"

@@ -106,7 +106,7 @@ public class ChartAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_chart);
-        setTitle("Skylight Multi-Chart Analysis");
+        setTitle("Awajima Multi-Chart Analysis");
         checkInternetConnection();
         bundle= new Bundle();
         stringType=null;
@@ -253,14 +253,14 @@ public class ChartAct extends AppCompatActivity {
         promoBarChart = findViewById(R.id.ourPieChartPromo);
         itemsBarchart = (BarChart) findViewById(R.id.itemsBarChart);
         savingsBarChart = findViewById(R.id.savingsBarChart);
-        descriptionTx.setText("Skylight Tranx Chart");
-        descriptionCus.setText("Skylight Customer Chart");
-        descriptionSavings.setText("Skylight Savings Chart");
-        descriptionPacks.setText("Skylight Packages Chart");
-        descriptionPromo.setText("Skylight Promo Chart");
-        descriptionItems.setText("Skylight Items Chart");
-        descriptionInv.setText("Skylight Investment Chart");
-        descriptionPayment.setText("Skylight Payout Chart");
+        descriptionTx.setText("Awajima Tranx Chart");
+        descriptionCus.setText("Awajima Customer Chart");
+        descriptionSavings.setText("Awajima Savings Chart");
+        descriptionPacks.setText("Awajima Packages Chart");
+        descriptionPromo.setText("Awajima Promo Chart");
+        descriptionItems.setText("Awajima Items Chart");
+        descriptionInv.setText("Awajima Investment Chart");
+        descriptionPayment.setText("Awajima Payout Chart");
 
 
         populateBarCartInv(investmentArrayList,chartDataInvestment,valueSetInvestment,invBarChart);

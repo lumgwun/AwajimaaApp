@@ -32,11 +32,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.dynamiclinks.DynamicLink;
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
-import com.google.firebase.dynamiclinks.ShortDynamicLink;
+
 import com.google.gson.Gson;
 import com.melnykov.fab.FloatingActionButton;
 import com.quickblox.core.QBEntityCallback;
@@ -131,7 +127,6 @@ public class LoginActivity extends BaseActivity {
     ArrayList<Customer> customers;
     RadioGroup userTypes, radioGroup1;
     AppCompatRadioButton checkBoxCustomer;
-    private FirebaseAuth mFirebaseAuth;
     public static final int RC_SIGN_IN = 1;
     private ProgressBar loadingUserName, progressBar;
     AppCompatButton btn_email_loginUp, loginBtnWithUserName,  btn_loginEmail, signUpUserInstead;
@@ -162,10 +157,8 @@ public class LoginActivity extends BaseActivity {
     String SharedPrefJoinedDate;
     String SharedPrefOffice;
     String SharedPrefState;
-    private FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleApiClient mGoogleApiClient;
     ProgressDialog progressDialog;
-    FirebaseUser user;
 
     //private CallbackManager mCallbackManager;
     private String profilePhotoUrlLarge;
@@ -178,14 +171,13 @@ public class LoginActivity extends BaseActivity {
     private StandingOrderAcct standingOrderAcct;
     private  Profile userProfile;
     private QBUser qbUser;
-    private FirebaseUser firebaseUser;
     private String refLink;
     private Uri mInvitationUrl;
     private ProfDAO profDAO;
     private PrefManager prefManager;
 
     private static final String TAG = "EmailPassword";
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
 
     String regEx =
             "^(([w-]+.)+[w-]+|([a-zA-Z]{1}|[w-]{2,}))@"
@@ -194,7 +186,6 @@ public class LoginActivity extends BaseActivity {
                     + "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9]).([0-1]?"
                     + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
                     + "([a-zA-Z]+[w-]+.)+[a-zA-Z]{2,4})$";
-    private FirebaseAuth mAuth;
     private Context context;
     public static void start(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);
@@ -207,7 +198,6 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setTitle("Login Access");
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         random= new Random();
         SQLiteDataBaseBuild();
         prefManager= new PrefManager(this);
@@ -227,16 +217,17 @@ public class LoginActivity extends BaseActivity {
         qbUser = gson1.fromJson(json1, QBUser.class);
         if(userProfile !=null){
             sharedPrefUserMachine=userPreferences.getString("Machine","");
-            sharedPrefSurName=userPreferences.getString("USER_SURNAME","");
-            sharedPrefFirstName=userPreferences.getString("USER_FIRSTNAME","");
-            sharedPrefRole=userPreferences.getString("USER_ROLE","");
+            sharedPrefSurName=userPreferences.getString("PROFILE_SURNAME","");
+            sharedPrefFirstName=userPreferences.getString("PROFILE_FIRSTNAME","");
+            sharedPrefRole=userPreferences.getString("PROFILE_ROLE","");
             sharedPrefProfileID=userPreferences.getInt("PROFILE_ID",0);
         }
         refLink = "https://skylightbizapp.page.link/?invitedby=" + sharedPrefProfileID;
 
         dbHelper = new DBHelper(this);
         sqLiteDatabase = dbHelper.getWritableDatabase();
-        FirebaseDynamicLinks.getInstance().createDynamicLink()
+
+        /*FirebaseDynamicLinks.getInstance().createDynamicLink()
                 .setLink(Uri.parse(refLink))
                 .setDomainUriPrefix("https://skylightbizapp.page.link")
                 .setAndroidParameters(
@@ -247,7 +238,7 @@ public class LoginActivity extends BaseActivity {
                         new DynamicLink.IosParameters.Builder("com.example.ios")
                                 .setAppStoreId("123456789")
                                 .setMinimumVersion("1.0.1")
-                                .build())*/
+                                .build())
                 .buildShortDynamicLink()
                 .addOnSuccessListener(new OnSuccessListener<ShortDynamicLink>() {
                     @Override
@@ -255,7 +246,7 @@ public class LoginActivity extends BaseActivity {
                         mInvitationUrl = shortDynamicLink.getShortLink();
                         // ...
                     }
-                });
+                });*/
         if(dbHelper !=null){
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
@@ -445,25 +436,6 @@ public class LoginActivity extends BaseActivity {
 
 
 
-    private void updateUI(FirebaseUser user) {
-        if (user != null) {
-            gson = new Gson();
-            userProfile= new Profile();
-            customer1 = new Customer();
-            skyLightCustomer= new Customer();
-            //profileID2 = (long) random.nextInt((int) (Math.random() * 909) + 1119);
-            userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-            dbHelper = new DBHelper(LoginActivity.this);
-
-            //  findViewById(R.id.email_password_buttons).setVisibility(View.GONE);
-            //  findViewById(R.id.email_password_fields).setVisibility(View.GONE);
-            //  findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
-        } else {
-            // sign_up_textView.setText("sign out");
-            //Toast.makeText(getApplicationContext(), "sign out", Toast.LENGTH_LONG).show();
-        }
-
-    }
 
     @Override
     public void onStop() {
@@ -1229,7 +1201,7 @@ public class LoginActivity extends BaseActivity {
             adminIntent.putExtra("PROFILE_EMAIL", email);
             adminIntent.putExtra("PROFILE_PHONE", sharedPrefPhone);
             adminIntent.putExtra("PROFILE_FIRSTNAME", "Alpha");
-            adminIntent.putExtra("PROFILE_SURNAME", "Skylight");
+            adminIntent.putExtra("PROFILE_SURNAME", "Awajima");
             adminIntent.putExtra("PROFILE_DOB", dob);
             adminIntent.putExtra("PROFILE_DATE_JOINED", dateJoined);
             adminIntent.putExtra("CUSTOMER_ID", 1111100001);
@@ -1240,12 +1212,12 @@ public class LoginActivity extends BaseActivity {
             adminIntent.putExtra(PROFILE_USERNAME, "LS80069990");
             adminIntent.putExtra(PROFILE_PASSWORD, "LS09996008");
             adminIntent.putExtra(PROFILE_OFFICE, officeBranch);
-            adminIntent.putExtra(PROFILE_STATE, "Skylight");
+            adminIntent.putExtra(PROFILE_STATE, "Awajima");
             adminIntent.putExtra(PROFILE_ROLE, "SuperAdmin");
             adminIntent.putExtra(PROFILE_DATE_JOINED, dateJoined);
             adminIntent.putExtra(PROFILE_PHONE, sharedPrefPhone);
             adminIntent.putExtra(PROFILE_FIRSTNAME, "Alpha");
-            adminIntent.putExtra(PROFILE_SURNAME, "Skylight");
+            adminIntent.putExtra(PROFILE_SURNAME, "Awajima");
             adminIntent.putExtra(PROFILE_DOB, dob);
             adminIntent.putExtra(CUSTOMER_ID, 1111100001);
             adminIntent.putExtra(PROFILE_GENDER, gender);
@@ -1260,7 +1232,7 @@ public class LoginActivity extends BaseActivity {
             adminIntent.putExtra("EMAIL_ADDRESS", email);
             adminIntent.putExtra("USER_PHONE", sharedPrefPhone);
             adminIntent.putExtra("USER_FIRSTNAME", "Alpha");
-            adminIntent.putExtra("USER_SURNAME", "Skylight");
+            adminIntent.putExtra("USER_SURNAME", "Awajima");
             adminIntent.putExtra("USER_DOB", dob);
             adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
             adminIntent.putExtra("CUSTOMER_ID", 1111100001);
@@ -1270,7 +1242,7 @@ public class LoginActivity extends BaseActivity {
             editor = userPreferences.edit();
             editor.putString("USERNAME", "LS80069990");
             editor.putString("USER_PASSWORD", "LS09996008");
-            editor.putString("USER_SURNAME", "Skylight");
+            editor.putString("USER_SURNAME", "Awajima");
             editor.putString("USER_FIRSTNAME", "Alpha");
             editor.putString("LOGIN_ID_EXTRA_KEY", LOGIN_ID_EXTRA_KEY);
             editor.putString("machine", sharedPrefRole);
@@ -1279,7 +1251,7 @@ public class LoginActivity extends BaseActivity {
             editor.putInt("PROFILE_ID", 12000);
             editor.putString("PROFILE_USERNAME", "LS80069990");
             editor.putString("PROFILE_PASSWORD", "LS09996008");
-            editor.putString("PROFILE_OFFICE", "Skylight");
+            editor.putString("PROFILE_OFFICE", "Awajima");
             editor.putString("PROFILE_STATE", state);
             editor.putString("PROFILE_ROLE", "SuperAdmin");
             editor.putString("PROFILE_DATE_JOINED", dateJoined);
@@ -1294,19 +1266,19 @@ public class LoginActivity extends BaseActivity {
             editor.putInt(PROFILE_ID, 12000);
             editor.putString(PROFILE_USERNAME, "LS80069990");
             editor.putString(PROFILE_PASSWORD, "LS09996008");
-            editor.putString(PROFILE_OFFICE, "Skylight");
+            editor.putString(PROFILE_OFFICE, "Awajima");
             editor.putString(PROFILE_STATE, state);
             editor.putString(PROFILE_ROLE, "SuperAdmin");
             editor.putString(PROFILE_DATE_JOINED, dateJoined);
             editor.putString(PROFILE_EMAIL, sharedPrefEmail);
             editor.putString(PROFILE_PHONE, sharedPrefPhone);
             editor.putString(PROFILE_FIRSTNAME, "Alpha");
-            editor.putString(PROFILE_SURNAME, "Skylight");
+            editor.putString(PROFILE_SURNAME, "Awajima");
             editor.putString(PROFILE_DOB, dob);
             editor.putInt(CUSTOMER_ID, 1111100001);
             editor.putString(PROFILE_GENDER, gender);
             editor.putString(PROFILE_ADDRESS, address);
-            userProfile= new Profile(12000,"Skylight", "Alpha", "08069524599", "urskylight@gmail.com", "", "female", "Skylight", "","Rivers", "Elelenwo", "19/04/2022","SuperAdmin", "LS80069990", "LS09996008","Confirmed","");
+            userProfile= new Profile(12000,"Awajima", "Alpha", "08069524599", "urskylight@gmail.com", "", "female", "Awajima", "","Rivers", "Elelenwo", "19/04/2022","SuperAdmin", "LS80069990", "LS09996008","Confirmed","");
             dbHelper.saveNewProfile(userProfile);
             json = gson.toJson(lastProfileUsed);
             startActivity(adminIntent);
@@ -1738,11 +1710,11 @@ public class LoginActivity extends BaseActivity {
         sharedPrefUserPassword = userPreferences.getString("PROFILE_PASSWORD", "");
         sharedPrefUserMachine = userPreferences.getString("machine", "");
         Bundle smsBundle= new Bundle();
-        String smsMessage="You just Signed into the Skylight App @ "+""+"@"+System.currentTimeMillis();
+        String smsMessage="You just Signed into the Awajima App @ "+""+"@"+System.currentTimeMillis();
         smsBundle.putString(PROFILE_PHONE,sharedPrefPhone);
         smsBundle.putString("USER_PHONE",sharedPrefPhone);
         smsBundle.putString("smsMessage",smsMessage);
-        smsBundle.putString("from","Skylight");
+        smsBundle.putString("from","Awajima");
         smsBundle.putString("to",sharedPrefPhone);
         Intent itemPurchaseIntent = new Intent(LoginActivity.this, SMSAct.class);
         itemPurchaseIntent.putExtras(smsBundle);

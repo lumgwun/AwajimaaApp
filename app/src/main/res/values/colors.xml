@@ -12,6 +12,18 @@
     <color name="colorPrimaryDark">@color/purple_blue</color>
     <color name="colorPrimary">#0fc0fc</color>
     <color name="colorP">#980e03</color>
+    <color name="check_bg">#1D90CD</color>
+    <color name="ic_logo_background">#FFF</color>
+    <color name="ic_new_icon_background">#FFF</color>
+    <color name="mic_new_bg">#1D90CD</color>
+    <color name="nirsal_bank_bg">#980e03</color>
+    <color name="star_background">#980e03</color>
+    <color name="top_bg">#FFF</color>
+    <color name="wish_bg">#1D90CD</color>
+
+    <color name="vertical_dots_bg">#1D90CD</color>
+
+    <color name="ic_right_tab_background">#FFF</color>
 
     <color name="colorPrimaryD">#1D90CD</color>
     <color name="gray_light_pro">#D9D9D9</color>

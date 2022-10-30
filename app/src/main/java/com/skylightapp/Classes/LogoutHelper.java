@@ -10,33 +10,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.auth.api.Auth;
+
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.auth.UserInfo;
-import com.google.firebase.iid.FirebaseInstanceId;
+
+import com.skylightapp.MapAndLoc.GoogleApiHelper;
+
 
 public class LogoutHelper {
     private static final String TAG = LogoutHelper.class.getSimpleName();
     private static ClearImageCacheAsyncTask clearImageCacheAsyncTask;
 
     public static void signOut(GoogleApiClient mGoogleApiClient, FragmentActivity fragmentActivity) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
 
-            /*ProfileInteractor.getInstance(fragmentActivity.getApplicationContext())
-                    .removeRegistrationToken(FirebaseInstanceId.getInstance().getToken(), user.getUid());*/
-
-            for (UserInfo profile : user.getProviderData()) {
-                String providerId = profile.getProviderId();
-                logoutByProvider(providerId, mGoogleApiClient, fragmentActivity);
-            }
-            logoutFirebase(fragmentActivity.getApplicationContext());
-        }
 
         if (clearImageCacheAsyncTask == null) {
             clearImageCacheAsyncTask = new ClearImageCacheAsyncTask(fragmentActivity.getApplicationContext());
@@ -45,13 +32,10 @@ public class LogoutHelper {
     }
 
     private static void logoutByProvider(String providerId, GoogleApiClient mGoogleApiClient, FragmentActivity fragmentActivity) {
-        if (GoogleAuthProvider.PROVIDER_ID.equals(providerId)) {
-            logoutGoogle(mGoogleApiClient, fragmentActivity);
-        }
+
     }
 
     private static void logoutFirebase(Context context) {
-        FirebaseAuth.getInstance().signOut();
         PrefManager.setProfileCreated(context, false);
     }
 
@@ -69,18 +53,7 @@ public class LogoutHelper {
         mGoogleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
             @Override
             public void onConnected(@Nullable Bundle bundle) {
-                if (finalMGoogleApiClient.isConnected()) {
-                    Auth.GoogleSignInApi.signOut(finalMGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
-                        @Override
-                        public void onResult(@NonNull Status status) {
-                            if (status.isSuccess()) {
-                                LogUtil.logDebug(TAG, "User Logged out from Google");
-                            } else {
-                                LogUtil.logDebug(TAG, "Error Logged out from Google");
-                            }
-                        }
-                    });
-                }
+
             }
 
             @Override

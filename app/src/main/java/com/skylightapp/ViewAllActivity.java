@@ -23,6 +23,7 @@ public class ViewAllActivity extends AppCompatActivity {
     private GridView gridView;
     public static List<WishlistModel>wishlistModelList;
     public static List<SkyLightPackModel> horizontalProductScrollModelList;
+    private static final String PREF_NAME = "awajima";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

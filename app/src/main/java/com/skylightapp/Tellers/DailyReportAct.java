@@ -22,8 +22,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.skylightapp.Accountant.BranchMPayments;
+import com.skylightapp.Adapters.OfficeAdapter;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerManager;
+import com.skylightapp.Classes.OfficeBranch;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.TellerReport;
@@ -31,6 +34,8 @@ import com.skylightapp.Classes.Utils;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.TReportDAO;
 import com.skylightapp.Database.TimeLineClassDAO;
+import com.skylightapp.MarketClasses.MarketBizArrayAdapter;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
 
 import java.text.SimpleDateFormat;
@@ -54,13 +59,13 @@ public class DailyReportAct extends AppCompatActivity {
     private Gson gson,gson1;
     private String json,json1;
     private  Bundle messageBundle;
-    private  long sendeeProfileID,customerID,SharedPrefAdminID;
+    private  int sendeeProfileID,customerID,SharedPrefAdminID;
     private  String purpose;
     private Spinner spnPurpose ,spnOffice;
     private  String selectedPurpose,sendee;
     private Customer customer;
     DatePicker picker;
-    private  Spinner spnNoOfClients;
+    private  Spinner spnNoOfClients,spnMyBiz;
     private AppCompatButton btnConfirmation;
     EditText edtAmounts;
     private double amountEntered;
@@ -69,10 +74,17 @@ public class DailyReportAct extends AppCompatActivity {
     private int noOfSavings;
     DBHelper applicationDb;
     int officeBranchID;
-    int selectedNoIndex;
+    int selectedNoIndex,SharedPrefProfileID;
     private static final String PREF_NAME = "skylight";
     SQLiteDatabase sqLiteDatabase;
-    String SharedPrefUserPassword, stringNoOfSavings, officeBranch,dateOfReport, cmFirstName,cmLastName,cmName,SharedPrefUserMachine,phoneNo,SharedPrefUserName,SharedPrefProfileID,adminName;
+    private ArrayList<OfficeBranch> bizOffices;
+    private MarketBusiness marketBiz;
+    private int selectedOfficeIndex,selectedBizIndex;
+    private OfficeBranch officeB;
+    private OfficeAdapter officeBranchAdapter;
+    private ArrayList<MarketBusiness> marketBusinesses;
+    private MarketBizArrayAdapter bizAdapter;
+    String bizName,SharedPrefUserPassword, stringNoOfSavings, officeBranch,dateOfReport, cmFirstName,cmLastName,cmName,SharedPrefUserMachine,phoneNo,SharedPrefUserName,adminName;
     Spinner.OnItemSelectedListener spnClickListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -101,38 +113,7 @@ public class DailyReportAct extends AppCompatActivity {
                 }
 
             }
-            else if (adapterView.getId() == spnOffice.getId()) {
-                officeBranch = (String) adapterView.getSelectedItem();
-                if(officeBranch !=null){
-                    if(officeBranch.equalsIgnoreCase("Trans-Amadi")){
-                        officeBranchID=200;
-                    }
-                    if(officeBranch.equalsIgnoreCase("Elelenwo")){
-                        officeBranchID=201;
-                    }
-                    if(officeBranch.equalsIgnoreCase("Wimpey")){
-                        officeBranchID=202;
-                    }
-                    if(officeBranch.equalsIgnoreCase("Rumuomasi")){
-                        officeBranchID=203;
-                    }
-                    if(officeBranch.equalsIgnoreCase("Ozuoba")){
-                        officeBranchID=204;
-                    }
-                    if(officeBranch.equalsIgnoreCase("Eleme")){
-                        officeBranchID=205;
-                    }
-                    if(officeBranch.equalsIgnoreCase("Iriebe")){
-                        officeBranchID=206;
-                    }
-                    if(officeBranch.equalsIgnoreCase("Onne")){
-                        officeBranchID=207;
-                    }
-                    Toast.makeText(DailyReportAct.this, "Office Branch: "  + officeBranch, Toast.LENGTH_SHORT).show();
 
-                }
-
-            }
         }
 
         @Override
@@ -151,11 +132,13 @@ public class DailyReportAct extends AppCompatActivity {
         customerManager=new CustomerManager();
         currentDate= new Date();
         tellerReports=new ArrayList<>();
+        marketBusinesses= new ArrayList<>();
+        bizOffices= new ArrayList<>();
         applicationDb = new DBHelper(this);
         SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
         SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
         SharedPrefUserMachine=userPreferences.getString("machine", "");
-        SharedPrefProfileID=userPreferences.getString("PROFILE_ID", "");
+        SharedPrefProfileID=userPreferences.getInt("PROFILE_ID", 0);
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         json1 = userPreferences.getString("LastTellerProfileUsed", "");
@@ -165,67 +148,52 @@ public class DailyReportAct extends AppCompatActivity {
             cmLastName =customerManager.getTSurname();
             cmName=cmLastName+""+cmFirstName;
             tellerID=customerManager.getTID();
+            marketBusinesses=customerManager.gettMarketBusinesses();
         }
         picker=(DatePicker)findViewById(R.id.dob_date_Report);
         spnNoOfClients = findViewById(R.id.spinnerNoOfClients);
+        spnMyBiz = findViewById(R.id.spinnerBiz_My);
+
         spnNoOfClients.setOnItemSelectedListener(spnClickListener);
 
-        /*spnNoOfClients.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        bizAdapter = new MarketBizArrayAdapter(DailyReportAct.this,R.layout.item_market_biz, marketBusinesses);
+        spnMyBiz.setAdapter(bizAdapter);
+        spnMyBiz.setSelection(0);
+        selectedBizIndex = spnMyBiz.getSelectedItemPosition();
 
-                noOfSavings = (int) parent.getSelectedItem();
-                Toast.makeText(context, "No. of Customers for today: "+ noOfSavings,Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });*/
+        try {
+            marketBiz = marketBusinesses.get(selectedBizIndex);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Oops!");
+        }
         edtAmounts = findViewById(R.id.clientAmount);
         spnOffice = findViewById(R.id.spinnerOffice);
         spnOffice.setOnItemSelectedListener(spnClickListener);
+        if(marketBiz !=null){
+            bizOffices=marketBiz.getOfficeBranches();
 
-        spnOffice.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        }
 
-                officeBranch = (String) parent.getSelectedItem();
-                if(officeBranch !=null){
-                    if(officeBranch.equalsIgnoreCase("Trans-Amadi")){
-                        officeBranchID=200;
-                    }
-                    if(officeBranch.equalsIgnoreCase("Elelenwo")){
-                        officeBranchID=201;
-                    }
-                    if(officeBranch.equalsIgnoreCase("Wimpey")){
-                        officeBranchID=202;
-                    }
-                    if(officeBranch.equalsIgnoreCase("Rumuomasi")){
-                        officeBranchID=203;
-                    }
-                    if(officeBranch.equalsIgnoreCase("Ozuoba")){
-                        officeBranchID=204;
-                    }
-                    if(officeBranch.equalsIgnoreCase("Eleme")){
-                        officeBranchID=205;
-                    }
-                    if(officeBranch.equalsIgnoreCase("Iriebe")){
-                        officeBranchID=206;
-                    }
-                    if(officeBranch.equalsIgnoreCase("Onne")){
-                        officeBranchID=207;
-                    }
-                    Toast.makeText(DailyReportAct.this, "Office Branch: "  + officeBranch, Toast.LENGTH_SHORT).show();
+        officeBranchAdapter = new OfficeAdapter(DailyReportAct.this, bizOffices);
+        spnOffice.setAdapter(officeBranchAdapter);
+        spnOffice.setSelection(0);
+        selectedOfficeIndex = spnOffice.getSelectedItemPosition();
 
-                }
+        try {
+            officeB = bizOffices.get(selectedOfficeIndex);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Oops!");
+        }
+        if(bizOffices.size()==0){
+            if(userProfile !=null){
+                officeB=userProfile.getProfileOfficeBranch();
 
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        }
+        if(officeB !=null){
+            officeBranchID=officeB.getOfficeBranchID();
+            bizName=officeB.getOfficeBranchName();
+        }
 
         btnConfirmation = findViewById(R.id.confirmReportSub);
         btnConfirmation.setOnClickListener(this::sendReport);
@@ -241,7 +209,7 @@ public class DailyReportAct extends AppCompatActivity {
         btnConfirmation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                processReport(customerManager, dateOfReport,SharedPrefProfileID,userProfile,tellerReports,noOfSavings,officeBranchID);
+                processReport(customerManager, dateOfReport,SharedPrefProfileID,userProfile,tellerReports,noOfSavings,officeBranchID,bizName);
 
             }
         });
@@ -251,7 +219,7 @@ public class DailyReportAct extends AppCompatActivity {
         dateOfReport = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
 
     }
-    private void processReport(CustomerManager customerManager, String dateOfReport, String SharedPrefProfileID, Profile userProfile, ArrayList<TellerReport> tellerReports, int noOfSavings, int officeBranchID){
+    private void processReport(CustomerManager customerManager, String dateOfReport, int SharedPrefProfileID, Profile userProfile, ArrayList<TellerReport> tellerReports, int noOfSavings, int officeBranchID,String bizName){
         String reportDate=null;
         tellerReports = null;
         if(dateOfReport ==null){
@@ -265,42 +233,7 @@ public class DailyReportAct extends AppCompatActivity {
 
 
         }
-        spnNoOfClients = findViewById(R.id.spinnerNoOfClients);
-        spnNoOfClients.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                DailyReportAct.this.noOfSavings = (int) parent.getSelectedItem();
-                Toast.makeText(DailyReportAct.this, "No. of Customers for today: "+ DailyReportAct.this.noOfSavings,Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        spnOffice = findViewById(R.id.spinnerOffice);
-
-        spnOffice.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                officeBranch = (String) parent.getSelectedItem();
-                if(officeBranch.equalsIgnoreCase("Trans-Amadi")){
-                    DailyReportAct.this.officeBranchID =200;
-                }
-                if(officeBranch.equalsIgnoreCase("Elelenwo")){
-                    DailyReportAct.this.officeBranchID =201;
-                }
-                if(officeBranch.equalsIgnoreCase("Wimpey")){
-                    DailyReportAct.this.officeBranchID =202;
-                }
-                Toast.makeText(DailyReportAct.this, "Office Branch: "  + officeBranch, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
         if(customerManager !=null){
             cmFirstName =customerManager.getTFirstName();
             cmLastName =customerManager.getTSurname();
@@ -345,17 +278,28 @@ public class DailyReportAct extends AppCompatActivity {
                 }else {
                     if (customerManager != null) {
                         userProfile.addPTimeLine(timelineTittle2,timelineDetails2);
-                        userProfile.addPTellerReport(KEY_EXTRA_REPORT_ID,officeBranch,amountEntered, noOfSavings,dateOfReport);
+                        userProfile.addPTellerReport(KEY_EXTRA_REPORT_ID,bizName,officeBranch,amountEntered, noOfSavings,dateOfReport);
                         customerManager.addTimeLine(timelineTittle2,timelineDetails2);
-                        customerManager.addTellerReport(KEY_EXTRA_REPORT_ID,officeBranch,amountEntered, noOfSavings,dateOfReport);
+                        customerManager.addTellerReport(KEY_EXTRA_REPORT_ID,bizName,officeBranch,amountEntered, noOfSavings,dateOfReport);
                     }
                     if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                         sqLiteDatabase = applicationDb.getWritableDatabase();
                         TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(this);
                         try {
                             tReportDAO.insertTellerReport1( officeBranchID,0,tellerID,reportDate,amountEntered, noOfSavings,0.00,0.00,0.00,officeBranch,cmName,"");
-                            timeLineClassDAO.insertTimeLine(timelineTittle,timelineDetails,dateOfReport,location);
                             startNotification();
+                            Toast.makeText(DailyReportAct.this, "Report submission was successful" , Toast.LENGTH_LONG).show();
+                        } catch (Exception e) {
+                            System.out.println("Oops!");
+                        }
+
+
+                    }
+                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                        sqLiteDatabase = applicationDb.getWritableDatabase();
+                        TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(this);
+                        try {
+                            timeLineClassDAO.insertTimeLine(timelineTittle,timelineDetails,dateOfReport,location);
                             Toast.makeText(DailyReportAct.this, "Report submission was successful" , Toast.LENGTH_LONG).show();
                         } catch (Exception e) {
                             System.out.println("Oops!");
@@ -393,7 +337,7 @@ public class DailyReportAct extends AppCompatActivity {
     }
 
     public void sendReport(View view) {
-        processReport(customerManager,dateOfReport,SharedPrefProfileID,userProfile,tellerReports, noOfSavings, officeBranchID);
+        processReport(customerManager, dateOfReport,SharedPrefProfileID, userProfile, tellerReports, noOfSavings, officeBranchID,bizName);
     }
 
 

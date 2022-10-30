@@ -10,6 +10,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,17 +18,24 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.skylightapp.Accountant.BranchMPayments;
+import com.skylightapp.Adapters.OfficeAdapter;
 import com.skylightapp.Classes.AdminUser;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerManager;
+import com.skylightapp.Classes.OfficeBranch;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.AdminUserDAO;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.StocksDAO;
 import com.skylightapp.Inventory.UpDateStocksCode;
+import com.skylightapp.MapAndLoc.EmergencyReport;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AdminRepostingAct extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     Bundle updateBundle;
@@ -49,12 +57,28 @@ public class AdminRepostingAct extends AppCompatActivity implements AdapterView.
     Spinner spnAdminUsers;
     int selectedTellerIndex,selectedAdminIndex;
     private ArrayList<AdminUser> adminUsers;
+    private MarketBusiness marketBusiness;
+    private long bizID;
+    private static final String PREF_NAME = "skylight";
+    String SharedPrefUserMachine;
+    String SharedPrefUserName;
+    private int profileID;
+    String SharedPrefProfileID,stringLatLng;
+    SharedPreferences.Editor editor;
+    Gson gson, gson1,gson2;
+    private SharedPreferences userPreferences;
+    private int selectedOfficeIndex,officeID;
+    private OfficeBranch officeB;
+    private OfficeAdapter officeBranchAdapter;
+    private ArrayList<OfficeBranch> bizOffices;
+    String json, json1, json2,userName, userPassword, userMachine, dateOfToday, selectedType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_admin_reposting);
         updateBundle= new Bundle();
+        bizOffices= new ArrayList<>();
         dbHelper= new DBHelper(this);
         spnAdminUsers = findViewById(R.id.spn_admin33);
         spnRepostAdmin = findViewById(R.id.spn_repost_office);
@@ -65,6 +89,25 @@ public class AdminRepostingAct extends AppCompatActivity implements AdapterView.
         adminUser= new AdminUser();
         updateBundle= getIntent().getExtras();
         adminUsers = new ArrayList<AdminUser>();
+        gson1 = new Gson();
+        gson = new Gson();
+        dbHelper = new DBHelper(this);
+        userProfile = new Profile();
+        customer = new Customer();
+        marketBusiness= new MarketBusiness();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserMachine=userPreferences.getString("machine", "");
+        SharedPrefProfileID= String.valueOf(userPreferences.getLong("PROFILE_ID", 0));
+        json1 = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson1.fromJson(json1, Profile.class);
+        userName=userPreferences.getString("PROFILE_USERNAME", "");
+        userPassword=userPreferences.getString("PROFILE_PASSWORD", "");
+        userMachine=userPreferences.getString("PROFILE_ROLE", "");
+        profileID=userPreferences.getInt("PROFILE_ID", 0);
+
+        json2 = userPreferences.getString("LastMarketBusinessUsed", "");
+        marketBusiness = gson2.fromJson(json2, MarketBusiness.class);
 
         spnAdminUsers.setOnItemSelectedListener(this);
         spnRepostAdmin.setOnItemSelectedListener(this);
@@ -72,20 +115,28 @@ public class AdminRepostingAct extends AppCompatActivity implements AdapterView.
             userProfile=updateBundle.getParcelable("Profile");
             customer=updateBundle.getParcelable("Customer");
         }
-        spnRepostAdmin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedOffice = spnRepostAdmin.getSelectedItem().toString();
-                selectedOffice = (String) parent.getSelectedItem();
-                Toast.makeText(AdminRepostingAct.this, "New Office: "+ selectedOffice,Toast.LENGTH_SHORT).show();
+        if(marketBusiness !=null){
+            bizID=marketBusiness.getBusinessID();
+            bizOffices=marketBusiness.getOfficeBranches();
+        }
+        officeBranchAdapter = new OfficeAdapter(AdminRepostingAct.this, bizOffices);
+        spnRepostAdmin.setAdapter(officeBranchAdapter);
+        spnRepostAdmin.setSelection(0);
+        selectedOfficeIndex = spnRepostAdmin.getSelectedItemPosition();
 
+        try {
+            officeB = bizOffices.get(selectedOfficeIndex);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Oops!");
+        }
+        if(officeB !=null){
+            selectedOffice=officeB.getOfficeBranchName();
+            officeID=officeB.getOfficeBranchID();
+        }
+        if(bizOffices.size()==0){
+            officeB=marketBusiness.getMBBranchOffice();
+        }
 
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
         AdminUserDAO adminUserDAO= new AdminUserDAO(this);
         adminUsers=adminUserDAO.getAllAdminSpinner();
 
@@ -119,6 +170,7 @@ public class AdminRepostingAct extends AppCompatActivity implements AdapterView.
                 if (adminUser != null) {
                     adminID=adminUser.getAdminID();
                     adminUser.setAdminOffice(selectedOffice);
+                    adminUser.addBusinessID(bizID);
 
                 }
                 AdminUserDAO adminUserDAO= new AdminUserDAO(AdminRepostingAct.this);
@@ -182,8 +234,23 @@ public class AdminRepostingAct extends AppCompatActivity implements AdapterView.
 
                 break;
             case R.id.spn_repost_office:
-                selectedOffice = spnRepostAdmin.getSelectedItem().toString();
-                selectedOffice = (String) adapterView.getSelectedItem();
+                officeBranchAdapter = new OfficeAdapter(AdminRepostingAct.this, bizOffices);
+                spnRepostAdmin.setAdapter(officeBranchAdapter);
+                spnRepostAdmin.setSelection(0);
+                selectedOfficeIndex = spnRepostAdmin.getSelectedItemPosition();
+
+                try {
+                    officeB = bizOffices.get(selectedOfficeIndex);
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("Oops!");
+                }
+                if(officeB !=null){
+                    selectedOffice=officeB.getOfficeBranchName();
+                    officeID=officeB.getOfficeBranchID();
+                }
+                if(bizOffices.size()==0){
+                    officeB=marketBusiness.getMBBranchOffice();
+                }
                 Toast.makeText(AdminRepostingAct.this, "New Office: "+ selectedOffice,Toast.LENGTH_SHORT).show();
                 break;
             default:

@@ -11,17 +11,24 @@ import androidx.recyclerview.widget.SnapHelper;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
-import com.skylightapp.Adapters.TransactionAdapter;
+import com.google.gson.Gson;
+import com.skylightapp.Adapters.TranxAdminA;
 import com.skylightapp.Adapters.TranxSimpleAdapter;
+import com.skylightapp.Classes.OfficeBranch;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.Database.OfficeBranchDAO;
 import com.skylightapp.Database.TranXDAO;
+import com.skylightapp.MarketClasses.MarketBizArrayAdapter;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
 import com.skylightapp.SuperAdmin.UpdateTranxAct;
 
@@ -35,7 +42,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class WimpeyTranx extends AppCompatActivity implements TransactionAdapter.OnItemsClickListener{
+public class WimpeyTranx extends AppCompatActivity implements TranxAdminA.OnItemsClickListener{
     private List<Transaction> transactionList;
     private TranxSimpleAdapter transactionAdapter;
 
@@ -58,14 +65,40 @@ public class WimpeyTranx extends AppCompatActivity implements TransactionAdapter
     double transactionTotal;
     protected DatePickerDialog datePickerDialog;
     private TranXDAO tranXDAO;
+    private static final String PREF_NAME = "skylight";
+    private MarketBusiness marketBiz;
+    private OfficeBranch office;
+    private long bizID;
+    Gson gson3,gson2,gson1,gson;
+    private String officeName,userRole;
+    String json3,json1,json2;
+    private OfficeBranchDAO officeBranchDAO;
+    private SQLiteDatabase sqLiteDatabase;
+    private SharedPreferences userPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_wimpey_tranx);
-        setTitle("Wimpey Office Transactions");
+        setTitle(" Office Transactions");
+        gson = new Gson();
+        gson2 = new Gson();
+        gson3= new Gson();
+        officeBranchDAO= new OfficeBranchDAO(this);
+        marketBiz= new MarketBusiness();
+        office= new OfficeBranch();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        userRole = userPreferences.getString("machine", "");
+        json2 = userPreferences.getString("LastMarketBusinessUsed", "");
+        marketBiz = gson2.fromJson(json2, MarketBusiness.class);
+        json3 = userPreferences.getString("LastOfficeBranchUsed", "");
+        office = gson3.fromJson(json3, OfficeBranch.class);
+
         transactionArrayList = new ArrayList<Transaction>();
         customTransactionArrayList = new ArrayList<Transaction>();
+        if(office !=null){
+            officeBranch=office.getOfficeBranchName();
+        }
         RecyclerView recyclerView = findViewById(R.id.recyclerViewTXWTR);
         RecyclerView recyclerViewTXToday = findViewById(R.id.recyclerViewTXWToday);
         picker=(DatePicker)findViewById(R.id.TX_date_Wimpey);
@@ -82,7 +115,7 @@ public class WimpeyTranx extends AppCompatActivity implements TransactionAdapter
         });
         dateOfTransaction = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
         SnapHelper snapHelper = new PagerSnapHelper();
-        officeBranch="Wimpey";
+
         //   ,   Elelenwo
         btnSearchDB = findViewById(R.id.buttonSearchTXWimpey);
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());

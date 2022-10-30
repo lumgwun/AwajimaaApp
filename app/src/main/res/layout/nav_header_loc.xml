@@ -11,20 +11,6 @@
         android:layout_marginBottom="5dp"
         android:background="@drawable/material_drawer_circle_mask"
         android:layout_gravity="top">
-        <com.scwang.wave.MultiWaveHeader
-            android:id="@+id/waveHeader"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:scaleY="1"
-            app:mwhVelocity="2.5"
-            app:mwhProgress="1"
-            app:mwhIsRunning="true"
-            app:mwhGradientAngle="360"
-            app:mwhWaveHeight="50dp"
-            app:mwhColorAlpha="0.2"
-            app:mwhStartColor="@color/gray"
-            app:mwhCloseColor="@color/white_good"
-            app:mwhWaves="MultiWave"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/locGreetings"
@@ -48,22 +34,6 @@
             android:stateListAnimator="@animator/nav_default_pop_enter_anim"
             app:civ_border_width="1dp"
             app:civ_border_color="#ffffff"/>
-        <com.scwang.wave.MultiWaveHeader
-            android:id="@+id/waveHeader66"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:scaleY="1"
-            app:mwhVelocity="2.5"
-            app:mwhProgress="1"
-            app:mwhIsRunning="true"
-            app:mwhGradientAngle="360"
-            app:mwhWaveHeight="50dp"
-            app:mwhColorAlpha="0.2"
-            app:mwhStartColor="@color/colorPrimaryDark"
-            app:mwhCloseColor="@color/random_color_1"
-            app:mwhWaves="MultiWave"/>
-
-
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"

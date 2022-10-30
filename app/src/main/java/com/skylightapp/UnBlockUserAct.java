@@ -27,6 +27,7 @@ public class UnBlockUserAct extends AppCompatActivity {
     private AppCompatSpinner spnUserType;
     private AppCompatButton btnUpdate;
     private SQLiteDatabase sqLiteDatabase;
+    private static final String PREF_NAME = "awajima";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

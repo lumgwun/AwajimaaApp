@@ -1,22 +1,18 @@
 package com.skylightapp;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,8 +21,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.gson.Gson;
 import com.skylightapp.Adapters.SkyLightPackageShowCaseAdapter;
 import com.skylightapp.Adapters.SkylightPackageSliderAdapter;
@@ -35,10 +32,7 @@ import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SkyLightPackModel;
 import com.skylightapp.Classes.SkyLightPackage;
-import com.skylightapp.Classes.SkylightPackageModel;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.SuperAdmin.Skylight;
-import com.smarteist.autoimageslider.SliderView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +55,7 @@ public class SkylightSliderAct extends AppCompatActivity implements SkylightPack
     Gson gson, gson1,gson2;
     String json, json1,json2;
     SharedPreferences.Editor editor;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     SQLiteDatabase sqLiteDatabase;
     private DBHelper dbHelper;
     private Profile managerProfile;
@@ -81,6 +75,8 @@ public class SkylightSliderAct extends AppCompatActivity implements SkylightPack
     private TextView tv_languages;
     private RelativeLayout lout1,lout2;
     SkyLightPackageShowCaseAdapter recyPackAdapter;
+    private ArrayList<SlideModel> sliderList;
+    private  ImageSlider sliderView;
     private SkyLightPackageShowCaseAdapter.OnItemsClickListener callback;
 
 
@@ -88,7 +84,7 @@ public class SkylightSliderAct extends AppCompatActivity implements SkylightPack
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_skylight_slider);
-        setTitle("Packages Slider");
+        setTitle("Packages");
         gson = new Gson();
         gson1 = new Gson();
         gson2 = new Gson();
@@ -109,22 +105,25 @@ public class SkylightSliderAct extends AppCompatActivity implements SkylightPack
         skyLightPackage_2s = new ArrayList<>() ;
         skyLightPackage= new SkyLightPackage();
         searchPackageList = new ArrayList<>() ;
+        sliderList= new ArrayList<>();
+        sliderView = findViewById(R.id.sliderPAC);
+
+
+        //sliderList.add(SlideModel("https:https://drive.google.com/file/d/1_Tid7XsiM4erLQDVMCuABLJnMZ32SEDv/view?usp=sharing", "High performance 16GB , 1TB SSD HP Laptop"));
+        //sliderList.add( SlideModel("https://drive.google.com/file/d/1CUjS0I6ze0waIIefwAB7k7emc6rzpjJz/view?usp=sharing", "High class 32Gb, 2TB SSD ,HP Laptop"));
+        //sliderList.add(SlideModel("https://drive.google.com/file/d/13pdMZoJYLpRvdFL--iX-kskv4GVLP_hj/view?usp=sharing", "Triple Monitor"));
+        //sliderList.startSliding();
 
         manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         fillPackageList();
-        SliderView sliderView = findViewById(R.id.sliderPAC);
-        adapter = new SkylightPackageSliderAdapter(SkylightSliderAct.this, skyLightPackage_2s,onItemsClickListener);
-        sliderView.setAutoCycleDirection(SliderView.LAYOUT_DIRECTION_LTR);
 
-        sliderView.setSliderAdapter(adapter);
+        adapter = new SkylightPackageSliderAdapter(SkylightSliderAct.this, skyLightPackage_2s,onItemsClickListener);
+
+        //sliderView.setSliderAdapter(sliderList);
+
+
         adapter.setCallback(onItemsClickListener);
         editsearch = findViewById(R.id.search);
-        //editsearch.setOnQueryTextListener(this);
-
-        sliderView.setScrollTimeInSec(3);
-
-        sliderView.setAutoCycle(true);
-        sliderView.startAutoCycle();
         adapter.notifyDataSetChanged();
         editsearch.setActivated(true);
         //editsearch.setQueryHint("Type your keyword here");

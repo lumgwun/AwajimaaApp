@@ -10,7 +10,6 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:text="No Group Savings Transactions"
-        android:visibility="gone"
         android:background="@drawable/rect_their_message"
         android:textAlignment="center"
         android:id="@+id/noGrpSavingsTx"

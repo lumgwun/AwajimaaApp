@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.card.MaterialCardView;
+import com.skylightapp.Markets.MarketDetailsAct;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -24,19 +25,24 @@ import java.util.Locale;
 public class CommodityAdater extends RecyclerView.Adapter<CommodityAdater.MyViewHolder> implements View.OnClickListener, Filterable {
 
 
-    private ArrayList<Commodity> data;
-    private OnItemsClickListener listener;
-    private List<Commodity> theSlideItemsModelClassList = new ArrayList<>();
-    private List<Commodity> itemsListFilter = new ArrayList<>();
+    private ArrayList<MarketCommodity> data;
+    private OnCommodityClickListener listener;
+    private List<MarketCommodity> theSlideItemsModelClassList = new ArrayList<>();
+    private List<MarketCommodity> itemsListFilter = new ArrayList<>();
     String comName;
     String comType;
     String comDes;
     int comQty;
     private Context context;
     private int comImg;
-    private Commodity commodity;
+    private MarketCommodity marketCommodity;
     protected AlphaAnimation fadeOut = new AlphaAnimation( 1.0f , 0.0f );
     protected AlphaAnimation fadeIn = new AlphaAnimation( 0.0f , 1.0f );
+
+    public CommodityAdater(MarketDetailsAct marketDetailsAct, ArrayList<MarketCommodity> marketCommodities) {
+        this.context = marketDetailsAct;
+        this.data = marketCommodities;
+    }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -64,7 +70,7 @@ public class CommodityAdater extends RecyclerView.Adapter<CommodityAdater.MyView
         if (charText.length() == 0) {
             itemsListFilter.addAll(data);
         } else {
-            for (Commodity wp : data) {
+            for (MarketCommodity wp : data) {
                 if (wp.getCommodityName().toLowerCase(Locale.getDefault()).contains(charText)) {
                     itemsListFilter.add(wp);
                 }
@@ -82,10 +88,10 @@ public class CommodityAdater extends RecyclerView.Adapter<CommodityAdater.MyView
                 if (charString.isEmpty()) {
                     itemsListFilter = data;
                 } else {
-                    List<Commodity> filteredList = new ArrayList<>();
-                    for (Commodity commodity : data) {
-                        if (commodity.getCommodityName().toLowerCase().contains(charString.toLowerCase())) {
-                            filteredList.add(commodity);
+                    List<MarketCommodity> filteredList = new ArrayList<>();
+                    for (MarketCommodity marketCommodity : data) {
+                        if (marketCommodity.getCommodityName().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(marketCommodity);
                         }
                     }
                     itemsListFilter = filteredList;
@@ -98,7 +104,7 @@ public class CommodityAdater extends RecyclerView.Adapter<CommodityAdater.MyView
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                itemsListFilter = (ArrayList<Commodity>) filterResults.values;
+                itemsListFilter = (ArrayList<MarketCommodity>) filterResults.values;
 
                 notifyDataSetChanged();
             }
@@ -110,27 +116,27 @@ public class CommodityAdater extends RecyclerView.Adapter<CommodityAdater.MyView
     @Override
     public void onClick(View view) {
         if (listener != null) {
-            listener.onItemClick(commodity);
+            listener.onCommodityClick(marketCommodity);
         }
 
     }
-    public CommodityAdater(Context context, ArrayList<Commodity> commodityArrayList, OnItemsClickListener callback) {
+    public CommodityAdater(Context context, ArrayList<MarketCommodity> marketCommodityArrayList, OnCommodityClickListener callback) {
         this.context = context;
-        this.data = commodityArrayList;
+        this.data = marketCommodityArrayList;
         this.listener = callback;
 
 
     }
 
-    public void updateItems(ArrayList<Commodity> list) {
+    public void updateItems(ArrayList<MarketCommodity> list) {
         this.data = list;
         notifyDataSetChanged();
     }
 
-    public CommodityAdater(ArrayList<Commodity> data) {
+    public CommodityAdater(ArrayList<MarketCommodity> data) {
         this.data = data;
     }
-    public void renewItems(ArrayList<Commodity> sliderItems) {
+    public void renewItems(ArrayList<MarketCommodity> sliderItems) {
         this.data = sliderItems;
         notifyDataSetChanged();
     }
@@ -140,11 +146,11 @@ public class CommodityAdater extends RecyclerView.Adapter<CommodityAdater.MyView
         notifyDataSetChanged();
     }
 
-    public void addItem(Commodity sliderItem) {
+    public void addItem(MarketCommodity sliderItem) {
         this.data.add(sliderItem);
         notifyDataSetChanged();
     }
-    public void setCallback(OnItemsClickListener callback) {
+    public void setCallback(OnCommodityClickListener callback) {
         this.listener = callback;
     }
 
@@ -157,13 +163,13 @@ public class CommodityAdater extends RecyclerView.Adapter<CommodityAdater.MyView
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        Commodity commodity = data.get(position);
-        if(commodity !=null){
-            comName=commodity.getCommodityName();
-            comType=commodity.getCommodityType();
-            comDes=commodity.getCommodityDes();
-            comQty=commodity.getCommodityQty();
-            comImg=commodity.getCommodityImage();
+        MarketCommodity marketCommodity = data.get(position);
+        if(marketCommodity !=null){
+            comName= marketCommodity.getCommodityName();
+            comType= marketCommodity.getCommodityType();
+            comDes= marketCommodity.getCommodityDes();
+            comQty= marketCommodity.getCommodityQty();
+            comImg= marketCommodity.getCommodityImage();
         }
 
         holder.mComodityName.setText(MessageFormat.format("Name:{0}", comName));
@@ -189,7 +195,7 @@ public class CommodityAdater extends RecyclerView.Adapter<CommodityAdater.MyView
     public int getItemCount() {
         return (null != data ? data.size() : 0);
     }
-    public void setWhenClickListener(OnItemsClickListener listener){
+    public void setWhenClickListener(OnCommodityClickListener listener){
         this.listener = listener;
     }
 
@@ -200,16 +206,16 @@ public class CommodityAdater extends RecyclerView.Adapter<CommodityAdater.MyView
         notifyDataSetChanged();
     }
 
-    public void restoreItem(Commodity item, int position) {
+    public void restoreItem(MarketCommodity item, int position) {
         data.add(position, item);
         notifyItemInserted(position);
         notifyDataSetChanged();
     }
 
-    public ArrayList<Commodity> getData() {
+    public ArrayList<MarketCommodity> getData() {
         return data;
     }
-    public interface OnItemsClickListener{
-        void onItemClick(Commodity commodity);
+    public interface OnCommodityClickListener {
+        void onCommodityClick(MarketCommodity marketCommodity);
     }
 }

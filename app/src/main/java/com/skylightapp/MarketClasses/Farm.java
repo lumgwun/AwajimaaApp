@@ -43,7 +43,7 @@ public class Farm implements Serializable, Parcelable {
         farmCountry = in.readString();
         farmStatus = in.readString();
         farmStartDate = in.readString();
-        farmCommodity = in.readParcelable(Commodity.class.getClassLoader());
+        farmCommodity = in.readParcelable(MarketCommodity.class.getClassLoader());
         farmRevenue = in.readDouble();
     }
 

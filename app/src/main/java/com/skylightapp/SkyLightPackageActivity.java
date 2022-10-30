@@ -57,7 +57,7 @@ public class SkyLightPackageActivity extends AppCompatActivity implements  NewSk
     Gson gson, gson1,gson2;
     String json, json1,json2;
     SharedPreferences.Editor editor;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     SQLiteDatabase sqLiteDatabase;
     private DBHelper dbHelper;
     private Profile managerProfile;
@@ -88,7 +88,7 @@ public class SkyLightPackageActivity extends AppCompatActivity implements  NewSk
         packageID = ThreadLocalRandom.current().nextInt(122, 1631);
         json1 = userPreferences.getString("LastProfileUsed", "");
         managerProfile = gson1.fromJson(json1, Profile.class);
-        json2 = userPreferences.getString("LastTellerProfileUsed", "");
+        json2 = userPreferences.getString("LastCustomerManagerUsed", "");
         customerManager = gson2.fromJson(json2, CustomerManager.class);
         adapter = new NewSkylightPackageSlider(this, skyLightPackage_2s,listener);
         page.setAdapter(adapter);

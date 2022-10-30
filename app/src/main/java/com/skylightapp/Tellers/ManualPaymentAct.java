@@ -403,7 +403,7 @@ public class ManualPaymentAct extends AppCompatActivity {
                                             }
                                             startNotification();
 
-                                            String paymentMessage = "Skylight! your manual withdrawal :" + "was successful";
+                                            String paymentMessage = "Awajima! your manual withdrawal :" + "was successful";
                                             Twilio.init(TWILLO_ACCOUNT_SID, TWILLO_AUTH_TOKEN);
                                             Message message = Message.creator(
                                                     new com.twilio.type.PhoneNumber(customerPhoneNo),
@@ -467,7 +467,7 @@ public class ManualPaymentAct extends AppCompatActivity {
                                             }
                                             startNotification();
 
-                                            String paymentMessage = "Skylight! your manual withdrawal :" + "was successful";
+                                            String paymentMessage = "Awajima! your manual withdrawal :" + "was successful";
                                             Twilio.init(TWILLO_ACCOUNT_SID, TWILLO_AUTH_TOKEN);
                                             Message message = Message.creator(
                                                     new com.twilio.type.PhoneNumber(customerPhoneNo),

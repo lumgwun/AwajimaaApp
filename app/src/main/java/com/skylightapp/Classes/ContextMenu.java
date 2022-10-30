@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.skylightapp.MapAndLoc.GoogleMapActivity;
-import com.skylightapp.MapAndLoc.ListingFiltersActivity;
+import com.skylightapp.MapAndLoc.HotEmergAct;
 import com.skylightapp.MapAndLoc.MapSettingsActivity;
 import com.skylightapp.R;
 
@@ -99,7 +99,7 @@ public class ContextMenu {
             case "ListingSettings" :
 
 
-                return ListingFiltersActivity.class;
+                return HotEmergAct.class;
 
             default :
                 throw new InvalidParameterException("Trying to open an unknown menu type");
