@@ -13,18 +13,12 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.skylightapp.Accountant.AcctantBackOffice;
 import com.skylightapp.Admins.AdminDrawerActivity;
+import com.skylightapp.Bookings.BookingsAct;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.StandingOrderAcct;
-import com.skylightapp.Customers.CusOrderTab;
-import com.skylightapp.Customers.CusPacksAct;
-import com.skylightapp.Customers.CusStocksListAct;
-import com.skylightapp.Customers.CusSubPackTab;
-import com.skylightapp.Customers.CustomerPayAct;
+
 import com.skylightapp.Customers.NewCustomerDrawer;
-import com.skylightapp.Customers.PackListTab;
-import com.skylightapp.Customers.PackageTab;
-import com.skylightapp.Customers.SOTab;
 import com.skylightapp.MapAndLoc.ResponseTeamOffice;
 import com.skylightapp.Markets.BizRegulOffice;
 import com.skylightapp.Markets.MarketAdminOffice;
@@ -39,16 +33,11 @@ import com.skylightapp.Tellers.TellerHomeChoices;
 public class TestAct extends AppCompatActivity {
     private SharedPreferences userPreferences;
     private Gson gson;
-    private String json,phoneNo;
+    private String json;
     private Customer selectedCustomer;
     private Profile userProfile;
     private StandingOrderAcct standingOrderAcct;
-    double accountBalance1;
-    long accountNo,acctID;
-    long customerID;
-    double amountContributedSoFar,newAmountContributedSoFar;
-    double packageGrantTotal,amountRemaining,moneySaved;
-    long profileID, oldPackageId;
+    long profileID;
     private static final String PREF_NAME = "awajima";
     private GridLayout maingrid;
     private AppCompatButton btn_Customer,btnAdmin,btnShop,btnTeller,btnSuperAdmin,btnSign,btnAccountant;
@@ -429,7 +418,16 @@ public class TestAct extends AppCompatActivity {
                         startActivity(intent);
                     }
 
-
+                    else if(finalI==9) {
+                        tosend = "Trip Office";
+                        Intent intent=new Intent(TestAct.this, BookingsAct.class);
+                        intent.putExtra("info",tosend);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        overridePendingTransition(R.anim.slide_in_right,
+                                R.anim.slide_out_left);
+                        startActivity(intent);
+                    }
 
                 }
             });

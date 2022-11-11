@@ -101,6 +101,8 @@ import static com.skylightapp.Classes.DailyAccount.CREATE_DAILY_ACCOUNTING_TABLE
 
 import static com.skylightapp.Classes.DailyAccount.DAILY_ACCOUNTING_TABLE;
 
+import static com.skylightapp.Classes.Profile.CREATE_USER_TYPE_TABLE;
+import static com.skylightapp.Classes.Profile.USER_TYPE_TABLE;
 import static com.skylightapp.MapAndLoc.EmergReportNext.CREATE_EMERGENCY_NEXT_REPORT_TABLE;
 import static com.skylightapp.MapAndLoc.EmergReportNext.EMERGENCY_NEXT_REPORT_TABLE;
 import static com.skylightapp.MapAndLoc.EmergResponse.CREATE_RESPONSE_TABLE;
@@ -398,9 +400,6 @@ public class DBHelper extends SQLiteOpenHelper {
     private DateTimeFormatter timeFormat;
     private static final String PREF_NAME = "awajima";
 
-
-
-
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         Log.d("table", CREATE_PROFILES_TABLE);
@@ -456,6 +455,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.d("table", CREATE_RESPONSE_TABLE);
         Log.d("table", CREATE_SUPPLIER_TABLE);
         Log.d("table", CREATE_MARKET_BIZ_SUB_TABLE);
+        Log.d("table", CREATE_USER_TYPE_TABLE);
 
 
         try {
@@ -553,6 +553,8 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_RESPONSE_TABLE);
             db.execSQL(CREATE_SUPPLIER_TABLE);
             db.execSQL(MARKET_BIZ_SUB_TABLE);
+            db.execSQL(CREATE_USER_TYPE_TABLE);
+
 
             db.execSQL("create table ROLES " + "(role_ID integer primary key, roleUserName text,rolePassword text,rolePhoneNo text,role text)");
             db.setTransactionSuccessful();
@@ -632,6 +634,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + RESPONSE_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + SUPPLIER_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MARKET_BIZ_SUB_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + USER_TYPE_TABLE);
 
         onCreate(db);
 
@@ -700,6 +703,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + RESPONSE_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + SUPPLIER_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MARKET_BIZ_SUB_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + USER_TYPE_TABLE);
         onCreate(db);
     }
 

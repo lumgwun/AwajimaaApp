@@ -139,11 +139,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
     //@Ignore
     public static final String SPONSOR_TABLE_PROF_ID = "sponsor_Table_Prof_ID";
-
-    //@Ignore
     public static final String SPONSOR_TABLE_PHONE = "sponsor_Table_Phone";
-
-    //@Ignore
     public static final String SPONSOR_TABLE_EMAIL = "sponsor_Table_Email";
     public static final String PICTURE_MARKET_ID = "pic_market_ID";
 
@@ -153,8 +149,6 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public static final String SPONSOR_REF_COUNT = "sponsor_Ref_Count";
     public static final String SPONSOR_REF_REWARD_COUNT21 = "sponsor_Ref_Reward_Count";
 
-
-    //@Ignore
     public static final String PROF_ID_FOREIGN_KEY_PASSWORD = "prof_ID_FkeyPassW";
     public static final String PROF_BUSINESS_ID = "prof_BizID";
     public static final String PROF_MARKET_ID = "profmarket_ID8234";
@@ -162,9 +156,15 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public static final String PROF_ROLE_TYPE = "prof_Role_Type";
 
     public static final String PROF_DB_ID = "prof_DB_ID";
+    public static final String USER_TYPE_TABLE = "user_type_tableP";
+    public static final String USER_TYPE_ID = "user_type_ID";
+    public static final String USER_TYPE_PROF_ID = "user_type_Prof_ID";
+    public static final String USER_TYPE_CUS_ID = "user_type_Cus_ID";
+    public static final String USER_TYPE_STRING = "user_type_SS";
+    public static final String USER_TYPE_BIZ_ID = "user_type_Biz_ID";
+    public static final String USER_TYPE_MARKET_ID = "user_type_MID";
+    public static final String USER_TYPE_STATUS = "user_type_Status";
 
-
-    //@Ignore
     public static final String CREATE_PIXTURE_TABLE = "CREATE TABLE " + PICTURE_TABLE + " (" + PROFILE_PIC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PROFID_FOREIGN_KEY_PIX + " INTEGER, " + CUS_ID_PIX_KEY + " INTEGER , " +
             PICTURE_URI + " TEXT ,"+ PICTURE_MARKET_ID + " TEXT, "+"FOREIGN KEY(" + PICTURE_MARKET_ID  + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+"FOREIGN KEY(" + PROFID_FOREIGN_KEY_PIX  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + CUS_ID_PIX_KEY + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
     //@Ignore
@@ -175,8 +175,10 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public static final String CREATE_PROFILES_TABLE = "CREATE TABLE " + PROFILES_TABLE + " (" + PROFILE_ID + " INTEGER , " + PROFILE_SURNAME + " TEXT, " + PROFILE_FIRSTNAME + " TEXT, " + PROFILE_PHONE + " TEXT, " + PROFILE_EMAIL + " TEXT, " + PROFILE_DOB + " TEXT, " + PROFILE_GENDER + " TEXT, " +
             PROFILE_ADDRESS + " TEXT, " + PROFILE_NIN + " TEXT, " + PROFILE_UNIT + " TEXT, " + PROFILE_WARD + " TEXT, " + PROFILE_TOWN + " TEXT, " + PROFILE_STATE + " TEXT, " + PROFILE_COUNTRY + " TEXT, " + PROFILE_OFFICE + " TEXT, " + PROFILE_DATE_JOINED + " TEXT, " + PROFILE_ROLE + " TEXT, " + PROFILE_USERNAME + " TEXT, " + PROFILE_PASSWORD + " TEXT, " + PROFILE_STATUS + " TEXT, " + PROFILE_NEXT_OF_KIN + " TEXT,"+ PROFILE_SPONSOR_ID + " TEXT,"+ PROFILE_CUS_ID_KEY + " INTEGER,"+ PROF_BUSINESS_ID + " TEXT,"+ PROF_MARKET_ID + " TEXT,"+ PROF_REF_LINK + " REAL," + PROF_ADMIN_TYPE + " TEXT, " + PROF_ROLE_TYPE + " TEXT, "+ PROF_DB_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ "FOREIGN KEY(" + PROF_BUSINESS_ID + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+ "FOREIGN KEY(" + PROF_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+ "FOREIGN KEY(" + PROFILE_CUS_ID_KEY + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
-    //@Ignore
     public static final String CREATE_SPONSOR_TABLE = "CREATE TABLE " + SPONSOR_TABLE + " (" + SPONSOR_TABLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + SPONSOR_TABLE_CUS_ID + " INTEGER, " + SPONSOR_TABLE_PROF_ID + " INTEGER, " + SPONSOR_TABLE_PHONE + " TEXT, " + SPONSOR_TABLE_EMAIL + " TEXT, "+ SPONSOR_REFERER + " TEXT, "+ SPONSOR_REFERRER_CODE + " TEXT, "+ SPONSOR_REFERRER_USER + " TEXT, "+ SPONSOR_REF_COUNT + " INTEGER, "+  SPONSOR_REF_REWARD_COUNT21 + " INTEGER, " + "FOREIGN KEY(" + SPONSOR_TABLE_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+
+
+    public static final String CREATE_USER_TYPE_TABLE = "CREATE TABLE " + USER_TYPE_TABLE + " (" + USER_TYPE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + USER_TYPE_PROF_ID + " INTEGER, " + USER_TYPE_CUS_ID + " INTEGER, " + USER_TYPE_STRING + " TEXT, " + USER_TYPE_BIZ_ID + " INTEGER, "+ USER_TYPE_MARKET_ID + " INTEGER, "+ USER_TYPE_STATUS + " TEXT, "+ "FOREIGN KEY(" + USER_TYPE_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "),"+ "FOREIGN KEY(" + USER_TYPE_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + USER_TYPE_BIZ_ID + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+ "FOREIGN KEY(" + USER_TYPE_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "))";
 
     //@Ignore
     private Profile profile;
@@ -528,6 +530,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     private ArrayList<EmergencyReport> profileEmergReports;
     private ArrayList<EmergReportNext> profileEmergRNextS;
     private ArrayList<EmergResponse> profileEmergResponses;
+    private ArrayList<String> profUserTypes;
 
     @Ignore
     protected Profile(Parcel in) {
@@ -1530,6 +1533,11 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         profMarketIDs = new ArrayList<>();
         profMarketIDs.add(marketID);
     }
+    public void addUserType(String userType) {
+        profUserTypes = new ArrayList<>();
+        profUserTypes.add(userType);
+    }
+
     /*public void addBusinessOthers(BusinessOthers businessOthers) {
         profBizOthers = new ArrayList<>();
         profBizOthers.add(businessOthers);
@@ -1859,4 +1867,11 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     }
 
 
+    public ArrayList<String> getProfUserTypes() {
+        return profUserTypes;
+    }
+
+    public void setProfUserTypes(ArrayList<String> profUserTypes) {
+        this.profUserTypes = profUserTypes;
+    }
 }

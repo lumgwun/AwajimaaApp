@@ -8,10 +8,8 @@
     android:theme="@style/Theme.SkylightApp3"
     android:id="@android:id/tabhost"
     android:background="#f1f5f7"
-    tools:context="com.skylightapp.HQLogisticsOffice">
+    tools:context="com.skylightapp.Bookings.BookingsAct">
     <include layout="@layout/tool_bar9"/>
-    <include layout="@layout/toolbar_hq_logistics"/>
-
 
     <LinearLayout
         android:orientation="vertical"
@@ -30,12 +28,12 @@
             android:layout_height="fill_parent"
             android:padding="5dp" />
     </LinearLayout>
-    <include layout="@layout/inv_tab_bottom"/>
+    <include layout="@layout/booking_bottom"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="match_parent"
         android:src="@drawable/icon_tab1"
-        android:id="@+id/logTab"
+        android:id="@+id/booking_Fab"
         android:layout_gravity="end"
         android:foregroundGravity="center_horizontal"
         android:theme="@style/ThemeOverlay.MaterialComponents"
@@ -43,6 +41,5 @@
         android:layout_marginTop="19dp"
         android:layout_marginBottom="12dp"
         android:layout_height="wrap_content"/>
-
 
 </TabHost>

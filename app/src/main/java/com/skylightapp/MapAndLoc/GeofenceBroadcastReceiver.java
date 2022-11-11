@@ -10,30 +10,71 @@ import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
 
 import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofenceStatusCodes;
 import com.google.android.gms.location.GeofencingEvent;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.skylightapp.R;
 import com.webgeoservices.woosmapgeofencing.WoosmapRebootJobService;
 
+import java.util.List;
+
 public class GeofenceBroadcastReceiver extends BroadcastReceiver {
     public static final String TAG = GeofenceBroadcastReceiver.class.getSimpleName();
+    Context context;
+    private int geofenceTransition;
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
+        if (geofencingEvent.hasError()) {
+            String errorMessage = GeofenceStatusCodes
+                    .getStatusCodeString(geofencingEvent.getErrorCode());
+            Log.e(TAG, errorMessage);
+            return;
+        }
+        if(geofencingEvent !=null){
+            geofenceTransition = geofencingEvent.getGeofenceTransition();
+
+        }
+
+
+
+        if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ||
+                geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
+
+            List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
+
+            String geofenceTransitionDetails = getGeofenceTransitionDetails(
+                    this,
+                    geofenceTransition,
+                    triggeringGeofences
+            );
+
+            sendNotification(geofenceTransitionDetails,geofenceTransition);
+            Log.i(TAG, geofenceTransitionDetails);
+        } else {
+            Log.i(TAG, "Invalid Type");
+
+        }
+
+
         if ("android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) {
             WoosmapRebootJobService.enqueueWork(context, new Intent());
         }
         GeofTransJobIntentS.enqueueWork(context, intent);
-        GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
+        geofencingEvent = GeofencingEvent.fromIntent(intent);
         if (geofencingEvent.hasError()) {
             Log.e(TAG, String.format("Error code : %d", geofencingEvent.getErrorCode()));
             return;
         }
 
-        int geofenceTransition = geofencingEvent.getGeofenceTransition();
+        geofenceTransition = geofencingEvent.getGeofenceTransition();
         if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) {
             setRingerMode(context, AudioManager.RINGER_MODE_SILENT);
         } else if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
@@ -47,6 +88,53 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
         throw new UnsupportedOperationException("Not Supported on your device");
 
     }
+
+    private void sendNotification(String geofenceTransitionDetails, int geofenceTransition) {
+        Intent notificationIntent = new Intent(context, GoogleMapActivity.class);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+
+        stackBuilder.addParentStack(GoogleMapActivity.class);
+
+        stackBuilder.addNextIntent(notificationIntent);
+
+        PendingIntent notificationPendingIntent =
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+
+        if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) {
+            builder.setSmallIcon(R.drawable.ic_volume_off)
+                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
+                            R.drawable.ic_volume_off))
+                    .setContentTitle(context.getString(R.string.silent_mode_activated));
+        } else if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
+            builder.setSmallIcon(R.drawable.ic_volume_up)
+                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
+                            R.drawable.ic_volume_up))
+                    .setContentTitle(context.getString(R.string.back_to_normal));
+
+
+
+        }
+        builder.setContentText(geofenceTransitionDetails);
+        builder.setContentIntent(notificationPendingIntent);
+        builder.setAutoCancel(true);
+
+        // Get an instance of the Notification manager
+        NotificationManager mNotificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Issue the notification
+        mNotificationManager.notify(0, builder.build());
+
+    }
+
+    private String getGeofenceTransitionDetails(GeofenceBroadcastReceiver geofenceBroadcastReceiver, int geofenceTransition, List<Geofence> triggeringGeofences) {
+        return null;
+    }
+
+
     private void sendNotification(Context context, int transitionType) {
         Intent notificationIntent = new Intent(context, GoogleMapActivity.class);
 

@@ -1,4 +1,4 @@
-package com.skylightapp.Classes;
+package com.skylightapp.MapAndLoc;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

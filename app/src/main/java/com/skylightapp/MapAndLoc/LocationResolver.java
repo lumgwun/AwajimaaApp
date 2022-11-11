@@ -1,4 +1,4 @@
-package com.skylightapp.Classes;
+package com.skylightapp.MapAndLoc;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,6 +10,8 @@ import android.os.Handler;
 import android.os.Looper;
 
 import androidx.annotation.NonNull;
+
+import com.skylightapp.Classes.Message;
 
 import java.util.Timer;
 import java.util.TimerTask;

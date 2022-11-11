@@ -21,12 +21,10 @@ import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.tasks.CancellationTokenSource;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
-import com.skylightapp.Classes.LocationUpdatesBroadcastReceiver;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Utils;

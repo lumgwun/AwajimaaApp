@@ -1,11 +1,10 @@
 package com.skylightapp.MapAndLoc;
 
-import static com.skylightapp.Database.DBHelper.DATABASE_NAME;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.TaskStackBuilder;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
@@ -22,24 +21,27 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import com.blongho.country_data.World;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -62,15 +64,9 @@ import com.webgeoservices.woosmapgeofencingcore.database.WoosmapDb;
 import com.webgeoservices.woosmapgeofencingcore.database.ZOI;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URLConnection;
-import java.nio.channels.FileChannel;
-import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -79,10 +75,10 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class GeofenceActivity extends AppCompatActivity {
     public static final boolean AIRSHIP = false;
+    @SuppressLint("SimpleDateFormat")
     static SimpleDateFormat displayDateFormatAirship = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
@@ -96,7 +92,7 @@ public class GeofenceActivity extends AppCompatActivity {
     private boolean isMenuOpen = false;
 
     private BottomNavigationView bottomNav;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private SharedPreferences userPreferences;
     private SQLiteDatabase sqLiteDatabase;
     private Calendar calendar;
@@ -109,6 +105,17 @@ public class GeofenceActivity extends AppCompatActivity {
 
     private Woosmap woosmap;
     private Bundle trackingIntent;
+    String name = "my_package_channel";
+    String id = "my_package_channel_1"; // The user-visible name of the channel.
+    String description = "my_package_first_channel"; // The user-visible description of the channel.
+
+    Intent intent;
+    PendingIntent pendingIntent;
+    PendingIntent geofencePendingIntent;
+    NotificationCompat.Builder builder;
+    private GeofencingClient geofencingClient;
+
+
 
     public class WoosLocationReadyListener implements Woosmap.LocationReadyListener {
         public void LocationReadyCallback(Location location) {
@@ -269,13 +276,7 @@ public class GeofenceActivity extends AppCompatActivity {
         final int NOTIFY_ID = 1002;
 
         // There are hardcoding only for show it's just strings
-        String name = "my_package_channel";
-        String id = "my_package_channel_1"; // The user-visible name of the channel.
-        String description = "my_package_first_channel"; // The user-visible description of the channel.
 
-        Intent intent;
-        PendingIntent pendingIntent;
-        NotificationCompat.Builder builder;
 
         NotificationManager notifManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -357,6 +358,8 @@ public class GeofenceActivity extends AppCompatActivity {
         loadZOI();
         loadRegion();
         loadRegionLogs();
+        geofencingClient = LocationServices.getGeofencingClient(this);
+
         if(trackingIntent !=null){
             reportID=trackingIntent.getInt("EMERGENCY_LOCID");
             trackedUser=trackingIntent.getParcelable("Profile");
@@ -464,6 +467,29 @@ public class GeofenceActivity extends AppCompatActivity {
         }
 
         this.InitializeOptionsPanel();
+        //geofencePendingIntent = LocationServices.getGeofencingClient(this);
+
+
+    }
+    private String getGeofenceTransitionDetails(GeofenceBroadcastReceiver geofenceBroadcastReceiver, int geofenceTransition, List<Geofence> triggeringGeofences) {
+
+
+        geofencingClient.removeGeofences(getGeofencePendingIntent())
+                .addOnSuccessListener(this, new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Geofences removed
+                        // ...
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Failed to remove geofences
+                        // ...
+                    }
+                });
+        return null;
     }
 
     private void InitializeOptionsPanel() {
@@ -843,6 +869,18 @@ public class GeofenceActivity extends AppCompatActivity {
             }
         });
     }
+    @SuppressLint("UnspecifiedImmutableFlag")
+    private PendingIntent getGeofencePendingIntent() {
+        if (geofencePendingIntent != null) {
+            return geofencePendingIntent;
+        }
+        Intent intent = new Intent(this, GeofenceBroadcastReceiver.class);
+
+        geofencePendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.
+                FLAG_UPDATE_CURRENT);
+        return geofencePendingIntent;
+    }
+
 
     private void setFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

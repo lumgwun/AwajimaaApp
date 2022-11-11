@@ -241,7 +241,7 @@ public class Utils {
     }
 
 
-    static void sendNotification(Context context, String notificationDetails) {
+    public static void sendNotification(Context context, String notificationDetails) {
 
         Intent notificationIntent = new Intent(context, MapPanoramaStVAct.class);
 
@@ -342,7 +342,7 @@ public class Utils {
 
 
 
-    static String getLocationResultTitle(Context context, List<Location> locations) {
+    public static String getLocationResultTitle(Context context, List<Location> locations) {
         String numLocationsReported = context.getResources().getQuantityString(
                 R.plurals.num_locations_reported, locations.size(), locations.size());
         return numLocationsReported + ": " + DateFormat.getDateTimeInstance().format(new Date());
@@ -363,7 +363,7 @@ public class Utils {
         }
         return sb.toString();
     }
-    static void setLocationUpdatesResult(Context context, List<Location> locations) {
+    public static void setLocationUpdatesResult(Context context, List<Location> locations) {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
                 .putString(KEY_LOCATION_UPDATES_RESULT, getLocationResultTitle(context, locations)

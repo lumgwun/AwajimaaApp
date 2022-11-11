@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.skylightapp" >
+    package="com.skylightapp">
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -86,7 +86,40 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:node="merge"
         tools:remove="android:icon"
-        tools:replace="android:allowBackup" >
+        tools:replace="android:allowBackup">
+        <activity
+            android:name=".Bookings.BoatDriverMainAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.TaxiDriverMainAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.RateUserAct"
+            android:exported="false" />
+        <activity
+            android:name=".Spillages.SpillageResponseAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.TrainTripListAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.TaxiDriverRideAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.BoatTripListAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.MyTrainAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.MyTaxiAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.MyBoatAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.BookingsAct"
+            android:exported="false" />
         <activity
             android:name=".GooglePayAct"
             android:exported="false" />
@@ -117,14 +150,14 @@
             android:exported="false" />
         <activity
             android:name=".GrpSavingsOptionAct"
-            android:exported="false" >
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".GroupAcctDetailsAct"
-            android:exported="false" >
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -164,7 +197,7 @@
             android:exported="false" />
         <activity
             android:name=".Markets.SendMultiSendeeMAct"
-            android:exported="false" >
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -181,7 +214,7 @@
             android:name=".MarketClasses.AppInstallRefReceiver"
             android:enabled="true"
             android:exported="true"
-            android:permission="android.permission.INSTALL_PACKAGES" >
+            android:permission="android.permission.INSTALL_PACKAGES">
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
@@ -317,7 +350,7 @@
         <receiver
             android:name=".MapAndLoc.UserLocBReceiver"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="my.action" />
             </intent-filter>
@@ -448,7 +481,7 @@
             android:name=".Customers.CusStatementAct"
             android:exported="false"
             android:label="File Selector"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
 
@@ -536,8 +569,8 @@
             android:name=".JoinThisGrpSavAct"
             android:exported="true"
             android:label="Add New Profile to Group "
-            android:theme="@style/TeliverTheme" >
-            <intent-filter android:autoVerify="true" >
+            android:theme="@style/TeliverTheme">
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -739,7 +772,7 @@
             android:name=".WelcomeActivity"
             android:configChanges="orientation|screenSize"
             android:exported="true"
-            tools:ignore="IntentFilterExportedReceiver" >
+            tools:ignore="IntentFilterExportedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -809,7 +842,7 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.UserContentProvider"
             android:exported="false"
-            android:grantUriPermissions="true" >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepath_pdf" />
@@ -893,7 +926,7 @@
         <receiver
             android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
             android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
@@ -905,7 +938,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".Classes.LocationUpdatesBroadcastReceiver"
+            android:name=".MapAndLoc.LocationUpdatesBroadcastReceiver"
             android:enabled="true"
             android:exported="true" />
 
@@ -914,7 +947,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".MainActChat"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>

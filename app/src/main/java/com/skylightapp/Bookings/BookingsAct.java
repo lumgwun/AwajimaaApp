@@ -1,6 +1,5 @@
-package com.skylightapp;
+package com.skylightapp.Bookings;
 
-import androidx.cardview.widget.CardView;
 
 import android.annotation.SuppressLint;
 import android.app.TabActivity;
@@ -9,8 +8,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.GridLayout;
 import android.widget.TabHost;
 
 import com.blongho.country_data.Country;
@@ -20,29 +17,28 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.skylightapp.Adapters.CurrAdapter;
-import com.skylightapp.Admins.AdminTransActivity;
-import com.skylightapp.Admins.SkylightUsersActivity;
+
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Customers.CustomerHelpActTab;
-import com.skylightapp.Customers.NewCustomerDrawer;
-import com.skylightapp.Customers.PackListTab;
+
+import com.skylightapp.MapAndLoc.EmergReportMapA;
 import com.skylightapp.MarketClasses.MarketBizSubScription;
-import com.skylightapp.Markets.MarketTab;
+
+import com.skylightapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class HQLogisticsOffice extends TabActivity {
+public class BookingsAct extends TabActivity {
     private static final String PREF_NAME = "awajima";
-    public static final String KEY = "HQLogisticsOffice.KEY";
+    public static final String KEY = "BookingsAct.KEY";
     ChipNavigationBar chipNavigationBar;
-    GridLayout maingrid;
-    Button btnUtility, btnOurPrivacyPolicy,btnInvestment;
+
     private SharedPreferences userPreferences;
     PrefManager prefManager;
     private Gson gson,gson1;
@@ -57,22 +53,22 @@ public class HQLogisticsOffice extends TabActivity {
     private List<Currency> currencies;
     private World world;
     private CurrAdapter currencyAdapter;
-    private  Customer customer;
-    private  Account account;
+    private Customer customer;
+    private Account account;
     private ArrayList<Account> accountArrayList;
     private ArrayList<MarketBizSubScription> marketBizSubScriptions;
 
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
-    CardView cardViewPackges,cardViewGrpSavings,cardViewHistory, cardViewStandingOrders, cardViewOrders, cardViewSupport;
-    private FloatingActionButton fab;
+    private FloatingActionButton fab,fabHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_hqlogistics_office);
+        setContentView(R.layout.act_bookings);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         chipNavigationBar = findViewById(R.id.bottom_nav_barC);
-        fab = findViewById(R.id.logTab);
+        fab = findViewById(R.id.booking_Fab);
+        fabHome = findViewById(R.id.fab_BBB);
         gson = new Gson();
         World.init(this);
         countries=new ArrayList<>();
@@ -83,10 +79,26 @@ public class HQLogisticsOffice extends TabActivity {
         userProfile=new Profile();
         customer=new Customer();
         account=new Account();
+        fabHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(BookingsAct.this, EmergReportMapA.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(myIntent);
+            }
+        });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent myIntent = new Intent(BookingsAct.this, CustomerHelpActTab.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(myIntent);
             }
         });
         SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
@@ -103,20 +115,27 @@ public class HQLogisticsOffice extends TabActivity {
         TabHost tabhost = (TabHost) findViewById(android.R.id.tabhost);
         tabhost.setup(getLocalActivityManager());
 
-        Intent intentsupport = new Intent().setClass(this, SkylightUsersActivity.class);
-        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabUserSupport = tabhost
-                .newTabSpec("Users")
-                .setIndicator("", resources.getDrawable(R.drawable.user3))
-                .setContent(intentsupport);
+        Intent intentBoatB = new Intent().setClass(this, BoatTripListAct.class);
+        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec boatTrips = tabhost
+                .newTabSpec("Boat Trips")
+                .setIndicator("", resources.getDrawable(R.drawable.boat33))
+                .setContent(intentBoatB);
 
-        Intent intentTransactions= new Intent().setClass(this, AdminTransActivity.class);
-        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabTransaction = tabhost
-                .newTabSpec("Tx")
-                .setIndicator("", resources.getDrawable(R.drawable.withdrawal))
+        Intent intentTransactions= new Intent().setClass(this, TaxiDriverRideAct.class);
+        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec taxiTrips = tabhost
+                .newTabSpec("Taxi Trips")
+                .setIndicator("", resources.getDrawable(R.drawable.ic_taxi33))
                 .setContent(intentTransactions);
 
-        tabhost.addTab(tabUserSupport);
-        tabhost.addTab(tabTransaction);
+        Intent intentTrain= new Intent().setClass(this, TrainTripListAct.class);
+        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabTrain = tabhost
+                .newTabSpec("Train Trips")
+                .setIndicator("", resources.getDrawable(R.drawable.train))
+                .setContent(intentTrain);
+
+        tabhost.addTab(boatTrips);
+        tabhost.addTab(taxiTrips);
+        tabhost.addTab(tabTrain);
 
         tabhost.setCurrentTab(2);
         chipNavigationBar.setOnItemSelectedListener
@@ -125,17 +144,10 @@ public class HQLogisticsOffice extends TabActivity {
                     public void onItemSelected(int i) {
                         //Fragment fragment = null;
                         switch (i){
-                            case R.id.cHome:
-                                Intent myIntent = new Intent(HQLogisticsOffice.this, NewCustomerDrawer.class);
-                                overridePendingTransition(R.anim.slide_in_right,
-                                        R.anim.slide_out_left);
-                                myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(myIntent);
 
-                            case R.id.cTimeLine:
+                            case R.id.my_boatB:
 
-                                Intent chat = new Intent(HQLogisticsOffice.this, MyTimelineAct.class);
+                                Intent chat = new Intent(BookingsAct.this, MyBoatAct.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
                                 chat.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -143,36 +155,26 @@ public class HQLogisticsOffice extends TabActivity {
                                 startActivity(chat);
 
 
-                            case R.id.cGeneralShop:
+                            case R.id.my_taxiB:
 
-                                Intent shop = new Intent(HQLogisticsOffice.this, MarketTab.class);
+                                Intent shop = new Intent(BookingsAct.this, MyTaxiAct.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
                                 shop.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 shop.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(shop);
 
-                            case R.id.cPackageT:
+                            case R.id.my_trainB:
 
-                                Intent pIntent = new Intent(HQLogisticsOffice.this, PackListTab.class);
+                                Intent pIntent = new Intent(BookingsAct.this, MyTrainAct.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
                                 pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 pIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(pIntent);
 
-
-                            case R.id.cSupport:
-                                Intent helpIntent = new Intent(HQLogisticsOffice.this, CustomerHelpActTab.class);
-                                overridePendingTransition(R.anim.slide_in_right,
-                                        R.anim.slide_out_left);
-                                helpIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                helpIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(helpIntent);
                         }
-                        /*getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.fragment_container,
-                                        fragment).commit();*/
+
                     }
                 });
     }

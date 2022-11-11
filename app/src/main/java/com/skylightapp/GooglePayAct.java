@@ -157,7 +157,6 @@ public class GooglePayAct extends AppCompatActivity {
         userPassword=userPreferences.getString("PROFILE_PASSWORD", "");
         userMachine=userPreferences.getString("PROFILE_ROLE", "");
         profileID=userPreferences.getInt("PROFILE_ID", 0);
-
         json2 = userPreferences.getString("LastMarketBusinessUsed", "");
         marketBusiness = gson2.fromJson(json2, MarketBusiness.class);
         btnContinue.setOnClickListener(new View.OnClickListener() {
@@ -207,10 +206,6 @@ public class GooglePayAct extends AppCompatActivity {
             Toast.makeText(this, R.string.google_pay_status_unavailable, Toast.LENGTH_LONG).show();
         }
     }
-
-
-
-
     public void requestPayment(View view) {
         gPayBundle= new Bundle();
 
@@ -225,7 +220,6 @@ public class GooglePayAct extends AppCompatActivity {
             noOfMonths=gPayBundle.getInt("NoOfMonths");
 
         }
-
         long totalPriceCents = amount;
         final Task<PaymentData> task = model.getLoadPaymentDataTask(totalPriceCents);
 

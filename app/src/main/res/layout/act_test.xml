@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="wrap_content">
-        <include layout="@layout/tool_bar_11c"/>
+        <include layout="@layout/tool_bar_test"/>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -44,7 +44,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
-                android:text="Admin"
+                android:text="Biz. Admin"
                 android:onClick="goAdmin"
                 android:textSize="20sp"
                 android:padding="20dp"
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"/>
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
-                android:text="Teller"
+                android:text="Virtual Assistants"
                 android:textSize="20sp"
                 android:padding="20dp"
                 android:drawableTint="@color/ORANGE_CHAT"
@@ -254,7 +254,7 @@
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Coach Live"
+                            android:text="Live Session"
                             android:drawableTint="@color/white"
                             android:drawableTop="@drawable/ic_add_business"
                             android:textAlignment="center"
@@ -492,6 +492,40 @@
                             android:textStyle="bold" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardTrips"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_columnWeight="1"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    app:layout_rowWeight="1"
+                    app:cardBackgroundColor="#ffae19"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="8dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        android:layout_margin="16dp"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Trip Office"
+                            android:drawableTint="@color/white"
+                            android:drawableTop="@drawable/ic_menu_gallery"
+                            android:textAlignment="center"
+                            android:textColor="@android:color/white"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
 
 
 
