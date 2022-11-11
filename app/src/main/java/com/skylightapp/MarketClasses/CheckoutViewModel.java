@@ -78,9 +78,6 @@ public class CheckoutViewModel extends AndroidViewModel {
         return paymentsClient.loadPaymentData(request);
     }
 
-    /**
-     * Determine whether the API to save passes to Google Pay is available on the device.
-     */
     private void fetchCanAddPassesToGoogleWallet() {
         walletClient
                 .getPayApiAvailabilityStatus(PayClient.RequestType.SAVE_PASSES)

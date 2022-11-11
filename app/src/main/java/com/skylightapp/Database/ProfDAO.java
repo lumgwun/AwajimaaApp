@@ -58,6 +58,12 @@ import static com.skylightapp.Classes.Profile.SPONSOR_REFERER;
 import static com.skylightapp.Classes.Profile.SPONSOR_REF_COUNT;
 import static com.skylightapp.Classes.Profile.SPONSOR_REF_REWARD_COUNT21;
 import static com.skylightapp.Classes.Profile.SPONSOR_TABLE;
+import static com.skylightapp.Classes.Profile.USER_TYPE_BIZ_ID;
+import static com.skylightapp.Classes.Profile.USER_TYPE_CUS_ID;
+import static com.skylightapp.Classes.Profile.USER_TYPE_MARKET_ID;
+import static com.skylightapp.Classes.Profile.USER_TYPE_PROF_ID;
+import static com.skylightapp.Classes.Profile.USER_TYPE_STRING;
+import static com.skylightapp.Classes.Profile.USER_TYPE_TABLE;
 import static java.lang.String.valueOf;
 
 public class ProfDAO extends DBHelperDAO{
@@ -92,6 +98,35 @@ public class ProfDAO extends DBHelperDAO{
 
         db.close();
         return password;
+    }
+    public long addUserTypes(ArrayList<String> userTypeList,int profID,int cusID,long bizID,int marketID) {
+        int count = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        for (int i = 0; i < userTypeList.size(); i++) {
+            String userType = userTypeList.get(i);
+            ContentValues values = new ContentValues();
+            values.put(USER_TYPE_STRING, userType);
+            values.put(USER_TYPE_PROF_ID, profID);
+            values.put(USER_TYPE_CUS_ID, cusID);
+            values.put(USER_TYPE_BIZ_ID, bizID);
+            values.put(USER_TYPE_MARKET_ID, marketID);
+            long id = db.insert(USER_TYPE_TABLE, null, values);
+            if (id != -1)
+                count += 10;
+        }
+        return count;
+
+    }
+    public long addUserType(String userType,int profID,int cusID,long bizID,int marketID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(USER_TYPE_STRING, userType);
+        values.put(USER_TYPE_PROF_ID, profID);
+        values.put(USER_TYPE_CUS_ID, cusID);
+        values.put(USER_TYPE_BIZ_ID, bizID);
+        values.put(USER_TYPE_MARKET_ID, marketID);
+        return db.insert(USER_TYPE_TABLE, null, values);
+
     }
     public int getReferrerCount(String refLink) {
         SQLiteDatabase db = this.getReadableDatabase();

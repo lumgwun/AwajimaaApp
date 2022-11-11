@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Awajima Market App</string>
+    <string name="app_name">Awajima App</string>
     <string name="title_activity_settings">SettingsActivity</string>
 
     <string name="messages_header">Messages</string>
@@ -2025,6 +2025,11 @@
     <string name="title_activity_resp_team_pref">RespTeamPrefAct</string>
     <string name="fui_phone_hint">Phone Number</string>
     <string name="title_activity_biz_type_select">BizTypeSelectAct</string>
+
+    <string name="ip">http://192.168.1.76:8000/</string>
+    <string name="acceptbutton">Accept ride</string>
+    <string name="beginridebutton">BEGIN RIDE</string>
+    <string name="endridebutton">END RIDE</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 

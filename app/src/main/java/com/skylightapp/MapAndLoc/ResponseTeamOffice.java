@@ -45,7 +45,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -84,7 +83,6 @@ import com.mig35.carousellayoutmanager.CarouselZoomPostLayoutListener;
 import com.mig35.carousellayoutmanager.CenterScrollListener;
 import com.skylightapp.BuildConfig;
 import com.skylightapp.Classes.Customer;
-import com.skylightapp.Classes.LocationUpdatesBroadcastReceiver;
 import com.skylightapp.Classes.MyTouchListener;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
@@ -297,6 +295,7 @@ public class ResponseTeamOffice extends FragmentActivity implements OnMapReadyCa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_map_test);
+        setTitle("Emergency,Crimes & Env. Issues");
         dbHelper = new DBHelper(this);
         bundleIntent= new Bundle();
         placeData= new PlaceData();

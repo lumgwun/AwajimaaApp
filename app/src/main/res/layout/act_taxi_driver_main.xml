@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/sky4"
+    android:layout_height="match_parent"
+    tools:context=".Bookings.TaxiDriverMainAct">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:id="@+id/driverGreetings"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/good_afternoon1"
+        android:layout_height="100dp"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:text="Chukwuma"
+        android:id="@+id/driverName"
+        android:textColor="@color/white_good"
+        android:textSize="20sp"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:layout_height="wrap_content"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/loginForRide"
+        android:background="@drawable/rect_their4"
+        android:layout_width="fill_parent"
+        android:padding="40dp"
+        android:layout_height="wrap_content"
+        android:text="Login for Rides" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

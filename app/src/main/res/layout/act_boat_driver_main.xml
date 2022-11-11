@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/rect_their_message"
+    android:layout_height="match_parent"
+    tools:context=".Bookings.BoatDriverMainAct">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:id="@+id/bGreetings"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/good_afternoon1"
+        android:layout_height="100dp"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:text="Adasi Nte"
+        android:id="@+id/boat_DriverName"
+        android:textColor="@color/red_brown_dark"
+        android:textSize="20sp"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:layout_height="wrap_content"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:text="Trip Bookings"
+        android:id="@+id/tripBooking"
+        android:textColor="@color/red_brown_dark"
+        android:textSize="20sp"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:layout_height="wrap_content"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:padding="5dp"
+        android:id="@+id/recyTrip"
+        android:layout_height="wrap_content"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/loginForRide"
+        android:background="@drawable/rect_their4"
+        android:layout_width="fill_parent"
+        android:padding="40dp"
+        android:layout_height="wrap_content"
+        android:text="Start Boat Trip" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

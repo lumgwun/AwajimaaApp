@@ -17,7 +17,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Switch;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -29,9 +28,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
-import com.skylightapp.Classes.LocationUpdatesBroadcastReceiver;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.EmergReportDAO;

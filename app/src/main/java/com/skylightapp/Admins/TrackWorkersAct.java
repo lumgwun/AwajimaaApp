@@ -1,7 +1,6 @@
 package com.skylightapp.Admins;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -28,7 +27,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.directions.route.AbstractRouting;
 import com.directions.route.Route;
 import com.directions.route.RouteException;
 import com.directions.route.Routing;
@@ -65,7 +63,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.maps.android.ui.IconGenerator;
 import com.melnykov.fab.FloatingActionButton;
 import com.skylightapp.BuildConfig;
-import com.skylightapp.Classes.LocationUpdatesBroadcastReceiver;
+import com.skylightapp.MapAndLoc.LocationUpdatesBroadcastReceiver;
 import com.skylightapp.Classes.Utils;
 import com.skylightapp.R;
 

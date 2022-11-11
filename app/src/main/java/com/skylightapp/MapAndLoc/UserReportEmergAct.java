@@ -81,7 +81,6 @@ import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.melnykov.fab.FloatingActionButton;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerManager;
-import com.skylightapp.Classes.LocationUpdatesBroadcastReceiver;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Utils;
 import com.skylightapp.Customers.CustomerHelpActTab;

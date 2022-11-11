@@ -232,16 +232,32 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
         txtGrpSavings = findViewById(R.id.GrpSavingsAdmin56);
         txtNoOfPaymentsToday = findViewById(R.id.paymentNO);
         txtTotalPayments = findViewById(R.id.adminTotalPayment);
-        paymentTotal=paymentDAO.getTotalPaymentTodayForBranch1(SharedPrefOffice,todayDate);
-        paymentCount=paymentDAO.getPaymentCountTodayForBranch(SharedPrefOffice,todayDate);
+        if(paymentDAO !=null){
+            try {
+
+                paymentTotal=paymentDAO.getTotalPaymentTodayForBranch1(SharedPrefOffice,todayDate);
+                paymentCount=paymentDAO.getPaymentCountTodayForBranch(SharedPrefOffice,todayDate);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
         txtNoOfPaymentsToday.setText(MessageFormat.format("Branch Payments:{0}", paymentCount));
         txtTotalPayments.setText(MessageFormat.format("Payments: N{0}", paymentTotal));
 
         txtNoOfReports = findViewById(R.id.reportsAdminToday);
-        tellerReportCount=tReportDAO.getTellerReportCountTodayForBranch(SharedPrefOffice,todayDate);
+        try {
+
+            tellerReportCount=tReportDAO.getTellerReportCountTodayForBranch(SharedPrefOffice,todayDate);
+            tellerReportBalance=tReportDAO.getTotalTellerReportAmountSubmittedTodayForBranch(SharedPrefOffice,newDate1);
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+
+
         txtNoOfReports.setText(MessageFormat.format("Reports:{0}", tellerReportCount));
         txtgrandBalance = findViewById(R.id.grandBalanceAdmin);
-        tellerReportBalance=tReportDAO.getTotalTellerReportAmountSubmittedTodayForBranch(SharedPrefOffice,newDate1);
         txtgrandBalance.setText(MessageFormat.format("Grand Balance: N{0}", tellerReportBalance));
 
         btnSO=findViewById(R.id.standingOrder3);
