@@ -1,0 +1,37 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:enabled="true">
+    <PreferenceCategory app:title="Team Preferences">
+
+        <EditTextPreference
+            app:defaultValue="Awajima"
+            app:key="signature"
+            app:title="Team Organization Name"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            app:allowDividerBelow="true"
+            app:defaultValue="Emergencies"
+            app:entries="@array/EmergencyCategory"
+            app:entryValues="@array/EmergencyCategory"
+            app:key="EMERGENCY_REPORT_GROUP"
+            app:title="Response Team Category"
+            app:useSimpleSummaryProvider="true">
+
+        </ListPreference>
+        <intent android:action="android.intent.action.APPLICATION_PREFERENCES"></intent>
+
+    </PreferenceCategory>
+    <PreferenceCategory app:title="State Preference">
+
+        <ListPreference
+            app:defaultValue="Rivers"
+            app:entries="@array/state"
+            app:entryValues="@array/state"
+            app:key="EMERGENCY_REPORT_STATE"
+            app:title="Response Team State"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

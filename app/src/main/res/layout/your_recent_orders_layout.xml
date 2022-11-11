@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/rect_their_message"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp"
+    android:background="@drawable/event_rect"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
     android:elevation="4dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -19,7 +19,7 @@
         android:layout_marginTop="16dp"
         android:text="Your Recent Orders"
         android:textSize="16sp"
-        android:textColor="#000000"
+        android:textColor="@color/white_good"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -50,7 +50,7 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_weight="1"
-            android:src="@drawable/home_theater_600w"
+            android:src="@drawable/hp_16gb_1tb_ssd_608_2"
             app:civ_border_color="@color/colorPrimary"
             app:civ_border_width="4dp" />
 
@@ -58,7 +58,7 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_weight="1"
-            android:src="@drawable/electric_iron"
+            android:src="@drawable/hp_32gb_2tb_ssd_"
             app:civ_border_color="@color/colorPrimary"
             app:civ_border_width="4dp" />
 
@@ -66,7 +66,7 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_weight="1"
-            android:src="@drawable/grinding_machine_mil"
+            android:src="@drawable/hp_16gb_1tb_ssd_608"
             app:civ_border_color="@color/colorPrimary"
             app:civ_border_width="4dp" />
 

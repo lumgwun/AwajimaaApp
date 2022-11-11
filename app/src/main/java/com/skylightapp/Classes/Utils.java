@@ -17,10 +17,12 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
@@ -62,6 +64,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.skylightapp.Interfaces.UploadImagePrefix;
+import com.skylightapp.MapAndLoc.Coordinate;
 import com.skylightapp.MapAndLoc.MapPanoramaStVAct;
 import com.skylightapp.R;
 import com.skylightapp.Transactions.Pay_load;
@@ -154,6 +157,39 @@ public class Utils {
                 .putBoolean(KEY_LOCATION_UPDATES_REQUESTED, value)
                 .apply();
     }
+    public static Integer toDp(Integer value) {
+        Float calculatedValue = value * Resources.getSystem().getDisplayMetrics().density + 0.5f;
+        return calculatedValue.intValue();
+    }
+
+    public static Coordinate toCoordinate(LatLng latLng) {
+        if (latLng != null) {
+            return new Coordinate(latLng.latitude, latLng.longitude);
+        } else {
+            return null;
+        }
+    }
+
+    public static Long secondToMillisecond(Long value) {
+        return value * 1000;
+    }
+
+    public static LatLng toLatLng(Coordinate coordinate) {
+        return new LatLng(coordinate.lat, coordinate.lng);
+    }
+
+    public static Bitmap toBitmap(Drawable drawable) {
+        if (drawable instanceof BitmapDrawable)
+            return ((BitmapDrawable) drawable).getBitmap();
+        Bitmap bitmap = Bitmap.createBitmap(
+                drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
 
     public static boolean getRequestingLocationUpdates(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
@@ -239,6 +275,32 @@ public class Utils {
         return dist;
 
     }
+    public static double taxiDistance(LatLng userLatLng, LatLng dBLatLng, String unit){
+        double earthRadius = 6371.0;
+        if (unit.equalsIgnoreCase("M")){
+            earthRadius = 6371 * 1000;
+        }else if(unit.equalsIgnoreCase("N")){
+            earthRadius=6371.75;
+        }
+        double latitude = userLatLng.latitude;
+        double longitude = userLatLng.longitude;
+
+        double latDB = dBLatLng.latitude;
+        double longDB = dBLatLng.longitude;
+
+
+        double dLat = Math.toRadians(latitude-latDB);
+        double dLng = Math.toRadians(longitude-longDB);
+        double sindLat = Math.sin(dLat / 2);
+        double sindLng = Math.sin(dLng / 2);
+
+        double a = Math.pow(sindLat,2)+ Math.pow(sindLng,2) * Math.cos(Math.toRadians(latitude)) * Math.cos(Math.toRadians(latDB));
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double dist = earthRadius * c;
+        return dist;
+
+    }
+
 
 
     public static void sendNotification(Context context, String notificationDetails) {
@@ -425,7 +487,7 @@ public class Utils {
         return new String[0];
     }
 
-    public static class Profile {
+    public static class Profile22 {
         public static final int MAX_AVATAR_SIZE = 1280; //px, side of square
         public static final int MIN_AVATAR_SIZE = 100; //px, side of square
         public static final int MAX_NAME_LENGTH = 120;
@@ -544,7 +606,7 @@ public class Utils {
     }
 
 
-    public static class SkyLightPackage {
+    public static class SkyLightPackage33 {
         public static final int MAX_TEXT_LENGTH_IN_LIST = 300; //characters
         public static final int MAX_POST_TITLE_LENGTH = 255; //characters
         public static final int POST_AMOUNT_ON_PAGE = 10;

@@ -33,10 +33,7 @@ public class MyOrdersFragment extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         myOrdersRecyclerView.setLayoutManager(linearLayoutManager);
         List<MyOrderItemModel> myOrderItemModelList = new ArrayList<>();
-        myOrderItemModelList.add(new MyOrderItemModel(R.drawable.water_dispenser,2,"Water Dispenser","Delivered on Mon,15th JAN 2022"));
-        myOrderItemModelList.add(new MyOrderItemModel(R.drawable.home_theater_1200,1,"Home Theater","Delivered on Mon,15th FEB 2022"));
-        myOrderItemModelList.add(new MyOrderItemModel(R.drawable.hot_plate_double_burner,0,"Hot plate","Cancelled"));
-        myOrderItemModelList.add(new MyOrderItemModel(R.drawable.keke_bus,4,"Keke Bus","Delivered on Mon,15th MAR 2022"));
+        myOrderItemModelList.add(new MyOrderItemModel(R.drawable.hp_32gb_2tb_ssd_,5,"32Gb RAM, 2Tb HD, High performance Laptop","Delivered on Mon,15th Jan 2023"));
         MyOrderAdapter myOrderAdapter=new MyOrderAdapter(myOrderItemModelList);
         myOrdersRecyclerView.setAdapter(myOrderAdapter);
         myOrderAdapter.notifyDataSetChanged();

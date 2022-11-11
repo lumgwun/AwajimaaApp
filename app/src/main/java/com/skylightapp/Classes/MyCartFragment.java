@@ -38,10 +38,9 @@ public class MyCartFragment extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         cartItemsRecyclerView.setLayoutManager(linearLayoutManager);
         List<CartItemModel> cartItemModelList = new ArrayList<>();
-        cartItemModelList.add(new CartItemModel(0, R.drawable.grinder, "Grinder", 2, "NGN 659/-", "759/-", 1, 0, 0));
-        cartItemModelList.add(new CartItemModel(0, R.drawable.sewing_maching, "Sewing Machine", 0, "NGN 459/-", "549/-", 1, 1, 0));
-        cartItemModelList.add(new CartItemModel(0, R.drawable.deep_freezer, "Deep Freezer", 2, "NGN 80/-", "120/-", 1, 2, 0));
-        cartItemModelList.add(new CartItemModel(1, "Price (3) items", "NGN119,998/-", "Free", "NGN1198/-", "NGN 230/-"));
+        cartItemModelList.add(new CartItemModel(0, R.drawable.hidden_camera, "Hidden Camera", 2, "NGN 70000/-", "1000/-", 1, 0, 0));
+        cartItemModelList.add(new CartItemModel(0, R.drawable.hp_32gb_2tb_ssd_, "High performance 32Gb RAM,2Tb HD Laptop", 0, "NGN 1200000/-", "49000/-", 1, 1, 0));
+        cartItemModelList.add(new CartItemModel(1, "Price (2) items", "NGN1270000/-", "Free", "NGN1220000/-", "NGN 50000/-"));
 
         CartAdapter cartAdapter = new CartAdapter(cartItemModelList);
         cartItemsRecyclerView.setAdapter(cartAdapter);

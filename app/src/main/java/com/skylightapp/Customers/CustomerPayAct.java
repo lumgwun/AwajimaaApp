@@ -740,7 +740,7 @@ public class CustomerPayAct extends AppCompatActivity {
         int tId = transaction.getTransactionID();
         Skylightransaction= new com.skylightapp.Classes.Transaction();
 
-        transaction.setTransactionId(tId);
+        transaction.setTranxIdString(tId);
         String officeBranch=null;
         FirebaseApp.initializeApp(this);
 
@@ -750,7 +750,7 @@ public class CustomerPayAct extends AppCompatActivity {
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         if (userProfile != null) {
-            officeBranch=userProfile.getProfileOffice();
+            officeBranch=userProfile.getProfOfficeName();
         }
 
         Customer customer = new Customer();

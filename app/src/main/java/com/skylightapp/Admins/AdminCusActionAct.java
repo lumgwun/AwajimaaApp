@@ -43,7 +43,7 @@ public class AdminCusActionAct extends AppCompatActivity {
     DBHelper dbHelper;
     LatLng CUSTOMER_LATLONG;
     private  Profile userProfile,customerProfile,theProfile;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     String packages,loans,savings,transactions,so,savingsCode,doc,messages,grpSavings;
 
     @Override

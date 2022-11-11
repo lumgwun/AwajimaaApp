@@ -37,16 +37,21 @@ public class Market implements Serializable, Parcelable {
     public static final String MARKET_ADDRESS = "market_Address";
     public static final String MARKET_LAT = "market_Lat";
     public static final String MARKET_LNG = "market_Lng";
+    public static final String MARKET_DBID = "market_Id_Db";
+    public static final String MARKET_CUS_ID = "market_Cus_ID";
+    public static final String MARKET_DATEJOINED = "market_DateJoined";
+    public static final String MARKET_MAP_ZOOM = "market_Map_Zoom";
 
 
     public static final String CREATE_MARKET_TABLE = "CREATE TABLE IF NOT EXISTS " + MARKET_TABLE + " (" + MARKET_ID + " INTEGER , " + MARKET_NAME + "TEXT," + MARKET_ACCOUNT_ID + " INTEGER , " +
             MARKET_PROF_ID + " INTEGER , " + MARKET_TYPE + " TEXT , " +
             MARKET_TOWN + " TEXT , " + MARKET_LGA + " TEXT , " + MARKET_STATE + " TEXT , " + MARKET_COUNTRY + " TEXT, " + MARKET_LOGO + " BLOB, " +
-            MARKET_COMMODITY_COUNT + " REAL, " + MARKET_USER_COUNT + " REAL, " + MARKET_STATUS + "TEXT, "+ MARKET_REVENUE + "TEXT, "+ MARKET_ADDRESS + "TEXT, "+ MARKET_LAT + "REAL, "+ MARKET_LNG + "REAL, "+"FOREIGN KEY(" + MARKET_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"  + "FOREIGN KEY(" + MARKET_ACCOUNT_ID + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," +
-            "PRIMARY KEY(" + MARKET_ID + "))";
+            MARKET_COMMODITY_COUNT + " REAL, " + MARKET_USER_COUNT + " REAL, " + MARKET_STATUS + "TEXT, "+ MARKET_REVENUE + "TEXT, "+ MARKET_ADDRESS + "TEXT, "+ MARKET_LAT + "REAL, "+ MARKET_LNG + "REAL, "+ MARKET_DBID + " INTEGER , "+ MARKET_CUS_ID + " INTEGER, "+ MARKET_DATEJOINED + " TEXT , "+ MARKET_MAP_ZOOM + " REAL, "+"FOREIGN KEY(" + MARKET_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"  + "FOREIGN KEY(" + MARKET_ACCOUNT_ID + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + ")," +
+            "PRIMARY KEY(" + MARKET_DBID + "))";
    private Market marketInstance;
     private int marketID;
     private int marketProfID;
+    private int marketCusID;
     private String marketName;
     private  String marketAddress;
     private String marketType;
@@ -85,6 +90,8 @@ public class Market implements Serializable, Parcelable {
     private ArrayList<LogisticEntity> marketLogisticE;
     private List<Uri> marketPhotos;
     private boolean selected;
+    private String marketDateOfReg;
+    private int marketMapZoom;
 
     public Market () {
         super();
@@ -128,6 +135,22 @@ public class Market implements Serializable, Parcelable {
             return new Market[size];
         }
     };
+
+    public Market(int newMarketID,int profID, String marketName, String marketType, String address, String town, String lga, String marketState, String country, double latitude, double longitude,String dateOFReg) {
+        this.marketID=newMarketID;
+        this.marketName=marketName;
+        this.marketType=marketType;
+        this.marketState=marketState;
+        this.marketLat=latitude;
+        this.marketCountry=country;
+        this.marketLGA=lga;
+        this.marketTown=town;
+        this.marketStatus=address;
+        this.marketLng=longitude;
+        this.marketProfID=profID;
+        this.marketDateOfReg=dateOFReg;
+    }
+
     public void addMarketBizID(long businessID) {
         marketBizIDList = new ArrayList<>();
         marketBizIDList.add(businessID);
@@ -145,7 +168,7 @@ public class Market implements Serializable, Parcelable {
         this.marketRevenue=marketRevenue;
         this.marketStatus=marketStatus;
     }
-    public Market(int marketID, String name, String address, String marketType, String town, String lga, String state, String country, Uri logo, String status, double lat, double lng, double marketRev) {
+    public Market(int marketID, String name, String address, String marketType, String town, String lga, String state, String country, Uri logo, String status, double lat, double lng, double marketRev,String dateOfJoined) {
         this.marketID=marketID;
         this.marketName=name;
         this.marketType=marketType;
@@ -159,6 +182,7 @@ public class Market implements Serializable, Parcelable {
         this.marketCountry=country;
         this.marketRevenue=marketRev;
         this.marketStatus=status;
+        this.marketDateOfReg=dateOfJoined;
     }
 
     public Market(Market loan_market) {
@@ -568,5 +592,29 @@ public class Market implements Serializable, Parcelable {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    public int getMarketCusID() {
+        return marketCusID;
+    }
+
+    public void setMarketCusID(int marketCusID) {
+        this.marketCusID = marketCusID;
+    }
+
+    public String getMarketDateOfReg() {
+        return marketDateOfReg;
+    }
+
+    public void setMarketDateOfReg(String marketDateOfReg) {
+        this.marketDateOfReg = marketDateOfReg;
+    }
+
+    public int getMarketMapZoom() {
+        return marketMapZoom;
+    }
+
+    public void setMarketMapZoom(int marketMapZoom) {
+        this.marketMapZoom = marketMapZoom;
     }
 }

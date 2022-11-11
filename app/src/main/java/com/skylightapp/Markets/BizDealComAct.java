@@ -12,6 +12,7 @@ import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -26,12 +27,15 @@ import com.quickblox.auth.session.QBSettings;
 import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.chat.model.QBChatMessage;
 import com.skylightapp.Classes.PrefManager;
+import com.skylightapp.Classes.Profile;
 import com.skylightapp.MarketClasses.AttachmentPreviewAdapter;
 import com.skylightapp.MarketClasses.BizDealChatAdapter;
 import com.skylightapp.MarketClasses.BizDealChatMessage;
+import com.skylightapp.MarketClasses.BusinessDeal;
 import com.skylightapp.MarketClasses.ChatAdapter;
 import com.skylightapp.MarketClasses.ChatAdapterConf;
 import com.skylightapp.MarketClasses.ChatHelper;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.MarketClasses.OpponentsFromCallAdapter;
 import com.skylightapp.MarketClasses.QbDialogHolderE;
 import com.skylightapp.MarketClasses.StrokedTextView;
@@ -129,6 +133,13 @@ public class BizDealComAct extends AppCompatActivity  {
     private String json,json1;
     private  Bundle messageBundle;
     private  int senderProfileID,adminDepositID,SharedPrefAdminID;
+    private long bizID;
+    private Bundle bundle;
+    private BusinessDeal businessDeal;
+    private String bizDealTittle;
+    private static final String PREF_NAME = "awajima";
+    private Profile bizProfile;
+    private MarketBusiness marketBusiness;
 
     public static void startForResult(Activity activity, int code, QBChatDialog dialogId) {
         Intent intent = new Intent(activity, BizDealComAct.class);
@@ -152,10 +163,27 @@ public class BizDealComAct extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.act_biz_deal_com);
         FirebaseApp.initializeApp(this);
         QBSettings.getInstance().init(this, APPLICATION_ID, AUTH_KEY, AUTH_SECRET);
         QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
+        bundle= new Bundle();
+        gson= new Gson();
+        gson1= new Gson();
+        marketBusiness= new MarketBusiness();
+        bizProfile= new Profile();
+        businessDeal= new BusinessDeal();
+        bundle=getIntent().getExtras();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        json1 = userPreferences.getString("LastProfileUsed", "");
+        bizProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastMarketBusinessUsed", "");
+        marketBusiness = gson1.fromJson(json1, MarketBusiness.class);
+        if(marketBusiness !=null){
+            bizID =marketBusiness.getBusinessID();
+        }
 
 
     }

@@ -209,7 +209,7 @@ public class HotEmergAct extends AppCompatActivity {
         }
         stringLatLng= String.valueOf(placeLatLng);
         emergencyReport = new EmergencyReport(reportID, profileID,bizID, dateOfToday, "Hot",stringLatLng,String.valueOf(name), "",String.valueOf(address),"");
-        reportIDF =emergReportDAO.insertUserEmergencyReport(reportID, profileID,bizID, dateOfToday, "Hot",stringLatLng,String.valueOf(name), "",String.valueOf(address),"");
+        reportIDF =emergReportDAO.insertHotEmergReport(reportID, profileID,bizID, dateOfToday, "Hot",stringLatLng,String.valueOf(name), "",String.valueOf(address),"");
     }
 
 }

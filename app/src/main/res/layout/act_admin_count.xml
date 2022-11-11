@@ -55,7 +55,7 @@
                             android:layout_gravity="center_horizontal"
                             android:elevation="2dp"
                             android:layout_weight="1"
-                            android:text="Skylight App Count Updates"
+                            android:text="Biz App Count Updates"
                             android:gravity="center"
                             android:textAlignment="center"
                             android:textStyle="italic"
@@ -896,7 +896,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/awajima" />
+                android:src="@drawable/awajima_logo" />
 
 
 

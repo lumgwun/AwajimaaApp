@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator1"
+    android:orientation="vertical"
+    android:theme="@style/NoActionBar"
+    android:background="@drawable/rect_their_message"
+    android:layout_height="match_parent"
+    tools:context="com.skylightapp.Markets.MarketCreatorAct">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/line12"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/layoutSign"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/whereMarketIs"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="20dp"
+                android:visibility="gone"
+                android:text="Here:"
+                android:focusable="true"
+                android:drawableStart="@drawable/add_loc_"
+                android:textStyle="bold"
+                android:textColorHint="@color/black"
+                android:textSize="15sp"
+                android:layout_gravity="center_vertical|start"
+                android:gravity="center_vertical|start"
+                android:clickable="false" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/here_market"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="20dp"
+                android:visibility="gone"
+                android:text="Where you are:"
+                android:focusable="true"
+                android:textStyle="bold"
+                android:textColorHint="@color/black"
+                android:textSize="15sp"
+                android:layout_gravity="center_vertical|start"
+                android:gravity="center_vertical|start"
+                android:clickable="false" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/market_Name_Tittle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:hint="Market Name"
+                        android:drawableEnd="@drawable/ic_icon_foreground"
+                        android:contextClickable="true"
+                        android:background="@drawable/rect6h"
+                        android:focusable="true"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:textStyle="bold"
+                        android:textColorHint="@color/black"
+                        android:textSize="15sp"
+                        android:layout_gravity="center_horizontal|center"
+                        android:gravity="center_horizontal|center"
+                        android:clickable="false"
+                        />
+
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/town_market"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:focusable="true"
+                        android:drawableEnd="@drawable/ic_icon_foreground"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:hint="Market Town"
+                        android:background="@drawable/rect6h"
+                        android:textStyle="bold"
+                        android:textColorHint="@color/black"
+                        android:textSize="15sp"
+                        android:clickable="false"
+                        android:layout_gravity="center_horizontal|center"
+                        android:gravity="center_horizontal|center"
+                        />
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/province_lga"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:focusable="true"
+                        android:inputType="textShortMessage"
+                        android:textSize="15sp"
+                        android:drawableEnd="@drawable/ic_icon_foreground"
+                        android:background="@drawable/rect6h"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:hint="Market LGA /Province"
+                        android:textStyle="bold"
+                        android:textColorHint="@color/black"
+                        android:clickable="false"
+                        android:layout_gravity="center_horizontal|center"
+                        android:gravity="center_horizontal|center" />
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="10dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/address_market"
+                        android:layout_width="match_parent"
+                        android:textStyle="bold"
+                        android:focusable="true"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:drawableEnd="@drawable/ic_icon_foreground"
+                        android:background="@drawable/rect6h"
+                        android:textSize="15sp"
+                        android:textColorHint="@color/black"
+                        android:hint="Market Address"
+                        android:clickable="false"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:layout_gravity="center_horizontal|center"
+                        android:gravity="center_horizontal|center"
+                        />
+
+                </androidx.cardview.widget.CardView>
+                <androidx.fragment.app.FragmentContainerView android:id="@+id/autocomplete_fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/gOfC"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:focusable="false"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:background="@null"
+                    android:text="Select the Country" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/market_country"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:paddingLeft="10dp"
+                        android:hint="Country"
+                        android:background="@drawable/rect6h"
+                        style="@style/Widget.AppCompat.Spinner.DropDown"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:entries="@array/Countries_of_the_world"
+                        android:padding="30dp"
+                        android:textSize="20sp"
+                        android:layout_gravity="center_vertical|start"
+                        android:gravity="center_vertical|start"
+                        android:clickable="false"
+                        />
+
+                </androidx.cardview.widget.CardView>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:id="@+id/stateLayout"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/stateOfM"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textSize="15sp"
+                        android:focusable="false"
+                        android:layout_marginBottom="10dp"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:background="@null"
+                        android:text="Select / Enter State of the Market" />
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        app:cardCornerRadius="2dp"
+                        app:cardElevation="2dp"
+                        android:id="@+id/cardSelectState"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        app:cardPreventCornerOverlap="false"
+                        app:contentPadding="0dp">
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/market_state_new"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:paddingLeft="10dp"
+                            android:padding="30dp"
+                            android:background="@drawable/rect6h"
+                            android:drawableStart="@drawable/ic_icon_foreground"
+                            android:textSize="20sp"
+                            android:layout_gravity="center_vertical|start"
+                            android:gravity="center_vertical|start"
+                            android:clickable="false" />
+
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        app:cardCornerRadius="2dp"
+                        android:id="@+id/cardSelectSOutside"
+                        app:cardElevation="2dp"
+                        android:layout_marginBottom="10dp"
+                        app:cardPreventCornerOverlap="false"
+                        app:contentPadding="0dp">
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/market_state_addition"
+                            android:layout_width="match_parent"
+                            android:textStyle="bold"
+                            android:focusable="true"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:drawableEnd="@drawable/ic_icon_foreground"
+                            android:background="@drawable/rect6h"
+                            android:textSize="15sp"
+                            android:textColorHint="@color/black"
+                            android:hint="Market State Outside Nigeria"
+                            android:clickable="false"
+                            android:drawableStart="@drawable/ic_icon_foreground"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:layout_gravity="center_horizontal|center"
+                            android:gravity="center_horizontal|center" />
+
+                    </androidx.cardview.widget.CardView>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tOfC"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:background="@null"
+                    android:text="Select the Market Type" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/market_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:paddingLeft="10dp"
+                        android:background="@drawable/rect6h"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:entries="@array/market_type"
+                        android:padding="30dp"
+                        android:textSize="20sp"
+                        android:layout_gravity="center_vertical|start"
+                        android:gravity="center_vertical|start"
+                        android:clickable="false"
+                        />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:text="Create Awajima Market"
+                    android:textSize="20sp"
+                    android:padding="20dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:textStyle="bold"
+                    android:onClick="registerANewMarket"
+                    android:id="@+id/create_market_new"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/rect6g"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <fragment
+                android:id="@+id/mapMarket"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</ScrollView>

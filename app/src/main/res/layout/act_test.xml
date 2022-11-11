@@ -44,7 +44,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
-                android:text="Biz. Admin"
+                android:text="Awajima Admin"
                 android:onClick="goAdmin"
                 android:textSize="20sp"
                 android:padding="20dp"
@@ -128,13 +128,157 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
-                android:text="Reception Area"
+                android:text="NOSDRA Office"
                 android:textSize="20sp"
                 android:drawableTop="@drawable/ic_menu_gallery"
                 android:padding="20dp"
                 android:drawableTint="@color/ORANGE_CHAT"
-                android:onClick="goSignTab"
+                android:onClick="goNosdraTab"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/shape_rect_6"
+                android:layout_marginEnd="2dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/GetNosdra"
+                android:layout_height="wrap_content"/>
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:text="Oil Company Office"
+                android:textSize="20sp"
+                android:drawableTop="@drawable/ic_menu_gallery"
+                android:padding="20dp"
+                android:onClick="goOilComTab"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_rect_6"
+                android:layout_marginEnd="2dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/GetOilC"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:text="Trip Booking Office"
+                android:textSize="20sp"
+                android:drawableTop="@drawable/ic_menu_gallery"
+                android:padding="20dp"
+                android:drawableTint="@color/ORANGE_CHAT"
+                android:onClick="goTripTab"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_rect_6"
+                android:layout_marginEnd="2dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/GetTripOffice"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:text="Biz Branch Office"
+                android:drawableTop="@drawable/ic_menu_gallery"
+                android:onClick="GetBizBranchO"
+                android:textSize="20sp"
+                android:padding="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/shape_rect_6"
+                android:layout_marginEnd="2dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/gBizBranchO"
+                android:layout_height="wrap_content"/>
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:text="Biz Supplier"
+                android:textSize="20sp"
+                android:drawableTop="@drawable/ic_menu_gallery"
+                android:padding="20dp"
+                android:drawableTint="@color/ORANGE_CHAT"
+                android:onClick="goSupplierTab"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_rect_6"
+                android:layout_marginEnd="2dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/GetSupplier"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:text="Response Team"
+                android:textSize="20sp"
+                android:drawableTop="@drawable/ic_menu_gallery"
+                android:padding="20dp"
+                android:onClick="goResponseTTab"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_rect_6"
+                android:layout_marginEnd="2dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/GetRes"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:text="Regulator"
+                android:textSize="20sp"
+                android:drawableTop="@drawable/ic_menu_gallery"
+                android:padding="20dp"
+                android:drawableTint="@color/ORANGE_CHAT"
+                android:onClick="goRegulatorsTab"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_rect_6"
+                android:layout_marginEnd="2dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/GetRegulators"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:text="Climate Change Office"
+                android:textSize="20sp"
+                android:drawableTop="@drawable/ic_menu_gallery"
+                android:padding="20dp"
+                android:onClick="getClimateOffice"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_rect_6"
+                android:layout_marginEnd="2dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/GetCC"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:text="Biz Partner"
+                android:drawableTop="@drawable/ic_menu_gallery"
+                android:onClick="goBizPartner"
+                android:textSize="20sp"
+                android:drawableTint="@color/ORANGE_CHAT"
+                android:padding="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/shape_rect_6"
+                android:layout_marginEnd="2dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/getPartnerBiz"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:text="Reception Area"
+                android:drawableTop="@drawable/ic_menu_gallery"
+                android:onClick="goSignTab"
+                android:textSize="20sp"
+                android:padding="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/shape_rect_6"
                 android:layout_marginEnd="2dp"
                 android:textColor="@color/colorPrimaryDark"
@@ -142,11 +286,13 @@
                 android:id="@+id/GetSign"
                 android:layout_height="wrap_content"/>
 
+
         </androidx.appcompat.widget.LinearLayoutCompat>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:background="@drawable/event_rect"
             android:layout_weight="100"
             android:id="@+id/linearGrid">
 
@@ -273,7 +419,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     app:layout_rowWeight="1"
-                    app:cardBackgroundColor="#ffae19"
+                    app:cardBackgroundColor="#BA55D3"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="8dp">
 
@@ -360,175 +506,6 @@
                             android:textStyle="bold" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardPartners"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:layout_columnWeight="1"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    app:layout_rowWeight="1"
-                    app:cardBackgroundColor="#ffae19"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="8dp">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal|center_vertical"
-                        android:layout_margin="16dp"
-                        android:orientation="vertical">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Biz Partner"
-                            android:drawableTint="@color/white"
-                            android:drawableTop="@drawable/ic_menu_gallery"
-                            android:textAlignment="center"
-                            android:textColor="@android:color/white"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardRegulator"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:layout_columnWeight="1"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    app:layout_rowWeight="1"
-                    app:cardBackgroundColor="#BA55D3"
-                    app:cardCornerRadius="8dp"
-
-                    app:cardElevation="8dp">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal|center_vertical"
-                        android:layout_margin="16dp"
-                        android:orientation="vertical">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Regulator"
-                            android:drawableTop="@drawable/ic_menu_gallery"
-                            android:textAlignment="center"
-                            android:textColor="@android:color/white"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardRespTeamsO"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:layout_columnWeight="1"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    app:layout_rowWeight="1"
-                    app:cardCornerRadius="8dp"
-                    app:cardBackgroundColor="#42C0FB"
-                    app:cardElevation="8dp">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal|center_vertical"
-                        android:layout_margin="16dp"
-                        android:orientation="vertical">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Response Team"
-                            android:drawableTint="@color/app_color"
-                            android:drawableTop="@drawable/ic_menu_gallery"
-                            android:textAlignment="center"
-                            android:textColor="@android:color/white"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardSupplier"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:layout_columnWeight="1"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    app:layout_rowWeight="1"
-                    android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    app:cardBackgroundColor="#ff0000"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="8dp">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal|center_vertical"
-                        android:layout_margin="16dp"
-                        android:orientation="vertical">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Biz Supplier"
-                            android:drawableTop="@drawable/ic_menu_gallery"
-                            android:textAlignment="center"
-                            android:textColor="@android:color/white"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardTrips"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:layout_columnWeight="1"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    app:layout_rowWeight="1"
-                    app:cardBackgroundColor="#ffae19"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="8dp">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal|center_vertical"
-                        android:layout_margin="16dp"
-                        android:orientation="vertical">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Trip Office"
-                            android:drawableTint="@color/white"
-                            android:drawableTop="@drawable/ic_menu_gallery"
-                            android:textAlignment="center"
-                            android:textColor="@android:color/white"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-
-
-
 
             </androidx.gridlayout.widget.GridLayout>
 

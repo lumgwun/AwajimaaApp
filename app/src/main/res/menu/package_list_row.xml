@@ -12,11 +12,11 @@
             android:title="My Dashboard" />
         <item
             android:id="@+id/nav_timelinesB"
-            android:icon="@drawable/awajima"
+            android:icon="@drawable/awajima_logo"
             android:title="My Timeline" />
         <item
             android:id="@+id/nav_my_message"
-            android:icon="@drawable/awajima"
+            android:icon="@drawable/awajima_logo"
             android:title="My Messages" />
 
         <item android:title="TX Record">
@@ -24,7 +24,7 @@
                 <group android:checkableBehavior="single">
                     <item
                         android:id="@+id/nav_accounts"
-                        android:icon="@drawable/awajima"
+                        android:icon="@drawable/awajima_logo"
                         android:title="Accounts" />
                     <item
                         android:id="@+id/nav_tx"

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -19,7 +20,7 @@ import android.widget.ArrayAdapter;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
-import com.skylightapp.Adapters.AccountAdapter2;
+import com.skylightapp.Adapters.AccountRecylerAdap;
 import com.skylightapp.Adapters.DocumentAdapter;
 import com.skylightapp.Adapters.MessageAdapter;
 import com.skylightapp.Adapters.MySavingsCodeAdapter;
@@ -88,7 +89,7 @@ public class AdminCusActionView extends AppCompatActivity {
     private List<CustomerDailyReport> customerDailyReports;
     private StandingOrderAdapter standingOrderAdapter;
     private TranxAdminA tranxAdminA;
-    private AccountAdapter2 accountAdapter;
+    private AccountRecylerAdap accountAdapter;
     private MySavingsCodeAdapter codeAdapter;
     private  MessageAdapter  messageAdapter;
     private ArrayList<Message> messageArrayList;
@@ -140,6 +141,7 @@ public class AdminCusActionView extends AppCompatActivity {
     private BirthdayDAO birthdayDAO;
     private TransactionGrantingDAO grantingDAO;
     private AwardDAO awardDAO;
+    SQLiteDatabase sqLiteDatabase;
 
 
     @Override
@@ -204,8 +206,20 @@ public class AdminCusActionView extends AppCompatActivity {
                     txtName.setText(MessageFormat.format("Customer''s Name:{0}", names));
                     txtID.setText(MessageFormat.format("Customer''s ID:{0}", customerID));
 
+                    if (dbHelper !=null) {
+                        sqLiteDatabase = dbHelper.getReadableDatabase();
+                        try {
 
-                    standingOrders = sodao.getAllStandingOrdersForCustomer(customerID);
+                            standingOrders = sodao.getAllStandingOrdersForCustomer(customerID);
+                        } catch (Exception e) {
+                            System.out.println("Oops!");
+                        }
+
+
+                    }
+
+
+
                     LinearLayoutManager layoutManager
                             = new LinearLayoutManager(AdminCusActionView.this, LinearLayoutManager.HORIZONTAL, false);
                     recyclerStandingOrder.setLayoutManager(layoutManager);
@@ -250,7 +264,18 @@ public class AdminCusActionView extends AppCompatActivity {
                             = new LinearLayoutManager(AdminCusActionView.this, LinearLayoutManager.HORIZONTAL, false);
 
                     recyclerPackages.setLayoutManager(layoutManager);
-                    skyLightPackages = dbHelper.getPackagesFromCustomer(customerID);
+                    if (dbHelper !=null) {
+                        sqLiteDatabase = dbHelper.getReadableDatabase();
+                        try {
+
+                            skyLightPackages = dbHelper.getPackagesFromCustomer(customerID);
+                        } catch (Exception e) {
+                            System.out.println("Oops!");
+                        }
+
+
+                    }
+
                     packageAdapter = new SkyLightPackageAdapter(AdminCusActionView.this, skyLightPackages);
                     //recyclerPackages.setHasFixedSize(true);
                     recyclerPackages.setAdapter(packageAdapter);
@@ -290,7 +315,18 @@ public class AdminCusActionView extends AppCompatActivity {
                     recyclerSavings.setLayoutManager(layoutManager5);
 
                     recyclerSavings.setItemAnimator(new DefaultItemAnimator());
-                    savingsArrayList = dbHelper.getSavingsFromCurrentCustomer(customerID);
+                    if (dbHelper !=null) {
+                        sqLiteDatabase = dbHelper.getReadableDatabase();
+                        try {
+
+                            savingsArrayList = dbHelper.getSavingsFromCurrentCustomer(customerID);
+                        } catch (Exception e) {
+                            System.out.println("Oops!");
+                        }
+
+
+                    }
+
                     savingsAdapter = new SuperSavingsAdapter(AdminCusActionView.this, savingsArrayList);
                     recyclerSavings.setAdapter(savingsAdapter);
                     SnapHelper snapHelper = new PagerSnapHelper();
@@ -325,7 +361,20 @@ public class AdminCusActionView extends AppCompatActivity {
 
                     LinearLayoutManager layoutManager2
                             = new LinearLayoutManager(AdminCusActionView.this, LinearLayoutManager.HORIZONTAL, false);
-                    paymentCodeArrayList = codeDAO.getCodesFromCurrentCustomer(customerID);
+
+                    if (dbHelper !=null) {
+                        sqLiteDatabase = dbHelper.getReadableDatabase();
+                        try {
+
+                            paymentCodeArrayList = codeDAO.getCodesFromCurrentCustomer(customerID);
+                        } catch (Exception e) {
+                            System.out.println("Oops!");
+                        }
+
+
+                    }
+
+
                     recyclerCodes.setLayoutManager(layoutManager2);
                     codeAdapter = new MySavingsCodeAdapter(AdminCusActionView.this, paymentCodeArrayList);
                     //recyclerCodes.setHasFixedSize(true);
@@ -366,7 +415,19 @@ public class AdminCusActionView extends AppCompatActivity {
                             = new LinearLayoutManager(AdminCusActionView.this, LinearLayoutManager.HORIZONTAL, false);
 
                     rcyclerTransactions.setLayoutManager(layoutManager3);
-                    transactions2 = tranXDAO.getAllTransactionCustomer(customerID);
+                    if (dbHelper !=null) {
+                        sqLiteDatabase = dbHelper.getReadableDatabase();
+                        try {
+
+                            transactions2 = tranXDAO.getAllTransactionCustomer(customerID);
+                        } catch (Exception e) {
+                            System.out.println("Oops!");
+                        }
+
+
+                    }
+
+
                     tranxAdminA = new TranxAdminA(AdminCusActionView.this, transactions2);
                     //rcyclerTransactions.setHasFixedSize(true);
                     rcyclerTransactions.setAdapter(tranxAdminA);
@@ -412,7 +473,18 @@ public class AdminCusActionView extends AppCompatActivity {
                             = new LinearLayoutManager(AdminCusActionView.this, LinearLayoutManager.HORIZONTAL, false);
 
                     rcyclerDocs.setLayoutManager(layoutManager);
-                    paymentDocs = paymDocDAO.getDocumentsFromCurrentCustomer(customerID);
+                    if (dbHelper !=null) {
+                        sqLiteDatabase = dbHelper.getReadableDatabase();
+                        try {
+
+                            paymentDocs = paymDocDAO.getDocumentsFromCurrentCustomer(customerID);
+                        } catch (Exception e) {
+                            System.out.println("Oops!");
+                        }
+
+
+                    }
+
                     rcyclerDocs.setItemAnimator(new DefaultItemAnimator());
                     DividerItemDecoration dividerItemDecorationD = new DividerItemDecoration(rcyclerDocs.getContext(),
                             layoutManager.getOrientation());
@@ -453,7 +525,19 @@ public class AdminCusActionView extends AppCompatActivity {
                             = new LinearLayoutManager(AdminCusActionView.this, LinearLayoutManager.HORIZONTAL, false);
 
                     recyclerLoans.setLayoutManager(layoutManager4);
-                    cusLoans = loanDAO.getAllLoansCustomer(customerID);
+
+                    if (dbHelper !=null) {
+                        sqLiteDatabase = dbHelper.getReadableDatabase();
+                        try {
+
+                            cusLoans = loanDAO.getAllLoansCustomer(customerID);
+                        } catch (Exception e) {
+                            System.out.println("Oops!");
+                        }
+
+
+                    }
+
                     loanArrayAdapter = new ArrayAdapter<Loan>(AdminCusActionView.this, android.R.layout.simple_spinner_item, cusLoans);
                     //recyclerLoans.setHasFixedSize(true);
                     recyclerLoans.setAdapter(packageAdapter);
@@ -496,6 +580,7 @@ public class AdminCusActionView extends AppCompatActivity {
 
 
         }
+        dbHelper = new DBHelper(this);
         btnLoans = findViewById(R.id.ic_loan);
         btnLoans.setOnClickListener(this::icloan);
 
@@ -516,8 +601,20 @@ public class AdminCusActionView extends AppCompatActivity {
             txtID.setText(MessageFormat.format("Customer''s ID:{0}", customerID));
 
 
-            dbHelper = new DBHelper(this);
-            standingOrders = sodao.getAllStandingOrdersForCustomer(customerID);
+
+            if (dbHelper !=null) {
+                sqLiteDatabase = dbHelper.getReadableDatabase();
+                try {
+
+                    standingOrders = sodao.getAllStandingOrdersForCustomer(customerID);
+                } catch (Exception e) {
+                    System.out.println("Oops!");
+                }
+
+
+            }
+
+
             LinearLayoutManager layoutManager
                     = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
             recyclerStandingOrder.setLayoutManager(layoutManager);
@@ -558,7 +655,20 @@ public class AdminCusActionView extends AppCompatActivity {
                     = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
             recyclerMessages.setLayoutManager(layoutManager);
-            messageArrayList = messageDAO.getMessagesForCurrentCustomer(customerID);
+
+            if (dbHelper !=null) {
+                sqLiteDatabase = dbHelper.getReadableDatabase();
+                try {
+
+                    messageArrayList = messageDAO.getMessagesForCurrentCustomer(customerID);
+                } catch (Exception e) {
+                    System.out.println("Oops!");
+                }
+
+
+            }
+
+
             recyclerMessages.setItemAnimator(new DefaultItemAnimator());
             DividerItemDecoration dividerItemDecorationM = new DividerItemDecoration(recyclerMessages.getContext(),
                     layoutManager.getOrientation());

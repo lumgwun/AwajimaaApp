@@ -17,14 +17,8 @@ import com.skylightapp.Classes.BirthdayViewHolder;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.R;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-
 
 
 public class UpcomingBirthdayAdapter1 extends RecyclerView.Adapter<BirthdayViewHolder> {
@@ -61,7 +55,7 @@ public class UpcomingBirthdayAdapter1 extends RecyclerView.Adapter<BirthdayViewH
         viewHolder.setDOB("DOB:"+birthday.getBirthDay());
         if(userProfile !=null){
             viewHolder.setGender("Gender"+userProfile.getProfileGender());
-            viewHolder.setOffice("Office"+userProfile.getProfileOffice());
+            viewHolder.setOffice("Office"+userProfile.getProfOfficeName());
 
         }
 

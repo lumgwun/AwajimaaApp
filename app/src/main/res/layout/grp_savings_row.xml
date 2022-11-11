@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content">
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="50dp"
-                        android:src="@drawable/awajima"
+                        android:src="@drawable/awajima_logo"
                         android:id="@+id/grpS09"
                         android:contentDescription="@string/app_name"
                         android:layout_height="50dp"/>

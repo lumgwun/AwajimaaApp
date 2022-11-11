@@ -35,10 +35,8 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class GPSTracker extends Service implements LocationListener {
+public class GPSTracker extends Service implements LocationListener  {
     private static final String TAG = GPSTracker.class.getSimpleName();
-    //private static String TAG = GPSTracker.class.getName();
-
 
     private static final String ACTION_FOO = "com.skylightapp.MapAndLoc.action.FOO";
     private static final String ACTION_BAZ = "com.skylightapp.MapAndLoc.action.BAZ";
@@ -68,17 +66,25 @@ public class GPSTracker extends Service implements LocationListener {
 
     private String provider_info;
 
+
+    private LocationManager lm;
+
+    public enum ProviderType{
+        NETWORK,
+        GPS
+    };
+
+
+
     public GPSTracker() {
         super();
     }
 
-    /*public GPSTracker() {
-        super("GPSTracker");
-    }*/
     public GPSTracker(Context context) {
         this.mContext = context;
         getLocation();
     }
+
 
 
     public void getLocation() {
@@ -130,6 +136,7 @@ public class GPSTracker extends Service implements LocationListener {
             Log.e(TAG, "Impossible to connect to LocationManager", e);
         }
     }
+
 
 
     public void updateGPSCoordinates() {

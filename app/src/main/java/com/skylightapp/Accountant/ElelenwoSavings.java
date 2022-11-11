@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.SnapHelper;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
@@ -55,6 +56,7 @@ public class ElelenwoSavings extends AppCompatActivity implements SavingsAdapter
     DatePicker picker;
     double savingsTotal;
     protected DatePickerDialog datePickerDialog;
+    private SQLiteDatabase sqLiteDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,9 +95,35 @@ public class ElelenwoSavings extends AppCompatActivity implements SavingsAdapter
 
         } catch (ParseException ignored) {
         }
-        customerDailyReports = dbHelper.getSavingsForBranchAtDate(officeBranch,dateOfToday);
-        branchSavingsCount =dbHelper.getSavingsCountForBranchAtDate(officeBranch,dateOfToday);
-        savingsTotal =dbHelper.getTotalSavingsForBranchAtDate(officeBranch,dateOfToday);
+
+        if(dbHelper !=null){
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            customerDailyReports = dbHelper.getSavingsForBranchAtDate(officeBranch,dateOfToday);
+
+
+        }
+
+
+
+
+        if(dbHelper !=null){
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            branchSavingsCount =dbHelper.getSavingsCountForBranchAtDate(officeBranch,dateOfToday);
+
+
+        }
+
+
+
+        if(dbHelper !=null){
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            savingsTotal =dbHelper.getTotalSavingsForBranchAtDate(officeBranch,dateOfToday);
+
+
+        }
+
+
+
         LinearLayoutManager layoutManagerC
                 = new LinearLayoutManager(ElelenwoSavings.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerViewTXToday.setLayoutManager(layoutManagerC);
@@ -128,9 +156,32 @@ public class ElelenwoSavings extends AppCompatActivity implements SavingsAdapter
             public void onClick(View view) {
                 recyclerViewTXToday.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
-                customerDailyReports = dbHelper.getSavingsForBranchAtDate(officeBranch,dateOfTransaction);
-                branchSavingsCount =dbHelper.getSavingsCountForBranchAtDate(officeBranch,dateOfTransaction);
-                savingsTotal =dbHelper.getTotalSavingsForBranchAtDate(officeBranch,dateOfTransaction);
+                if(dbHelper !=null){
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    customerDailyReports = dbHelper.getSavingsForBranchAtDate(officeBranch,dateOfTransaction);
+
+
+                }
+
+
+
+                if(dbHelper !=null){
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    branchSavingsCount =dbHelper.getSavingsCountForBranchAtDate(officeBranch,dateOfTransaction);
+
+
+                }
+
+
+
+                if(dbHelper !=null){
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    savingsTotal =dbHelper.getTotalSavingsForBranchAtDate(officeBranch,dateOfTransaction);
+
+
+                }
+
+
                 LinearLayoutManager layoutManagerC
                         = new LinearLayoutManager(ElelenwoSavings.this, LinearLayoutManager.HORIZONTAL, false);
                 recyclerView.setLayoutManager(layoutManagerC);

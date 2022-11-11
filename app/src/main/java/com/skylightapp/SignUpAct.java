@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
@@ -19,8 +18,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
 import androidx.core.widget.ContentLoadingProgressBar;
-import androidx.preference.PreferenceManager;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -38,6 +35,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -60,6 +58,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -73,13 +72,10 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.installreferrer.api.InstallReferrerClient;
@@ -87,17 +83,16 @@ import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.android.installreferrer.api.ReferrerDetails;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.tasks.CancellationTokenSource;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -108,6 +103,11 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 import com.hbb20.CountryCodePicker;
 import com.quickblox.auth.session.QBSettings;
+import com.quickblox.chat.QBChatService;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.users.QBUsers;
+import com.quickblox.users.model.QBUser;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.AccountInvestment;
 import com.skylightapp.Classes.AccountItemPurchase;
@@ -121,32 +121,20 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.Message;
 import com.skylightapp.Classes.PinEntryView;
+import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.RoomRepo;
 import com.skylightapp.Classes.StandingOrderAcct;
-import com.skylightapp.Classes.TimeLine;
-import com.skylightapp.Classes.User;
 import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Database.AcctDAO;
-import com.skylightapp.Database.AdminBDepositDAO;
-import com.skylightapp.Database.AdminBalanceDAO;
 import com.skylightapp.Database.BirthdayDAO;
-import com.skylightapp.Database.CodeDAO;
 import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.Database.LoanDAO;
 import com.skylightapp.Database.MessageDAO;
-import com.skylightapp.Database.PaymDocDAO;
-import com.skylightapp.Database.PaymentCodeDAO;
-import com.skylightapp.Database.PaymentDAO;
 import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.Database.SODAO;
-import com.skylightapp.Database.TCashDAO;
-import com.skylightapp.Database.TReportDAO;
 import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.Database.TranXDAO;
-import com.skylightapp.Interfaces.ProfileDao;
 import com.skylightapp.MarketClasses.AppInstallRefReceiver;
 import com.skylightapp.MarketClasses.ResourceUtils;
 
@@ -208,9 +196,8 @@ import static com.skylightapp.Database.DBHelper.DATABASE_NAME;
 import static com.skylightapp.Database.DBHelper.DATABASE_NEW_VERSION;
 import static com.skylightapp.Database.DBHelper.DATABASE_VERSION;
 
-public class SignUpAct extends AppCompatActivity implements LocationListener {
+public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,LocationListener {
     public static final int PICTURE_REQUEST_CODE = 505;
-    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     SharedPreferences userPreferences;
     AppCompatEditText edtPhone_number;
     AppCompatEditText email_address;
@@ -225,7 +212,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     protected DatePickerDialog datePickerDialog;
     Random ran;
     SecureRandom random;
-    String dateOfBirth;
+    String dateOfBirth,json4;
 
     AppCompatTextView dobText;
     String uPhoneNumber;
@@ -254,8 +241,8 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
     AccountTypes accountTypeStr;
 
-    Gson gson, gson1;
-    String json, json1, nIN;
+    Gson gson, gson1,gson3;
+    String json, json1, json3,nIN;
     Profile userProfile, customerProfile, lastProfileUsed;
     String  officePref;
 
@@ -291,6 +278,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     private Uri mImageUri;
     ContentLoadingProgressBar progressBar;
     List<Address> addresses;
+    private PrefManager prefManager;
 
     private Calendar cal;
     private static boolean isPersistenceEnabled = false;
@@ -308,20 +296,17 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     private AppInstallRefReceiver appInstallRefReceiver;
     String dob;
     String  otpMessage, smsMessage;
-    private AppCompatButton btnVerifyOTPAndSignUp;
+    private AppCompatButton btnVerifyOTPAndSignUp,btnSendOTP;
     private int otpDigit;
     String otpPhoneNumber;
     PinEntryView pinEntry;
     private LinearLayoutCompat layoutOTP, layoutPreOTP;
     private EditText[] editTexts;
-    private Button btnSendOTP;
-    Location location;
-    AppCompatTextView txtLoc, locTxt;
-    private LocationRequest request;
 
+    Location location;
+    AppCompatTextView txtLoc, locTxt,otpTxt;
+    private LocationRequest request;
     private CancellationTokenSource cancellationTokenSource;
-    CameraUpdate cLocation;
-    TextView otpTxt;
     private Calendar calendar;
     private PinEntryView pinEntryView;
     InstallReferrerClient referrerClient;
@@ -338,6 +323,10 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
     private CusDAO cusDAO;
     private ProfDAO profileDao;
+    private QBUser qbUser,lastQBUserUsed;
+    private Profile profile, tellerProfile;
+    private Account lastAccountUsed;
+
 
     private BirthdayDAO birthdayDAO;
     private TimeLineClassDAO timeLineClassDAO;
@@ -362,6 +351,11 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     private Bundle bizNameBundle;
     private int bizID,marketID,managerProfileID;
     private LinearLayout layoutPrivacyAndTerms;
+
+    //private PlaceAutocompleteAdapter mAdapter;
+    private AutoCompleteTextView mAutocompleteView;
+    protected GoogleApiClient mGoogleApiClient;
+    private AppController appController;
 
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {
@@ -460,25 +454,23 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                 Geocoder newGeocoder = new Geocoder(SignUpAct.this, Locale.ENGLISH);
                 List<Address> newAddresses = newGeocoder.getFromLocation(latitude, longitude, 1);
                 StringBuilder street = new StringBuilder();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-                    if (Geocoder.isPresent()) {
+                if (Geocoder.isPresent()) {
 
-                        locTxt.setVisibility(View.VISIBLE);
+                    locTxt.setVisibility(View.VISIBLE);
 
-                        Address newAddress = newAddresses.get(0);
+                    Address newAddress = newAddresses.get(0);
 
-                        String localityString = newAddress.getLocality();
+                    String localityString = newAddress.getLocality();
 
-                        street.append(localityString).append("");
+                    street.append(localityString).append("");
 
-                        locTxt.setText(MessageFormat.format("Where you are:  {0},{1}/{2}", latitude, longitude, street));
-                        Toast.makeText(SignUpAct.this, street,
-                                Toast.LENGTH_SHORT).show();
+                    locTxt.setText(MessageFormat.format("Where you are:  {0},{1}/{2}", latitude, longitude, street));
+                    Toast.makeText(SignUpAct.this, street,
+                            Toast.LENGTH_SHORT).show();
 
-                    } else {
-                        locTxt.setVisibility(View.GONE);
-                        //go
-                    }
+                } else {
+                    locTxt.setVisibility(View.GONE);
+                    //go
                 }
 
 
@@ -497,8 +489,26 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_sign_up);
         dbHelper = new DBHelper(this);
+        appController= new AppController();
+        gson3 = new Gson();
+        prefManager= new PrefManager();
+        lastQBUserUsed= qbUser;
         bizNameBundle= new Bundle();
+        qbUser= new QBUser();
+        profile= new Profile();
+        lastAccountUsed = new Account();
+        tellerProfile = new Profile();
         lastCustomerUsed=new Customer();
+        appController.onCreate();
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+        /*if (dbHelper != null) {
+            dbHelper.onUpgrade(sqLiteDatabase, DATABASE_VERSION, DATABASE_NEW_VERSION);
+
+        } else {
+            sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+
+
+        }*/
         appInstallRefReceiver= new AppInstallRefReceiver();
         QBSettings.getInstance().init(this, APPLICATION_ID, AUTH_KEY, AUTH_SECRET);
         QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
@@ -506,6 +516,11 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         bizNameBundle=getIntent().getExtras();
         createLocationRequest();
         cusDAO= new CusDAO(this);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, 0 /* clientId */, this)
+                .addApi(Places.GEO_DATA_API)
+                .build();
 
         profileDao= new ProfDAO(this);
         birthdayDAO= new BirthdayDAO(this);
@@ -624,8 +639,8 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         customers = null;
         ran = new Random();
         random = new SecureRandom();
-        SQLiteDataBaseBuild();
-        sqLiteDatabase = dbHelper.getWritableDatabase();
+        //SQLiteDataBaseBuild();
+        //sqLiteDatabase = dbHelper.getWritableDatabase();
 
         getDeviceLocation();
 
@@ -670,10 +685,18 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         customer = new Customer();
         managerProfile = new Profile();
         standingOrderAcct = new StandingOrderAcct();
-        account = new Account();
         customerProfile = new Profile();
         birthday = new Birthday();
-        PrePopulateDB();
+        try {
+
+            if (dbHelper != null) {
+                PrePopulateDB();
+            }
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
         //dbHelper.onUpgrade(sqLiteDatabase, dbHelper.getDatabaseVersion(), DBHelper.DATABASE_NEW_VERSION);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
@@ -837,7 +860,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedGender = spnGender.getSelectedItem().toString();
-                selectedGender = (String) parent.getSelectedItem();
+                //selectedGender = (String) parent.getSelectedItem();
             }
 
             @Override
@@ -849,8 +872,8 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         office.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //selectedOffice = office.getSelectedItem().toString();
-                selectedOffice = (String) parent.getSelectedItem();
+                selectedOffice = office.getSelectedItem().toString();
+                //selectedOffice = (String) parent.getSelectedItem();
 
             }
 
@@ -864,8 +887,8 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //selectedState = state.getSelectedItem().toString();
-                selectedState = (String) parent.getSelectedItem();
+                selectedState = state.getSelectedItem().toString();
+                //selectedState = (String) parent.getSelectedItem();
 
             }
 
@@ -1052,7 +1075,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
         }
         if(dbHelper !=null){
-            SQLiteDataBaseBuild();
+            //SQLiteDataBaseBuild();
             sqLiteDatabase = dbHelper.getReadableDatabase();
             customers = cusDAO.getAllCustomers11();
 
@@ -1063,6 +1086,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         pinEntryView = (PinEntryView) findViewById(R.id.txt_pin_entry);
 
         Animation translater = AnimationUtils.loadAnimation(this, R.anim.bounce);
+        Animation translER = AnimationUtils.loadAnimation(this, R.anim.pro_animation);
 
         btnSendOTP.setOnClickListener(this::sendOTPToCus);
         btnSendOTP.startAnimation(translater);
@@ -1092,7 +1116,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         btnSendOTP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.startAnimation(translater);
+                view.startAnimation(translER);
                 uFirstName = edtFirstName.getText().toString().trim();
                 uSurname = edtSurname.getText().toString().trim();
                 uEmail = email_address.getText().toString();
@@ -1150,13 +1174,12 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                                     doOtpNotification();
                                     sendOTPMessage(otpPhoneNumber, otpMessage);
 
-                                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                                        dbHelper.openDataBase();
-                                        sqLiteDatabase = dbHelper.getWritableDatabase();
+                                    if(dbHelper !=null){
+                                        sqLiteDatabase = dbHelper.getReadableDatabase();
                                         messageDAO.insertMessage(profileID, customerID, messageID, bizID, otpMessage, "Awajima App", customerName, selectedOffice, joinedDate);
 
-                                    }
 
+                                    }
 
                                     //sendOTPVerCode(otpPhoneNumber,mAuth,sponsorID,account,standingOrderAcct,customer,joinedDate,uFirstName,uSurname,uPhoneNumber,uAddress,uUserName,uPassword,customer,customerProfile,nIN,managerProfile,dateOfBirth,selectedGender,selectedOffice,selectedState,birthday,customerManager,dateOfBirth,profileID1,virtualAccountNumber,soAccountNumber, customerID,profileID2,birthdayID, investmentAcctID,itemPurchaseAcctID,promoAcctID,packageAcctID,profiles,customers,tellers,adminUserArrayList,superAdminArrayList);
                                 }
@@ -1215,6 +1238,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
 
     }
+
     private boolean checkInputs() {
         @SuppressLint("UseCompatLoadingForDrawables") Drawable customErrorIcon = getResources().getDrawable(R.drawable.ic_error_black_24dp);
         customErrorIcon.setBounds(0, 0, customErrorIcon.getIntrinsicWidth(), customErrorIcon.getIntrinsicHeight());
@@ -1303,11 +1327,135 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     }
 
     private void saveNewCustomer(int sponsorID, LatLng cusLatLng, Account account, StandingOrderAcct standingOrderAcct, String joinedDate, String uFirstName, String uSurname, String uPhoneNumber, String uAddress, String uUserName, String uPassword, Customer customer, Profile customerProfile, String nIN, Profile managerProfile, String dateOfBirth, String selectedGender, String selectedOffice, String selectedState, Birthday birthday, CustomerManager customerManager, String dateOfBirth1, int profileID1, int virtualAccountNumber, int soAccountNumber, int customerID, int birthdayID, int investmentAcctID, int itemPurchaseAcctID, int promoAcctID, int packageAcctID, ArrayList<Customer> customers) {
-        customerProfile = new Profile(profileID1, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, "", selectedState, selectedOffice, joinedDate, "Customer", uUserName, uPassword, "pending", "");
+        profile= new Profile();
+        profile=customerProfile;
+        tellerProfile = new Profile();
+        Bundle userBundle = new Bundle();
+        prefManager= new PrefManager();
+        profile = new Profile(profileID1, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, "", selectedState, selectedOffice, joinedDate, "Customer", uUserName, uPassword, "pending", "");
+        String name =uSurname+","+uFirstName;
+        qbUser= new QBUser();
+        qbUser.setCustomData(selectedOffice);
+        qbUser.setEmail(uEmail);
+        qbUser.setPassword(uPassword);
+        qbUser.setCustomDataClass(profile.getClass());
+        qbUser.setFullName(name);
+        qbUser.setExternalId(String.valueOf(profileID));
+        qbUser.setPhone(uPhoneNumber);
+        qbUser.setId(profileID1);
+        qbUser.setExternalId(String.valueOf(customerID));
+
+
+        if (userPreferences !=null){
+            userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+            gson3 = new Gson();
+            lastQBUserUsed= qbUser;
+            json3 = gson3.toJson(lastQBUserUsed);
+
+        }
+
+
+        SharedPreferences.Editor editor = userPreferences.edit();
+        editor.putString("PROFILE_DOB", dateOfBirth);
+        editor.putString("PROFILE_EMAIL", uEmail);
+        editor.putString("PROFILE_OFFICE", selectedOffice);
+        editor.putString("PROFILE_FIRSTNAME", uFirstName);
+        editor.putString("PROFILE_GENDER", selectedGender);
+        editor.putString("PROFILE_COUNTRY", "");
+        editor.putString("PROFILE_NEXT_OF_KIN", "");
+        editor.putString("PROFILE_PHONE", uPhoneNumber);
+        editor.putString("PROFILE_SURNAME", uSurname);
+        editor.putString("PICTURE_URI", String.valueOf(mImageUri));
+        editor.putString("CUSTOMER_LATLONG", String.valueOf(cusLatLng));
+        editor.putString("PROFILE_PASSWORD", uPassword);
+        editor.putString("PROFILE_NIN", nIN);
+        editor.putString("PROFILE_STATE", selectedState);
+        editor.putString("PROFILE_ROLE", "Customer");
+        editor.putString("PROFILE_STATUS", "Pending Approval");
+        editor.putInt("PROFILE_ID", profileID1);
+        editor.putString("PROFILE_DATE_JOINED", joinedDate);
+
+        editor.putString("PROFILE_USERNAME", uUserName);
+        editor.putString("PROFILE_PASSWORD", uPassword);
+        editor.putInt("CUSTOMER_ID", customerID);
+        editor.putString("PROFILE_SURNAME", uSurname);
+        editor.putString("PROFILE_FIRSTNAME", uFirstName);
+        editor.putString("PROFILE_PHONE", uPhoneNumber);
+        editor.putString("PROFILE_EMAIL", uEmail);
+        editor.putString("PROFILE_DOB", dateOfBirth);
+        editor.putString("PROFILE_ADDRESS", uAddress);
+        editor.putString("PROFILE_GENDER", selectedGender);
+        editor.putString("PROFILE_STATE", selectedState);
+        editor.putString(PROFILE_DOB, dateOfBirth);
+        editor.putString(PROFILE_EMAIL, uEmail);
+        editor.putString(PROFILE_OFFICE, selectedOffice);
+        editor.putString(PROFILE_FIRSTNAME, uFirstName);
+        editor.putString(PROFILE_GENDER, selectedGender);
+        editor.putString(PROFILE_COUNTRY, "");
+        editor.putString(PROFILE_NEXT_OF_KIN, "");
+        editor.putString(PROFILE_PHONE, uPhoneNumber);
+        editor.putString(PROFILE_SURNAME, uSurname);
+        editor.putString("PICTURE_URI", String.valueOf(mImageUri));
+        editor.putString(PICTURE_URI, String.valueOf(mImageUri));
+        editor.putString(CUSTOMER_LATLONG, String.valueOf(cusLatLng));
+        editor.putString(PROFILE_PASSWORD, uPassword);
+        editor.putString(PROFILE_NIN, nIN);
+        editor.putString(PROFILE_STATE, selectedState);
+        editor.putString(PROFILE_ROLE, "Customer");
+        editor.putString(PROFILE_STATUS, "Pending Approval");
+        editor.putInt(PROFILE_ID, profileID1);
+        editor.putString(PROFILE_DATE_JOINED, joinedDate);
+        editor.putString(PROFILE_USERNAME, uUserName);
+        editor.putString(PROFILE_PASSWORD, uPassword);
+        editor.putInt(CUSTOMER_ID, customerID);
+        editor.putString(PROFILE_SURNAME, uSurname);
+        editor.putString(PROFILE_FIRSTNAME, uFirstName);
+        editor.putString(PROFILE_PHONE, uPhoneNumber);
+        editor.putString(PROFILE_EMAIL, uEmail);
+        editor.putString(PROFILE_DOB, dateOfBirth);
+        editor.putString(PROFILE_ADDRESS, uAddress);
+        editor.putString(PROFILE_GENDER, selectedGender);
+        editor.putString(PROFILE_STATE, selectedState);
+        editor.putString("machine", "Customer");
+        editor.putString("Machine", "Customer");
+        editor.putLong("EWalletID", virtualAccountNumber);
+        editor.putLong("StandingOrderAcct", soAccountNumber);
+        //editor.putLong("TransactionAcctID", transactionAcctID);
+        editor.putInt("InvestmentAcctID", investmentAcctID);
+        editor.putInt("PromoAcctID", promoAcctID);
+        editor.putInt("ItemsPurchaseAcctID", itemPurchaseAcctID);
+        editor.putInt("SavingsAcctID", savingsAcctID);
+        //editor.putLong("MessageAcctID", finalProfileID1);
+
+
+        editor.putString("PICTURE_URI", String.valueOf(mImageUri));
+        editor.putInt("PROFILE_ID", profileID1);
+        editor.putString("EMAIL_ADDRESS", uEmail);
+        editor.putString("Machine", "Customer");
+        editor.putString("LastQBUserUsed", json3).apply();
+        prefManager.saveLoginDetails(uEmail,uPassword);
+
+
+        tellerProfile=managerProfile;
+        if (customerManager != null) {
+            ManagerSurname = customerManager.getTSurname();
+            managerFirstName = customerManager.getTFirstName();
+            profileID = customerManager.getTellerProfileID();
+            managerPhoneNumber1 = customerManager.getTPhoneNumber();
+            managerEmail = customerManager.getTEmailAddress();
+            managerUserName = customerManager.getTUserName();
+            officePref = customerManager.getTOffice();
+            managerAddress = customerManager.getTAddress();
+            managerGender = customerManager.getTGender();
+            customerManager.addCustomer(0,customerID, name, uPhoneNumber,  joinedDate,"New");
+
+        }
+
         if(customer !=null){
             customer.setCusProfile(customerProfile);
             customer.setCusFirstName(uFirstName);
             customer.setCusSurname(uSurname);
+            customer.setCusPin(uPassword);
             customer.setCusAddress(uAddress);
             customer.setCusDob(dateOfBirth);
             customer.setCusUID(customerID);
@@ -1324,55 +1472,139 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
             customer.setCusAccount(account);
             customer.setCusStandingOrderAcct(standingOrderAcct);
             customer.setCusProfilePicture(String.valueOf(mImageUri));
+            customer.setCusAccount(account);
+            customer.setCusStandingOrderAcct(standingOrderAcct);
+            customer.setCusProfile(profile);
+            customer.addCusAccountManager(managerProfileID, ManagerSurname, managerFirstName, managerGender, officePref);
 
-            customerProfile.setProfileFirstName(uFirstName);
-            customerProfile.setProfileLastName(uSurname);
-            customerProfile.setProfileAddress(uAddress);
-            customerProfile.setProfileDob(dateOfBirth);
-            customerProfile.setProfileDateJoined(joinedDate);
-            customerProfile.setProfileEmail(uEmail);
-            customerProfile.setProfileRole("customer");
-            customerProfile.setProfilePhoneNumber(uPhoneNumber);
-            customerProfile.setProfileGender(selectedGender);
-            customerProfile.setProfileIdentity(null);
-            customerProfile.setProfileLastKnownLocation(this.cusLatLng);
-            customerProfile.setProfileMachine("customer");
-            customerProfile.setProfileUserName(uUserName);
-            customerProfile.setProfileState(selectedState);
-            customerProfile.setProfileSponsorID(profileID);
-            customerProfile.setProfileOffice(selectedOffice);
-            customerProfile.setProfile_CustomerManager(customerManager);
-            customerProfile.setProfilePicture(mImageUri);
+            profile.setProfileFirstName(uFirstName);
+            profile.setProfileLastName(uSurname);
+            profile.setProfileAddress(uAddress);
+            profile.setProfilePassword(uPassword);
+            profile.setProfileDob(dateOfBirth);
+            profile.setProfileDateJoined(joinedDate);
+            profile.setProfileEmail(uEmail);
+            profile.setProfileRole("customer");
+            profile.setProfilePhoneNumber(uPhoneNumber);
+            profile.setProfileGender(selectedGender);
+            profile.setProfileIdentity(null);
+            profile.setProfileLastKnownLocation(this.cusLatLng);
+            profile.setProfileMachine("customer");
+            profile.setProfileUserName(uUserName);
+            profile.setProfileState(selectedState);
+            profile.setProfileSponsorID(profileID);
+            profile.setProfOfficeName(selectedOffice);
+            profile.setProfile_CustomerManager(customerManager);
+            profile.setProfilePicture(mImageUri);
             int countC=0;
-            String name =uSurname+","+uFirstName;
-
-            if (customerManager != null) {
-                ManagerSurname = customerManager.getTSurname();
-                managerFirstName = customerManager.getTFirstName();
-                profileID = customerManager.getTellerProfileID();
-                managerPhoneNumber1 = customerManager.getTPhoneNumber();
-                managerEmail = customerManager.getTEmailAddress();
-                managerUserName = customerManager.getTUserName();
-                officePref = customerManager.getTOffice();
-                managerAddress = customerManager.getTAddress();
-                managerGender = customerManager.getTGender();
-                customerManager.addCustomer(countC,customerID, name, uPhoneNumber,  joinedDate,"New");
-
-            }
+            profile.setProfQbUser(qbUser);
 
 
-            try {
+            SignUpUser(qbUser,profile);
+            userBundle.putString(PROFILE_DOB, dateOfBirth);
+            userBundle.putString(BANK_ACCT_NO, bankAcctNumber);
+            userBundle.putString("BANK_ACCT_NO", bankAcctNumber);
+            userBundle.putString(PROFILE_EMAIL, uEmail);
+            userBundle.putString(PROFILE_OFFICE, selectedOffice);
+            userBundle.putString(PROFILE_FIRSTNAME, uFirstName);
+            userBundle.putString(PROFILE_GENDER, selectedGender);
+            userBundle.putString(PROFILE_COUNTRY, "");
+            userBundle.putString(PROFILE_NEXT_OF_KIN, "");
+            userBundle.putString(PROFILE_PHONE, uPhoneNumber);
+            userBundle.putString(PROFILE_SURNAME, uSurname);
+            userBundle.putString(PICTURE_URI, String.valueOf(mImageUri));
+            userBundle.putString(CUSTOMER_LATLONG, String.valueOf(cusLatLng));
+            userBundle.putString(PROFILE_PASSWORD, uPassword);
+            userBundle.putString(PROFILE_NIN, nIN);
+            userBundle.putString(PROFILE_STATE, selectedState);
+            userBundle.putString(PROFILE_ROLE, "Customer");
+            userBundle.putString(PROFILE_STATUS, "Pending Approval");
+            userBundle.putString(PROFILE_USERNAME, uUserName);
+            userBundle.putInt(PROFILE_ID, profileID1);
+            userBundle.putString(PROFILE_DATE_JOINED, joinedDate);
+            userBundle.putString("machine", "Customer");
 
-                customer.setCusAccount(account);
-                customer.setCusStandingOrderAcct(standingOrderAcct);
-                customer.addCusAccountManager(managerProfileID, ManagerSurname, managerFirstName, managerGender, officePref);
+            userBundle.putString("PICTURE_URI", String.valueOf(mImageUri));
+            userBundle.putString("PROFILE_NIN", nIN);
+            userBundle.putLong("PROFILE_ID", profileID1);
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            userBundle.putString("CHOSEN_OFFICE", selectedOffice);
+
+            userBundle.putInt("CUSTOMER_ID", customerID);
+            userBundle.putString("PROFILE_NIN", nIN);
+            userBundle.putString("EMAIL_ADDRESS", uEmail);
+            userBundle.putString("DATE_OF_BIRTH_KEY", dateOfBirth);
+            userBundle.putString("GENDER_KEY", selectedGender);
+            userBundle.putString("USER_NEXT_OF_KIN", "");
+            userBundle.putString(CUSTOMER_LATLONG, "");
+            userBundle.putString("machine", "Customer");
+            userBundle.putInt(PROFILE_SPONSOR_ID, sponsorID);
+            userBundle.putInt("USER_SPONSOR_ID", sponsorID);
+            Intent intent = new Intent(SignUpAct.this, NewCustomerDrawer.class);
+            intent.putExtras(userBundle);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right,
+                    R.anim.slide_out_left);
+
+
+            Toast.makeText(SignUpAct.this, "Thank you" + "" +
+                    "for Signing up " + "" + uFirstName + "" + "on the Awajima. App", Toast.LENGTH_LONG).show();
+
+
 
         }
 
+
+    }
+    private void SignUpUser(final QBUser newUser, final Profile lastProfileUsed) {
+        newUser.setCustomDataClass(lastProfileUsed.getClass());
+        QBUsers.signUp(newUser).performAsync(new QBEntityCallback<QBUser>() {
+            @Override
+            public void onSuccess(QBUser qbUser, Bundle bundle) {
+                signinUser(qbUser,lastProfileUsed);
+
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+
+            }
+        });
+    }
+    private void signinUser(final QBUser newUser,Profile lastProfileUsed) {
+        QBUsers.signIn(newUser).performAsync(new QBEntityCallback<QBUser>() {
+            @Override
+            public void onSuccess(QBUser qbUser, Bundle bundle) {
+                Toast.makeText(SignUpAct.this, "Login successfully", Toast.LENGTH_SHORT).show();
+                QBChatService.setDebugEnabled(true); // enable chat logging
+                QBChatService.setDefaultPacketReplyTimeout(10000);
+                Bundle newBundle= new Bundle();
+
+                QBChatService.ConfigurationBuilder chatServiceConfigurationBuilder = new QBChatService.ConfigurationBuilder();
+                chatServiceConfigurationBuilder.setSocketTimeout(60);
+                chatServiceConfigurationBuilder.setKeepAlive(true);
+                chatServiceConfigurationBuilder.setUseTls(true);
+                QBChatService.setConfigurationBuilder(chatServiceConfigurationBuilder);
+                newBundle=bundle;
+                newBundle.putParcelable("QBUser", (Parcelable) qbUser);
+                newBundle.putParcelable("Profile",lastProfileUsed);
+
+                Intent intent = new Intent(SignUpAct.this, NewCustomerDrawer.class);
+                intent.putExtras(newBundle);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+
+
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                Toast.makeText(SignUpAct.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -1384,7 +1616,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         SQLiteDataBaseBuild();
         calendar = Calendar.getInstance();
         sqLiteDatabase = dbHelper.getWritableDatabase();
-        //startBankAcctCreationForResult.launch(new Intent(SignUpAct.this, NewBankAcctAct.class));
+        //startBankAcctCreationForResult.launch(new Intent(SignUpAct.this, MyAcctOverViewAct.class));
 
 
         @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -1423,7 +1655,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
             managerPhoneNumber1 = managerProfile.getProfilePhoneNumber();
             managerEmail = managerProfile.getProfileEmail();
             managerUserName = managerProfile.getProfileUserName();
-            officePref = managerProfile.getProfileOffice();
+            officePref = managerProfile.getProfOfficeName();
             customerManager = managerProfile.getProfile_CustomerManager();
             managerAddress = managerProfile.getProfileAddress();
             managerGender = managerProfile.getProfileGender();
@@ -1443,55 +1675,55 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
         saveMyPreferences(sponsorID,cusLatLng,account,standingOrderAcct,joinedDate,uFirstName,uSurname,uPhoneNumber,uAddress,uUserName,uPassword,customer,customerProfile,nIN,managerProfile, dateOfBirth, selectedGender, selectedOffice, selectedState, birthday,  customerManager, ofBirth, profileID1,  virtualAccountNumber, soAccountNumber,  customerID, birthdayID, investmentAcctID,itemPurchaseAcctID,  promoAcctID, packageAcctID,  customers);
 
-
-        sqLiteDatabase = dbHelper.getWritableDatabase();
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-
+        if(dbHelper !=null){
+            sqLiteDatabase = dbHelper.getWritableDatabase();
             acctDAO.insertAccount(profileID1, customerID, skylightMFb, accountName, virtualAccountNumber, accountBalance, accountTypeStr);
+
+
         }
 
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
+        if(dbHelper !=null){
             sqLiteDatabase = dbHelper.getWritableDatabase();
             dbHelper.insertRole(profileID1, "Customer",  uPhoneNumber);
+
         }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
+
+        if(dbHelper !=null){
             sqLiteDatabase = dbHelper.getWritableDatabase();
             dbHelper.insertCustomer11(profileID1, customerID, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedState, "", joinedDate, uUserName, uPassword, mImageUri, "Customer");
 
+
         }
 
-
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
+        if(dbHelper !=null){
             sqLiteDatabase = dbHelper.getWritableDatabase();
             birthdayDAO.insertBirthDay3(birthday, dateOfBirth);
+
         }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.saveNewProfile(customerProfile);
-        }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
+
+        if(dbHelper !=null){
             sqLiteDatabase = dbHelper.getWritableDatabase();
             timeLineClassDAO.insertTimeLine(tittleT1, timelineDetailsTD, timeLineTime, mCurrentLocation);
+
         }
+        if(dbHelper !=null){
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            dbHelper.saveNewProfile(customerProfile);
+
+        }
+
+
         SODAO sodao= new SODAO(this);
 
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
+        if(dbHelper !=null){
             sqLiteDatabase = dbHelper.getWritableDatabase();
             sodao.insertStandingOrderAcct(profileID1, customerID, virtualAccountNumber, accountName, 0.00);
+
+
         }
 
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            //dbHelper = new DBHelper(this);
+
+        if(dbHelper !=null){
             sqLiteDatabase = dbHelper.getWritableDatabase();
             if (cusLatLng != null) {
                 try {
@@ -1507,91 +1739,32 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
             EmptyEditTextAfterDataInsert();
 
-
         }
-        userBundle.putString(PROFILE_DOB, dateOfBirth);
-        userBundle.putString(BANK_ACCT_NO, bankAcctNumber);
-        userBundle.putString("BANK_ACCT_NO", bankAcctNumber);
-        userBundle.putString(PROFILE_EMAIL, uEmail);
-        userBundle.putString(PROFILE_OFFICE, selectedOffice);
-        userBundle.putString(PROFILE_FIRSTNAME, uFirstName);
-        userBundle.putString(PROFILE_GENDER, selectedGender);
-        userBundle.putString(PROFILE_COUNTRY, "");
-        userBundle.putString(PROFILE_NEXT_OF_KIN, "");
-        userBundle.putString(PROFILE_PHONE, uPhoneNumber);
-        userBundle.putString(PROFILE_SURNAME, uSurname);
-        userBundle.putString(PICTURE_URI, String.valueOf(mImageUri));
-        userBundle.putString(CUSTOMER_LATLONG, String.valueOf(cusLatLng));
-        userBundle.putString(PROFILE_PASSWORD, uPassword);
-        userBundle.putString(PROFILE_NIN, nIN);
-        userBundle.putString(PROFILE_STATE, selectedState);
-        userBundle.putString(PROFILE_ROLE, "Customer");
-        userBundle.putString(PROFILE_STATUS, "Pending Approval");
-        userBundle.putString(PROFILE_USERNAME, uUserName);
-        userBundle.putInt(PROFILE_ID, profileID1);
-        userBundle.putString(PROFILE_DATE_JOINED, joinedDate);
-        userBundle.putString("machine", "Customer");
 
-        userBundle.putString("USER_DOB", dateOfBirth);
-        userBundle.putString("USER_EMAIL", uEmail);
-        userBundle.putString("USER_OFFICE", selectedOffice);
-        userBundle.putString("USER_FIRSTNAME", uFirstName);
-        userBundle.putString("USER_GENDER", selectedGender);
-        userBundle.putString("USER_COUNTRY", "");
-        userBundle.putString("USER_NEXT_OF_KIN", "");
-        userBundle.putString("USER_PHONE", uPhoneNumber);
-        userBundle.putString("USER_SURNAME", "");
-        userBundle.putString("PICTURE_URI", String.valueOf(mImageUri));
-        userBundle.putString("USER_DATE_JOINED", "");
-        userBundle.putString("PROFILE_NIN", nIN);
-        userBundle.putString("USER_STATE", selectedState);
-        userBundle.putString("USER_ROLE", "Customer");
-        userBundle.putString("USER_STATUS", "Pending Approval");
-        userBundle.putString("USERNAME", uUserName);
-        userBundle.putLong("PROFILE_ID", profileID1);
-        userBundle.putString("USER_PASSWORD", uPassword);
-        userBundle.putString("USER_LOCATION", String.valueOf(cusLatLng));
-        userBundle.putString("EMAIL_ADDRESS", uEmail);
-        userBundle.putString("CHOSEN_OFFICE", selectedOffice);
-        userBundle.putString("USER_NAME", uUserName);
-        userBundle.putString("USER_DATE_JOINED", joinedDate);
 
-        userBundle.putInt("CUSTOMER_ID", customerID);
-        userBundle.putString("PROFILE_NIN", nIN);
-        userBundle.putString("EMAIL_ADDRESS", uEmail);
-        userBundle.putString("DATE_OF_BIRTH_KEY", dateOfBirth);
-        userBundle.putString("GENDER_KEY", selectedGender);
-        userBundle.putString("USER_NEXT_OF_KIN", "");
-        userBundle.putString(CUSTOMER_LATLONG, "");
-        userBundle.putString("machine", "Customer");
-        userBundle.putInt(PROFILE_SPONSOR_ID, sponsorID);
-        userBundle.putInt("USER_SPONSOR_ID", sponsorID);
-        Intent intent = new Intent(SignUpAct.this, NewCustomerDrawer.class);
-        intent.putExtras(userBundle);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_right,
-                R.anim.slide_out_left);
 
-        Toast.makeText(SignUpAct.this, "Thank you" + "" +
-                "for Signing up " + "" + uFirstName + "" + "on the Awajima. App", Toast.LENGTH_LONG).show();
 
 
     }
+
     private void saveMyPreferences(int sponsorID, LatLng cusLatLng, Account account, StandingOrderAcct standingOrderAcct, String joinedDate, String uFirstName, String uSurname, String uPhoneNumber, String uAddress, String uUserName, String uPassword, Customer customer, Profile customerProfile, String nIN, Profile managerProfile, String dateOfBirth, String selectedGender, String selectedOffice, String selectedState, Birthday birthday, CustomerManager customerManager, String ofBirth, int profileID1, int virtualAccountNumber, int soAccountNumber, int customerID, int birthdayID, int investmentAcctID, int itemPurchaseAcctID, int promoAcctID, int packageAcctID, ArrayList<Customer> customers) {
         Bundle userBundle = new Bundle();
+        lastAccountUsed = new Account();
         smsMessage = "Welcome to the Awajima  App, may you have the best experience";
 
         sendSMSMessage22(uPhoneNumber, smsMessage);
         sendTextMessage(uPhoneNumber, smsMessage);
+        lastAccountUsed =account;
+        gson = new Gson();
+        Gson gson4 = new Gson();
+        lastProfileUsed = customerProfile;
+        lastCustomerUsed= customer;
 
-        if (userPreferences == null){
+        if (userPreferences !=null){
             userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-            gson = new Gson();
-            lastProfileUsed = customerProfile;
-            lastCustomerUsed= customer;
             json = gson.toJson(lastProfileUsed);
             json1 = gson1.toJson(lastCustomerUsed);
+            json4 = gson4.toJson(lastAccountUsed);
 
         }
 
@@ -1695,6 +1868,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         editor.putString("Machine", "Customer");
         editor.putString(PROFILE_ROLE, "Customer");
         editor.putString("LastCustomerUsed", json1);
+        editor.putString("lastAccountUsed", json4);
         editor.putString("LastProfileUsed", json).apply();
 
         userBundle.putString(PROFILE_DOB, dateOfBirth);
@@ -1764,6 +1938,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         Toast.makeText(SignUpAct.this, "Thank you" + "" +
                 "for Signing up " + "" + uFirstName + "" + "on the Awajima. App", Toast.LENGTH_LONG).show();
         setResult(Activity.RESULT_OK, new Intent());
+
         finish();
     }
 
@@ -1782,7 +1957,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
                     .fitCenter()
                     .centerCrop()
                     .into(this.profilePix);
-            this.profilePix.setImageBitmap(addGradient(logoBitmap));
+            profilePix.setImageBitmap(addGradient(logoBitmap));
 
         }
         if ((data != null) && requestCode == RESULT_LOAD_IMAGE) {
@@ -1904,49 +2079,89 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
     public void loadProfiles(DBHelper dbHelper) {
 
-        userProfile1 = new Profile(10000, "Emmanuel", "Becky", "08069524599", "urskylight@gmail.com", "1980-04-19", "female", "Awajima", "", "Rivers", "Elelenwo", "2022-04-19", "SuperAdmin", "Skylight4ever", "@Awajima2", "Confirmed", "");
-        userProfile2= new Profile(1000,"Benedict", "Benedict", "08059250176", "bener@gmail.com", "25/04/1989", "male", "PH", "","Rivers", "Elelenwo", "19/04/2022","Customer", "Lumgwun", "@Awajima3","Confirmed","");
+        userProfile1 = new Profile(10000, "Emmanuel", "Uju", "08069524599", "urskylight@gmail.com", "1980-04-19", "female", "Awajima", "", "Rivers", "Elelenwo", "2022-04-19", "SuperAdmin", "Skylight4ever", "@Awajima2", "Confirmed", "");
+        userProfile2= new Profile(1000,"Bartha", "Ene", "08059250176", "bener@gmail.com", "25/04/1989", "male", "PH", "","Rivers", "Elelenwo", "19/04/2022","Customer", "Lumgwun", "@Awajima3","Confirmed","");
 
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.insertCustomer11(1000002, 10, "Ezekiel", "Gwun-orene", "07038843102", "lumgwun1@gmail.com", "1983-04-25", "male", "Ilabuchi", "Rivers", "", "2022-04-19", "Lumgwun", "@Awajima1", Uri.parse(""), "Customer");
-
-        }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            timeLineClassDAO.insertTimeLine("Sign up", "", "2022-04-19", mCurrentLocation);
-
-        }
         Message supportMessage = new Message(uPhoneNumber,otpDigit);
-
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
+        if(dbHelper !=null){
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            messageDAO.saveNewMessage(supportMessage);
-            //dbHelper.insertMessage(profileID, customerID, messageID, otpMessage, "Awajima", customerName, selectedOffice, joinedDate);
+            try {
+                dbHelper.openDataBase();
+                dbHelper.saveNewProfile(userProfile2);
+
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+
+
+
 
         }
 
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            //dbHelper = new DBHelper(this);
+
+        if(dbHelper !=null){
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.openDataBase();
-            dbHelper.saveNewProfile(userProfile2);
+            try {
+                dbHelper.openDataBase();
+                messageDAO.saveNewMessage(supportMessage);
+
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
 
 
         }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            //dbHelper = new DBHelper(this);
+
+        if(dbHelper !=null){
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.openDataBase();
-            dbHelper.saveNewProfile(userProfile1);
+            try {
+                dbHelper.openDataBase();
+                timeLineClassDAO.insertTimeLine("Sign up", "", "2022-04-19", mCurrentLocation);
+
+
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
 
 
         }
+
+        if(dbHelper !=null){
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+                dbHelper.openDataBase();
+                dbHelper.insertCustomer11(1000002, 10, "Ezekiel", "Gwun-orene", "07038843102", "lumgwun1@gmail.com", "1983-04-25", "male", "Ilabuchi", "Rivers", "", "2022-04-19", "Lumgwun", "@Awajima1", Uri.parse(""), "Customer");
+
+
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+
+
+
+        }
+
+
+
+        if(dbHelper !=null){
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+                dbHelper.openDataBase();
+                dbHelper.saveNewProfile(userProfile1);
+
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+
 
 
     }
@@ -2058,14 +2273,29 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
         sqLiteDatabase = dbHelper.getWritableDatabase();
 
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            profileDao.insertProfile(userProfile1);
+        try {
+
+            if (dbHelper != null) {
+                //dbHelper.openDataBase();
+                profileDao.insertProfile(userProfile2);
+            }
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            profileDao.insertProfile(userProfile2);
+
+        try {
+
+            if (dbHelper != null) {
+                //dbHelper.openDataBase();
+                profileDao.insertProfile(userProfile1);
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
+
+
+
 
 
         /*if (DatabaseUtils.queryNumEntries(dbHelper.getWritableDatabase(),DATABASE_NAME) < 1) {
@@ -2082,14 +2312,14 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
 
 
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
+        if (dbHelper != null) {
+            //dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
             profileDao.insertProfile(userProfile1);
 
         }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
+        if (dbHelper != null) {
+            //dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
             profileDao.insertProfile(userProfile2);
 
@@ -2124,24 +2354,16 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
         profile33 = new Profile(12903, "TestBoy", "Emeka", "07034123456", "leaveme@yahoo.com", "1987-02-09", "male", "no address", "", "Rivers", "Head Office", joinedDate, "Customer", "seeme", "finish", "pending", "");
 
 
-        sqLiteDatabase = dbHelper.getWritableDatabase();
+
         if (dbHelper != null) {
-            dbHelper.onUpgrade(sqLiteDatabase, DATABASE_VERSION, DATABASE_NEW_VERSION);
-
-        } else {
-            sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
-
-
-        }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
+            //dbHelper.openDataBase();
             dbHelper.insertNewPackage(1000000,1234,92345678,4567,"Test Package","Savings",31,5000,"2022-17-06",5000000,"","Confirmed");
 
 
         }
 
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
+        if (dbHelper !=null) {
+            //dbHelper.openDataBase();
             profileDao.insertProfile(profile33);
 
 
@@ -2192,6 +2414,14 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
     public void showPrivacyPolicy(View view) {
     }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+
+
 
     public interface OnPinEnteredListener {
         void onPinEntered(String pin);
@@ -2349,28 +2579,28 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
     private void getDeviceLocation() {
         try {
             if (locationPermissionGranted) {
-                Task<Location> locationResult = fusedLocationClient.getLastLocation();
-                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful()) {
-                            location = task.getResult();
-                            if (location != null) {
-                                latitude = location.getLatitude();
-                                longitude = location.getLongitude();
-                                cusLatLng = new LatLng(latitude, longitude);
+
+                fusedLocationClient.getCurrentLocation(2, cancellationTokenSource.getToken())
+                        .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location2) {
+                                if (location2 != null) {
+                                    latitude = location2.getLatitude();
+                                    longitude = location2.getLongitude();
+                                    cusLatLng = new LatLng(latitude, longitude);
+
+
+                                    setResult(Activity.RESULT_OK, new Intent());
+
+
+                                } else {
+                                    cusLatLng = new LatLng(4.52871, 7.44507);
+                                    Log.d(TAG, "Current location is null. Using defaults.");
+                                }
 
                             }
-                        } else {
 
-                            cusLatLng = new LatLng(4.52871, 7.44507);
-                            Log.d(TAG, "Current location is null. Using defaults.");
-                            /*googleMap.moveCamera(CameraUpdateFactory
-                                    .newLatLngZoom(cusLatLng, 17));
-                            googleMap.getUiSettings().setMyLocationButtonEnabled(false);*/
-                        }
-                    }
-                });
+                        });
                 txtLoc = findViewById(R.id.hereYou333);
                 try {
                     geocoder = new Geocoder(SignUpAct.this, Locale.ENGLISH);
@@ -2399,50 +2629,12 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
 
                     Log.e("tag", e.getMessage());
                 }
+                /*fusedLocationClient.requestLocationUpdates(LocationRequest.create()
+                                .setInterval(36000).setFastestInterval(36000)
+                                .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
+                                .setMaxWaitTime(1000),
+                        mLocationCallBack(), Looper.myLooper());*/
 
-
-                fusedLocationClient.getCurrentLocation(2, cancellationTokenSource.getToken())
-                        .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                            @Override
-                            public void onSuccess(Location location2) {
-                                if (location2 != null) {
-                                    latitude = location2.getLatitude();
-                                    longitude = location2.getLongitude();
-                                    cusLatLng = new LatLng(latitude, longitude);
-
-
-                                    setResult(Activity.RESULT_OK, new Intent());
-
-
-                                } else {
-                                    cusLatLng = new LatLng(4.52871, 7.44507);
-                                    Log.d(TAG, "Current location is null. Using defaults.");
-                                }
-
-                            }
-
-                        });
-
-                geocoder = new Geocoder(this, Locale.getDefault());
-
-                if (location != null) {
-                    try {
-                        addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-
-                        address = addresses.get(0).getAddressLine(0);
-                        //txtLoc.setVisibility(View.VISIBLE);
-
-
-
-                    } catch (NullPointerException e) {
-                        e.printStackTrace();
-                    }
-                }
-                String city = addresses.get(0).getAdminArea();
 
 
                 //txtLoc.setText("My Loc:" + latitude + "," + longitude + "/" + city);
@@ -2453,6 +2645,7 @@ public class SignUpAct extends AppCompatActivity implements LocationListener {
             Log.e("Exception: %s", e.getMessage(), e);
         }
     }
+
 
     private boolean checkPermissions() {
         int fineLocationPermissionState = ActivityCompat.checkSelfPermission(

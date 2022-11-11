@@ -2,6 +2,7 @@ package com.skylightapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -32,12 +33,13 @@ public class WelcomeActivity extends AppCompatActivity {
     private int[] layouts;
     private Button btnSkip, btnNext,buttonSwitchNext;
     private PrefManager prefManager;
+    private AppCompatTextView txtWel2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_welcome);
-        setTitle("Our App Reception Area");
+        setTitle("Awajima Reception Area");
         //int messageCount = strings.length;
         final int[] currentIndex = {-1};
 
@@ -53,12 +55,22 @@ public class WelcomeActivity extends AppCompatActivity {
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
         btnSkip = (Button) findViewById(R.id.btn_skip);
         btnNext = (Button) findViewById(R.id.btn_next);
+        txtWel2 = findViewById(R.id.tv2_Welcome);
+
 
         Animation in = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
         Animation out = AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right);
 
         btnNext.setAnimation(in);
         btnSkip.setAnimation(out);
+        Animation marquee = AnimationUtils.loadAnimation(this, R.anim.marquee);
+        try {
+
+            txtWel2.startAnimation(marquee);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
 
         //textSwitcher2.setCurrentText("click on next button to switch text");
 

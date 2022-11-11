@@ -9,6 +9,6 @@ public class FollowingPrefFrag extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.root_preferences, rootKey);
+        setPreferencesFromResource(R.xml.response_team_pref, rootKey);
     }
 }

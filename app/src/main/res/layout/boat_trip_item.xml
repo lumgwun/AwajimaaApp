@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/list_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:scrollbarSize="30dp"
+    app:cardCornerRadius="25dp"
+    app:cardBackgroundColor="@color/white_good"
+    android:paddingLeft="1dp"
+    android:paddingRight="1dp">
+    <View
+        android:id="@+id/divider1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/shape_layer" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/shape_rect14"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/group_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:layout_alignParentTop="true"
+            android:gravity="center_vertical"
+            android:background="@drawable/shape_rect14"
+            android:orientation="horizontal"
+            android:paddingEnd="1dp"
+            android:weightSum="2"
+            android:paddingLeft="1dp"
+            android:paddingRight="1dp"
+            android:paddingStart="1dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/name_dest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:elevation="2dp"
+                android:layout_weight="1"
+                android:text="Oyorokoto"
+                android:gravity="center"
+                android:textStyle="italic"
+                android:paddingEnd="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/mImga"
+                android:layout_width="90dp"
+                android:layout_height="70dp"
+                android:layout_gravity="end"
+                android:foregroundGravity="right"
+                android:background="@drawable/shape_layer_1a"
+                android:contentDescription="Trip"
+                android:layout_marginEnd="10dp"
+                android:paddingEnd="1dp"
+                android:layout_weight="1"
+                android:paddingLeft="1dp"
+                android:paddingRight="1dp"
+                android:paddingStart="1dp"
+                android:scaleX=".85"
+                android:scaleY=".85"
+                android:src="@drawable/transfer3" />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/group_2d"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/group_1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingEnd="1dp"
+            android:weightSum="2"
+            android:paddingLeft="1dp"
+            android:paddingRight="1dp"
+            android:layout_marginBottom="10dp"
+            android:paddingStart="1dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/trip_fromASD"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:elevation="2dp"
+                android:layout_marginStart="2dp"
+                android:text="Utawa"
+                android:paddingLeft="1dp"
+                android:layout_weight="1"
+                android:paddingRight="1dp"
+                android:layout_marginEnd="5dp"
+                android:singleLine="true"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/td_trip"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:elevation="2dp"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:text="Trip. ID: 096439L"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/group_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/group_2d"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingEnd="1dp"
+            android:weightSum="2"
+            android:paddingLeft="1dp"
+            android:paddingRight="1dp"
+            android:layout_marginBottom="10dp"
+            android:paddingStart="1dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/amt_triper"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:text="NGN6,000"
+                android:paddingLeft="1dp"
+                android:layout_weight="1"
+                android:paddingRight="1dp"
+                android:layout_marginEnd="5dp"
+                android:singleLine="true"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/trip_total_Sit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:elevation="2dp"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:layout_marginEnd="2dp"
+                android:text="4 Sits"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/group_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:layout_below="@id/group_2"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingEnd="1dp"
+            android:weightSum="2"
+            android:layout_marginBottom="10dp"
+            android:paddingLeft="1dp"
+            android:paddingRight="1dp"
+            android:paddingStart="1dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/trip_dated"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:elevation="2dp"
+                android:layout_marginStart="2dp"
+                android:paddingEnd="1dp"
+                android:paddingLeft="1dp"
+                android:paddingRight="1dp"
+                android:layout_marginEnd="5dp"
+                android:paddingStart="1dp"
+                android:text="Trip Date: 25/12/2022"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/sits_remaining"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="1dp"
+                android:paddingLeft="1dp"
+                android:layout_weight="1"
+                android:paddingRight="1dp"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:paddingStart="1dp"
+                android:fontFamily="sans-serif"
+                android:text="Sits Rem:"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/group_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_below="@id/group_3"
+            android:paddingEnd="1dp"
+            android:weightSum="2"
+            android:layout_marginBottom="10dp"
+            android:paddingLeft="1dp"
+            android:paddingRight="1dp"
+            android:paddingStart="1dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/trip_state"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:singleLine="true"
+                android:textStyle="bold"
+                android:text="Rivers"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="5dp"
+                android:textColor="@color/black"
+                android:layout_weight="1"
+                android:textSize="15sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/trip_end_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:text="End Date: 31/03/2021"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/group_4_0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_below="@id/group_4"
+            android:paddingEnd="1dp"
+            android:weightSum="2"
+            android:layout_marginBottom="10dp"
+            android:paddingLeft="1dp"
+            android:paddingRight="1dp"
+            android:paddingStart="1dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/trip_amt_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:singleLine="true"
+                android:text="NGN2,500"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/trip_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:text="Registering"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="#1effffff" />
+
+</androidx.cardview.widget.CardView>

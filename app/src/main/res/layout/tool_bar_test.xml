@@ -19,6 +19,7 @@
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:elevation="5.0dp"
+        android:background="@drawable/event_circle"
         android:layout_weight="4"
         app:shape_arc_cropDirection="inside"
         app:shape_arc_height="15dp"
@@ -40,7 +41,7 @@
                 android:layout_gravity="center_horizontal"
                 android:textAlignment="center"
                 android:layout_marginStart="10dp"
-                app:titleTextColor="@color/gray_light"
+                app:titleTextColor="@color/green_dark"
                 android:layout_height="100dp"/>
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -51,6 +52,7 @@
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:elevation="5.0dp"
+        android:background="@drawable/event_circle"
         android:layout_weight="1"
         app:shape_arc_cropDirection="inside"
         app:shape_arc_height="15dp"

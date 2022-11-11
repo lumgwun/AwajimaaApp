@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/biz_adminHome"
+        android:title="Biz Home"
+        app:cnb_backgroundColor="@color/dark_and_red"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#2196F3"
+        android:icon="@drawable/ic_home_black_24dp"/>
+
+    <item
+        android:id="@+id/biz_Admin_Stocks"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#4CAF50"
+        android:icon="@drawable/map_foreground"
+        android:title="Stocks" />
+    <item
+        android:id="@+id/support_bizAdmin"
+        android:title="Messages"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#FF9800"
+        android:icon="@drawable/ic_admin_panel"/>
+
+</menu>

@@ -79,6 +79,7 @@ public class AdminLoanList extends AppCompatActivity implements LoanAdapter.OnLo
         paymentDAO= new PaymentDAO(this);
         adminBalanceDAO= new AdminBalanceDAO(this);
         timeLineClassDAO= new TimeLineClassDAO(this);
+        dbHelper = new DBHelper(this);
 
 
         sodao= new SODAO(this);
@@ -90,8 +91,12 @@ public class AdminLoanList extends AppCompatActivity implements LoanAdapter.OnLo
         codeDAO= new CodeDAO(this);
         acctDAO= new AcctDAO(this);
         loanAdapter = new LoanAdapter(this, loanArrayList);
-        dbHelper = new DBHelper(this);
-        loanArrayList = loanDAO.getAllLoansAdmin();
+
+        if (dbHelper !=null) {
+            //dbHelper.openDataBase();
+            loanArrayList = loanDAO.getAllLoansAdmin();
+        }
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.skylightapp.MarketPlaceTransport.MapApp;
+import com.skylightapp.Bookings.MapApp;
 import com.teliver.sdk.core.Teliver;
 import com.teliver.sdk.core.TrackingListener;
 import com.teliver.sdk.models.MarkerOption;

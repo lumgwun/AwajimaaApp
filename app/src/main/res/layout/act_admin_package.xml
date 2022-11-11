@@ -25,7 +25,7 @@
                 style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Skylight Package and Transactions"
+                android:text="Biz Transactions"
                 android:textAlignment="center"
                 android:textSize="20sp"
                 android:gravity="center_horizontal"

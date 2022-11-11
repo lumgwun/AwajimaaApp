@@ -1,6 +1,11 @@
 package com.skylightapp.Markets;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,7 +16,11 @@ import com.google.gson.Gson;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.MarketClasses.BizDealArrayAd;
+import com.skylightapp.MarketClasses.BusinessDeal;
 import com.skylightapp.R;
+
+import java.util.ArrayList;
 
 public class MyBizDealAct extends AppCompatActivity {
     SharedPreferences userPreferences;
@@ -21,8 +30,11 @@ public class MyBizDealAct extends AppCompatActivity {
     int profileUID;
     Bundle bundle;
     PrefManager prefManager;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private ChipNavigationBar chipNavigationBar;
+    private RecyclerView recycler,recyclerReal;
+    private ArrayList<BusinessDeal> fenceEventArrayList;
+    private BizDealArrayAd bizDealArrayAd;
     String SharedPrefUserPassword,SharedPrefBankAcctNo,SharedPrefBankName,SharedPrefCusID,SharedPrefNirsal,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
 
 
@@ -32,6 +44,17 @@ public class MyBizDealAct extends AppCompatActivity {
         setContentView(R.layout.act_my_biz_deal);
 
         chipNavigationBar = findViewById(R.id.bottom_nav_Market);
+
+
+        /*bizDealArrayAd = new BizDealArrayAd(MyBizDealAct.this,fenceEventArrayList);
+        LinearLayoutManager layout = new LinearLayoutManager (this);
+        recyclerReal.setLayoutManager (layout);
+        recyclerReal.setAdapter (bizDealArrayAd);
+        recyclerReal.setItemAnimator(new DefaultItemAnimator());
+        SnapHelper snapHelper = new PagerSnapHelper();
+        snapHelper.attachToRecyclerView(recyclerReal);
+        recyclerReal.setNestedScrollingEnabled(false);
+        recyclerReal.invalidate ();*/
         chipNavigationBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

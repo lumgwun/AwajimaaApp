@@ -36,6 +36,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.rom4ek.arcnavigationview.ArcNavigationView;
+import com.skylightapp.AwajimaSliderAct;
 import com.skylightapp.BizSubQTOptionAct;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
@@ -61,7 +62,6 @@ import com.skylightapp.PasswordRecovAct;
 import com.skylightapp.PrivacyPolicy_Web;
 import com.skylightapp.R;
 import com.skylightapp.SignTabMainActivity;
-import com.skylightapp.SkylightSliderAct;
 import com.skylightapp.UserPrefActivity;
 import com.skylightapp.UserTimeLineAct;
 
@@ -363,13 +363,7 @@ public class MarketBizOffice extends AppCompatActivity implements NavigationView
                         R.anim.slide_out_left);
                 startActivity(so1Intent);
                 return true;
-            case R.id.my_packs:
-                Intent timelineIntent = new Intent(this, PackListTab.class);
-                timelineIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                overridePendingTransition(R.anim.slide_in_right,
-                        R.anim.slide_out_left);
-                startActivity(timelineIntent);
-                return true;
+
             case R.id.utility:
                 Intent cIntent = new Intent(this, CustUtilTab.class);
                 cIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -413,7 +407,7 @@ public class MarketBizOffice extends AppCompatActivity implements NavigationView
 
 
             case R.id.package_slider:
-                Intent tIntent = new Intent(this, SkylightSliderAct.class);
+                Intent tIntent = new Intent(this, AwajimaSliderAct.class);
                 tIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);

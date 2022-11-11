@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.google.gson.Gson;
+import com.skylightapp.AwajimaSliderAct;
 import com.skylightapp.CheckMailActivity;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
@@ -30,7 +31,6 @@ import com.skylightapp.PrivacyPolicy_Web;
 import com.skylightapp.R;
 import com.skylightapp.SignTabMainActivity;
 import com.skylightapp.SignUpAct;
-import com.skylightapp.SkylightSliderAct;
 import com.skylightapp.TransactionFragment;
 import com.skylightapp.UserTimeLineOverview;
 
@@ -238,7 +238,7 @@ public class TellerDashboardAct extends AppCompatActivity {
     }
 
     public void goToShopCM(View view) {
-        Intent intent = new Intent(this, SkylightSliderAct.class);
+        Intent intent = new Intent(this, AwajimaSliderAct.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("User", profileID);
         startActivity(intent);
@@ -292,7 +292,7 @@ public class TellerDashboardAct extends AppCompatActivity {
         startActivity(intent);
     }
     public void skylightC(View view) {
-        Intent intent = new Intent(this, SkylightSliderAct.class);
+        Intent intent = new Intent(this, AwajimaSliderAct.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("User", profileID);
         startActivity(intent);

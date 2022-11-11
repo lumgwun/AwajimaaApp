@@ -2,6 +2,7 @@ package com.skylightapp.Adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.InsuranceUsersAct;
@@ -35,6 +38,8 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Recycl
     private Context mcontext;
     private Profile userProfile;
     private CustomerListener mListener;
+    private Profile cusProf;
+    private Uri cusPix;
     int layout;
 
 
@@ -107,6 +112,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Recycl
         public final TextView gender;
         public final Button delete;
         public final Button addPackage;
+        private  ImageView img_Cus;
 
 
 
@@ -118,9 +124,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Recycl
             //Customer customer = getItem(position);
             txtCustomerName = view.findViewById(R.id.name_customer4);
             txtPhoneNo = view.findViewById(R.id.customer_phone4);
-            TextView customerSkylightNo = view.findViewById(R.id.customer_phone4);
-            ImageView img_account = view.findViewById(R.id.customer_image4);
-            img_account.setImageResource(R.drawable.ic_dashboard_black_24dp);
+            img_Cus = view.findViewById(R.id.customer_image4);
             office4 = view.findViewById(R.id.customer_office4);
             packages = view.findViewById(R.id.package_count4);
             txtDateJoined = view.findViewById(R.id.customer_date_join4);
@@ -152,15 +156,32 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Recycl
             return;
         }
         final Customer customer = customers.get(position);
-        viewHolder.office4.setText(MessageFormat.format("State:{0}", customer.getCusOfficeBranch()));
-        viewHolder.txtCustomerName.setText(MessageFormat.format("{0}{1}", customer.getCusFirstName(), customer.getCusSurname()));
-        viewHolder.txtPhoneNo.setText(MessageFormat.format("Phone:{0}", customer.getCusPhoneNumber()));
-        viewHolder.address.setText(String.valueOf("Address:"+customer.getCusAddress()));
-        viewHolder.dob.setText(MessageFormat.format("DOB:{0}", customer.getCusDob()));
-        viewHolder.gender.setText(MessageFormat.format("Phone:{0}", customer.getCusGender()));
-        viewHolder.packages.setText(MessageFormat.format("Number of Package:{0}", customer.getCusSkyLightPackage().getCount()));
-        viewHolder.txtDateJoined.setText(MessageFormat.format("Date Joined: {0}", customer.getCusDateJoined()));
-        viewHolder.savings.setText(MessageFormat.format("Savings: {0}", customer.getCusDailyReports().size()));
+        if(customer !=null){
+            cusProf=customer.getCusProfile();
+
+            viewHolder.office4.setText(MessageFormat.format("State:{0}", customer.getCusOfficeBranch()));
+            viewHolder.txtCustomerName.setText(MessageFormat.format("{0}{1}", customer.getCusFirstName(), customer.getCusSurname()));
+            viewHolder.txtPhoneNo.setText(MessageFormat.format("Phone:{0}", customer.getCusPhoneNumber()));
+            viewHolder.address.setText(String.valueOf("Address:"+customer.getCusAddress()));
+            viewHolder.dob.setText(MessageFormat.format("DOB:{0}", customer.getCusDob()));
+            viewHolder.gender.setText(MessageFormat.format("Phone:{0}", customer.getCusGender()));
+            viewHolder.packages.setText(MessageFormat.format("Number of Package:{0}", customer.getCusSkyLightPackage().getCount()));
+            viewHolder.txtDateJoined.setText(MessageFormat.format("Date Joined: {0}", customer.getCusDateJoined()));
+            viewHolder.savings.setText(MessageFormat.format("Savings: {0}", customer.getCusDailyReports().size()));
+        }
+        if(cusProf !=null){
+            cusPix= cusProf.getProfilePicture();
+        }
+
+        //viewHolder.img_Cus.setImageResource(R.drawable.ic_dashboard_black_24dp);
+        Glide.with(mcontext)
+                .load(cusPix)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .error(R.drawable.ic_alert)
+                .skipMemoryCache(true)
+                .fitCenter()
+                .centerCrop()
+                .into(viewHolder.img_Cus);
     }
 
     //@Override

@@ -50,7 +50,6 @@ import com.google.gson.Gson;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.AdminBalanceDAO;
 import com.skylightapp.Database.CodeDAO;
-import com.skylightapp.Database.PaymentCodeDAO;
 import com.skylightapp.Database.TCashDAO;
 import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.Database.TranXDAO;
@@ -927,7 +926,7 @@ public class MyCusNewPackAct extends AppCompatActivity implements View.OnClickLi
                     skyLightPackage1.addPReportCount(packageID, numberOfDays);
                     skyLightPackage1.setPackageCustomer(customer);
                     skyLightPackage1.setPackageCode(skylightCode);
-                    skyLightPackage1.setPackageOfficeBranch(userProfile.getProfileOffice());
+                    skyLightPackage1.setPackageOfficeBranch(userProfile.getProfOfficeName());
                     skyLightPackage1.addPSavings(profileID, customerID, reportID, savingsAmount, numberOfDays, initialDeposit, daysRemaining, amountRemaining, reportDate, "first");
 
 

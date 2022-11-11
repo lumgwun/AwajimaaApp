@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
@@ -100,7 +99,7 @@ public class LocationUpdatesIntentService extends IntentService {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.awajima)
+                        .setSmallIcon(R.drawable.awajima_logo)
                         .setContentTitle("GCM Notification")
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(msg))

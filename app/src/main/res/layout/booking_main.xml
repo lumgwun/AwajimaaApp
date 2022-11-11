@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/booking_drawer"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start"
+    tools:context="com.skylightapp.Bookings.BookingsMainAct">
+    <include layout="@layout/act_bookings"/>
+
+    <com.rom4ek.arcnavigationview.ArcNavigationView
+        android:id="@+id/nav_view_bookingR"
+        android:layout_width="match_parent"
+        android:background="@drawable/shape_layer_3b"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:arc_cropDirection="cropOutside"
+        app:arc_width="96dp"
+        app:itemIconSize="20dp"
+        android:layout_marginStart="5dp"
+        android:fitsSystemWindows="true"
+        android:layout_marginEnd="5dp"
+        app:itemShapeInsetStart="20dp"
+        android:paddingVertical="20dp"
+        app:itemHorizontalPadding="40dp"
+        app:itemIconTint="@color/colorPrimary"
+        app:itemTextColor="@color/black"
+        android:layout_marginBottom="10dp"
+        app:itemBackground="@drawable/shape_rect13b"
+        app:itemTextAppearance="?android:attr/textAppearanceSmallInverse"
+        app:headerLayout="@layout/booking_header"
+        android:stateListAnimator="@anim/raise"
+        app:menu="@menu/booking_nav_menu" />
+</androidx.drawerlayout.widget.DrawerLayout>

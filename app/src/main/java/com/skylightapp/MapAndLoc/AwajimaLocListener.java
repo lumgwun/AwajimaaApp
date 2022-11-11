@@ -5,4 +5,5 @@ import android.location.Location;
 
 public interface AwajimaLocListener {
     public void onLocationUpdate(Location location, Address address);
+
 }

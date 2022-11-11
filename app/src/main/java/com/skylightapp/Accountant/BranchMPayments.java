@@ -14,6 +14,7 @@ import android.app.DatePickerDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -111,6 +112,7 @@ public class BranchMPayments extends AppCompatActivity implements  PaymentAdapte
     private int selectedOfficeIndex;
     private OfficeBranch officeB;
     private OfficeAdapter officeBranchAdapter;
+    private SQLiteDatabase sqLiteDatabase;
 
     @SuppressLint("SimpleDateFormat")
     @Override
@@ -217,13 +219,38 @@ public class BranchMPayments extends AppCompatActivity implements  PaymentAdapte
 
         dbHelper = new DBHelper(this);
 
+
         try {
-            paymentArrayList = paymentDAO.getALLPaymentsBranchToday(selectedOffice,dateString);
-            paymentArrayList2 = paymentDAO.getALLPaymentsSuperToday(dateString);
+            if(dbHelper !=null){
+                sqLiteDatabase = dbHelper.getReadableDatabase();
+                paymentArrayList = paymentDAO.getALLPaymentsBranchToday(selectedOffice,dateString);
+
+
+            }
+
+
         }catch (NullPointerException e)
         {
             e.printStackTrace();
         }
+
+
+
+        try {
+            if(dbHelper !=null){
+                sqLiteDatabase = dbHelper.getReadableDatabase();
+                paymentArrayList2 = paymentDAO.getALLPaymentsSuperToday(dateString);
+
+
+            }
+
+
+        }catch (NullPointerException e)
+        {
+            e.printStackTrace();
+        }
+
+
         mAdapter = new PaymentAdapterSuper(this, R.layout.super_payment_row, paymentArrayList);
 
         LinearLayoutManager layoutManager

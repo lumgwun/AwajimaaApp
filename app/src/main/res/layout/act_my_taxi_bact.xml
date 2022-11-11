@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/jet_private"
+    android:layout_height="match_parent"
+    tools:context=".Bookings.MyTaxiBAct">
+    <include layout="@layout/tool_bar11f"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="2dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
+        app:cardPreventCornerOverlap="false"
+        app:contentPadding="0dp">
+        <fragment
+            android:id="@+id/mapM_Taxi"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="2dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
+        app:cardPreventCornerOverlap="false"
+        app:contentPadding="0dp">
+        <androidx.fragment.app.FragmentContainerView android:id="@+id/autoc_taxi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment" />
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

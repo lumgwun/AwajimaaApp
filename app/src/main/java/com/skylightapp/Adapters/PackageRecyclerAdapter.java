@@ -172,7 +172,7 @@ public class PackageRecyclerAdapter extends RecyclerView.Adapter<PackageRecycler
         return (null != skyLightPackages ? skyLightPackages.size() : 0);
     }
     private String removeNewLinesDividers(String text) {
-        int decoratedTextLength = Math.min(text.length(), Utils.SkyLightPackage.MAX_TEXT_LENGTH_IN_LIST);
+        int decoratedTextLength = Math.min(text.length(), Utils.SkyLightPackage33.MAX_TEXT_LENGTH_IN_LIST);
         return text.substring(0, decoratedTextLength).replaceAll("\n", " ").trim();
     }
     /*FirebaseUser firebaseUser = FirebaseAuth.getInstance().getUser();

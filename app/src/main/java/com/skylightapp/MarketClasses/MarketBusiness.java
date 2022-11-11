@@ -153,6 +153,7 @@ public class MarketBusiness implements Parcelable, Serializable {
     private ArrayList<EmergencyReport> marketBizEmergL;
     private Market bizMarket;
     private Set<String> mBTypes;
+    private ArrayList<BizDealPartner> bizDealPartners;
 
 
     public MarketBusiness(long businessID) {
@@ -286,6 +287,10 @@ public class MarketBusiness implements Parcelable, Serializable {
     public void addOfficeBranch(OfficeBranch officeBranch) {
         officeBranches = new ArrayList<>();
         officeBranches.add(officeBranch);
+    }
+    public void addBizDealPartner(BizDealPartner bizDealPartner) {
+        bizDealPartners = new ArrayList<>();
+        bizDealPartners.add(bizDealPartner);
     }
     public void addMarketBizAcctID(int marketBizAcctID) {
         marketBiz_acctIDs = new ArrayList<>();
@@ -772,4 +777,11 @@ public class MarketBusiness implements Parcelable, Serializable {
     }
 
 
+    public ArrayList<BizDealPartner> getBizDealPartners() {
+        return bizDealPartners;
+    }
+
+    public void setBizDealPartners(ArrayList<BizDealPartner> bizDealPartners) {
+        this.bizDealPartners = bizDealPartners;
+    }
 }

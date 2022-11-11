@@ -256,12 +256,12 @@ public class TaxiDriverRideAct extends AppCompatActivity implements View.OnClick
                 @SuppressLint("HandlerLeak")
                 public void handleMessage(Message msg) {
 
-                    String aResponse = msg.getData().getString("message");
+                    @SuppressLint("HandlerLeak") String aResponse = msg.getData().getString("message");
 
                     if ((null != aResponse)) {
                         addMarkers(aResponse);
                     } else {
-                        Toast.makeText(getBaseContext(), "Not Got Response From Server.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TaxiDriverRideAct.this, "Not Got Response From Server.", Toast.LENGTH_SHORT).show();
                     }
                 }
             };
@@ -312,7 +312,7 @@ public class TaxiDriverRideAct extends AppCompatActivity implements View.OnClick
                 sb.append("&pendingrequestid=");
                 sb.append(rideid);
 
-                URLpetition petition = new URLpetition("accept uber request");
+                URLpetition petition = new URLpetition("accept Taxi request");
                 petition.execute(sb.toString());
                 acceptbutton.setVisibility(View.INVISIBLE);
 

@@ -65,7 +65,7 @@ public class TodayBirthdayAdap extends RecyclerView.Adapter<BirthdayViewHolder> 
         viewHolder.setDOB("DOB:"+birthday.getBirthDay());
         if(userProfile !=null){
             viewHolder.setGender("Gender"+userProfile.getProfileGender());
-            viewHolder.setOffice("Office"+userProfile.getProfileOffice());
+            viewHolder.setOffice("Office"+userProfile.getProfOfficeName());
 
         }
 

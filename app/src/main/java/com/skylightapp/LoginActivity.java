@@ -31,7 +31,6 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import com.google.gson.Gson;
 import com.melnykov.fab.FloatingActionButton;
@@ -248,7 +247,7 @@ public class LoginActivity extends BaseActivity {
                     }
                 });*/
         if(dbHelper !=null){
-            dbHelper.openDataBase();
+            //dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
             prefManager.saveAppReferrer(mInvitationUrl);
 
@@ -552,11 +551,34 @@ public class LoginActivity extends BaseActivity {
         }
 
         progressBar.setVisibility(View.GONE);
-        sharedPrefRole=profileDao.getProfileRoleByUserNameAndPassword(userName,password);
+        if(dbHelper !=null){
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            sharedPrefRole=profileDao.getProfileRoleByUserNameAndPassword(userName,password);
 
-        profileID=profileDao.getProfileIDByUserNameAndPassword(userName,password);
-        sharedPrefUserMachine= profileDao.getProfileRoleByUserNameAndPassword(userName,password);
-        userProfile=profileDao.getProfileFromUserNameAndPassword(userName,password);
+
+        }
+
+
+
+        if(dbHelper !=null){
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            profileID=profileDao.getProfileIDByUserNameAndPassword(userName,password);
+
+
+        }
+        if(dbHelper !=null){
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            sharedPrefUserMachine= profileDao.getProfileRoleByUserNameAndPassword(userName,password);
+
+
+        }
+
+
+        if(dbHelper !=null){
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            userProfile=profileDao.getProfileFromUserNameAndPassword(userName,password);
+
+        }
 
         if(userProfile !=null){
             profileID=userProfile.getPID();
@@ -566,7 +588,7 @@ public class LoginActivity extends BaseActivity {
             sharedPrefRole=userProfile.getProfileRole();
             sharedPrefFirstName=userProfile.getProfileFirstName();
             sharedPrefSurName=userProfile.getProfileLastName();
-            officeBranch=userProfile.getProfileOffice();
+            officeBranch=userProfile.getProfOfficeName();
             picture=userProfile.getProfilePicture();
             gender=userProfile.getProfileGender();
             state=userProfile.getProfileState();

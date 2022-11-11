@@ -13,10 +13,8 @@ import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 import com.denzcoskun.imageslider.models.SlideModel;
-import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.places.Place;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.TellerReport;
 
 @Entity(tableName = EmergencyReport.EMERGENCY_REPORT_TABLE)
 public class EmergencyReport implements Parcelable, Serializable {
@@ -40,10 +38,11 @@ public class EmergencyReport implements Parcelable, Serializable {
     public static final String EMERGENCY_REPORT_MARKET_ID = "emerg_lOC_Market_ID";
     public static final String EMERGENCY_REPORT_COUNTRY = "emerg_lOC_Country";
     public static final String EMERGENCY_REPORT_GROUP = "emerg_lOC_report_Group";
+    public static final String EMERGENCY_REPORT_QUESTION = "emerg_report_Question";
 
 
     public static final String CREATE_EMERGENCY_REPORT_TABLE = "CREATE TABLE IF NOT EXISTS " + EMERGENCY_REPORT_TABLE + " (" + EMERGENCY_LOCID + " INTEGER , " + EMERGENCY_REPORT_PROF_ID + " INTEGER , " +
-            EMERGENCY_LOCTIME + " TEXT , " + EMERGENCY_REPORT_TYPE + " TEXT , " + EMERGENCY_REPORT_LAT + " REAL , "+ EMERGENCY_REPORT_LNG + " REAL , " + EMERGENCY_REPORT_STATUS + " TEXT , " + EMERGENCY_REPORT + " TEXT , " + EMERGENCY_REPORT_ADDRESS + " TEXT , " + EMERGENCY_REPORT_LATLNG + " REAL , "+ EMERGENCY_REPORT_SUBLOCALE + " TEXT , " + EMERGENCY_REPORT_DB_ID + " INTEGER , "+ EMERGENCY_REPORT_BG_ADDRESS + " TEXT , "+ EMERGENCY_REPORT_TOWN + " TEXT , "+ EMERGENCY_REPORT_STATE + " TEXT , "+ EMERGENCY_REPORT_BIZ_ID + " INTEGER , "+ EMERGENCY_REPORT_MARKET_ID + " INTEGER , "+ EMERGENCY_REPORT_COUNTRY + " TEXT , "+ EMERGENCY_REPORT_GROUP + " TEXT , "+ "PRIMARY KEY(" + EMERGENCY_REPORT_DB_ID + "), " +
+            EMERGENCY_LOCTIME + " TEXT , " + EMERGENCY_REPORT_TYPE + " TEXT , " + EMERGENCY_REPORT_LAT + " REAL , "+ EMERGENCY_REPORT_LNG + " REAL , " + EMERGENCY_REPORT_STATUS + " TEXT , " + EMERGENCY_REPORT + " TEXT , " + EMERGENCY_REPORT_ADDRESS + " TEXT , " + EMERGENCY_REPORT_LATLNG + " REAL , "+ EMERGENCY_REPORT_SUBLOCALE + " TEXT , " + EMERGENCY_REPORT_DB_ID + " INTEGER , "+ EMERGENCY_REPORT_BG_ADDRESS + " TEXT , "+ EMERGENCY_REPORT_TOWN + " TEXT , "+ EMERGENCY_REPORT_STATE + " TEXT , "+ EMERGENCY_REPORT_BIZ_ID + " INTEGER , "+ EMERGENCY_REPORT_MARKET_ID + " INTEGER , "+ EMERGENCY_REPORT_COUNTRY + " TEXT , "+ EMERGENCY_REPORT_GROUP + " TEXT , "+ EMERGENCY_REPORT_QUESTION + " TEXT , "+ "PRIMARY KEY(" + EMERGENCY_REPORT_DB_ID + "), " +
             "FOREIGN KEY(" + EMERGENCY_REPORT_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
     private Place emerGPlace;
     private boolean selected;
@@ -55,8 +54,9 @@ public class EmergencyReport implements Parcelable, Serializable {
     }
     int profileID;
     @PrimaryKey(autoGenerate = true)
-    private int emergReportID;
+    private int emergReportDBID;
     Profile userProfile;
+    private int emergReportID;
     //private double latLng;
     private String emergRTime;
     private String emergRType;
@@ -79,7 +79,10 @@ public class EmergencyReport implements Parcelable, Serializable {
     private String emergRGroup;
     private PlaceData emerGPlaceDate;
     private ArrayList<EmergencyReport> emergReportMoreReports;
-    private ArrayList<ALocGeoFence> aLocGeoFences;
+    private ArrayList<ERGeofenceResponse> ERGeofenceResponses;
+    private String emergRQuestion;
+    private ArrayList<FenceEvent> emergReportFenceEs;
+
 
     public EmergencyReport(int reportID, int profileID, long bizID, String dateOfToday, String selectedType, String stringLatLng, String locality, String bgAddress, String address, String country) {
         this.emergReportID = reportID;
@@ -112,13 +115,19 @@ public class EmergencyReport implements Parcelable, Serializable {
 
 
     }
-    public void addEmergLocFence(ALocGeoFence aLocGeoFence) {
-        aLocGeoFences= new ArrayList<>();
-        aLocGeoFences.add(aLocGeoFence);
+    public void addEmergLocFence(ERGeofenceResponse ERGeofenceResponse) {
+        ERGeofenceResponses = new ArrayList<>();
+        ERGeofenceResponses.add(ERGeofenceResponse);
 
     }
-    public void removeEmergLocFence(ArrayList<ALocGeoFence> aLocGeoFences,ALocGeoFence aLocGeoFence) {
-        aLocGeoFences.remove(aLocGeoFence);
+    public void addEmergFence(FenceEvent fenceEvent) {
+        emergReportFenceEs= new ArrayList<>();
+        emergReportFenceEs.add(fenceEvent);
+
+    }
+
+    public void removeEmergLocFence(ArrayList<ERGeofenceResponse> ERGeofenceResponses, ERGeofenceResponse ERGeofenceResponse) {
+        ERGeofenceResponses.remove(ERGeofenceResponse);
 
     }
 
@@ -410,11 +419,35 @@ public class EmergencyReport implements Parcelable, Serializable {
     }
 
 
-    public ArrayList<ALocGeoFence> getaLocGeoFences() {
-        return aLocGeoFences;
+    public ArrayList<ERGeofenceResponse> getaLocGeoFences() {
+        return ERGeofenceResponses;
     }
 
-    public void setaLocGeoFences(ArrayList<ALocGeoFence> aLocGeoFences) {
-        this.aLocGeoFences = aLocGeoFences;
+    public void setaLocGeoFences(ArrayList<ERGeofenceResponse> ERGeofenceResponses) {
+        this.ERGeofenceResponses = ERGeofenceResponses;
+    }
+
+    public int getEmergReportDBID() {
+        return emergReportDBID;
+    }
+
+    public void setEmergReportDBID(int emergReportDBID) {
+        this.emergReportDBID = emergReportDBID;
+    }
+
+    public String getEmergRQuestion() {
+        return emergRQuestion;
+    }
+
+    public void setEmergRQuestion(String emergRQuestion) {
+        this.emergRQuestion = emergRQuestion;
+    }
+
+    public ArrayList<FenceEvent> getEmergReportFenceEs() {
+        return emergReportFenceEs;
+    }
+
+    public void setEmergReportFenceEs(ArrayList<FenceEvent> emergReportFenceEs) {
+        this.emergReportFenceEs = emergReportFenceEs;
     }
 }

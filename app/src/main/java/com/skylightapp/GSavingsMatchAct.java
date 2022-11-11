@@ -23,6 +23,8 @@ import com.skylightapp.Classes.Profile;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.MessageFormat;
+import java.text.NumberFormat;
+import java.util.Currency;
 
 public class GSavingsMatchAct extends AppCompatActivity {
     private SeekBar SliderQ1;
@@ -94,7 +96,12 @@ public class GSavingsMatchAct extends AppCompatActivity {
 
             }
         };
-        amtRangeSeekbar.setStepSize(100);
+        //amtRangeSeekbar.setStepSize(100);
+        /*amtRangeSeekbar.setLabelFormatter(double amount);
+        val format = NumberFormat.getCurrencyInstance();
+        format.maximumFractionDigits = 0''
+        format.currency = Currency.getInstance("USD");
+        format.format(value.toDouble());*/
 
         amtRangeSeekbar.addOnSliderTouchListener(new RangeSlider.OnSliderTouchListener() {
             @Override

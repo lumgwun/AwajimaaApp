@@ -13,13 +13,17 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.skylightapp.Accountant.AcctantBackOffice;
 import com.skylightapp.Admins.AdminDrawerActivity;
-import com.skylightapp.Bookings.BookingsAct;
+import com.skylightapp.Bookings.BookingsMainAct;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.StandingOrderAcct;
 
 import com.skylightapp.Customers.NewCustomerDrawer;
+import com.skylightapp.MapAndLoc.ClimateCOffice;
+import com.skylightapp.MapAndLoc.NOSDRAOffice;
+import com.skylightapp.MapAndLoc.OilCompanyOffice;
 import com.skylightapp.MapAndLoc.ResponseTeamOffice;
+import com.skylightapp.Markets.BizAdminOffice;
 import com.skylightapp.Markets.BizRegulOffice;
 import com.skylightapp.Markets.MarketAdminOffice;
 import com.skylightapp.Markets.MarketBizDonorOffice;
@@ -80,6 +84,10 @@ public class TestAct extends AppCompatActivity {
         bundle.putString(machine, machine);
         Intent intent = new Intent(this, AdminDrawerActivity.class);
         intent.putExtras(bundle);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
     }
@@ -93,6 +101,10 @@ public class TestAct extends AppCompatActivity {
         //bundle.putString("FirstName", profileFirstName);
         Intent intent = new Intent(this, NewCustomerDrawer.class);
         intent.putExtras(bundle);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
     }
@@ -105,6 +117,10 @@ public class TestAct extends AppCompatActivity {
         //bundle.putString("machine", "machine");
         //bundle.putString("FirstName", profileFirstName);
         Intent intent = new Intent(this, TellerHomeChoices.class);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtras(bundle);
         startActivity(intent);
 
@@ -119,6 +135,10 @@ public class TestAct extends AppCompatActivity {
         //bundle.putString("FirstName", profileFirstName);
         Intent intent = new Intent(this, AcctantBackOffice.class);
         intent.putExtras(bundle);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
     }
@@ -130,6 +150,10 @@ public class TestAct extends AppCompatActivity {
         bundle.putString(machine, machine);
         Intent intent = new Intent(this, MarketTab.class);
         intent.putExtras(bundle);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
     }
@@ -143,6 +167,10 @@ public class TestAct extends AppCompatActivity {
         //bundle.putString("FirstName", profileFirstName);
         Intent intent = new Intent(this, SignTabMainActivity.class);
         intent.putExtras(bundle);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
     }
@@ -157,6 +185,10 @@ public class TestAct extends AppCompatActivity {
         //bundle.putString("FirstName", profileFirstName);
         Intent intent = new Intent(this, SuperAdminOffice.class);
         intent.putExtras(bundle);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
     }
@@ -169,6 +201,10 @@ public class TestAct extends AppCompatActivity {
         bundle.putString(machine, machine);
         Intent intent = new Intent(this, MarketTab.class);
         intent.putExtras(bundle);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
     public void goDonor(View view) {
@@ -181,6 +217,10 @@ public class TestAct extends AppCompatActivity {
         //bundle.putString("FirstName", profileFirstName);
         Intent intent = new Intent(this, MarketBizDonorOffice.class);
         intent.putExtras(bundle);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
     }
@@ -194,6 +234,10 @@ public class TestAct extends AppCompatActivity {
         //bundle.putString("FirstName", profileFirstName);
         Intent intent = new Intent(this, MarketAdminOffice.class);
         intent.putExtras(bundle);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
     }
@@ -207,6 +251,10 @@ public class TestAct extends AppCompatActivity {
         //bundle.putString("FirstName", profileFirstName);
         Intent intent = new Intent(this, MarketBizOffice.class);
         intent.putExtras(bundle);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
     }
@@ -220,6 +268,10 @@ public class TestAct extends AppCompatActivity {
         //bundle.putString("FirstName", profileFirstName);
         Intent intent = new Intent(this, MarketBizPOffice.class);
         intent.putExtras(bundle);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
     }
@@ -233,6 +285,10 @@ public class TestAct extends AppCompatActivity {
         //bundle.putString("FirstName", profileFirstName);
         Intent intent = new Intent(this, BizRegulOffice.class);
         intent.putExtras(bundle);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
     }
@@ -246,6 +302,10 @@ public class TestAct extends AppCompatActivity {
         //bundle.putString("FirstName", profileFirstName);
         Intent intent = new Intent(this, BizLogisticsOffice.class);
         intent.putExtras(bundle);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
     }
@@ -259,6 +319,10 @@ public class TestAct extends AppCompatActivity {
         //bundle.putString("FirstName", profileFirstName);
         Intent intent = new Intent(this, HQLogisticsOffice.class);
         intent.putExtras(bundle);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
     }
@@ -272,6 +336,10 @@ public class TestAct extends AppCompatActivity {
         //bundle.putString("FirstName", profileFirstName);
         Intent intent = new Intent(this, InsuranceOffice.class);
         intent.putExtras(bundle);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
     }
@@ -285,6 +353,27 @@ public class TestAct extends AppCompatActivity {
         //bundle.putString("FirstName", profileFirstName);
         Intent intent = new Intent(this, CoachOffice.class);
         intent.putExtras(bundle);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+
+    }
+    public void getClimateOffice(View view) {
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        String machine = userPreferences.getString("machine","");
+        Bundle bundle = new Bundle();
+        bundle.putLong("ProfileID", profileID);
+        bundle.putString(machine, machine);
+        //bundle.putString("machine", "machine");
+        //bundle.putString("FirstName", profileFirstName);
+        Intent intent = new Intent(this, ClimateCOffice.class);
+        intent.putExtras(bundle);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
     }
@@ -377,61 +466,81 @@ public class TestAct extends AppCompatActivity {
                                 R.anim.slide_out_left);
                         startActivity(intent);
                     }
-                    else if(finalI==7) {
-                        tosend = "Regulator";
-                        Intent intent=new Intent(TestAct.this, BizRegulOffice.class);
-                        intent.putExtra("info",tosend);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        overridePendingTransition(R.anim.slide_in_right,
-                                R.anim.slide_out_left);
-                        startActivity(intent);
-                    }
-                    else if(finalI==8) {
-                        tosend = "Donor";
-                        Intent intent=new Intent(TestAct.this, MarketBizDonorOffice.class);
-                        intent.putExtra("info",tosend);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        overridePendingTransition(R.anim.slide_in_right,
-                                R.anim.slide_out_left);
-                        startActivity(intent);
-                    }
-                    else if(finalI==8) {
-                        tosend = "Response Team";
-                        Intent intent=new Intent(TestAct.this, ResponseTeamOffice.class);
-                        intent.putExtra("info",tosend);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        overridePendingTransition(R.anim.slide_in_right,
-                                R.anim.slide_out_left);
-                        startActivity(intent);
-                    }
-                    else if(finalI==9) {
-                        tosend = "Supplier Office";
-                        Intent intent=new Intent(TestAct.this, SupplierOffice.class);
-                        intent.putExtra("info",tosend);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        overridePendingTransition(R.anim.slide_in_right,
-                                R.anim.slide_out_left);
-                        startActivity(intent);
-                    }
-
-                    else if(finalI==9) {
-                        tosend = "Trip Office";
-                        Intent intent=new Intent(TestAct.this, BookingsAct.class);
-                        intent.putExtra("info",tosend);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        overridePendingTransition(R.anim.slide_in_right,
-                                R.anim.slide_out_left);
-                        startActivity(intent);
-                    }
 
                 }
             });
         }
     }
 
+    public void goBizPartner(View view) {
+        Intent intent=new Intent(TestAct.this, MarketBizDonorOffice.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        startActivity(intent);
+    }
+
+    public void goRegulatorsTab(View view) {
+        Intent intent=new Intent(TestAct.this, BizRegulOffice.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        startActivity(intent);
+    }
+
+    public void goResponseTTab(View view) {
+        Intent intent=new Intent(TestAct.this, ResponseTeamOffice.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        startActivity(intent);
+    }
+
+    public void goSupplierTab(View view) {
+        Intent intent=new Intent(TestAct.this, SupplierOffice.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        startActivity(intent);
+    }
+
+    public void goTripTab(View view) {
+        Intent intent=new Intent(TestAct.this, BookingsMainAct.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        startActivity(intent);
+    }
+
+    public void goOilComTab(View view) {
+        Intent intent=new Intent(TestAct.this, OilCompanyOffice.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        startActivity(intent);
+    }
+
+    public void goNosdraTab(View view) {
+        Intent intent=new Intent(TestAct.this, NOSDRAOffice.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        startActivity(intent);
+    }
+
+    public void GetBizBranchO(View view) {
+        Intent intent = new Intent(TestAct.this, BizAdminOffice.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        startActivity(intent);
+    }
 }

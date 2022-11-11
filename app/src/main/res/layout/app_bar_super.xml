@@ -26,7 +26,7 @@
                 android:textAlignment="center"
                 android:textSize="15sp"
                 android:textColor="@color/white"
-                android:text="Skylight Balance :N100,000,000"/>
+                android:text="Awajima Balance :N100,000,000"/>
 
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
@@ -53,7 +53,7 @@
                     android:layout_gravity="top">
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/superGreetings"
-                        android:layout_width="match_parent"
+                        android:layout_width="250dp"
                         android:layout_height="100dp"
                         android:src="@drawable/good_afternoon1"
                         android:layout_marginTop="5dp"

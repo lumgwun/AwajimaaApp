@@ -13,10 +13,10 @@ public class RolesEnumMap {
 
     final private static EnumMap<UserType, Integer> rolesMap = new EnumMap<>(UserType.class);
 
-    final private DBHelper selector;
+    //final private DBHelper selector;
 
     public RolesEnumMap(Context context) {
-        selector = new DBHelper(context);
+        //selector = new DBHelper(context);
         //this.update();
     }
 

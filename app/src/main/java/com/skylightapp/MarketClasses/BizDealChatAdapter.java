@@ -1,5 +1,6 @@
 package com.skylightapp.MarketClasses;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Outline;
@@ -487,6 +488,7 @@ public class BizDealChatAdapter extends RecyclerView.Adapter<BizDealChatAdapter.
         }
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     private void makeRoundedCorners(ImageView imageView, final boolean onlyTopCorners) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && imageView != null) {
             imageView.setOutlineProvider(new ViewOutlineProvider() {

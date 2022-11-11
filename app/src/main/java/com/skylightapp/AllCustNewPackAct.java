@@ -4,7 +4,6 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -58,7 +57,7 @@ import com.skylightapp.Database.CodeDAO;
 import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.TCashDAO;
 import com.skylightapp.Database.TimeLineClassDAO;
-import com.skylightapp.MapAndLoc.UserLocTrackingAct;
+import com.skylightapp.MapAndLoc.ReportSceneMAct;
 import com.skylightapp.SuperAdmin.AppCommission;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.AccountTypes;
@@ -651,7 +650,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
         userProfile = gson.fromJson(json, Profile.class);
         if (userProfile != null) {
             customersN = userProfile.getProfileCustomers();
-            officeBranch=userProfile.getProfileOffice();
+            officeBranch=userProfile.getProfOfficeName();
         }
 
 
@@ -902,7 +901,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
                     locBundle.putLong("ProfileID", this.profileID);
                     locBundle.putString("CustomerName", customerNames);
                     locBundle.putString("CustomerPhone", phoneNumber1);
-                    Intent locationIntent = new Intent(AllCustNewPackAct.this, UserLocTrackingAct.class);
+                    Intent locationIntent = new Intent(AllCustNewPackAct.this, ReportSceneMAct.class);
                     locationIntent.putExtras(locBundle);
                     locationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     Toast.makeText(AllCustNewPackAct.this, "Taking you to Customer Location savings", Toast.LENGTH_SHORT).show();

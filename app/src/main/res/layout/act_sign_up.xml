@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content">
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/Greetings"
-                    android:layout_width="match_parent"
+                    android:layout_width="250dp"
                     android:layout_height="100dp"
                     android:src="@drawable/good_afternoon1"
                     android:layout_marginTop="5dp"
@@ -525,7 +525,7 @@
 
                 </androidx.cardview.widget.CardView>
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="match_parent"
                     android:text="Get OTP"
                     android:textSize="20sp"
@@ -554,7 +554,7 @@
             android:visibility="gone"
             android:layout_height="wrap_content">
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textOTP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -579,7 +579,7 @@
                 app:digitElevation="10dp" />
 
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -651,7 +651,7 @@
 
 
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:text="Powered By Lumgwun"
             android:textSize="15sp"
@@ -675,7 +675,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -685,7 +685,7 @@
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/gilroy_semi_bold"
@@ -693,7 +693,7 @@
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="3dp"
@@ -702,7 +702,7 @@
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_privacyPolicy"
                 android:layout_width="wrap_content"
                 android:onClick="goPP"

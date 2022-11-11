@@ -11,13 +11,15 @@ import android.telephony.SmsMessage;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.quickblox.core.model.QBEntity;
 import com.quickblox.users.model.QBUser;
 import com.skylightapp.Admins.AdminBankDeposit;
+import com.skylightapp.Bookings.BoatTrip;
+import com.skylightapp.Bookings.Driver;
+import com.skylightapp.Bookings.TripBooking;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Inventory.StockTransfer;
 import com.skylightapp.Inventory.Stocks;
@@ -25,6 +27,7 @@ import com.skylightapp.Inventory.Stocks;
 import com.skylightapp.MapAndLoc.EmergReportNext;
 import com.skylightapp.MapAndLoc.EmergResponse;
 import com.skylightapp.MapAndLoc.EmergencyReport;
+import com.skylightapp.MapAndLoc.TaxiDriver;
 import com.skylightapp.MarketClasses.BusinessOthers;
 import com.skylightapp.MarketClasses.InsuranceCompany;
 import com.skylightapp.MarketClasses.Market;
@@ -51,110 +54,59 @@ import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TABLE;
 //@Entity(tableName = "RoomProfileTable")
 //@Entity
 public class Profile implements Parcelable, Serializable, BaseColumns {
-    //@Ignore
     public static final String PROFILE_SURNAME = "P_surname";
-    //@Ignore
     public static final String PROFILE_FIRSTNAME = "P_first_name";
-    //@Ignore
     public static final String PROFILE_EMAIL = "P_email";
-    //@Ignore
     public static final String PROFILE_DOB = "P_dob";
-    //@Ignore
     public static final String PROFILE_ADDRESS = "P_street";
-    //@Ignore
     public static final String PROFILE_GENDER = "P_gender";
-    //@Ignore
     public static final String PROFILE_PHONE = "p_phone";
-    //@Ignore
     public static final String PROFILE_ROLE = "p_role";
-    //@Ignore
     public static final String PROFILE_DATE_JOINED = "p_join_date";
-    //@Ignore
     public static final String PROFILE_NEXT_OF_KIN = "p_next_of_kin";
-    //@Ignore
     public static final String PROFILE_STATUS = "p_status";
-    //@Ignore
     public static final String PROFILE_PASSWORD = "p_passCode";
-    //@Ignore
     public static final String PROFILES_TABLE = "profiles_table";
-    //@Ignore
     public static final String PROFILE_UNIT = "p_unit";
-    //@Ignore
     public static final String PROFILE_WARD = "p_ward";
-    //@Ignore
     public static final String PROFILE_TOWN = "p_town";
-    //@Ignore
     public static final String PROFILE_COUNTRY = "p_country";
-    //@Ignore
     public static final String PROFILE_SPONSOR_ID = "p_sponsor";
-    //@Ignore
-
     public static final String PROFILE_ID = "profile_id";
-    //@Ignore
     public static final String PICTURE_TABLE = "pictureTable";
-    //@Ignore
     public static final String PICTURE_URI = "picture_uri";
-    //@Ignore
     public static final String PROFILE_USERNAME = "p_username";
-    //@Ignore
     public static final String PASSWORD = "p_password";
-    //@Ignore
     public static final String PASSWORD_ID = "password_Id";
-
-   // @Ignore
     public static final String PASSWORD_TABLE = "password_table";
-    //@Ignore
     public static final String PROFILE_NIN = "profile_NIN";
-    //@Ignore
     public static final String PROFILE_STATE = "p_state";
-    //@Ignore
     public static final String PROFILE_OFFICE = "p_office";
-    //@Ignore
     public static final String PROFILE_PIC_ID = "picture_id";
-    //@Ignore
     public static final String PROFILE_CUS_ID_KEY = "customer_ID_Foreign_key";
-
-    //@Ignore
     public static final String CUS_ID_PIX_KEY = "cus_ID_Pix_key";
-    //@Ignore
     public static final String CUS_ID_PASS_KEY = "cus_ID_Pass_key";
-
-    //@Ignore
     public static final String PROF_SPONSOR_ID = "prof_SponsorID";
-
-    //@Ignore
     public static final String PROFID_FOREIGN_KEY_PIX = "profID_For_keyP";
-
-
-    //@Ignore
     public static final String PROF_SPONSOR_KEY = "prof_Sponsor_Key";
     public static final String PROF_REF_LINK = "prof_Ref_Link";
-    //@Ignore
     public static final String SPONSOR_TABLE = "sponsor_Table";
-    //@Ignore
     public static final String SPONSOR_TABLE_ID = "sponsor_TableID";
-
-    //@Ignore
     public static final String SPONSOR_TABLE_CUS_ID = "sponsor_TableCus_ID";
-
-    //@Ignore
     public static final String SPONSOR_TABLE_PROF_ID = "sponsor_Table_Prof_ID";
     public static final String SPONSOR_TABLE_PHONE = "sponsor_Table_Phone";
     public static final String SPONSOR_TABLE_EMAIL = "sponsor_Table_Email";
     public static final String PICTURE_MARKET_ID = "pic_market_ID";
-
     public static final String SPONSOR_REFERER = "s_ReferrerZ";
     public static final String SPONSOR_REFERRER_CODE = "sponsor_Ref_Code";
     public static final String SPONSOR_REFERRER_USER = "sponsor_Ref_User";
     public static final String SPONSOR_REF_COUNT = "sponsor_Ref_Count";
     public static final String SPONSOR_REF_REWARD_COUNT21 = "sponsor_Ref_Reward_Count";
-
     public static final String PROF_ID_FOREIGN_KEY_PASSWORD = "prof_ID_FkeyPassW";
     public static final String PROF_BUSINESS_ID = "prof_BizID";
     public static final String PROF_MARKET_ID = "profmarket_ID8234";
     public static final String PROF_ADMIN_TYPE = "prof_Admin_Type";
     public static final String PROF_ROLE_TYPE = "prof_Role_Type";
-
     public static final String PROF_DB_ID = "prof_DB_ID";
     public static final String USER_TYPE_TABLE = "user_type_tableP";
     public static final String USER_TYPE_ID = "user_type_ID";
@@ -166,7 +118,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public static final String USER_TYPE_STATUS = "user_type_Status";
 
     public static final String CREATE_PIXTURE_TABLE = "CREATE TABLE " + PICTURE_TABLE + " (" + PROFILE_PIC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PROFID_FOREIGN_KEY_PIX + " INTEGER, " + CUS_ID_PIX_KEY + " INTEGER , " +
-            PICTURE_URI + " TEXT ,"+ PICTURE_MARKET_ID + " TEXT, "+"FOREIGN KEY(" + PICTURE_MARKET_ID  + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+"FOREIGN KEY(" + PROFID_FOREIGN_KEY_PIX  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + CUS_ID_PIX_KEY + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+            PICTURE_URI + " BLOB ,"+ PICTURE_MARKET_ID + " TEXT, "+"FOREIGN KEY(" + PICTURE_MARKET_ID  + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+"FOREIGN KEY(" + PROFID_FOREIGN_KEY_PIX  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + CUS_ID_PIX_KEY + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
     //@Ignore
     public static final String CREATE_PASSWORD_TABLE = "CREATE TABLE IF NOT EXISTS " + PASSWORD_TABLE + " (" + PASSWORD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PROF_ID_FOREIGN_KEY_PASSWORD + " INTEGER, "+
             PASSWORD + " TEXT , " + CUS_ID_PASS_KEY + " INTEGER , " +"FOREIGN KEY(" + PROF_ID_FOREIGN_KEY_PASSWORD  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +
@@ -176,98 +128,114 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
             PROFILE_ADDRESS + " TEXT, " + PROFILE_NIN + " TEXT, " + PROFILE_UNIT + " TEXT, " + PROFILE_WARD + " TEXT, " + PROFILE_TOWN + " TEXT, " + PROFILE_STATE + " TEXT, " + PROFILE_COUNTRY + " TEXT, " + PROFILE_OFFICE + " TEXT, " + PROFILE_DATE_JOINED + " TEXT, " + PROFILE_ROLE + " TEXT, " + PROFILE_USERNAME + " TEXT, " + PROFILE_PASSWORD + " TEXT, " + PROFILE_STATUS + " TEXT, " + PROFILE_NEXT_OF_KIN + " TEXT,"+ PROFILE_SPONSOR_ID + " TEXT,"+ PROFILE_CUS_ID_KEY + " INTEGER,"+ PROF_BUSINESS_ID + " TEXT,"+ PROF_MARKET_ID + " TEXT,"+ PROF_REF_LINK + " REAL," + PROF_ADMIN_TYPE + " TEXT, " + PROF_ROLE_TYPE + " TEXT, "+ PROF_DB_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ "FOREIGN KEY(" + PROF_BUSINESS_ID + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+ "FOREIGN KEY(" + PROF_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+ "FOREIGN KEY(" + PROFILE_CUS_ID_KEY + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
     public static final String CREATE_SPONSOR_TABLE = "CREATE TABLE " + SPONSOR_TABLE + " (" + SPONSOR_TABLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + SPONSOR_TABLE_CUS_ID + " INTEGER, " + SPONSOR_TABLE_PROF_ID + " INTEGER, " + SPONSOR_TABLE_PHONE + " TEXT, " + SPONSOR_TABLE_EMAIL + " TEXT, "+ SPONSOR_REFERER + " TEXT, "+ SPONSOR_REFERRER_CODE + " TEXT, "+ SPONSOR_REFERRER_USER + " TEXT, "+ SPONSOR_REF_COUNT + " INTEGER, "+  SPONSOR_REF_REWARD_COUNT21 + " INTEGER, " + "FOREIGN KEY(" + SPONSOR_TABLE_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
-
-
     public static final String CREATE_USER_TYPE_TABLE = "CREATE TABLE " + USER_TYPE_TABLE + " (" + USER_TYPE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + USER_TYPE_PROF_ID + " INTEGER, " + USER_TYPE_CUS_ID + " INTEGER, " + USER_TYPE_STRING + " TEXT, " + USER_TYPE_BIZ_ID + " INTEGER, "+ USER_TYPE_MARKET_ID + " INTEGER, "+ USER_TYPE_STATUS + " TEXT, "+ "FOREIGN KEY(" + USER_TYPE_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "),"+ "FOREIGN KEY(" + USER_TYPE_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + USER_TYPE_BIZ_ID + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+ "FOREIGN KEY(" + USER_TYPE_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "))";
 
-    //@Ignore
     private Profile profile;
-
     private Payment profile_Payment;
-
     private String profile_Identity, businessName, profile_Unit, profile_Ward, profile_Town;
-
-
-    private OfficeBranch profile_OfficeBranch;
-
     //@PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = PROFILE_ID)
     private int pID ;
-
     @ColumnInfo(name = PROFILE_SURNAME)
     private String profileLastName;
-
     @ColumnInfo(name = PROFILE_FIRSTNAME)
     private String profileFirstName;
-
-
     @ColumnInfo(name = PROFILE_PHONE)
     private String profilePhoneNumber;
-
     @ColumnInfo(name = PROFILE_EMAIL)
     private String profileEmail;
-
     @ColumnInfo(name = PROFILE_DOB)
     private String profileDob;
-
     @ColumnInfo(name = PROFILE_GENDER)
     private String profileGender;
-
     @ColumnInfo(name = PROFILE_ADDRESS)
     protected String profileAddress;
-
     //@ColumnInfo(name = PROFILE_NIN)
     @Ignore
     private String profile_Nin;
-
-
+    private OfficeBranch profile_OfficeBranch;
     @ColumnInfo(name = PROFILE_OFFICE)
-    private String profileOffice;
-
+    private String profOfficeName;
     @ColumnInfo(name = PROFILE_DATE_JOINED)
     private String profileDateJoined;
-
-
     @ColumnInfo(name = PROFILE_STATE)
     private String profileState;
-
-
     @ColumnInfo(name = PROFILE_ROLE)
     private String profileRole;
-
-
-
     @ColumnInfo(name = PROFILE_NEXT_OF_KIN)
     private String nextOfKin;
-
-
     @ColumnInfo(name = PROFILE_USERNAME)
     private String profileUserName;
-
-
-
-
     @ColumnInfo(name = PASSWORD)
     private String profilePassword;
-
-
     @ColumnInfo(name = PROFILE_SPONSOR_ID)
     private int profileSponsorID;
-
-
     @ColumnInfo(name = PROFILE_CUS_ID_KEY)
     private int profCusID;
-
     @ColumnInfo(name = PROFID_FOREIGN_KEY_PIX)
     private int profPixID;
-
-
     @ColumnInfo(name = PROF_ID_FOREIGN_KEY_PASSWORD)
     private int profPassID;
-
-
     @ColumnInfo(name = PROFILE_STATUS)
     private String profileStatus;
+    private String pin;
+    protected User.User_Type type;
+    private String profile_Machine;
+    @TypeConverters
+    @ColumnInfo(name = PICTURE_URI)
+    private Uri profilePicture;
+
+    private Transaction profile_Tranx;
+
+    private Loan profile_Loan;
+
+    private Birthday profile_Birthday;
+
+    private MarketBusiness profile_Biz;
+
+    private GroupAccount profile_GroupAcct;
+
+    private String profile_AuthenticationKey;
+
+    Context context;
+
+    protected transient boolean profile_Authenticated = false;
+
+    //protected RolesEnumMap enumMap = new RolesEnumMap(context);
+
+    private Awajima profile_Awajima;
+
+    private ProjectSavingsGroup profile_Project_SavingsGroup;
+
+    StandingOrderAcct profile_SOAcct;
+
+    private StandingOrder profile_StandingOrder;
+
+    private CustomerDailyReport profile_CusDailyReport;
+
+    private SkyLightPackage profile_SkyLightPackage;
+
+    private Payee profile_Payee;
+
+    private AdminUser profile_AdminUser;
+    private CustomerManager profile_CustomerManager;
+
+    private UserSuperAdmin profile_SuperAdmin;
+
+    SmsMessage.MessageClass messageClass;
+
+    private Customer profile_Customer;
+
+    Account profile_Account;
+
+    private  LatLng profile_LastLocation;
+
+    DBHelper dbHelper;
+    String profile_AccountBalance;
+
+    private int payoutNo;
+
+    int profileNo;
 
     private int profileBusinessID;
     private int profileMarketID;
@@ -275,11 +243,78 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     private QBUser profQbUser;
     private QBEntity profQbEntity;
     private AdminUser.ADMIN_TYPE profileAdmin_type;
-
-
-
     private String profileAdminType;
     private String profileRoleType;
+    private TaxiDriver profileTaxiDriver;
+    private Driver profDriver;
+    private ArrayList<Integer> profile_bizIDs;
+    private ArrayList<Integer> profile_acctIDs;
+    private ArrayList<Integer> profMarketIDs;
+    private ArrayList<Integer> profBusinessIDs;
+    private ArrayList<BusinessOthers> profBizOthers;
+    private ArrayList<MarketBusiness> profMarketBizs;
+    private ArrayList<MarketBusiness> marketBusinessArrayList;
+    private ArrayList<Market> profMarketArrayList;
+    private ArrayList<MarketAdmin> profMarketAdmins;
+    private ArrayList<InsuranceCompany> insuranceCompanies;
+    private ArrayList<EmergencyReport> profileEmergReports;
+    private ArrayList<EmergReportNext> profileEmergRNextS;
+    private ArrayList<EmergResponse> profileEmergResponses;
+    private ArrayList<String> profUserTypes;
+    private ArrayList<BoatTrip> profileBoatTrips;
+    private ArrayList<TripBooking> profileTripBookings;
+    private ArrayList<Account> profile_Accounts;
+
+    private ArrayList<Stocks> profile_Stocks;
+
+    private ArrayList<Address> profile_Addresses;
+
+    private ArrayList<Payee> profile_Payees;
+
+    private ArrayList<TimeLine> profile_TimeLines;
+
+    private ArrayList<Customer> profile_Customers;
+
+    private ArrayList<CustomerDailyReport> profile_DailyReports;
+
+    private ArrayList<SkyLightPackage> profile_SkyLightPackages;
+
+    private ArrayList<Loan> profile_Loans;
+
+    private ArrayList<Payment> profile_PaymentArrayList;
+
+    private ArrayList<PaymentCode> profile_PaymentCodeArrayList;
+
+    private ArrayList<PaymentDoc> profile_PaymentDocArrayList;
+
+
+    private ArrayList<CustomerManager> profile_CustomerManagers;
+    private ArrayList<AdminUser> adminUsers;
+    private ArrayList<AdminBankDeposit> profile_AdminBankDeposits;
+    //@Ignore
+    private ArrayList<StockTransfer> profile_StockTransferArrayList;
+    //@Ignore
+    private ArrayList<TellerCash> profile_TellerCashes;
+    //@Ignore
+    private ArrayList<StandingOrder> profile_StandingOrders;
+    //@Ignore
+    private ArrayList<ProjectSavingsGroup> profile_Project_SavingsGroups;
+    //@Ignore
+    private ArrayList<GroupAccount> profile_GroupAccounts;
+    //@Ignore
+    private ArrayList<Transaction> profile_Transactions;
+    //@Ignore
+    private ArrayList<TimeLine> profile_TimeLineArrayList;
+    //@Ignore
+    private ArrayList<LatLng> profile_LatLngs;
+    //@Ignore
+    ArrayList<TellerReport> ptellerReportArrayList;
+    //@Ignore
+    ArrayList<TransactionGranting> profile_TranxGrantings;
+    //@Ignore
+    private ArrayList<SmsMessage.MessageClass> messageClasses;
+    //@Ignore
+    private ArrayList<GroupSavings> prof_GrpSavings;
 
 
     public void setProfilePassword(String profilePassword)   {
@@ -294,18 +329,6 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     private String dob1;*/
 
 
-
-    private String pin;
-
-    protected User.User_Type type;
-
-    private String profile_Machine;
-
-
-
-    @TypeConverters
-    @ColumnInfo(name = PICTURE_URI)
-    private Uri profilePicture;
 
     @Override
     public boolean equals(Object o) {
@@ -365,8 +388,8 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
     public void setProfileDob(String profileDob) { this.profileDob = profileDob; }
     public void setProfileGender(String profileGender) { this.profileGender = profileGender; }
-    public String getProfileOffice() {
-        return profileOffice;
+    public String getProfOfficeName() {
+        return profOfficeName;
     }
     @Ignore
     public void setProfileMachine(String machine) { this.profile_Machine = machine;
@@ -377,7 +400,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     }
 
     public String getProfilePhoneNumber() { return profilePhoneNumber; }
-    public void setProfileOffice(String profileOffice) { this.profileOffice = profileOffice; }
+    public void setProfOfficeName(String profOfficeName) { this.profOfficeName = profOfficeName; }
     public void setProfilePhoneNumber(String profilePhoneNumber) { this.profilePhoneNumber = profilePhoneNumber; }
 
     public void setProfileAddress(String profileAddress) { this.profileAddress = profileAddress; }
@@ -401,136 +424,10 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
 
 
-    //@Ignore
-    private ArrayList<Account> profile_Accounts;
-    //@Ignore
-    private ArrayList<Stocks> profile_Stocks;
-    //@Ignore
-    private ArrayList<Address> profile_Addresses;
-    //@Ignore
-    private ArrayList<Payee> profile_Payees;
-    //@Ignore
-    private ArrayList<TimeLine> profile_TimeLines;
-    //@Ignore
-    private ArrayList<Customer> profile_Customers;
-    //@Ignore
-
-    //@Ignore
-    private ArrayList<CustomerDailyReport> profile_DailyReports;
-
-    private ArrayList<SkyLightPackage> profile_SkyLightPackages;
-
-    private ArrayList<Loan> profile_Loans;
-
-    private ArrayList<Payment> profile_PaymentArrayList;
-
-    private ArrayList<PaymentCode> profile_PaymentCodeArrayList;
-
-    private ArrayList<PaymentDoc> profile_PaymentDocArrayList;
-
-
-    private ArrayList<CustomerManager> profile_CustomerManagers;
-    private ArrayList<AdminUser> adminUsers;
-
-
-    @Ignore
-    private ArrayList<AdminBankDeposit> profile_AdminBankDeposits;
-    @Ignore
-    private ArrayList<StockTransfer> profile_StockTransferArrayList;
-    @Ignore
-    private ArrayList<TellerCash> profile_TellerCashes;
-    @Ignore
-    private ArrayList<StandingOrder> profile_StandingOrders;
-    @Ignore
-    private ArrayList<ProjectSavingsGroup> profile_Project_SavingsGroups;
-    @Ignore
-    private ArrayList<GroupAccount> profile_GroupAccounts;
-    @Ignore
-    private ArrayList<Transaction> profile_Transactions;
-    @Ignore
-    private ArrayList<TimeLine> profile_TimeLineArrayList;
-    @Ignore
-    private ArrayList<LatLng> profile_LatLngs;
-    @Ignore
-    ArrayList<TellerReport> ptellerReportArrayList;
-    @Ignore
-    ArrayList<TransactionGranting> profile_TranxGrantings;
-    @Ignore
-    private ArrayList<SmsMessage.MessageClass> messageClasses;
-    @Ignore
-    private ArrayList<GroupSavings> prof_GrpSavings;
-
-    @Ignore
-    private Transaction profile_Tranx;
-    @Ignore
-    private Loan profile_Loan;
-    @Ignore
-    private Birthday profile_Birthday;
-    @Ignore
-    private MarketBusiness profile_Biz;
-
-    private GroupAccount profile_GroupAcct;
-
-    private String profile_AuthenticationKey;
-
-    Context context;
-
-    protected transient boolean profile_Authenticated = false;
-
-    protected RolesEnumMap enumMap = new RolesEnumMap(context);
-
-    private Awajima profile_Awajima;
-
-    private ProjectSavingsGroup profile_Project_SavingsGroup;
-
-    StandingOrderAcct profile_SOAcct;
-
-    private StandingOrder profile_StandingOrder;
-
-    private CustomerDailyReport profile_CusDailyReport;
-
-    private SkyLightPackage profile_SkyLightPackage;
-
-    private Payee profile_Payee;
-
-    private AdminUser profile_AdminUser;
 
 
 
-    private CustomerManager profile_CustomerManager;
 
-    private UserSuperAdmin profile_SuperAdmin;
-
-    SmsMessage.MessageClass messageClass;
-
-    private Customer profile_Customer;
-
-    Account profile_Account;
-
-    private  LatLng profile_LastLocation;
-
-    DBHelper dbHelper;
-
-
-    String profile_AccountBalance;
-
-    private int payoutNo;
-
-    int profileNo;
-    private ArrayList<Integer> profile_bizIDs;
-    private ArrayList<Integer> profile_acctIDs;
-    private ArrayList<Integer> profMarketIDs;
-    private ArrayList<Integer> profBusinessIDs;
-    private ArrayList<BusinessOthers> profBizOthers;
-    private ArrayList<MarketBusiness> profMarketBizs;
-    private ArrayList<MarketBusiness> marketBusinessArrayList;
-    private ArrayList<Market> profMarketArrayList;
-    private ArrayList<MarketAdmin> profMarketAdmins;
-    private ArrayList<InsuranceCompany> insuranceCompanies;
-    private ArrayList<EmergencyReport> profileEmergReports;
-    private ArrayList<EmergReportNext> profileEmergRNextS;
-    private ArrayList<EmergResponse> profileEmergResponses;
-    private ArrayList<String> profUserTypes;
 
     @Ignore
     protected Profile(Parcel in) {
@@ -547,7 +444,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         profileSponsorID = in.readInt();
         profileGender = in.readString();
         profileAddress = in.readString();
-        profileOffice = in.readString();
+        profOfficeName = in.readString();
         profilePhoneNumber = in.readString();
         profileDateJoined = in.readString();
         profile_Machine = in.readString();
@@ -633,7 +530,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         parcel.writeLong(profileSponsorID);
         parcel.writeString(profileGender);
         parcel.writeString(profileAddress);
-        parcel.writeString(profileOffice);
+        parcel.writeString(profOfficeName);
         parcel.writeString(profilePhoneNumber);
         parcel.writeString(profileDateJoined);
         parcel.writeString(profile_Machine);
@@ -716,7 +613,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         this.profileGender = selectedGender;
         this.profileAddress = uAddress;
         this.profileState = selectedState;
-        this.profileOffice = selectedOffice;
+        this.profOfficeName = selectedOffice;
         this.profileDateJoined = dateJoined;
         this.profileUserName = uUserName;
         this.profileRole = selectedUserType;
@@ -741,7 +638,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         this.profileAddress = uAddress;
         this.profile_Identity = nIN;
         this.profileState = selectedState;
-        this.profileOffice = selectedOffice;
+        this.profOfficeName = selectedOffice;
         this.profileDateJoined = dateOfJoin;
         this.profileRole = userProfileType;
         this.profileUserName = username;
@@ -1106,7 +1003,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         this.profileGender = selectedGender;
         this.profileAddress = address1;
         this.profileState = selectedState;
-        this.profileOffice = selectedOffice;
+        this.profOfficeName = selectedOffice;
         this.profileRole = s;
         this.profileUserName = userName;
         this.profilePassword = profilePassword;
@@ -1133,7 +1030,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
         super();
     }
-    public Profile(String profileFirstName, String profileLastName, String profilePhoneNumber, String profileEmail, String profileDob, String profileGender, String profileAddress, String username, String profileOffice, String joinedDate, int id) {
+    public Profile(String profileFirstName, String profileLastName, String profilePhoneNumber, String profileEmail, String profileDob, String profileGender, String profileAddress, String username, String profOfficeName, String joinedDate, int id) {
         super();
         this.profileFirstName = profileFirstName;
         this.profileLastName = profileLastName;
@@ -1144,7 +1041,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         this.profileAddress = profileAddress;
         this.profileUserName = username;
         this.profileDateJoined = joinedDate;
-        this.profileOffice = profileOffice;
+        this.profOfficeName = profOfficeName;
         this.pID = id;
     }
 
@@ -1158,7 +1055,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         this.profileGender = genderType;
         this.profileAddress = profileAddress;
         this.profileState = profileState;
-        this.profileOffice = spinnerOffice;
+        this.profOfficeName = spinnerOffice;
         this.profileUserName = userName;
         this.profilePassword = profilePassword;
         this.profileRole = profileRole;
@@ -1859,6 +1756,17 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         profileEmergReports = new ArrayList<>();
         profileEmergReports.add(emergencyReport);
     }
+    public void addBoatTrip(BoatTrip boatTrip) {
+        profileBoatTrips = new ArrayList<>();
+        profileBoatTrips.add(boatTrip);
+
+    }
+    public void addTripBooking(TripBooking tripBooking) {
+        profileTripBookings = new ArrayList<>();
+        profileTripBookings.add(tripBooking);
+
+    }
+
 
     //@Ignore
     @Override
@@ -1873,5 +1781,31 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
     public void setProfUserTypes(ArrayList<String> profUserTypes) {
         this.profUserTypes = profUserTypes;
+    }
+
+
+    public ArrayList<BoatTrip> getProfileBoatTrips() {
+        return profileBoatTrips;
+    }
+
+    public void setProfileBoatTrips(ArrayList<BoatTrip> profileBoatTrips) {
+        this.profileBoatTrips = profileBoatTrips;
+    }
+
+
+    public TaxiDriver getProfileTaxiDriver() {
+        return profileTaxiDriver;
+    }
+
+    public void setProfileTaxiDriver(TaxiDriver profileTaxiDriver) {
+        this.profileTaxiDriver = profileTaxiDriver;
+    }
+
+    public Driver getProfDriver() {
+        return profDriver;
+    }
+
+    public void setProfDriver(Driver profDriver) {
+        this.profDriver = profDriver;
     }
 }

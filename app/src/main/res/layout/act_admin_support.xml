@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/shape_rect14"
-    tools:context=".Admins.AdminSupportAct">
+    tools:context=".Admins.BranchSuppAct">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

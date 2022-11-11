@@ -21,7 +21,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -67,7 +66,7 @@ public class UpcomingBirthdayAdapter7 extends RecyclerView.Adapter<BirthdayViewH
             viewHolder.setGender("Gender"+userProfile.getProfileGender());
         }
         if (userProfile != null) {
-            viewHolder.setOffice("Office"+userProfile.getProfileOffice());
+            viewHolder.setOffice("Office"+userProfile.getProfOfficeName());
         }
         viewHolder.setPhoneNo("Phone No:"+birthday.getbPhoneNumber());
         //viewHolder.setDaysRemaining(birthday.getFormattedDaysRemainingString(theDate,birthday.getBirthDay()));

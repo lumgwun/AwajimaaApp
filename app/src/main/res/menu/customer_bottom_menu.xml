@@ -43,12 +43,6 @@
                         android:title="My Subscriptions"
                         app:showAsAction="ifRoom" />
 
-                    <item
-                        android:id="@+id/my_packs"
-                        android:enabled="true"
-                        android:icon="@drawable/transaction2"
-                        android:title="My Packs"
-                        app:showAsAction="ifRoom" />
 
                     <item
                         android:id="@+id/so_menu"
@@ -127,7 +121,7 @@
                         android:id="@+id/privacy_policy_customer"
                         android:enabled="true"
                         android:icon="@drawable/notification"
-                        android:title="Skylight Privacy Policy"
+                        android:title="Awajima Privacy Policy"
                         app:showAsAction="ifRoom" />
 
 
@@ -135,7 +129,7 @@
                         android:id="@+id/action_customer_logout"
                         android:enabled="true"
                         android:icon="@drawable/notification"
-                        android:title="@string/Sign_out_from_skylight"
+                        android:title="Sign Out"
                         app:showAsAction="ifRoom" />
 
                 </group>

@@ -41,12 +41,6 @@
     <string name="dlg_wait_for_chat_connection_title">Please wait for connection</string>
     <string name="dlg_wait_for_chat_connection">Please wait for a connection to the chat as it now is in the progress</string>
 
-    <!-- Error strings -->
-    <string name="geofence_not_available">Geofence service is not available now</string>
-    <string name="geofence_too_many_geofences">Your app has registered too many geofences</string>
-    <string name="geofence_too_many_pending_intents">
-        You have provided too many PendingIntents to the addGeofences() call
-    </string>
     <string name="unknown_geofence_error">
         Unknown error: the Geofence service is not available now
     </string>
@@ -2030,6 +2024,144 @@
     <string name="acceptbutton">Accept ride</string>
     <string name="beginridebutton">BEGIN RIDE</string>
     <string name="endridebutton">END RIDE</string>
+
+
+    <string name="text_day_tours">Day Tours</string>
+    <string name="text_desc">Description</string>
+    <string name="text_full_day">Full Day</string>
+    <string name="text_half_day">Half Day</string>
+    <string name="text_tour_highlights">TOUR HIGHLIGHTS</string>
+    <string name="text_schedule">Schedule</string>
+    <string name="text_tarrif">Tariff</string>
+    <string name="text_common_tour">Common Tour</string>
+    <string name="private_luxury_tour">Private Luxury Tour</string>
+    <string name="book_full_day">BOOK FULL DAY TRIP</string>
+    <string name="book_half_day">BOOK HALF DAY TRIP</string>
+    <string name="text_full_day_tour">Full day trip</string>
+    <string name="text_half_day_tour">Half day trip</string>
+    <string name="text_morning">Morning</string>
+    <string name="text_afternoon">Afternoon</string>
+    <string name="text_departure">Departure</string>
+    <string name="text_return">Return</string>
+    <string name="title_activity_nin_idact">NinIDAct</string>
+    <string name="crime_channel_name">crime_channel</string>
+    <string name="spillage_channel_name">spillage_channel</string>
+    <string name="emerg_channel_name">Emergency</string>
+    <string name="stop_point_channel">stop point</string>
+    <string name="booking">Booking_channel</string>
+    <string name="bd_channel_name">Biz Deal Channel</string>
+    <string name="session_channel_name">Session_Channel</string>
+    <string name="premium">Premium</string>
+    <string name="classic">Classic</string>
+    <string name="gold">Gold</string>
+    <string name="vip_car">VIP</string>
+    <string name="driver_name">Driver\'s Name</string>
+    <string name="driver_gender">Driver\'s Gender</string>
+    <string name="driver_age">Driver\'s Age</string>
+    <string name="driver_car_type">Driver\'s Car Type</string>
+    <string name="driver_car">Car</string>
+    <string name="driver_car_plate">Car Plate Number</string>
+    <string name="pick_up">Pick Up</string>
+    <string name="drop_off">Drop Off</string>
+    <string name="start_trip">Start Trip</string>
+    <string name="answer_cancel">Cancel Trip</string>
+    <string name="warning_empty_destination">Empty Destination</string>
+    <string name="warning_empty_starting_location">Empty Take off Location</string>
+    <string name="loc_place_error_message">Error getting Location, Check Your Internet</string>
+    <string name="try_again">please, try again.</string>
+    <string name="show">SHOW</string>
+
+    <!-- Geofences Application -->
+
+    <string name="failed_with_error_code">
+        Failed with error code %1$d (%2$s)
+    </string>
+    <string name="failed_with_unexpected_error">
+        Failed with unexpected error: %1$s
+    </string>
+    <string name="geofence_event_dwell">DWELL</string>
+    <string name="geofence_event_enter">ENTER</string>
+    <string name="geofence_event_exit">EXIT</string>
+    <string name="geofence_event_unknown">UNKNOWN</string>
+    <string name="geofence_insufficient_location_permission">
+        The app has insufficient permissions for geofencing
+    </string>
+    <string name="geofence_not_available">
+        The Geofence Service is not available
+    </string>
+    <string name="geofence_request_too_frequent">
+        We are adding Geofences too frequently
+    </string>
+    <string name="geofence_too_many_geofences">
+        We have registered more than 100 geofences
+    </string>
+    <string name="geofence_too_many_pending_intents">
+        We have provided more than 5 PendingIntents (internal error)
+    </string>
+    <string name="status_default">DEFAULT</string>
+    <string name="status_fences_added">Fences added</string>
+    <string name="status_fences_failed">Adding fences failed</string>
+    <string name="status_fences_removed">Fences removed</string>
+    <string name="status_unknown">UNKNOWN STATUS</string>
+
+    <!-- Broadcast Receiver -->
+
+    <string name="receiver_log_transition">%1$s event on Fence: %2$s</string>
+    <string name="receiver_transition_notification_entry">
+        You have entered %1$s
+    </string>
+    <string name="receiver_transition_notification_exit">
+        You have left %1$s
+    </string>
+    <string name="receiver_transition_notification_title">
+        Fence crossed
+    </string>
+    <string name="receiver_transition_notification_unknown">
+        Unknown transition code %1$d on fence %2$s
+    </string>
+
+    <!-- Request Permissions Screen -->
+
+    <string name="channel_name">Fence Crossed Notification</string>
+
+    <string name="button_request_permissions">
+        Request Location Permissions
+    </string>
+    <string name="adding_fence_failed_title">Adding Fence(s) Failed</string>
+    <string name="inadequate_permissions_title">
+        Inadequate Application Permissions
+    </string>
+    <string name="inadequate_permissions_message">
+        This application cannot run without requesting its location.
+        The application will now terminate.
+    </string>
+
+    <!-- Display Locations Screen -->
+
+    <string name="title_activity_display_location">Display Location</string>
+
+    <string name="status_label">Status</string>
+    <string name="coarse_permission_label">Coarse location access</string>
+    <string name="fine_permission_label">Fine location access</string>
+    <string name="background_permission_label">Background loc. access</string>
+    <string name="num_events_label">Background events</string>
+    <string name="permission_granted">Granted</string>
+    <string name="permission_withheld">Withheld</string>
+
+    <string name="button_show_events">Show Fence Events</string>
+    <string name="button_display_location">Get Current location</string>
+
+    <string name="title_last_location">Last Location Found</string>
+    <string name="latitude_label">Latitude</string>
+    <string name="longitude_label">Longitude</string>
+    <string name="time_label">Time</string>
+    <string name="title_current_position">Current Position</string>
+
+    <!-- Show Location Screen (Using Google Maps) -->
+
+    <string name="title_activity_show_location">Show Location</string>
+    <string name="current_position">Current position</string>
+    <string name="last_location">Last Location</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 

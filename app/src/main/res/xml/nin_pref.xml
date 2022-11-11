@@ -1,0 +1,15 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:enabled="true">
+    <PreferenceCategory app:title="Awajima User Identification">
+
+        <EditTextPreference
+            app:defaultValue=""
+            app:key="PROFILE_NIN"
+            app:positiveButtonText="Ok"
+            app:negativeButtonText="Cancel"
+            app:title="Enter Your NIN For Verification"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

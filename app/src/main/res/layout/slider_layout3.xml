@@ -34,7 +34,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:id="@+id/item_image5"
-                    android:src="@drawable/provision_package"
+                    android:src="@drawable/hp_16gb_1tb_ssd_608_2"
                     android:layout_marginBottom="20dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginStart="5dp"
@@ -47,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="5dp"
                     android:paddingEnd="5dp"
-                    android:text="Package A--"
+                    android:text="High Performance Laptop"
                     android:layout_marginBottom="10dp"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
@@ -60,7 +60,7 @@
                     android:paddingStart="5dp"
                     android:paddingEnd="5dp"
                     android:layout_marginBottom="10dp"
-                    android:text="NGN500 daily"
+                    android:text="NGN50000 daily"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
                     android:textSize="15sp" />
@@ -97,7 +97,7 @@
                     android:paddingStart="5dp"
                     android:layout_marginTop="10dp"
                     android:paddingEnd="5dp"
-                    android:text="half bag of rice, 1 packet of maggi, tomato, and red oil"
+                    android:text="Hp, 16Gb RAM, 1Tb HD, with SSD"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
                     android:textSize="15sp" />

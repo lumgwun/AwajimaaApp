@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.skylightapp.Adapters.AccountAdapter2;
+import com.skylightapp.Adapters.AccountRecylerAdap;
 import com.skylightapp.Adapters.MySavingsCodeAdapter;
 import com.skylightapp.Adapters.SkyLightPackageAdapter;
 import com.skylightapp.Adapters.StandingOrderAdapter;
@@ -39,7 +39,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLightPackageAdapter.OnItemsClickListener, SuperSavingsAdapter.OnItemsClickListener, MySavingsCodeAdapter.OnItemsClickListener, TranxAdminA.OnItemsClickListener, StandingOrderAdapter.OnItemsClickListener, AccountAdapter2.OnItemsClickListener{
+public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLightPackageAdapter.OnItemsClickListener, SuperSavingsAdapter.OnItemsClickListener, MySavingsCodeAdapter.OnItemsClickListener, TranxAdminA.OnItemsClickListener, StandingOrderAdapter.OnItemsClickListener, AccountRecylerAdap.OnAcctClickListener {
     private SharedPreferences userPreferences;
     PrefManager prefManager;
     private Gson gson,gson1;
@@ -52,7 +52,7 @@ public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLight
     private List<CustomerDailyReport> customerDailyReports;
     private StandingOrderAdapter standingOrderAdapter;
     private TranxAdminA tranxAdminA;
-    private AccountAdapter2 accountAdapter;
+    private AccountRecylerAdap accountAdapter;
     private MySavingsCodeAdapter codeAdapter;
     private SuperSavingsAdapter savingsAdapter;
     SkyLightPackageAdapter packageAdapter;
@@ -190,7 +190,7 @@ public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLight
             DividerItemDecoration dividerItemDecorationL = new DividerItemDecoration(recyclerAccounts.getContext(),
                     layoutManager.getOrientation());
             recyclerAccounts.addItemDecoration(dividerItemDecorationL);
-            accountAdapter = new AccountAdapter2(ProfilePackHistoryAct.this,accounts4);
+            accountAdapter = new AccountRecylerAdap(ProfilePackHistoryAct.this,accounts4);
             //recyclerAccounts.setHasFixedSize(true);
             recyclerAccounts.setAdapter(accountAdapter);
         }
@@ -214,7 +214,7 @@ public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLight
     }
 
     @Override
-    public void onItemClick(Account account) {
+    public void onAcctClicked(Account account) {
 
     }
 

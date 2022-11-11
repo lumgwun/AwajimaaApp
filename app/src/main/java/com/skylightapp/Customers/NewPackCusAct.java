@@ -316,7 +316,7 @@ public class NewPackCusAct extends AppCompatActivity {
         userProfile = gson.fromJson(json, Profile.class);
 
         if(userProfile !=null){
-            officeBranch=userProfile.getProfileOffice();
+            officeBranch=userProfile.getProfOfficeName();
             customer=userProfile.getProfileCus();
         }
 
@@ -603,7 +603,7 @@ public class NewPackCusAct extends AppCompatActivity {
                 }
                 Skylightransaction= new com.skylightapp.Classes.Transaction();
                 if (userProfile != null) {
-                    officeBranch=userProfile.getProfileOffice();
+                    officeBranch=userProfile.getProfOfficeName();
 
                 }
 
@@ -692,7 +692,7 @@ public class NewPackCusAct extends AppCompatActivity {
                 }
                 Skylightransaction= new com.skylightapp.Classes.Transaction();
                 if (userProfile != null) {
-                    officeBranch=userProfile.getProfileOffice();
+                    officeBranch=userProfile.getProfOfficeName();
 
                 }
 

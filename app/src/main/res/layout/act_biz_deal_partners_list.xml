@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#28072E"
+    android:background="@drawable/shape_layer_3b"
     android:layout_height="match_parent"
-    tools:context="com.skylightapp.Markets.BizDealPartnersListAct">
+    tools:context="com.skylightapp.Markets.BizDSelectPartnerAct">
     <com.facebook.shimmer.ShimmerFrameLayout
         android:layout_width="match_parent"
         app:shimmer_duration="1500"
@@ -17,11 +17,6 @@
             android:orientation="vertical">
             <include layout="@layout/placeholder_layout"/>
             <include layout="@layout/placeholder_layout"/>
-            <include layout="@layout/placeholder_layout"/>
-            <include layout="@layout/placeholder_layout"/>
-            <include layout="@layout/placeholder_layout"/>
-            <include layout="@layout/placeholder_layout"/>
-            <include layout="@layout/placeholder_layout"/>
 
         </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>
@@ -30,17 +25,25 @@
         android:layout_height="wrap_content"
         android:id="@+id/createChat"
         android:padding="20dp"
+        android:onClick="CreateChatDialog"
         android:background="@drawable/shape_layer_3b"
         android:layout_gravity="bottom|center"
         android:layout_margin="10dp"
-        android:text="Message"
-        />
-    <androidx.recyclerview.widget.RecyclerView
+        android:text="Create Biz Deal Partner / Chat" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:id="@+id/listUserRecyclerView"
-        />
+        app:shimmer_duration="1500"
+        android:id="@+id/shimmerPList"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <include layout="@layout/biz_deal_bottom"/>
+
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

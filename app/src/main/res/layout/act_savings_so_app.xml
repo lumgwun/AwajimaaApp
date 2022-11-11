@@ -11,10 +11,11 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         app:cardCornerRadius="10dp"
-        app:cardElevation="90dp"
+        android:id="@+id/cd_material"
+        app:strokeColor="@color/color_green_qb"
+        android:elevation="90dp"
+        android:background="@drawable/shape_layer_3b"
         android:layout_marginBottom="5dp"
-        app:cardForegroundColor="@color/cardview_shadow_end_color"
-        app:cardBackgroundColor="@color/cardview_light_background"
         android:layout_height="wrap_content">
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
@@ -28,7 +29,6 @@
             android:id="@+id/txtResult4"
             android:layout_gravity="center_horizontal"
             android:textColor="@android:color/holo_red_dark"
-            android:marqueeRepeatLimit="marquee_forever"
             android:text="Savings with Automatic Deductions"
             android:layout_height="wrap_content"/>
 
@@ -52,7 +52,7 @@
                 app:cardForegroundColor="@color/cardview_shadow_end_color"
                 app:cardBackgroundColor="@color/cardview_light_background"
                 android:layout_height="wrap_content">
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:textStyle="bold"
                     android:textSize="15sp"
@@ -63,7 +63,7 @@
                     android:padding="10dp"
                     android:background="@drawable/rect_their_message"
                     android:layout_gravity="center_horizontal"
-                    android:textColor="@android:color/holo_red_dark"
+                    android:textColor="@android:color/black"
                     android:marqueeRepeatLimit="marquee_forever"
                     android:text="Note that the plan is for each day,or week"
                     android:layout_height="wrap_content"/>
@@ -78,7 +78,7 @@
                 app:cardForegroundColor="@color/cardview_shadow_end_color"
                 app:cardBackgroundColor="@color/cardview_light_background"
                 android:layout_height="wrap_content">
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:textStyle="bold"
                     android:textSize="15sp"
@@ -88,9 +88,9 @@
                     android:gravity="center_horizontal"
                     android:padding="12dp"
                     android:layout_gravity="center_horizontal"
-                    android:textColor="@android:color/holo_red_dark"
+                    android:textColor="@android:color/black"
                     android:marqueeRepeatLimit="marquee_forever"
-                    android:text="Also Note that Skylight would take a day's savings, or 0.03% of your savings"
+                    android:text="Also Note that Awajima would take a day's savings, or 0.03% of your savings"
                     android:layout_height="wrap_content"/>
 
             </com.google.android.material.card.MaterialCardView>
@@ -103,7 +103,7 @@
                 app:cardForegroundColor="@color/cardview_shadow_end_color"
                 app:cardBackgroundColor="@color/cardview_light_background"
                 android:layout_height="wrap_content">
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:textStyle="bold"
                     android:textSize="15sp"
@@ -114,7 +114,7 @@
                     android:padding="10dp"
                     android:layout_marginBottom="16dp"
                     android:layout_gravity="center_horizontal"
-                    android:textColor="@android:color/holo_red_dark"
+                    android:textColor="@android:color/black"
                     android:marqueeRepeatLimit="marquee_forever"
                     android:text="Select a plan below"
                     android:layout_height="wrap_content"/>
@@ -129,7 +129,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="10dp"
-                android:background="@drawable/shape_rect13"
+                android:background="@drawable/rect6h"
                 android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.LinearLayoutCompat

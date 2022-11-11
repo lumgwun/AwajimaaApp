@@ -18,7 +18,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.LinearGradient;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Shader;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -41,7 +49,7 @@ import com.rom4ek.arcnavigationview.ArcNavigationView;
 import com.skylightapp.Accountant.AcctantBackOffice;
 import com.skylightapp.Admins.AdminLoanList;
 import com.skylightapp.Admins.AdminPackageActivity;
-import com.skylightapp.Admins.AdminSupportAct;
+import com.skylightapp.Admins.BranchSuppAct;
 import com.skylightapp.Admins.AdminTabActivity;
 import com.skylightapp.Admins.AdminTimelineAct;
 import com.skylightapp.Admins.AdminTransActivity;
@@ -52,6 +60,7 @@ import com.skylightapp.Admins.ImportDateTab;
 import com.skylightapp.Admins.SendSingleUserMAct;
 import com.skylightapp.Admins.SkylightAllWeb;
 import com.skylightapp.Admins.SkylightUsersActivity;
+import com.skylightapp.AwajimaSliderAct;
 import com.skylightapp.CameraActivity;
 import com.skylightapp.Classes.ChartData;
 import com.skylightapp.Classes.Customer;
@@ -65,10 +74,10 @@ import com.skylightapp.Database.SODAO;
 import com.skylightapp.Inventory.SuperInvTab;
 import com.skylightapp.LoginActivity;
 import com.skylightapp.MapAndLoc.StateEmergList;
+import com.skylightapp.MarketClasses.ResourceUtils;
 import com.skylightapp.PayClientActivity;
 import com.skylightapp.R;
 import com.skylightapp.SignTabMainActivity;
-import com.skylightapp.SkylightSliderAct;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -135,14 +144,17 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
     private  int SOCount;
     Button btnUtils, btnImpDates, btnTimeLines;
     private Profile userProfile;
-    int allCus,allUsers,savingsToday,packagesToday,soToday;
+    int allCus,allUsers,savingsToday,packagesToday,soToday,width,height;
     private Date today;
     Date currentDate;
     DBHelper applicationDb;
     double totalAdminBalance;
     private Uri pictureLink;
-    private static final String PREF_NAME = "skylight";
+    SQLiteDatabase sqLiteDatabase;
+    private static final String PREF_NAME = "awajima";
     ChipNavigationBar chipNavigationBar;
+    private Bitmap bitmap,updatedBitmap;
+    private Canvas canvas;
     String machineUser, office,state,role,dbRole,joinedDate,password, email,phoneNO, dob,gender,address;
 
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
@@ -225,6 +237,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
         superAdminProfile =new UserSuperAdmin();
         applicationDb = new DBHelper(this);
         profDAO=new ProfDAO(this);
+        //applicationDb.openDataBase();
         SharedPrefUserName=userPreferences.getString("USER_NAME", "");
         SharedPrefUserPassword=userPreferences.getString("USER_PASSWORD", "");
         SharedPrefUserMachine=userPreferences.getString("machine", "");
@@ -237,7 +250,19 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
         state = userPreferences.getString("PROFILE_STATE", "");
         role = userPreferences.getString("PROFILE_ROLE", "");
         password = userPreferences.getString("PROFILE_PASSWORD", "");
-        dbRole=profDAO.getProfileRoleByUserNameAndPassword(userName,password);
+
+        if (applicationDb != null) {
+            sqLiteDatabase = applicationDb.getReadableDatabase();
+            try {
+                dbRole=profDAO.getProfileRoleByUserNameAndPassword(userName,password);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
 
         joinedDate = userPreferences.getString("PROFILE_DATE_JOINED", "");
         surname = userPreferences.getString("PROFILE_SURNAME", "");
@@ -278,7 +303,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
         Calendar calendar = Calendar.getInstance();
         currentDate = calendar.getTime();
         SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "dd/MM/yyyy", Locale.getDefault());
+                "yyyy-MM-dd", Locale.getDefault());
 
         try {
             dateOfToday =dateFormat.format(currentDate);
@@ -300,15 +325,60 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
         textAllCustomers = findViewById(R.id.allCus_Super);
         //textAllCustomers.setOnClickListener(this);
         CusDAO cusDAO= new CusDAO(this);
-        try {
-            allCus=cusDAO.getCustomersCountAdmin();
-            savingsToday=applicationDb.getSavingsCountToday(dateOfToday);
-            allUsers=profDAO.getAllProfileCount();
-            customersToday=cusDAO.getCusCountToday(dateOfToday);
-            activePackagesToday = applicationDb.getPackagesCountAdmin();
 
-        } catch (NullPointerException e) {
-            System.out.println("Oops!");
+        if (applicationDb != null) {
+            sqLiteDatabase = applicationDb.getReadableDatabase();
+            try {
+                customersToday = cusDAO.getCusCountToday(dateOfToday);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        if (applicationDb != null) {
+            sqLiteDatabase = applicationDb.getReadableDatabase();
+            try {
+                allUsers=profDAO.getAllProfileCount();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        if (applicationDb != null) {
+            sqLiteDatabase = applicationDb.getReadableDatabase();
+            try {
+                savingsToday=applicationDb.getSavingsCountToday(dateOfToday);
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        if (applicationDb != null) {
+            sqLiteDatabase = applicationDb.getReadableDatabase();
+            try {
+                allCus=cusDAO.getCustomersCountAdmin();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        if (applicationDb != null) {
+            sqLiteDatabase = applicationDb.getReadableDatabase();
+            try {
+                activePackagesToday = applicationDb.getPackagesCountAdmin();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
         }
 
 
@@ -323,9 +393,24 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
 
         if(superAdminProfile !=null){
             profileID= superAdminProfile.getSuperID();
-            Bitmap bitmap = profDAO.getProfilePicture(profileID);
-            imgProfilePic.setImageBitmap(bitmap);
+
+
         }
+
+        if (applicationDb != null) {
+            sqLiteDatabase = applicationDb.getReadableDatabase();
+            try {
+                bitmap = profDAO.getProfilePicture(profileID);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+            imgProfilePic.setImageBitmap(addGradient(bitmap));
+
+
+        }
+
+
         imgProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -406,7 +491,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
                                 startActivity(invIntent);
 
                             case R.id.super_support_menu:
-                                Intent myIntent2 = new Intent(SuperAdminOffice.this, AdminSupportAct.class);
+                                Intent myIntent2 = new Intent(SuperAdminOffice.this, BranchSuppAct.class);
                                 myIntent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
@@ -441,7 +526,20 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
             btnTimeLines.setOnClickListener(this::TimelinesSuper);
             txtAllSubscriptions.setOnClickListener(this::gpPackages);
             btnSOSuper.setOnClickListener(this::standingOrdersSuper);
-            SOCount=sodao.getStandingOrderCountToday(dateOfToday);
+
+            if (applicationDb != null) {
+                sqLiteDatabase = applicationDb.getReadableDatabase();
+                try {
+                    SOCount=sodao.getStandingOrderCountToday(dateOfToday);
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+                imgProfilePic.setImageBitmap(bitmap);
+
+            }
+
             txtAllStandingOrders.setText(MessageFormat.format("Standing Orders:{0}", SOCount));
             textCustomersToday.setText(MessageFormat.format("New Cus:{0}", customersToday));
             textAllCustomers.setText(MessageFormat.format("All Cus:{0}", allCus));
@@ -457,14 +555,32 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
         int timeOfDay = calendar.get(Calendar.HOUR_OF_DAY);
 
         if (timeOfDay >= 5 && timeOfDay < 12) {
-            //welcomeString.append(getString(R.string.good_morning));
-            imgTime.setImageResource(R.drawable.good_morn3);
+            try {
+                imgTime.setImageResource(R.drawable.good_morn3);
+
+            } catch (OutOfMemoryError e) {
+                e.printStackTrace();
+            }
+
         } else if (timeOfDay >= 12 && timeOfDay < 17) {
             welcomeString.append(getString(R.string.good_afternoon));
-            imgTime.setImageResource(R.drawable.good_after1);
+            try {
+                imgTime.setImageResource(R.drawable.good_after1);
+
+            } catch (OutOfMemoryError e) {
+                e.printStackTrace();
+            }
+
         } else {
             welcomeString.append(getString(R.string.good_evening));
-            imgTime.setImageResource(R.drawable.good_even2);
+            try {
+                imgTime.setImageResource(R.drawable.good_even2);
+
+            } catch (OutOfMemoryError e) {
+                e.printStackTrace();
+            }
+
+
         }
 
 
@@ -509,6 +625,32 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
         setupHeader();
 
 
+    }
+    public Bitmap addGradient(Bitmap originalBitmap) {
+        bitmap=originalBitmap;
+        if(bitmap !=null){
+            width = bitmap.getWidth();
+            height = bitmap.getHeight();
+            updatedBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            canvas = new Canvas(updatedBitmap);
+            canvas.drawBitmap(bitmap, 0, 0, null);
+
+        }
+
+        try {
+            Paint paint = new Paint();
+            LinearGradient shader = new LinearGradient(0, 0, width/2, height, ResourceUtils.getColor(R.color.primary_blue), ResourceUtils.getColor(R.color.primary_purple), Shader.TileMode.CLAMP);
+            paint.setShader(shader);
+            paint.setFilterBitmap(true);
+            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+            canvas.drawRect(0, 0, width, height, paint);
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+
+        return updatedBitmap;
     }
 
 
@@ -600,51 +742,75 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
                     switch(finalI) {
                         case 0:
                             Intent myIntent = new Intent(SuperAdminOffice.this, AdminPackageActivity.class);
+                            overridePendingTransition(R.anim.slide_in_right,
+                                    R.anim.slide_out_left);
                             myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(myIntent);
                             break;
 
 
                         case 1:
                             Intent myIntent4 = new Intent(SuperAdminOffice.this, CustomerListActivity.class);
-                            myIntent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            overridePendingTransition(R.anim.slide_in_right,
+                                    R.anim.slide_out_left);
+                            myIntent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                    Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(myIntent4);
                             break;
 
 
                         case 2:
                             Intent listIntentSper = new Intent(SuperAdminOffice.this, SuperMPaymentListA.class);
-                            listIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            overridePendingTransition(R.anim.slide_in_right,
+                                    R.anim.slide_out_left);
+                            listIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                    Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(listIntentSper);
                             break;
 
                         case 3:
                             Intent unConfirmedIntentSper = new Intent(SuperAdminOffice.this, SuperUnconfirmedSavings.class);
-                            unConfirmedIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            overridePendingTransition(R.anim.slide_in_right,
+                                    R.anim.slide_out_left);
+                            unConfirmedIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                    Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(unConfirmedIntentSper);
                             break;
 
                         case 4:
                             Intent dueIntentSper = new Intent(SuperAdminOffice.this, DuePackagesAct.class);
-                            dueIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            overridePendingTransition(R.anim.slide_in_right,
+                                    R.anim.slide_out_left);
+                            dueIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                    Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(dueIntentSper);
                             break;
 
                         case 5:
                             Intent officeIntent = new Intent(SuperAdminOffice.this, StocksTab.class);
-                            officeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            overridePendingTransition(R.anim.slide_in_right,
+                                    R.anim.slide_out_left);
+                            officeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                    Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(officeIntent);
                             break;
 
                         case 6:
                             Intent cusIntent = new Intent(SuperAdminOffice.this, CusByPackAct.class);
-                            cusIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            overridePendingTransition(R.anim.slide_in_right,
+                                    R.anim.slide_out_left);
+                            cusIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                    Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(cusIntent);
                             break;
 
                         case 7:
                             Intent myIntentSper = new Intent(SuperAdminOffice.this, BizSuperAdminAllView.class);
-                            myIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            overridePendingTransition(R.anim.slide_in_right,
+                                    R.anim.slide_out_left);
+                            myIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                    Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(myIntentSper);
                             break;
 
@@ -652,7 +818,10 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
 
                         case 8:
                             Intent chartIntent = new Intent(SuperAdminOffice.this, ChartData.class);
-                            chartIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            overridePendingTransition(R.anim.slide_in_right,
+                                    R.anim.slide_out_left);
+                            chartIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                    Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(chartIntent);
                             break;
 
@@ -679,33 +848,53 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
         switch (item.getItemId()) {
             case R.id.nav_dashboardSuper:
                 Intent mainIntent = new Intent(this, SuperAdminOffice.class);
-                mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(mainIntent);
                 return true;
             case R.id.timeline_Super:
                 Intent timelineIntent = new Intent(this, AdminTimelineAct.class);
-                timelineIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                timelineIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(timelineIntent);
                 return true;
 
             case R.id.nav_SignupSuper:
                 Intent active = new Intent(SuperAdminOffice.this, SuperUserCreator.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                active.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(active);
                 return true;
             case R.id.nav_my_packageSuper:
                 Intent pIntent = new Intent(this, AdminPackageActivity.class);
-                pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(pIntent);
                 return true;
 
 
             case R.id.my_SuperTrans:
                 Intent tIntent = new Intent(this, AdminTransActivity.class);
-                tIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                tIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(tIntent);
                 return true;
             case R.id.nav_TellerReportsSuper:
                 Intent supportInt = new Intent(SuperAdminOffice.this, TellerReportActSuper.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                supportInt.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(supportInt);
                 return true;
 
@@ -716,6 +905,8 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
                 editor.clear();
                 editor.apply();
                 Intent loginIntent = new Intent(this, LoginActivity.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
                 loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                         Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(loginIntent);
@@ -733,120 +924,191 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
             case R.id.nav_dashboardSuper:
 
                 Intent intent = new Intent(SuperAdminOffice.this, SuperAdminOffice.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 break;
             case R.id.timeline_Super:
                 Intent timelineIntent = new Intent(this, AdminTimelineAct.class);
-                timelineIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                timelineIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(timelineIntent);
                 break;
             case R.id.nav_SignupSuper:
                 Intent active = new Intent(SuperAdminOffice.this, SuperUserCreator.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                active.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(active);
                 break;
             case R.id.nav_my_packageSuper:
                 Intent pIntent = new Intent(this, AdminPackageActivity.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(pIntent);
                 break;
 
             case R.id.my_SuperTrans:
                 Intent tIntent = new Intent(this, AdminTransActivity.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                tIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 tIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(tIntent);
                 break;
 
             case R.id.nav_TellerReportsSuper:
                 Intent supportInt = new Intent(SuperAdminOffice.this, TellerReportActSuper.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                supportInt.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(supportInt);
                 break;
             case R.id.nav_ImpDateSuper:
                 Intent aIntent = new Intent(this, SODueDateListAct.class);
-                aIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                aIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(aIntent);
                 break;
             case R.id.nav_soSuper:
                 Intent so1Intent = new Intent(this, AdminSOTabAct.class);
-                so1Intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                so1Intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(so1Intent);
                 break;
             case R.id.nav_superLoans:
                 Intent loanIntent = new Intent(this, AdminLoanList.class);
-                loanIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+
+                loanIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(loanIntent);
                 break;
 
             case R.id.nav_payClientSuper:
                 Intent payNowIntent = new Intent(this, PayClientActivity.class);
-                payNowIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                payNowIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(payNowIntent);
                 break;
 
             case R.id.navsupportSuper:
-                Intent sIntent = new Intent(this, AdminSupportAct.class);
-                sIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Intent sIntent = new Intent(this, BranchSuppAct.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+
+                sIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(sIntent);
                 break;
 
 
             case R.id.nav_UsersSuper:
                 Intent uIntent = new Intent(this, SkylightUsersActivity.class);
-                uIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                uIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(uIntent);
                 break;
 
             case R.id.nav_bDays:
                 Intent myIntent3 = new Intent(SuperAdminOffice.this, BirthdayTab.class);
-                myIntent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                myIntent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(myIntent3);
                 break;
 
             case R.id.nav_Web:
                 Intent myWeb = new Intent(SuperAdminOffice.this, SkylightAllWeb.class);
-                myWeb.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                myWeb.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(myWeb);
                 break;
 
 
             case R.id.nav_All_New:
                 Intent myIntentTeller = new Intent(SuperAdminOffice.this, CreationTab.class);
-                myIntentTeller.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                myIntentTeller.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(myIntentTeller);
                 break;
 
             case R.id.nav_Reposting:
                 Intent updateIntent = new Intent(SuperAdminOffice.this, AdminRepostingAct.class);
-                updateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                updateIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                updateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(updateIntent);
                 break;
 
             case R.id.nav_Slider:
-                Intent myIntentTeller7 = new Intent(SuperAdminOffice.this, SkylightSliderAct.class);
-                myIntentTeller7.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Intent myIntentTeller7 = new Intent(SuperAdminOffice.this, AwajimaSliderAct.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                myIntentTeller7.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(myIntentTeller7);
                 break;
                 
             case R.id.nav_Accts:
                 Intent acctantIntentSper = new Intent(SuperAdminOffice.this, AcctantBackOffice.class);
-                acctantIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                acctantIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(acctantIntentSper);
                 break;
 
             case R.id.nav_Emergencies:
                 Intent emergencyIntentSper = new Intent(SuperAdminOffice.this, StateEmergList.class);
-                emergencyIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                emergencyIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(emergencyIntentSper);
                 break;
 
 
             case R.id.nav_User_Messages:
                 Intent myIntent5 = new Intent(SuperAdminOffice.this, SendSingleUserMAct.class);
-                myIntent5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                myIntent5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(myIntent5);
                 break;
             case R.id.nav_Tab:
                 Intent myIntent1 = new Intent(SuperAdminOffice.this, AdminTabActivity.class);
-                myIntent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                myIntent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(myIntent1);
                 break;
 
@@ -875,6 +1137,8 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
         switch (view.getId()) {
             case R.id.standingOrder3:
                 Intent active = new Intent(SuperAdminOffice.this, AdminSOTabAct.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
                 active.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                         Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(active);
@@ -883,10 +1147,15 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
                 Intent history = new Intent(SuperAdminOffice.this, ImportDateTab.class);
                 history.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                         Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
                 startActivity(history);
                 break;
             case R.id.superTimelinesA:
                 Intent timelineIntent = new Intent(SuperAdminOffice.this, AdminTimelineAct.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                timelineIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 timelineIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                         Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(timelineIntent);
@@ -899,37 +1168,61 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
 
     public void standingOrdersSuper(View view) {
         Intent so1Intent = new Intent(this, AdminSOTabAct.class);
-        so1Intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        so1Intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        so1Intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(so1Intent);
     }
 
     public void importantDateSuper(View view) {
         Intent iIntent = new Intent(this, ImportDateTab.class);
-        iIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        iIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        iIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(iIntent);
     }
 
     public void TimelinesSuper(View view) {
         Intent timelineIntent = new Intent(this, AdminTimelineAct.class);
-        timelineIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        timelineIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        timelineIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(timelineIntent);
     }
 
     public void goLoans(View view) {
         Intent loanIntent = new Intent(this, AdminLoanList.class);
-        loanIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        loanIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        loanIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(loanIntent);
     }
 
     public void goSoSuper(View view) {
         Intent so1Intent = new Intent(this, AdminSOTabAct.class);
-        so1Intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        so1Intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        so1Intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(so1Intent);
     }
 
     public void gpPackages(View view) {
         Intent pIntent = new Intent(this, AdminTabActivity.class);
-        pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        pIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(pIntent);
     }
 }

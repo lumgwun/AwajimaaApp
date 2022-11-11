@@ -50,7 +50,7 @@ import com.quickblox.messages.model.QBNotificationType;
 import com.quickblox.messages.services.QBPushManager;
 import com.quickblox.messages.services.SubscribeService;
 import com.quickblox.users.QBUsers;
-import com.skylightapp.Adapters.AccountAdapter2;
+import com.skylightapp.Adapters.AccountRecylerAdap;
 import com.skylightapp.Adapters.OfficeAdapter;
 import com.skylightapp.Admins.AdminBankDeposit;
 import com.skylightapp.Classes.Account;
@@ -240,7 +240,7 @@ public class SingleCusMessagingAct extends AppCompatActivity implements TextWatc
     private Profile lastProfileUsed;
     int PERMISSION_ALL = 1;
     private OfficeAdapter officeAdapter;
-    private AccountAdapter2 accountAdapter2;
+    private AccountRecylerAdap accountRecylerAdap;
     private Spinner spnSelectBankAcct,spnDepositTranxType;
     private ArrayList<OfficeBranch> officeBranchArrayList;
     private ArrayList<Account> accountArrayList;

@@ -30,7 +30,6 @@ import com.skylightapp.Classes.OfficeBranch;
 import com.skylightapp.Classes.TellerCountData;
 import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Classes.Utils;
-import com.skylightapp.MapAndLoc.PlaceContract;
 import com.skylightapp.MarketClasses.Market;
 import com.skylightapp.MarketClasses.MarketStock;
 import com.skylightapp.MarketClasses.StockAttrException;
@@ -55,6 +54,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -74,6 +74,14 @@ import static com.skylightapp.Admins.AdminBankDeposit.CREATE_ADMIN_DEPOSIT_TABLE
 import static com.skylightapp.Admins.AdminBankDeposit.DEPOSIT_TABLE;
 import static com.skylightapp.Awards.Award.AWARD_TABLE;
 import static com.skylightapp.Awards.Award.CREATE_AWARD_TABLE;
+import static com.skylightapp.Bookings.BoatTrip.BOAT_TRIP_TABLE;
+import static com.skylightapp.Bookings.BoatTrip.CREATE_BOAT_TRIP_TABLE;
+import static com.skylightapp.Bookings.BoatTripRoute.BOAT_TRIP_ROUTE_TABLE;
+import static com.skylightapp.Bookings.BoatTripRoute.CREATE_BOAT_TRIP_ROUTE_TABLE;
+import static com.skylightapp.Bookings.Driver.CREATE_DRIVER_TABLE;
+import static com.skylightapp.Bookings.Driver.DRIVER_TABLE;
+import static com.skylightapp.Bookings.TripBooking.CREATE_TRIP_BOOKING_TABLE;
+import static com.skylightapp.Bookings.TripBooking.TRIP_BOOKING_TABLE;
 import static com.skylightapp.Classes.Account.ACCOUNTS_TABLE;
 import static com.skylightapp.Classes.Account.ACCOUNT_TYPE;
 import static com.skylightapp.Classes.Account.ACCOUNT_TYPES_TABLE;
@@ -103,8 +111,9 @@ import static com.skylightapp.Classes.DailyAccount.DAILY_ACCOUNTING_TABLE;
 
 import static com.skylightapp.Classes.Profile.CREATE_USER_TYPE_TABLE;
 import static com.skylightapp.Classes.Profile.USER_TYPE_TABLE;
+import static com.skylightapp.Bookings.TripStopPoint.TRIP_STOP_POINT_TABLE;
+import static com.skylightapp.Bookings.TripStopPoint.CREATE_TRIP_STOP_POINT_TABLE;
 import static com.skylightapp.MapAndLoc.EmergReportNext.CREATE_EMERGENCY_NEXT_REPORT_TABLE;
-import static com.skylightapp.MapAndLoc.EmergReportNext.EMERGENCY_NEXT_REPORT_TABLE;
 import static com.skylightapp.MapAndLoc.EmergResponse.CREATE_RESPONSE_TABLE;
 import static com.skylightapp.MapAndLoc.EmergResponse.RESPONSE_TABLE;
 import static com.skylightapp.MapAndLoc.EmergencyReport.CREATE_EMERGENCY_REPORT_TABLE;
@@ -168,8 +177,22 @@ import static com.skylightapp.Inventory.StockTransfer.CREATE_T_STOCKS_TABLE;
 import static com.skylightapp.Inventory.StockTransfer.T_STOCKS_TABLE;
 import static com.skylightapp.Inventory.Stocks.CREATE_STOCK_TABLE;
 import static com.skylightapp.Inventory.Stocks.STOCKS_TABLE;
+import static com.skylightapp.MapAndLoc.FenceEvent.CREATE_FENCE_EVENT_TABLE;
+import static com.skylightapp.MapAndLoc.FenceEvent.FENCE_EVENT_TABLE;
 import static com.skylightapp.MapAndLoc.PlaceData.CREATE_PLACES_TABLE;
 import static com.skylightapp.MapAndLoc.PlaceData.PLACE_ENTRY_TABLE;
+import static com.skylightapp.MapAndLoc.TaxiDriver.CREATE_TAXI_DRIVER_TABLE;
+import static com.skylightapp.MapAndLoc.TaxiDriver.TAXI_DRIVER_TABLE;
+import static com.skylightapp.MapAndLoc.TaxiTrip.CREATE_TAXI_TRIP_TABLE;
+import static com.skylightapp.MapAndLoc.TaxiTrip.TAXI_TRIP_TABLE;
+import static com.skylightapp.MarketClasses.BizDealPartner.BDEAL_PARTNER_TABLE;
+import static com.skylightapp.MarketClasses.BizDealPartner.CREATE_BDEAL_PARTNER_TABLE;
+import static com.skylightapp.MarketClasses.BusinessDeal.BIZ_DEAL_CHAT_TABLE;
+import static com.skylightapp.MarketClasses.BusinessDeal.BIZ_DEAL_CODE_TABLE;
+import static com.skylightapp.MarketClasses.BusinessDeal.BIZ_DEAL_TABLE;
+import static com.skylightapp.MarketClasses.BusinessDeal.CREATE_BIZ_DEAL_CODE_TABLE;
+import static com.skylightapp.MarketClasses.BusinessDeal.CREATE_BIZ_DEAL_TABLE;
+import static com.skylightapp.MarketClasses.BusinessDeal.CREATE_DEAL_CHAT_TABLE;
 import static com.skylightapp.MarketClasses.Market.CREATE_MARKET_TABLE;
 import static com.skylightapp.MarketClasses.Market.MARKET_ID;
 import static com.skylightapp.MarketClasses.Market.MARKET_NAME;
@@ -363,6 +386,9 @@ import static com.skylightapp.Transactions.BillModel.CREATE_BILLS_TABLE;
 import static java.lang.String.valueOf;
 
 public class DBHelper extends SQLiteOpenHelper {
+    public static final String TAG = DBHelper.class.getSimpleName();
+    public static int flag;
+    String outFileName = "";
 
     private static final String BILL_CUSTOMER_ID = "billCus";
     private ContentResolver myCR;
@@ -372,20 +398,19 @@ public class DBHelper extends SQLiteOpenHelper {
     private HashMap hp;
     private ArrayList<Customer> customers;
     SharedPreferences userPref;
-    private Context context;
+    private Context mContext;
 
     private SQLiteDatabase db;
     private static String TICK = "`";
+    private File dbFile;
 
     private DBHelper dbHelper;
     private SharedPreferences sharedPreferences;
 
     private Bitmap missingPhoto;
 
-    public static String DB_PATH = "/data/Awajima";
-    private static String TAG = "Business Book";
-
-    public static final String DATABASE_NAME = "dB_Awajima";
+    public static String DB_PATH = "dA/";
+    public static final String DATABASE_NAME = "A.DBase";
     private static final String LOG = DBHelper.class.getName();
 
     public static final String TABLE_MYTABLE = "mytable";
@@ -393,15 +418,54 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String COl_MYTABLE_NAME = "name";
 
     public static final String BILL_ID_WITH_PREFIX = "bill.id";
-    public static final int DATABASE_VERSION = 13;
-    public static final int DATABASE_NEW_VERSION = 15;
+    public static final int DATABASE_VERSION = 37;
+    public static final int DATABASE_NEW_VERSION = 39;
     private static final String TIME_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss.SSSZZZZZ";
     private SimpleDateFormat timeStamp;
     private DateTimeFormatter timeFormat;
     private static final String PREF_NAME = "awajima";
+    private static String sqlite_ext_shm = "-shm";
+    private static String sqlite_ext_wal = "-wal";
+    private static int copy_buffer_size = 1024 * 8;
+    private static String stck_trc_msg = " (see stack-trace above)";
+    private static String sqlite_ext_journal = "-journal";
+    private static int db_user_version, asset_user_version, user_version_offset = 60, user_version_length = 4;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        //super(context, DATABASE_NAME, null, setUserVersionFromAsset(context,DATABASE_NAME));
+        this.mContext = context;
+        if (!ifDbExists(context,DATABASE_NAME)) {
+            try {
+                copyDBFromAssets(context, DATABASE_NAME,DATABASE_NAME);
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            setUserVersionFromAsset(context,DATABASE_NAME);
+            setUserVersionFromDB(context,DATABASE_NAME);
+            if (asset_user_version > db_user_version) {
+                copyDBFromAssets(context,DATABASE_NAME,DATABASE_NAME);
+            }
+        }
+        // Force open (and hence copy attempt) when constructing helper
+        myDB = this.getWritableDatabase();
+
+
+        outFileName = DB_PATH + DATABASE_NAME;
+        File file = new File(DB_PATH);
+        Log.e(TAG, "Awajima DB: " + file.exists());
+        if (!file.exists()) {
+            try {
+                file.getParentFile().mkdirs();
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+             // CHANGED you don't want the database to be a directory
+        }
+        //getDatabase(context);
         Log.d("table", CREATE_PROFILES_TABLE);
         Log.d("table", CREATE_PAYEES_TABLE);
         Log.d("table", CREATE_ACCOUNTS_TABLE);
@@ -456,11 +520,21 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.d("table", CREATE_SUPPLIER_TABLE);
         Log.d("table", CREATE_MARKET_BIZ_SUB_TABLE);
         Log.d("table", CREATE_USER_TYPE_TABLE);
-
+        Log.d("table", CREATE_BOAT_TRIP_ROUTE_TABLE);
+        Log.d("table", CREATE_BOAT_TRIP_TABLE);
+        Log.d("table", CREATE_TRIP_STOP_POINT_TABLE);
+        Log.d("table", CREATE_TRIP_BOOKING_TABLE);
+        Log.d("table", CREATE_TAXI_TRIP_TABLE);
+        Log.d("table", CREATE_TAXI_DRIVER_TABLE);
+        Log.d("table", CREATE_MARKET_TABLE);
+        Log.d("table", CREATE_FENCE_EVENT_TABLE);
+        Log.d("table", CREATE_BIZ_DEAL_CODE_TABLE);
+        Log.d("table", CREATE_BIZ_DEAL_TABLE);
+        Log.d("table", CREATE_BDEAL_PARTNER_TABLE);
+        Log.d("table", CREATE_DEAL_CHAT_TABLE);
 
         try {
-            this.context = context;
-            sharedPreferences = context.getSharedPreferences(PREF_NAME, 0);
+            sharedPreferences = mContext.getSharedPreferences(PREF_NAME, 0);
 
 
             timeStamp = new SimpleDateFormat(TIME_FORMAT_PATTERN,
@@ -470,7 +544,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 timeFormat = DateTimeFormatter.ofPattern(TIME_FORMAT_PATTERN, Locale.getDefault());
             }
 
-            missingPhoto = BitmapFactory.decodeResource(context.getResources(), R.drawable.user3);
+            missingPhoto = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.user3);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -479,6 +553,160 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     }
+    private static int setUserVersionFromAsset(Context context, String assetname) {
+        InputStream is = null;
+        try {
+            try {
+                is = context.getAssets().open(assetname);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            throw new RuntimeException("IOError Getting asset " + assetname + " as an InputStream" + stck_trc_msg);
+        }
+        if (is != null) {
+            asset_user_version = getUserVersion(is);
+        }
+        Log.d("ASSETUSERVERSION","Obtained user_version from asset, it is " + String.valueOf(asset_user_version)); //TODO remove for Live App
+        return asset_user_version;
+    }
+    private static boolean ifDbExists(Context context, String dbname) {
+        File db = context.getDatabasePath(dbname);
+        if (db.exists()) return true;
+        if (!db.getParentFile().exists()) {
+            db.getParentFile().mkdirs();
+        }
+        return false;
+    }
+    private static int setUserVersionFromDB(Context context, String dbname) {
+        File db = context.getDatabasePath(dbname);
+        InputStream is;
+        try {
+            is = new FileInputStream(db);
+        } catch (IOException e) {
+            throw new RuntimeException("IOError Opening " + db.getPath() + " as an InputStream" + stck_trc_msg);
+        }
+        db_user_version = getUserVersion(is);
+        Log.d("DATABASEUSERVERSION","Obtained user_version from current DB, it is " + String.valueOf(db_user_version)); //TODO remove for live App
+        return db_user_version;
+    }
+    private void getDatabase(Context context) {
+        dbFile = new File(context.getDatabasePath((DATABASE_NAME)).getPath());
+        if (dbFile.exists()) return; // Database found so all done
+        // Otherwise ensure that the database directory exists (does not by default until later versions)
+        if (!dbFile.getParentFile().exists()) {
+            dbFile.getParentFile().mkdirs();
+        }
+        if (!copyDataBase()) {
+            throw new RuntimeException("Unable to copy database from the asset (check the stack-trace).");
+        }
+    }
+
+    private static int getUserVersion(InputStream is) {
+        String ioerrmsg = "Reading DB header bytes(60-63) ";
+        int rv;
+        byte[] buffer = new byte[user_version_length];
+        byte[] header = new byte[64];
+        try {
+            is.skip(user_version_offset);
+            is.read(buffer,0,user_version_length);
+            ByteBuffer bb = ByteBuffer.wrap(buffer);
+            rv = ByteBuffer.wrap(buffer).getInt();
+            ioerrmsg = "Closing DB ";
+            is.close();
+            return rv;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw  new RuntimeException("IOError " + ioerrmsg + stck_trc_msg);
+        }
+    }
+    private static void copyDBFromAssets(Context context, String dbname, String assetname) {
+        String tag = "COPYDBFROMASSETS";
+        Log.d(tag,"Copying Database from assets folder");
+        String backup_base = "bkp_" + String.valueOf(System.currentTimeMillis());
+        String ioerrmsg = "Opening Asset " + assetname;
+
+        // Prepare Files that could be used
+        File db = context.getDatabasePath(dbname);
+        File dbjrn = new File(db.getPath() + sqlite_ext_journal);
+        File dbwal = new File(db.getPath() + sqlite_ext_wal);
+        File dbshm = new File(db.getPath() + sqlite_ext_shm);
+        File dbbkp = new File(db.getPath() + backup_base);
+        File dbjrnbkp = new File(db.getPath() + backup_base);
+        File dbwalbkp = new File(db.getPath() + backup_base);
+        File dbshmbkp = new File(db.getPath() + backup_base);
+        byte[] buffer = new byte[copy_buffer_size];
+        int bytes_read = 0;
+        int total_bytes_read = 0;
+        int total_bytes_written = 0;
+
+        // Backup existing sqlite files
+        if (db.exists()) {
+            db.renameTo(dbbkp);
+            dbjrn.renameTo(dbjrnbkp);
+            dbwal.renameTo(dbwalbkp);
+            dbshm.renameTo(dbshmbkp);
+        }
+        // ALWAYS delete the additional sqlite log files
+        dbjrn.delete();
+        dbwal.delete();
+        dbshm.delete();
+
+        //Attempt the copy
+        try {
+            ioerrmsg = "Open InputStream for Asset " + assetname;
+            InputStream is = context.getAssets().open(assetname);
+            ioerrmsg = "Open OutputStream for Databse " + db.getPath();
+            OutputStream os = new FileOutputStream(db);
+            ioerrmsg = "Read/Write Data";
+            while((bytes_read = is.read(buffer)) > 0) {
+                total_bytes_read = total_bytes_read + bytes_read;
+                os.write(buffer,0,bytes_read);
+                total_bytes_written = total_bytes_written + bytes_read;
+            }
+            ioerrmsg = "Flush Written data";
+            os.flush();
+            ioerrmsg = "Close DB OutputStream";
+            os.close();
+            ioerrmsg = "Close Asset InputStream";
+            is.close();
+            Log.d(tag,"Databsse copied from the assets folder. " + String.valueOf(total_bytes_written) + " bytes were copied.");
+            // Delete the backups
+            dbbkp.delete();
+            dbjrnbkp.delete();
+            dbwalbkp.delete();
+            dbshmbkp.delete();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("IOError attempting to " + ioerrmsg + stck_trc_msg);
+        }
+    }
+    public void createDataBase() throws IOException {
+        boolean dbExist = checkDataBase();
+        if (dbExist) {
+            //
+        } else {
+            this.getReadableDatabase();
+            copyDataBase();
+        }
+    }
+    /*public void createDataBase() throws IOException {
+        boolean dbExist = checkDataBase();
+
+        if (dbExist) {
+            openDataBase();
+        } else {
+            this.getReadableDatabase();
+            try {
+                copyDataBase();
+            } catch (IOException e) {
+                Log.e("App - create", e.getMessage());
+            }
+        }
+
+    }*/
+
 
     /*public DBHelper(Context context, String DATABASE_NAME,
                     SQLiteDatabase.CursorFactory factory, int version) {
@@ -542,8 +770,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_SKYLIGHT_CASH_TABLE);
             db.execSQL(CREATE_MARKET_STOCK_TABLE);
             db.execSQL(CREATE_MARKET_TABLE);
-
-            db.execSQL(EMERGENCY_NEXT_REPORT_TABLE);
+            db.execSQL(CREATE_EMERGENCY_NEXT_REPORT_TABLE);
             db.execSQL(CREATE_DAILY_ACCOUNTING_TABLE);
             db.execSQL(CREATE_JOURNEY_TABLE);
             db.execSQL(CREATE_JOURNEY_ACCOUNT_TABLE);
@@ -552,9 +779,20 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_PLACES_TABLE);
             db.execSQL(CREATE_RESPONSE_TABLE);
             db.execSQL(CREATE_SUPPLIER_TABLE);
-            db.execSQL(MARKET_BIZ_SUB_TABLE);
+            db.execSQL(CREATE_MARKET_BIZ_SUB_TABLE);
             db.execSQL(CREATE_USER_TYPE_TABLE);
-
+            db.execSQL(CREATE_BOAT_TRIP_ROUTE_TABLE);
+            db.execSQL(CREATE_BOAT_TRIP_TABLE);
+            db.execSQL(CREATE_DRIVER_TABLE);
+            db.execSQL(CREATE_TRIP_STOP_POINT_TABLE);
+            db.execSQL(CREATE_TRIP_BOOKING_TABLE);
+            db.execSQL(CREATE_TAXI_TRIP_TABLE);
+            db.execSQL(CREATE_TAXI_DRIVER_TABLE);
+            db.execSQL(CREATE_FENCE_EVENT_TABLE);
+            db.execSQL(CREATE_BIZ_DEAL_CODE_TABLE);
+            db.execSQL(CREATE_BIZ_DEAL_TABLE);
+            db.execSQL(CREATE_BDEAL_PARTNER_TABLE);
+            db.execSQL(CREATE_DEAL_CHAT_TABLE);
 
             db.execSQL("create table ROLES " + "(role_ID integer primary key, roleUserName text,rolePassword text,rolePhoneNo text,role text)");
             db.setTransactionSuccessful();
@@ -635,6 +873,18 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + SUPPLIER_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MARKET_BIZ_SUB_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + USER_TYPE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BOAT_TRIP_ROUTE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BOAT_TRIP_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + DRIVER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TRIP_STOP_POINT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TRIP_BOOKING_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TAXI_TRIP_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TAXI_DRIVER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + FENCE_EVENT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BIZ_DEAL_CODE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BIZ_DEAL_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BDEAL_PARTNER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BIZ_DEAL_CHAT_TABLE);
 
         onCreate(db);
 
@@ -704,6 +954,18 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + SUPPLIER_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MARKET_BIZ_SUB_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + USER_TYPE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BOAT_TRIP_ROUTE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BOAT_TRIP_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + DRIVER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TRIP_STOP_POINT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TRIP_BOOKING_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TAXI_TRIP_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TAXI_DRIVER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + FENCE_EVENT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BIZ_DEAL_CODE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BIZ_DEAL_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BDEAL_PARTNER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BIZ_DEAL_CHAT_TABLE);
         onCreate(db);
     }
 
@@ -807,7 +1069,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
     private void copyFile(String fullPath, String filename) {
-        AssetManager assetManager = context.getAssets();
+        AssetManager assetManager = mContext.getAssets();
 
         InputStream in;
         OutputStream out;
@@ -833,7 +1095,13 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public static String getDatabasePath(Context context) {
-        return context.getDatabasePath(DATABASE_NAME).getPath();
+        try {
+            return context.getDatabasePath(DATABASE_NAME).getPath();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public boolean isTableExists(String tableName) {
@@ -873,9 +1141,23 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-
-
     private boolean checkDataBase() {
+        SQLiteDatabase checkDB = null;
+        try {
+            checkDB = SQLiteDatabase.openDatabase(outFileName, null, SQLiteDatabase.OPEN_READONLY);
+        } catch (SQLiteException e) {
+            copyDataBase();
+        }
+
+        if (checkDB != null) {
+            checkDB.close();
+        }
+        return checkDB != null ? true : false;
+    }
+
+
+
+    /*private boolean checkDataBase() {
         SQLiteDatabase tempDB = null;
         try {
             String myPath = DB_PATH + DATABASE_NAME;
@@ -888,11 +1170,40 @@ public class DBHelper extends SQLiteOpenHelper {
             //tempDB.close();
             return tempDB != null ? true : false;
         return false;
+    }*/
+
+    private boolean  copyDataBase() {
+        Log.i("Database",
+                "Awajima database is being copied to device!");
+        byte[] buffer = new byte[4096]; //Probably more efficient as default page size will be 4k
+        OutputStream myOutput = null;
+        int length;
+        // Open your local db as the input stream
+        InputStream myInput = null;
+        try {
+            myInput = mContext.getAssets().open(DATABASE_NAME);
+            // transfer bytes from the inputfile to the
+            // outputfile
+            myOutput = new FileOutputStream(DB_PATH);
+            while ((length = myInput.read(buffer)) > 0) {
+                myOutput.write(buffer, 0, length);
+            }
+            myOutput.close();
+            myOutput.flush();
+            myInput.close();
+            Log.i("Database",
+                    "New database has been copied to device!");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
-    public void copyDataBase() throws IOException {
+
+    /*public boolean copyDataBase() throws IOException {
         try {
-            InputStream myInput = context.getAssets().open(DATABASE_NAME);
+            InputStream myInput = mContext.getAssets().open(DATABASE_NAME);
             String outputFileName = DB_PATH + DATABASE_NAME;
             OutputStream myOutput = new FileOutputStream(outputFileName);
 
@@ -910,7 +1221,8 @@ public class DBHelper extends SQLiteOpenHelper {
             Log.e("tle99 - copyDatabase", e.getMessage());
         }
 
-    }
+        return false;
+    }*/
     private synchronized SQLiteDatabase openWrite(SQLiteOpenHelper handler) {
         if (handler != null) {
             return handler.getWritableDatabase();
@@ -928,14 +1240,30 @@ public class DBHelper extends SQLiteOpenHelper {
     private synchronized void close(SQLiteDatabase db) {
         if (db != null && db.isOpen()) {
             db.close();
+            super.close();
         }
     }
-
     public void openDataBase() throws SQLException {
+        //Open the database
+        String myPath = DB_PATH + DATABASE_NAME;
+        db = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+        Log.e(TAG, "openDataBase: Open " + db.isOpen());
+    }
+    @Override
+    public synchronized void close() {
+        if (db != null)
+            db.close();
+        super.close();
+        Log.i(DBHelper.class.getName(), "Database is closed");
+    }
+
+    /*public void openDataBase() throws SQLException {
         String myPath = DB_PATH + DATABASE_NAME;
         myDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
+        Log.e(TAG, "openDataBase: Open " + db.isOpen());
         sqLiteDatabase.execSQL("PRAGMA foreign_keys=ON");
-    }
+
+    }*/
     public SQLiteDatabase openDataBase(SQLiteDatabase db) {
         if(db.isOpen()){
             sqLiteDatabase.execSQL("PRAGMA foreign_keys=ON");
@@ -947,21 +1275,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public void createDataBase() throws IOException {
-        boolean dbExist = checkDataBase();
 
-        if (dbExist) {
-            openDataBase();
-        } else {
-            this.getReadableDatabase();
-            try {
-                copyDataBase();
-            } catch (IOException e) {
-                Log.e("App - create", e.getMessage());
-            }
-        }
-
-    }
     public void closeDB() {
         SQLiteDatabase db = this.getReadableDatabase();
         if (db != null && db.isOpen())
@@ -4864,7 +5178,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(PROFILE_ADDRESS, profile.getProfileAddress());
         cv.put(PROFILE_NIN, profile.getProfileState());
         cv.put(PROFILE_STATE, profile.getProfileIdentity());
-        cv.put(PROFILE_OFFICE, profile.getProfileOffice());
+        cv.put(PROFILE_OFFICE, profile.getProfOfficeName());
         cv.put(PROFILE_DATE_JOINED, profile.getProfileDateJoined());
         cv.put(PROFILE_ROLE, profile.getProfileRole());
         cv.put(PROFILE_USERNAME, profile.getProfileUserName());
@@ -5952,10 +6266,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void close() {
-        Log.i(DBHelper.class.getName(), "Database is closed");
-        db.close();
-    }
+
 
     private ContentValues contentValuesFrom(MarketStock p) {
         ContentValues content = new ContentValues();
@@ -5975,7 +6286,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     private String getOrderBy(){
-        String sortBy = PreferenceManager.getDefaultSharedPreferences(context).getString(StockSettingAct.PREF_SORT_BY, "Name");
+        String sortBy = PreferenceManager.getDefaultSharedPreferences(mContext).getString(StockSettingAct.PREF_SORT_BY, "Name");
 
         if (sortBy.equals("Name")) {
             return KEY_PROD_NAME + " ASC";

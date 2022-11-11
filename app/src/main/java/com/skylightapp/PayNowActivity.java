@@ -1005,7 +1005,7 @@ public class PayNowActivity extends AppCompatActivity  {
         }
 
 
-        transaction.setTransactionId(transactionID);
+        transaction.setTranxIdString(transactionID);
 
         transaction.setTranxAmount(totalToday);
         //long profileID =userProfile.getuID();

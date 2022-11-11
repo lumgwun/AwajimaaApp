@@ -20,16 +20,8 @@ import com.skylightapp.Database.DBHelper;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 public class SignTabMainActivity extends TabActivity {
-    private AppBarLayout appBarLayout;
     com.melnykov.fab.FloatingActionButton floatingActionButton;
     Profile userProfile;
-    int profileUID2;
-    int id;
-    String userName;
-    String password;
-    Customer customer;
-    Bundle getBundle;
-    String name;
     com.github.clans.fab.FloatingActionButton fab;
     SharedPreferences userPreferences;
     DBHelper dbHelper;

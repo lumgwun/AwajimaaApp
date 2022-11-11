@@ -6,34 +6,203 @@
     tools:showIn="navigation_view">
     <group android:checkableBehavior="single"
         android:menuCategory="system">
-        <item
-            android:id="@+id/nav_dashboard44"
-            android:icon="@drawable/ic_dashboard_black_24dp"
-            android:title="My Dashboard" />
+        <item android:title="Home">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_dashboard44"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="My Dashboard" />
+                </group>
+            </menu>
+        </item>
+        <item android:title="Reports">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_cus_Env"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Environment Reports" />
+                    <item
+                        android:id="@+id/nav_Crime_Cus"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Crime Reports" />
+                    <item
+                        android:id="@+id/nav_Cus_Emerg"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Emergency Reports" />
+                </group>
+            </menu>
+        </item>
+        <item android:title="Climate Change">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_climate_change"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title=" Reports Climate Change" />
+                </group>
+            </menu>
+        </item>
 
-        <item
-            android:id="@+id/timeline_cus24"
-            android:icon="@drawable/ic_icon2"
-            android:title="My Timeline" />
+        <item android:title="Market Area">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_cus_market"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Market Arena" />
 
-        <item
-            android:id="@+id/nav_act_package44"
-            android:icon="@drawable/ic_icon2"
-            android:title="Skylight Packages" />
-        <item
-            android:id="@+id/nav_my_package44"
-            android:icon="@drawable/ic_icon2"
-            android:title="My Packages" />
+                    <item
+                        android:id="@+id/nav_New_market"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Register a New Market" />
 
-        <item
-            android:id="@+id/my_packageTab"
-            android:icon="@drawable/ic_icon2"
-            android:title="My Packages" />
+                </group>
+            </menu>
+        </item>
 
-        <item
-            android:id="@+id/nav_my_package44_payment"
-            android:icon="@drawable/ic_icon2"
-            android:title="My Packages for payment" />
+
+        <item android:title="Business">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_cus_Biz"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Business Area" />
+
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="Bookings">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/booking_nav_taxi"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Taxi Booking Tab" />
+
+                    <item
+                        android:id="@+id/nav_train_bookings"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Train Bookings" />
+
+                    <item
+                        android:id="@+id/boat_cus_bookings"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Boat Bookings" />
+                    <item
+                        android:id="@+id/session_booking_cus"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Session Bookings" />
+
+                    <item
+                        android:id="@+id/session_tour_cus"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Tour Bookings" />
+
+                    <item
+                        android:id="@+id/jet_charter_cus"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Jet Charter Bookings" />
+
+                </group>
+            </menu>
+        </item>
+        <item android:title="My Stocks">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_cus_Stocks"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Logistics" />
+
+                </group>
+            </menu>
+        </item>
+        <item android:title="My Subscription">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_cus_Subscription"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Subscriptions" />
+
+                </group>
+            </menu>
+        </item>
+        <item android:title="My History">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/history_cus_Nav"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="History" />
+
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="My Accounts">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_cus_accounts"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Accounts" />
+
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="My TimeLines">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_cus_timelines"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="My TimeLines" />
+
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="My Insurance">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_cus_Insurance"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="My Insurance" />
+
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="Packages">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_cus_packs"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="My Packages" />
+
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="Group Savings">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_cus_GrpSavings"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Group Savings" />
+                </group>
+            </menu>
+        </item>
+
 
 
         <item android:title="Transaction">
@@ -41,7 +210,7 @@
                 <group android:checkableBehavior="single">
 
                     <item
-                        android:id="@+id/nav_so0994"
+                        android:id="@+id/nav_so_cus"
                         android:icon="@drawable/ic_icon2"
                         android:title="Use Standing Order" />
                     <item
@@ -61,14 +230,7 @@
                         android:id="@+id/nav_tx5"
                         android:icon="@drawable/ic_icon2"
                         android:title="My Transactions" />
-                    <item
-                        android:id="@+id/nav_loan35"
-                        android:icon="@drawable/ic_icon2"
-                        android:title="My Loans" />
-                    <item
-                        android:id="@+id/nav_borrow6"
-                        android:icon="@drawable/ic_icon2"
-                        android:title="Borrow" />
+
 
 
                 </group>
@@ -90,10 +252,7 @@
         <item android:title="Loan">
             <menu>
                 <group android:checkableBehavior="single">
-                    <item
-                        android:id="@+id/nav_loan6"
-                        android:icon="@drawable/ic_dashboard_black_24dp"
-                        android:title="My Settings" />
+
                     <item
                         android:id="@+id/my_Loan_Tab"
                         android:icon="@drawable/ic_dashboard_black_24dp"
@@ -109,6 +268,17 @@
                         android:id="@+id/nav_Utils"
                         android:icon="@drawable/ic_dashboard_black_24dp"
                         android:title="Utilities" />
+                </group>
+            </menu>
+        </item>
+        <item android:title="Our Privacy Policy">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/cus_pp_nav"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Our Privacy Policy" />
+
                 </group>
             </menu>
         </item>

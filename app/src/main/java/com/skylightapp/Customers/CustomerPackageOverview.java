@@ -56,7 +56,7 @@ public class CustomerPackageOverview extends Fragment {
 
     private int selectedAccountIndex;
     FragmentActivity activity;
-    private Customer userProfile;
+    private Customer customer;
     long profileID;
 
     public CustomerPackageOverview() {
@@ -91,19 +91,20 @@ public class CustomerPackageOverview extends Fragment {
         //btnHistory = rootView.findViewById(R.id.acct_overview_1);
         //btnLoanOverview = rootView.findViewById(R.id.loan_overview_1);
         //addSavings = rootView.findViewById(R.id.cm_add_pack);
+        customer= new Customer();
         txtTitleMessage = rootView.findViewById(R.id.package_tittle2);
         recyclerView = rootView.findViewById(R.id.recycler_view_cus);
 
         userPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         gson = new Gson();
         json = userPreferences.getString("LastProfileUsed", "");
-        userProfile = gson.fromJson(json, Customer.class);
+        customer = gson.fromJson(json, Customer.class);
 
         skyLightPackages = new ArrayList<SkyLightPackage>();
         mAdapter = new PackageRecyclerAdapter(getContext(), R.layout.package_list_row,skyLightPackages);
         dbHelper = new DBHelper(getContext());
-        if(userProfile !=null){
-            int profileID =userProfile.getCusUID();
+        if(customer !=null){
+            int profileID = customer.getCusUID();
             skyLightPackages = dbHelper.getPackagesFromCustomer(profileID);
 
         }

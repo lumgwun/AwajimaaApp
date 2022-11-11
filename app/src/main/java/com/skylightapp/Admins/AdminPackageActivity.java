@@ -13,7 +13,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.skylightapp.Adapters.AccountAdapter2;
+import com.skylightapp.Adapters.AccountRecylerAdap;
 import com.skylightapp.Adapters.MySavingsCodeAdapter;
 import com.skylightapp.Adapters.SkyLightPackageAdapter;
 import com.skylightapp.Adapters.StandingOrderAdapter;
@@ -56,7 +56,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class AdminPackageActivity extends AppCompatActivity implements SkyLightPackageAdapter.OnItemsClickListener,SuperSavingsAdapter.OnItemsClickListener, MySavingsCodeAdapter.OnItemsClickListener, TranxAdminA.OnItemsClickListener,StandingOrderAdapter.OnItemsClickListener,AccountAdapter2.OnItemsClickListener {
+public class AdminPackageActivity extends AppCompatActivity implements SkyLightPackageAdapter.OnItemsClickListener,SuperSavingsAdapter.OnItemsClickListener, MySavingsCodeAdapter.OnItemsClickListener, TranxAdminA.OnItemsClickListener,StandingOrderAdapter.OnItemsClickListener, AccountRecylerAdap.OnAcctClickListener {
     private SharedPreferences userPreferences;
     PrefManager prefManager;
     private Gson gson;
@@ -69,7 +69,7 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
     private List<CustomerDailyReport> customerDailyReports;
     private StandingOrderAdapter standingOrderAdapter;
     private TranxAdminA tranxAdminA;
-    private AccountAdapter2 accountAdapter;
+    private AccountRecylerAdap accountAdapter;
     private MySavingsCodeAdapter codeAdapter;
     private SuperSavingsAdapter savingsAdapter;
     SkyLightPackageAdapter packageAdapter;
@@ -107,7 +107,7 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
     private OfficeBranchDAO officeBranchDAO;
     private BirthdayDAO birthdayDAO;
     SharedPreferences sharedpreferences;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
 
 
     @Override
@@ -251,7 +251,21 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
         recyclerPackages.setLayoutManager(layoutManager1);
-        skyLightPackages = dbHelper.getAllPackagesAdmin();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            //dbHelper = new DBHelper(this);
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+                skyLightPackages = dbHelper.getAllPackagesAdmin();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+
+
         packageAdapter = new SkyLightPackageAdapter(AdminPackageActivity.this,skyLightPackages);
         //recyclerPackages.setHasFixedSize(true);
         recyclerPackages.setAdapter(packageAdapter);
@@ -266,7 +280,19 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
 
         LinearLayoutManager layoutManager2
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        paymentCodeArrayList = codeDAO.getAllSavingsCodes();
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            try {
+                paymentCodeArrayList = codeDAO.getAllSavingsCodes();
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
         try {
             codeInt=paymentCodeArrayList.size();
 
@@ -283,31 +309,31 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
         }
         recyclerCodes.setLayoutManager(layoutManager2);
         codeAdapter = new MySavingsCodeAdapter(AdminPackageActivity.this,paymentCodeArrayList);
-        //recyclerCodes.setHasFixedSize(true);
         DividerItemDecoration dividerItemDecoration2 = new DividerItemDecoration(recyclerCodes.getContext(),
                 layoutManager.getOrientation());
         recyclerCodes.addItemDecoration(dividerItemDecoration2);
         recyclerCodes.setItemAnimator(new DefaultItemAnimator());
         recyclerCodes.setAdapter(codeAdapter);
-        //SnapHelper snapHelperCodes = new PagerSnapHelper();
-        //snapHelperCodes.attachToRecyclerView(recyclerCodes);
-
-
-
 
         LinearLayoutManager layoutManager3
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
         rcyclerTransactions.setLayoutManager(layoutManager3);
 
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            try {
+                transactions2 = tranXDAO.getAllTransactionAdmin();
 
-        try {
-            transactions2 = tranXDAO.getAllTransactionAdmin();
 
 
-        } catch (NullPointerException e) {
-            e.printStackTrace();
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
         }
+
 
         try {
             txInt=transactions2.size();
@@ -385,7 +411,7 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
         DividerItemDecoration dividerItemDecoAcct = new DividerItemDecoration(recyclerAccounts.getContext(),
                 layoutManager.getOrientation());
         recyclerAccounts.addItemDecoration(dividerItemDecoAcct);
-        accountAdapter = new AccountAdapter2(AdminPackageActivity.this,accounts);
+        accountAdapter = new AccountRecylerAdap(AdminPackageActivity.this,accounts);
         //recyclerAccounts.setHasFixedSize(true);
         accountAdapter.setWhenClickListener(this);
         //SnapHelper snapHelperAcct = new PagerSnapHelper();
@@ -403,7 +429,7 @@ public class AdminPackageActivity extends AppCompatActivity implements SkyLightP
     }
 
     @Override
-    public void onItemClick(Account account) {
+    public void onAcctClicked(Account account) {
 
     }
 

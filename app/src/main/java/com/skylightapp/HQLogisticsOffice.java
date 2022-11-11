@@ -135,7 +135,7 @@ public class HQLogisticsOffice extends TabActivity {
 
                             case R.id.cTimeLine:
 
-                                Intent chat = new Intent(HQLogisticsOffice.this, MyTimelineAct.class);
+                                Intent chat = new Intent(HQLogisticsOffice.this, LogisticParkAct.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
                                 chat.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -154,7 +154,7 @@ public class HQLogisticsOffice extends TabActivity {
 
                             case R.id.cPackageT:
 
-                                Intent pIntent = new Intent(HQLogisticsOffice.this, PackListTab.class);
+                                Intent pIntent = new Intent(HQLogisticsOffice.this, BizLogisticsOffice.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
                                 pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

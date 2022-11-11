@@ -24,6 +24,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.ResultReceiver;
 import android.os.SystemClock;
 import android.util.Log;
@@ -238,7 +239,7 @@ public class LocationUpdateAct extends AppCompatActivity implements LocationList
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                 .setInterval(10 * 1000)        // 10 seconds, in milliseconds
-                .setFastestInterval(1000); // 1 second, in milliseconds
+                .setFastestInterval(5000); // 1 second, in milliseconds
 
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPrefUserMachine = userPreferences.getString("machine", "");
@@ -531,8 +532,8 @@ public class LocationUpdateAct extends AppCompatActivity implements LocationList
                     LOCATION_PERMISSION_REQUEST_CODE);
         } else {
             LocationRequest locationRequest = new LocationRequest();
-            locationRequest.setInterval(2000);
-            locationRequest.setFastestInterval(1000);
+            locationRequest.setInterval(5000);
+            locationRequest.setFastestInterval(4000);
             locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
             fusedLocationClient.requestLocationUpdates(locationRequest,
@@ -813,6 +814,40 @@ public class LocationUpdateAct extends AppCompatActivity implements LocationList
     protected void onResume() {
         super.onResume();
         startLocationUpdates();
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                googleApiClient, mLocationRequest, this);
+        //fusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, request, new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+
+
+                double lat = location.getLatitude();
+                double lng = location.getLongitude();
+
+                LocationUpdateAct.this.latitude1 = lat;
+                LocationUpdateAct.this.longitude1 = lng;
+
+                try {
+                    if (now != null) {
+                        now.remove();
+                    }
+
+                    userLocation = new LatLng(LocationUpdateAct.this.latitude1, LocationUpdateAct.this.longitude1);
+                    cusLatLng = userLocation;
+
+
+                } catch (Exception ex) {
+
+                    ex.printStackTrace();
+                    Log.e("MapException", ex.getMessage());
+
+                }
+
+
+            }
+
+        });
     }
 
     @Override

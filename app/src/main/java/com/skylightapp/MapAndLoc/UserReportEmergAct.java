@@ -38,6 +38,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.os.Parcelable;
 import android.provider.Settings;
 import android.util.Log;
@@ -51,8 +52,10 @@ import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
@@ -79,14 +82,18 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.melnykov.fab.FloatingActionButton;
+import com.skylightapp.Classes.Birthday;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Utils;
 import com.skylightapp.Customers.CustomerHelpActTab;
+import com.skylightapp.Customers.CustomerPayAct;
+import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Customers.PackListTab;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.EmergReportDAO;
+import com.skylightapp.Database.EmergReportNextDAO;
 import com.skylightapp.LoginDirAct;
 import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.Markets.MarketBizOffice;
@@ -110,11 +117,11 @@ import java.util.concurrent.ThreadLocalRandom;
 import static com.skylightapp.Classes.ImageUtil.TAG;
 
 
-public class UserReportEmergAct extends AppCompatActivity implements LocationListener,GoogleApiClient.ConnectionCallbacks,
+public class UserReportEmergAct extends AppCompatActivity implements LocationListener, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback {
     Location location;
     StreetViewPanorama streetViewPanorama;
-//OnStreetViewPanoramaReadyCallback
+    //OnStreetViewPanoramaReadyCallback
     private SharedPreferences userPreferences;
     private static final int REQUEST_CHECK_SETTINGS = 1000;
     private String s, bgAddress;
@@ -132,15 +139,15 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
     CameraUpdate cLocation;
     List<Address> addresses;
     Geocoder geocoder;
-    private AppCompatSpinner spnTypeOfEmerg;
+    private AppCompatSpinner spnTypeOfEmerg,spnSafe;
     Profile tellerProfile;
     private CustomerManager customerManager;
     Location customerLoc;
 
     LatLng cusLatLng;
     SharedPreferences.Editor editor;
-    Gson gson, gson1,gson2;
-    String json, json1, json2,userName, userPassword, userMachine, dateOfToday, selectedType;
+    Gson gson, gson1, gson2;
+    String json, json1, json2, userName, userPassword, userMachine, dateOfToday, selectedType;
     Profile userProfile, customerProfile;
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
@@ -153,38 +160,40 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
 
     AppCompatButton btnSubmitReport;
 
-    AppCompatTextView txtLocAddress, txtLat,txtLocTittle, txtLng;
-    private static final String PREF_NAME = "skylight";
+    AppCompatTextView txtLocAddress, txtLat, txtLocTittle, txtLng;
+    private static final String PREF_NAME = "awajima";
     String SharedPrefUserMachine;
     String SharedPrefUserName;
-    String SharedPrefProfileID,stringLatLng;
-    //Task<Void> myProfile;
-    private int locationRequestCode = 1000;
-    Task<Void> myProfileDatabaseRef;
+    String SharedPrefProfileID, stringLatLng;
     EmergencyReport emergencyReport;
     private CancellationTokenSource cancellationTokenSource;
     PlacesClient placesClient;
     private boolean locationPermissionGranted;
-    private View mapView,mapView2;
-    LatLng userLocation,dest;
+    private View mapView, mapView2;
+    LatLng userLocation, dest;
     private Woosmap woosmap;
-    GoogleMap googleMapView,map,mMap;
+    GoogleMap googleMapView, map, mMap;
 
     private GoogleApiClient googleApiClient;
     SupportMapFragment mapFrag;
     Location mLastLocation;
     Marker mCurrLocationMarker;
     private FloatingActionButton homeFab;
-    private long reportIDF=0;
-    private String placeID,type,address,country;
+    private long reportIDF = 0;
+    private String placeID, type, address, country;
     private Bundle bundle;
-    private String locality;
+    private String locality,safeOption;
     private MarketBusiness marketBusiness;
     private long bizID;
     Place place;
     int PERMISSION_ALL = 1;
     private ChipNavigationBar chipNavigationBar;
     private SQLiteDatabase sqLiteDatabase;
+    boolean firstTimeFlag;
+    private LocationRequest locationRequest;
+    private boolean iSReportingForSelf;
+    private int reportTrackingID;
+    private com.google.android.material.floatingactionbutton.FloatingActionButton fabEmerg;
 
     private FusedLocationProviderClient fusedLocationClient;
     String[] PERMISSIONS = {
@@ -198,14 +207,14 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     switch (result.getResultCode()) {
-                        case Activity.RESULT_OK :
+                        case Activity.RESULT_OK:
                             if (result.getData() != null) {
                                 Intent data = result.getData();
                                 //resultUri = data.getData();
                                 place = PlacePicker.getPlace(UserReportEmergAct.this, data);
-                                cusLatLng=place.getLatLng();
-                                if(place !=null){
-                                    placeID=place.getId();
+                                cusLatLng = place.getLatLng();
+                                if (place != null) {
+                                    placeID = place.getId();
                                     address = String.valueOf(place.getAddress());
                                 }
                                 //Bundle bundle = data.getBundleExtra("userLocBundle");
@@ -229,7 +238,22 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
                 }
 
             });
+    private final LocationCallback mLocationCallback = new LocationCallback() {
 
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            super.onLocationResult(locationResult);
+            if (locationResult.getLastLocation() == null)
+                return;
+            location = locationResult.getLastLocation();
+
+            if (firstTimeFlag && map != null) {
+                animateCamera(location);
+                firstTimeFlag = false;
+            }
+            showMarker(location);
+        }
+    };
 
 
     @SuppressLint("MissingPermission")
@@ -241,49 +265,51 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
         woosmap = Woosmap.getInstance().initializeWoosmap(this);
         chipNavigationBar = findViewById(R.id.gsavings_nav_bar);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        chipNavigationBar = findViewById(R.id.mb_nav_bar);
+        chipNavigationBar = findViewById(R.id.emerg_Bar);
         mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map34R);
 
         if (mapFrag != null) {
             mapFrag.getMapAsync(this);
             mapView = mapFrag.getView();
         }
-        bundle= new Bundle();
+        bundle = new Bundle();
         if (!hasPermissions(UserReportEmergAct.this, PERMISSIONS)) {
             ActivityCompat.requestPermissions(UserReportEmergAct.this, PERMISSIONS, PERMISSION_ALL);
         }
         if (googleApiClient == null) {
 
-            googleApiClient = new GoogleApiClient.Builder( this )
-                    .addConnectionCallbacks( this )
-                    .addOnConnectionFailedListener( this )
-                    .addApi( LocationServices.API )
+            googleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    //.addApi(LocationServices.API)
                     .build();
         }
         googleApiClient.connect();
+        locationRequest = LocationRequest.create();
         //createLocationRequest();
         //setInitialLocation();
-        //fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         //getDeviceLocation(dest, latitute1, longitute1);
         gson1 = new Gson();
-        gson = new Gson();
+        gson2 = new Gson();
         today = new Date();
         dbHelper = new DBHelper(this);
         userProfile = new Profile();
         customer = new Customer();
         addresses = new ArrayList<>();
-        marketBusiness= new MarketBusiness();
+        marketBusiness = new MarketBusiness();
         emergencyReport = new EmergencyReport();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
-        SharedPrefUserMachine=userPreferences.getString("machine", "");
-        SharedPrefProfileID= String.valueOf(userPreferences.getLong("PROFILE_ID", 0));
+        SharedPrefUserName = userPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserMachine = userPreferences.getString("machine", "");
+        SharedPrefProfileID = String.valueOf(userPreferences.getLong("PROFILE_ID", 0));
         json1 = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson1.fromJson(json1, Profile.class);
-        userName=userPreferences.getString("PROFILE_USERNAME", "");
-        userPassword=userPreferences.getString("PROFILE_PASSWORD", "");
-        userMachine=userPreferences.getString("PROFILE_ROLE", "");
-        profileID=userPreferences.getInt("PROFILE_ID", 0);
+        userName = userPreferences.getString("PROFILE_USERNAME", "");
+        userPassword = userPreferences.getString("PROFILE_PASSWORD", "");
+        userMachine = userPreferences.getString("PROFILE_ROLE", "");
+        profileID = userPreferences.getInt("PROFILE_ID", 0);
 
         json2 = userPreferences.getString("LastMarketBusinessUsed", "");
         marketBusiness = gson2.fromJson(json2, MarketBusiness.class);
@@ -294,31 +320,35 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
 
         reportID = ThreadLocalRandom.current().nextInt(1020, 103210);
         spnTypeOfEmerg = findViewById(R.id.teller_pur_spn_);
+        spnSafe = findViewById(R.id.safe_reporter_spn);
+
         txtLocAddress = findViewById(R.id.loAddress);
         txtLat = findViewById(R.id.telle_latT);
         txtLng = findViewById(R.id.teller_lng);
         txtLocTittle = findViewById(R.id.tittleLocU);
         homeFab = findViewById(R.id.ic_emerg_fab);
-        if(marketBusiness !=null){
-            bizID=marketBusiness.getBusinessID();
+        fabEmerg = findViewById(R.id.fab_Emergency);
+
+        if (marketBusiness != null) {
+            bizID = marketBusiness.getBusinessID();
         }
         chipNavigationBar.setOnItemSelectedListener
                 (new ChipNavigationBar.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(int i) {
                         //Fragment fragment = null;
-                        switch (i){
-                            case R.id.cHome:
-                                Intent myIntent = new Intent(UserReportEmergAct.this, MarketBizOffice.class);
+                        switch (i) {
+                            case R.id.emerg_reports:
+                                Intent myIntent = new Intent(UserReportEmergAct.this, MyEmergReportAct.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
                                 myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(myIntent);
 
-                            case R.id.cTimeLine:
+                            case R.id.emerg_report_rewards:
 
-                                Intent chat = new Intent(UserReportEmergAct.this, MyTimelineAct.class);
+                                Intent chat = new Intent(UserReportEmergAct.this, MyERRewardAct.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
                                 chat.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -326,32 +356,16 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
                                 startActivity(chat);
 
 
-                            case R.id.cGeneralShop:
+                            case R.id.emerg_report_com:
 
-                                Intent shop = new Intent(UserReportEmergAct.this, MarketTab.class);
+                                Intent shop = new Intent(UserReportEmergAct.this, CustomerHelpActTab.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
                                 shop.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 shop.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(shop);
 
-                            case R.id.cPackageT:
 
-                                Intent pIntent = new Intent(UserReportEmergAct.this, PackListTab.class);
-                                overridePendingTransition(R.anim.slide_in_right,
-                                        R.anim.slide_out_left);
-                                pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                pIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(pIntent);
-
-
-                            case R.id.cSupport:
-                                Intent helpIntent = new Intent(UserReportEmergAct.this, CustomerHelpActTab.class);
-                                overridePendingTransition(R.anim.slide_in_right,
-                                        R.anim.slide_out_left);
-                                helpIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                helpIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(helpIntent);
                         }
                         /*getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.fragment_container,
@@ -365,15 +379,16 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
         homeFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bundle.putParcelable("Profile",userProfile);
-                bundle.putInt("EMERGENCY_LOCID",reportID);
-                Intent intent= new Intent(UserReportEmergAct.this, GoogleMapActivity.class);
+                bundle.putParcelable("Profile", userProfile);
+                bundle.putInt("EMERGENCY_LOCID", reportID);
+                Intent intent = new Intent(UserReportEmergAct.this, GoogleMapActivity.class);
                 intent.putExtras(bundle);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mGetReportLoc.launch(intent);
 
             }
         });
+
 
         spnTypeOfEmerg.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -385,11 +400,21 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        spnSafe.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                safeOption = (String) parent.getSelectedItem();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
         Calendar calendar = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:SS", Locale.getDefault());
 
-        dateOfToday =dateFormat.format(calendar.getTime());
+        dateOfToday = dateFormat.format(calendar.getTime());
 
         /*if(userProfile !=null){
             customer= userProfile.getProfileCus();
@@ -398,33 +423,33 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
             customerID=customer.getCusUID();
         }*/
         checkInternetConnection();
-        String title="Awajima Reports, Response";
-        String body ="Emergency Reports received, and Tracking in Progress";
+        String title = "Awajima Reports, Response";
+        String body = "Emergency Reports received, and Tracking in Progress";
 
         btnSubmitReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (cusLatLng != null) {
-                    EmergReportDAO emergReportDAO= new EmergReportDAO(UserReportEmergAct.this);
-                    emergencyReport = new EmergencyReport(reportID, profileID,bizID, dateOfToday, selectedType,stringLatLng,locality, bgAddress,address,country);
-
-                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                        dbHelper.openDataBase();
+                    EmergReportDAO emergReportDAO = new EmergReportDAO(UserReportEmergAct.this);
+                    emergencyReport = new EmergencyReport(reportID, profileID, bizID, dateOfToday, selectedType, stringLatLng, locality, bgAddress, address, country);
+                    if(dbHelper !=null){
                         sqLiteDatabase = dbHelper.getWritableDatabase();
-                        reportIDF =emergReportDAO.insertUserEmergencyReport(reportID, profileID,bizID, dateOfToday, selectedType,stringLatLng,locality, bgAddress,address,country);
+                        reportIDF = emergReportDAO.insertUserEmergencyReport(reportID, profileID, bizID, dateOfToday, selectedType, stringLatLng, locality, bgAddress, address, country,safeOption);
 
                     }
 
 
                 }
-                if(reportIDF>0){
+                if (reportIDF > 0) {
                     emergencyReport.setEmerGPlace(place);
                     createNotification(title, body);
+                    enableLocUpdates(reportID,reportIDF);
 
-                    Toast.makeText(UserReportEmergAct.this, "Your Emergency Report has been received ",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserReportEmergAct.this, "Your Emergency Report has been received ", Toast.LENGTH_SHORT).show();
 
-                    showSnackbar( R.string.permission_terms, R.string.tracking,
+                    showSnackbar(R.string.permission_terms, R.string.tracking,
                             new View.OnClickListener() {
+                                @SuppressLint("UnspecifiedImmutableFlag")
                                 @Override
                                 public void onClick(View view) {
 
@@ -432,17 +457,13 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
                                     intent = new Intent(UserReportEmergAct.this, LocationUpdatesBroadcastReceiver.class);
                                     intent.setAction(LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES);
                                     PendingIntent.getBroadcast(UserReportEmergAct.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                                    intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
-                                    startActivity( intent );
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
                                 }
-                            } );
+                            });
 
-
-
-
-
-                    bundle.putParcelable("Profile",userProfile);
-                    Intent intent= new Intent(UserReportEmergAct.this, LoginDirAct.class);
+                    bundle.putParcelable("Profile", userProfile);
+                    Intent intent = new Intent(UserReportEmergAct.this, LoginDirAct.class);
                     intent.putExtras(bundle);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 }
@@ -452,39 +473,88 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
 
 
     }
+
+    private void animateCamera(@NonNull Location location) {
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        //mMap.animateCamera(CameraUpdateFactory.newCameraPosition(getCameraPositionWithBearing(latLng)));
+    }
+
+    private void showMarker(@NonNull Location currentLocation) {
+        LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+        if (mCurrLocationMarker == null)
+            mCurrLocationMarker = mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.defaultMarker()).position(latLng));
+        else
+            MarkerAnimation.animateMarkerToGB(mCurrLocationMarker, latLng, new LatLngInterpolator.Spherical());
+    }
+
     private void showSnackbar(final int mainTextStringId, final int actionStringId,
                               View.OnClickListener listener) {
         Snackbar.make(findViewById(android.R.id.content),
-                        getString(mainTextStringId),
-                        Snackbar.LENGTH_INDEFINITE)
+                getString(mainTextStringId),
+                Snackbar.LENGTH_INDEFINITE)
                 .setAction(getString(actionStringId), listener).show();
     }
-    public void enableLocUpdates(){
+
+
+
+    public void enableLocUpdates(int reportID, long reportIDF) {
+        EmergReportNext emergReportNext = new EmergReportNext();
+        EmergReportNextDAO emergReportNextDAO= new EmergReportNextDAO(this);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        reportTrackingID = ThreadLocalRandom.current().nextInt(110, 1213);
+        Calendar calendar = Calendar.getInstance();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:SS", Locale.getDefault());
+
+        dateOfToday = dateFormat.format(calendar.getTime());
+
+        FallbackLocTracker tracker = new FallbackLocTracker(UserReportEmergAct.this);
+        tracker.start(new LocationTracker.LocationUpdateListener() {
+            @Override
+            public void onUpdate(Location oldLoc, long oldTime, Location newLoc, long newTime) {
+                if(newLoc==null) {
+                    if(oldLoc !=null){
+                        location = oldLoc;
+
+                    }else {
+                        location = newLoc;
+                    }
+                }
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                if(latLng !=null){
+                    stringLatLng = String.valueOf(latLng);
+
+                }
+                emergReportNextDAO.insertNewEmergNextLoc(reportTrackingID,reportID,dateOfToday,stringLatLng,reportIDF);
+            }
+        });
+
         WoosmapSettings.modeHighFrequencyLocation = !WoosmapSettings.modeHighFrequencyLocation;
         String msg = "";
-        if(WoosmapSettings.modeHighFrequencyLocation) {
+        if (WoosmapSettings.modeHighFrequencyLocation) {
             msg = "Mode High Frequency Location Enable";
-            editor.putBoolean( "modeHighFrequencyLocationEnable",true);
+            editor.putBoolean("modeHighFrequencyLocationEnable", true);
             editor.apply();
         } else {
             msg = "Mode High Frequency Location disable";
-            editor.putBoolean( "modeHighFrequencyLocationEnable",false);
+            editor.putBoolean("modeHighFrequencyLocationEnable", false);
             editor.apply();
         }
-        woosmap.enableModeHighFrequencyLocation(WoosmapSettings.modeHighFrequencyLocation );
+        woosmap.enableModeHighFrequencyLocation(WoosmapSettings.modeHighFrequencyLocation);
     }
+
     private PendingIntent getPendingIntent() {
         Intent intent = new Intent(this, LocationUpdatesBroadcastReceiver.class);
         intent.setAction(LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES);
         return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         //return null;
     }
+
     public void removeLocationUpdates(View view) {
         Log.i(TAG, "Removing location updates");
         Utils.setRequestingLocationUpdates(this, false);
         fusedLocationClient.removeLocationUpdates(getPendingIntent());
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -493,6 +563,19 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
         }
 
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (googleApiClient != null) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+        }
+        fusedLocationClient.removeLocationUpdates(getPendingIntent());
+
+        if (fusedLocationClient != null)
+            fusedLocationClient.removeLocationUpdates(mLocationCallback);
+    }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -500,10 +583,12 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
         if (googleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
         }
+        fusedLocationClient.removeLocationUpdates(getPendingIntent());
     }
+
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        mMap=googleMap;
+        mMap = googleMap;
         mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map34R);
 
         if (mapFrag != null) {
@@ -525,22 +610,21 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
             googleMap.animateCamera(zoom);
 
 
-        }
-        else {
+        } else {
             //buildGoogleApiClient();
             checkLocationPermission();
             //googleMap.setMyLocationEnabled(false);
             requestPermissions();
         }
-        if(latitude==0.0){
-            latitude=4.8359;
+        if (latitude == 0.0) {
+            latitude = 4.8359;
 
         }
-        if(longitude==0.0){
-            longitude=7.0139;
+        if (longitude == 0.0) {
+            longitude = 7.0139;
 
         }
-        mMap=googleMap;
+        mMap = googleMap;
         cusLatLng = new LatLng(latitude, longitude);
         mMap.addMarker(new MarkerOptions().position(cusLatLng).title("Default Location"));
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
@@ -554,8 +638,8 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
         mMap.animateCamera(zoom);
 
 
-
     }
+
     protected synchronized void buildGoogleApiClient() {
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -604,7 +688,7 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 ActivityCompat.requestPermissions(UserReportEmergAct.this,
                                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        MY_PERMISSIONS_REQUEST_LOCATION );
+                                        MY_PERMISSIONS_REQUEST_LOCATION);
                             }
                         })
                         .create()
@@ -614,10 +698,11 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
             } else {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION );
+                        MY_PERMISSIONS_REQUEST_LOCATION);
             }
         }
     }
+
     private void requestPermissions() {
 
         boolean permissionAccessFineLocationApproved =
@@ -647,9 +732,9 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
                         public void onClick(View view) {
                             // Request permission
                             ActivityCompat.requestPermissions(UserReportEmergAct.this,
-                                    new String[] {
+                                    new String[]{
                                             Manifest.permission.ACCESS_FINE_LOCATION,
-                                            Manifest.permission.ACCESS_BACKGROUND_LOCATION },
+                                            Manifest.permission.ACCESS_BACKGROUND_LOCATION},
                                     MY_PERMISSIONS_REQUEST_LOCATION);
                         }
                     })
@@ -657,13 +742,14 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 ActivityCompat.requestPermissions(UserReportEmergAct.this,
-                        new String[] {
+                        new String[]{
                                 Manifest.permission.ACCESS_FINE_LOCATION,
-                                Manifest.permission.ACCESS_BACKGROUND_LOCATION },
+                                Manifest.permission.ACCESS_BACKGROUND_LOCATION},
                         MY_PERMISSIONS_REQUEST_LOCATION);
             }
         }
     }
+
     @SuppressLint("MissingPermission")
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -681,9 +767,9 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    if (ActivityCompat.checkSelfPermission( this, Manifest.permission.ACCESS_FINE_LOCATION )
-                            == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( this,
-                            Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                            Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                         //setupLocationManager();
                         if (googleApiClient == null) {
                             buildGoogleApiClient();
@@ -694,13 +780,13 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
                     }
                 } else {
 
-                    Toast.makeText( UserReportEmergAct.this, "Permission Denied", Toast.LENGTH_SHORT ).show();
+                    Toast.makeText(UserReportEmergAct.this, "Permission Denied", Toast.LENGTH_SHORT).show();
                     //finish();
                 }
 
             }
             break;
-            case REQUEST_PERMISSIONS_REQUEST_CODE:{
+            case REQUEST_PERMISSIONS_REQUEST_CODE: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     locationPermissionGranted = true;
@@ -727,10 +813,10 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
                                         latitude = location2.getLatitude();
                                         longitude = location2.getLongitude();
                                         userLocation = new LatLng(latitude, longitude);
-                                        stringLatLng=String.valueOf(latitude + "," + longitude);
+                                        stringLatLng = String.valueOf(latitude + "," + longitude);
 
                                     }
-                                    if(googleMapView !=null){
+                                    if (googleMapView != null) {
                                         googleMapView.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                                         //googleMapView.getUiSettings().setZoomControlsEnabled(true);
                                         //googleMapView.getUiSettings().setZoomGesturesEnabled(true);
@@ -747,8 +833,8 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
                                     }
 
                                     cusLatLng = new LatLng(latitude, longitude);
-                                    txtLat.setText("Your Lat:"+latitude);
-                                    txtLng.setText("Your Lng:"+longitude);
+                                    txtLat.setText("Your Lat:" + latitude);
+                                    txtLng.setText("Your Lng:" + longitude);
 
                                 }
                             });
@@ -775,8 +861,7 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
                         }
                     }
 
-                    txtLocAddress.setText("My Loc:"+ bgAddress);
-
+                    txtLocAddress.setText("My Loc:" + bgAddress);
 
 
                 } else {
@@ -784,34 +869,35 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
                 }
             }
         }
-        stringLatLng=String.valueOf(latitude + "," + longitude);
+        stringLatLng = String.valueOf(latitude + "," + longitude);
 
 
         //updateLocationUI();
 
         cusLatLng = new LatLng(latitude, longitude);
-        txtLat.setText("Your Lat:"+latitude);
-        txtLng.setText("Your Lng:"+longitude);
+        txtLat.setText("Your Lat:" + latitude);
+        txtLng.setText("Your Lng:" + longitude);
 
     }
+
     protected void createLocationRequest() {
 
         request = new LocationRequest();
-        request.setSmallestDisplacement( 10 );
-        request.setFastestInterval( 50000 );
-        request.setPriority( LocationRequest.PRIORITY_HIGH_ACCURACY );
-        request.setNumUpdates( 3 );
+        request.setSmallestDisplacement(10);
+        request.setFastestInterval(50000);
+        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        request.setNumUpdates(3);
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-                .addLocationRequest( request );
-        builder.setAlwaysShow( true );
+                .addLocationRequest(request);
+        builder.setAlwaysShow(true);
 
         PendingResult<LocationSettingsResult> result =
-                LocationServices.SettingsApi.checkLocationSettings( googleApiClient,
-                        builder.build() );
+                LocationServices.SettingsApi.checkLocationSettings(googleApiClient,
+                        builder.build());
 
 
-        result.setResultCallback( new ResultCallback<LocationSettingsResult>() {
+        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
             @Override
             public void onResult(@NonNull LocationSettingsResult result) {
                 final Status status = result.getStatus();
@@ -827,7 +913,7 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
 
                             status.startResolutionForResult(
                                     UserReportEmergAct.this,
-                                    REQUEST_CHECK_SETTINGS );
+                                    REQUEST_CHECK_SETTINGS);
                         } catch (IntentSender.SendIntentException e) {
                             // Ignore the error.
                         }
@@ -838,10 +924,11 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
                         break;
                 }
             }
-        } );
+        });
 
 
     }
+
     @SuppressLint("MissingPermission")
     private void getDeviceLocation(LatLng dest, double latitute1, double longitute1) {
         try {
@@ -857,7 +944,7 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
                                     latitude = mCurrentLocation.getLatitude();
                                     longitude = mCurrentLocation.getLongitude();
                                     cusLatLng = new LatLng(latitude, longitude);
-                                    stringLatLng=String.valueOf(latitude + "," + longitude);
+                                    stringLatLng = String.valueOf(latitude + "," + longitude);
                                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                             new LatLng(mCurrentLocation.getLatitude(),
                                                     mCurrentLocation.getLongitude()), 20));
@@ -871,8 +958,8 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
 
                         });
                 dest = cusLatLng;
-                latitute1=latitude;
-                longitute1=longitude;
+                latitute1 = latitude;
+                longitute1 = longitude;
                 setResult(Activity.RESULT_OK, new Intent());
                 mMap.addMarker(new MarkerOptions().position(new LatLng(latitute1, longitute1))).setTitle("Where you are");
                 MarkerOptions markerOptions = new MarkerOptions();
@@ -918,13 +1005,13 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
                         latitude = location.getLatitude();
                         longitude = location.getLongitude();
                         cusLatLng = new LatLng(latitude, longitude);
-                        stringLatLng=String.valueOf(latitude + "," + longitude);
+                        stringLatLng = String.valueOf(latitude + "," + longitude);
                         cusLatLng = new LatLng(latitude, longitude);
                         dest = cusLatLng;
-                        finalLatitute=latitude;
-                        finalLongitute=longitude;
-                        txtLat.setText("Your Lat:"+latitude);
-                        txtLng.setText("Your Lng:"+longitude);
+                        finalLatitute = latitude;
+                        finalLongitute = longitude;
+                        txtLat.setText("Your Lat:" + latitude);
+                        txtLng.setText("Your Lng:" + longitude);
                         mMap.addMarker(new MarkerOptions().position(new LatLng(finalLatitute, finalLongitute))).setTitle("Where you were");
                         MarkerOptions markerOptions = new MarkerOptions();
                         markerOptions.position(cusLatLng);
@@ -944,13 +1031,14 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
         });
 
     }
+
     private void setupLocationManager() {
         if (googleApiClient == null) {
 
-            googleApiClient = new GoogleApiClient.Builder( this )
-                    .addConnectionCallbacks( this )
-                    .addOnConnectionFailedListener( this )
-                    .addApi( LocationServices.API )
+            googleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
                     .build();
         }
         googleApiClient.connect();
@@ -978,6 +1066,11 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
         CameraUpdate zoom = CameraUpdateFactory.zoomTo(17);
         mMap.moveCamera(zoom);
         mMap.animateCamera(zoom);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            return;
+        }
+        fusedLocationClient.requestLocationUpdates(locationRequest, mLocationCallback, Looper.myLooper());
 
 
     }
@@ -1113,8 +1206,10 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
     @Override
     protected void onResume() {
         super.onResume();
+        if (fusedLocationClient != null)
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if(googleApiClient.isConnected()){
-            setInitialLocation();
+            enableLocUpdates(reportID, reportIDF);
 
         }
 
@@ -1146,9 +1241,9 @@ public class UserReportEmergAct extends AppCompatActivity implements LocationLis
         txtLat = findViewById(R.id.telle_latT);
         txtLng = findViewById(R.id.teller_lng);
         txtLocTittle = findViewById(R.id.tittleLocU);
-        if (mCurrLocationMarker != null) {
+        /*if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
-        }
+        }*/
         fusedLocationClient.getCurrentLocation(2, cancellationTokenSource.getToken())
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override

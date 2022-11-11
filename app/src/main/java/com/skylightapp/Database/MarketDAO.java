@@ -7,6 +7,7 @@ import static com.skylightapp.Classes.Profile.PROFILE_ID;
 import static com.skylightapp.Classes.Profile.PROFILE_PHONE;
 import static com.skylightapp.MarketClasses.Market.MARKET_ADDRESS;
 import static com.skylightapp.MarketClasses.Market.MARKET_COUNTRY;
+import static com.skylightapp.MarketClasses.Market.MARKET_DATEJOINED;
 import static com.skylightapp.MarketClasses.Market.MARKET_ID;
 import static com.skylightapp.MarketClasses.Market.MARKET_LAT;
 import static com.skylightapp.MarketClasses.Market.MARKET_LGA;
@@ -69,8 +70,8 @@ public class MarketDAO extends DBHelperDAO{
                 Values.put(MARKET_TOWN, market.getMarketTown());
                 Values.put(MARKET_LGA, market.getMarketLGA());
                 Values.put(MARKET_COUNTRY, market.getMarketCountry());
-                Values.put(MARKET_LOGO, String.valueOf(market.getMarketLogoURI()));
                 Values.put(MARKET_STATUS, market.getMarketStatus());
+                Values.put(MARKET_DATEJOINED, market.getMarketDateOfReg());
                 Values.put(MARKET_PROF_ID, String.valueOf(market.getMarketProfID()));
                 Values.put(MARKET_ADDRESS, market.getMarketAddress());
                 Values.put(MARKET_LAT, market.getMarketLat());
@@ -134,7 +135,7 @@ public class MarketDAO extends DBHelperDAO{
     public ArrayList<Market> getMarketsFromProfile(int profileID) {
         try {
             ArrayList<Market> marketArrayList = new ArrayList<>();
-            SQLiteDatabase db = this.getWritableDatabase();
+            SQLiteDatabase db = this.getReadableDatabase();
             Cursor cursor = db.query(MARKET_TABLE, null, MARKET_PROF_ID + "=?",
                     new String[]{String.valueOf(profileID)}, null, null,
                     null, null);
@@ -152,7 +153,7 @@ public class MarketDAO extends DBHelperDAO{
     public ArrayList<Market> getMarketsFromCustomer(int customerID) {
         try {
             ArrayList<Market> marketArrayList = new ArrayList<>();
-            SQLiteDatabase db = this.getWritableDatabase();
+            SQLiteDatabase db = this.getReadableDatabase();
             Cursor cursor = db.query(MARKET_TABLE, null, MARKET_PROF_ID + "=?",
                     new String[]{String.valueOf(customerID)}, null, null,
                     null, null);
@@ -170,7 +171,7 @@ public class MarketDAO extends DBHelperDAO{
     public ArrayList<Market> getMarketsFromMarketID(int marketID) {
         try {
             ArrayList<Market> marketArrayList = new ArrayList<>();
-            SQLiteDatabase db = this.getWritableDatabase();
+            SQLiteDatabase db = this.getReadableDatabase();
             Cursor cursor = db.query(MARKET_TABLE, null, MARKET_ID + "=?",
                     new String[]{String.valueOf(marketID)}, null, null,
                     null, null);
@@ -188,7 +189,7 @@ public class MarketDAO extends DBHelperDAO{
     public ArrayList<Market> getMarkets() {
         try {
             ArrayList<Market> marketArrayList = new ArrayList<>();
-            SQLiteDatabase db = this.getWritableDatabase();
+            SQLiteDatabase db = this.getReadableDatabase();
             Cursor cursor = db.query(MARKET_TABLE, null, null, null, null,
                     null, null);
             getMarketsFromCursor(marketArrayList, cursor);
@@ -380,7 +381,7 @@ public class MarketDAO extends DBHelperDAO{
     public ArrayList<Market> getAllMarketsForState(String state) {
         try {
             ArrayList<Market> market = new ArrayList<>();
-            SQLiteDatabase db = this.getWritableDatabase();
+            SQLiteDatabase db = this.getReadableDatabase();
             String selection = MARKET_STATE + "=?";
             String[] selectionArgs = new String[]{valueOf(state)};
             Cursor cursor = db.query(MARKET_TABLE, null, selection, selectionArgs, null,
@@ -403,7 +404,7 @@ public class MarketDAO extends DBHelperDAO{
     public ArrayList<Market> getAllMarketsForCountry(String country) {
         try {
             ArrayList<Market> market = new ArrayList<>();
-            SQLiteDatabase db = this.getWritableDatabase();
+            SQLiteDatabase db = this.getReadableDatabase();
             String selection = MARKET_COUNTRY + "=?";
             String[] selectionArgs = new String[]{valueOf(country)};
             Cursor cursor = db.query(MARKET_TABLE, null, selection, selectionArgs, null,
@@ -438,7 +439,8 @@ public class MarketDAO extends DBHelperDAO{
                 double lat = cursor.getColumnIndex(MARKET_LAT);
                 double lng = cursor.getColumnIndex(MARKET_LNG);
                 double marketRev = cursor.getColumnIndex(MARKET_REVENUE);
-                marketArrayList.add(new Market(marketID, name,address,marketType,town, lga, state, country,logo,status,lat,lng,marketRev));
+                String dateOfJoined = cursor.getString(19);
+                marketArrayList.add(new Market(marketID, name,address,marketType,town, lga, state, country,logo,status,lat,lng,marketRev,dateOfJoined));
             }
 
         }catch (SQLException e)

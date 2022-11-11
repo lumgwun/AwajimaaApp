@@ -9,8 +9,14 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
+import com.skylightapp.Accountant.AcctantBackOffice;
+import com.skylightapp.Admins.AdminDrawerActivity;
+import com.skylightapp.Bookings.BoatBookingTab;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Customers.NewCustomerDrawer;
+import com.skylightapp.MapAndLoc.UserReportEmergAct;
+import com.skylightapp.Markets.MarketTab;
+import com.skylightapp.SuperAdmin.SuperAdminOffice;
 
 public class ConfirmationActivity extends AppCompatActivity {
     private AppCompatButton xConfirmBtn;

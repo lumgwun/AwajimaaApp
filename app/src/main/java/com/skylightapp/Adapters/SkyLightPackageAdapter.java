@@ -268,7 +268,7 @@ public class SkyLightPackageAdapter extends RecyclerView.Adapter<SkyLightPackage
             this.price.setText((int) price);
             this.description.setText(description);
             this.duration1.setText( duration);
-            this.itemImage.setImageResource(R.drawable.skylight_logo);
+            this.itemImage.setImageResource(R.drawable.hp_16gb_1tb_ssd_608);
         }
 
         @Override

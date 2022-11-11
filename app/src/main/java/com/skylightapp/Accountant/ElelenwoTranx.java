@@ -101,6 +101,7 @@ public class ElelenwoTranx extends AppCompatActivity implements TranxAdminA.OnIt
         gson2 = new Gson();
         gson3= new Gson();
         office= new OfficeBranch();
+        dbHelper = new DBHelper(this);
         officeBranchDAO= new OfficeBranchDAO(this);
         marketBiz= new MarketBusiness();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
@@ -154,39 +155,49 @@ public class ElelenwoTranx extends AppCompatActivity implements TranxAdminA.OnIt
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd", Locale.getDefault());
         currentDate = dateFormat.format(calendar.getTime());
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper = new DBHelper(this);
+
+        if(dbHelper !=null){
             sqLiteDatabase = dbHelper.getReadableDatabase();
-            try {
-                transactionArrayList = tranXDAO.getTransactionsForBranchAtDate(officeBranch,currentDate);
-                branchTranxCount =tranXDAO.getTransactionCountForBranchAtDate(officeBranch,currentDate);
-                transactionTotal=tranXDAO.getTotalTransactionForBranchAtDate(officeBranch,currentDate);
-
-            }catch (NullPointerException e)
-            {
-                e.printStackTrace();
-            }
-
-
+            transactionArrayList = tranXDAO.getTransactionsForBranchAtDate(officeBranch,currentDate);
 
 
         }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper = new DBHelper(this);
+
+        if(dbHelper !=null){
             sqLiteDatabase = dbHelper.getReadableDatabase();
-
-            try {
-                transactionArrayList = tranXDAO.getTransactionsForBranchAtDate(officeBranch,dateOfTransaction);
-                transactionTotal=tranXDAO.getTotalTransactionForBranchAtDate(officeBranch,dateOfTransaction);
-                branchTranxCount =tranXDAO.getTransactionCountForBranchAtDate(officeBranch,dateOfTransaction);
-            }catch (NullPointerException e)
-            {
-                e.printStackTrace();
-            }
-
+            branchTranxCount =tranXDAO.getTransactionCountForBranchAtDate(officeBranch,currentDate);
 
 
         }
+
+        if(dbHelper !=null){
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            transactionArrayList = tranXDAO.getTransactionsForBranchAtDate(officeBranch,dateOfTransaction);
+
+
+        }
+
+        if(dbHelper !=null){
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            transactionTotal=tranXDAO.getTotalTransactionForBranchAtDate(officeBranch,currentDate);
+
+
+        }
+
+        if(dbHelper !=null){
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            branchTranxCount =tranXDAO.getTransactionCountForBranchAtDate(officeBranch,dateOfTransaction);
+
+
+        }
+
+        if(dbHelper !=null){
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            transactionTotal=tranXDAO.getTotalTransactionForBranchAtDate(officeBranch,dateOfTransaction);
+
+
+        }
+
 
 
 

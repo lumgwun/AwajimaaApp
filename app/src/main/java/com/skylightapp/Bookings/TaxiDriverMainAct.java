@@ -10,6 +10,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -36,10 +37,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.maps.model.PointOfInterest;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
@@ -174,6 +177,67 @@ public class TaxiDriverMainAct extends AppCompatActivity implements View.OnClick
                 break;
         }
     }
+    public static double[] getNeighbourhoodArea(
+            final double lat, final double lng, final int distInMtrs) {
+
+        double[] area = new double[4];
+
+        final double latRadian = Math.toRadians(lat);
+
+        final double degLatKm = 110.574235;
+        final double degLngKm = 110.572833 * Math.cos(latRadian);
+        final double deltaLat = distInMtrs / 1000.0 / degLatKm;
+        final double deltaLong = distInMtrs / 1000.0 / degLngKm;
+
+        final double minLat = lat - deltaLat;
+        final double minLng = lng - deltaLong;
+        final double maxLat = lat + deltaLat;
+        final double maxLng = lng + deltaLong;
+
+        area[0] = minLat;
+        area[1] = minLng;
+        area[2] = maxLat;
+        area[3] = maxLng;
+
+        return area;
+    }
+
+
+    /*private PointOfInterest collectPOIs(double lat, double lng) {
+
+        if (mDb == null) return Const.NULL_POI;
+
+        Cursor cursorStat = mDb.getPoisInArea(lat, lng, Const.SIDE_LENGTH_GEO_OFFSET);
+
+        double area[] = Logic.getProtectionArea(lat, lng, Const.SIDE_LENGTH_GEO_OFFSET);
+
+        ArrayList<PointOfInterest> poiArray = new ArrayList<PointOfInterest>();
+
+        PointOfInterest poi = Const.NULL_POI;
+
+        if (cursorStat.moveToFirst()) {
+            for (int i = 0; i < cursorStat.getCount(); i++) {
+                double potLat = cursorStat.getFloat(Const.COL_LA);
+                double potLng = cursorStat.getFloat(Const.COL_LO);
+
+                if ((potLat < area[Const.MAX_LAT] && potLat > area[Const.MIN_LAT])
+                        && (potLng < area[Const.MAX_LNG] && potLng > area[Const.MIN_LNG])) {
+
+                    poi = Logic.getPoiByCursor(getApplicationContext(), cursorStat);
+                    poiArray.add(poi);
+
+                }
+                cursorStat.moveToNext();
+            } // End "Cursor"
+        }
+        cursorStat.close();
+
+        // more than once, fire the nearest
+        if (poiArray.size() > 1) return closest(poiArray, lat, lng);
+        else return poi; // one or null
+    }*/
+
+
 
     public void loginToRides(View view) {
     }

@@ -63,7 +63,7 @@ public class StocksDAO extends DBHelperDAO{
     }
     public ArrayList<Stocks> getStocksForBusiness(int bizID) {
         ArrayList<Stocks> stocksArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = STOCK_BIZ_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(bizID)};
 
@@ -106,7 +106,7 @@ public class StocksDAO extends DBHelperDAO{
         return count;
     }
     public double getStocksTotalForBranch(int branchID) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
         try (Cursor cursor = db.rawQuery("SELECT SUM(" + STOCK_QTY + ") as Total FROM " + STOCKS_TABLE, new String[]{" WHERE STOCK_BRANCH_ID=?",String.valueOf(branchID)})){
 
@@ -158,7 +158,7 @@ public class StocksDAO extends DBHelperDAO{
     }
     public ArrayList<Stocks> getAllStocksForBranch(int branchID) {
         ArrayList<Stocks> stocksArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = STOCK_BRANCH_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(branchID)};
         Cursor cursor = db.query(STOCKS_TABLE, null, selection, selectionArgs, null,
@@ -180,7 +180,7 @@ public class StocksDAO extends DBHelperDAO{
 
     public ArrayList<Stocks> getStocksForBranchName(String branchName) {
         ArrayList<Stocks> stocksArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = STOCK_OFFICE + "=?";
         String[] selectionArgs = new String[]{valueOf(branchName)};
 
@@ -212,7 +212,7 @@ public class StocksDAO extends DBHelperDAO{
     }
     public ArrayList<Stocks> getStocksForBranchAtDate(int branchID, String date) {
         ArrayList<Stocks> stocksArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = STOCK_BRANCH_ID + "=? AND " + STOCK_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(branchID), valueOf(date)};
 
@@ -418,7 +418,7 @@ public class StocksDAO extends DBHelperDAO{
     public ArrayList<Stocks> getAllStocksForDate(String date) {
         try {
             ArrayList<Stocks> stocksArrayList = new ArrayList<>();
-            SQLiteDatabase db = this.getWritableDatabase();
+            SQLiteDatabase db = this.getReadableDatabase();
             String selection = STOCK_DATE + "=?";
             String[] selectionArgs = new String[]{valueOf(date)};
             Cursor cursor = db.query(STOCKS_TABLE, null, selection, selectionArgs, null,
@@ -444,7 +444,7 @@ public class StocksDAO extends DBHelperDAO{
     }
     public ArrayList<Stocks> getAllStocksForToday(String today) {
         ArrayList<Stocks> stocksArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = STOCK_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(today)};
         Cursor cursor = db.query(STOCKS_TABLE, null, selection, selectionArgs, null,
@@ -465,7 +465,7 @@ public class StocksDAO extends DBHelperDAO{
     public double getTotalStocksForDate(String date) {
         double count = 0;
         Cursor cursor=null;
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = STOCK_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(date)};
         cursor = db.rawQuery(
@@ -487,7 +487,7 @@ public class StocksDAO extends DBHelperDAO{
     public double getTotalStocks() {
         double count = 0;
         Cursor cursor=null;
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         cursor = db.rawQuery(
                 "select Total ("+ STOCK_QTY +") from " + STOCKS_TABLE ,null,
                 null);
@@ -507,7 +507,7 @@ public class StocksDAO extends DBHelperDAO{
     public double getTotalStocksForToday(String today) {
         double count = 0;
         Cursor cursor=null;
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = STOCK_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(today)};
         cursor = db.rawQuery(
@@ -553,7 +553,7 @@ public class StocksDAO extends DBHelperDAO{
     }
     public ArrayList<Stocks> getStocksForProfile(int profileID) {
         ArrayList<Stocks> stocksArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = STOCK_PROFILE_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(profileID)};
 
@@ -575,7 +575,7 @@ public class StocksDAO extends DBHelperDAO{
     }
     public ArrayList<Stocks> getStocksForProfileAtDate(int profileID, String date) {
         ArrayList<Stocks> stocksArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = STOCK_PROFILE_ID + "=? AND " + STOCK_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(profileID), valueOf(date)};
 
@@ -598,7 +598,7 @@ public class StocksDAO extends DBHelperDAO{
     }
     public ArrayList<Stocks> getAllStocksForProfile(int profileID) {
         ArrayList<Stocks> stocksArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = STOCK_PROFILE_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(profileID)};
         Cursor cursor = db.query(STOCKS_TABLE, null, selection, selectionArgs, null,
@@ -634,7 +634,7 @@ public class StocksDAO extends DBHelperDAO{
     public double getStocksTotalForProfile(int profileID) {
         double count = 0;
         Cursor cursor=null;
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = STOCK_PROFILE_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(profileID)};
         cursor = db.rawQuery(
@@ -671,7 +671,7 @@ public class StocksDAO extends DBHelperDAO{
     }
     public ArrayList<Stocks> getALLStocksSuperAwajima(String awajima) {
         ArrayList<Stocks> stocksArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = STOCK_ROLE + "=?";
         String[] selectionArgs = new String[]{valueOf(awajima)};
 
@@ -694,7 +694,7 @@ public class StocksDAO extends DBHelperDAO{
     }
     public ArrayList<Stocks> getALLStocksSuperState(String state) {
         ArrayList<Stocks> stocksArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = STOCK_ROLE + "=?";
         String[] selectionArgs = new String[]{valueOf(state)};
 
@@ -718,7 +718,7 @@ public class StocksDAO extends DBHelperDAO{
 
     public ArrayList<Stocks> getStocksForTeller3(int profileID) {
         ArrayList<Stocks> stocksArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = STOCK_PROFILE_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(profileID)};
 
@@ -762,7 +762,7 @@ public class StocksDAO extends DBHelperDAO{
 
     public ArrayList<String> getAllStocksName() {
         ArrayList<String> stockNameArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {STOCK_ITEM_NAME};
         Cursor cursor = db.query(STOCKS_TABLE, columns, STOCK_ITEM_NAME, null, null,
                 null, null);
@@ -819,7 +819,7 @@ public class StocksDAO extends DBHelperDAO{
 
     public ArrayList<Stocks> getALLStocksSuper() {
         ArrayList<Stocks> stocksArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {STOCK_ID,STOCK_ITEM_NAME,STOCK_QTY,STOCK_OFFICE,STOCK_DATE,STOCK_20_DATE,STOCK_STATUS};
         Cursor cursor = db.query(STOCKS_TABLE, columns, null, null, null,
                 null, null);

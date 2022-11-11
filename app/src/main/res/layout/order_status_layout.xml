@@ -28,7 +28,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:elevation="3dp"
-        android:src="@drawable/grinding_machine_mil"
+        android:src="@drawable/hp_16gb_1tb_ssd_608"
         app:civ_border_color="@color/colorPrimaryDark"
         app:civ_border_width="5dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,7 +77,7 @@
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:src="@drawable/selected_dot"
-            android:tint="@color/successGreen"
+            app:tint="@color/successGreen"
             android:translationX="12dp" />
 
         <ProgressBar
@@ -95,7 +95,7 @@
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:src="@drawable/selected_dot"
-            android:tint="@color/successGreen"
+            app:tint="@color/successGreen"
             android:translationX="4dp" />
 
         <ProgressBar
@@ -112,7 +112,7 @@
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:src="@drawable/selected_dot"
-            android:tint="@color/successGreen"
+            app:tint="@color/successGreen"
             android:translationX="-4dp" />
 
         <ProgressBar
@@ -127,7 +127,7 @@
             android:translationX="-8dp" />
 
         <ImageView
-            android:tint="@color/successGreen"
+            app:tint="@color/successGreen"
             android:id="@+id/delivered_indicator"
             android:layout_width="15dp"
             android:layout_height="15dp"

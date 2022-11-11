@@ -66,7 +66,7 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
         viewHolder.setDOB("DOB:"+birthday.getBirthDay());
         if(userProfile !=null){
             viewHolder.setGender("Gender:"+userProfile.getProfileDob());
-            viewHolder.setOffice("Office:"+userProfile.getProfileOffice());
+            viewHolder.setOffice("Office:"+userProfile.getProfOfficeName());
 
         }
         viewHolder.setPhoneNo("Phone No::"+birthday.getbPhoneNumber());

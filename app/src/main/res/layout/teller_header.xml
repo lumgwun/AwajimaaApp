@@ -20,7 +20,7 @@
         android:layout_height="wrap_content">
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="wrap_content"
-            android:src="@drawable/skylight_madam"
+            android:src="@drawable/ic_admin_user"
             android:id="@+id/teller9"
             android:layout_marginBottom="10dp"
             android:layout_height="50dp"/>

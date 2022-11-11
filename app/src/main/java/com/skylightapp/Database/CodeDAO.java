@@ -24,7 +24,7 @@ import static com.skylightapp.Classes.StandingOrder.SO_ID;
 import static java.lang.String.valueOf;
 
 public class CodeDAO extends DBHelperDAO{
-    private static final String WHERE_ID_EQUALS = SO_ID
+    private static final String WHERE_ID_EQUALS = CODE_ID
             + " =?";
     public CodeDAO(Context context) {
         super(context);
@@ -71,7 +71,7 @@ public class CodeDAO extends DBHelperDAO{
     public void deleteSavingsCode(int codeID) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String selection = CODE_PIN + "=?";
+        String selection = CODE_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(codeID)};
         db.delete(CODE_TABLE, selection, selectionArgs);
 

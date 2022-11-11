@@ -89,16 +89,16 @@ public class AdminTransListFrag extends Fragment {
         transactionList = new ArrayList<>();
         dbHelper = new DBHelper(getContext());
         tranXDAO = new TranXDAO(getContext());
+        transactionList = tranXDAO.getAllTransactionAdmin();
+        mAdapter = new TransactionAdapter(getContext(),transactionList);
 
-        mAdapter = new TransactionAdapter(getActivity(), transactionList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(new TransactionAdapter(context,transactionList));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
         recyclerView.setNestedScrollingEnabled(false);
-        transactionList = tranXDAO.getAllTransactionAdmin();
-        mAdapter = new TransactionAdapter(getContext(),transactionList);
+
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
 

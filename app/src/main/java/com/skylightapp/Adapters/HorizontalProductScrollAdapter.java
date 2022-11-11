@@ -65,8 +65,8 @@ public class HorizontalProductScrollAdapter extends RecyclerView.Adapter<Horizon
         }
 
         private void setData(int resource, String title, String description, double price){
-            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.grinder)).into(productImage);
-            productPrice.setText("Rs."+price+"/-");
+            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.hp_16gb_1tb_ssd_608)).into(productImage);
+            productPrice.setText("NGN."+price+"/-");
             productDescription.setText(description);
             productTitle.setText(title);
             if(!title.equals("")) {

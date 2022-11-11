@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:itemTextAppearance="@style/TextAppearance.AppCompat.Widget.PopupMenu.Header"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single"
+        android:menuCategory="system">
+        <item android:title="Awajima Business Home">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_dash_biz_admin"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Dashboard" />
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="Customers">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_bCus_biz"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Branch Customers" />
+                    <item
+                        android:id="@+id/all_Cus_biz"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Buz Customers" />
+
+                </group>
+            </menu>
+        </item>
+        <item android:title="Workers">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/biz_admin_workers"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Admin Workers" />
+                    <item
+                        android:id="@+id/biz_admin_BTe"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Branch Tellers" />
+                    <item
+                        android:id="@+id/biz_admin_ATe"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="All Tellers" />
+
+                    <item
+                        android:id="@+id/biz_admin_VA"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Virtual Assistants" />
+
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="Report Emergency">
+            <menu>
+                <group android:checkableBehavior="single">
+
+                    <item
+                        android:id="@+id/reportB_emerg"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Report Emerg." />
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="Suppliers">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_supBiz"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Business Suppliers" />
+
+                </group>
+            </menu>
+        </item>
+
+
+        <item android:title="Bookings">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/biz_taxi"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Taxi Booking Tab" />
+
+                    <item
+                        android:id="@+id/biz_trainB"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Train Bookings" />
+
+                    <item
+                        android:id="@+id/boat_Biz_bookings"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Boat Bookings" />
+                    <item
+                        android:id="@+id/session_bookingB"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Session Bookings" />
+
+                    <item
+                        android:id="@+id/tour_trip_Biz"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Tour Bookings" />
+
+                </group>
+            </menu>
+        </item>
+        <item android:title="Business Stocks">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_Stocks_biz"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Biz Branch Stocks" />
+
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="Bank Deposits">
+            <menu>
+                <group android:checkableBehavior="single">
+
+                    <item
+                        android:id="@+id/biz_B_BankD"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Bank Deposit" />
+                </group>
+            </menu>
+        </item>
+
+
+        <item android:title="Biz Accounts">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_accounts_Branch"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Branch Accounts" />
+
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="My TimeLines">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_timelines_Biz"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="My TimeLines" />
+
+                </group>
+            </menu>
+        </item>
+
+
+        <item android:title="Group Savings">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_GrpSavings_Biz"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Group Savings" />
+                </group>
+            </menu>
+        </item>
+
+
+        <item android:title="Transaction">
+            <menu>
+                <group android:checkableBehavior="single">
+
+                    <item
+                        android:id="@+id/nav_tx_Biz"
+                        android:icon="@drawable/ic_icon2"
+                        android:title="My Transactions" />
+
+                </group>
+            </menu>
+
+        </item>
+
+        <item android:title="Birthdays">
+            <menu>
+                <group android:checkableBehavior="single">
+
+                    <item
+                        android:id="@+id/birthdays_Biz"
+                        android:icon="@drawable/ic_happy_anne_cake"
+                        android:title="Birthdays" />
+
+                </group>
+            </menu>
+
+        </item>
+
+        <item android:title="Daily Report">
+            <menu>
+                <group android:checkableBehavior="single">
+
+                    <item
+                        android:id="@+id/nav_DR_Biz"
+                        android:icon="@drawable/ic_icon2"
+                        android:title="Daily Reports" />
+
+                </group>
+            </menu>
+
+        </item>
+
+
+        <item android:title="Support">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/biz_supportM"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Support Tab" />
+
+                    <item
+                        android:id="@+id/biz_sendM"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Send Message" />
+                    <item
+                        android:id="@+id/biz_Messenger"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Market Messenger" />
+                </group>
+            </menu>
+        </item>
+
+
+        <item android:title="Our Privacy Policy">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/pp_BIz"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Our Privacy Policy" />
+
+                </group>
+            </menu>
+        </item>
+        <item android:title="Insurance">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/biz_ins"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Insurance" />
+
+                </group>
+            </menu>
+        </item>
+
+
+        <item android:title="Settings">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_pref_Biz"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="My Settings" />
+                    <item
+                        android:id="@+id/biz_Alogout"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Logout" />
+                </group>
+            </menu>
+        </item>
+
+    </group>
+
+</menu>

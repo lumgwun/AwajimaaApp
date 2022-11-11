@@ -23,13 +23,13 @@ import com.github.mzule.fantasyslide.SideBar;
 import com.github.mzule.fantasyslide.SimpleFantasyListener;
 import com.github.mzule.fantasyslide.Transformer;
 import com.skylightapp.AllCusPackTab;
+import com.skylightapp.AwajimaSliderAct;
 import com.skylightapp.Customers.SOTab;
 import com.skylightapp.LoginActivity;
 import com.skylightapp.PasswordRecovAct;
 import com.skylightapp.PrivacyPolicy_Web;
 import com.skylightapp.R;
 import com.skylightapp.SignUpAct;
-import com.skylightapp.SkylightSliderAct;
 import com.skylightapp.UserPrefActivity;
 import com.skylightapp.UserTimeLineOverview;
 
@@ -150,7 +150,7 @@ public class TellerDrawerTab extends AppCompatActivity {
         }
         if (id == R.id.teller_pack2) {
 
-            Intent mainIntent = new Intent(this, SkylightSliderAct.class);
+            Intent mainIntent = new Intent(this, AwajimaSliderAct.class);
             mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(mainIntent);
 
@@ -255,7 +255,7 @@ public class TellerDrawerTab extends AppCompatActivity {
     }
 
     public void SkylightPacks(View view) {
-        Intent mainIntent = new Intent(this, SkylightSliderAct.class);
+        Intent mainIntent = new Intent(this, AwajimaSliderAct.class);
         mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(mainIntent);
     }

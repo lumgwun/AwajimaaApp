@@ -22,7 +22,7 @@
             <item
                 android:id="@+id/cm_shop"
                 android:icon="@drawable/notification"
-                android:title="Skylight Shop" />
+                android:title="Awajima Shop" />
             <item
                 android:id="@+id/cm_my_paynow"
                 android:icon="@drawable/savings"

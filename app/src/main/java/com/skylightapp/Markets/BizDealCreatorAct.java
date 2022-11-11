@@ -30,15 +30,13 @@ public class BizDealCreatorAct extends AppCompatActivity {
     SharedPreferences userPreferences;
     private double accountBalance;
     SecureRandom random;
-    int profileID,  businessAcctNo;
+    int profileID,  businessDealNo;
     int virtualAccountNumber;
     String creationDate;
     AppCompatSpinner state, office, spnDealType;
-    SupportSQLiteDatabase supportSQLiteDatabase;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     Gson gson, gson1;
     String json, json1, bDTittle,selectedDealType;
-    private BusinessOthers businessOthers;
     private Profile adminProfile;
     private Calendar calendar;
     private AppCompatEditText edtDealTittle;
@@ -47,15 +45,15 @@ public class BizDealCreatorAct extends AppCompatActivity {
     private long bdID;
     private long bdFromID;
     private MarketBusiness marketBusiness;
+    private boolean isHost=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_biz_deal_creator);
-        setTitle("Business Deal Creation");
+        setTitle("Business Deal Creator");
         gson1 = new Gson();
         gson = new Gson();
-        businessOthers = new BusinessOthers();
         marketBusiness= new MarketBusiness();
         adminProfile = new Profile();
         bizDealDAO = new BizDealDAO(this);
@@ -68,7 +66,7 @@ public class BizDealCreatorAct extends AppCompatActivity {
         adminProfile = gson.fromJson(json, Profile.class);
         json1 = userPreferences.getString("LastBusinessUsed", "");
         marketBusiness = gson1.fromJson(json1, MarketBusiness.class);
-        businessAcctNo = ThreadLocalRandom.current().nextInt(112537, 1040045);
+        businessDealNo = ThreadLocalRandom.current().nextInt(112537, 1040045);
         calendar = Calendar.getInstance();
         if (adminProfile != null) {
             profileID = adminProfile.getPID();
@@ -97,7 +95,8 @@ public class BizDealCreatorAct extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 bDTittle = edtDealTittle.getText().toString();
-                bdID = bizDealDAO.saveBizDeal(businessAcctNo, profileID, bdFromID, bDTittle, creationDate, selectedDealType, "new");
+                isHost=true;
+                bdID = bizDealDAO.saveBizDeal(businessDealNo, profileID, bdFromID, bDTittle, creationDate, selectedDealType, "new",isHost);
 
             }
         });

@@ -79,7 +79,7 @@
         android:installLocation="preferExternal"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/awajima_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.OurCApp"
         android:value="androidx.core.app.CoreComponentFactory"
@@ -87,6 +87,112 @@
         tools:node="merge"
         tools:remove="android:icon"
         tools:replace="android:allowBackup">
+        <activity
+            android:name=".Bookings.TripDetailAct"
+            android:exported="false" />
+        <activity
+            android:name=".Live.BizDealChatAct"
+            android:exported="false" />
+        <activity
+            android:name=".Markets.BizDealDetailHostAct"
+            android:exported="false" />
+        <activity
+            android:name=".Markets.BizDealTab"
+            android:exported="false" />
+        <activity
+            android:name=".MapAndLoc.FenceCreationAct"
+            android:exported="false" />
+        <activity
+            android:name=".MapAndLoc.FenceEventsAct"
+            android:exported="false" />
+        <activity
+            android:name=".ClimateCRespAct"
+            android:exported="false" />
+        <activity
+            android:name=".ClimateRepAct"
+            android:exported="false" />
+        <activity
+            android:name=".MapAndLoc.ClimateCOffice"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.JetCharterAct"
+            android:exported="false" />
+        <activity
+            android:name=".Markets.MarketCreatorAct"
+            android:exported="false" />
+        <activity
+            android:name=".Markets.BizAdminOffice"
+            android:exported="false" />
+        <activity
+            android:name=".MapAndLoc.CompensationAct"
+            android:exported="false" />
+        <activity
+            android:name=".MyInsTab"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.TaxiBookingTab"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.SessionTab"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.BoatBookingTab"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.TrainBookingTab"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.TourBookingAct"
+            android:exported="false" />
+        <activity
+            android:name=".Markets.BizOfficeAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.MyTaxiBAct"
+            android:exported="false" />
+        <activity
+            android:name=".MapAndLoc.MyERRewardAct"
+            android:exported="false" />
+        <activity
+            android:name=".MapAndLoc.MyEmergReportAct"
+            android:exported="false" />
+        <activity
+            android:name=".MapAndLoc.TaxiPickUpAct"
+            android:exported="false" />
+        <activity
+            android:name=".SubHistoryAct"
+            android:exported="false" />
+        <activity
+            android:name=".SubScriptionTab"
+            android:exported="false" />
+        <activity
+            android:name=".MapAndLoc.OurCleanUpAct"
+            android:exported="false" />
+        <activity
+            android:name=".MapAndLoc.OurJIVsAct"
+            android:exported="false" />
+        <activity
+            android:name=".MapAndLoc.OurSpRespAct"
+            android:exported="false" />
+        <activity
+            android:name=".MapAndLoc.TreatedReportAct"
+            android:exported="false" />
+        <activity
+            android:name=".MapAndLoc.OurSpReportAct"
+            android:exported="false" />
+        <activity
+            android:name=".MapAndLoc.OilCompanyOffice"
+            android:exported="false" />
+        <activity
+            android:name=".MapAndLoc.NOSDRAOffice"
+            android:exported="false" />
+        <activity
+            android:name=".NinIDAct"
+            android:exported="false"
+            android:label="@string/title_activity_nin_idact" />
+        <activity
+            android:name=".Bookings.TripBookingAct"
+            android:exported="false" />
         <activity
             android:name=".Bookings.BoatDriverMainAct"
             android:exported="false" />
@@ -118,7 +224,7 @@
             android:name=".Bookings.MyBoatAct"
             android:exported="false" />
         <activity
-            android:name=".Bookings.BookingsAct"
+            android:name=".Bookings.BookingsMainAct"
             android:exported="false" />
         <activity
             android:name=".GooglePayAct"
@@ -267,16 +373,16 @@
         <activity android:name=".Markets.AttachmentImageActivity" />
         <activity android:name=".Markets.ChatActEthernal" />
         <activity android:name=".Markets.ProfileActivity" />
-        <activity android:name=".MarketPlaceTransport.DriverAct" />
+        <activity android:name=".Bookings.DriverStartTripAct" />
 
         <receiver
             android:name=".MarketClasses.NotificationReceiver"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".MarketPlaceTransport.LocationSelecAct" />
-        <activity android:name=".MarketPlaceTransport.FindDriverAct" />
-        <activity android:name=".MarketPlaceTransport.LocActivity" />
+        <activity android:name=".Bookings.LocationSelecAct" />
+        <activity android:name=".Bookings.FindDriverAct" />
+        <activity android:name=".Bookings.LocActivity" />
         <activity android:name=".Markets.BaseActivity" />
         <activity android:name=".Markets.CoreBaseActivity" />
 
@@ -325,7 +431,7 @@
         <activity android:name=".ViewAllActivity" />
         <activity android:name=".Markets.ProductsAct" />
         <activity android:name=".NotiAct" />
-        <activity android:name=".Customers.NewBankAcctAct" />
+        <activity android:name=".Customers.MyAcctOverViewAct" />
         <activity android:name=".SuperAdmin.TellerWorkAct" />
         <activity android:name=".SuperAdmin.ChartAct" />
         <activity android:name=".Tellers.TellerSendEmailAct" />
@@ -336,7 +442,7 @@
         <activity android:name=".Customers.MySavingsListAct" />
         <activity android:name=".Customers.CusPackageList" />
         <activity android:name=".BlockedUserAct" />
-        <activity android:name=".EmergNextAct" />
+        <activity android:name=".MapAndLoc.GeoDrivingAct" />
         <activity android:name=".NewLocAct" />
         <activity android:name=".SuperAdmin.PayOutRequestList" />
         <activity android:name=".SuperAdmin.TranxApprovalAct" />
@@ -389,6 +495,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
         <uses-library android:name="com.google.android.maps" />
 
@@ -540,7 +649,7 @@
             android:name=".Admins.SOListAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".SuperAdmin.AdminSOTabAct" />
-        <activity android:name=".SkylightSliderAct" />
+        <activity android:name=".AwajimaSliderAct" />
         <activity android:name=".Tellers.UniversalAct" />
         <activity android:name=".Tellers.TellerDrawerTab" />
         <activity
@@ -663,7 +772,7 @@
             android:name=".Admins.CusPackHistoryAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".MapAndLoc.UserLocTrackingAct"
+            android:name=".MapAndLoc.ReportSceneMAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Tellers.MyCusNewPackAct"
@@ -671,7 +780,7 @@
         <activity
             android:name=".Tellers.MyNewPackOptionAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".Admins.AdminSupportAct" />
+        <activity android:name=".Admins.BranchSuppAct" />
         <activity
             android:name=".Customers.CustomerPayAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -840,18 +949,20 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.UserContentProvider"
+            android:authorities="com.awajima.UserContentProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
+                android:grantUriPermissions="true"
                 android:resource="@xml/filepath_pdf" />
         </provider>
         <provider
             android:name=".Database.UserContentProvider"
-            android:authorities="${applicationId}.UserContentProvider"
+            android:authorities="com.awajima.UserContentProvider"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:grantUriPermissions="true" />
 
         <receiver
             android:name=".MapAndLoc.GeofenceBroadcastReceiver"

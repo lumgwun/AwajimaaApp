@@ -17,7 +17,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/non_sticky_pot" />
+        app:srcCompat="@drawable/hp_16gb_1tb_ssd_608" />
 
     <TextView
         android:id="@+id/product_title"
@@ -37,7 +37,7 @@
         android:id="@+id/coupon_icon"
         android:layout_width="15dp"
         android:layout_height="15dp"
-        android:tint="#8000FF"
+        app:tint="#8000FF"
         app:layout_constraintBottom_toBottomOf="@+id/free_coupons"
         app:layout_constraintStart_toStartOf="@+id/product_title"
         app:layout_constraintTop_toTopOf="@+id/free_coupons"
@@ -84,7 +84,7 @@
             android:layout_marginStart="2dp"
             android:layout_marginEnd="2dp"
             android:src="@mipmap/star"
-            android:tint="@color/colorAccent" />
+            app:tint="@color/colorAccent" />
 
     </LinearLayout>
 

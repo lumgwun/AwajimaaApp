@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootCar"
+    style="@style/ListItem"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:paddingLeft="@dimen/_8sdp"
+    android:paddingRight="@dimen/list_item_side_margin"
+    tools:ignore="RtlHardcoded">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/image_car_icon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/list_item_side_margin"
+            android:scaleType="centerCrop"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_orange_car" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:text="Car"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/image_car_icon"
+            android:id="@+id/name_car_ic"
+            android:layout_height="wrap_content"/>
+
+
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

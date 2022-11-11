@@ -6,6 +6,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -57,7 +58,7 @@ public class AdminCountAct extends AppCompatActivity {
     private int tellerID2;
     private  AdminUser adminUser;
     //private Spinner spnPaymentBranchToday,spnPaymentBranchT,spnBranchNewCus;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private  TextView txtTellerPaymentT,txtCustomersforBranch,txtCustomerPaymentToday,txtBranchPaymentToday,txtTellerTotalPayment,txtBranchTotalPayment,txtTellerNewCus;
     private AppCompatButton btnTellerPayment,btnCusPayment,btnBranchPayment,btnTotalTellerPayment,buttonTotalPaymentBranch,buttonTellerNewCus, btnTellerNewCus;
     private AppCompatEditText edtTellerPaymentToday, edtCustomerPaymentToday,edtPaymentTellerTotal,edtTellerNewCus;
@@ -77,6 +78,8 @@ public class AdminCountAct extends AppCompatActivity {
     private PaymentDAO paymentDAO;
     private AdminBalanceDAO adminBalanceDAO;
     private TimeLineClassDAO timeLineClassDAO;
+    private SQLiteDatabase sqLiteDatabase;
+    int cusCountForOffice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,21 +161,98 @@ public class AdminCountAct extends AppCompatActivity {
         btnTellerNewCus.setOnClickListener(this::getTellerNewCus);
 
         totalSoCountToday =  findViewById(R.id.soCounts);
-        soCount=sodao.getStandingOrderCountToday(todayDate);
+        if (dbHelper !=null) {
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            try {
+
+                soCount=sodao.getStandingOrderCountToday(todayDate);
+            } catch (Exception e) {
+                System.out.println("Oops!");
+            }
+
+
+        }
+
         txtTotalSavingsToday =  findViewById(R.id.txtTotalSavingsToday);
-        totalSavingsToday=dbHelper.getSavingsCountToday(todayDate);
+        if (dbHelper !=null) {
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            try {
+
+                totalSavingsToday=dbHelper.getSavingsCountToday(todayDate);
+            } catch (Exception e) {
+                System.out.println("Oops!");
+            }
+
+
+        }
+
+
+
+
         txtTotalSavingsToday.setText(MessageFormat.format("Savings Count{0}", totalSavingsToday));
         txtAllProfileCount=  findViewById(R.id.edtNoOfDaysMyCus);
         txtNewCusToday =  findViewById(R.id.txtNewCusToday);
         txttotalSavingCs =  findViewById(R.id.totalSavingCs);
-        totalSavings2Today33=dbHelper.getTotalSavingsToday(todayDate);
+
+        if (dbHelper !=null) {
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            try {
+
+                totalSavings2Today33=dbHelper.getTotalSavingsToday(todayDate);
+            } catch (Exception e) {
+                System.out.println("Oops!");
+            }
+
+
+        }
+
+
+
+
         txttotalSavingCs.setText(MessageFormat.format("Total Savings N{0}", totalSavings2Today33));
-        customerCountToday=cusDAO.getAllNewCusCountForToday(todayDate);
+        if (dbHelper !=null) {
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            try {
+
+                customerCountToday=cusDAO.getAllNewCusCountForToday(todayDate);
+            } catch (Exception e) {
+                System.out.println("Oops!");
+            }
+
+
+        }
+
+
+
         txtNewCusToday.setText(MessageFormat.format("New Customers:{0}", customerCountToday));
-        countPackageToday=tranXDAO.getAllTxCountForToday(todayDate);
+        if (dbHelper !=null) {
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            try {
+
+                countPackageToday=tranXDAO.getAllTxCountForToday(todayDate);
+            } catch (Exception e) {
+                System.out.println("Oops!");
+            }
+
+
+        }
+
+
         txtNewPackageCountToday =  findViewById(R.id.txtNewPackageCountToday);
         txtNewPackageCountToday.setText(MessageFormat.format("New Packs:{0}", countPackageToday));
-        txCountToday=tranXDAO.getAllTxCountForToday(todayDate);
+        if (dbHelper !=null) {
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            try {
+
+                txCountToday=tranXDAO.getAllTxCountForToday(todayDate);
+            } catch (Exception e) {
+                System.out.println("Oops!");
+            }
+
+
+        }
+
+
         txtNewTXToday = findViewById(R.id.txtNewTXToday);
         txtNewTXToday.setText(MessageFormat.format("Transactions today N{0}", txCountToday));
 
@@ -193,7 +273,19 @@ public class AdminCountAct extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String joinedDate = mdformat.format(calendar.getTime());
-        int cusCountForOffice= cusDAO.getNewCustomersCountForTodayOffice(branchName,joinedDate);
+        if (dbHelper !=null) {
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            try {
+
+                cusCountForOffice= cusDAO.getNewCustomersCountForTodayOffice(branchName,joinedDate);
+            } catch (Exception e) {
+                System.out.println("Oops!");
+            }
+
+
+        }
+
+
         txtCustomersforBranch.setText(MessageFormat.format("Branch Customers ,Today:{0}", cusCountForOffice));
 
     }
@@ -217,7 +309,19 @@ public class AdminCountAct extends AppCompatActivity {
             System.out.println("Oops!");
         }
 
-        customersForTeller=cusDAO.getNewCustomersCountForTodayTeller(tellerID2,todayDate);
+        if (dbHelper !=null) {
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            try {
+
+                customersForTeller=cusDAO.getNewCustomersCountForTodayTeller(tellerID2,todayDate);
+            } catch (Exception e) {
+                System.out.println("Oops!");
+            }
+
+
+        }
+
+
         txtTellerNewCus.setText(MessageFormat.format("Teller Cus:{0}", customersForTeller));
     }
 
@@ -242,7 +346,19 @@ public class AdminCountAct extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        paymentForBranchTotal=paymentDAO.getTotalPaymentForBranch(branchName);
+        if (dbHelper !=null) {
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            try {
+
+                paymentForBranchTotal=paymentDAO.getTotalPaymentForBranch(branchName);
+            } catch (Exception e) {
+                System.out.println("Oops!");
+            }
+
+
+        }
+
+
         txtBranchTotalPayment.setText(MessageFormat.format("Branch''s Total Payment: N{0}", paymentForBranchTotal));
 
     }
@@ -259,7 +375,20 @@ public class AdminCountAct extends AppCompatActivity {
         } catch (Exception e) {
             System.out.println("Oops!");
         }
-        paymentTotalForTeller=paymentDAO.getTotalPaymentForTeller(tellerID);
+
+        if (dbHelper !=null) {
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            try {
+
+                paymentTotalForTeller=paymentDAO.getTotalPaymentForTeller(tellerID);
+            } catch (Exception e) {
+                System.out.println("Oops!");
+            }
+
+
+        }
+
+
         txtTellerTotalPayment.setText(MessageFormat.format("Teller''s Total Payment: N{0}", paymentTotalForTeller));
 
     }
@@ -285,7 +414,20 @@ public class AdminCountAct extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        paymentForBranchToday=paymentDAO.getTotalPaymentTodayForBranch1(branchName,todayDate);
+
+        if (dbHelper !=null) {
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            try {
+
+                paymentForBranchToday=paymentDAO.getTotalPaymentTodayForBranch1(branchName,todayDate);
+            } catch (Exception e) {
+                System.out.println("Oops!");
+            }
+
+
+        }
+
+
         txtBranchPaymentToday.setText(MessageFormat.format("Branch''s Payment ,today : N{0}", paymentForBranchToday));
 
 
@@ -308,7 +450,20 @@ public class AdminCountAct extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        paymentForCusToday=paymentDAO.getTotalPaymentTodayForCustomer(customerID,todayDate);
+
+        if (dbHelper !=null) {
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            try {
+
+                paymentForCusToday=paymentDAO.getTotalPaymentTodayForCustomer(customerID,todayDate);
+            } catch (Exception e) {
+                System.out.println("Oops!");
+            }
+
+
+        }
+
+
         txtCustomerPaymentToday.setText(MessageFormat.format("Customer''s Payment ,today : N{0}", paymentForCusToday));
 
     }
@@ -330,7 +485,20 @@ public class AdminCountAct extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        paymentForTellerToday=paymentDAO.getTotalPaymentTodayForTeller1(tellerID1,todayDate);
+
+        if (dbHelper !=null) {
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            try {
+
+                paymentForTellerToday=paymentDAO.getTotalPaymentTodayForTeller1(tellerID1,todayDate);
+            } catch (Exception e) {
+                System.out.println("Oops!");
+            }
+
+
+        }
+
+
         txtTellerPaymentT.setText(MessageFormat.format("Teller''s Payment ,today : N{0}", paymentForTellerToday));
 
 

@@ -207,7 +207,7 @@ public class SavingsInteractor {
         long lastItemCreatedDate = 0;
 
         if (objectMap != null) {
-            isMoreDataAvailable = Utils.SkyLightPackage.POST_AMOUNT_ON_PAGE == objectMap.size();
+            isMoreDataAvailable = Utils.SkyLightPackage33.POST_AMOUNT_ON_PAGE == objectMap.size();
 
             for (String key : objectMap.keySet()) {
                 Object obj = objectMap.get(key);

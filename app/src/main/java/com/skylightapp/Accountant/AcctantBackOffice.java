@@ -13,6 +13,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
@@ -63,12 +65,13 @@ import com.skylightapp.Database.TCashDAO;
 import com.skylightapp.Database.TReportDAO;
 import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.LoginActivity;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.MyTimelineAct;
 import com.skylightapp.PasswordRecovAct;
 import com.skylightapp.PrivacyPolicy_Web;
 import com.skylightapp.R;
 import com.skylightapp.SignTabMainActivity;
-import com.skylightapp.SkylightSliderAct;
+import com.skylightapp.AwajimaSliderAct;
 import com.skylightapp.SuperAdmin.AppCommission;
 import com.skylightapp.SuperAdmin.AdminSOTabAct;
 import com.skylightapp.SuperAdmin.SuperMPaymentListA;
@@ -90,9 +93,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class AcctantBackOffice extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
     public static final String KEY = "AcctantBackOffice.KEY";
     GridLayout maingrid;
-    Button btnUtility, btnOurPrivacyPolicy,btnInvestment;
     private SharedPreferences userPreferences;
-    PrefManager prefManager;
     private Gson gson,gson1;
     private String json,json1;
     private LinearLayout linearLayout;
@@ -102,18 +103,13 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
     private Profile userProfile;
     private int profileID;
     Button btnMore;
-    //drawLinechart(yValues,xValues);
     float yValues[]={10,20,30,0,40,60};
     CardView cardViewPackges,cardViewGrpSavings,cardViewHistory, cardViewStandingOrders, cardViewOrders, cardViewSupport;
 
     AppCompatTextView extName, textAdminAcctNo, textAdminBalance,  textAmtOfSavings;
-    FrameLayout frameLayout1,frameLayout2;
-    CircleImageView profileImage;
-    private Profile profile;
 
     private AppCompatTextView txtManualPaymentsToday;
 
-    private Customer customerProfile;
     Intent data;
     FloatingActionButton floatingActionButton;
     Customer customer;
@@ -124,66 +120,50 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
     long accountN,saving,skPackages;
     double accountBalance;
     CircleImageView imgProfilePic;
-    private  int SOCount;
-    Button btnUtils,btnLoans,btnSupport;
     private AppCommission appCommission;
     private DBHelper dbHelper;
     double manualPayment, totalSavingsToday;
     private Date today;
     String dateOfToday;
-    private static final String PREF_NAME = "skylight";
-    private SODAO sodao;
-    private TranXDAO tranXDAO;
-    private MessageDAO messageDAO;
-    private LoanDAO loanDAO;
-    private AcctDAO acctDAO;
-    private CodeDAO codeDAO;
-    private PaymDocDAO paymDocDAO;
-    private CusDAO cusDAO;
-    private PaymentCodeDAO paymentCodeDAO;
+    private static final String PREF_NAME = "awajima";
     private ProfDAO profileDao;
-    private TCashDAO cashDAO;
-    private TReportDAO tReportDAO;
+
     private PaymentDAO paymentDAO;
     private AdminBalanceDAO adminBalanceDAO;
-    String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
+    private DBHelper applicationDb;
+    private SQLiteDatabase sqLiteDatabase;
+    private MarketBusiness marketBusiness;
+    String SharedPrefUserPassword;
+    String SharedPrefCusID;
+    String SharedPrefUserMachine;
+    String SharedPrefUserName;
+    int SharedPrefProfileID;
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_acctant_office);
-        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         gson1 = new Gson();
         userProfile=new Profile();
+        marketBusiness= new MarketBusiness();
         appCommission = new AppCommission();
         dbHelper= new DBHelper(this);
-        cusDAO= new CusDAO(this);
-        paymentCodeDAO= new PaymentCodeDAO(this);
-        profileDao= new ProfDAO(this);
-        cashDAO= new TCashDAO(this);
-        paymDocDAO= new PaymDocDAO(this);
-        tReportDAO= new TReportDAO(this);
         paymentDAO= new PaymentDAO(this);
         adminBalanceDAO= new AdminBalanceDAO(this);
-
-        sodao= new SODAO(this);
-        tranXDAO= new TranXDAO(this);
-        sodao= new SODAO(this);
-        messageDAO= new MessageDAO(this);
-        loanDAO= new LoanDAO(this);
-
-        codeDAO= new CodeDAO(this);
-        acctDAO= new AcctDAO(this);
-        SharedPrefUserName=userPreferences.getString("USER_NAME", "");
-        SharedPrefUserPassword=userPreferences.getString("USER_PASSWORD", "");
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
         SharedPrefCusID=userPreferences.getString("CUSTOMER_ID", "");
         SharedPrefUserMachine=userPreferences.getString("machine", "");
-        SharedPrefProfileID=userPreferences.getString("PROFILE_ID", "");
+        SharedPrefProfileID=userPreferences.getInt("PROFILE_ID", 0);
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
+        json = userPreferences.getString("LastMarketBusinessUsed", "");
+        marketBusiness = gson1.fromJson(json1, MarketBusiness.class);
         extName = findViewById(R.id.Acctant_name);
+        toolbar = findViewById(R.id.toolbar_Acctant);
         textAdminAcctNo = findViewById(R.id.allAdminAcctID);
         textAdminBalance = findViewById(R.id.balance_AdminMoney);
         textAmtOfSavings = findViewById(R.id.savingsTodayAcctant);
@@ -197,18 +177,9 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
         toggle.setHomeAsUpIndicator(R.drawable.home2);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        getSupportActionBar().setTitle("Accountant BackOffice");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Accountant BackOffice");
         getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_launcher_round);
-        if(customerProfile !=null){
-            surname=customerProfile.getCusSurname();
-            firstName=customerProfile.getCusFirstName();
-            saving = customerProfile.getCusDailyReports().size();
-            skPackages = customerProfile.getCusSkyLightPackages().size();
-            names=surname+","+ firstName;
 
-
-
-        }
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd", Locale.getDefault());
@@ -222,7 +193,7 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
         }
 
         imgProfilePic = findViewById(R.id.profile_image_Acctant);
-        DBHelper applicationDb = new DBHelper(this);
+        applicationDb = new DBHelper(this);
         if(userProfile !=null){
             profileID=userProfile.getPID();
             Bitmap bitmap = profileDao.getProfilePicture(profileID);
@@ -235,9 +206,37 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
 
             }
         });
-        accountBalance = adminBalanceDAO.getAdminReceivedBalance();
-        manualPayment=paymentDAO.getTotalPaymentToday1(dateOfToday);
-        totalSavingsToday=dbHelper.getTotalSavingsToday(dateOfToday);
+        if (applicationDb != null) {
+            sqLiteDatabase = applicationDb.getReadableDatabase();
+            try {
+                accountBalance = adminBalanceDAO.getAdminReceivedBalance();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+        if (applicationDb != null) {
+            sqLiteDatabase = applicationDb.getReadableDatabase();
+            try {
+                manualPayment=paymentDAO.getTotalPaymentToday1(dateOfToday);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+        if (applicationDb != null) {
+            sqLiteDatabase = applicationDb.getReadableDatabase();
+            try {
+                totalSavingsToday=dbHelper.getTotalSavingsToday(dateOfToday);
+
+            } catch (SQLiteException sqLiteException) {
+                sqLiteException.printStackTrace();
+            }
+
+        }
+
         if(totalSavingsToday>0){
             textAmtOfSavings.setText(MessageFormat.format("Savings today:{0}", totalSavingsToday));
 
@@ -405,11 +404,7 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
                 so1Intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(so1Intent);
                 return true;
-            case R.id.my_packs:
-                Intent timelineIntent = new Intent(this, PackListTab.class);
-                timelineIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(timelineIntent);
-                return true;
+
             case R.id.utility:
                 Intent cIntent = new Intent(this, CustUtilTab.class);
                 cIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -443,7 +438,7 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
 
 
             case R.id.package_slider:
-                Intent tIntent = new Intent(this, SkylightSliderAct.class);
+                Intent tIntent = new Intent(this, AwajimaSliderAct.class);
                 tIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(tIntent);
                 return true;
@@ -484,6 +479,7 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
 
 
     public void showDrawerButton() {
+        toolbar = findViewById(R.id.toolbar_Acctant);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
         toggle = new ActionBarDrawerToggle(

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/nosdra_drawerL"
+    android:background="@drawable/rect_their_message"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start"
+    tools:context="com.skylightapp.MapAndLoc.NOSDRAOffice">
+
+    <include
+        layout="@layout/app_bar_nosdra"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_height="match_parent" />
+
+    <include
+        layout="@layout/act_nosdraoffice"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content" />
+
+
+    <com.rom4ek.arcnavigationview.ArcNavigationView
+        android:layout_width="match_parent"
+        android:background="@drawable/rect_their_message"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:arc_cropDirection="cropOutside"
+        app:arc_width="96dp"
+        app:itemIconSize="20dp"
+        android:layout_margin="20dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        app:itemShapeInsetStart="10dp"
+        android:paddingVertical="20dp"
+        app:itemHorizontalPadding="40dp"
+        app:itemIconTint="@color/red_brown"
+        app:itemTextColor="@color/green_dark"
+        android:layout_marginBottom="10dp"
+        app:itemBackground="@drawable/shape_layer_3b"
+        app:itemTextAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:stateListAnimator="@anim/raise"
+        android:id="@+id/nav_Nosdra"
+        app:headerLayout="@layout/tool_nosdra"
+        android:fitsSystemWindows="true"
+        app:menu="@menu/nosdra_nav_menu" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

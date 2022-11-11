@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/oil_Home"
+        android:title="Home"
+        app:cnb_backgroundColor="@color/dark_and_red"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#2196F3"
+        android:icon="@drawable/ic_admin_panel"/>
+
+    <item
+        android:id="@+id/OIL_Reports"
+        android:title="New Spillage"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#F44336"
+        android:icon="@drawable/ic_home_black_24dp"/>
+
+    <item
+        android:id="@+id/oil_done"
+        android:title="Treated Reports"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#F44336"
+        android:icon="@drawable/ic_add_business"/>
+
+    <item
+        android:id="@+id/oil_sub"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#4CAF50"
+        android:icon="@drawable/ic_chats"
+        android:title="Our Subscription" />
+    <item
+        android:id="@+id/oil_messages"
+        android:title="Messages"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#FF9800"
+        android:icon="@drawable/ic_admin_panel"/>
+
+</menu>

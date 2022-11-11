@@ -2,15 +2,15 @@
     <!-- Base application theme. -->
     <style name="Theme.OurCApp" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/blue1</item>
-        <item name="colorPrimaryVariant">@color/google_blue2</item>
-        <item name="colorOnPrimary">@color/blue1</item>
+        <item name="colorPrimary">@color/bg_screen1</item>
+        <item name="colorPrimaryVariant">@color/color1</item>
+        <item name="colorOnPrimary">@android:color/holo_green_dark</item>
         <item name="colorAccent">@android:color/holo_orange_dark</item>
         <item name="android:windowBackground">@drawable/shape_rect14</item>
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!--<item name="android:statusBarColor" tools:targetApi="l">@color/red_brown_dark</item>-->
         <item name="android:titleTextColor">@color/white</item>
-        <item name="colorOnSecondary">@color/colorAccent</item>
+        <item name="colorOnSecondary">@color/fine_green</item>
         <item name="actionMenuTextColor">@color/white</item>
         <item name="android:textStyle">bold</item>
         <item name="android:actionMenuTextColor">@color/white</item>

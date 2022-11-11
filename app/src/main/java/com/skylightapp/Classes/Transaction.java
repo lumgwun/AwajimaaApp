@@ -24,7 +24,7 @@ import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 @Entity(tableName = Transaction.TRANSACTIONS_TABLE)
 public class Transaction implements Parcelable, Serializable {
-    public static final String TRANSACTIONS_TABLE = "transactions";
+    public static final String TRANSACTIONS_TABLE = "transactions_Tables";
     public static final String TRANSACTION_ID = "transaction_id";
 
     //public static final String TIMESTAMP = "timestamp";
@@ -108,10 +108,10 @@ public class Transaction implements Parcelable, Serializable {
     public enum TRANSACTION_TYPE {
         PAYMENT, TRANSFER, DEPOSIT,MANUAL_WITHDRAWAL, SAVINGS,LOAN,STANDING_ORDER,
         REFERRALS,BORROWING,GROUP_SAVINGS_DEPOSIT,GROUP_SAVINGS_WITHDRAWAL,WITHDRAWALTX,PROMO,ITEM_PURCHASE,
-        RETURNS, INVESTMENT,APP_SUBSCRIPTION,INSURANCE,BIZ_DEAL,SESSION_PAYMENT,DONATION,BUSINESS_SUPPORT;
+        RETURNS, INVESTMENT,APP_SUBSCRIPTION,INSURANCE,BIZ_DEAL,SESSION_PAYMENT,DONATION,BUSINESS_SUPPORT,BOAT_BOOKING,TRAIN_BOOKING,TAXI_BOOKING;
     }
     @SuppressLint("SimpleDateFormat")
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd - hh:mm a");
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd - hh:mm a");
 
     //@PrimaryKey(autoGenerate = true)
     private int transactionID=10101;
@@ -131,7 +131,7 @@ public class Transaction implements Parcelable, Serializable {
     Currency tranxCurrency;
     int transferId;
     String tranxReceiptId;
-    String transactionId;
+    String tranxIdString;
     String tranxStatus;
     String tranxMethodOfPay;
     private int tranxBizID;
@@ -443,7 +443,7 @@ public class Transaction implements Parcelable, Serializable {
 
 
     protected Transaction(Parcel in) {
-        this.transactionId = in.readString();
+        this.tranxIdString = in.readString();
         this.tranxCusID = in.readInt();
         this.tranxAcctId = in.readInt();
         this.tranxAmount = in.readDouble();
@@ -458,16 +458,16 @@ public class Transaction implements Parcelable, Serializable {
 
     public Transaction(int payoutID, int loanProfileID, int tranxCusID, int acctNo, String todayDate, String skylight, int no, String acctName, String customerName, double amountRequested, String paymentType, String payStack_transfer, String officeBranch, String txApprover, String tranxDate, String completed) {
     }
-    public Transaction(long transactionId, String surname, String firstName, String customerPhoneNumber, double tranxAmount, String accountNumber, String description, String tranxDate, String type) {
+    public Transaction(long tranxIdString, String surname, String firstName, String customerPhoneNumber, double tranxAmount, String accountNumber, String description, String tranxDate, String type) {
 
     }
 
-    public int getTransactionId() {
+    public int getTranxIdString() {
         return transactionID;
     }
 
-    public void setTransactionId(int transactionId) {
-        this.transactionID = transactionId;
+    public void setTranxIdString(int tranxIdString) {
+        this.transactionID = tranxIdString;
     }
 
     public long getTranxCusID() {
@@ -551,7 +551,7 @@ public class Transaction implements Parcelable, Serializable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.transactionId);
+        dest.writeString(this.tranxIdString);
         dest.writeLong(this.tranxCusID);
         dest.writeLong(this.tranxAcctId);
         dest.writeDouble(this.tranxAmount);
@@ -567,7 +567,7 @@ public class Transaction implements Parcelable, Serializable {
     @Override
     public String toString() {
         return "Transaction{" +
-                "transactionId='" + transactionId + '\'' +
+                "transactionId='" + tranxIdString + '\'' +
                 ", transferId=" + transferId +
                 // ", transferDetail=" + transferDetail +
                 ", receiptId=" + tranxReceiptId +

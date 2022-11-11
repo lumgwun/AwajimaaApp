@@ -213,6 +213,7 @@ public class MapPanoramaStVAct extends FragmentActivity implements LocationListe
     private CancellationTokenSource cancellationTokenSource;
     private static final String PREF_NAME = "skylight";
     private String receivedLatLng;
+
     private Woosmap woosmap;
 
     @Override
@@ -274,31 +275,34 @@ public class MapPanoramaStVAct extends FragmentActivity implements LocationListe
         SupportStreetViewPanoramaFragment panoramaFragment =
                 (SupportStreetViewPanoramaFragment) getSupportFragmentManager()
                         .findFragmentById(R.id.streetviewpanorama);
-        panoramaFragment.getStreetViewPanoramaAsync(this);
+        if (panoramaFragment != null) {
+            panoramaFragment.getStreetViewPanoramaAsync(this);
+        }
         latitude=4.8359;
         longitude=7.0139;
         LatLng TechCreek = new LatLng(latitude, longitude);
 
 
+        if (panoramaFragment != null) {
+            panoramaFragment.getStreetViewPanoramaAsync(new OnStreetViewPanoramaReadyCallback() {
+                @Override
+                public void onStreetViewPanoramaReady(@NonNull StreetViewPanorama streetViewPanorama) {
 
-        panoramaFragment.getStreetViewPanoramaAsync(new OnStreetViewPanoramaReadyCallback() {
-            @Override
-            public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
+                    if (savedInstanceState == null) {
+                        StreetViewPanoramaCamera camera = new StreetViewPanoramaCamera.Builder()
+                                .zoom(streetViewPanorama.getPanoramaCamera().zoom)
+                                // .tilt(streetViewPanorama.getPanoramaCamera().tilt)
+                                .bearing(200)
+                                .build();
 
-                if (savedInstanceState == null) {
-                    StreetViewPanoramaCamera camera = new StreetViewPanoramaCamera.Builder()
-                            .zoom(streetViewPanorama.getPanoramaCamera().zoom)
-                            // .tilt(streetViewPanorama.getPanoramaCamera().tilt)
-                            .bearing(200)
-                            .build();
+                        streetViewPanorama.animateTo(camera, 500);
+                        streetViewPanorama.setPosition(TechCreek, 20);
 
-                    streetViewPanorama.animateTo(camera, 500);
-                    streetViewPanorama.setPosition(TechCreek, 20);
+                    }
 
                 }
-
-            }
-        });
+            });
+        }
 
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);

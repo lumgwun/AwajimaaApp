@@ -24,6 +24,7 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.AppCash;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.StocksDAO;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
 
 import java.text.SimpleDateFormat;
@@ -56,22 +57,24 @@ public class BranchStockOv extends AppCompatActivity implements MyInventAdapter.
     private AppCompatButton btnByDate;
     TextView txtTotalSCForDate,txtTotalSCForToday,txtTotalSCTotal;
     double totalSCForDate,totalSCForToday,totalSC;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private SQLiteDatabase sqLiteDatabase;
     private Profile userProfile;
     private  OfficeBranch office;
+    private MarketBusiness marketBusiness;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_branch_stock_ov);
-        setTitle("All Stocks Listing");
+        setTitle("Branch Stocks Listing");
         stocksListDate =new ArrayList<>();
         stocksArrayListToday =new ArrayList<>();
         stocksArrayAll =new ArrayList<>();
         gson = new Gson();
         gson1 = new Gson();
+        marketBusiness= new MarketBusiness();
         userProfile= new Profile();
         sqLiteDatabase = dbHelper.getWritableDatabase();
         txtTotalSCForDate = findViewById(R.id.StocksBranchD);
@@ -88,9 +91,13 @@ public class BranchStockOv extends AppCompatActivity implements MyInventAdapter.
         dbHelper= new DBHelper(this);
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
+
+        json1 = userPreferences.getString("LastMarketBusinessUsed", "");
+        marketBusiness = gson1.fromJson(json, MarketBusiness.class);
+
         userBundle= new Bundle();
         if(userProfile !=null){
-            branch=userProfile.getProfileOffice();
+            branch=userProfile.getProfOfficeName();
             office=userProfile.getProfileOfficeBranch();
         }
 
@@ -113,41 +120,41 @@ public class BranchStockOv extends AppCompatActivity implements MyInventAdapter.
             dateOfStocks =todayDate;
         }
         StocksDAO stocksDAO= new StocksDAO(this);
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
+        if (dbHelper !=null) {
+            //dbHelper.openDataBase();
             stocksArrayListToday =stocksDAO.getStocksForBranchAtDate(branchID,dateOfStocks);
         }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
+        if (dbHelper !=null) {
+            //dbHelper.openDataBase();
             stocksBranchCount =stocksDAO.getStockCountAtDateForBranch(branch,dateOfStocks);
         }
 
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
+        if (dbHelper !=null) {
+            //dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
             stocksListDate =stocksDAO.getStocksForBranchAtDate(branchID, dateOfStocks);
         }
 
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
+        if (dbHelper !=null) {
+            //dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
             stocksArrayAll =stocksDAO.getAllStocksForBranch(branchID);
         }
 
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
+        if (dbHelper !=null) {
+            //dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
             totalSCForDate =stocksDAO.getTotalStocksTodayForBranch1(branchID, dateOfStocks);
         }
 
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
+        if (dbHelper !=null) {
+            //dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
             totalSCForToday =stocksDAO.getTotalStocksTodayForBranch1(branchID,todayDate);
         }
 
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
+        if (dbHelper !=null) {
+            //dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getWritableDatabase();
             totalSC=stocksDAO.getStocksTotalForBranch(branchID);
         }

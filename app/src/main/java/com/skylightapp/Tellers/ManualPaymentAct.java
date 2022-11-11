@@ -288,7 +288,7 @@ public class ManualPaymentAct extends AppCompatActivity {
 
         if(tellerProfile !=null){
             tellerProfileID=tellerProfile.getPID();
-            office=tellerProfile.getProfileOffice();
+            office=tellerProfile.getProfOfficeName();
             cmName=tellerProfile.getProfileLastName()+""+tellerProfile.getProfileFirstName();
 
         }

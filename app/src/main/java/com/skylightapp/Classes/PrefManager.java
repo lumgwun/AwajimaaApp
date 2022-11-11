@@ -233,7 +233,7 @@ public class PrefManager {
         String userName = profile.getProfileUserName();
         String profileEmail=profile.getProfileEmail();
         String userState =profile.getProfileState();
-        String userOffice = profile.getProfileOffice();
+        String userOffice = profile.getProfOfficeName();
         String otp=profile.getProfile_AuthenticationKey();
         String dateJoined =profile.getProfileDateJoined();
         String DOB = profile.getProfileDob();

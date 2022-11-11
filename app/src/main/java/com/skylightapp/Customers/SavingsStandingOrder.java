@@ -9,7 +9,6 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.preference.PreferenceManager;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -29,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
@@ -160,15 +160,13 @@ public class SavingsStandingOrder extends AppCompatActivity {
     private AppCompatTextView txtResult;
     int soAcctNo;
     double sOAmount,amountCarriedForward,sONowAmount,amtDiff;
-    AppCompatEditText edtAmount, edtsoDaysToPayToday, edtMonths;
-    int noOfDays, frequencyIndex,currencyIndex,months,soDaysToPayToday,daysRemaining;
+    int noOfDays, months,daysRemaining;
     String customerName, customerPhoneNo,customerEmail, endDate;
-    AppCompatButton btnCreateAPlan;
-    Spinner spnPlanFreq,spnPlanCurrency;
     StandingOrderAcct standingOrderAcct;
     String Enddate,officeBranch;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     AppCompatEditText edtNoOfMonths;
+    private MaterialCardView cardView;
     com.skylightapp.Classes.Transaction Skylightransaction;
     com.skylightapp.Classes.Transaction.TRANSACTION_TYPE transaction_type;
     ActivityResultLauncher<Intent> standingOrderUpdateStartForResult = registerForActivityResult(
@@ -196,7 +194,7 @@ public class SavingsStandingOrder extends AppCompatActivity {
                                 currency = bundle.getString("Currency");
                                 standingOrderAcct= new StandingOrderAcct(soNo,customerName,sONowAmount);
                                 customer.setCusStandingOrderAcct(standingOrderAcct);
-                                //StandingOrderAcct.addStandingOrder(soNo,expectedAmount);
+
                                 customer.addCusStandingOrder(soAcctNo,expectedAmount,sONowAmount,amountCarriedForward, currentDate, months,daysRemaining,endDate);
                                 applicationDb = new DBHelper(SavingsStandingOrder.this);
                                 String managerFullNames = ManagerSurname + "," + managerFirstName;
@@ -209,9 +207,9 @@ public class SavingsStandingOrder extends AppCompatActivity {
                                 String timelineUserProfile = selectedPlan + "was initiated by you for" + namesT + "@" + currentDate;
                                 String tittle = "Standing order package Alert";
                                 transaction_type= com.skylightapp.Classes.Transaction.TRANSACTION_TYPE.STANDING_ORDER;
-                                refID= "SkyLight/SO"+ random.nextInt((int) (Math.random() * 101) + 191);
+                                refID= "Awajima/SO"+ random.nextInt((int) (Math.random() * 101) + 191);
                                 if(userProfile !=null){
-                                    officeBranch=userProfile.getProfileOffice();
+                                    officeBranch=userProfile.getProfOfficeName();
                                     userProfile.addPTransaction(transactionID,uSurname,uFirstName,phoneNo,sONowAmount,PHONE_NO,"Standing order payment",currentDate,"Standing Order");
 
                                 }
@@ -228,7 +226,7 @@ public class SavingsStandingOrder extends AppCompatActivity {
 
                                 }
                                 if(userProfile !=null){
-                                    officeBranch=userProfile.getProfileOffice();
+                                    officeBranch=userProfile.getProfOfficeName();
                                     userProfile.addPTimeLine(tittle,timelineUserProfile);
                                     userProfile.addPTransaction(transactionID,uSurname,uFirstName,phoneNo,sONowAmount,PHONE_NO,"Standing order payment",currentDate,"Standing Order");
 
@@ -237,7 +235,7 @@ public class SavingsStandingOrder extends AppCompatActivity {
                                     tranXDAO= new TranXDAO(getApplicationContext());
                                     timeLineClassDAO= new TimeLineClassDAO(getApplicationContext());
                                     standingOrderAcct=customer.getCusStandingOrderAcct();
-                                    sodao= new SODAO(getApplicationContext());
+                                    sodao= new SODAO(SavingsStandingOrder.this);
                                     if(standingOrderAcct !=null){
                                         soAcctNo=standingOrderAcct.getSoAcctNo();
 
@@ -252,7 +250,7 @@ public class SavingsStandingOrder extends AppCompatActivity {
 
                                 }
                                 try {
-                                    sodao= new SODAO(getApplicationContext());
+                                    sodao= new SODAO(SavingsStandingOrder.this);
                                     sodao.insertStandingOrder(profileID,customerID,soNo,soAcctNo,amountCarriedForward, currentDate,expectedAmount,sONowAmount,amtDiff, months,daysRemaining,endDate,"inProgress");
 
 
@@ -288,12 +286,17 @@ public class SavingsStandingOrder extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_savings_so_app);
+        setTitle("Savings Standing Orders");
         planSpn = findViewById(R.id.planSpinner);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        userProfile= new Profile();
 
         spnFrequency = findViewById(R.id.SOFrequency2);
         spnCurrency = findViewById(R.id.SOCurrency);
         txtResult = findViewById(R.id.txtResult4);
         edtNoOfMonths = findViewById(R.id.soNoOfMonths4);
+        cardView = findViewById(R.id.cd_material);
+
         Date date = new Date();
         workersDAO= new WorkersDAO(this);
         awardDAO= new AwardDAO(this);
@@ -328,7 +331,7 @@ public class SavingsStandingOrder extends AppCompatActivity {
         SimpleDateFormat dateFormatWithZone = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String currentDate = dateFormatWithZone.format(date);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        refID= "SkyLightT/"+currentDate+ random.nextInt((int) (Math.random() * 9091) + 19);
+        refID= "Awajima/"+currentDate+ random.nextInt((int) (Math.random() * 9091) + 19);
         transactionID = random.nextInt((int) (Math.random() * 91) + 19);
         soNo = random.nextInt((int) (Math.random() * 75310) + 13570);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -642,9 +645,11 @@ public class SavingsStandingOrder extends AppCompatActivity {
             public void onClick(View v) {
                 PaystackSdk.initialize(getApplicationContext());
                 PaystackSdk.setPublicKey(PUBLIC_KEY_PAYSTACK);
-                SimpleDateFormat dateFormatWithZone = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                SimpleDateFormat dateFormatWithZone = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 String currentDate = dateFormatWithZone.format(date);
-                userPreferences = PreferenceManager.getDefaultSharedPreferences(SavingsStandingOrder.this);
+                userProfile= new Profile();
+                userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+                //userPreferences = PreferenceManager.getDefaultSharedPreferences(SavingsStandingOrder.this);
                 json = userPreferences.getString("LastProfileUsed", "");
                 userProfile = gson.fromJson(json, Profile.class);
 

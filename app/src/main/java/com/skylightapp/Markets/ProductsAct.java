@@ -12,6 +12,7 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -29,6 +30,7 @@ import com.google.gson.Gson;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.rom4ek.arcnavigationview.ArcNavigationView;
 import com.skylightapp.Adapters.ProductPageAdapter;
+import com.skylightapp.AwajimaSliderAct;
 import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.HomeFragment;
 import com.skylightapp.Classes.MyAccountFragment;
@@ -41,8 +43,8 @@ import com.skylightapp.Classes.SliderModel;
 import com.skylightapp.Classes.WishlistModel;
 import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
-import com.skylightapp.SkylightSliderAct;
 import com.skylightapp.UserPrefActivity;
 import com.skylightapp.UserTimeLineAct;
 
@@ -70,10 +72,10 @@ public class ProductsAct extends AppCompatActivity implements NavigationView.OnN
     public List<SliderModel> sliderModelList;
     SharedPreferences userPreferences;
     PreferenceManager preferenceManager;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     DBHelper applicationDb;
-    Gson gson, gson1;
-    String json, json1, nIN;
+    Gson gson, gson1,gson2;
+    String json, json1,json2, nIN;
     Profile userProfile, customerProfile, lastProfileUsed;
     private CustomerManager customerManager;
     private static final int HOME_FRAGMENT = 0;
@@ -93,6 +95,7 @@ public class ProductsAct extends AppCompatActivity implements NavigationView.OnN
     private Toolbar toolbar;
     ChipNavigationBar chipNavigationBar;
     private String title;
+    private MarketBusiness marketBusiness;
     com.google.android.material.floatingactionbutton.FloatingActionButton fabHome;
     //public static List<String> loadCategoriesNames = new ArrayList<>();
 
@@ -104,12 +107,17 @@ public class ProductsAct extends AppCompatActivity implements NavigationView.OnN
         userProfile= new Profile();
         gson= new Gson();
         gson1= new Gson();
+        gson2= new Gson();
+        marketBusiness= new MarketBusiness();
         customerManager= new CustomerManager();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         json1 = userPreferences.getString("LastTellerProfileUsed", "");
         customerManager = gson1.fromJson(json1, CustomerManager.class);
+
+        json2 = userPreferences.getString("LastMarketBusinessUsed", "");
+        marketBusiness = gson2.fromJson(json2, MarketBusiness.class);
         categoryRecyclerView=findViewById(R.id.category_recyclerview);
         DBHelper applicationDb = new DBHelper(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar_shop);
@@ -165,7 +173,7 @@ public class ProductsAct extends AppCompatActivity implements NavigationView.OnN
         fabHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(ProductsAct.this, SkylightSliderAct.class);
+                Intent myIntent = new Intent(ProductsAct.this, AwajimaSliderAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -238,88 +246,6 @@ public class ProductsAct extends AppCompatActivity implements NavigationView.OnN
         sliderModelFakeList.add(new SliderModel("null", "#FFFFFF"));
         sliderModelFakeList.add(new SliderModel("null", "#FFFFFF"));
 
-
-
-
-
-
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.p_a, "Package A","Item Purchase", 50, "the duration is in Months", 12 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.p_b, "Package B","Item Purchase", 100, "the duration is in Months", 12 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.p_c, "Package C", "Item Purchase",150, "the duration is in Months", 12 ));
-
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.p_d, "Package D","Item Purchase", 200, "the duration is in Months", 12 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.p_e, "Package E","Item Purchase", 100, "the duration is in Months", 6 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.p_f, "Package F","Item Purchase", 200, "the duration is in Months", 6));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.p_g, "Package G", "Item Purchase",400, "the duration is in Months", 6 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.p_h, "Package H","Item Purchase", 300, "the duration is in Months", 5 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.p_i, "Package I","Item Purchase", 200, "the duration is in Months", 3 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.special_package, "Item Purchase","CELEBRATION PACKAGE 1", 300, "1 Big Goat", 4));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.p_a, "CELEBRATION PACKAGE 2","Item Purchase", 1200, "1 Cow", 12 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.p_a, "CELEBRATION PACKAGE 3","Item Purchase", 300, "Full bag of Rice", 3));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.special_package, "CELEBRATION PACKAGE 4","Item Purchase", 100, "1/2 bag of Rice", 5));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.next_level, "NEXT LEVEL PACKAGE 1", "Item Purchase",1000, "the duration is in Months", 6 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.next_level, "NEXT LEVEL PACKAGE 2", "Item Purchase",500, "the duration is in Months", 12 ));
-
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.special_package, "SPECIAL PACKAGE 1","Item Purchase", 500, "the duration is in Months", 6 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.special_package, "SPECIAL PACKAGE 2","Item Purchase", 250, "the duration is in Months", 12 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.provision_package, "PROVISION PACKAGE","Item Purchase", 300, "the duration is in Months", 6 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.p_a, "Siena Car,model 2006","Item Purchase", 4000, "the duration is in Months", 18));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.p_b, "Keke Bus", "Item Purchase",2500, "the duration is in Months", 17));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.p_c, "Keke Tricycle", "Item Purchase",2300, "the duration is in Months", 12 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.p_d, "Electric Kettle","Item Purchase", 200, "As it is in the picture", 2 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.p_e, "Cooking Stove(Big round)","Item Purchase", 200, "As it is in the picture", 3 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.p_f, "Single Burner Hot Plate", "Item Purchase",200, "As it is in the picture", 1));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.p_g, "Double Burner Hot Plate","Item Purchase", 200, "As it is in the picture", 2 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.p_h, "Two Burner Stove","Item Purchase", 200, "As it is in the picture", 4 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.p_i, "8Kg Cylinder and Burner","Item Purchase", 150, "As it is in the picture", 3 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.special_package, "12.5 kg Cylinder","Item Purchase", 200, "As it is in the picture", 3));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.p_a, "Hammer mill Grinding Machine", "Item Purchase",500, "As it is in the picture", 5 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.p_a, "Butterfly Sewing Machine", "Item Purchase",400, "As it is in the picture", 6 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.special_package, "CELEBRATION PACKAGE 4","Item Purchase", 100, "As it is in the picture", 5 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.special_package, "SPECIAL PACKAGE 1","Item Purchase", 500, "As it is in the picture", 6 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.special_package, "SPECIAL PACKAGE 2","Item Purchase", 250, "As it is in the picture", 12));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.provision_package, "PROVISION PACKAGE","Item Purchase", 300, "As it is in the picture", 6));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.blender, "Blender(3 in 1)", "Item Purchase",250, "As it is in the picture", 2));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.grinder, "Corona manual Grinder","Item Purchase", 200, "As it is in the picture", 3));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.grinding_machine_mil, "Hammer Mill grinding machine","Item Purchase", 500, "As it is in the picture", 5 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.home_theater_600w, "Home theatre 600W","Item Purchase", 500, "As it is in the picture", 6 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.hot_plate_double_burner, "Double Burner Hot plate", "Item Purchase",200, "As it is in the picture", 2 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.keke_bus, "Keke Bus","Item Purchase", 2500, "As it is in the picture", 17 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.laptop, "Lenovo Laptop Idea Pad","Item Purchase", 700, "Intel core i3, 2.0 Ghz, 6Gb RAM, 500Gb HDD", 8));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.laptop, "HP Laptop 15.6", "Item Purchase",800, "110-15isk Intel core i3,6100U, 2.3 Ghz, 5Gb RAM, 1000TB HDD,15 Inches", 8 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.non_sticky_pot, "Generic Non sticky pot with frying pan", "Item Purchase",200, "As it is in the picture", 5));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.oven, "Microwave Oven", "Item Purchase",400, "As it is in the picture", 4 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.sewing_maching, "BUTTERFLY SEWING MACHINE","Item Purchase", 400, "As it is in the picture", 6));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.two_burner_stove, "TWO BURNER STOVE","Item Purchase", 200, "As it is in the picture", 3));
-
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.generator, "Fireman(SPG 8.800EZ) Petrol Gen","Item Purchase", 800, "As it is in the picture", 12));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.generator, "Fireman Rugged Line (RDS 900 EX) Petrol Gen","Item Purchase", 800, "As it is in the picture", 12));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.generator, "Fireman Ecological Line Keno Gravity(Eco 1990s) Petrol Gen","Item Purchase", 500, "As it is in the picture", 5));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.generator, "Fireman Rugged Line(3910 EX) Petrol Gen","Item Purchase", 500, "As it is in the picture", 12));
-
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.blender, "Rechargeable Blender", "Item Purchase",150, "As it is in the picture", 1));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.a_c_1_5, "Air conditioner (1.5HP)","Item Purchase", 700, "As it is in the picture", 7));
-
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.a_c_1_5, "Air conditioner (2HP)","Item Purchase", 1000, "As it is in the picture", 2));
-
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.electric_iron, "Original Philips pressing iron","Item Purchase", 150, "As it is in the picture", 3));
-
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.gass_cylinder, "12.5KG Cylinder","Item Purchase", 200, "As it is in the picture", 3));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.gas_cylinder_and_burner, "8Kg Cylinder & Burner","Item Purchase", 150, "As it is in the picture", 3));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.hot_plate_double_burner, "Double burner hot plate","Item Purchase", 200, "As it is in the picture", 2));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.emel_ind_sewing_machind, "Emel Ind sewing machine","Item Purchase", 600, "As it is in the picture", 7));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.two_burner_table_gas, "Two burner table gas","Item Purchase", 200, "As it is in the picture", 4));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.water_dispenser, "Water dispenser","Item Purchase", 400, "As it is in the picture", 6));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.standing_fan, "Standard standing fan","Item Purchase", 200, "As it is in the picture", 4));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.standing_fan, "Ox Ind. fan","Item Purchase", 400, "As it is in the picture", 5));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.deep_freezer, "Deep freezer (100L, 2ft)","Item Purchase", 700, "As it is in the picture", 7));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.deep_freezer, "Deep freezer (200L, 3ft)","Item Purchase", 800, "As it is in the picture", 7));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.deep_freezer, "Deep freezer (Beko)","Item Purchase", 700, "Biggest size,one door", 12));
-
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.hanging_hair_dryer, "Hanging hair dryer","Item Purchase", 450, "As it is in the picture", 5));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.keke_bus, "Keke bus","Item Purchase", 2500, "As it is in the picture", 17));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.electric_kettle, "Electric Kettle","Item Purchase", 200, "As it is in the picture", 2));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.stove_round, "Cooking stove (big round)","Item Purchase", 200, "As it is in the picture", 3));
 
 
         skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "", "Savings", 500, "", 1));
@@ -472,6 +398,7 @@ public class ProductsAct extends AppCompatActivity implements NavigationView.OnN
 
 
     }
+    @SuppressLint("NotifyDataSetChanged")
     public void loadFragmentData(final int index, String title){
        if(index==0){
            sliderModel= new SliderModel();
@@ -588,7 +515,7 @@ public class ProductsAct extends AppCompatActivity implements NavigationView.OnN
                     showCart = false;
                     finish();
                 } else {
-                    actionBarLogo.setVisibility(View.VISIBLE);
+                    //actionBarLogo.setVisibility(View.VISIBLE);
                     invalidateOptionsMenu();
                     setFragment(new HomeFragment(), HOME_FRAGMENT);
                     navigationView.getMenu().getItem(0).setChecked(true);
@@ -601,7 +528,7 @@ public class ProductsAct extends AppCompatActivity implements NavigationView.OnN
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.nav_my_Home) {
-            actionBarLogo.setVisibility(View.VISIBLE);
+            //actionBarLogo.setVisibility(View.VISIBLE);
             invalidateOptionsMenu();
             setFragment(new HomeFragment(), HOME_FRAGMENT);
         } else if (id == R.id.nav_my_orders) {
@@ -635,8 +562,9 @@ public class ProductsAct extends AppCompatActivity implements NavigationView.OnN
         }
 
     }
+
     private void gotoFragment(String title, Fragment fragment, int fragmentNo) {
-        actionBarLogo.setVisibility(View.GONE);
+        //actionBarLogo.setVisibility(View.GONE);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle(title);
         invalidateOptionsMenu();

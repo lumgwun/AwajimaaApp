@@ -23,7 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.skylightapp.Adapters.AccountAdapter2;
+import com.skylightapp.Adapters.AccountRecylerAdap;
 import com.skylightapp.Adapters.CustomerAdapter;
 import com.skylightapp.Adapters.MySavingsCodeAdapter;
 import com.skylightapp.Adapters.OfficeAdapter;
@@ -81,7 +81,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class BizSuperAdminAllView extends AppCompatActivity implements AdapterView.OnItemSelectedListener,SkyLightPackageAdapter.OnItemsClickListener,SuperSavingsAdapter.OnItemsClickListener, MySavingsCodeAdapter.OnItemsClickListener, TranxAdminA.OnItemsClickListener,StandingOrderAdapter.OnItemsClickListener,AccountAdapter2.OnItemsClickListener{
+public class BizSuperAdminAllView extends AppCompatActivity implements AdapterView.OnItemSelectedListener,SkyLightPackageAdapter.OnItemsClickListener,SuperSavingsAdapter.OnItemsClickListener, MySavingsCodeAdapter.OnItemsClickListener, TranxAdminA.OnItemsClickListener,StandingOrderAdapter.OnItemsClickListener, AccountRecylerAdap.OnAcctClickListener {
     TextView txtTotalForTheDay,txtDurationInDays,txtTotalPaymentToday, countManualPaymentToday,txtNewCusToday,totalSavings2Today,txttotalSavingCs,totalSoCountToday,txtNewPackageCountToday, txtNewTXToday,txtTotalSavingsToday,txtAllProfileCount;
     SharedPreferences sharedpreferences;
     protected DBHelper dbHelper;
@@ -111,7 +111,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
     private PaymentAdapterSuper paymentAdapter;
     private CustomerAdapter customerAdapter;
 
-    private AccountAdapter2 accountAdapter;
+    private AccountRecylerAdap accountAdapter;
     private TellerReportAdapterSuper tellerReportAdapter;
     //private MySavingsCodeAdapter codeAdapter;
     private PaymentCodeAdapter paymentCodeAdapter;
@@ -1413,7 +1413,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
     }
 
     @Override
-    public void onItemClick(Account account) {
+    public void onAcctClicked(Account account) {
 
     }
 

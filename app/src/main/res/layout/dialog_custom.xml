@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_chats" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/cd_dialog_T"
+        android:layout_width="392dp"
+        android:layout_height="112dp"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:hint="Tittle"
+        android:layout_below="@id/imageView"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:textStyle="bold"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/cd_message_d"
+        android:layout_width="392dp"
+        android:layout_height="112dp"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:hint="Message"
+        android:layout_below="@id/cd_dialog_T"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:textStyle="bold"/>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cd_dialog_T"
+        android:layout_margin="15dp"
+        android:layout_centerHorizontal="true">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/okay_Dtext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="100dp"
+            android:text="Okay"
+            android:background="@drawable/rect66"
+            android:textStyle="bold"
+            android:textColor="#3F51B5"
+            android:textSize="20sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cancel_textD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rect66"
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="100dp"
+            android:layout_toRightOf="@id/okay_Dtext"
+            android:text="Cancel"
+            android:textStyle="bold"
+            android:textColor="#FF0000"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

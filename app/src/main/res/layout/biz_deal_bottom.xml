@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/bd_scrollV"
+    android:visibility="gone"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_layer_3b"
+    tools:context="com.skylightapp.Markets.BizDSelectPartnerAct"
+    app:layout_behavior="@string/bottom_sheet_behavior">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:padding="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_width="60dp"
+            android:background="@drawable/com_facebook_close"
+            android:layout_gravity="end"
+            android:id="@+id/btn_closeBD_Sheet"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/com_facebook_close"
+            android:layout_height="60dp"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="My Awajima Business Deals Partners"
+            android:textAlignment="center"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:gravity="center_horizontal"
+            android:id="@+id/bd_card_amount"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyDealP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/event_rect"
+                android:clipToPadding="false"
+                tools:listitem="@layout/deal_user_layout"
+                android:foregroundGravity="center"
+                android:orientation="vertical" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:gravity="end"
+            android:id="@+id/cardBD_Btn"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:weightSum="1"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:text="Get Selected Partner"
+                    android:textSize="17sp"
+                    android:padding="20dp"
+                    android:layout_weight="1"
+                    android:onClick="getBizDealPartnerN"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textStyle="bold"
+                    android:id="@+id/buttonGetDealsP"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their_message"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+</ScrollView>

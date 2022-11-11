@@ -76,7 +76,7 @@
                         android:gravity="center_horizontal"
                         android:text="You can manage Your Customers, Partners, Regulators, daily icome, expenditures, deposits, and transactions,and Businesses can send messages, and hold Live Streaming sessions"
                         android:background="@drawable/rect_their_message"
-                        android:src="@drawable/skylight_madam" />
+                        android:src="@drawable/ls_logo" />
 
                 </com.google.android.material.card.MaterialCardView>
 

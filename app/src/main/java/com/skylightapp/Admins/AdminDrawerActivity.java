@@ -19,7 +19,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -62,14 +61,16 @@ import com.skylightapp.Database.TReportDAO;
 import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.GroupSavingsTab;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.Markets.BizCusDepositAct;
 import com.skylightapp.PasswordRecovAct;
 import com.skylightapp.PayNowActivity;
 import com.skylightapp.R;
 import com.skylightapp.SignTabMainActivity;
 import com.skylightapp.SignUpAct;
-import com.skylightapp.SkylightSliderAct;
+import com.skylightapp.AwajimaSliderAct;
 import com.skylightapp.MapAndLoc.StateEmergList;
+import com.skylightapp.SuperAdmin.Awajima;
 import com.skylightapp.Tellers.AllCusLoanRepayment;
 import com.skylightapp.Tellers.LoanRepaymentTab;
 import com.skylightapp.Tellers.MyCusList;
@@ -99,8 +100,8 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
     public static final String INTENT_IMAGE_PICKER_OPTION = "image_picker_option";
 
     private SharedPreferences userPreferences;
-    private Gson gson;
-    private String json;
+    private Gson gson,gson2,gson3;
+    private String json,json2,json3;
 
     private Profile userProfile;
 
@@ -141,14 +142,14 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
     Date newDate1;
     private  Bitmap bitmap;
     private SQLiteDatabase sqLiteDatabase;
-    String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,SharedPrefState,SharedPrefOffice,
+    String SharedPrefUserPassword,officeBranch,SharedPrefUserMachine,SharedPrefState,SharedPrefOffice,
             SharedPrefAddress,SharedPrefJoinedDate,SharedPrefGender,
             SharedPrefRole,SharedPrefDOB,SharedPrefPhone,SharedPrefEmail,SharedPrefProfileID,
             SharedPrefSurName,SharedPrefFirstName,SharedPrefAcctNo,customerId,SharedPrefBankNo,SharedPrefAcctBalance,SharedPrefAcctName,SharedPrefType,SharedPrefBank
             ;
     GridLayout gridLayout;
     private DBHelper dbHelper;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private SODAO sodao;
     private TranXDAO tranXDAO;
     private MessageDAO messageDAO;
@@ -164,6 +165,10 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
     private PaymentDAO paymentDAO;
     private AdminBalanceDAO adminBalanceDAO;
     private TimeLineClassDAO timeLineClassDAO;
+    private MarketBusiness marketBusiness;
+    private int officeBranchID,awajimaID;
+    private long bizID;
+    private Awajima awajima;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,6 +177,8 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
         dbHelper= new DBHelper(this);
         userProfile=new Profile();
         newDate1= new Date();
+        awajima= new Awajima();
+        marketBusiness= new MarketBusiness();
         cusDAO= new CusDAO(this);
         paymentCodeDAO= new PaymentCodeDAO(this);
         profileDao= new ProfDAO(this);
@@ -208,9 +215,25 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
         SharedPrefState=sharedPreferences.getString("PROFILE_STATE", "");
         SharedPrefAcctBalance=sharedPreferences.getString("ACCOUNT_BALANCE", "");
         SharedPrefUserMachine=sharedPreferences.getString("Machine", "");
+        officeBranchID=sharedPreferences.getInt("OFFICE_BRANCH_ID", 0);
+        officeBranch=sharedPreferences.getString("OFFICE_BRANCH_NAME", "");
         gson = new Gson();
+        gson2 = new Gson();
+        gson3 = new Gson();
         json = sharedPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
+
+        json = sharedPreferences.getString("LastMarketBusinessUsed", "");
+        marketBusiness = gson2.fromJson(json2, MarketBusiness.class);
+
+        json = sharedPreferences.getString("LastMarketBusinessUsed", "");
+        awajima = gson3.fromJson(json3, Awajima.class);
+
+        if(awajima !=null){
+            awajimaID=awajima.getAwajimaID();
+        }
+
+
         ArcNavigationView navigationView =  findViewById(R.id.nav_view_admin3);
         navigationView.setNavigationItemSelectedListener(this);
         gridLayout=(GridLayout)findViewById(R.id.ViewAdmin3);
@@ -224,6 +247,9 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
             newDate1=sdf.parse(todayDate);
         } catch (ParseException e) {
             e.printStackTrace();
+        }
+        if(marketBusiness !=null){
+            bizID=marketBusiness.getBusinessID();
         }
         adminName=findViewById(R.id.nameAdmin);
         txtAdminUserName = findViewById(R.id.userNAdmin);
@@ -246,9 +272,14 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
 
         txtNoOfReports = findViewById(R.id.reportsAdminToday);
         try {
+            if(tReportDAO !=null){
+                tellerReportCount=tReportDAO.getTellerReportCountTodayForBranch(SharedPrefOffice,todayDate);
+                tellerReportBalance=tReportDAO.getTotalTellerReportAmountSubmittedTodayForBranch(SharedPrefOffice,newDate1);
 
-            tellerReportCount=tReportDAO.getTellerReportCountTodayForBranch(SharedPrefOffice,todayDate);
-            tellerReportBalance=tReportDAO.getTotalTellerReportAmountSubmittedTodayForBranch(SharedPrefOffice,newDate1);
+
+            }
+
+
 
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -314,17 +345,22 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
 
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            //dbHelper.openDataBase();
             try {
                 bitmap= profileDao.getProfilePicture(userID);
-            } catch (CursorIndexOutOfBoundsException e) {
+            } catch (NullPointerException e) {
                 e.printStackTrace();
             }
 
 
         }
 
-        profilePix.setImageBitmap(bitmap);
+        try {
+            profilePix.setImageBitmap(bitmap);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+
 
         profilePix.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -410,7 +446,7 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
                             startActivity(myIntent1);
                             break;
                         case 2:
-                            Intent myIntent2 = new Intent(AdminDrawerActivity.this, AdminSupportAct.class);
+                            Intent myIntent2 = new Intent(AdminDrawerActivity.this, BranchSuppAct.class);
                             myIntent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                     Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(myIntent2);
@@ -621,7 +657,7 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
                 return true;
 
             case R.id.package_slider:
-                Intent tIntent = new Intent(this, SkylightSliderAct.class);
+                Intent tIntent = new Intent(this, AwajimaSliderAct.class);
                 tIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                         Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(tIntent);
@@ -685,7 +721,7 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
                 return true;
 
             case R.id.admin_support:
-                Intent sIntent = new Intent(this, AdminSupportAct.class);
+                Intent sIntent = new Intent(this, BranchSuppAct.class);
                 sIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                         Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(sIntent);
@@ -784,7 +820,7 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
 
                 return true;
             case R.id.admin_support3:
-                Intent supportIntent = new Intent(this, AdminSupportAct.class);
+                Intent supportIntent = new Intent(this, BranchSuppAct.class);
                 supportIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(supportIntent);
                 return true;

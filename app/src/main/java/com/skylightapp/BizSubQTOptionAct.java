@@ -15,7 +15,7 @@ public class BizSubQTOptionAct extends AppCompatActivity {
         setContentView(R.layout.act_biz_sub_option);
         AlertDialog.Builder builder= new AlertDialog.Builder(BizSubQTOptionAct.this);
         builder.setTitle("Awajima Subscription Choice");
-        builder.setIcon(R.drawable.awajima);
+        builder.setIcon(R.drawable.awajima_logo);
         builder.setItems(new CharSequence[]{"Automatic Payment", "3 months ","6 Months","One Time, Manual Payment"},
                 new DialogInterface.OnClickListener() {
                     @Override

@@ -26,7 +26,9 @@ import com.google.gson.Gson;
 import com.quickblox.auth.session.QBSettings;
 import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.chat.model.QBChatMessage;
+import com.skylightapp.Bookings.BoatTripListAct;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.CoachOffice;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.LoginActivity;
 import com.skylightapp.MarketClasses.AttachmentPreviewAdapter;
@@ -52,56 +54,26 @@ import static com.skylightapp.BuildConfig.QUICKBLOX_SECRET_KEY;
 
 public class MarketChatTab extends TabActivity {
     private static final String TAG = MarketChatTab.class.getSimpleName();
-    private static final int REQUEST_CODE_ATTACHMENT = 721;
-
-    private static final String PROPERTY_SAVE_TO_HISTORY = "save_to_history";
     public static final String EXTRA_DIALOG_ID = "dialogId";
-    public static final String EXTRA_DELETE_DIALOG = "deleteDialog";
-    public static final String EXTRA_DIALOG_DATA = "dialogData";
 
-    private ProgressBar progressBar;
-    private StickyListHeadersListView messagesListView;
-    private EditText messageEditText;
-
-    private RelativeLayout emptyChatLayout;
-    private TextView emptyChatMatchText;
-    private TextView emptyChatTimeText;
-    private CircleImageView emptyChatCircleImageView;
-    private StrokedTextView emptyChatMatchValueText;
-    private CircularProgressIndicator emptyChatIndicator;
-
-    private LinearLayout attachmentPreviewContainerLayout;
-    private Snackbar snackbar;
-    private ChatAdapter chatAdapter;
-    private AttachmentPreviewAdapter attachmentPreviewAdapter;
-    private ConnectionListener chatConnectionListener;
-
-    private QBChatDialog qbChatDialog;
-    private ArrayList<QBChatMessage> unShownMessages;
-    private ChatActEthernal.ChatMessageListener chatMessageListener;
     private DBHelper dbHelper;
     private Bundle bizNameBundle;
     private int bizID,marketID;
 
-    private View.OnClickListener openProfileActivityOnClickListener;
     private int skipPagination = 0;
     private static final String APPLICATION_ID = QUICKBLOX_APP_ID;   //QUICKBLOX_APP_ID
     private static final String AUTH_KEY = QUICKBLOX_AUTH_KEY;
     private static final String AUTH_SECRET = QUICKBLOX_SECRET_KEY;
     private static final String ACCOUNT_KEY = QUICKBLOX_ACCT_KEY;
-    private static final String SERVER_URL = "";
     public static final String USER_DEFAULT_PASSWORD = "quickblox";
     private UserProfileInfo userProfileInfo;
     private Profile userProfile;
     private MarketBusiness marketBusiness;
-    private static final String PREF_NAME = "skylight";
-    private boolean locationPermissionGranted;
-    int profileID, birthdayID, messageID;
+    private static final String PREF_NAME = "awajima";
     SharedPreferences userPreferences;
     Gson gson, gson1,gson2,gson3;
-    String json, json1, json2,json3;
-    private Profile lastProfileUsed;
-    SQLiteDatabase sqLiteDatabase;
+    String json, json1, json2;
+
     com.melnykov.fab.FloatingActionButton floatingActionButton;
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {
@@ -125,6 +97,7 @@ public class MarketChatTab extends TabActivity {
         gson1 = new Gson();
         gson2 = new Gson();
         gson3 = new Gson();
+        userProfile= new Profile();
         marketBusiness= new MarketBusiness();
         userProfileInfo= new UserProfileInfo();
         QBSettings.getInstance().init(this, APPLICATION_ID, AUTH_KEY, AUTH_SECRET);
@@ -136,7 +109,7 @@ public class MarketChatTab extends TabActivity {
         userProfile = gson.fromJson(json, Profile.class);
         json1 = userPreferences.getString("LastUserProfileInfoUsed", "");
         userProfileInfo = gson1.fromJson(json1, UserProfileInfo.class);
-        json1 = userPreferences.getString("LastMarketBusinessUsed", "");
+        json2 = userPreferences.getString("LastMarketBusinessUsed", "");
         marketBusiness = gson2.fromJson(json2, MarketBusiness.class);
         bizNameBundle=getIntent().getExtras();
         if(bizNameBundle !=null){
@@ -161,13 +134,27 @@ public class MarketChatTab extends TabActivity {
                 .setIndicator("", resources.getDrawable(R.drawable.ic_icon2))
                 .setContent(intentSignIn);
 
+        Intent intentChat = new Intent().setClass(this, CallActivityCon.class);
+        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpChat = tabhost
+                .newTabSpec("Sessions")
+                .setIndicator("", resources.getDrawable(R.drawable.ic_icon2))
+                .setContent(intentChat);
+
         tabhost.addTab(tabSpecSignUp);
         tabhost.addTab(tabSpecLogin);
+        tabhost.addTab(tabSpChat);
 
         tabhost.setCurrentTab(0);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent loanIntent = new Intent(MarketChatTab.this, CoachOffice.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+
+                loanIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(loanIntent);
 
             }
         });

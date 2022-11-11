@@ -21,6 +21,7 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Customers.CustomerHelpActTab;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.MarketClasses.Market;
 import com.skylightapp.R;
 
 import java.util.Date;
@@ -33,13 +34,14 @@ public class MarketAdminOffice extends TabActivity {
     private static final String PREF_NAME = "awajima";
     SharedPreferences sharedpreferences;
     protected DBHelper dbHelper;
-    Gson gson,gson1;
+    Gson gson,gson1,gson2;
     private Profile userProfile;
     private Date date;
     private Customer customer;
-    private String json,json1;
+    private String json,json1,json2;
     private Bundle userBundle;
-    private int customerID;
+    private int customerID,profID,marketID;
+    private Market market;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,19 +55,21 @@ public class MarketAdminOffice extends TabActivity {
         bottomAppBar = findViewById(R.id.invAppBar);
         sharedpreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         userProfile= new Profile();
+        market= new Market();
+        customer= new Customer();
         gson = new Gson();
+        gson1 = new Gson();
+
         json = sharedpreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
-        if(userBundle !=null){
-            userProfile=userBundle.getParcelable("Profile");
-            customer=userBundle.getParcelable("Customer");
 
-        }else {
-            json = sharedpreferences.getString("LastProfileUsed", "");
-            userProfile = gson.fromJson(json, Profile.class);
-            json1 = sharedpreferences.getString("LastCustomerUsed", "");
-            customer = gson1.fromJson(json1, Customer.class);
-        }
+        json = sharedpreferences.getString("LastMarketUsed", "");
+        market = gson1.fromJson(json1, Market.class);
+
+
+        userBundle.putParcelable("Market",market);
+        //userBundle.putParcelable("Customer",customer);
+        userBundle.putParcelable("Profile",userProfile);
 
         dbHelper= new DBHelper(this);
         if(customer !=null){
@@ -84,7 +88,7 @@ public class MarketAdminOffice extends TabActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MarketAdminOffice.this, BizDealCreatorAct.class);
+                Intent intent = new Intent(MarketAdminOffice.this, MarketCreatorAct.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 //intent.putExtra("PROFILE_ID", profileID);
                 Toast.makeText(MarketAdminOffice.this, "Taking you to the Dashboard", Toast.LENGTH_LONG).show();
@@ -97,24 +101,28 @@ public class MarketAdminOffice extends TabActivity {
         tabhost.setup(getLocalActivityManager());
 
         Intent intentsupport = new Intent().setClass(this, AdminStocksTab.class);
+        intentsupport.putExtras(userBundle);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabUserSupport = tabhost
                 .newTabSpec("Stocks")
                 .setIndicator("", resources.getDrawable(R.drawable.user3))
                 .setContent(intentsupport);
 
         Intent intentTransactions= new Intent().setClass(this, AdminTransActivity.class);
+        intentsupport.putExtras(userBundle);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabTransaction = tabhost
                 .newTabSpec("Tx")
                 .setIndicator("", resources.getDrawable(R.drawable.withdrawal))
                 .setContent(intentTransactions);
 
         Intent intentDeposit= new Intent().setClass(this, TopStatsAct.class);
+        intentsupport.putExtras(userBundle);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabDeposit = tabhost
                 .newTabSpec("Top Stats")
                 .setIndicator("", resources.getDrawable(R.drawable.ic__category))
                 .setContent(intentDeposit);
 
         Intent intentHistory= new Intent().setClass(this, ProfilePackHistoryAct.class);
+        intentsupport.putExtras(userBundle);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabHistory = tabhost
                 .newTabSpec("History")
                 .setIndicator("", resources.getDrawable(R.drawable.transfer3))

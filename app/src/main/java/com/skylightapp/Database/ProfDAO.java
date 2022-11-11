@@ -23,7 +23,6 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.skylightapp.Classes.CustomerManager.WORKER_BIZ_ID;
 import static com.skylightapp.Classes.GroupAccount.GRP_PROFILE_TABLE;
 import static com.skylightapp.Classes.Profile.CUS_ID_PIX_KEY;
 import static com.skylightapp.Classes.Profile.PASSWORD;
@@ -551,7 +550,7 @@ public class ProfDAO extends DBHelperDAO{
         cv.put(PROFILE_EMAIL, profile.getProfileEmail());
         cv.put(PROFILE_DOB, valueOf(profile.getProfileDob()));
         cv.put(PROFILE_ADDRESS, valueOf(profile.getProfileAddress()));
-        cv.put(PROFILE_OFFICE, profile.getProfileOffice());
+        cv.put(PROFILE_OFFICE, profile.getProfOfficeName());
         cv.put(PROFILE_NEXT_OF_KIN, profile.getNextOfKin());
         cv.put(PROFILE_USERNAME, profile.getProfileUserName());
         cv.put(PROFILE_PASSWORD, profile.getProfilePassword());
@@ -659,6 +658,16 @@ public class ProfDAO extends DBHelperDAO{
                 selectionArgs);
 
     }
+    public void blockProfile(int profID, String blocked) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(PROFILE_ROLE, blocked);
+        String selection = PROFILE_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(profID)};
+        db.update(PROFILES_TABLE, values, selection,
+                selectionArgs);
+
+    }
     public Cursor getUserDetailsFromUserName(String userName) {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         return sqLiteDatabase.rawQuery("SELECT * FROM PROFILES_TABLE WHERE USERNAME = ?",
@@ -720,7 +729,7 @@ public class ProfDAO extends DBHelperDAO{
             profile.setProfilePhoneNumber(cursor.getString(3));
             profile.setProfileEmail(cursor.getString(4));
             profile.setProfileGender(cursor.getString(6));
-            profile.setProfileOffice(cursor.getString(14));
+            profile.setProfOfficeName(cursor.getString(14));
             profile.setProfileDob(cursor.getString(4));
             profile.setProfileAddress(cursor.getString(7));
             return profile;
@@ -752,9 +761,9 @@ public class ProfDAO extends DBHelperDAO{
 
             return (BitmapFactory.decodeFile(String.valueOf(picturePath)));
 
-        }catch (SQLException e)
+        }catch (NullPointerException exception)
         {
-            e.printStackTrace();
+            exception.printStackTrace();
         }
 
         return null;
@@ -885,7 +894,7 @@ public class ProfDAO extends DBHelperDAO{
         values.put(PROFILE_GENDER, profile.getProfileGender());
         values.put(PROFILE_ADDRESS, profile.getProfileAddress());
         values.put(PROFILE_STATE, profile.getProfileState());
-        values.put(PROFILE_OFFICE, profile.getProfileOffice());
+        values.put(PROFILE_OFFICE, profile.getProfOfficeName());
         values.put(PROFILE_DATE_JOINED, profile.getProfileDateJoined());
         values.put(PROFILE_ROLE, profile.getProfileRole());
         values.put(PROFILE_USERNAME, profile.getProfileUserName());
@@ -986,7 +995,7 @@ public class ProfDAO extends DBHelperDAO{
 
             profile.setPID(csr.getInt(0));
             profile.setProfileEmail(csr.getString(2));
-            profile.setProfileOffice(csr.getString(6));
+            profile.setProfOfficeName(csr.getString(6));
             profile.setProfileFirstName(csr.getString(7));
             profile.setProfileLastName(csr.getString(8));
             profile.setProfileRole(csr.getString(15));

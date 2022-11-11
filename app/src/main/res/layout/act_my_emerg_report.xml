@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".MapAndLoc.MyEmergReportAct">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="50dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/card_l1"
+        app:cardBackgroundColor="#f3f5f7"
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/emerg_recy_report"
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            tools:listitem="@layout/emergency_row"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"/>
+
+
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

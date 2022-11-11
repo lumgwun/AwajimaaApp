@@ -41,7 +41,7 @@ public class MyMessageFragment extends Fragment{
     private static final String ARG_PARAM2 = "param2";
 
     private static final String TAG = MyMessageFragment.class.getSimpleName();
-    private static final String URL = "https://skylightciacs.com/MessageListUser";
+    private static final String URL = "https://awajima.com/MessageListUser";
 
     private RecyclerView recyclerView,recyclerView2;
 

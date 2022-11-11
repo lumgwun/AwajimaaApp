@@ -10,18 +10,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
 
 import com.skylightapp.R;
-
-import java.util.Objects;
 
 public class RespTeamPrefAct extends AppCompatActivity {
     Preference preference;
     private Bundle bundle;
     private static final String PREF_NAME = "awajima";
     private SharedPreferences userPreferences;
-    private String cateogory,state,org;
+    private String category,state,org;
     private String key;
     SharedPreferences.Editor editor;
     Intent intent;
@@ -42,8 +39,8 @@ public class RespTeamPrefAct extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         intent= new Intent();
-        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        cateogory = userPreferences.getString("EMERGENCY_REPORT_GROUP", "");
+        //userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        //category = userPreferences.getString("EMERGENCY_REPORT_GROUP", "");
         /*if(cateogory !=null){
             setResult(Activity.RESULT_OK, new Intent());
         }
@@ -55,9 +52,9 @@ public class RespTeamPrefAct extends AppCompatActivity {
     public class SettingsFragment extends PreferenceFragmentCompat {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.root_preferences, rootKey);
-            //userPreferences = requireActivity().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-            userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(requireContext());
+            setPreferencesFromResource(R.xml.response_team_pref, rootKey);
+            userPreferences = requireActivity().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+            //userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(requireContext());
 
             for(int x = 0; x < getPreferenceScreen().getPreferenceCount(); x++){
                 PreferenceCategory lol = (PreferenceCategory) getPreferenceScreen().getPreference(x);
@@ -90,14 +87,14 @@ public class RespTeamPrefAct extends AppCompatActivity {
                                         return true;
 
                                     case "EMERGENCY_REPORT_GROUP":
-                                        if ((cateogory = userPreferences.getString("EMERGENCY_REPORT_GROUP", null)) == null) {
-                                            cateogory = "All";
-                                            editor.putString("EMERGENCY_REPORT_GROUP", cateogory );
+                                        if ((category = userPreferences.getString("EMERGENCY_REPORT_GROUP", null)) == null) {
+                                            category = "All";
+                                            editor.putString("EMERGENCY_REPORT_GROUP", category);
                                             editor.commit();
                                             setResult(Activity.RESULT_OK, new Intent());
                                         }
 
-                                        bundle.putString("EMERGENCY_REPORT_GROUP",cateogory);
+                                        bundle.putString("EMERGENCY_REPORT_GROUP", category);
                                         intent.putExtras(bundle);
                                         setResult(Activity.RESULT_OK, intent);
                                         return true;

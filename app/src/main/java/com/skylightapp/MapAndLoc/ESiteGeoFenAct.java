@@ -281,8 +281,8 @@ public class ESiteGeoFenAct extends FragmentActivity implements LocationListener
     private  int gefTransitionType;
     private  int gefNotRes;
     private  int gefLoiteringDealay;
-    private ArrayList<ALocGeoFence> aLocGeoFenceArrayList;
-    private ALocGeoFence aLocGeoFence;
+    private ArrayList<ERGeofenceResponse> ERGeofenceResponseArrayList;
+    private ERGeofenceResponse ERGeofenceResponse;
 
     private GeofencingRequest getGeofencingRequest() {
         mGeofenceList = new ArrayList<>();
@@ -330,7 +330,7 @@ public class ESiteGeoFenAct extends FragmentActivity implements LocationListener
         ran = new Random();
         gson = new Gson();
         userProfile= new Profile();
-        aLocGeoFenceArrayList= new ArrayList<>();
+        ERGeofenceResponseArrayList = new ArrayList<>();
         geofenceID = random.nextInt((int) (Math.random() * 1000) + 1010);
         geofenceStrg="Awajima"+geofenceID;
         addresses = new ArrayList<>();
@@ -357,10 +357,10 @@ public class ESiteGeoFenAct extends FragmentActivity implements LocationListener
         } catch (ParseException ignored) {
         }
 
-        aLocGeoFence= new ALocGeoFence();
+        ERGeofenceResponse = new ERGeofenceResponse();
         if(emergencyReport !=null){
             emergReportID=emergencyReport.getEmergReportID();
-            aLocGeoFenceArrayList=emergencyReport.getaLocGeoFences();
+            ERGeofenceResponseArrayList =emergencyReport.getaLocGeoFences();
         }
         txtEmergID.setText("Emerg. Report ID:"+emergReportID);
         geocoder = new Geocoder(this, Locale.getDefault());
@@ -470,10 +470,10 @@ public class ESiteGeoFenAct extends FragmentActivity implements LocationListener
     }
     @SuppressWarnings("MissingPermission")
     private void removeGeofences() {
-        aLocGeoFence= new ALocGeoFence();
+        ERGeofenceResponse = new ERGeofenceResponse();
         if(emergencyReport !=null){
             emergReportID=emergencyReport.getEmergReportID();
-            aLocGeoFenceArrayList=emergencyReport.getaLocGeoFences();
+            ERGeofenceResponseArrayList =emergencyReport.getaLocGeoFences();
         }
         if (!checkPermissions()) {
             showSnackbar(getString(R.string.insufficient_permissions));
@@ -567,7 +567,7 @@ public class ESiteGeoFenAct extends FragmentActivity implements LocationListener
             mNotificationManager.createNotificationChannel(mChannel);
         }
 
-        Intent notificationIntent = new Intent(getApplicationContext(), ESiteGeoFenAct.class);
+        Intent notificationIntent = new Intent(this, ESiteGeoFenAct.class);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 
@@ -609,10 +609,10 @@ public class ESiteGeoFenAct extends FragmentActivity implements LocationListener
     }
     private void addGeofences() {
         PendingIntent pendingIntent = getGeofencePendingIntent();
-        aLocGeoFence= new ALocGeoFence();
+        ERGeofenceResponse = new ERGeofenceResponse();
         if(emergencyReport !=null){
             emergReportID=emergencyReport.getEmergReportID();
-            aLocGeoFenceArrayList=emergencyReport.getaLocGeoFences();
+            ERGeofenceResponseArrayList =emergencyReport.getaLocGeoFences();
         }
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -897,8 +897,6 @@ public class ESiteGeoFenAct extends FragmentActivity implements LocationListener
             addCircle(i, GEOFENCE_RADIUS);
             addGeofence(i, GEOFENCE_RADIUS);
         }
-
-
 
     }
 

@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/event_rect"
     android:layout_height="match_parent"
     style="@style/TextAppearance.AppCompat">
 
@@ -14,7 +15,7 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:background="@drawable/material_drawer_circle_mask"
+            android:background="@drawable/event_circle"
             android:layout_height="wrap_content">
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
@@ -227,8 +228,9 @@
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_marginTop="5dp"
+            android:layout_marginEnd="6dp"
             android:layout_marginBottom="5dp"
-            android:background="@drawable/shape_layer_3b"
+            android:background="@drawable/event_circle"
             android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
@@ -241,7 +243,7 @@
                 android:layout_marginEnd="2dp"
                 android:textAlignment="center"
                 android:textSize="15sp"
-                android:textColor="@android:color/holo_red_dark"
+                android:textColor="@android:color/white"
                 android:text="Other Currencies Details :"/>
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -255,26 +257,26 @@
                     android:id="@+id/selectAcct"
                     android:layout_weight="1"
                     android:padding="10dp"
-                    android:background="@drawable/message_circle"
+                    android:background="@drawable/shape_layer_3b"
                     android:gravity="center_horizontal"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="15dp"
                     android:layout_marginEnd="2dp"
                     android:textAlignment="center"
                     android:textSize="15sp"
-                    android:textColor="@android:color/white"
-                    android:text="Select Currency Account :"/>
+                    android:textColor="@android:color/holo_red_dark"
+                    android:text="Select Account :"/>
 
                 <Spinner
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/spnA"
-                    android:background="@drawable/message_circle"
+                    android:background="@drawable/shape_layer_3b"
                     android:textAllCaps="true"
                     android:padding="20dp"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
                     android:layout_marginStart="5dp"
-                    android:layout_marginEnd="2dp"
+                    android:layout_marginEnd="15dp"
                     android:textAlignment="center"
                     android:textSize="15sp"
                     android:textColor="@android:color/holo_orange_dark"
@@ -294,7 +296,7 @@
                 android:textAlignment="center"
                 android:textSize="15sp"
                 android:layout_marginBottom="10dp"
-                android:textColor="@android:color/holo_red_dark"
+                android:textColor="@android:color/white"
                 android:text="USD 0.00 :"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>

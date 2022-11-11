@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ public class DeliveryAct extends AppCompatActivity {
     private Button changeOrAddNewAddressBtn;
     public static final int SELECT_ADDRESS = 0;
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,10 +44,10 @@ public class DeliveryAct extends AppCompatActivity {
         deliveryRecyclerView.setLayoutManager(linearLayoutManager);
 
         List<CartItemModel> cartItemModelList = new ArrayList<>();
-        cartItemModelList.add(new CartItemModel(0, R.drawable.home_theater, "Home Theater", 2, "NGN 60,559/-", "759/-", 1, 0, 0));
-        cartItemModelList.add(new CartItemModel(0, R.drawable.microwave_oven, "Microwave Oven", 0, "NGN 45,900/-", "549/-", 1, 1, 0));
-        cartItemModelList.add(new CartItemModel(0, R.drawable.water_dispenser, "Water Dispenser", 2, "NGN 27,000/-", "120/-", 1, 2, 0));
-        cartItemModelList.add(new CartItemModel(1, "Price (3) items", "NGN 1198/-", "Free", "NGN 1198/-", "NGN 230/-"));
+        cartItemModelList.add(new CartItemModel(0, R.drawable.hp_16gb_1tb_ssd_608, "HP,16Gb,1 TB Laptop", 2, "NGN 1,1,000/-", "5000/-", 1, 0, 0));
+        cartItemModelList.add(new CartItemModel(0, R.drawable.hp_32gb_2tb_ssd_, "HP, 32Gb, 2Tb Laptop", 0, "NGN 1,9,900/-", "1000/-", 1, 1, 0));
+        cartItemModelList.add(new CartItemModel(0, R.drawable.hidden_camera, "Hidden watch Camera", 2, "NGN 21,100/-", "1000/-", 1, 2, 0));
+        cartItemModelList.add(new CartItemModel(1, "Price (3) items", "NGN 3022000/-", "Free", "NGN 302300/-", "NGN 7000/-"));
 
         CartAdapter cartAdapter = new CartAdapter(cartItemModelList);
         deliveryRecyclerView.setAdapter(cartAdapter);

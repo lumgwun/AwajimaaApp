@@ -34,7 +34,7 @@ public class AdminStocksTab extends TabActivity {
     Intent data;
     private AppBarLayout appBarLayout;
     FloatingActionButton floatingActionButton,floatingActionButton2;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
 
 
     @Override

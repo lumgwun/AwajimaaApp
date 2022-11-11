@@ -100,7 +100,7 @@ public class SO_Customer_Adapter extends BaseAdapter {
         double newBalanceForCustomer =standingOrder.getSo_Account().setBalance(newBalance);
         if(profile !=null){
             payBundle.putString("USER_ROLE", String.valueOf(profile.getProfileType()));
-            payBundle.putString("USER_OFFICE", profile.getProfileOffice());
+            payBundle.putString("USER_OFFICE", profile.getProfOfficeName());
 
         }
 

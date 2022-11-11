@@ -12,6 +12,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.gridlayout.widget.GridLayout;
 
@@ -20,6 +21,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,15 +47,24 @@ import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.rom4ek.arcnavigationview.ArcNavigationView;
 import com.skylightapp.Adapters.AccountAdapter;
 import com.skylightapp.Adapters.CurrAdapter;
+import com.skylightapp.Bookings.BoatBookingTab;
+import com.skylightapp.Bookings.JetCharterAct;
+import com.skylightapp.Bookings.SessionTab;
+import com.skylightapp.Bookings.TaxiBookingTab;
+import com.skylightapp.Bookings.TrainBookingTab;
 import com.skylightapp.CameraActivity;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.StandingOrderAcct;
+import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.LoginActivity;
+import com.skylightapp.MapAndLoc.ClimateCOffice;
+import com.skylightapp.Markets.BizOfficeAct;
 import com.skylightapp.Markets.MarketChatTab;
+import com.skylightapp.Markets.MarketCreatorAct;
 import com.skylightapp.Markets.MarketTab;
 import com.skylightapp.MyGrpSavingsTab;
 import com.skylightapp.MyTimelineAct;
@@ -61,8 +72,10 @@ import com.skylightapp.PasswordRecovAct;
 import com.skylightapp.PrivacyPolicy_Web;
 import com.skylightapp.R;
 import com.skylightapp.SignTabMainActivity;
-import com.skylightapp.SkylightSliderAct;
+import com.skylightapp.AwajimaSliderAct;
 import com.skylightapp.MapAndLoc.UserReportEmergAct;
+import com.skylightapp.SubHistoryAct;
+import com.skylightapp.SuperAdmin.StocksTab;
 import com.skylightapp.UserPrefActivity;
 import com.skylightapp.UserTimeLineAct;
 import com.squareup.picasso.Picasso;
@@ -102,7 +115,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
     private AppCompatTextView txtBankName, balance, sPackages, accountNo,txtSO,  txtUserName;
     private Customer customer;
     private Toolbar toolbar;
-    private DrawerLayout drawer;
+    private DrawerLayout mDrawerLayout;
     private Account account;
     private ActionBarDrawerToggle toggle;
     private String surname,firstName,names,cusUserName;
@@ -121,11 +134,15 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
     private AppCompatTextView txtBankAcctBalance;
     ChipNavigationBar chipNavigationBar;
     private Currency currency;
-    private String currencySymbol;
+    private String currencySymbol,reportType,reportCategory;
     private List<Country> countries;
     private List<Currency> currencies;
     private World world;
+    private Bundle bundle;
     private CurrAdapter currencyAdapter;
+    private Bitmap bitmap;
+    private DBHelper applicationDb;
+
 
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
     ActivityResultLauncher<Intent> startCusPictureActivityForResult = registerForActivityResult(
@@ -197,6 +214,38 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_new_cus_drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar_cus);
+        applicationDb= new DBHelper(this);
+
+        ArcNavigationView navigationView = (ArcNavigationView) findViewById(R.id.nav_view_cus2);
+        navigationView.setNavigationItemSelectedListener(this);
+        bundle= new Bundle();
+        mDrawerLayout = findViewById(R.id.cus_drawer2);
+        toggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.red_brown_dark));
+        toggle.setHomeAsUpIndicator(R.drawable.home2);
+        mDrawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        getSupportActionBar().setElevation(0);
+        getSupportActionBar().setTitle("Customer BackOffice");
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home_black_24dp);
+        navigationView.bringToFront();
+
+
+        toggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                mDrawerLayout.bringToFront();
+                mDrawerLayout.requestLayout();
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+        };
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         World.init(this);
@@ -289,80 +338,26 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
 
 
 
-        chipNavigationBar = findViewById(R.id.bottom_nav_barC);
-        chipNavigationBar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-        chipNavigationBar.setOnItemSelectedListener
-                (new ChipNavigationBar.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(int i) {
-                        //Fragment fragment = null;
-                        switch (i){
-                            case R.id.cHome:
-                                Intent myIntent = new Intent(NewCustomerDrawer.this, NewCustomerDrawer.class);
-                                overridePendingTransition(R.anim.slide_in_right,
-                                        R.anim.slide_out_left);
-                                myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(myIntent);
-
-                            case R.id.cTimeLine:
-
-                                Intent chat = new Intent(NewCustomerDrawer.this, MyTimelineAct.class);
-                                overridePendingTransition(R.anim.slide_in_right,
-                                        R.anim.slide_out_left);
-                                chat.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                chat.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(chat);
-
-
-                            case R.id.cGeneralShop:
-
-                                Intent shop = new Intent(NewCustomerDrawer.this, MarketTab.class);
-                                overridePendingTransition(R.anim.slide_in_right,
-                                        R.anim.slide_out_left);
-                                shop.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                shop.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(shop);
-
-                            case R.id.cPackageT:
-
-                                Intent pIntent = new Intent(NewCustomerDrawer.this, PackListTab.class);
-                                overridePendingTransition(R.anim.slide_in_right,
-                                        R.anim.slide_out_left);
-                                pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                pIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(pIntent);
-
-
-                            case R.id.cSupport:
-                                Intent helpIntent = new Intent(NewCustomerDrawer.this, CustomerHelpActTab.class);
-                                overridePendingTransition(R.anim.slide_in_right,
-                                        R.anim.slide_out_left);
-                                helpIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                helpIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(helpIntent);
-                        }
-                        /*getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.fragment_container,
-                                        fragment).commit();*/
-                    }
-                });
-
-
-
         ProfDAO applicationDb = new ProfDAO(this);
         if(userProfile !=null){
             profileID=userProfile.getPID();
-            Bitmap bitmap = applicationDb.getProfilePicture(profileID);
-            imgProfilePic.setImageBitmap(bitmap);
+
             names=surname+","+ firstName;
 
-            extName.setText("Welcome"+""+names);
+
+
+        }
+
+
+        imgProfilePic.setImageBitmap(bitmap);
+        extName.setText("Welcome"+""+names);
+
+        if(applicationDb !=null){
+            SQLiteDatabase sqLiteDatabase = applicationDb.getReadableDatabase();
+            if(profileID>0){
+                bitmap = applicationDb.getProfilePicture(profileID);
+
+            }
 
         }
         imgProfilePic.setOnClickListener(new View.OnClickListener() {
@@ -423,21 +418,6 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
 
 
         }
-
-        ArcNavigationView navigationView = (ArcNavigationView) findViewById(R.id.nav_view_cus2);
-        navigationView.setNavigationItemSelectedListener(this);
-        drawer = findViewById(R.id.cus_drawer2);
-        toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
-        toggle.setHomeAsUpIndicator(R.drawable.home2);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        getSupportActionBar().setElevation(0);
-        getSupportActionBar().setTitle("Customer BackOffice");
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic__category);
-
-
 
         setSingleEvent(maingrid);
         StringBuilder welcomeString = new StringBuilder();
@@ -501,6 +481,249 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
 
 
     }
+
+    public void showDrawerButton() {
+        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.red_brown_dark));
+        mDrawerLayout = findViewById(R.id.cus_drawer2);
+        toggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
+        mDrawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        toggle.syncState();
+    }
+
+
+    private void setupDrawerListener() {
+        mDrawerLayout = findViewById(R.id.cus_drawer2);
+        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            }
+        });
+    }
+
+
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        int id = menuItem.getItemId();
+        switch (id) {
+            case R.id.nav_dashboard44:
+
+                Intent intent = new Intent(NewCustomerDrawer.this, NewCustomerDrawer.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                break;
+            case R.id.nav_cus_market:
+                Intent profile = new Intent(NewCustomerDrawer.this, MarketTab.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                profile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                profile.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(profile);
+                break;
+            case R.id.nav_cus_Env:
+                Intent active = new Intent(NewCustomerDrawer.this, UserReportEmergAct.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                active.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                active.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(active);
+                break;
+            case R.id.nav_Crime_Cus:
+                Intent history = new Intent(NewCustomerDrawer.this, UserReportEmergAct.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                history.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                history.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(history);
+                break;
+
+            case R.id.jet_charter_cus:
+                Intent jetIntent = new Intent(NewCustomerDrawer.this, JetCharterAct.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                jetIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                jetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(jetIntent);
+                break;
+
+            case R.id.nav_climate_change:
+                Intent climateCIntent = new Intent(NewCustomerDrawer.this, ClimateCOffice.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                climateCIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                climateCIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(climateCIntent);
+                break;
+
+            case R.id.nav_Cus_Emerg:
+                Intent chat = new Intent(NewCustomerDrawer.this, UserReportEmergAct.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                chat.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                chat.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(chat);
+                break;
+
+            case R.id.nav_cus_Biz:
+                Intent supportInt = new Intent(NewCustomerDrawer.this, BizOfficeAct.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                supportInt.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                supportInt.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(supportInt);
+                break;
+            case R.id.booking_nav_taxi:
+                Intent intPref = new Intent(NewCustomerDrawer.this, TaxiBookingTab.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                intPref.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intPref.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intPref);
+                break;
+            case R.id.nav_train_bookings:
+                Intent intSO = new Intent(NewCustomerDrawer.this, TrainBookingTab.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                intSO.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intSO.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intSO);
+                break;
+            case R.id.boat_cus_bookings:
+                Intent pIntent = new Intent(NewCustomerDrawer.this, BoatBookingTab.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                pIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(pIntent);
+                break;
+
+            case R.id.session_booking_cus:
+                Intent lIntent = new Intent(NewCustomerDrawer.this, SessionTab.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                lIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                lIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(lIntent);
+                break;
+            case R.id.nav_cus_Stocks:
+                Intent loanIntent = new Intent(NewCustomerDrawer.this, StocksTab.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                loanIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                loanIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(loanIntent);
+                break;
+            case R.id.nav_cus_accounts:
+                Intent uIntent = new Intent(NewCustomerDrawer.this, MyAcctOverViewAct.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                uIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                uIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(uIntent);
+                break;
+
+
+
+            case R.id.nav_live_tab:
+                Intent emergencyIntentSper = new Intent(NewCustomerDrawer.this, MarketChatTab.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                emergencyIntentSper.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(emergencyIntentSper);
+                break;
+
+
+            case R.id.nav_cus_timelines:
+
+                Intent chathh = new Intent(NewCustomerDrawer.this, MyTimelineAct.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                chathh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(chathh);
+
+
+            case R.id.nav_cus_Insurance:
+
+                Intent shop = new Intent(NewCustomerDrawer.this, MarketTab.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                shop.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(shop);
+
+            case R.id.nav_cus_packs:
+
+                Intent prtIntent = new Intent(NewCustomerDrawer.this, PackListTab.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                prtIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(prtIntent);
+
+
+            case R.id.cSupport:
+                Intent helpIntent = new Intent(NewCustomerDrawer.this, CustomerHelpActTab.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                helpIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(helpIntent);
+
+            case R.id.nav_New_market:
+                Intent newMarketIntent = new Intent(NewCustomerDrawer.this, MarketCreatorAct.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                newMarketIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                newMarketIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(newMarketIntent);
+                break;
+
+
+            case R.id.nav_logout4:
+                Toast.makeText(this, "Logging out", Toast.LENGTH_SHORT).show();
+                SharedPreferences preferences = getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.clear();
+                editor.apply();
+                Intent loginIntent = new Intent(NewCustomerDrawer.this, SignTabMainActivity.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(loginIntent);
+                finish();
+                break;
+        }
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -514,6 +737,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
             case R.id.action_home_customer:
                 Intent mainIntent = new Intent(this, NewCustomerDrawer.class);
@@ -531,26 +755,20 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                 return true;
 
             case R.id.action_notification_customer:
-                Intent p1Intent = new Intent(this, UserTimeLineAct.class);
+                Intent p1Intent = new Intent(this, CustomerHelpActTab.class);
                 p1Intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 startActivity(p1Intent);
                 return true;
             case R.id.my_subscriptions:
-                Intent so1Intent = new Intent(this, PackageTab.class);
+                Intent so1Intent = new Intent(this, SubHistoryAct.class);
                 so1Intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 startActivity(so1Intent);
                 return true;
-            case R.id.my_packs:
-                Intent timelineIntent = new Intent(this, PackListTab.class);
-                timelineIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                overridePendingTransition(R.anim.slide_in_right,
-                        R.anim.slide_out_left);
-                startActivity(timelineIntent);
-                return true;
+
             case R.id.utility:
                 Intent cIntent = new Intent(this, CustUtilTab.class);
                 cIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -594,20 +812,13 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
 
 
             case R.id.package_slider:
-                Intent tIntent = new Intent(this, SkylightSliderAct.class);
+                Intent tIntent = new Intent(this, AwajimaSliderAct.class);
                 tIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 startActivity(tIntent);
                 return true;
 
-            case R.id.all_new:
-                Intent wIntent = new Intent(this, NewPackCusAct.class);
-                wIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                overridePendingTransition(R.anim.slide_in_right,
-                        R.anim.slide_out_left);
-                startActivity(wIntent);
-                return true;
 
 
             case R.id.privacy_policy_customer:
@@ -617,13 +828,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                         R.anim.slide_out_left);
                 startActivity(w1Intent);
                 return true;
-            case R.id.admin_pswd2:
-                Intent impIntent = new Intent(this, PasswordRecovAct.class);
-                impIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                overridePendingTransition(R.anim.slide_in_right,
-                        R.anim.slide_out_left);
-                startActivity(impIntent);
-                return true;
+
 
             case R.id.action_customer_logout:
                 Toast.makeText(this, "Logging out", Toast.LENGTH_SHORT).show();
@@ -639,20 +844,9 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                 startActivity(loginIntent);
                 return true;
             default:
-                return super.onOptionsItemSelected(item);
+                //return super.onOptionsItemSelected(item);
         }
-    }
-
-
-    public void showDrawerButton() {
-
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
-        toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        toggle.syncState();
+        return toggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     public void showUpButton() {
@@ -664,42 +858,18 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
             }
         });
     }
-    private void setupDrawerListener() {
-        drawer = findViewById(R.id.cus_drawer2);
-        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
-            @Override
-            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-
-            }
-
-            @Override
-            public void onDrawerOpened(@NonNull View drawerView) {
-
-            }
-
-            @Override
-            public void onDrawerClosed(@NonNull View drawerView) {
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-            }
-        });
-    }
 
     private void setupHeader() {
 
         ArcNavigationView navigationView = (ArcNavigationView) findViewById(R.id.nav_view_cus2);
         navigationView.setNavigationItemSelectedListener(this);
-        drawer = findViewById(R.id.cus_drawer2);
+        mDrawerLayout = findViewById(R.id.cus_drawer2);
 
         toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
         toggle.setHomeAsUpIndicator(R.drawable.home2);
-        drawer.addDrawerListener(toggle);
+        mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         //getSupportActionBar().setElevation(0);
         getSupportActionBar().setTitle("Customer BackOffice");
@@ -833,8 +1003,8 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                     String tosend="";
                     if(finalI==0)
                     {
-                        tosend="Packages";
-                        Intent intent=new Intent(NewCustomerDrawer.this, SkylightSliderAct.class);
+                        tosend="Emergencies";
+                        Intent intent=new Intent(NewCustomerDrawer.this, UserReportEmergAct.class);
                         intent.putExtra("info",tosend);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -842,19 +1012,7 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                                 R.anim.slide_out_left);
                         startActivity(intent);
                     }
-                    else if(finalI==1)
-                    {
-                        tosend="History";
-                        Intent intent=new Intent(NewCustomerDrawer.this, CusPacksAct.class);
-                        intent.putExtra("info",tosend);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        overridePendingTransition(R.anim.slide_in_right,
-                                R.anim.slide_out_left);
-                        startActivity(intent);
-                    }
-                    else if(finalI==2)
-                    {
+                    else if(finalI==1) {
                         tosend="Customer Pay";
                         Intent intent=new Intent(NewCustomerDrawer.this, CustomerPayAct.class);
                         intent.putExtra("info",tosend);
@@ -864,17 +1022,8 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                                 R.anim.slide_out_left);
                         startActivity(intent);
                     }
-                    else if(finalI==3) {
-                        tosend = "Standing Orders";
-                        Intent intent=new Intent(NewCustomerDrawer.this, SOTab.class);
-                        intent.putExtra("info",tosend);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        overridePendingTransition(R.anim.slide_in_right,
-                                R.anim.slide_out_left);
-                        startActivity(intent);
-                    }
-                    else if(finalI==4) {
+
+                    else if(finalI==2) {
                         tosend = "Orders";
                         Intent intent=new Intent(NewCustomerDrawer.this, CusOrderTab.class);
                         intent.putExtra("info",tosend);
@@ -884,69 +1033,10 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                                 R.anim.slide_out_left);
                         startActivity(intent);
                     }
-                    else if(finalI==5) {
-                        tosend = "My Package";
-                        Intent intent=new Intent(NewCustomerDrawer.this, PackageTab.class);
-                        intent.putExtra("info",tosend);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        overridePendingTransition(R.anim.slide_in_right,
-                                R.anim.slide_out_left);
-                        startActivity(intent);
-                    }
-                    else if(finalI==6) {
+
+                    else if(finalI==3) {
                         tosend = "My Sub. Packs";
                         Intent intent=new Intent(NewCustomerDrawer.this, CusSubPackTab.class);
-                        intent.putExtra("info",tosend);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        overridePendingTransition(R.anim.slide_in_right,
-                                R.anim.slide_out_left);
-                        startActivity(intent);
-                    }
-                    else if(finalI==7) {
-                        tosend = "Pack List";
-                        Intent intent=new Intent(NewCustomerDrawer.this, PackListTab.class);
-                        intent.putExtra("info",tosend);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        overridePendingTransition(R.anim.slide_in_right,
-                                R.anim.slide_out_left);
-                        startActivity(intent);
-                    }
-                    else if(finalI==8) {
-                        tosend = "Items List";
-                        Intent intent=new Intent(NewCustomerDrawer.this, CusStocksListAct.class);
-                        intent.putExtra("info",tosend);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        overridePendingTransition(R.anim.slide_in_right,
-                                R.anim.slide_out_left);
-                        startActivity(intent);
-                    }
-                    else if(finalI==9) {
-                        tosend = "Group Savings";
-                        Intent intent=new Intent(NewCustomerDrawer.this, MyGrpSavingsTab.class);
-                        intent.putExtra("info",tosend);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        overridePendingTransition(R.anim.slide_in_right,
-                                R.anim.slide_out_left);
-                        startActivity(intent);
-                    }
-                    else if(finalI==10) {
-                        tosend = "My Sessions";
-                        Intent intent=new Intent(NewCustomerDrawer.this, MarketChatTab.class);
-                        intent.putExtra("info",tosend);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        overridePendingTransition(R.anim.slide_in_right,
-                                R.anim.slide_out_left);
-                        startActivity(intent);
-                    }
-                    else if(finalI==10) {
-                        tosend = "Emergency Sessions";
-                        Intent intent=new Intent(NewCustomerDrawer.this, UserReportEmergAct.class);
                         intent.putExtra("info",tosend);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -961,132 +1051,6 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
         }
     }
 
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        int id = menuItem.getItemId();
-        switch (id) {
-            case R.id.nav_dashboard44:
-
-                Intent intent = new Intent(NewCustomerDrawer.this, NewCustomerDrawer.class);
-                overridePendingTransition(R.anim.slide_in_right,
-                        R.anim.slide_out_left);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                break;
-            case R.id.nav_act_package44:
-                Intent profile = new Intent(NewCustomerDrawer.this, SkylightSliderAct.class);
-                overridePendingTransition(R.anim.slide_in_right,
-                        R.anim.slide_out_left);
-                profile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                profile.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(profile);
-                break;
-            case R.id.nav_my_package44:
-                Intent active = new Intent(NewCustomerDrawer.this, CusPacksAct.class);
-                overridePendingTransition(R.anim.slide_in_right,
-                        R.anim.slide_out_left);
-                active.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                active.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(active);
-                break;
-            case R.id.nav_my_package44_payment:
-                Intent history = new Intent(NewCustomerDrawer.this, CusPackForPayment.class);
-                overridePendingTransition(R.anim.slide_in_right,
-                        R.anim.slide_out_left);
-                history.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                history.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(history);
-                break;
-
-            case R.id.timeline_cus24:
-                Intent chat = new Intent(NewCustomerDrawer.this, MyTimelineAct.class);
-                overridePendingTransition(R.anim.slide_in_right,
-                        R.anim.slide_out_left);
-                chat.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                chat.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(chat);
-                break;
-
-            case R.id.navsupport:
-                Intent supportInt = new Intent(NewCustomerDrawer.this, CustomerHelpActTab.class);
-                overridePendingTransition(R.anim.slide_in_right,
-                        R.anim.slide_out_left);
-                supportInt.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                supportInt.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(supportInt);
-                break;
-            case R.id.nav_pref:
-                Intent intPref = new Intent(NewCustomerDrawer.this, UserPrefActivity.class);
-                overridePendingTransition(R.anim.slide_in_right,
-                        R.anim.slide_out_left);
-                intPref.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intPref.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intPref);
-                break;
-            case R.id.nav_so0994:
-                Intent intSO = new Intent(NewCustomerDrawer.this, SOTab.class);
-                overridePendingTransition(R.anim.slide_in_right,
-                        R.anim.slide_out_left);
-                intSO.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intSO.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intSO);
-                break;
-            case R.id.my_packageTab:
-                Intent pIntent = new Intent(NewCustomerDrawer.this, PackageTab.class);
-                overridePendingTransition(R.anim.slide_in_right,
-                        R.anim.slide_out_left);
-                pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                pIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(pIntent);
-                break;
-
-            case R.id.nav_loan6:
-                Intent lIntent = new Intent(NewCustomerDrawer.this, CusLoanRepaymentAct.class);
-                overridePendingTransition(R.anim.slide_in_right,
-                        R.anim.slide_out_left);
-                lIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                lIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(lIntent);
-                break;
-            case R.id.my_Loan_Tab:
-                Intent loanIntent = new Intent(NewCustomerDrawer.this, CusLoanTab.class);
-                overridePendingTransition(R.anim.slide_in_right,
-                        R.anim.slide_out_left);
-                loanIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                loanIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(loanIntent);
-                break;
-            case R.id.nav_Utils:
-                Intent uIntent = new Intent(NewCustomerDrawer.this, CustUtilTab.class);
-                overridePendingTransition(R.anim.slide_in_right,
-                        R.anim.slide_out_left);
-                uIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                uIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(uIntent);
-                break;
-
-
-            case R.id.nav_logout4:
-                Toast.makeText(this, "Logging out", Toast.LENGTH_SHORT).show();
-                SharedPreferences preferences = getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.clear();
-                editor.apply();
-                Intent loginIntent = new Intent(NewCustomerDrawer.this, SignTabMainActivity.class);
-                overridePendingTransition(R.anim.slide_in_right,
-                        R.anim.slide_out_left);
-                loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(loginIntent);
-                finish();
-                break;
-        }
-        return true;
-
-    }
-
 
 
     @Override
@@ -1098,8 +1062,8 @@ public class NewCustomerDrawer extends AppCompatActivity implements NavigationVi
                         Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(active);
                 break;
-            case R.id.btnMyLoans:
-                Intent loanTab = new Intent(NewCustomerDrawer.this, CusLoanTab.class);
+            case R.id.btnMyHistory:
+                Intent loanTab = new Intent(NewCustomerDrawer.this, CusPacksAct.class);
                 loanTab.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                         Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(loanTab);

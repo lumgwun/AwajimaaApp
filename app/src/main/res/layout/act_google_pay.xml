@@ -8,6 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:background="@drawable/rect_their_message"
     tools:context=".GooglePayAct">
 
     <LinearLayout
@@ -21,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="350dp"
             android:layout_marginTop="20dp"
-            android:src="@drawable/awajima" />
+            android:src="@drawable/awajima_logo" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

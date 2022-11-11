@@ -241,7 +241,7 @@ public class NewSOPaymentPlan extends AppCompatActivity {
                                 }
                                 if(userProfile !=null){
                                     userProfile.addPTimeLine(tittle,timelineUserProfile);
-                                    officeBranch=userProfile.getProfileOffice();
+                                    officeBranch=userProfile.getProfOfficeName();
                                     userProfile.addPTransaction(transactionID,uSurname,uFirstName,phoneNo,sONowAmount,PHONE_NO,"Standing order payment",currentDate,"Standing Order");
 
                                 }

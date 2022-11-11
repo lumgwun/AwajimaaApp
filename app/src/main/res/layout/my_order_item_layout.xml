@@ -19,7 +19,7 @@
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/grinding_machine_mil" />
+        app:srcCompat="@drawable/hp_16gb_1tb_ssd_608_2" />
 
     <TextView
         android:id="@+id/product_title"
@@ -39,7 +39,7 @@
         android:layout_height="10dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:tint="@color/successGreen"
+        app:tint="@color/successGreen"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/product_title"
         app:srcCompat="@drawable/default_dot" />
@@ -99,8 +99,8 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            android:tint="#bebebe"
-            app:srcCompat="@drawable/star_fg" />
+            app:srcCompat="@drawable/star_fg"
+            app:tint="#bebebe" />
 
         <ImageView
             android:id="@+id/imageView10"
@@ -109,7 +109,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            android:tint="#ffffff"
+            app:tint="#ffffff"
             app:srcCompat="@drawable/star_fg" />
 
         <ImageView
@@ -119,7 +119,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            android:tint="#bebebe"
+            app:tint="#bebebe"
             app:srcCompat="@drawable/star_fg" />
 
         <ImageView
@@ -129,7 +129,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            android:tint="#ffffff"
+            app:tint="#ffffff"
             app:srcCompat="@drawable/star_fg" />
 
         <ImageView
@@ -139,7 +139,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            android:tint="#bebebe"
+            app:tint="#bebebe"
             app:srcCompat="@drawable/star_fg" />
 
     </LinearLayout>

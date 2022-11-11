@@ -34,6 +34,7 @@ import com.skylightapp.MarketClasses.MarketAdmin;
 import com.skylightapp.MarketClasses.MarketAnnouncement;
 import com.skylightapp.MarketClasses.MarketBizDonor;
 import com.skylightapp.MarketClasses.MarketBizPartner;
+import com.skylightapp.MarketClasses.MarketBizSubScription;
 import com.skylightapp.MarketClasses.MarketBusiness;
 
 import java.io.Serializable;
@@ -65,6 +66,7 @@ public class Awajima implements Parcelable, Serializable {
     private ArrayList<MarketBizDonor> awajimaMarketDonors;
     private ArrayList<MarketBizPartner> awajimaMarketPartners;
     private ArrayList<BusinessDealSub> awajimaBizSubDeals;
+    private ArrayList<MarketBizSubScription> awajimaSubs;
     private ArrayList<BusinessDeal> awajimaBizDeals;
     private ArrayList<BusinessDealDoc> awajimaBizDealDocs;
     private ArrayList<BusinessDealLoan> awajimaBizDealLoans;
@@ -72,6 +74,8 @@ public class Awajima implements Parcelable, Serializable {
     private ArrayList<BizDealAccount> awajimaBizAccts;
     private ArrayList<GroupAccount> awajimaGrpAccts;
     private ArrayList<GroupSavings> awajimaGrpSavings;
+    private int awajimaID;
+    private String awajimaOffice;
 
     public Awajima() {
         super();
@@ -411,5 +415,29 @@ public class Awajima implements Parcelable, Serializable {
         parcel.writeTypedList(awajimaBizAccts);
         parcel.writeTypedList(awajimaGrpAccts);
         parcel.writeTypedList(awajimaGrpSavings);
+    }
+
+    public int getAwajimaID() {
+        return awajimaID;
+    }
+
+    public void setAwajimaID(int awajimaID) {
+        this.awajimaID = awajimaID;
+    }
+
+    public ArrayList<MarketBizSubScription> getAwajimaSubs() {
+        return awajimaSubs;
+    }
+
+    public void setAwajimaSubs(ArrayList<MarketBizSubScription> awajimaSubs) {
+        this.awajimaSubs = awajimaSubs;
+    }
+
+    public String getAwajimaOffice() {
+        return awajimaOffice;
+    }
+
+    public void setAwajimaOffice(String awajimaOffice) {
+        this.awajimaOffice = awajimaOffice;
     }
 }

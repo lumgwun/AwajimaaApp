@@ -19,6 +19,7 @@ import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_COUNTRY
 import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_LATLNG;
 import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_MARKET_ID;
 import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_PROF_ID;
+import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_QUESTION;
 import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_STATE;
 import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_SUBLOCALE;
 import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_TABLE;
@@ -66,7 +67,7 @@ public class EmergReportDAO extends DBHelperDAO{
         return sqLiteDatabase.insert(EMERGENCY_REPORT_TABLE, null, contentValues);
 
     }
-    public long insertUserEmergencyReport(int reportID, int profileID, long bizID, String dateOfToday, String selectedType, String stringLatLng, String locality, String bgAddress, String address, String country) {
+    public long insertUserEmergencyReport(int reportID, int profileID, long bizID, String dateOfToday, String selectedType, String stringLatLng, String locality, String bgAddress, String address, String country,String safeOption) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(EMERGENCY_REPORT_PROF_ID, profileID);
@@ -79,9 +80,23 @@ public class EmergReportDAO extends DBHelperDAO{
         contentValues.put(EMERGENCY_REPORT_COUNTRY, country);
         contentValues.put(EMERGENCY_REPORT_ADDRESS, address);
         contentValues.put(EMERGENCY_REPORT_LATLNG, stringLatLng);
+        contentValues.put(EMERGENCY_REPORT_QUESTION, safeOption);
         return sqLiteDatabase.insert(EMERGENCY_REPORT_TABLE, null, contentValues);
 
 
+    }
+    public long insertHotEmergReport(int reportID, int profileID, long bizID, String dateOfToday, String hot, String stringLatLng, String valueOf, String s, String valueOf1, String s1) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(EMERGENCY_REPORT_PROF_ID, profileID);
+        contentValues.put(EMERGENCY_LOCID, reportID);
+        contentValues.put(EMERGENCY_REPORT_BIZ_ID, bizID);
+        contentValues.put(EMERGENCY_LOCTIME, dateOfToday);
+        contentValues.put(EMERGENCY_REPORT_TYPE, hot);
+        contentValues.put(EMERGENCY_REPORT_ADDRESS, valueOf1+","+valueOf);
+        contentValues.put(EMERGENCY_REPORT_LATLNG, stringLatLng);
+        contentValues.put(EMERGENCY_REPORT_QUESTION, "Can't Say");
+        return sqLiteDatabase.insert(EMERGENCY_REPORT_TABLE, null, contentValues);
     }
     public void deleteLocationReport(int reportID) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -383,5 +398,6 @@ public class EmergReportDAO extends DBHelperDAO{
 
         return reportArrayList;
     }
+
 
 }

@@ -12,7 +12,7 @@ import com.skylightapp.Admins.AdminDashboardTab;
 import com.skylightapp.R;
 
 
-public class FirebaseMessageReceiver extends FirebaseMessagingService {
+public class FirebaseMessageReceiver extends FirebaseMessS {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage){
         if(remoteMessage.getNotification() != null){

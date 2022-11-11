@@ -6,6 +6,14 @@ plugins {
     id 'com.github.johnrengelman.shadow'
     id 'org.springframework.boot' version '2.7.2'
 
+    //id 'kotlin-android'
+    //id 'kotlin-kapt'
+    //id 'dagger.hilt.android.plugin'
+    //id 'com.google.dagger.hilt.android'
+    //id 'com.google.dagger.hilt.android' version '2.44' apply false
+
+
+
     //id 'war'
     //id 'com.diffplug.gradle.spotless' version '3.27.1'
     //id 'net.ltgt.errorprone' version '1.1.1'
@@ -106,6 +114,8 @@ android {
         checkReleaseBuilds false
         abortOnError false
     }
+
+
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/NOTICE'
@@ -469,6 +479,45 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'com.google.android.gms:play-services-pay:16.0.3'
     implementation 'com.google.android.gms:play-services-wallet:19.1.0'
+    implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
+    implementation 'com.facebook.stetho:stetho:1.5.1'
+    implementation 'com.facebook.stetho:stetho-urlconnection:1.5.1'
+    implementation 'com.google.dagger:hilt-android:2.38.1'
+    implementation group: 'com.squareup.retrofit2', name: 'adapter-rxjava', version: '2.3.0'
+    implementation "com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0"
+//Thanks for using https://jar-download.com
+
+    /*kapt 'com.google.dagger:hilt-android-compiler:2.38.1'
+    kapt 'androidx.hilt:hilt-compiler:1.0.0'
+    implementation "androidx.activity:activity-ktx:1.4.0"
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-compiler:2.44"
+
+    implementation 'com.google.dagger:hilt-android:2.44.2'
+    annotationProcessor 'com.google.dagger:hilt-compiler:2.44.2'
+
+    // For instrumentation tests
+    androidTestImplementation  'com.google.dagger:hilt-android-testing:2.44.2'
+    androidTestAnnotationProcessor 'com.google.dagger:hilt-compiler:2.44.2'
+
+    // For local unit tests
+    testImplementation 'com.google.dagger:hilt-android-testing:2.44.2'
+    testAnnotationProcessor 'com.google.dagger:hilt-compiler:2.44.2'
+
+    implementation 'com.google.dagger:hilt-android:2.44.2'
+    kapt 'com.google.dagger:hilt-compiler:2.44.2'
+
+    // For instrumentation tests
+    androidTestImplementation  'com.google.dagger:hilt-android-testing:2.44.2'
+    kaptAndroidTest 'com.google.dagger:hilt-compiler:2.44.2'
+
+    // For local unit tests
+    testImplementation 'com.google.dagger:hilt-android-testing:2.44.2'
+    kaptTest 'com.google.dagger:hilt-compiler:2.44.2'*/
+
+    //implementation group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.4.30'
+//Thanks for using https://jar-download.com
+
     //implementation 'com.google.firebase:firebase-dynamic-links'
 
 

@@ -7,6 +7,7 @@
     android:background="@drawable/rect_their_message"
     android:layout_height="match_parent"
     tools:context="com.skylightapp.MapAndLoc.UserReportEmergAct">
+    <include layout="@layout/user_emerg_bottom"/>
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:orientation="vertical"
@@ -179,6 +180,57 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/p_safe"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:background="@null"
+                    android:text="Are you safe to receive a Call or Message?" />
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/safe_reporter_spn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:padding="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/rect6h"
+                    android:focusable="false"
+                    android:paddingStart="100dp"
+                    android:entries="@array/EmergencyReport"
+                    android:backgroundTintMode="src_in"
+                    android:spinnersShown="true"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -248,8 +300,8 @@
         </androidx.cardview.widget.CardView>
 
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
 
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 
 

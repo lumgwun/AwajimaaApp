@@ -19,6 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keep class org.sqlite.** { *; }
+-keepnames class org.sqlite.* { *; }
 -keepclasseswithmembers public class com.flutterwave.raveandroid.** {*; }
 -dontwarn com.flutterwave.raveandroid.card.CardFragment
 -keep

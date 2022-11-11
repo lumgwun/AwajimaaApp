@@ -5,18 +5,14 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -26,7 +22,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -40,13 +35,12 @@ import com.google.gson.Gson;
 import com.skylightapp.Admins.BirthdayTab;
 import com.skylightapp.AllCusPackTab;
 import com.skylightapp.AllNewAct;
+import com.skylightapp.AwajimaSliderAct;
 import com.skylightapp.CameraActivity;
 import com.skylightapp.CheckMailActivity;
 import com.skylightapp.Classes.Account;
-import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Payment;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.AppCash;
 import com.skylightapp.Customers.TellerForCusLoanAct;
 import com.skylightapp.Customers.CusPacksAct;
 import com.skylightapp.Database.AcctDAO;
@@ -67,7 +61,6 @@ import com.skylightapp.Inventory.StocksTransferAct;
 import com.skylightapp.MyInvAct;
 import com.skylightapp.R;
 import com.skylightapp.SignTabMainActivity;
-import com.skylightapp.SkylightSliderAct;
 import com.skylightapp.MapAndLoc.ESiteGeoFenAct;
 import com.skylightapp.UserPrefActivity;
 import com.skylightapp.UserTimeLineAct;
@@ -617,7 +610,7 @@ public class TellerDrawerAct extends AppCompatActivity {
                     }
                     else if(finalI==2) {
                         tosend = "Awajima Packages";
-                        Intent intent=new Intent(TellerDrawerAct.this, SkylightSliderAct.class);
+                        Intent intent=new Intent(TellerDrawerAct.this, AwajimaSliderAct.class);
                         intent.putExtra("Awajima Packages",tosend);
                         startActivity(intent);
                     }
@@ -797,7 +790,7 @@ public class TellerDrawerAct extends AppCompatActivity {
         }
         if (id == R.id.teller_pack2) {
 
-            Intent mainIntent = new Intent(this, SkylightSliderAct.class);
+            Intent mainIntent = new Intent(this, AwajimaSliderAct.class);
             mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         }
@@ -893,7 +886,7 @@ public class TellerDrawerAct extends AppCompatActivity {
                 break;
 
             case R.id.teller_pack2:
-                Intent pIntent = new Intent(this, SkylightSliderAct.class);
+                Intent pIntent = new Intent(this, AwajimaSliderAct.class);
                 pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 break;
             case R.id.my_cusP:

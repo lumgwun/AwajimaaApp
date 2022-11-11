@@ -13,16 +13,16 @@
 
         <item
             android:id="@+id/timeline_Acctant"
-            android:icon="@drawable/awajima"
+            android:icon="@drawable/awajima_logo"
             android:title="My Timeline" />
 
         <item
             android:id="@+id/nav_Acctant_Savings"
-            android:icon="@drawable/awajima"
+            android:icon="@drawable/awajima_logo"
             android:title="Savings" />
         <item
             android:id="@+id/nav_Acctant_p"
-            android:icon="@drawable/awajima"
+            android:icon="@drawable/awajima_logo"
             android:title="Packages" />
 
 
@@ -32,21 +32,21 @@
 
                     <item
                         android:id="@+id/nav_Acctant_SO"
-                        android:icon="@drawable/awajima"
+                        android:icon="@drawable/awajima_logo"
                         android:title="Standing Order" />
 
 
                     <item
                         android:id="@+id/nav_AcctantTX"
-                        android:icon="@drawable/awajima"
+                        android:icon="@drawable/awajima_logo"
                         android:title="TX Tab" />
                     <item
                         android:id="@+id/nav_loanAcctant"
-                        android:icon="@drawable/awajima"
+                        android:icon="@drawable/awajima_logo"
                         android:title="Loans" />
                     <item
                         android:id="@+id/nav_PaymentAcctant"
-                        android:icon="@drawable/awajima"
+                        android:icon="@drawable/awajima_logo"
                         android:title="Payments" />
 
 

@@ -14,6 +14,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -85,8 +86,8 @@ public class UserLocatorAct extends FragmentActivity implements OnMapReadyCallba
     protected boolean gps_enabled, network_enabled;
     private SharedPreferences userPreferences;
     PrefManager prefManager;
-    private Gson gson,gson1;
-    private String json,json1;
+    private Gson gson, gson1;
+    private String json, json1;
     private Profile userProfile;
     private int emergencyReportID;
     LatLng mostRecentLatLng;
@@ -124,10 +125,10 @@ public class UserLocatorAct extends FragmentActivity implements OnMapReadyCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_pack_loc);
-        emergencyReport=new EmergencyReport();
+        emergencyReport = new EmergencyReport();
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
-        }else {
+        } else {
             if (!hasPermissions(UserLocatorAct.this, PERMISSIONS)) {
                 ActivityCompat.requestPermissions(UserLocatorAct.this, PERMISSIONS, PERMISSION_ALL);
             }
@@ -135,33 +136,33 @@ public class UserLocatorAct extends FragmentActivity implements OnMapReadyCallba
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (android.location.LocationListener) this);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
-        userProfile= new Profile();
-        bundle= new Bundle();
+        userProfile = new Profile();
+        bundle = new Bundle();
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         cancellationTokenSource = new CancellationTokenSource();
 
-        bundle=getIntent().getExtras();
+        bundle = getIntent().getExtras();
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                 .setInterval(10 * 1000)        // 10 seconds, in milliseconds
                 .setFastestInterval(1000);
 
-        if(bundle !=null){
-            emergencyReport=bundle.getParcelable("EmergencyReport");
-            oldLatitude=bundle.getDouble("Lat");
-            oldLongitude=bundle.getDouble("Lng");
-            position= (LatLng) bundle.getParcelable("Location");
+        if (bundle != null) {
+            emergencyReport = bundle.getParcelable("EmergencyReport");
+            oldLatitude = bundle.getDouble("Lat");
+            oldLongitude = bundle.getDouble("Lng");
+            position = (LatLng) bundle.getParcelable("Location");
 
         }
-        if(position ==null){
+        if (position == null) {
             position = new LatLng(oldLatitude, oldLongitude);
 
         }
-        if(emergencyReport !=null){
-            emergencyReportID=emergencyReport.getEmergReportID();
+        if (emergencyReport != null) {
+            emergencyReportID = emergencyReport.getEmergReportID();
         }
 
 
@@ -172,6 +173,7 @@ public class UserLocatorAct extends FragmentActivity implements OnMapReadyCallba
         }
 
     }
+
     public static boolean hasPermissions(Context context, String... permissions) {
         if (context != null && permissions != null) {
             for (String permission : permissions) {
@@ -183,6 +185,7 @@ public class UserLocatorAct extends FragmentActivity implements OnMapReadyCallba
         return true;
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(@NotNull GoogleMap googleMap) {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -191,7 +194,11 @@ public class UserLocatorAct extends FragmentActivity implements OnMapReadyCallba
                 .setInterval(10 * 1000)        // 10 seconds, in milliseconds
                 .setFastestInterval(1000);
 
-        fusedLocationClient.getCurrentLocation(2,cancellationTokenSource.getToken())
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            return;
+        }
+        fusedLocationClient.getCurrentLocation(2, cancellationTokenSource.getToken())
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location2) {
@@ -202,10 +209,9 @@ public class UserLocatorAct extends FragmentActivity implements OnMapReadyCallba
                             //setResult(Activity.RESULT_OK, new Intent().putExtras(userLocBundle));
 
 
-                        }
-                        else {
-                            latitude=4.52871;
-                            longitude=7.44507;
+                        } else {
+                            latitude = 4.52871;
+                            longitude = 7.44507;
                             Log.d(TAG, "Current location is null. Using defaults.");
                         }
 

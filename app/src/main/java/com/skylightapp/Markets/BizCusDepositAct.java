@@ -33,7 +33,7 @@ import com.google.gson.Gson;
 import com.quickblox.auth.session.QBSettings;
 import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.chat.model.QBChatMessage;
-import com.skylightapp.Adapters.AccountAdapter2;
+import com.skylightapp.Adapters.AccountRecylerAdap;
 import com.skylightapp.Adapters.OfficeAdapter;
 import com.skylightapp.Admins.AdminBankDeposit;
 import com.skylightapp.Classes.Account;
@@ -65,7 +65,7 @@ import com.skylightapp.LoginDirAct;
 import com.skylightapp.MarketClasses.AttachmentPreviewAdapter;
 import com.skylightapp.MarketClasses.BizDealAccount;
 import com.skylightapp.MarketClasses.BizDealAcctAdapter;
-import com.skylightapp.MarketClasses.BizDealAdapter;
+import com.skylightapp.MarketClasses.BizDealArrayAd;
 import com.skylightapp.MarketClasses.BusinessDeal;
 import com.skylightapp.MarketClasses.ChatAdapter;
 import com.skylightapp.MarketClasses.MarketAdmin;
@@ -195,7 +195,7 @@ public class BizCusDepositAct extends AppCompatActivity {
     private Profile lastProfileUsed;
     int PERMISSION_ALL = 1;
     private OfficeAdapter officeAdapter;
-    private AccountAdapter2 accountAdapter2;
+    private AccountRecylerAdap accountRecylerAdap;
     private Spinner spnSelectBankAcct,spnDepositTranxType;
     private ArrayList<OfficeBranch> officeBranchArrayList;
     private ArrayList<Account> accountArrayList;
@@ -388,8 +388,8 @@ public class BizCusDepositAct extends AppCompatActivity {
 
         }
 
-        BizDealAdapter bizDealAdapter = new BizDealAdapter(this, item_biz_acct, businessDealArrayList);
-        spnBusinessDeal.setAdapter(bizDealAdapter);
+        BizDealArrayAd bizDealArrayAd = new BizDealArrayAd(this, item_biz_acct, businessDealArrayList);
+        spnBusinessDeal.setAdapter(bizDealArrayAd);
 
         spnBusinessDeal.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

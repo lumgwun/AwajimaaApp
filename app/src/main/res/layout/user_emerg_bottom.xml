@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Platform.MaterialComponents"
+    android:background="@drawable/rect_their_message"
+    tools:context="com.skylightapp.MapAndLoc.UserReportEmergAct">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:id="@+id/cord_emergA"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content">
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/eMERG_AppB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom">
+
+            <com.ismaeldivita.chipnavigation.ChipNavigationBar
+                android:id="@+id/emerg_Bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="false"
+                android:layout_gravity="center_horizontal"
+                android:background="#fff"
+                android:layout_above="@id/cord_emergA"
+                android:fadingEdge="horizontal"
+                app:cnb_orientationMode="horizontal"
+                app:cnb_addBottomInset="false"
+                app:cnb_addLeftInset="true"
+                app:cnb_addRightInset="false"
+                app:cnb_addTopInset="false"
+                app:cnb_unselectedColor="@color/red_brown_dark"
+                app:cnb_badgeColor="@color/dark_and_red"
+                app:cnb_radius="8dp"
+                app:cnb_iconSize="24dp"
+                app:cnb_menuResource="@menu/user_emerg" />
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_Emergency"
+            android:layout_width="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_loc"
+            app:layout_anchor="@id/booking_navBar" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+
+</RelativeLayout>

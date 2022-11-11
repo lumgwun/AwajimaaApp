@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="6dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/view_fence_event"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/event_Geotime"
+                android:layout_width="0dp"
+                android:text="Event Time"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#00ff0000"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/event_Geofence"
+                android:layout_width="0dp"
+                android:text="Geofence Event"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#0000ff00"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/event_Geotype"
+                android:layout_width="0dp"
+                android:text="Geofence Type"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#000000ff"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="50dp"
+        android:id="@+id/card_l1"
+        app:cardBackgroundColor="#f3f5f7"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/id_l1"
+            android:padding="20dp"
+            android:orientation="vertical"
+            android:background="@drawable/rect_their_black"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <com.mikepenz.materialdrawer.view.BezelImageView
+                    android:id="@+id/img_account4"
+                    android:layout_width="58dp"
+                    android:layout_height="55dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/location_pin"
+                    android:contentDescription="Event Image" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:text=" Emerg Report ID"
+                    android:id="@+id/emerg_event_reportID"
+                    android:layout_marginEnd="20dp"
+                    android:padding="15dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="20dp"
+                    android:textColor="@color/red_brown_dark"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:text=" Emerg. Type"
+                android:id="@+id/type_emergGeo"
+                android:layout_marginEnd="20dp"
+                android:textStyle="bold"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/red_brown_dark"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:text=" Device ID: 002"
+                android:id="@+id/device_idG"
+                android:layout_marginEnd="20dp"
+                android:textStyle="bold"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/red_brown_dark"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:text=" Status"
+                android:id="@+id/event_status_emerg"
+                android:textStyle="bold"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginEnd="20dp"
+                android:textColor="@color/red_brown_dark"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>

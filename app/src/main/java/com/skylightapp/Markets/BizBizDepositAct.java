@@ -32,7 +32,7 @@ import com.google.gson.Gson;
 import com.quickblox.auth.session.QBSettings;
 import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.chat.model.QBChatMessage;
-import com.skylightapp.Adapters.AccountAdapter2;
+import com.skylightapp.Adapters.AccountRecylerAdap;
 import com.skylightapp.Adapters.OfficeAdapter;
 import com.skylightapp.Admins.AdminBankDeposit;
 import com.skylightapp.Classes.Account;
@@ -192,7 +192,7 @@ public class BizBizDepositAct extends AppCompatActivity {
     private Profile lastProfileUsed;
     int PERMISSION_ALL = 1;
     private OfficeAdapter officeAdapter;
-    private AccountAdapter2 accountAdapter2;
+    private AccountRecylerAdap accountRecylerAdap;
     private Spinner spnSelectBankAcct,spnDepositTranxType;
     private ArrayList<OfficeBranch> officeBranchArrayList;
     private ArrayList<Account> accountArrayList;

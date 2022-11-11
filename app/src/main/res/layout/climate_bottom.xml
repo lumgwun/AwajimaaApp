@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.skylightapp.MapAndLoc.ClimateCOffice">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:id="@+id/coord_climate"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content">
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/appBar_climate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:fabCradleMargin="5dp"
+            app:fabCradleRoundedCornerRadius="10dp"
+            app:fabCradleVerticalOffset="10dp">
+
+            <com.ismaeldivita.chipnavigation.ChipNavigationBar
+                android:id="@+id/chip_climate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="false"
+                android:layout_gravity="center_horizontal"
+                android:background="#fff"
+                android:layout_above="@id/coord_climate"
+                android:fadingEdge="horizontal"
+                app:cnb_orientationMode="horizontal"
+                app:cnb_addBottomInset="false"
+                app:cnb_addLeftInset="true"
+                app:cnb_addRightInset="false"
+                app:cnb_addTopInset="false"
+                app:cnb_unselectedColor="@color/red_brown_dark"
+                app:cnb_badgeColor="@color/gray_10"
+                app:cnb_radius="8dp"
+                app:cnb_iconSize="24dp"
+                app:cnb_menuResource="@menu/climate_c_b" />
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_cc"
+            android:layout_width="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/home2"
+            app:layout_anchor="@id/chip_climate" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+
+</RelativeLayout>

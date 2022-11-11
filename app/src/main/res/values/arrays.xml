@@ -12,6 +12,148 @@
         <item>To</item>
         <item>From</item>
     </string-array>
+    <string-array name="market_type">
+        <item>Fruit Market</item>
+        <item>Yam Market</item>
+        <item>Fish Market</item>
+        <item>Commodity Market</item>
+        <item>Wholesale Market</item>
+        <item>Electronics Market</item>
+        <item>Computer Market</item>
+        <item>Animal Market</item>
+        <item>Vegetable Market</item>
+        <item>Food Market</item>
+        <item>Clothes Market</item>
+        <item>Poultry Market</item>
+
+    </string-array>
+    <string-array name="Deal_Status">
+        <item>New</item>
+        <item>Accepted</item>
+        <item>Completed</item>
+        <item>In Progress</item>
+        <item>In Dispute</item>
+        <item>Blocked</item>
+        <item>Requested</item>
+        <item>On Loan</item>
+    </string-array>
+    <array name="range_slider_values" >
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+        <item>70</item>
+        <item>80</item>
+        <item>90</item>
+        <item>100</item>
+    </array>
+    <string-array name="river_state">
+        <item>Rivers State</item>
+        <item>Abia</item>
+        <item>Akwa Ibom State</item>
+        <item>Anambra State</item>
+        <item>Bayelsa State</item>
+        <item>Benue State</item>
+        <item>Cross River State</item>
+        <item>Delta State</item>
+        <item>Ebonyi State</item>
+        <item>Edo State</item>
+        <item>Imo State</item>
+        <item>Kogi State</item>
+        <item>Lagos State</item>
+        <item>All</item>
+    </string-array>
+
+    <string-array name="boat_booking_type">
+        <item>Full day Charter</item>
+        <item>Half day Charter</item>
+    </string-array>
+
+    <string-array name="boat_type">
+        <item>Canoe</item>
+        <item>Outboard Engine Boat</item>
+        <item>Normal Speed Boat</item>
+        <item>House Boat</item>
+        <item>Yacht Boat</item>
+    </string-array>
+
+    <string-array name="No_Of_Boats">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+    <string-array name="boat_booking_Adults">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+    </string-array>
+
+    <string-array name="boat_booking_Children">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+    </string-array>
+
+    <string-array name="tripTypes">
+        <item>Full day Trip</item>
+        <item>Half day Trip</item>
+    </string-array>
+    <string-array name="tourPackage">
+        <item>Common Tour</item>
+        <item>Private Luxury Tour</item>
+    </string-array>
     <string-array name="BizCategory">
         <item>Insurance Org.</item>
         <item>Logistics Org.</item>

@@ -30,7 +30,7 @@
             android:layout_height="fill_parent"
             android:padding="5dp" />
     </LinearLayout>
-    <include layout="@layout/inv_tab_bottom"/>
+    <include layout="@layout/logistics_bottom"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="match_parent"

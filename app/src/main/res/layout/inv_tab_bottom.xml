@@ -35,7 +35,7 @@
                 app:cnb_addLeftInset="true"
                 app:cnb_addRightInset="false"
                 app:cnb_addTopInset="false"
-                app:cnb_unselectedColor="@color/red_brown_dark"
+                app:cnb_unselectedColor="@color/white_good"
                 app:cnb_badgeColor="@color/dark_and_red"
                 app:cnb_radius="8dp"
                 app:cnb_iconSize="24dp"

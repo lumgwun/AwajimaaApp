@@ -9,7 +9,7 @@ public class BizDealMileStone implements Serializable, Parcelable {
     private int mileStoneID;
     private int mileStoneBizDealID;
     private double mileStoneAmt;
-    private String mileStoneCode;
+    private int mileStoneCode;
     private String mileStoneDate;
 
     private int[] numbersOfMileStones;
@@ -30,6 +30,14 @@ public class BizDealMileStone implements Serializable, Parcelable {
         numbersOfMileStones = numbOfMileStones1;
         answerPoints = new int[codes.length];
     }
+
+    public BizDealMileStone(int codeID, int bizDealID, int codeDigit, double calAmount) {
+        mileStoneID = codeID;
+        mileStoneBizDealID = bizDealID;
+        mileStoneCode = codeDigit;
+        mileStoneAmt = calAmount;
+    }
+
     public boolean containsNumber(int number)
     {
         boolean result = false;
@@ -78,7 +86,7 @@ public class BizDealMileStone implements Serializable, Parcelable {
         mileStoneID = in.readInt();
         mileStoneBizDealID = in.readInt();
         mileStoneAmt = in.readDouble();
-        mileStoneCode = in.readString();
+        mileStoneCode = in.readInt();
         mileStoneDate = in.readString();
     }
 
@@ -110,11 +118,11 @@ public class BizDealMileStone implements Serializable, Parcelable {
         this.mileStoneAmt = mileStoneAmt;
     }
 
-    public String getMileStoneCode() {
+    public int getMileStoneCode() {
         return mileStoneCode;
     }
 
-    public void setMileStoneCode(String mileStoneCode) {
+    public void setMileStoneCode(int mileStoneCode) {
         this.mileStoneCode = mileStoneCode;
     }
 
@@ -144,7 +152,7 @@ public class BizDealMileStone implements Serializable, Parcelable {
         parcel.writeInt(mileStoneID);
         parcel.writeInt(mileStoneBizDealID);
         parcel.writeDouble(mileStoneAmt);
-        parcel.writeString(mileStoneCode);
+        parcel.writeInt(mileStoneCode);
         parcel.writeString(mileStoneDate);
     }
 

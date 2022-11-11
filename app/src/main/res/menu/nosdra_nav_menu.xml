@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:itemTextAppearance="@style/TextAppearance.AppCompat.Widget.PopupMenu.Header"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single"
+        android:menuCategory="system">
+        <item android:title="Awajima NOSDRA Home">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_dash_NOSDRA"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Dashboard" />
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="Operations">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_jiv_N"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Joint Inv. Visits" />
+                    <item
+                        android:id="@+id/nav_NOSDRA_CU"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Clean Ups" />
+                    <item
+                        android:id="@+id/nav_N_PCI"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Post Clean Ups" />
+
+                    <item
+                        android:id="@+id/nav_Nosdra_comp"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Compensation" />
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="Report Emergency">
+            <menu>
+                <group android:checkableBehavior="single">
+
+                    <item
+                        android:id="@+id/report_new_emerg"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Report Emerg." />
+                </group>
+            </menu>
+        </item>
+
+
+        <item android:title="Business Office">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_nosdra_Biz"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Business Back Office" />
+
+                </group>
+            </menu>
+        </item>
+        <item android:title="Markets Across Africa">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_nosdra_Markets"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Markets" />
+
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="Bookings">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nosdra_nav_taxi"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Taxi Booking Tab" />
+
+                    <item
+                        android:id="@+id/nosdra_train_bookings"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Train Bookings" />
+
+                    <item
+                        android:id="@+id/boat_bookings_nosdra"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Boat Bookings" />
+                    <item
+                        android:id="@+id/session_nosdra_booking"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Session Bookings" />
+
+                    <item
+                        android:id="@+id/nosdra_tour_trip"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Tour Bookings" />
+
+                </group>
+            </menu>
+        </item>
+        <item android:title="NOSDRA Stocks">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_Stocks_nosdra"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Logistics Tab" />
+
+                </group>
+            </menu>
+        </item>
+
+
+        <item android:title="My Accounts">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_nosdra_accounts"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="My Accounts" />
+
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="My TimeLines">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_timelines_Nosdra"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="My TimeLines" />
+
+                </group>
+            </menu>
+        </item>
+
+
+        <item android:title="Group Savings">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_GrpSavings_nosdra"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Group Savings" />
+                </group>
+            </menu>
+        </item>
+
+
+
+        <item android:title="Transaction">
+            <menu>
+                <group android:checkableBehavior="single">
+
+                    <item
+                        android:id="@+id/nav_tx_nosdra"
+                        android:icon="@drawable/ic_icon2"
+                        android:title="My Transactions" />
+
+                </group>
+            </menu>
+
+        </item>
+
+        <item android:title="Support">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nosdra_navsupport"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Support Tab" />
+                </group>
+            </menu>
+        </item>
+
+
+        <item android:title="Our Privacy Policy">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nosdra_pp"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Our Privacy Policy" />
+
+                </group>
+            </menu>
+        </item>
+        <item android:title="Insurance">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nos_ins"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Insurance" />
+
+                </group>
+            </menu>
+        </item>
+
+
+        <item android:title="Settings">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_nosdra_pref"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="My Settings" />
+                    <item
+                        android:id="@+id/nosdra_logout"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Logout" />
+                </group>
+            </menu>
+        </item>
+
+    </group>
+
+</menu>
