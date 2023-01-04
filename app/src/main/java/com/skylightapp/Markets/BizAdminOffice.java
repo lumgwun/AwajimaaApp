@@ -149,10 +149,10 @@ public class BizAdminOffice extends TabActivity implements NavigationView.OnNavi
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(BizAdminOffice.this, BizDealCreatorAct.class);
+                Intent intent = new Intent(BizAdminOffice.this, BizDealTab.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 //intent.putExtra("PROFILE_ID", profileID);
-                Toast.makeText(BizAdminOffice.this, "Taking you to the Dashboard", Toast.LENGTH_LONG).show();
+                Toast.makeText(BizAdminOffice.this, "Taking you to the Biz Deal area", Toast.LENGTH_LONG).show();
                 startActivity(intent);
 
             }
@@ -173,7 +173,7 @@ public class BizAdminOffice extends TabActivity implements NavigationView.OnNavi
                 .setIndicator("", resources.getDrawable(R.drawable.withdrawal))
                 .setContent(intentTransactions);
 
-        Intent intentDeposit= new Intent().setClass(this, TopStatsAct.class);
+        Intent intentDeposit= new Intent().setClass(this, MyMStocksListAct.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabDeposit = tabhost
                 .newTabSpec("Top Stats")
                 .setIndicator("", resources.getDrawable(R.drawable.ic__category))

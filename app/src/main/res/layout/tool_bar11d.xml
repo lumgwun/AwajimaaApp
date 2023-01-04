@@ -34,7 +34,7 @@
                 app:title="@string/app_name"
                 android:background="@drawable/shape_layer_3b"
                 android:layout_marginEnd="10dp"
-                app:titleMarginStart="65dp"
+                app:titleMarginStart="60dp"
                 android:foregroundGravity="center_horizontal"
                 android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal"

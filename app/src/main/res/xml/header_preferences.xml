@@ -1,7 +1,6 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Preference
-        app:fragment="com.skylightapp.UserPrefActivity$SettingsFragment"
         app:icon="@drawable/ic_admin_panel"
         app:key="My First Preference"
         app:title="User Preference" />

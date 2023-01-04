@@ -4,27 +4,40 @@ import static com.skylightapp.BuildConfig.QUICKBLOX_ACCT_KEY;
 import static com.skylightapp.BuildConfig.QUICKBLOX_APP_ID;
 import static com.skylightapp.BuildConfig.QUICKBLOX_AUTH_KEY;
 import static com.skylightapp.BuildConfig.QUICKBLOX_SECRET_KEY;
+import static com.skylightapp.BuildConfig.QuickT_Client_ID;
+import static com.skylightapp.BuildConfig.QuickT_Merchant_Code;
+import static com.skylightapp.BuildConfig.QuickT_Secret_Key;
 import static com.skylightapp.BuildConfig.Teliver_API_Key;
 import static com.skylightapp.Database.DBHelper.TAG;
 
-import android.app.Application;
 import android.content.SharedPreferences;
+import android.icu.util.Calendar;
+import android.icu.util.TimeZone;
+import android.os.StrictMode;
 import android.text.TextUtils;
 import android.util.Log;
+import android.webkit.WebView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.multidex.MultiDexApplication;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapsSdkInitializedCallback;
+import com.google.android.gms.security.ProviderInstaller;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.installations.FirebaseInstallations;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.interswitchng.iswmobilesdk.IswMobileSdk;
+import com.interswitchng.iswmobilesdk.shared.models.core.Environment;
+import com.interswitchng.iswmobilesdk.shared.models.core.IswSdkConfig;
 import com.quickblox.auth.session.QBSettings;
 import com.quickblox.conference.ConferenceConfig;
 import com.quickblox.core.ServiceZone;
@@ -84,12 +97,20 @@ public class CustomApplication extends MultiDexApplication implements OnMapsSdkI
     private QBDialogsHolderConference qbDialogsHolder;
     private ChatHelperCon chatHelper;
     private DialogsManager dialogsManager;
+    private TimeZone lagosTimeZone;
+    private String apiKey;
+    String clientId = QuickT_Client_ID;
+    String merchantCode = QuickT_Merchant_Code;
+    String clientSecret = QuickT_Secret_Key;
+    private static final String AWAJIMA_WEB_HOOK = "https://eod04os6ldlez5q.m.pipedream.net";
+
     @Override
     public void onCreate() {
         super.onCreate();
         //Teliver.init(this,Teliver_API_Key);
         //TLog.setVisible(true);
         mInstance = this;
+        getCurrentTime();
         //MixpanelAPI.getInstance(this, BuildConfig.MIXPANEL_TOKEN);
         initializeFirebase();
         //MapsInitializer.initialize(getApplicationContext(), MapsInitializer.Renderer.LATEST, this);
@@ -103,8 +124,58 @@ public class CustomApplication extends MultiDexApplication implements OnMapsSdkI
         //initDialogsHolder();
         //initChatHelper();
         //initDialogsManager();
+        initializePlaceKey();
+        configureSDK();
+        updateAndroidSecurityProvider();
 
     }
+    public void configureSDK() {
+
+
+        IswSdkConfig config = new IswSdkConfig(clientId,
+                clientSecret, merchantCode, "566");
+
+        config.setEnv(Environment.SANDBOX);
+        IswMobileSdk.initialize(this, config);
+    }
+    private void updateAndroidSecurityProvider() {
+        try {
+            ProviderInstaller.installIfNeeded(this);
+        } catch (GooglePlayServicesRepairableException e) {
+            // Thrown when Google Play Services is not installed, up-to-date, or enabled
+            // Show dialog to allow users to install, update, or otherwise enable Google Play services.
+            // GooglePlayServicesUtil.getErrorDialog(e.getConnectionStatusCode(), callingActivity, 0);
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // Log.e("SecurityException", "Google Play Services not available.");
+        }
+    }
+
+    private void initializePlaceKey() {
+        apiKey = BuildConfig.MAP_API;
+
+        if (apiKey.equals("")) {
+            Toast.makeText(this, getString(R.string.error_api_key), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), apiKey);
+        }
+        if (BuildConfig.DEBUG) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build());
+
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build());
+
+            WebView.setWebContentsDebuggingEnabled(true);
+        }
+    }
+
     public void initializeFirebase() {
         FirebaseApp.initializeApp(getApplicationContext());
         if (!isPersistenceEnabled) {
@@ -112,6 +183,11 @@ public class CustomApplication extends MultiDexApplication implements OnMapsSdkI
             isPersistenceEnabled = true;
         }
 
+    }
+    public long getCurrentTime() {
+        lagosTimeZone = TimeZone.getTimeZone("Africa/Lagos");
+        Calendar calendar = Calendar.getInstance(lagosTimeZone);
+        return calendar.getTimeInMillis() / 1000;
     }
 
     public static synchronized CustomApplication getInstance() {
@@ -187,6 +263,18 @@ public class CustomApplication extends MultiDexApplication implements OnMapsSdkI
 
     @Override
     public void onMapsSdkInitialized(@NonNull MapsInitializer.Renderer renderer) {
+
+    }
+
+    public TimeZone getTimeZone() {
+        lagosTimeZone = TimeZone.getTimeZone("Africa/Lagos");
+        //Calendar calendar = Calendar.getInstance(lagosTimeZone);
+        //return calendar.getTimeInMillis() / 1000;
+        return lagosTimeZone;
+    }
+
+    public void setTimeZone() {
+        this.lagosTimeZone = TimeZone.getTimeZone("Africa/Lagos");
 
     }
 }

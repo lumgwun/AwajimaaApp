@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".VerifiAct">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/other_BankText"
+        android:textAllCaps="true"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="2dp"
+        android:textAlignment="center"
+        android:textSize="45sp"
+        android:textColor="@android:color/holo_green_dark"
+        android:text="Coming Soon!"/>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

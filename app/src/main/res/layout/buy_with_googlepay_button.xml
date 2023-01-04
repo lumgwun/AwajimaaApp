@@ -3,8 +3,8 @@
     android:clickable="true"
     android:focusable="true"
     android:layout_width="match_parent"
-    android:layout_height="48sp"
-    android:background="@drawable/rect6b"
+    android:layout_height="78sp"
+    android:background="@drawable/event_rect"
     android:padding="2sp">
     <LinearLayout
         android:duplicateParentState="true"
@@ -13,16 +13,17 @@
         android:weightSum="2"
         android:gravity="center_vertical"
         android:orientation="vertical">
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageButton
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:padding="20sp"
             android:id="@+id/buy_with_g"
             android:scaleType="fitCenter"
             android:duplicateParentState="true"
             android:src="@drawable/buy_with_googlepay"/>
     </LinearLayout>
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"

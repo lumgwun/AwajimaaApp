@@ -46,7 +46,7 @@ public class WorkersDAO extends DBHelperDAO{
     }
     public ArrayList<String> getAllWorkers() {
         ArrayList<String> workersArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {WORKER};
         Cursor cursor = db.query(WORKER_TABLE, columns, WORKER, null, null,
                 null, null);

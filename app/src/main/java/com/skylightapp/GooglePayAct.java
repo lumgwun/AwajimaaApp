@@ -8,6 +8,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatImageView;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -18,7 +20,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +42,7 @@ import com.skylightapp.Classes.AppConstants;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Transaction;
+import com.skylightapp.GooglePayDir.ViewModelProvider;
 import com.skylightapp.Database.BizSubscriptionDAO;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.TripBookingDAO;
@@ -57,12 +60,12 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class GooglePayAct extends AppCompatActivity {
-    private static final int ADD_TO_GOOGLE_WALLET_REQUEST_CODE = 999;
+public class GooglePayAct extends AppCompatActivity implements  View.OnClickListener{
+    private static final int ADD_TO_GOOGLE_WALLET_REQUEST_CODE = 699;
 
-    private View googlePayButton;
-    private ImageView addToGoogleWalletButtonContainer;
-    private ImageView addToGoogleWalletButton;
+    private AppCompatImageButton googlePayButton;
+    private FrameLayout addToGoogleWalletButtonContainer;
+    private AppCompatImageView addToGoogleWalletButton;
     private Bundle gPayBundle;
     long amount;
     SharedPreferences sharedPref;
@@ -73,8 +76,6 @@ public class GooglePayAct extends AppCompatActivity {
     SharedPreferences userPreferences;
     private FloatingActionButton fab;
     private CheckoutViewModel model;
-    SharedPreferences sharedPreferences;
-    String SharedPrefUserPassword;
     private AppCompatButton btnContinue;
     private LinearLayout layoutGoogle;
     private TextView txtPayingFor;
@@ -95,12 +96,14 @@ public class GooglePayAct extends AppCompatActivity {
     private MarketBizSub subScription;
     Calendar today;
     private Trip trip;
-    private long bookingAmt,tripBID;
+    private long bookingAmt,tripBID,grpSavingsAcctID,grpSavingsID;
     private SQLiteDatabase sqLiteDatabase;
     private long totalPriceCents;
     private Profile paymentProfile;
     private Transaction transaction;
-    private int bookingID,tripID;
+    private int bookingID,tripID,customerID,bundleProfID,bundleCusID,noOfMinors,marketID;
+    private String paymentType;
+    private String serviceType,state,office,country,bookingName,currency,takeOffPoint;
     private static final String TIME_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss.SSSZZZZZ";
     ActivityResultLauncher<IntentSenderRequest> resolvePaymentForResult = registerForActivityResult(
             new ActivityResultContracts.StartIntentSenderForResult(),
@@ -139,7 +142,9 @@ public class GooglePayAct extends AppCompatActivity {
         txtPayingFor = findViewById(R.id.payingForText);
         addToGoogleWalletButton = findViewById(R.id.addG);
         layoutGoogle = findViewById(R.id.layoutGoogle);
-        addToGoogleWalletButtonContainer = findViewById(R.id.buy_with_g);
+        googlePayButton = findViewById(R.id.buy_with_g);
+
+        addToGoogleWalletButtonContainer = findViewById(R.id.addToG);
         gPayBundle= new Bundle();
         business= new MarketBusiness();
         paymentProf= new Profile();
@@ -166,6 +171,7 @@ public class GooglePayAct extends AppCompatActivity {
         userPassword=userPreferences.getString("PROFILE_PASSWORD", "");
         userMachine=userPreferences.getString("PROFILE_ROLE", "");
         profileID=userPreferences.getInt("PROFILE_ID", 0);
+        customerID=userPreferences.getInt("CUSTOMER_ID", 0);
         json2 = userPreferences.getString("LastMarketBusinessUsed", "");
         marketBusiness = gson2.fromJson(json2, MarketBusiness.class);
         bookingID = ThreadLocalRandom.current().nextInt(1005, 17460);
@@ -179,36 +185,70 @@ public class GooglePayAct extends AppCompatActivity {
 
             }
         });
-        btnContinue.setOnClickListener(this::continueToG);
+
         gPayBundle=getIntent().getExtras();
         if(gPayBundle !=null){
             amount=gPayBundle.getLong("Amount");
             business=gPayBundle.getParcelable("MarketBusiness");
             paymentMarket=gPayBundle.getParcelable("Market");
-            profileID=gPayBundle.getInt("PROFILE_ID");
+            bundleProfID=gPayBundle.getInt("PROFILE_ID");
+            bundleCusID=gPayBundle.getInt("CUSTOMER_ID");
             noOfMonths=gPayBundle.getInt("NoOfMonths");
             trip =gPayBundle.getParcelable("Trip");
             sitCount=gPayBundle.getInt("SitCount");
             bookingAmt=gPayBundle.getLong("Total");
+            paymentFor=gPayBundle.getString("PaymentFor");
             paymentProfile=gPayBundle.getParcelable("Profile");
             stopPointName=gPayBundle.getString("stopPointName");
             nin=gPayBundle.getString("PROFILE_NIN");
+            grpSavingsAcctID=gPayBundle.getInt("GrpSavingsAcctID");
+            grpSavingsID=gPayBundle.getInt("GrpSavingsID");
+            noOfMinors=gPayBundle.getInt("noOfMinors");
+            state=gPayBundle.getString("state");
+            office=gPayBundle.getString("office");
+            country=gPayBundle.getString("country");
+            bookingName=gPayBundle.getString("bookingName");
+            currency=gPayBundle.getString("currency");
+            takeOffPoint=gPayBundle.getString("takeOffPoint");
+            marketID =gPayBundle.getInt("marketID");
 
         }
         initializeUi();
         if(amount >0){
-            txtPayingFor.setText("USD"+amount);
+            txtPayingFor.setText(currency+amount);
         }
 
-        //model = new ViewModelProvider(this).get(CheckoutViewModel.class);
+        model = new ViewModelProvider(this).get(CheckoutViewModel.class);
         model.canUseGooglePay.observe(this, this::setGooglePayAvailable);
 
-        // Check out Google Wallet availability
-        model.canAddPasses.observe(this, this::setAddToGoogleWalletAvailable);
+        try {
+            model.canAddPasses.observe(this, this::setAddToGoogleWalletAvailable);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+    }
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.con_to_Checkout:
+                addToGoogleWalletButton.setVisibility(View.VISIBLE);
+                addToGoogleWalletButtonContainer.setVisibility(View.VISIBLE);
+                googlePayButton.setVisibility(View.VISIBLE);
+                layoutGoogle.setVisibility(View.VISIBLE);
+                //onBackPressed();
+                break;
+            case R.id.buy_with_g:
+                requestPayment();
+                break;
+            case R.id.addG:
+                model.canAddPasses.observe(this, this::setAddToGoogleWalletAvailable);
+                break;
+            default:
+                break;
+        }
     }
     private void initializeUi() {
-
-        googlePayButton.setOnClickListener(this::requestPayment);
 
         addToGoogleWalletButton.setOnClickListener(v -> {
             addToGoogleWalletButton.setClickable(false);
@@ -222,7 +262,7 @@ public class GooglePayAct extends AppCompatActivity {
             Toast.makeText(this, R.string.google_pay_status_unavailable, Toast.LENGTH_LONG).show();
         }
     }
-    public void requestPayment(View view) {
+    public void requestPayment() {
         gPayBundle= new Bundle();
 
         googlePayButton.setClickable(false);
@@ -232,7 +272,8 @@ public class GooglePayAct extends AppCompatActivity {
             amount=gPayBundle.getLong("Amount");
             business=gPayBundle.getParcelable("MarketBusiness");
             paymentMarket=gPayBundle.getParcelable("Market");
-            profileID=gPayBundle.getInt("PROFILE_ID");
+            bundleProfID=gPayBundle.getInt("PROFILE_ID");
+            bundleCusID=gPayBundle.getInt("CUSTOMER_ID");
             noOfMonths=gPayBundle.getInt("NoOfMonths");
             trip =gPayBundle.getParcelable("Trip");
             sitCount=gPayBundle.getInt("SitCount");
@@ -241,7 +282,16 @@ public class GooglePayAct extends AppCompatActivity {
             paymentProfile=gPayBundle.getParcelable("Profile");
             stopPointName=gPayBundle.getString("stopPointName");
             nin=gPayBundle.getString("PROFILE_NIN");
-
+            grpSavingsAcctID=gPayBundle.getInt("GrpSavingsAcctID");
+            grpSavingsID=gPayBundle.getInt("GrpSavingsID");
+            noOfMinors=gPayBundle.getInt("noOfMinors");
+            state=gPayBundle.getString("state");
+            office=gPayBundle.getString("office");
+            country=gPayBundle.getString("country");
+            bookingName=gPayBundle.getString("bookingName");
+            currency=gPayBundle.getString("currency");
+            takeOffPoint=gPayBundle.getString("takeOffPoint");
+            marketID =gPayBundle.getInt("marketID");
 
         }
         if(paymentFor !=null){
@@ -249,7 +299,43 @@ public class GooglePayAct extends AppCompatActivity {
                 totalPriceCents=bookingAmt;
 
             }
+            if(paymentFor.equalsIgnoreCase("Train Booking")){
+                totalPriceCents=bookingAmt;
+
+            }
+            if(paymentFor.equalsIgnoreCase("Taxi Booking")){
+                totalPriceCents=bookingAmt;
+
+            }
+            if(paymentFor.equalsIgnoreCase("Tour Booking")){
+                totalPriceCents=bookingAmt;
+
+            }
+            if(paymentFor.equalsIgnoreCase("Jet Booking")){
+                totalPriceCents=bookingAmt;
+
+            }
+            if(paymentFor.equalsIgnoreCase("Coop Subscription")){
+                totalPriceCents=bookingAmt;
+
+            }
             if(paymentFor.equalsIgnoreCase("Subscription")){
+                totalPriceCents=amount;
+
+            }
+            if(paymentFor.equalsIgnoreCase("Donation")){
+                totalPriceCents=amount;
+
+            }
+            if(paymentFor.equalsIgnoreCase("Group Savings")){
+                totalPriceCents=amount;
+
+            }
+            if(paymentFor.equalsIgnoreCase("Savings")){
+                totalPriceCents=amount;
+
+            }
+            if(paymentFor.equalsIgnoreCase("Loan Repayment")){
                 totalPriceCents=amount;
 
             }
@@ -300,6 +386,8 @@ public class GooglePayAct extends AppCompatActivity {
         subScription= new MarketBizSub();
         today = Calendar.getInstance();
         transaction= new Transaction();
+        BizSubscriptionDAO subscriptionDAO= new BizSubscriptionDAO(this);
+        TripBookingDAO tripBookingDAO= new TripBookingDAO(this);
 
 
         gPayBundle=getIntent().getExtras();
@@ -307,7 +395,8 @@ public class GooglePayAct extends AppCompatActivity {
             amount=gPayBundle.getLong("Amount");
             business=gPayBundle.getParcelable("MarketBusiness");
             paymentMarket=gPayBundle.getParcelable("Market");
-            profileID=gPayBundle.getInt("PROFILE_ID");
+            bundleProfID=gPayBundle.getInt("PROFILE_ID");
+            bundleCusID=gPayBundle.getInt("CUSTOMER_ID");
             noOfMonths=gPayBundle.getInt("NoOfMonths");
             trip =gPayBundle.getParcelable("Trip");
             sitCount=gPayBundle.getInt("SitCount");
@@ -316,7 +405,16 @@ public class GooglePayAct extends AppCompatActivity {
             paymentProfile=gPayBundle.getParcelable("Profile");
             stopPointName=gPayBundle.getString("stopPointName");
             nin=gPayBundle.getString("PROFILE_NIN");
-
+            grpSavingsAcctID=gPayBundle.getInt("GrpSavingsAcctID");
+            grpSavingsID=gPayBundle.getInt("GrpSavingsID");
+            noOfMinors=gPayBundle.getInt("noOfMinors");
+            state=gPayBundle.getString("state");
+            office=gPayBundle.getString("office");
+            country=gPayBundle.getString("country");
+            bookingName=gPayBundle.getString("bookingName");
+            currency=gPayBundle.getString("currency");
+            takeOffPoint=gPayBundle.getString("takeOffPoint");
+            marketID =gPayBundle.getInt("marketID");
 
         }
 
@@ -333,6 +431,59 @@ public class GooglePayAct extends AppCompatActivity {
 
         }
 
+        if(paymentFor !=null){
+            if(paymentFor.equalsIgnoreCase("Boat Booking")){
+                totalPriceCents=bookingAmt;
+
+            }
+            if(paymentFor.equalsIgnoreCase("Train Booking")){
+                totalPriceCents=bookingAmt;
+
+            }
+            if(paymentFor.equalsIgnoreCase("Taxi Booking")){
+                totalPriceCents=bookingAmt;
+
+            }
+            if(paymentFor.equalsIgnoreCase("Tour Booking")){
+                totalPriceCents=bookingAmt;
+
+            }
+            if(paymentFor.equalsIgnoreCase("Jet Booking")){
+                totalPriceCents=bookingAmt;
+
+            }
+            if(paymentFor.equalsIgnoreCase("Coop Subscription")){
+                totalPriceCents=bookingAmt;
+
+            }
+            if(paymentFor.equalsIgnoreCase("Subscription")){
+                totalPriceCents=amount;
+
+            }
+            if(paymentFor.equalsIgnoreCase("Donation")){
+                totalPriceCents=amount;
+
+            }
+            if(paymentFor.equalsIgnoreCase("Group Savings")){
+                totalPriceCents=amount;
+
+            }
+            if(paymentFor.equalsIgnoreCase("Savings")){
+                totalPriceCents=amount;
+
+            }
+            if(paymentFor.equalsIgnoreCase("Loan Repayment")){
+                totalPriceCents=amount;
+
+            }
+
+        }
+        if(currency !=null){
+            if(currency.equalsIgnoreCase("NGN")){
+                totalPriceCents=totalPriceCents*700;
+            }
+        }
+
         @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat(TIME_FORMAT_PATTERN, Locale.getDefault());
         subDate = mdformat.format(today.getTime());
         String modeOfPayment="Google Pay";
@@ -341,29 +492,24 @@ public class GooglePayAct extends AppCompatActivity {
         subEndDate = mdformat.format(date);
         String status="Successful";
         Bundle bundle = new Bundle();
-        BizSubscriptionDAO subscriptionDAO= new BizSubscriptionDAO(this);
-        TripBookingDAO tripBookingDAO= new TripBookingDAO(this);
 
         bookingID = ThreadLocalRandom.current().nextInt(1005, 17460);
-        TripBooking tripBooking= new TripBooking(bookingID,tripID,profileID,"Boat Booking",sitCount,stopPointName,bookingAmt,modeOfPayment,subDate,"Paid");
+        TripBooking tripBooking= new TripBooking(bookingID,tripID,bundleProfID,bundleCusID,paymentFor,sitCount,stopPointName,bookingAmt,modeOfPayment,subDate,"Paid",nin,noOfMinors,state,office,country,bookingName,currency,takeOffPoint);
 
         if(paymentFor !=null){
-            if(paymentFor.equalsIgnoreCase("Boat Booking")){
-                totalPriceCents=bookingAmt;
+            totalPriceCents=bookingAmt;
+            if(paymentProfile !=null){
+                paymentProfile.addTripBooking(tripBooking);
 
-                if(paymentProfile !=null){
-                    paymentProfile.addTripBooking(tripBooking);
+            }
 
+            if(tripBookingDAO !=null){
+                try {
+                    tripBID=tripBookingDAO.insertTripBooking(bookingID,tripID,bundleProfID,bundleCusID,nin,paymentFor,sitCount,stopPointName,bookingAmt,modeOfPayment,subDate,"Paid",nin,noOfMinors,state,office,country,bookingName,currency,takeOffPoint);
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
                 }
-                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                    dbHelper.openDataBase();
-                    sqLiteDatabase = dbHelper.getWritableDatabase();
-                    tripBID=tripBookingDAO.insertTripBooking(bookingID,tripID,profileID,nin,"Boat Booking",sitCount,stopPointName,bookingAmt,modeOfPayment,subDate,"Paid");
-
-                }
-
-
-
             }
             if(tripBID>0){
                 Toast.makeText(
@@ -381,18 +527,54 @@ public class GooglePayAct extends AppCompatActivity {
             if(paymentFor.equalsIgnoreCase("Subscription")){
                 totalPriceCents=amount;
 
-
-                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                    dbHelper.openDataBase();
-                    sqLiteDatabase = dbHelper.getWritableDatabase();
-                    subDBID=subscriptionDAO.insertSubscription(bizID,amount,profileID,noOfMonths,subDate,subEndDate,modeOfPayment,status);
-
+                if(subscriptionDAO !=null){
+                    try {
+                        subDBID=subscriptionDAO.insertSubscription(bookingID,bizID,marketID,amount,bundleProfID,bundleCusID,noOfMonths,subDate,subEndDate,modeOfPayment,paymentFor,status,state,office,country,bookingName,currency);
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
                 }
+
                 bundle.putParcelable("MarketBusiness",business);
                 bundle.putParcelable("Market",paymentMarket);
                 bundle.putParcelable("Profile",userProfile);
                 bundle.putInt("PROFILE_ID",profileID);
-                subScription= new MarketBizSub(bizID,amount,profileID,noOfMonths,subDate,subEndDate,modeOfPayment,status);
+                subScription= new MarketBizSub(bookingID,bizID,marketID,amount,bundleProfID,bundleCusID,noOfMonths,subDate,subEndDate,modeOfPayment,paymentFor,status,state,office,country,currency,bookingName);
+
+                if(subDBID>0){
+                    business.addSubscription(subScription);
+
+                    Toast.makeText(
+                            this,
+                            "Subscription successful",
+                            Toast.LENGTH_LONG).show();
+                    Intent intent=new Intent(GooglePayAct.this, LoginDirAct.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                            Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    overridePendingTransition(R.anim.slide_in_right,
+                            R.anim.slide_out_left);
+                    startActivity(intent);
+
+                }
+
+            }
+            if(paymentFor.equalsIgnoreCase("Coop Subscription")){
+                totalPriceCents=amount;
+                noOfMonths=1;
+
+                if(subscriptionDAO !=null){
+                    try {
+                        subDBID=subscriptionDAO.insertSubscription(0,amount,bundleProfID,bundleCusID,noOfMonths,subDate,subEndDate,modeOfPayment,paymentFor,status,currency,state,country,bookingName,office);
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                bundle.putParcelable("MarketBusiness",business);
+                bundle.putParcelable("Market",paymentMarket);
+                bundle.putParcelable("Profile",userProfile);
+                bundle.putInt("PROFILE_ID",profileID);
+                subScription= new MarketBizSub(0,amount,bundleProfID,bundleCusID,noOfMonths,subDate,subEndDate,modeOfPayment,paymentFor,status,currency,state,country,bookingName,office);
 
                 if(subDBID>0){
                     business.addSubscription(subScription);
@@ -489,6 +671,6 @@ public class GooglePayAct extends AppCompatActivity {
         }
     }
 
-    public void continueToG(View view) {
-    }
+
+
 }

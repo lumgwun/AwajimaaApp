@@ -4,69 +4,66 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
-import androidx.room.Entity;
-import androidx.room.Ignore;
+
 
 import java.io.Serializable;
 
-@Entity(tableName = User.USER_TABLE)
+//@Entity(tableName = User.USER_TABLE)
 public class User implements Parcelable, Serializable {
-    @Ignore
+    //@Ignore
     private static final long serialVersionUID = 8924708152697574031L;
-    @Ignore
+    //@Ignore
 
     public static final String USER_TABLE = "user_table";
-    @Ignore
+    //@Ignore
     //public static final String USER_COLUMN_ID = "_id1";
     public static final String USER_SURNAME = "u_surname";
-    @Ignore
+    //@Ignore
     public static final String USER_FIRSTNAME = "u_first_name";
-    @Ignore
+    //@Ignore
     public static final String USER_EMAIL = "u_email";
-    @Ignore
+    //@Ignore
     public static final String USER_DOB = "u_dob";
-    @Ignore
+
     public static final String USER_ADDRESS = "u_street";
-    @Ignore
+
     public static final String USER_GENDER = "u_gender";
-    @Ignore
+
     public static final String USER_PHONE = "u_phone";
-    @Ignore
+
     public static final String USER_ROLE = "u_role";
-    @Ignore
+
     public static final String USER_DATE_JOINED = "u_join_date";
-    @Ignore
+
     public static final String USER_NEXT_OF_KIN = "u_next_of_kin";
-    @Ignore
+
     public static final String USER_STATUS = "u_status";
-    @Ignore
+
     public static final String USER_PASSWORD = "u_passCode";
 
     //public static final String PROFILES_TABLE = "profiles_table";
-    @Ignore
+
     public static final String USER_UNIT = "u_unit";
-    @Ignore
+
     public static final String USER_WARD = "u_ward";
-    @Ignore
+
     public static final String USER_TOWN = "u_town";
-    @Ignore
+
     public static final String USER_COUNTRY = "u_country";
-    @Ignore
+
     public static final String USER_SPONSOR_ID = "u_sponsor";
-    @Ignore
+
 
     public static final String USER_ID = "user_id";
-    @Ignore
+
 
     public static final String USERNAME = "u_username";
-    @Ignore
 
     public static final String USER_NIN = "u_NIN";
-    @Ignore
+
     public static final String USER_STATE = "u_state";
-    @Ignore
+
     public static final String USER_OFFICE = "u_office";
-    @Ignore
 
 
 

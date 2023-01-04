@@ -10,9 +10,7 @@ import android.os.Parcelable;
 import android.provider.BaseColumns;
 import android.telephony.SmsMessage;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Ignore;
-import androidx.room.TypeConverters;
+
 
 import com.google.android.gms.maps.model.LatLng;
 import com.quickblox.core.model.QBEntity;
@@ -151,10 +149,6 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
             NIN_EXPIRYD + " TEXT, " + NIN_APPROVER + " INTEGER, " + NIN_APPROVING_OFFICE + " REAL, " + NIN_APPROVING_OFFICE + " TEXT, " +
             NIN_QBID  + " INTEGER, "+ NIN_STATUS + " TEXT, "  +"PRIMARY KEY(" +NIN_ID + "), " +"FOREIGN KEY(" + NIN_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + NIN_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
-
-
-
-
     public static final String CREATE_PIXTURE_TABLE = "CREATE TABLE " + PICTURE_TABLE + " (" + PROFILE_PIC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PROFID_FOREIGN_KEY_PIX + " INTEGER, " + CUS_ID_PIX_KEY + " INTEGER , " +
             PICTURE_URI + " BLOB ,"+ PICTURE_MARKET_ID + " TEXT, "+"FOREIGN KEY(" + PICTURE_MARKET_ID  + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+"FOREIGN KEY(" + PROFID_FOREIGN_KEY_PIX  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + CUS_ID_PIX_KEY + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
     //@Ignore
@@ -172,55 +166,55 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     private Payment profile_Payment;
     private String profile_Identity, businessName, profile_Unit, profile_Ward, profile_Town;
     //@PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = PROFILE_ID)
+    //@ColumnInfo(name = PROFILE_ID)
     private int pID ;
-    @ColumnInfo(name = PROFILE_SURNAME)
+    //@ColumnInfo(name = PROFILE_SURNAME)
     private String profileLastName;
-    @ColumnInfo(name = PROFILE_FIRSTNAME)
+    //@ColumnInfo(name = PROFILE_FIRSTNAME)
     private String profileFirstName;
-    @ColumnInfo(name = PROFILE_PHONE)
+    //@ColumnInfo(name = PROFILE_PHONE)
     private String profilePhoneNumber;
-    @ColumnInfo(name = PROFILE_EMAIL)
+    //@ColumnInfo(name = PROFILE_EMAIL)
     private String profileEmail;
-    @ColumnInfo(name = PROFILE_DOB)
+    //@ColumnInfo(name = PROFILE_DOB)
     private String profileDob;
-    @ColumnInfo(name = PROFILE_GENDER)
+    //@ColumnInfo(name = PROFILE_GENDER)
     private String profileGender;
-    @ColumnInfo(name = PROFILE_ADDRESS)
+    //@ColumnInfo(name = PROFILE_ADDRESS)
     protected String profileAddress;
     //@ColumnInfo(name = PROFILE_NIN)
-    @Ignore
+    //@Ignore
     private String profile_Nin;
     private OfficeBranch profile_OfficeBranch;
-    @ColumnInfo(name = PROFILE_OFFICE)
+    //@ColumnInfo(name = PROFILE_OFFICE)
     private String profOfficeName;
-    @ColumnInfo(name = PROFILE_DATE_JOINED)
+    //@ColumnInfo(name = PROFILE_DATE_JOINED)
     private String profileDateJoined;
-    @ColumnInfo(name = PROFILE_STATE)
+    //@ColumnInfo(name = PROFILE_STATE)
     private String profileState;
-    @ColumnInfo(name = PROFILE_ROLE)
+    //@ColumnInfo(name = PROFILE_ROLE)
     private String profileRole;
-    @ColumnInfo(name = PROFILE_NEXT_OF_KIN)
+    //@ColumnInfo(name = PROFILE_NEXT_OF_KIN)
     private String nextOfKin;
-    @ColumnInfo(name = PROFILE_USERNAME)
+    //@ColumnInfo(name = PROFILE_USERNAME)
     private String profileUserName;
-    @ColumnInfo(name = PASSWORD)
+    //@ColumnInfo(name = PASSWORD)
     private String profilePassword;
-    @ColumnInfo(name = PROFILE_SPONSOR_ID)
+    //@ColumnInfo(name = PROFILE_SPONSOR_ID)
     private int profileSponsorID;
-    @ColumnInfo(name = PROFILE_CUS_ID_KEY)
+    //@ColumnInfo(name = PROFILE_CUS_ID_KEY)
     private int profCusID;
-    @ColumnInfo(name = PROFID_FOREIGN_KEY_PIX)
+    //@ColumnInfo(name = PROFID_FOREIGN_KEY_PIX)
     private int profPixID;
-    @ColumnInfo(name = PROF_ID_FOREIGN_KEY_PASSWORD)
+    //@ColumnInfo(name = PROF_ID_FOREIGN_KEY_PASSWORD)
     private int profPassID;
-    @ColumnInfo(name = PROFILE_STATUS)
+    //@ColumnInfo(name = PROFILE_STATUS)
     private String profileStatus;
     private String pin;
     protected User.User_Type type;
     private String profile_Machine;
-    @TypeConverters
-    @ColumnInfo(name = PICTURE_URI)
+    //@TypeConverters
+    //@ColumnInfo(name = PICTURE_URI)
     private Uri profilePicture;
 
     private Transaction profile_Tranx;
@@ -440,10 +434,10 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public String getProfOfficeName() {
         return profOfficeName;
     }
-    @Ignore
+    //@Ignore
     public void setProfileMachine(String machine) { this.profile_Machine = machine;
     }
-    @Ignore
+    //@Ignore
     public String getProfileMachine() {
         return profile_Machine;
     }
@@ -478,7 +472,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
 
 
-    @Ignore
+    //@Ignore
     protected Profile(Parcel in) {
         super();
         pID = in.readInt();
@@ -856,7 +850,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public void setUserPaymentDocuments(ArrayList<PaymentDoc> paymentDocArrayList) {
         this.profile_PaymentDocArrayList = paymentDocArrayList;
     }
-    @Ignore
+
     public ArrayList<PaymentDoc> getProfilePaymentDocuments() { return profile_PaymentDocArrayList; }
 
     //@Ignore
@@ -892,11 +886,11 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public void setProfileLastName(String profileLastName) {
         this.profileLastName = profileLastName;
     }
-    @Ignore
+
     public String getProfileIdentity() {
         return profile_Identity;
     }
-    @Ignore
+
     public void setProfileIdentity(String identity) {
         this.profile_Identity = identity;
 
@@ -915,86 +909,81 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public void setNextOfKin(String nextOfKin) {
         this.nextOfKin = nextOfKin;
     }
-    @Ignore
+
     public String getProfileUnit() {
         return profile_Unit;
     }
-    @Ignore
+
     public void setProfileUnit(String unit) { this.profile_Unit = unit;
     }
-    @Ignore
+
     public String getProfileWard() {
         return profile_Ward;
     }
-    @Ignore
+
     public void setProfileWard(String ward) { this.profile_Ward = ward;
     }
-    @Ignore
+
     public String getProfileTown() {
         return profile_Town;
     }
-    @Ignore
+
     public void setProfileTown(String town) { this.profile_Town = town; }
-    @Ignore
+
     public StandingOrderAcct getProfileSOAcct() { return profile_SOAcct; }
-    @Ignore
+
     public void setProfileSOAcct(StandingOrderAcct standingOrderAcct) { this.profile_SOAcct = standingOrderAcct; }
     @SuppressLint("SimpleDateFormat")
-    @Ignore
+
     public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    @Ignore
+
     public Awajima getProfileAwajima() { return profile_Awajima;
     }
-    @Ignore
+
     public void setProfileSkylight(Awajima awajima) { this.profile_Awajima = awajima;
     }
 
 
-    @Ignore
+
     public String getProfile_AuthenticationKey() {
         return profile_AuthenticationKey;
     }
-    @Ignore
+
     public void setProfile_AuthenticationKey(String profile_AuthenticationKey) {
         this.profile_AuthenticationKey = profile_AuthenticationKey;
     }
 
-    @Ignore
+
 
 
     public LatLng getProfileLastKnownLocation() {
         return profile_LastLocation;
     }
-    @Ignore
+
     public LatLng setProfileLastKnownLocation(LatLng lastLocation) {
         this.profile_LastLocation = lastLocation;
 
         return lastLocation;
     }
 
-    @Ignore
     public boolean getProfile_Authenticated() {
         return false;
     }
     public Birthday getProfileBirthday() { return profile_Birthday; }
     public void setProfileBirthday(Birthday birthday) { this.profile_Birthday = birthday; }
-    @Ignore
+
     public GroupAccount getGroupAccount(int grpAcctID) { return profile_GroupAcct; }
     public void setProfile_GroupAcct(GroupAccount profile_GroupAcct) { this.profile_GroupAcct = profile_GroupAcct; }
-    @Ignore
+
     public ProjectSavingsGroup getProject_SavingsGroup() { return profile_Project_SavingsGroup; }
-    @Ignore
+
     public void setProject_SavingsGroup(ProjectSavingsGroup profile_Project_SavingsGroup) { this.profile_Project_SavingsGroup = profile_Project_SavingsGroup; }
 
-    @Ignore
     public boolean profileAuthenticate(String password, String phoneNumber) {
 
         return false;
     }
 
-
-
-    @Ignore
     public String getProfileBusinessName() {
         if(profile_Biz !=null){
             businessName= profile_Biz.getBusinessName();
@@ -1112,19 +1101,15 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         this.profilePicture = Uri.parse(String.valueOf(parse));
     }
 
-
-
-
-    @Ignore
     public StandingOrder getProfileStandingOrder() { return profile_StandingOrder; }
-    @Ignore
+
     public void setProfileStandingOrder(StandingOrder standingOrder) {
         this.profile_StandingOrder = standingOrder;
 
     }
-    @Ignore
+
     public MarketBusiness getProfileBusiness() { return profile_Biz; }
-    @Ignore
+
     public void setProfileBusiness(MarketBusiness marketBusiness) {
         this.profile_Biz = marketBusiness;
 
@@ -1160,82 +1145,76 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         this.profile_GroupAccounts = profile_GroupAccounts;
 
     }
-    @Ignore
+
     public ArrayList<StandingOrder> getProfile_StandingOrders() { return profile_StandingOrders; }
-    @Ignore
     public void setProfile_StandingOrders(ArrayList<StandingOrder> profile_StandingOrders) {
         this.profile_StandingOrders = profile_StandingOrders;
 
     }
-    @Ignore
 
 
     public ArrayList<Account> getProfileAccounts() { return profile_Accounts;
     }
-    @Ignore
+
     public ArrayList<Customer> getProfileCustomers() { return profile_Customers;
     }
-    @Ignore
+
     public ArrayList<MarketBusiness> getProfile_Businesses() { return marketBusinessArrayList; }
-    @Ignore
+
     public void setProfile_Businesses(ArrayList<MarketBusiness> profile_Businesses) { this.marketBusinessArrayList = profile_Businesses; }
-    @Ignore
 
     public ArrayList<MarketBizPackage> getProfileSkylightPackages() { return profile_MarketBizPackages; }
-    @Ignore
+
     public ArrayList<CustomerDailyReport> getProfileDailyReports() { return profile_DailyReports; }
 
-    @Ignore
+
     public void setProfileLoans(ArrayList<Loan> loans) {
         this.profile_Loans = loans;
 
     }
-    @Ignore
+
     public ArrayList<Loan> getProfileLoans() { return profile_Loans; }
-    @Ignore
+
     public Loan getProfileLoan() { return profile_Loan; }
-    @Ignore
+
     public void setProfileLoan(Loan loan) { this.profile_Loan = loan; }
 
-   @Ignore
     public OfficeBranch getProfileOfficeBranch() {
         return profile_OfficeBranch;
     }
-    @Ignore
+
     public void setProfileOfficeBranch(OfficeBranch officeBranch) {
         this.profile_OfficeBranch = officeBranch;
     }
 
 
     public Payee getProfilePayee() { return profile_Payee; }
-    @Ignore
+
     public void setProfilePayee(Payee payee) { this.profile_Payee = payee; }
-    @Ignore
+
 
     public SmsMessage.MessageClass getMessageClass() { return messageClass; }
-    @Ignore
+
     public void setMessageClass(SmsMessage.MessageClass messageClass) { this.messageClass = messageClass; }
-    @Ignore
+
     public MarketBizPackage getProfileSkyLightPackage() { return profile_MarketBizPackage; }
-    @Ignore
+
     public void setProfileSkyLightPackage(MarketBizPackage marketBizPackage) { this.profile_MarketBizPackage = marketBizPackage; }
-    @Ignore
+
     public Account getProfileAccount() { return profile_Account;
     }
-    @Ignore
+
     public void setProfileAccount(Account account) { this.profile_Account = account;
     }
-    @Ignore
+
     public CustomerDailyReport getProfileCustomerDailyReport() { return profile_CusDailyReport;
     }
-    @Ignore
+
     public void setProfile_CusDailyReport(CustomerDailyReport profile_CusDailyReport) { this.profile_CusDailyReport = profile_CusDailyReport; }
 
-
-    @Ignore
     public AdminUser getProfileAdminUser() { return profile_AdminUser;
     }
-   @Ignore
+
     public void setPin(String pin) {
         this.pin = pin;
 
@@ -1247,7 +1226,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public String getProfileDob() {
         return profileDob;
     }
-    @Ignore
+
     public User.User_Type getProfileType() {
         return type;
     }
@@ -1255,56 +1234,55 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public Uri getProfilePicture() {
         return profilePicture;
     }
-    @Ignore
+
     public String getProfilePin() {
         return pin;
     }
-    @Ignore
+
 
     public void setProfile_AdminUser(AdminUser profile_AdminUser) { this.profile_AdminUser = profile_AdminUser;
     }
-    @Ignore
+
 
     public CustomerManager getProfile_CustomerManager() { return profile_CustomerManager;
     }
-    @Ignore
+
     public void setProfile_CustomerManager(CustomerManager profile_CustomerManager) { this.profile_CustomerManager = profile_CustomerManager; }
-    @Ignore
+
     public UserSuperAdmin getProfile_SuperAdmin() { return profile_SuperAdmin;
     }
-    @Ignore
+
     public void setProfile_SuperAdmin(UserSuperAdmin profile_SuperAdmin) { this.profile_SuperAdmin = profile_SuperAdmin; }
 
-    @Ignore
+
     public void setTransactionsFromDB(ArrayList<Transaction> transactions) {
         this.profile_Transactions = transactions;
 
     }
-    @Ignore
+
     public void setProfile_TimeLines(ArrayList<TimeLine> timeLineArrayList) {
         this.profile_TimeLineArrayList = timeLineArrayList;
     }
-    @Ignore
+
     public ArrayList<TimeLine> getProfile_TimeLines() { return profile_TimeLineArrayList;
     }
-    @Ignore
+
     public Customer getProfileCus() { return profile_Customer;
     }
-    @Ignore
+
     public void setProfileCus(Customer timelineCustomer) { this.profile_Customer = timelineCustomer; }
 
-    @Ignore
     public void setSkyLightPackagesFromDB(ArrayList<MarketBizPackage> marketBizPackages) {
         this.profile_MarketBizPackages = marketBizPackages;
     }
-    @Ignore
+
     public ArrayList<Payee> getProfile_Payees() { return profile_Payees; }
 
-    @Ignore
+
 
     public ArrayList<Transaction> getProfile_Transactions() { return profile_Transactions;
     }
-    @Ignore
+
     public ArrayList<LatLng> getProfileLocations() {
         return profile_LatLngs;
     }
@@ -1445,7 +1423,6 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         }
         return this.authenticated;
     }*/
-    @Ignore
 
     public String toString() {
         return "ID: " + String.valueOf(this.pID) + "\nlastName: " + this.profileFirstName + "\nphoneNumber: "

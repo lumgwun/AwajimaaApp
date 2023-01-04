@@ -66,9 +66,9 @@ public class SMSAct extends AppCompatActivity {
     Map<String, String> data;
     Session session;
     MimeMessage mimeMessage;
-    String host = "https://skylightciacs.com:2096/";
+    String host = "https://awajima.com:2096/";
     Integer port;
-    final String user="bdm@skylightciacs.com";
+    final String user="admin@awajima.com";
     private String TWILLO_ACCOUNT_SID= T_ACCT_SID;
     private String TWILLO_AUTH_TOKEN= T_AUTH_TOKEN;
     private String TWILLO_PHONE_NO= TWILLO_NO;
@@ -84,6 +84,17 @@ public class SMSAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_smsact);
+        smsBundle= new Bundle();
+        smsBundle= getIntent().getExtras();
+        if(smsBundle !=null){
+            phoneNumber=smsBundle.getString(PROFILE_PHONE);
+            smsMessage=smsBundle.getString("smsMessage");
+            //from=smsBundle.getString("from");
+            to=smsBundle.getString("to");
+            cusEmail=smsBundle.getString("emailAddress");
+            subject=smsBundle.getString("subject");
+
+        }
 
         twilloMessage= new TwilloMessage(phoneNumber,smsMessage);
         twilloMessageSenderService= new TwilloMessageSenderService();
@@ -135,16 +146,7 @@ public class SMSAct extends AppCompatActivity {
         }
 
         Twilio.init("AC5e05dc0a793a29dc1da2eabdebd6c28d", "39410e8b813c131da386f3d7bb7f94f7");
-        smsBundle= getIntent().getExtras();
-        if(smsBundle !=null){
-            phoneNumber=smsBundle.getString(PROFILE_PHONE);
-            smsMessage=smsBundle.getString("smsMessage");
-            //from=smsBundle.getString("from");
-            to=smsBundle.getString("to");
-            cusEmail=smsBundle.getString("emailAddress");
-            subject=smsBundle.getString("subject");
 
-        }
         Settings sendSettings = new Settings();
         sendSettings.setUseSystemSending(true);
         Transaction  transaction = new Transaction(SMSAct.this, sendSettings);
@@ -172,11 +174,11 @@ public class SMSAct extends AppCompatActivity {
             public void run() {
                 try {
 
-                    mimeMessage.setFrom(new InternetAddress("Awajima Coop."));
+                    mimeMessage.setFrom(new InternetAddress("Awajima App."));
                     //DataHandler handler = new DataHandler(new ByteArrayDataSource(body.getBytes(), "text/plain"));
                     mimeMessage.setSubject(subject);
                     mimeMessage.setText(smsMessage);
-                    mimeMessage.setSender(new InternetAddress("bdm@skylightciacs.com"));
+                    mimeMessage.setSender(new InternetAddress("admin@awajima.com"));
                     //mimeMessage.setDataHandler(handler);
 
 

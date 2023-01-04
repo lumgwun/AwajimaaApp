@@ -2,9 +2,6 @@ package com.skylightapp.Classes;
 
 import android.net.Uri;
 
-import androidx.room.ProvidedTypeConverter;
-import androidx.room.TypeConverter;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -15,7 +12,6 @@ import java.util.Date;
 import java.util.List;
 
 
-@ProvidedTypeConverter
 public class SourceTypeConverter {
     public String fromValuesToProfileList(ArrayList<Profile> value) {
         if (value== null) {
@@ -26,7 +22,6 @@ public class SourceTypeConverter {
         return gson.toJson(value, type);
     }
 
-    @TypeConverter
     public ArrayList<Profile> toProfileList(String value) {
         if (value== null) {
             return (null);
@@ -46,7 +41,7 @@ public class SourceTypeConverter {
         return gson.toJson(value, type);
     }
 
-    @TypeConverter
+    //@TypeConverter
     public ArrayList<Customer> toOptionValuesList(String value) {
         if (value== null) {
             return (null);
@@ -57,23 +52,23 @@ public class SourceTypeConverter {
         return gson.fromJson(value, type);
     }
 
-    @TypeConverter
+    //@TypeConverter
     public static Uri fromUriToString(String value) {
         //Uri myUri = Uri.fromFile(new File(value));
         //return value == null ? null : Uri.parse(Uri.decode(value));
         return value == null ? null : Uri.parse(value);
     }
-    @TypeConverter
+    //@TypeConverter
     public static String stringToUri(Uri uri) {
         String stringUri;
         stringUri = uri.toString();
         return uri == null ? null : stringUri;
     }
-    @TypeConverter
+    //@TypeConverter
     public static Date fromTimestamp(Long value) {
         return value == null ? null : new Date(value);
     }
-    @TypeConverter
+    //@TypeConverter
     public static Long dateToTimestamp(Date date) {
         return date == null ? null : date.getTime();
     }

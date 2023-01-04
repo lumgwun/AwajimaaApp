@@ -15,7 +15,7 @@ public class MapRepositoryImpl implements MapRepository {
         this.mRemoteService = remoteService;
     }
 
-    @Override
+    //@Override
     public Observable<DirectionResponse> getRoute(DirectionRequest directionRequest) {
         return mRemoteService.getRoute(directionRequest);
     }

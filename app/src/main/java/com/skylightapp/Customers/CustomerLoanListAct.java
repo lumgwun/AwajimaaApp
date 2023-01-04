@@ -29,7 +29,6 @@ import java.util.List;
 
 public class CustomerLoanListAct extends AppCompatActivity implements LoanAdapter.OnLoanInteractionListener {
     DBHelper dbHelper;
-    SharedPreferences userPreferences;
     Gson gson;
     String json;
     Profile userProfile;
@@ -38,19 +37,10 @@ public class CustomerLoanListAct extends AppCompatActivity implements LoanAdapte
     String SharedPrefUserPassword;
     int SharedPrefCusID;
     String SharedPrefUserMachine;
-    String SharedPrefState;
     String SharedPrefOffice;
-    String SharedPrefAddress;
     String SharedPrefJoinedDate;
-    String SharedPrefGender;
-    String name;
     String SharedPrefRole;
-    String SharedPrefDOB;
-    String SharedPrefPhone;
-    String SharedPrefEmail;
     int SharedPrefProfileID;
-    String SharedPrefSurName;
-    String SharedPrefFirstName;
     String SharedPrefAcctNo;
     int customerId;
     String SharedPrefBankNo;
@@ -78,6 +68,8 @@ public class CustomerLoanListAct extends AppCompatActivity implements LoanAdapte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_cust_loan_list);
         dbHelper= new DBHelper(this);
+        userProfile= new Profile();
+        cusBundle= new Bundle();
         recyclerView = findViewById(R.id.recycler_loan_Customer);
         txtLoanMessage = findViewById(R.id.loanText);
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);

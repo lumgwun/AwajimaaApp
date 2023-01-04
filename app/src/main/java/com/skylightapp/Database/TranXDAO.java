@@ -295,7 +295,7 @@ public class TranXDAO extends DBHelperDAO{
     }
     public ArrayList<Transaction> getAllTranxWithTypeForCustomer(int customerID, String typeOfTranX) {
         ArrayList<Transaction> transactionArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
         String selection = TRANSACTION_CUS_ID + "=? AND " + TRANSACTIONS_TYPE + "=?";
         String[] selectionArgs = new String[]{valueOf(customerID), valueOf(typeOfTranX)};
@@ -318,7 +318,7 @@ public class TranXDAO extends DBHelperDAO{
     }
     public ArrayList<Transaction> getTransactionsForBranchAtDate(String officeBranch, String givenDate) {
         ArrayList<Transaction> transactionArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {TRANSACTION_ID, TRANSACTIONS_TYPE,TRANSACTION_AMOUNT,TRANSACTION_PAYEE,TRANSACTION_DATE,TRANSACTION_STATUS};
 
         String[] selectionArgs = new String[]{valueOf(officeBranch), valueOf(givenDate)};
@@ -343,7 +343,7 @@ public class TranXDAO extends DBHelperDAO{
     }
     public ArrayList<Transaction> getTransactionsFromCurrentAccount(String accountNo) {
         ArrayList<Transaction> transactions = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = TRANSACTION_ACCT_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(accountNo)};
         Cursor cursor = db.query(TRANSACTIONS_TABLE, null, selection, selectionArgs, null,
@@ -364,7 +364,7 @@ public class TranXDAO extends DBHelperDAO{
     }
     public ArrayList<Transaction> getTransactionsToday(String today) {
         ArrayList<Transaction> transactions = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = TRANSACTION_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(today)};
         Cursor cursor = db.query(TRANSACTIONS_TABLE, null, selection, selectionArgs, null,
@@ -386,7 +386,7 @@ public class TranXDAO extends DBHelperDAO{
 
     public ArrayList<Transaction> getAllTransactions() {
         ArrayList<Transaction> transactions = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TRANSACTIONS_TABLE, null, null, null, null,
                 null, null);
 
@@ -400,7 +400,7 @@ public class TranXDAO extends DBHelperDAO{
 
     public ArrayList<Transaction> getAllTransactionsSimple() {
         ArrayList<Transaction> transactions = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TRANSACTIONS_TABLE, new String[]{TRANSACTION_ID, TRANSACTION_DATE, TRANSACTION_PAYEE, TRANSACTION_PAYER,
                         TRANSACTION_AMOUNT,TRANSACTIONS_TYPE,TRANSACTION_METHOD_OF_PAYMENT,TRANSACTION_OFFICE_BRANCH,TRANSACTION_STATUS}, null, null, TRANSACTIONS_TYPE,
@@ -417,7 +417,7 @@ public class TranXDAO extends DBHelperDAO{
 
     public ArrayList<Transaction> getBizTranxForDate(int bizID, String date) {
         ArrayList<Transaction> transactionArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = TRANSACTION_BIZ_ID + "=? AND " + TRANSACTION_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(bizID), valueOf(date)};
 
@@ -494,7 +494,7 @@ public class TranXDAO extends DBHelperDAO{
 
     public ArrayList<Transaction> getAllTransactionCustomer(int customerID) {
         ArrayList<Transaction> transactions = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = TRANSACTION_CUS_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(customerID)};
         Cursor cursor = db.query(TRANSACTIONS_TABLE, null, selection, selectionArgs, null,
@@ -537,7 +537,7 @@ public class TranXDAO extends DBHelperDAO{
     public ArrayList<Transaction> getAllGrpAcctTranxs(long grpAcctID) {
         try {
             ArrayList<Transaction> transactions = new ArrayList<>();
-            SQLiteDatabase db = this.getWritableDatabase();
+            SQLiteDatabase db = this.getReadableDatabase();
             Cursor cursor = db.query(GRP_TRANX_TABLE, null,  GRP_ACCT_ID
                             + " = " + grpAcctID, null, null,
                     null, null);
@@ -563,7 +563,7 @@ public class TranXDAO extends DBHelperDAO{
 
     public ArrayList<Transaction> getAllTransactionProfile(int profileID) {
         ArrayList<Transaction> transactions = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = TRANSACTION_PROF_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(profileID)};
 
@@ -583,7 +583,7 @@ public class TranXDAO extends DBHelperDAO{
     }
     public ArrayList<Transaction> getAllTranxForMarket(int marketID) {
         ArrayList<Transaction> transactions = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = TRANSACTION_MARKET_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(marketID)};
 
@@ -603,7 +603,7 @@ public class TranXDAO extends DBHelperDAO{
     }
     public ArrayList<Transaction> getAllTranxForBiz(long marketBizID) {
         ArrayList<Transaction> transactions = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = TRANSACTION_BIZ_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(marketBizID)};
 
@@ -625,7 +625,7 @@ public class TranXDAO extends DBHelperDAO{
         String selection = TRANSACTION_BIZ_ID + "=? AND " + TRANSACTION_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(marketBizID), valueOf(dateOfTranx)};
         ArrayList<Transaction> transactionArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TRANSACTIONS_TABLE, null, selection, selectionArgs, null,
                 null, null);
@@ -644,7 +644,7 @@ public class TranXDAO extends DBHelperDAO{
     public ArrayList<Transaction> getAllTransactionAdmin() {
         try {
             ArrayList<Transaction> transactions = new ArrayList<>();
-            SQLiteDatabase db = this.getWritableDatabase();
+            SQLiteDatabase db = this.getReadableDatabase();
             Cursor cursor = db.query(TRANSACTIONS_TABLE, null, null, null, null,
                     null, null);
             if(cursor!=null && cursor.getCount() > 0) {
@@ -899,7 +899,7 @@ public class TranXDAO extends DBHelperDAO{
     }
 
     public long saveNewTransaction(int profileID, int customerId,Transaction transaction, int accountId,String payee,String payer,Transaction.TRANSACTION_TYPE type, double amount, long transactionId,  String officeBranch,String date) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         co.paystack.android.Transaction transaction2 = new co.paystack.android.Transaction();
         ContentValues cv = new ContentValues();
         cv.put(TRANSACTION_PROF_ID, profileID);

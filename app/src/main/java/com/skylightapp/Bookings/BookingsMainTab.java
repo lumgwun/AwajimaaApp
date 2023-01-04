@@ -183,6 +183,14 @@ public class BookingsMainTab extends TabActivity implements NavigationView.OnNav
                 .setIndicator("", resources.getDrawable(R.drawable.train))
                 .setContent(intentTrain);
 
+
+        Intent intentTour= new Intent().setClass(this, TourBookingAct.class);
+        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabTour = tabhost
+                .newTabSpec("Tour Trips")
+                .setIndicator("", resources.getDrawable(R.drawable.train))
+                .setContent(intentTrain);
+
+        tabhost.addTab(tabTour);
         tabhost.addTab(boatTrips);
         tabhost.addTab(taxiTrips);
         tabhost.addTab(tabTrain);

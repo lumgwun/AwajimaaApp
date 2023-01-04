@@ -55,7 +55,7 @@ public class PlaceDataAdapter extends ArrayAdapter<PlaceData> {
             TextView tvCoord = (TextView) convertView.findViewById( R.id.coordinate );
             tvCoord.setText( place.getLatitude() + "," + place.getLongitude() );
 
-            String endVisitInformation = "Visit is Ongoing";
+            String endVisitInformation = "POIVisit is Ongoing";
 
             if (place.getDuration() != 0) {
                 endVisitInformation = "End time = " + displayDateFormat.format(place.getDepartureDate()) + "\n" + "Duration = ";

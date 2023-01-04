@@ -1,31 +1,27 @@
 package com.skylightapp.Interfaces;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.Query;
-import androidx.room.Update;
 
 import com.skylightapp.Classes.Account;
 
 import java.util.List;
 
-@androidx.room.Dao
+//@androidx.room.Dao
 public interface AccountDao {
-    @Insert
+    //@Insert
     void insert(Account account);
 
 
-    @Update
+    //@Update
     void update(Account account);
 
-    @Delete
+    //@Delete
     void delete(Account account);
 
-    @Query("DELETE FROM Account.accounts")
+    //@Query("DELETE FROM Account.accounts")
     void deleteAllAccount();
 
 
-    @Query("SELECT * FROM Account.accounts")
+    //@Query("SELECT * FROM Account.accounts")
     LiveData<List<Account>> getAllAccount();
 }

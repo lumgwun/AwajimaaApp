@@ -22,11 +22,17 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -34,20 +40,37 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.AlphaAnimation;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
+/*import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.AMapOptions;
+import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.TextureMapView;
+import com.amap.api.maps.model.MyLocationStyle;*/
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -56,9 +79,23 @@ import com.android.volley.toolbox.Volley;
 import com.androidquery.AQuery;
 import com.androidquery.callback.ImageOptions;
 import com.github.clans.fab.FloatingActionButton;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.vision.clearcut.LogUtils;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.rom4ek.arcnavigationview.ArcNavigationView;
+import com.skylightapp.BizSubQTOptionAct;
 import com.skylightapp.Classes.AppLog;
 import com.skylightapp.Classes.ParseContent;
 import com.skylightapp.Classes.PrefManager;
@@ -69,6 +106,9 @@ import com.skylightapp.Classes.VolleyHttpRequest;
 import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.ProfDAO;
+import com.skylightapp.GooglePayAct;
+import com.skylightapp.MapAndLoc.ApiUtil;
+import com.skylightapp.MapAndLoc.MyMapCallBack;
 import com.skylightapp.Markets.ProfileActivity;
 import com.skylightapp.R;
 
@@ -76,18 +116,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class BookingHomeAct extends ActionBarBaseAct implements NavigationView.OnNavigationItemSelectedListener{
+public class BookingHomeAct extends ActionBarBaseAct implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback,
+        GoogleMap.OnCameraMoveListener {
     SharedPreferences userPreferences;
     private static final String PREF_NAME = "awajima";
     DBHelper dbHelper;
-    Gson gson, gson1,gson2;
-    String json, json1,json2, userName;
+    Gson gson, gson1, gson2;
+    String json, json1, json2, userName;
     Profile userProfile;
     private NavigationView navigationView;
     private ActionBarDrawerToggle toggle;
     private DrawerLayout drawer;
     private FloatingActionButton floatingActionButton;
-    private Toolbar toolbar,toolbar22;
+    private Toolbar toolbar, toolbar22;
     private FrameLayout frameLayout;
     public ParseContent pContent;
     private AQuery aQuery;
@@ -98,34 +139,77 @@ public class BookingHomeAct extends ActionBarBaseAct implements NavigationView.O
     private RequestQueue requestQueue;
     private ArrayList<AppPages> listMenu;
     private PrefManager pHelper;
+    private LinearLayout mapLayout;
+    private AlphaAnimation anappear;
+    private AlphaAnimation andisappear;
     private boolean isDataRecieved = false, isRecieverRegistered = false,
             isNetDialogShowing = false, isGpsDialogShowing = false;
     private AlertDialog internetDialog, gpsAlertDialog, locationAlertDialog;
     com.google.android.material.floatingactionbutton.FloatingActionButton fabHome;
+    private MapView mGoogleMapView;
+
+    private GoogleMap googlemap;
+    private LinearLayout.LayoutParams mParams;
+    //private TextureMapView mAmapView;
+    //private AMap amap;
+    private float zoom = 10;
+    private double latitude = 23.10485;
+    private double longitude = 113.388975;
+    private boolean mIsAmapDisplay = true;
+    private boolean mIsAuto = true;
+    private String formatAddress = "";
+    private BookingHomeAct activity;
+    private Context context;
+    private FloatingActionButton fabChange;
+    private AppCompatImageButton fabBack;
+
 
     @Override
     protected boolean isValidate() {
         return false;
     }
 
+    private Marker centerMarker;
+
+    private BitmapDescriptor ICON_YELLOW ;
+    private BitmapDescriptor ICON_RED ;
+    private MarkerOptions markerOption = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_booking_home);
-        setTitle("Agric Market Shop");
-        userProfile= new Profile();
-        gson= new Gson();
-        gson1= new Gson();
-        gson2= new Gson();
+        setTitle("Booking Activity");
+        userProfile = new Profile();
+        gson = new Gson();
+        gson1 = new Gson();
+        gson2 = new Gson();
+        context = this;
+        activity = this;
+        try {
+            ICON_YELLOW = BitmapDescriptorFactory
+                    .defaultMarker(BitmapDescriptorFactory.HUE_YELLOW);
+            ICON_RED = BitmapDescriptorFactory
+                    .defaultMarker(BitmapDescriptorFactory.HUE_RED);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        initGDMap(savedInstanceState);
+        configGDLocation();
+        //changeToGoogleMapView();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
-        userName=userPreferences.getString("PROFILE_USERNAME", "");
+        userName = userPreferences.getString("PROFILE_USERNAME", "");
         ArcNavigationView navigationView = (ArcNavigationView) findViewById(R.id.booking_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         drawer = findViewById(R.id.m_Layout_Booking);
         toolbar = findViewById(R.id.toolbar_booking);
-
+        mGoogleMapView = findViewById(R.id.mapBooking);
+        mapLayout = findViewById(R.id.map_container);
+        fabChange = findViewById(R.id.f_Home_B);
+        fabBack = findViewById(R.id.btn_b);
         frameLayout = findViewById(R.id.frameC_booking);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -151,11 +235,191 @@ public class BookingHomeAct extends ActionBarBaseAct implements NavigationView.O
             e.printStackTrace();
         }
     }
+
+    private void initGDMap(Bundle savedInstanceState) {
+        /*mAmapView = new TextureMapView(this);
+        mapLayout = findViewById(R.id.map_container);
+        mParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        mapLayout.addView(mAmapView, mParams);
+        mAmapView.onCreate(savedInstanceState);
+        if (amap == null) {
+            amap = mAmapView.getMap();
+            amap.setOnCameraChangeListener(this);
+            amap.setOnMapClickListener(this);//new
+        }*/
+        anappear = new AlphaAnimation(0, 1);
+        andisappear = new AlphaAnimation(1, 0);
+        anappear.setDuration(5000);
+        andisappear.setDuration(5000);
+    }
+
+    private void addCenterMarker(LatLng latlng) {
+        if (null == centerMarker) {
+            markerOption = new MarkerOptions();
+            markerOption.icon(ICON_RED);//ICON_RED  ICON_YELLOW
+            //centerMarker = amap.addMarker(markerOption);
+            centerMarker.setPosition(latlng);
+            centerMarker.setTitle("：" + longitude + "," + latitude + "\n" + formatAddress);
+        }
+    }
+
+    private void setMapResult() {
+        Intent intent = new Intent(this, BookingHomeAct.class);
+        intent.putExtra("SP_LATITUDE", "" + latitude);
+        intent.putExtra("SP_LONGITUDE", "" + longitude);
+        intent.putExtra("SP_ADDRESS", "" + formatAddress);
+        activity.setResult(100, intent);
+        activity.finish();
+    }
+
+    private void changeToAmapView() {
+        if (googlemap != null) {
+            zoom = googlemap.getCameraPosition().zoom;
+            latitude = googlemap.getCameraPosition().target.latitude;
+            longitude = googlemap.getCameraPosition().target.longitude;
+        }
+        mapLayout = findViewById(R.id.map_container);
+
+       /* mAmapView = new TextureMapView(this, new AMapOptions()
+                .camera(new com.amap.api.maps.model.CameraPosition(new com.amap.api.maps.model.LatLng(latitude, longitude), zoom, 0, 0)));
+        mAmapView.onCreate(null);
+        mAmapView.onResume();
+        mapLayout.addView(mAmapView, mParams);*/
+
+        mGoogleMapView.animate().alpha(0f).setDuration(500).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mGoogleMapView.setVisibility(View.GONE);
+                mapLayout.removeView(mGoogleMapView);
+                if (mGoogleMapView != null) {
+                    mGoogleMapView.onDestroy();
+                }
+            }
+        });
+        //AMap amap = mAmapView.getMap();
+        /*amap = mAmapView.getMap();
+        amap.setOnCameraChangeListener(this);
+        amap.setOnMapClickListener(this);
+        mIsAmapDisplay = true;*/
+    }
+
+    private Handler handler = new Handler() {
+        @SuppressLint("HandlerLeak")
+        public void handleMessage(Message message) {
+            /*mAmapView.setVisibility(View.GONE);
+            mapLayout.removeView(mAmapView);
+            if (mAmapView != null) {
+                mAmapView.onDestroy();
+            }*/
+        }
+    };
+
+    private void changeToGoogleMapView() {
+        //zoom = mAmapView.getMap().getCameraPosition().zoom;
+        mapLayout = findViewById(R.id.map_container);
+
+        //latitude = mAmapView.getMap().getCameraPosition().target.latitude;
+        //longitude = mAmapView.getMap().getCameraPosition().target.longitude;
+        mIsAmapDisplay = false;
+        mGoogleMapView = new com.google.android.gms.maps.MapView(this, new GoogleMapOptions()
+                .camera(new com.google.android.gms.maps.model
+                        .CameraPosition(new com.google.android.gms.maps.model.LatLng(latitude, longitude), zoom, 0, 0)));
+        mGoogleMapView.onCreate(null);
+        mGoogleMapView.onResume();
+        mapLayout.addView(mGoogleMapView, mParams);
+        mGoogleMapView.getMapAsync(this);
+        handler.sendEmptyMessageDelayed(0, 500);
+    }
+
+    /*@Override
+    public void onCameraChange(com.amap.api.maps.model.CameraPosition cameraPosition) {
+
+    }
+
+    @Override
+    public void onCameraChangeFinish(com.amap.api.maps.model.CameraPosition cameraPosition) {
+        longitude = cameraPosition.target.longitude;
+        latitude = cameraPosition.target.latitude;
+        zoom = cameraPosition.zoom;
+        if (!isInArea(latitude, longitude) && mIsAmapDisplay && mIsAuto) {
+            changeToGoogleMapView();
+        }
+    }*/
+
+    private boolean isInArea(double latitude, double longtitude) {
+        if ((latitude > 3.837031) && (latitude < 53.563624)
+                && (longtitude < 135.095670) && (longtitude > 73.502355)) {
+            return true;
+        }
+        return false;
+    }
+
+
+    private void configGDLocation() {
+
+        /*try {
+            mlocationClient = new AMapLocationClient(this.getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mlocationClient.setLocationListener(this);
+
+        mLocationOption = new AMapLocationClientOption();
+
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        mLocationOption.setOnceLocation(true);
+
+        mlocationClient.setLocationOption(mLocationOption);
+        mlocationClient.startLocation();
+
+        MyLocationStyle myLocationStyle;
+        myLocationStyle = new MyLocationStyle();
+        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATE);
+        //myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);
+        //myLocationStyle.interval(2000);
+        amap.setMyLocationStyle(myLocationStyle);
+        amap.getUiSettings().setMyLocationButtonEnabled(true);
+        amap.setMyLocationEnabled(true);*/
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
 
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        /*if (mAmapView != null) {
+            mAmapView.onPause();
+        }*/
+        if (mGoogleMapView != null) {
+            try {
+                mGoogleMapView.onPause();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        /*if (mAmapView != null) {
+            mAmapView.onSaveInstanceState(outState);
+        }*/
+        if (mGoogleMapView != null) {
+            try {
+                mGoogleMapView.onSaveInstanceState(outState);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public BroadcastReceiver GpsChangeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -229,11 +493,14 @@ public class BookingHomeAct extends ActionBarBaseAct implements NavigationView.O
         gpsAlertDialog = gpsBuilder.create();
         gpsAlertDialog.show();
     }
+
     private void initActionBar() {
         actionBar = getSupportActionBar();
         // actionBar.setDisplayHomeAsUpEnabled(true);
         // actionBar.setHomeButtonEnabled(true);
+        mapLayout = findViewById(R.id.map_container);
     }
+
     public int getStatusBarHeight() {
         int result = 0;
         int resourceId = getResources().getIdentifier("status_bar_height",
@@ -249,6 +516,7 @@ public class BookingHomeAct extends ActionBarBaseAct implements NavigationView.O
         // TODO Auto-generated method stub
         AppLog.Log(TAG, error.getMessage());
     }
+
     public boolean isLocationEnabled(Context context) {
         int locationMode = 0;
         String locationProviders;
@@ -357,6 +625,7 @@ public class BookingHomeAct extends ActionBarBaseAct implements NavigationView.O
                                 startActivity(new Intent(
                                         Settings.ACTION_WIFI_SETTINGS));
                                 removeInternetDialog();
+
                             }
                         })
                 .setNegativeButton(getString(R.string.exit),
@@ -382,7 +651,16 @@ public class BookingHomeAct extends ActionBarBaseAct implements NavigationView.O
             unregisterReceiver(GpsChangeReceiver);
         }
 
+        if (mGoogleMapView != null) {
+            try {
+                mGoogleMapView.onDestroy();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
+
     @Override
     protected void onResume() {
         pHelper = new PrefManager(this);
@@ -390,6 +668,7 @@ public class BookingHomeAct extends ActionBarBaseAct implements NavigationView.O
         super.onResume();
         if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             ShowGpsDialog();
+            showLocationOffDialog();
         } else {
             removeGpsDialog();
         }
@@ -406,17 +685,135 @@ public class BookingHomeAct extends ActionBarBaseAct implements NavigationView.O
             }
         }
         gson = new Gson();
-        userProfile= new Profile();
+        userProfile = new Profile();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
 
+        /*if (mAmapView != null) {
+            mAmapView.onResume();
+        }*/
+        if (mGoogleMapView != null) {
+            try {
+                mGoogleMapView.onResume();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
+   /* @Override
+    public void onMapClick(LatLng latLng) {
+        longitude = latLng.longitude;
+        latitude = latLng.latitude;
+        initGeocodeSearch(latLng);
+    }
+
+    //高德地图，纬度/经度的反向地理编码
+    private void initGeocodeSearch(LatLng latLng) {
+        if (geocoderSearch == null) {
+            geocoderSearch = new GeocodeSearch(this);
+            geocoderSearch.setOnGeocodeSearchListener(new GeocodeSearch.OnGeocodeSearchListener() {
+                @Override
+                public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
+                    RegeocodeAddress regeocodeAddress = regeocodeResult.getRegeocodeAddress();
+                    formatAddress = regeocodeAddress.getFormatAddress();
+                    //LogUtils.debug(TAG,"regeocodeResult："+ formatAddress);
+                    setCurrentPositionInfo();
+                    addCenterMarker(latLng);
+                }
+
+                @Override
+                public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
+                }
+            });
+        }
+        LatLonPoint latLonPoint = new LatLonPoint(latLng.latitude, latLng.longitude);
+        RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 200, GeocodeSearch.AMAP);
+        geocoderSearch.getFromLocationAsyn(query);
+    }*/
+
+    private void setCurrentPositionInfo() {
+        String position = "：" + longitude + " ：" + latitude + "\n" + formatAddress;
+
+    }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
     }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.googlemap = googleMap;
+        if (googlemap != null) {
+            googlemap.setOnCameraMoveListener(this);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                return;
+            }
+            googlemap.setMyLocationEnabled(true);
+            //googlemap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+            googlemap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        }
+
+        addGoogleMarker();
+        googlemap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(com.google.android.gms.maps.model.LatLng latLng) {
+                longitude = latLng.longitude;
+                latitude = latLng.latitude;
+                getGooglePosition(latLng);
+            }
+        });
+        UiSettings uiSettings = googlemap.getUiSettings();
+        uiSettings.setAllGesturesEnabled(true);
+        uiSettings.setMapToolbarEnabled(true);
+        uiSettings.setZoomControlsEnabled(true);
+        uiSettings.setCompassEnabled(true);
+        uiSettings.setRotateGesturesEnabled(true);
+    }
+
+    private void getGooglePosition(com.google.android.gms.maps.model.LatLng latLng) {
+        ApiUtil.init().getGooglePostion(latLng, new MyMapCallBack() {
+            public void onSuccess(String result) {
+                formatAddress = result;
+                //LogUtils.debug(TAG,"Google formatAddress ="+formatAddress);
+                setCurrentPositionInfo();
+                addGoogleMarker();
+            }
+        });
+    }
+
+    private void addGoogleMarker() {
+        com.google.android.gms.maps.model.LatLng location = new com.google.android.gms.maps.model.LatLng(latitude, longitude);
+        googlemap.addMarker(new com.google.android.gms.maps.model.MarkerOptions().position(location).title("My Loc："+longitude+","+latitude));
+        googlemap.moveCamera(com.google.android.gms.maps.CameraUpdateFactory.newLatLng(location));
+        googlemap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),19));
+    }
+
+
+    @Override
+    public void onCameraMove() {
+        CameraPosition cameraPosition=googlemap.getCameraPosition();
+        longitude = cameraPosition.target.longitude;
+        latitude = cameraPosition.target.latitude;
+        zoom = cameraPosition.zoom;
+        if (isInArea(latitude, longitude) && !mIsAmapDisplay && mIsAuto) {
+            changeToAmapView();
+        }
+    }
+
+
+
+    private void stopLocation(){
+        // 停止定位
+        //mlocationClient.stopLocation();
+    }
+
+
+
     public void hideKeyboard() {
         InputMethodManager inputManager = (InputMethodManager) this
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -584,6 +981,25 @@ public class BookingHomeAct extends ActionBarBaseAct implements NavigationView.O
 
     @Override
     public void onClick(View view) {
+        fabChange = findViewById(R.id.f_Home_B);
+        fabBack = findViewById(R.id.btn_b);
+        switch (view.getId()) {
+            case R.id.f_Home_B:
+                Intent dialogIntent = new Intent(BookingHomeAct.this, NewCustomerDrawer.class);
+                dialogIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(dialogIntent);
+
+                break;
+
+            case R.id.btn_b:
+                onBackPressed();
+                break;
+            default:
+                break;
+        }
 
     }
     private void logout() {
@@ -924,7 +1340,6 @@ public class BookingHomeAct extends ActionBarBaseAct implements NavigationView.O
         requestQueue.add(new VolleyHttpRequest(Request.Method.GET, map,
                 BookingConstant.ServiceCode.GET_REQUEST_STATUS, this, this));
     }
-
 
 
 }

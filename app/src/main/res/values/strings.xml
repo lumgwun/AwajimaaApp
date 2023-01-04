@@ -2244,6 +2244,7 @@
     <string name="progress_getting_history">GETTING HISTORY</string>
     <string name="pick_place">pick a place</string>
     <string name="default_info_snippet">For Emergency Reporting</string>
+    <string name="error_api_key">Error! No Place API Key</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 

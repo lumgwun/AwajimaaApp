@@ -225,7 +225,7 @@ public class RequestItemAct extends AppCompatActivity {
     }
 
     public void addNew(View view) {
-        Intent amountIntent = new Intent(RequestItemAct.this, NewPackCusAct.class);
+        Intent amountIntent = new Intent(RequestItemAct.this, NewManualPackCusAct.class);
         amountIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(amountIntent);
     }

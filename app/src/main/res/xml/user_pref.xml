@@ -4,7 +4,7 @@
     <PreferenceCategory android:title="User Account Preference" >
         <EditTextPreference
             android:title="User Name"
-            app:icon="@drawable/ic_icon2"
+            app:icon="@drawable/user_red1"
             android:summary=" App User Name"
             android:key="PROFILE_USERNAME"/>
     </PreferenceCategory>
@@ -20,15 +20,35 @@
             android:entryValues="@array/Banks" />
         <EditTextPreference
             android:title="Account Number"
-            app:icon="@drawable/ic_icon2"
+            app:icon="@drawable/ic_cards"
             android:summary="Account Number"
             android:key="Bank_Account_Number"/>
         <EditTextPreference
             android:title="Bank Account Name"
             android:summary="Account Name"
-            app:icon="@drawable/ic_icon2"
+            app:icon="@drawable/ic__category"
             android:key="Bank_Acct_Name"/>
 
     </PreferenceCategory>
+    <PreferenceCategory
+        app:key="OtherCountry"
+        android:icon="@drawable/home2"
+        app:summary="Select Country"
+        app:initialExpandedChildrenCount="1">
+
+        <DropDownPreference
+            app:key="OtherCountry"
+            app:title="Country Name"
+            app:defaultValue="Luxembourg"
+            app:positiveButtonText="OK"
+            app:enableCopying="true"
+            app:summary="Select Country"
+            android:negativeButtonText="Cancel"
+            app:useSimpleSummaryProvider="true"
+            app:entries="@array/Countries_of_the_world"
+            app:entryValues="@array/Countries_of_the_world"/>
+
+    </PreferenceCategory>
+
 
 </PreferenceScreen>

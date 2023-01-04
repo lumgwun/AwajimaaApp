@@ -61,7 +61,7 @@ public class BookingDAO extends DBHelperDAO{
             List<Bookings> bookings = new ArrayList<>();
             String selectQuery = "SELECT * FROM " + BOOKING_TABLE;
 
-            SQLiteDatabase db = this.getWritableDatabase();
+            SQLiteDatabase db = this.getReadableDatabase();
             try (Cursor cursor = db.rawQuery(selectQuery, null)) {
 
                 if (cursor.moveToFirst()) {

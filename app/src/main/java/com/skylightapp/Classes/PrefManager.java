@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.quickblox.core.helper.StringifyArrayList;
 import com.quickblox.users.model.QBUser;
 import com.skylightapp.LoginActivity;
+import com.skylightapp.MapAndLoc.Region;
 import com.skylightapp.MarketClasses.MarketBizPackModel;
 import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.SignTabMainActivity;
@@ -292,6 +293,40 @@ public class PrefManager {
             latLng = new LatLng(0.0, 0.0);
         }
         return latLng;
+    }
+    public Region getRegion(int regionID) {
+        Region region = new Region();
+        boolean isTheRegion=false;
+        try {
+            region = new Region(app_prefs.getInt("regionID",0), Double.parseDouble(app_prefs.getString("lat","")) , Double.parseDouble(app_prefs.getString("lng","")),app_prefs.getLong("time",0), app_prefs.getBoolean("isEnter",false), Double.parseDouble(app_prefs.getString("radius", "")),app_prefs.getBoolean("isCurrentlyInside",false) ,app_prefs.getInt("distance",0), app_prefs.getString("distanceText",""), app_prefs.getInt("duration",0),app_prefs.getString("durationText",""), app_prefs.getString("type",""), app_prefs.getFloat("speed",0), app_prefs.getString("paramType",""), app_prefs.getString("status",""));
+
+            if(app_prefs.getInt("regionID",0)==regionID){
+                isTheRegion=true;
+
+                return region;
+
+            }
+        } catch (Exception nfe) {
+            //region = new Region();
+        }
+        return region;
+    }
+    public Region getRegion() {
+        Region region = new Region();
+        boolean isTheRegion=false;
+        try {
+            region = new Region(app_prefs.getInt("regionID",0), Double.parseDouble(app_prefs.getString("lat","")) , Double.parseDouble(app_prefs.getString("lng","")),app_prefs.getLong("time",0), app_prefs.getBoolean("isEnter",false), Double.parseDouble(app_prefs.getString("radius", "")),app_prefs.getBoolean("isCurrentlyInside",false) ,app_prefs.getInt("distance",0), app_prefs.getString("distanceText",""), app_prefs.getInt("duration",0),app_prefs.getString("durationText",""), app_prefs.getString("type",""), app_prefs.getFloat("speed",0), app_prefs.getString("paramType",""), app_prefs.getString("status",""));
+
+            if(app_prefs.getInt("regionID",0)>0){
+                isTheRegion=true;
+
+                return region;
+
+            }
+        } catch (Exception nfe) {
+            //region = new Region();
+        }
+        return region;
     }
 
     public void putClientDestination(LatLng destination) {

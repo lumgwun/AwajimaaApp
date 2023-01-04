@@ -1,24 +1,22 @@
 package com.skylightapp.Interfaces;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.Update;
+
 
 import com.skylightapp.MarketClasses.MarketBizPackage;
 
 import java.util.List;
 
-@androidx.room.Dao
+//@androidx.room.Dao
 public interface SkyLightPackageDao {
-    @Insert
+    //@Insert
     void insert(MarketBizPackage marketBizPackage);
 
 
-    @Update
+    //@Update
     void update(MarketBizPackage marketBizPackage);
 
-    @Delete
+    //@Delete
     void delete(MarketBizPackage marketBizPackage);
 
     //@Query("DELETE FROM PROFILE_TABLE")

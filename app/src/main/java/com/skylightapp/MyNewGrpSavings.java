@@ -54,7 +54,7 @@ import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 
 
-public class MyNewGrpSavings extends AppCompatActivity {
+public class MyNewGrpSavings extends AppCompatActivity implements View.OnClickListener{
     Profile userProfile;
     int profileUID;
     long id;
@@ -158,6 +158,7 @@ public class MyNewGrpSavings extends AppCompatActivity {
         if(currency !=null){
             currencyCode=currency.getCode();
         }
+        btnCreateGroup.setOnClickListener(this);
 
         if(userProfile !=null){
             ManagerSurname = userProfile.getProfileLastName();
@@ -172,11 +173,7 @@ public class MyNewGrpSavings extends AppCompatActivity {
             userBundle.putString("Machine",machine);
 
         }
-        sqLiteDatabase = dbHelper.getWritableDatabase();
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
 
-        }
         grpAcctNo = ThreadLocalRandom.current().nextInt(1125, 10490);
         btnCreateGroup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,6 +193,8 @@ public class MyNewGrpSavings extends AppCompatActivity {
 
 
                 }
+                TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(MyNewGrpSavings.this);
+                GroupAccountDAO groupAccountDAO= new GroupAccountDAO(MyNewGrpSavings.this);
                 calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
                 @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
                 grpDateDate = mdformat.format(calendar.getTime());
@@ -277,16 +276,34 @@ public class MyNewGrpSavings extends AppCompatActivity {
                         String tittle = "New Group Savings alert";
                         String timelineDetails1 = "A new Group savings of "+currencyCode+ amount + "was started @"+""+currentDate;
                         String timelineDetails = "A new Group savings of " +currencyCode+ amount + "was started";
-                        TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(MyNewGrpSavings.this);
-                        GroupAccountDAO groupAccountDAO= new GroupAccountDAO(MyNewGrpSavings.this);
+
                         GroupAccount groupAccount= new GroupAccount(grpAcctNo,profileUID, tittle,purpose,managerFirstName,ManagerSurname,managerPhoneNumber1,managerEmail,grpDateDate,amount,currencyCode,freqInt,durationInt,0.00);
 
 
                         try {
+                            if(timeLineClassDAO !=null){
+                                try {
+                                    timeLineClassDAO.insertTimeLine(tittle, timelineDetails, grpDateDate, null);
+                                } catch (NullPointerException e) {
+                                    e.printStackTrace();
+                                }
 
-                            timeLineClassDAO.insertTimeLine(tittle, timelineDetails, grpDateDate, null);
-                            groupAccountDAO.insertGroupAccount(grpAcctNo, profileUID, tittle, purpose,managerFirstName,ManagerSurname,managerPhoneNumber1,managerEmail,grpDateDate,amount,currencyCode,freqInt,durationInt,0.00,grpLink,null,"new");
-                            doNotification();
+                            }
+
+                        } catch (SQLiteException e) {
+                            System.out.println("Oops!");
+                        }
+                        doNotification();
+                        try {
+                            if(groupAccountDAO !=null){
+                                try {
+                                    groupAccountDAO.insertGroupAccount(grpAcctNo, profileUID, tittle, purpose,managerFirstName,ManagerSurname,managerPhoneNumber1,managerEmail,grpDateDate,amount,currencyCode,freqInt,durationInt,0.00,grpLink,null,"new");
+                                } catch (NullPointerException e) {
+                                    e.printStackTrace();
+                                }
+
+
+                            }
 
                         } catch (SQLiteException e) {
                             System.out.println("Oops!");
@@ -343,5 +360,11 @@ public class MyNewGrpSavings extends AppCompatActivity {
     }
 
     public void DoGrpAcctCreation(View view) {
+    }
+
+    @Override
+    public void onClick(View view) {
+        //grpCreateGrp
+
     }
 }

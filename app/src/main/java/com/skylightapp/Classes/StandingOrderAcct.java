@@ -3,8 +3,6 @@ package com.skylightapp.Classes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,7 +12,7 @@ import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
-@Entity(tableName = StandingOrderAcct.SO_ACCT_TABLE)
+//@Entity(tableName = StandingOrderAcct.SO_ACCT_TABLE)
 public class StandingOrderAcct implements Serializable, Parcelable {
     public static final String SO_ACCT_TABLE = "sOAcctTable";
     public static final String SO_ACCOUNT_NO = "sO_Account_id";
@@ -30,7 +28,7 @@ public class StandingOrderAcct implements Serializable, Parcelable {
 
 
     private ArrayList<Transaction> soTranXs;
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     private int soAcctID=1108213;
     String soAcctName;
     private int soAcctProfID;

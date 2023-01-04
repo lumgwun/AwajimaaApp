@@ -96,7 +96,7 @@ public class CodeDAO extends DBHelperDAO{
     }
     public ArrayList<PaymentCode> getSavingsCodesCustomer(int customerID) {
         ArrayList<PaymentCode> codes = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = CODE_CUS_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(customerID)};
         Cursor cursor = db.query(CODE_TABLE, null, selection, selectionArgs, null,
@@ -114,7 +114,7 @@ public class CodeDAO extends DBHelperDAO{
     }
     public ArrayList<PaymentCode> getSavingsCodesProfile(int profileID) {
         ArrayList<PaymentCode> codes = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = CODE_PROFILE_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(profileID)};
         Cursor cursor = db.query(CODE_TABLE, null, selection, selectionArgs, null,
@@ -132,7 +132,7 @@ public class CodeDAO extends DBHelperDAO{
 
     public ArrayList<PaymentCode> getCodesFromCurrentCustomer(int customerID) {
         ArrayList<PaymentCode> codeArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
         String selection = CODE_CUS_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(customerID)};
@@ -159,7 +159,7 @@ public class CodeDAO extends DBHelperDAO{
 
     public ArrayList<PaymentCode> getSavingsCodeForDate(String date) {
         ArrayList<PaymentCode> codeArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
         String selection = CODE_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(date)};
@@ -182,7 +182,7 @@ public class CodeDAO extends DBHelperDAO{
     }
     public ArrayList<PaymentCode> getCodesFromCurrentSavings(int savingsID) {
         ArrayList<PaymentCode> codeArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
         String selection = CODE_REPORT_NO + "=?";
         String[] selectionArgs = new String[]{valueOf(savingsID)};
@@ -206,7 +206,7 @@ public class CodeDAO extends DBHelperDAO{
     }
     public ArrayList<PaymentCode> getCodesFromCurrentTeller(String teller) {
         ArrayList<PaymentCode> codeArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
         String selection = CODE_MANAGER + "=?";
         String[] selectionArgs = new String[]{valueOf(teller)};
@@ -228,7 +228,7 @@ public class CodeDAO extends DBHelperDAO{
     }
     public ArrayList<PaymentCode> getAllSavingsCodes() {
         ArrayList<PaymentCode> paymentCodeArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(CODE_TABLE, null, null, null, null,
                 null, null);
 

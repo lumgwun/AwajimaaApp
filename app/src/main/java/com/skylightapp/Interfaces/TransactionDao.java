@@ -1,25 +1,23 @@
 package com.skylightapp.Interfaces;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.Update;
+
 
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Transaction;
 
 import java.util.List;
 
-@androidx.room.Dao
+//@androidx.room.Dao
 public interface TransactionDao {
-    @Insert
+    //@Insert
     void insert(Transaction transaction);
 
 
-    @Update
+    //@Update
     void update(Transaction transaction);
 
-    @Delete
+    //@Delete
     void delete(Transaction transaction);
 
     //@Query("DELETE FROM PROFILE_TABLE")

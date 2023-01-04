@@ -319,4 +319,12 @@ public class DriverStartTripAct extends AppCompatActivity implements OnSuccessLi
         return locationRequest;
 
     }
+    protected synchronized void buildGoogleApiClient() {
+        /*mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        mGoogleApiClient.connect();*/
+    }
 }

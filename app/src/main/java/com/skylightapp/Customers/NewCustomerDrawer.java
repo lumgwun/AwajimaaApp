@@ -14,18 +14,32 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.gridlayout.widget.GridLayout;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -49,8 +63,19 @@ import com.blongho.country_data.Currency;
 import com.blongho.country_data.World;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
@@ -58,6 +83,7 @@ import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.rom4ek.arcnavigationview.ArcNavigationView;
 import com.skyfishjy.library.RippleBackground;
 import com.skylightapp.Adapters.AccountAdapter;
+import com.skylightapp.Adapters.AccountRecylerAdap;
 import com.skylightapp.Adapters.CurrAdapter;
 import com.skylightapp.Bookings.BoatBookingTab;
 import com.skylightapp.Bookings.BookingHomeAct;
@@ -86,6 +112,7 @@ import com.skylightapp.Markets.MarketCreatorAct;
 import com.skylightapp.Markets.MarketTab;
 import com.skylightapp.MyGrpSavingsTab;
 import com.skylightapp.MyTimelineAct;
+import com.skylightapp.NinIDAct;
 import com.skylightapp.PrivacyPolicy_Web;
 import com.skylightapp.R;
 import com.skylightapp.SecureAppAct;
@@ -96,6 +123,7 @@ import com.skylightapp.SubHistoryAct;
 import com.skylightapp.SuperAdmin.StocksTab;
 import com.skylightapp.UserPrefActivity;
 import com.skylightapp.StateDir.WasteRequestAct;
+import com.skylightapp.VerifiAct;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -107,11 +135,13 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class NewCustomerDrawer extends SecureAppAct implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+public class NewCustomerDrawer extends SecureAppAct implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener , OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     public static final String KEY = "NewCustomerDrawer.KEY";
     GridLayout maingrid;
     private SharedPreferences userPreferences;
@@ -139,6 +169,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
     private String surname,firstName,names,cusUserName;
     ImageButton hideLayouts;
     private int accountN, savings,skPackages;
+    int acctIndex=0;
     private double accountBalance;
     CircleImageView imgProfilePic;
     private  int SOCount,customerID,loanCount,txCount;
@@ -167,10 +198,21 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
     int PERMISSION_ALL = 17;
     private Market market;
     String SharedPrefUserPassword;
-    String SharedPrefCusID;
+    int SharedPrefCusID;
     String SharedPrefUserRole;
     String SharedPrefUserName;
     int SharedPrefProfileID;
+    GoogleApiClient mGoogleApiClient;
+    Location mLastLocation;
+    Marker mCurrLocationMarker;
+    LocationRequest mLocationRequest;
+    private GoogleMap mMap;
+    private RecyclerView recyclerView;
+    private AccountRecylerAdap accountRecylerAdap;
+    private ArrayList<Account> accounts;
+    private Bundle chooserBundle;
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 201;
+    private MaterialCardView cardViewE,cardViewA,cardViewM,cardViewI,cardViewP;
     ActivityResultLauncher<Intent> startCusPictureActivityForResult = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -245,6 +287,27 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
         toolbar = (Toolbar) findViewById(R.id.toolbar_cus);
         applicationDb= new DBHelper(this);
         market= new Market();
+        accounts= new ArrayList<>();
+        recyclerView = findViewById(R.id.recycl_accts);
+        cardViewE = findViewById(R.id.bd_card_E);
+        cardViewA = findViewById(R.id.bd_card_A);
+        cardViewM = findViewById(R.id.bd_card_M);
+        cardViewI = findViewById(R.id.bd_card_I);
+        cardViewP = findViewById(R.id.bd_card_P);
+        chooserBundle= new Bundle();
+        cardViewE.setOnClickListener(this::verifyEmailAddress);
+        cardViewA.setOnClickListener(this::verifyAddress);
+        cardViewM.setOnClickListener(this::checkMembership);
+        cardViewI.setOnClickListener(this::verifyIDCard);
+        cardViewP.setOnClickListener(this::verifyPhoneNo);
+
+        /*SupportMapFragment mapFragment = (SupportMapFragment)
+                getSupportFragmentManager()
+                        .findFragmentById(R.id.map);
+
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }*/
         ArcNavigationView navigationView = (ArcNavigationView) findViewById(R.id.nav_view_cus2);
         navigationView.setNavigationItemSelectedListener(this);
         bundle= new Bundle();
@@ -254,6 +317,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.dark_green));
         toggle.setHomeAsUpIndicator(R.drawable.ic_home_black_24dp);
         mDrawerLayout.addDrawerListener(toggle);
+        toggle.setDrawerIndicatorEnabled(true);
         toggle.syncState();
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setTitle("Customer BackOffice");
@@ -293,7 +357,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
         SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
-        SharedPrefCusID=userPreferences.getString("CUSTOMER_ID", "");
+        SharedPrefCusID=userPreferences.getInt("CUSTOMER_ID", 0);
         SharedPrefUserMachine =userPreferences.getString("machine", "");
         SharedPrefUserRole = userPreferences.getString("PROFILE_ROLE", "");
         userState = userPreferences.getString("PROFILE_STATE", "");
@@ -308,7 +372,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
         userProfile = gson.fromJson(json, Profile.class);
         json1 = userPreferences.getString("LastCustomerUsed", "");
         json2 = userPreferences.getString("LastMarketUsed", "");
-        market = gson.fromJson(json2, Market.class);
+        market = gson2.fromJson(json2, Market.class);
         userPicture= Uri.parse(userPreferences.getString("PICTURE_URI", ""));
         customer = gson1.fromJson(json1, Customer.class);
         txtUserName = findViewById(R.id.cus_username);
@@ -363,6 +427,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
             }
             if (userProfile != null) {
                 accountArrayList=userProfile.getProfileAccounts();
+                accounts=userProfile.getProfileAccounts();
             }
             accountArrayAdapter = new AccountAdapter(NewCustomerDrawer.this, android.R.layout.simple_spinner_item, accountArrayList);
             accountArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -370,12 +435,26 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
             spnAccounts.setSelection(accountArrayAdapter.getPosition(account));
 
         }
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        accountRecylerAdap = new AccountRecylerAdap(NewCustomerDrawer.this,accounts);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                layoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(accountRecylerAdap);
 
 
         spnAccounts.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                account = (Account) parent.getSelectedItem();
+                if(acctIndex==position){
+                    return;
+                }else {
+                    account = (Account) parent.getSelectedItem();
+                }
+
             }
 
             @Override
@@ -384,11 +463,10 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
         });
         if(account !=null){
             currency=account.getCurrency();
+            currencySymbol=account.getAccountCurrSymbol();
 
         }
-        if(currency !=null){
-            currencySymbol=currency.getSymbol();
-        }
+
         if(account !=null){
             txtBankAcctBalance.setText(""+currencySymbol+account.getAccountBalance());
 
@@ -540,21 +618,30 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
 
 
     }
+    protected synchronized void buildGoogleApiClient() {
+        /*mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        mGoogleApiClient.connect();*/
+    }
 
     private void getFirebaseToken() {
         market= new Market();
+        gson2= new Gson();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json2 = userPreferences.getString("LastMarketUsed", "");
         SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
         SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
-        SharedPrefCusID=userPreferences.getString("CUSTOMER_ID", "");
+        SharedPrefCusID=userPreferences.getInt("CUSTOMER_ID", 0);
         SharedPrefUserMachine=userPreferences.getString("machine", "");
         SharedPrefUserRole = userPreferences.getString("PROFILE_ROLE", "");
         userState = userPreferences.getString("PROFILE_STATE", "");
         userCountry = userPreferences.getString("PROFILE_COUNTRY", "");
         ward = userPreferences.getString("PROFILE_WARD", "");
         town = userPreferences.getString("PROFILE_TOWN", "");
-        market = gson.fromJson(json2, Market.class);
+        market = gson2.fromJson(json2, Market.class);
         userOfficeV = userPreferences.getString("PROFILE_OFFICE", "");
         genderValue = userPreferences.getString("PROFILE_GENDER", "");
         ninValue = userPreferences.getString("PROFILE_NIN", "");
@@ -1392,7 +1479,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
 
 
 
-                    else if(finalI==5) {
+                    else if(finalI==2) {
                         tosend = "Group Savings";
                         Intent intent=new Intent(NewCustomerDrawer.this, MyGrpSavingsTab.class);
                         intent.putExtra("info",tosend);
@@ -1402,7 +1489,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
                                 R.anim.slide_out_left);
                         startActivity(intent);
                     }
-                    else if(finalI==4) {
+                    else if(finalI==3) {
                         tosend = "Loans";
                         Intent intent=new Intent(NewCustomerDrawer.this, CusLoanTab.class);
                         intent.putExtra("info",tosend);
@@ -1412,7 +1499,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
                                 R.anim.slide_out_left);
                         startActivity(intent);
                     }
-                    else if(finalI==2) {
+                    else if(finalI==4) {
                         tosend = "Orders";
                         Intent intent=new Intent(NewCustomerDrawer.this, CusOrderTab.class);
                         intent.putExtra("info",tosend);
@@ -1422,7 +1509,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
                                 R.anim.slide_out_left);
                         startActivity(intent);
                     }
-                    else if(finalI==3) {
+                    else if(finalI==5) {
                         tosend = "My Sub. Packs";
                         Intent intent=new Intent(NewCustomerDrawer.this, BookingHomeAct.class);
                         intent.putExtra("info",tosend);
@@ -1468,29 +1555,449 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
     }
 
     public void getAcctStatement(View view) {
+        gson = new Gson();
+        gson1= new Gson();
+        chooserBundle= new Bundle();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
+        SharedPrefCusID=userPreferences.getInt("CUSTOMER_ID", 0);
+        SharedPrefUserMachine =userPreferences.getString("machine", "");
+        SharedPrefUserRole = userPreferences.getString("PROFILE_ROLE", "");
+        userState = userPreferences.getString("PROFILE_STATE", "");
+        userCountry = userPreferences.getString("PROFILE_COUNTRY", "");
+        ward = userPreferences.getString("PROFILE_WARD", "");
+        town = userPreferences.getString("PROFILE_TOWN", "");
+        userOfficeV = userPreferences.getString("PROFILE_OFFICE", "");
+        genderValue = userPreferences.getString("PROFILE_GENDER", "");
+        ninValue = userPreferences.getString("PROFILE_NIN", "");
+        SharedPrefProfileID=userPreferences.getInt("PROFILE_ID", 0);
+        json = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastCustomerUsed", "");
+        userPicture= Uri.parse(userPreferences.getString("PICTURE_URI", ""));
+        customer = gson1.fromJson(json1, Customer.class);
+        chooserBundle.putParcelable("Profile",userProfile);
+        chooserBundle.putParcelable("Customer",customer);
+        chooserBundle.putInt("CUSTOMER_ID",SharedPrefCusID);
+        chooserBundle.putInt("PROFILE_ID",SharedPrefProfileID);
         Intent active = new Intent(NewCustomerDrawer.this, CusStatementAct.class);
         active.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        active.putExtras(chooserBundle);
+        startActivity(active);
+    }
+    public void verifyAddress(View view) {
+        chooserBundle= new Bundle();
+        gson = new Gson();
+        gson1= new Gson();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
+        SharedPrefCusID=userPreferences.getInt("CUSTOMER_ID", 0);
+        SharedPrefUserMachine =userPreferences.getString("machine", "");
+        SharedPrefUserRole = userPreferences.getString("PROFILE_ROLE", "");
+        userState = userPreferences.getString("PROFILE_STATE", "");
+        userCountry = userPreferences.getString("PROFILE_COUNTRY", "");
+        ward = userPreferences.getString("PROFILE_WARD", "");
+        town = userPreferences.getString("PROFILE_TOWN", "");
+        userOfficeV = userPreferences.getString("PROFILE_OFFICE", "");
+        genderValue = userPreferences.getString("PROFILE_GENDER", "");
+        ninValue = userPreferences.getString("PROFILE_NIN", "");
+        SharedPrefProfileID=userPreferences.getInt("PROFILE_ID", 0);
+        json = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastCustomerUsed", "");
+        userPicture= Uri.parse(userPreferences.getString("PICTURE_URI", ""));
+        customer = gson1.fromJson(json1, Customer.class);
+        chooserBundle=getIntent().getExtras();
+        chooserBundle.putString("chooser","Address");
+        chooserBundle.putParcelable("Profile",userProfile);
+        chooserBundle.putParcelable("Customer",customer);
+        chooserBundle.putInt("CUSTOMER_ID",SharedPrefCusID);
+        chooserBundle.putInt("PROFILE_ID",SharedPrefProfileID);
+        Intent active = new Intent(NewCustomerDrawer.this, VerifiAct.class);
+        active.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        active.putExtras(chooserBundle);
+        startActivity(active);
+    }
+    public void verifyEmailAddress(View view) {
+        chooserBundle= new Bundle();
+        gson = new Gson();
+        gson1= new Gson();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
+        SharedPrefCusID=userPreferences.getInt("CUSTOMER_ID", 0);
+        SharedPrefUserMachine =userPreferences.getString("machine", "");
+        SharedPrefUserRole = userPreferences.getString("PROFILE_ROLE", "");
+        userState = userPreferences.getString("PROFILE_STATE", "");
+        userCountry = userPreferences.getString("PROFILE_COUNTRY", "");
+        ward = userPreferences.getString("PROFILE_WARD", "");
+        town = userPreferences.getString("PROFILE_TOWN", "");
+        userOfficeV = userPreferences.getString("PROFILE_OFFICE", "");
+        genderValue = userPreferences.getString("PROFILE_GENDER", "");
+        ninValue = userPreferences.getString("PROFILE_NIN", "");
+        SharedPrefProfileID=userPreferences.getInt("PROFILE_ID", 0);
+        json = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastCustomerUsed", "");
+        userPicture= Uri.parse(userPreferences.getString("PICTURE_URI", ""));
+        customer = gson1.fromJson(json1, Customer.class);
+        chooserBundle=getIntent().getExtras();
+        chooserBundle.putString("chooser","EmailAddress");
+        chooserBundle.putParcelable("Profile",userProfile);
+        chooserBundle.putParcelable("Customer",customer);
+        chooserBundle.putInt("CUSTOMER_ID",SharedPrefCusID);
+        chooserBundle.putInt("PROFILE_ID",SharedPrefProfileID);
+        Intent active = new Intent(NewCustomerDrawer.this, VerifiAct.class);
+        active.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        active.putExtras(chooserBundle);
+        startActivity(active);
+    }
+    public void verifyPhoneNo(View view) {
+        chooserBundle= new Bundle();
+        gson = new Gson();
+        gson1= new Gson();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
+        SharedPrefCusID=userPreferences.getInt("CUSTOMER_ID", 0);
+        SharedPrefUserMachine =userPreferences.getString("machine", "");
+        SharedPrefUserRole = userPreferences.getString("PROFILE_ROLE", "");
+        userState = userPreferences.getString("PROFILE_STATE", "");
+        userCountry = userPreferences.getString("PROFILE_COUNTRY", "");
+        ward = userPreferences.getString("PROFILE_WARD", "");
+        town = userPreferences.getString("PROFILE_TOWN", "");
+        userOfficeV = userPreferences.getString("PROFILE_OFFICE", "");
+        genderValue = userPreferences.getString("PROFILE_GENDER", "");
+        ninValue = userPreferences.getString("PROFILE_NIN", "");
+        SharedPrefProfileID=userPreferences.getInt("PROFILE_ID", 0);
+        json = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastCustomerUsed", "");
+        userPicture= Uri.parse(userPreferences.getString("PICTURE_URI", ""));
+        customer = gson1.fromJson(json1, Customer.class);
+        chooserBundle=getIntent().getExtras();
+        chooserBundle.putString("chooser","PhoneNo");
+        chooserBundle.putParcelable("Profile",userProfile);
+        chooserBundle.putParcelable("Customer",customer);
+        chooserBundle.putInt("CUSTOMER_ID",SharedPrefCusID);
+        chooserBundle.putInt("PROFILE_ID",SharedPrefProfileID);
+        Intent active = new Intent(NewCustomerDrawer.this, VerifiAct.class);
+        active.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        active.putExtras(chooserBundle);
+        startActivity(active);
+    }
+    public void verifyIDCard(View view) {
+        gson = new Gson();
+        gson1= new Gson();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
+        SharedPrefCusID=userPreferences.getInt("CUSTOMER_ID", 0);
+        SharedPrefUserMachine =userPreferences.getString("machine", "");
+        SharedPrefUserRole = userPreferences.getString("PROFILE_ROLE", "");
+        userState = userPreferences.getString("PROFILE_STATE", "");
+        userCountry = userPreferences.getString("PROFILE_COUNTRY", "");
+        ward = userPreferences.getString("PROFILE_WARD", "");
+        town = userPreferences.getString("PROFILE_TOWN", "");
+        userOfficeV = userPreferences.getString("PROFILE_OFFICE", "");
+        genderValue = userPreferences.getString("PROFILE_GENDER", "");
+        ninValue = userPreferences.getString("PROFILE_NIN", "");
+        SharedPrefProfileID=userPreferences.getInt("PROFILE_ID", 0);
+        json = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastCustomerUsed", "");
+        userPicture= Uri.parse(userPreferences.getString("PICTURE_URI", ""));
+        customer = gson1.fromJson(json1, Customer.class);
+        chooserBundle.putParcelable("Profile",userProfile);
+        chooserBundle.putParcelable("Customer",customer);
+        chooserBundle.putInt("CUSTOMER_ID",SharedPrefCusID);
+        chooserBundle.putInt("PROFILE_ID",SharedPrefProfileID);
+        Intent active = new Intent(NewCustomerDrawer.this, NinIDAct.class);
+        active.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        active.putExtras(chooserBundle);
+        startActivity(active);
+    }
+    public void checkMembership(View view) {
+        chooserBundle= new Bundle();
+        gson = new Gson();
+        gson1= new Gson();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
+        SharedPrefCusID=userPreferences.getInt("CUSTOMER_ID", 0);
+        SharedPrefUserMachine =userPreferences.getString("machine", "");
+        SharedPrefUserRole = userPreferences.getString("PROFILE_ROLE", "");
+        userState = userPreferences.getString("PROFILE_STATE", "");
+        userCountry = userPreferences.getString("PROFILE_COUNTRY", "");
+        ward = userPreferences.getString("PROFILE_WARD", "");
+        town = userPreferences.getString("PROFILE_TOWN", "");
+        userOfficeV = userPreferences.getString("PROFILE_OFFICE", "");
+        genderValue = userPreferences.getString("PROFILE_GENDER", "");
+        ninValue = userPreferences.getString("PROFILE_NIN", "");
+        SharedPrefProfileID=userPreferences.getInt("PROFILE_ID", 0);
+        json = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastCustomerUsed", "");
+        userPicture= Uri.parse(userPreferences.getString("PICTURE_URI", ""));
+        customer = gson1.fromJson(json1, Customer.class);
+        chooserBundle=getIntent().getExtras();
+        chooserBundle.putString("chooser","PhoneNo");
+        chooserBundle.putParcelable("Profile",userProfile);
+        chooserBundle.putParcelable("Customer",customer);
+        chooserBundle.putInt("CUSTOMER_ID",SharedPrefCusID);
+        chooserBundle.putInt("PROFILE_ID",SharedPrefProfileID);
+        Intent active = new Intent(NewCustomerDrawer.this, CusStatementAct.class);
+        active.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        active.putExtras(chooserBundle);
         startActivity(active);
     }
 
     public void getMyLoansCus(View view) {
-        Intent loanTab = new Intent(NewCustomerDrawer.this, CusLoanTab.class);
-        loanTab.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+        chooserBundle= new Bundle();
+        gson = new Gson();
+        gson1= new Gson();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
+        SharedPrefCusID=userPreferences.getInt("CUSTOMER_ID", 0);
+        SharedPrefUserMachine =userPreferences.getString("machine", "");
+        SharedPrefUserRole = userPreferences.getString("PROFILE_ROLE", "");
+        userState = userPreferences.getString("PROFILE_STATE", "");
+        userCountry = userPreferences.getString("PROFILE_COUNTRY", "");
+        ward = userPreferences.getString("PROFILE_WARD", "");
+        town = userPreferences.getString("PROFILE_TOWN", "");
+        userOfficeV = userPreferences.getString("PROFILE_OFFICE", "");
+        genderValue = userPreferences.getString("PROFILE_GENDER", "");
+        ninValue = userPreferences.getString("PROFILE_NIN", "");
+        SharedPrefProfileID=userPreferences.getInt("PROFILE_ID", 0);
+        json = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastCustomerUsed", "");
+        userPicture= Uri.parse(userPreferences.getString("PICTURE_URI", ""));
+        customer = gson1.fromJson(json1, Customer.class);
+        chooserBundle=getIntent().getExtras();
+        chooserBundle.putString("chooser","PhoneNo");
+        chooserBundle.putParcelable("Profile",userProfile);
+        chooserBundle.putParcelable("Customer",customer);
+        chooserBundle.putInt("CUSTOMER_ID",SharedPrefCusID);
+        chooserBundle.putInt("PROFILE_ID",SharedPrefProfileID);
+        Intent loanI = new Intent(NewCustomerDrawer.this, CusLoanTab.class);
+        loanI.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(loanTab);
+        loanI.putExtras(chooserBundle);
+        startActivity(loanI);
     }
 
     public void getMyMessages(View view) {
-        Intent helpTab = new Intent(NewCustomerDrawer.this, CustomerHelpActTab.class);
-        helpTab.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+        chooserBundle= new Bundle();
+        gson = new Gson();
+        gson1= new Gson();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
+        SharedPrefCusID=userPreferences.getInt("CUSTOMER_ID", 0);
+        SharedPrefUserMachine =userPreferences.getString("machine", "");
+        SharedPrefUserRole = userPreferences.getString("PROFILE_ROLE", "");
+        userState = userPreferences.getString("PROFILE_STATE", "");
+        userCountry = userPreferences.getString("PROFILE_COUNTRY", "");
+        ward = userPreferences.getString("PROFILE_WARD", "");
+        town = userPreferences.getString("PROFILE_TOWN", "");
+        userOfficeV = userPreferences.getString("PROFILE_OFFICE", "");
+        genderValue = userPreferences.getString("PROFILE_GENDER", "");
+        ninValue = userPreferences.getString("PROFILE_NIN", "");
+        SharedPrefProfileID=userPreferences.getInt("PROFILE_ID", 0);
+        json = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastCustomerUsed", "");
+        userPicture= Uri.parse(userPreferences.getString("PICTURE_URI", ""));
+        customer = gson1.fromJson(json1, Customer.class);
+        chooserBundle=getIntent().getExtras();
+        chooserBundle.putString("chooser","PhoneNo");
+        chooserBundle.putParcelable("Profile",userProfile);
+        chooserBundle.putParcelable("Customer",customer);
+        chooserBundle.putInt("CUSTOMER_ID",SharedPrefCusID);
+        chooserBundle.putInt("PROFILE_ID",SharedPrefProfileID);
+        Intent helpIntent = new Intent(NewCustomerDrawer.this, CustomerHelpActTab.class);
+        helpIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(helpTab);
+        helpIntent.putExtras(chooserBundle);
+        startActivity(helpIntent);
     }
 
     public void getMyPacks(View view) {
+        chooserBundle= new Bundle();
+        gson = new Gson();
+        gson1= new Gson();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
+        SharedPrefCusID=userPreferences.getInt("CUSTOMER_ID", 0);
+        SharedPrefUserMachine =userPreferences.getString("machine", "");
+        SharedPrefUserRole = userPreferences.getString("PROFILE_ROLE", "");
+        userState = userPreferences.getString("PROFILE_STATE", "");
+        userCountry = userPreferences.getString("PROFILE_COUNTRY", "");
+        ward = userPreferences.getString("PROFILE_WARD", "");
+        town = userPreferences.getString("PROFILE_TOWN", "");
+        userOfficeV = userPreferences.getString("PROFILE_OFFICE", "");
+        genderValue = userPreferences.getString("PROFILE_GENDER", "");
+        ninValue = userPreferences.getString("PROFILE_NIN", "");
+        SharedPrefProfileID=userPreferences.getInt("PROFILE_ID", 0);
+        json = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastCustomerUsed", "");
+        userPicture= Uri.parse(userPreferences.getString("PICTURE_URI", ""));
+        customer = gson1.fromJson(json1, Customer.class);
+        chooserBundle=getIntent().getExtras();
+        chooserBundle.putString("chooser","PhoneNo");
+        chooserBundle.putParcelable("Profile",userProfile);
+        chooserBundle.putParcelable("Customer",customer);
+        chooserBundle.putInt("CUSTOMER_ID",SharedPrefCusID);
+        chooserBundle.putInt("PROFILE_ID",SharedPrefProfileID);
         Intent so1Intent = new Intent(NewCustomerDrawer.this, PackageTab.class);
         so1Intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        so1Intent.putExtras(chooserBundle);
         startActivity(so1Intent);
+    }
+
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(1000);
+        mLocationRequest.setFastestInterval(1000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, (com.google.android.gms.location.LocationListener) this);
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        mLastLocation = location;
+        if (mCurrLocationMarker != null) {
+            mCurrLocationMarker.remove();
+        }
+//Showing Current Location Marker on Map
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        LocationManager locationManager = (LocationManager)
+                getSystemService(Context.LOCATION_SERVICE);
+        String provider = locationManager.getBestProvider(new Criteria(), true);
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        Location locations = locationManager.getLastKnownLocation(provider);
+        List<String> providerList = locationManager.getAllProviders();
+        if (null != locations && null != providerList && providerList.size() > 0) {
+            double longitude = locations.getLongitude();
+            double latitude = locations.getLatitude();
+            Geocoder geocoder = new Geocoder(getApplicationContext(),
+                    Locale.getDefault());
+            try {
+                List<Address> listAddresses = geocoder.getFromLocation(latitude,
+                        longitude, 1);
+                if (null != listAddresses && listAddresses.size() > 0) {
+                    String state = listAddresses.get(0).getAdminArea();
+                    String country = listAddresses.get(0).getCountryName();
+                    String subLocality = listAddresses.get(0).getSubLocality();
+                    markerOptions.title("" + latLng + "," + subLocality + "," + state
+                            + "," + country);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+        mCurrLocationMarker = mMap.addMarker(markerOptions);
+        mMap.moveCamera(com.google.android.gms.maps.CameraUpdateFactory.newLatLng(latLng));
+        mMap.animateCamera(com.google.android.gms.maps.CameraUpdateFactory.zoomTo(11));
+        if (mGoogleApiClient != null) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, (com.google.android.gms.location.LocationListener) this);
+        }
+    }
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+    }
+    public boolean checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
+                        if (mGoogleApiClient == null) {
+                            buildGoogleApiClient();
+                        }
+                        mMap.setMyLocationEnabled(true);
+                    }
+                } else {
+                    Toast.makeText(this, "permission denied",
+                            Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mMap = googleMap;
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setZoomGesturesEnabled(true);
+        mMap.getUiSettings().setCompassEnabled(true);
+        //Initialize Google Play Services
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            buildGoogleApiClient();
+            mMap.setMyLocationEnabled(true);
+        }
+
     }
 }

@@ -3,14 +3,23 @@ package com.skylightapp.Database;
 import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_ID;
 import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_AMOUNT1;
 import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_BIZ_ID;
+import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_COUNTRY;
+import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_CURRENCY;
+import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_CUS_ID;
 import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_DATE;
 import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_END_T;
+import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_ID;
+import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_MARKET_ID22;
 import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_MODE_OF_P;
+import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_NAME;
 import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_NO_OF_MONTHS;
+import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_OFFICE;
 import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_PROF_ID;
 import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_START_T;
+import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_STATE;
 import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_STATUS;
 import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_TABLE;
+import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_TYPE;
 
 import static java.lang.String.valueOf;
 
@@ -35,7 +44,7 @@ public class BizSubscriptionDAO extends DBHelperDAO{
         super(context);
     }
 
-    public long insertSubscription(long bizID,double amount,int profileID,int noOfMonths,String subDate,String subEndDate,String modeOfPayment,String status) {
+    public long insertSubscription(long bizID,double amount,int profileID,int noOfMonths,String subDate,String subEndDate,String modeOfPayment,String subType,String status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(MARKET_BIZ_SUB_BIZ_ID, bizID);
@@ -47,6 +56,53 @@ public class BizSubscriptionDAO extends DBHelperDAO{
         values.put(MARKET_BIZ_SUB_STATUS, status);
         values.put(MARKET_BIZ_SUB_PROF_ID, profileID);
         values.put(MARKET_BIZ_SUB_MODE_OF_P, modeOfPayment);
+        return db.insert(MARKET_BIZ_SUB_TABLE, null, values);
+    }
+    public long insertSubscription(int i, long amount, int bundleProfID, int bundleCusID, int noOfMonths, String subDate, String subEndDate, String modeOfPayment, String paymentFor, String status,String currency,String state,String country,String name,String office) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(MARKET_BIZ_SUB_CUS_ID, bundleCusID);
+        values.put(MARKET_BIZ_SUB_DATE, subDate);
+        values.put(MARKET_BIZ_SUB_TYPE, paymentFor);
+        values.put(MARKET_BIZ_SUB_CURRENCY, currency);
+        values.put(MARKET_BIZ_SUB_STATE, state);
+        values.put(MARKET_BIZ_SUB_COUNTRY, country);
+        values.put(MARKET_BIZ_SUB_NAME, name);
+        values.put(MARKET_BIZ_SUB_OFFICE, office);
+
+        values.put(MARKET_BIZ_SUB_AMOUNT1, amount);
+        values.put(MARKET_BIZ_SUB_START_T, subDate);
+        values.put(MARKET_BIZ_SUB_END_T, subEndDate);
+        values.put(MARKET_BIZ_SUB_NO_OF_MONTHS, noOfMonths);
+        values.put(MARKET_BIZ_SUB_STATUS, status);
+        values.put(MARKET_BIZ_SUB_PROF_ID, bundleProfID);
+        values.put(MARKET_BIZ_SUB_MODE_OF_P, modeOfPayment);
+        return db.insert(MARKET_BIZ_SUB_TABLE, null, values);
+    }
+
+    public long insertSubscription(int subID,long bizID, int marketID, long amount, int bundleProfID, int bundleCusID, int noOfMonths, String subDate, String subEndDate, String modeOfPayment, String paymentFor, String status, String state, String office, String country, String bookingName, String currency) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(MARKET_BIZ_SUB_ID, subID);
+        values.put(MARKET_BIZ_SUB_BIZ_ID, bizID);
+        //values.put(MARKET_BIZ_SUB_BIZ_ID, bizID);
+        values.put(MARKET_BIZ_SUB_MARKET_ID22, marketID);
+
+        values.put(MARKET_BIZ_SUB_DATE, subDate);
+        values.put(MARKET_BIZ_SUB_AMOUNT1, amount);
+        values.put(MARKET_BIZ_SUB_START_T, subDate);
+        values.put(MARKET_BIZ_SUB_END_T, subEndDate);
+        values.put(MARKET_BIZ_SUB_NO_OF_MONTHS, noOfMonths);
+        values.put(MARKET_BIZ_SUB_STATUS, status);
+        values.put(MARKET_BIZ_SUB_PROF_ID, bundleProfID);
+        values.put(MARKET_BIZ_SUB_MODE_OF_P, modeOfPayment);
+        values.put(MARKET_BIZ_SUB_CUS_ID, bundleCusID);
+        values.put(MARKET_BIZ_SUB_TYPE, paymentFor);
+        values.put(MARKET_BIZ_SUB_STATE, state);
+        values.put(MARKET_BIZ_SUB_OFFICE, office);
+        values.put(MARKET_BIZ_SUB_COUNTRY, country);
+        values.put(MARKET_BIZ_SUB_NAME, bookingName);
+        values.put(MARKET_BIZ_SUB_CURRENCY, currency);
         return db.insert(MARKET_BIZ_SUB_TABLE, null, values);
     }
     private void getSubscriptionCursor(ArrayList<MarketBizSub> bizSubScriptions, Cursor cursor) {
@@ -135,4 +191,7 @@ public class BizSubscriptionDAO extends DBHelperDAO{
 
         return subScriptionArrayList;
     }
+
+
+
 }

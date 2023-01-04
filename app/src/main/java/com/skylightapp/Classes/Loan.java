@@ -4,8 +4,7 @@ package com.skylightapp.Classes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+
 
 import com.skylightapp.MarketClasses.Market;
 
@@ -23,7 +22,7 @@ import static com.skylightapp.Classes.Profile.PROFILE_ID;
 import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_ID;
 import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_TABLE;
 
-@Entity(tableName = Loan.LOAN_TABLE)
+//@Entity(tableName = Loan.LOAN_TABLE)
 public class Loan implements Serializable, Parcelable {
     public static final String LOAN_ID = "loan_id";
     public static final String LOAN_TYPE = "loanType";
@@ -49,12 +48,13 @@ public class Loan implements Serializable, Parcelable {
     public static final String LOAN_ACCT_NO = "loan_Acct_No";
     public static final String LOAN_BANK_ACCT_NO = "loan_BankAcct_No";
     public static final String LOAN_DB_NO = "loan_DB_No";
+    public static final String LOAN_CURRENCY = "loan_Currency";
 
     public static final String CREATE_LOAN_TABLE = "CREATE TABLE IF NOT EXISTS " + LOAN_TABLE + " (" + LOAN_ID + " INTEGER , " +
             LOAN_CUS_ID + " INTEGER , " +LOAN_PROF_ID + " INTEGER  , " + LOAN_ACCT_NO + " INTEGER , " + LOAN_TYPE + " TEXT, " + LOAN_AMOUNT + " REAL, " + LOAN_DURATION + " TEXT, " +
             LOAN_INTEREST + " REAL, " + LOAN_FIXED_PAYMENT + " REAL, " + LOAN_TOTAL_INTEREST + " REAL, " + LOAN_DOWN_PAYMENT + " REAL, " + LOAN_DISPOSABLE_COM + " REAL, " +
             LOAN_MONTHLY_COM + " REAL, " + LOAN_BALANCE + " REAL, " + LOAN_DATE + " TEXT, " + LOAN_START_DATE + " TEXT, " + LOAN_END_DATE + " TEXT, " +
-            LOAN_STATUS + " TEXT, " + LOAN_ACCT_NAME + " TEXT, " + LOAN_CODE + " REAL, "  + LOAN_PACK_ID + " INTEGER, "+ LOAN_BANK_ACCT_NO + " INTEGER, "+ LOAN_DB_NO + " INTEGER, " + "FOREIGN KEY(" + LOAN_PACK_ID + ") REFERENCES " + PACKAGE_TABLE + "(" + PACKAGE_ID + ")," + "FOREIGN KEY(" + LOAN_ACCT_NO + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + "),"+ "FOREIGN KEY(" + LOAN_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "PRIMARY KEY(" + LOAN_DB_NO  + "), " +
+            LOAN_STATUS + " TEXT, " + LOAN_ACCT_NAME + " TEXT, " + LOAN_CODE + " REAL, "  + LOAN_PACK_ID + " INTEGER, "+ LOAN_BANK_ACCT_NO + " INTEGER, "+ LOAN_DB_NO + " INTEGER, " +LOAN_CURRENCY + " TEXT  , "+ "FOREIGN KEY(" + LOAN_PACK_ID + ") REFERENCES " + PACKAGE_TABLE + "(" + PACKAGE_ID + ")," + "FOREIGN KEY(" + LOAN_ACCT_NO + ") REFERENCES " + ACCOUNTS_TABLE + "(" + ACCOUNT_NO + "),"+ "FOREIGN KEY(" + LOAN_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "PRIMARY KEY(" + LOAN_DB_NO  + "), " +
             "FOREIGN KEY(" + LOAN_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
     private static final long serialVersionUID = 1L;
@@ -87,7 +87,7 @@ public class Loan implements Serializable, Parcelable {
     private BigDecimal fixedPayment = BigDecimal.ZERO;
     private Integer period = 0;
     private List<Payment> payments = new ArrayList<Payment>();
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     private int loanId=115;
 
     private ArrayList<Customer> customers;
@@ -122,6 +122,7 @@ public class Loan implements Serializable, Parcelable {
     private ArrayList<Profile> profiles;
     private String acctType;
     private StandingOrderAcct SOAcct;
+    private String loanCurrency;
     public Loan() {
         super();
 
@@ -398,6 +399,14 @@ public class Loan implements Serializable, Parcelable {
     public String getLoan_date() {
         return loan_date;
     }
+
+    public String getloanCurrency() {
+        return loanCurrency;
+    }
+    public void setloanCurrency(String loanCurrency) {
+        this.loanCurrency = loanCurrency;
+    }
+
     public String getLoan_startDate() {
         return loan_startDate;
     }

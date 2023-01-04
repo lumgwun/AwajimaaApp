@@ -82,7 +82,7 @@ import static com.skylightapp.Classes.Profile.PROFILE_PHONE;
 import static com.skylightapp.Transactions.OurConfig.TWILIO_ACCOUNT_SID;
 import static com.skylightapp.Transactions.OurConfig.TWILIO_AUTH_TOKEN;
 
-public class NewPackCusAct extends AppCompatActivity {
+public class NewManualPackCusAct extends AppCompatActivity {
     public final static String DAILY_SAVINGS_CONT_ID = "KEY_EXTRA_PACKAGE_ID";
     private Button btn_add_New_Savings,  btn_payNow;
 
@@ -129,7 +129,7 @@ public class NewPackCusAct extends AppCompatActivity {
     public final static int SENT = 4;
     public final static int SHUTDOWN = 5;
 
-    private static final String TAG = "NewPackCusAct";
+    private static final String TAG = "NewManualPackCusAct";
     private static final long INTERVAL = 1000 * 10;
     private static final long FASTEST_INTERVAL = 1000 * 5;
     Button btnFusedLocation, btn_backTo_dashboard;
@@ -230,11 +230,11 @@ public class NewPackCusAct extends AppCompatActivity {
                 public void onActivityResult(ActivityResult result) {
                     switch (result.getResultCode()) {
                         case Activity.RESULT_OK:
-                            Toast.makeText(NewPackCusAct.this, "Payment returned successful", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(NewManualPackCusAct.this, "Payment returned successful", Toast.LENGTH_SHORT).show();
                             doProcessing(profileID, customerID, packageID, finalItemType, packageType, savingsAmount, packageDuration, reportDate, grandTotal, officeBranch, packageEndDate, marketBizPackage, dbHelper, Skylightransaction, customerDailyReport, totalAmountSum, transaction_type);
                             break;
                         case Activity.RESULT_CANCELED:
-                            Toast.makeText(NewPackCusAct.this, "Activity canceled", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(NewManualPackCusAct.this, "Activity canceled", Toast.LENGTH_SHORT).show();
                             finish();
                             break;
                     }
@@ -260,11 +260,11 @@ public class NewPackCusAct extends AppCompatActivity {
                                 pictureUri = data.getData();
                                 Picasso.get().load(pictureUri).into(photoPrOP);
                             }*/
-                            Toast.makeText(NewPackCusAct.this, "successful ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(NewManualPackCusAct.this, "successful ", Toast.LENGTH_SHORT).show();
                             finish();
                             break;
                         case Activity.RESULT_CANCELED:
-                            Toast.makeText(NewPackCusAct.this, "cancelled", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(NewManualPackCusAct.this, "cancelled", Toast.LENGTH_SHORT).show();
                             finish();
                             break;
                     }
@@ -332,7 +332,7 @@ public class NewPackCusAct extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     packageType = spnTypeOfPackage.getSelectedItem().toString();
                     //packageType = (String) parent.getSelectedItem();
-                    Toast.makeText(NewPackCusAct.this, "Selected Type: "+ packageType,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewManualPackCusAct.this, "Selected Type: "+ packageType,Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -467,7 +467,7 @@ public class NewPackCusAct extends AppCompatActivity {
         marketBizPackageArrayList = new ArrayList<MarketBizPackage>();
 
 
-        if(packageType.equalsIgnoreCase("Item Purchase")){
+        /*if(packageType.equalsIgnoreCase("Item Purchase")){
             layoutSavings.setVisibility(View.GONE);
             layoutFoodItemPurchase.setVisibility(View.VISIBLE);
             layoutInvestment.setVisibility(View.GONE);
@@ -493,7 +493,7 @@ public class NewPackCusAct extends AppCompatActivity {
             packageDuration=372;
             totalDurationDays.setText(MessageFormat.format("372 saving days,End Date:{0}",investmentEndDate +"/"+""+invMaturityDate));
 
-        }
+        }*/
         if(packageType.equalsIgnoreCase("Savings")){
             layoutSavings.setVisibility(View.VISIBLE);
             layoutFoodItemPurchase.setVisibility(View.GONE);
@@ -510,7 +510,7 @@ public class NewPackCusAct extends AppCompatActivity {
                 selectedItemType = spnSavingsPlan.getSelectedItem().toString();
                 selectedItemType = (String) parent.getSelectedItem();
                 finalItemType=selectedItemType;
-                Toast.makeText(NewPackCusAct.this, "Item Selected: "+ selectedItemType,Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewManualPackCusAct.this, "Item Selected: "+ selectedItemType,Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -525,7 +525,7 @@ public class NewPackCusAct extends AppCompatActivity {
                 selectedFoodStuff = spnFoodAndItem.getSelectedItem().toString();
                 selectedFoodStuff = (String) parent.getSelectedItem();
                 finalItemType=selectedFoodStuff;
-                Toast.makeText(NewPackCusAct.this, "Selected Food Stuff: "+ selectedFoodStuff,Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewManualPackCusAct.this, "Selected Food Stuff: "+ selectedFoodStuff,Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -539,7 +539,7 @@ public class NewPackCusAct extends AppCompatActivity {
                 selectedInvestmentType = spnInvestment.getSelectedItem().toString();
                 selectedInvestmentType = (String) parent.getSelectedItem();
                 finalItemType=selectedInvestmentType;
-                Toast.makeText(NewPackCusAct.this, "Selected Investment: "+ selectedInvestmentType,Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewManualPackCusAct.this, "Selected Investment: "+ selectedInvestmentType,Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -552,7 +552,7 @@ public class NewPackCusAct extends AppCompatActivity {
                 selectedPromoPack = spnPromo.getSelectedItem().toString();
                 selectedPromoPack = (String) parent.getSelectedItem();
                 finalItemType=selectedPromoPack;
-                Toast.makeText(NewPackCusAct.this, "Selected Promo: "+ selectedPromoPack,Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewManualPackCusAct.this, "Selected Promo: "+ selectedPromoPack,Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -630,17 +630,17 @@ public class NewPackCusAct extends AppCompatActivity {
                 }
                 try {
                     if (amountDouble<=0.00) {
-                        Toast.makeText(NewPackCusAct.this, "Package Amount can not be left empty", Toast.LENGTH_LONG).show();
+                        Toast.makeText(NewManualPackCusAct.this, "Package Amount can not be left empty", Toast.LENGTH_LONG).show();
 
 
                     }
                     if (stringNoOFMonths.isEmpty()) {
-                        Toast.makeText(NewPackCusAct.this, "The Number for month, must be selected", Toast.LENGTH_LONG).show();
+                        Toast.makeText(NewManualPackCusAct.this, "The Number for month, must be selected", Toast.LENGTH_LONG).show();
 
 
                     }
                     if (noOfDaysString.isEmpty()) {
-                        Toast.makeText(NewPackCusAct.this, "Number of days must be selected", Toast.LENGTH_LONG).show();
+                        Toast.makeText(NewManualPackCusAct.this, "Number of days must be selected", Toast.LENGTH_LONG).show();
 
 
                     }else {
@@ -719,17 +719,17 @@ public class NewPackCusAct extends AppCompatActivity {
                 }
                 try {
                     if (amountDouble<=0.00) {
-                        Toast.makeText(NewPackCusAct.this, "Package Amount can not be left empty", Toast.LENGTH_LONG).show();
+                        Toast.makeText(NewManualPackCusAct.this, "Package Amount can not be left empty", Toast.LENGTH_LONG).show();
 
 
                     }
                     if (stringNoOFMonths.isEmpty()) {
-                        Toast.makeText(NewPackCusAct.this, "The Number for month, must be selected", Toast.LENGTH_LONG).show();
+                        Toast.makeText(NewManualPackCusAct.this, "The Number for month, must be selected", Toast.LENGTH_LONG).show();
 
 
                     }
                     if (noOfDaysString.isEmpty()) {
-                        Toast.makeText(NewPackCusAct.this, "Number of days must be selected", Toast.LENGTH_LONG).show();
+                        Toast.makeText(NewManualPackCusAct.this, "Number of days must be selected", Toast.LENGTH_LONG).show();
 
 
                     }else {
@@ -739,9 +739,9 @@ public class NewPackCusAct extends AppCompatActivity {
                         try {
                             paymentBundle = new Bundle();
                             paymentBundle.putString("Total", String.valueOf(totalAmountSum));
-                            Intent amountIntent = new Intent(NewPackCusAct.this, PayNowActivity.class);
+                            Intent amountIntent = new Intent(NewManualPackCusAct.this, PayNowActivity.class);
                             amountIntent.putExtras(paymentBundle);
-                            Toast.makeText(NewPackCusAct.this, "Your are paying NGN"+totalAmountSum, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(NewManualPackCusAct.this, "Your are paying NGN"+totalAmountSum, Toast.LENGTH_SHORT).show();
                             savingsStartForResult.launch(new Intent(amountIntent));
 
                         } catch (NumberFormatException e) {
@@ -793,7 +793,7 @@ public class NewPackCusAct extends AppCompatActivity {
 
                         switch (which) {
                             case 0:
-                                Toast.makeText(NewPackCusAct.this, "Manual Payment option, selected ", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(NewManualPackCusAct.this, "Manual Payment option, selected ", Toast.LENGTH_SHORT).show();
                                 //doProcessing(profileID, customerID, packageID, finalItemType, packageType, savingsAmount, packageDuration, reportDate, grandTotal, officeBranch, packageEndDate, marketBizPackage, dbHelper, Skylightransaction, customerDailyReport, totalAmountSum);
                                 payNowNew();
                                 break;
@@ -805,7 +805,7 @@ public class NewPackCusAct extends AppCompatActivity {
                                 //paymentBundle.putString("Total", String.valueOf(totalAmountSum));*/
 
 
-                                Intent standingOrderIntent = new Intent(NewPackCusAct.this, SOTab.class);
+                                Intent standingOrderIntent = new Intent(NewManualPackCusAct.this, SOTab.class);
                                 standingOrderIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 mStandingOrder.launch(standingOrderIntent);
                                 //amountIntent.putExtras(paymentBundle);
@@ -835,9 +835,9 @@ public class NewPackCusAct extends AppCompatActivity {
         try {
             paymentBundle = new Bundle();
             paymentBundle.putString("Total", String.valueOf(totalAmountSum));
-            Intent amountIntent = new Intent(NewPackCusAct.this, PayNowActivity.class);
+            Intent amountIntent = new Intent(NewManualPackCusAct.this, PayNowActivity.class);
             amountIntent.putExtras(paymentBundle);
-            Toast.makeText(NewPackCusAct.this, "Your are paying NGN"+totalAmountSum, Toast.LENGTH_SHORT).show();
+            Toast.makeText(NewManualPackCusAct.this, "Your are paying NGN"+totalAmountSum, Toast.LENGTH_SHORT).show();
             savingsStartForResult.launch(new Intent(amountIntent));
 
         } catch (NumberFormatException e) {
@@ -930,7 +930,7 @@ public class NewPackCusAct extends AppCompatActivity {
 
         sendSMS22(phoneNumber1, paymentMessage);
 
-        Toast.makeText(NewPackCusAct.this, "Your have successfuly added a savings of NGN"+ this.totalAmountSum, Toast.LENGTH_SHORT).show();
+        Toast.makeText(NewManualPackCusAct.this, "Your have successfuly added a savings of NGN"+ this.totalAmountSum, Toast.LENGTH_SHORT).show();
 
 
 
@@ -955,7 +955,7 @@ public class NewPackCusAct extends AppCompatActivity {
         smsBundle.putString("smsMessage",smsMessage);
         smsBundle.putString("from","+15703251701");
         smsBundle.putString("to", "uPhoneNumber");
-        Intent itemPurchaseIntent = new Intent(NewPackCusAct.this, SMSAct.class);
+        Intent itemPurchaseIntent = new Intent(NewManualPackCusAct.this, SMSAct.class);
         itemPurchaseIntent.putExtras(smsBundle);
         itemPurchaseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         //startActivity(itemPurchaseIntent);

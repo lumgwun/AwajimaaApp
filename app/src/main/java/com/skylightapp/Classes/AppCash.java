@@ -3,8 +3,6 @@ package com.skylightapp.Classes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,7 +11,7 @@ import java.util.Date;
 import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_ID;
 import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_TABLE;
 
-@Entity(tableName = AppCash.APP_CASH_TABLE)
+//@Entity(tableName = AppCash.APP_CASH_TABLE)
 public class AppCash implements Serializable, Parcelable {
     public static final String APP_CASH_TABLE = "s_cash_table";
     public static final String APP_CASH_ID = "sc_id";
@@ -42,7 +40,7 @@ public class AppCash implements Serializable, Parcelable {
             S_CASH_ADMIN + " TEXT, "  + S_CASH_CODE + " TEXT," + S_CASH_STATUS + " TEXT, " + S_CASH_FROM + " TEXT, " + S_CASH_TO + " TEXT," +"FOREIGN KEY(" + S_CASH_OFFICE_ID + ") REFERENCES " + OFFICE_BRANCH_TABLE + "(" + OFFICE_BRANCH_ID + ")," +"FOREIGN KEY(" + S_CASH_PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + S_CASH_ADMIN_ID + ") REFERENCES " + ADMIN_TABLE + "(" + ADMIN_ID + "))";*/
 
     //private long skylightCashID;
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     private int skylightCashID=1012;
     private String skylightCashDate;
     private double skylightCashAmount;

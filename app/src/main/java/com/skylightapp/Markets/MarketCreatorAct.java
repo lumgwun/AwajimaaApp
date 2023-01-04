@@ -376,7 +376,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
         createLocationRequest();
         getDeviceLocation();
         setInitialLocation();
-        SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_Market_New);
         if (fm != null) {
             fm.getMapAsync(this);
         }
@@ -414,7 +414,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
 
 
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+                getSupportFragmentManager().findFragmentById(R.id.autoM_frag);
 
 
         if (autocompleteFragment != null) {

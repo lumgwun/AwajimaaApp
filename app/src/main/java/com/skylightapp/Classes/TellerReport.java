@@ -3,8 +3,6 @@ package com.skylightapp.Classes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
@@ -15,7 +13,7 @@ import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
-@Entity(tableName = TellerReport.TELLER_REPORT_TABLE)
+//@Entity(tableName = TellerReport.TELLER_REPORT_TABLE)
 public class TellerReport  implements Serializable, Parcelable {
     public static final String TELLER_REPORT_TABLE = "tellerReportTable";
     public static final String TELLER_REPORT_ID = "teller_report_id";
@@ -46,7 +44,7 @@ public class TellerReport  implements Serializable, Parcelable {
 
 
 
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     private int tellerReportID=1022;
     private int tr_DbaseID;
     private String tellerReportDate;

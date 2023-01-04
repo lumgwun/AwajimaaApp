@@ -4,8 +4,7 @@ import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+
 
 import java.io.Serializable;
 
@@ -15,7 +14,7 @@ import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 
-@Entity(tableName = TimeLine.TIMELINE_TABLE)
+//@Entity(tableName = TimeLine.TIMELINE_TABLE)
 public class TimeLine  implements Serializable ,Parcelable{
     public static final String TIMELINE_TABLE = "timelineTable";
     public static final String TIMELINE_ID = "_timeLine_id";
@@ -123,7 +122,7 @@ public class TimeLine  implements Serializable ,Parcelable{
         OTHERS,
         SAVINGS,TRANSACTION;
     }
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     private int timelineID=140;
     private Profile timelineProfile;
     public String timestamp;

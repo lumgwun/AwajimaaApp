@@ -6,8 +6,6 @@ import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 import static com.skylightapp.Classes.StandingOrder.SO_ID;
 import static com.skylightapp.Classes.StandingOrder.STANDING_ORDER_TABLE;
-import static com.skylightapp.Classes.StandingOrderAcct.SO_ACCOUNT_NO;
-import static com.skylightapp.Classes.StandingOrderAcct.SO_ACCT_TABLE;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -26,7 +24,7 @@ public class SOReceived implements Serializable, Parcelable {
     private double sorAmount;
     private int sorManagerID;
     private String sorManagerName;
-    private int sorOfficeID;
+    private String sorOffice;
     private String sorComment;
     private String sorCusName;
     private String sorPlatformType;
@@ -39,7 +37,7 @@ public class SOReceived implements Serializable, Parcelable {
     public static final String SOR_CUS_ID = "soR_Cus_Id";
     public static final String SOR_SOACCT_NO = "soR_SO_Acct_NO";
     public static final String SOR_SO_ID = "soR_SO_ID";
-    public static final String SOR_OFFICE_ID = "soR_Office_ID";
+    public static final String SOR_OFFICE = "soR_Office_ID";
     public static final String SOR_STATUS = "SoR_status";
     public static final String SOR_DBID = "SO_DBID";
     public static final String SOR_DATE = "SOR_Date";
@@ -53,7 +51,7 @@ public class SOReceived implements Serializable, Parcelable {
 
     public static final String CREATE_SO_RECEIVED_TABLE = "CREATE TABLE IF NOT EXISTS " + SO_RECEIVED_TABLE + " (" + SOR_DBID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + SOR_ID + " INTEGER, " +
             SOR_SO_ID + " INTEGER , " + SOR_ManagerID + " REAL , " + SOR_PROF_ID + " INTEGER , " + SOR_CUS_ID + " INTEGER , " + SOR_SOACCT_NO + " REAL , " +
-            SOR_AMOUNT + " REAL , " + SOR_TX_REF + " TEXT , " + SOR_DATE + " INTEGER , " + SOR_MANAGER_NAME + " TEXT, " + SOR_OFFICE_ID + " TEXT, "+ SOR_STATUS + " TEXT, " + SOR_COMMENT + " TEXT, "+ SOR_CUS_NAME + " TEXT , "+ SOR_PLATFORM + " TEXT , "+ SOR_AMT_REM + " TEXT , "  + "FOREIGN KEY(" + SOR_SO_ID + ") REFERENCES " + STANDING_ORDER_TABLE + "(" + SO_ID + ")," +"FOREIGN KEY(" + SOR_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + SOR_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+            SOR_AMOUNT + " REAL , " + SOR_TX_REF + " TEXT , " + SOR_DATE + " TEXT , " + SOR_MANAGER_NAME + " TEXT, " + SOR_OFFICE + " TEXT, "+ SOR_STATUS + " TEXT, " + SOR_COMMENT + " TEXT, "+ SOR_CUS_NAME + " TEXT , "+ SOR_PLATFORM + " TEXT , "+ SOR_AMT_REM + " TEXT , "  + "FOREIGN KEY(" + SOR_SO_ID + ") REFERENCES " + STANDING_ORDER_TABLE + "(" + SO_ID + ")," +"FOREIGN KEY(" + SOR_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + SOR_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
 
     public SOReceived(Parcel in) {
@@ -67,7 +65,7 @@ public class SOReceived implements Serializable, Parcelable {
         sorAmount = in.readDouble();
         sorManagerID = in.readInt();
         sorManagerName = in.readString();
-        sorOfficeID = in.readInt();
+        sorOffice = in.readString();
     }
 
     public static final Creator<SOReceived> CREATOR = new Creator<SOReceived>() {
@@ -86,7 +84,7 @@ public class SOReceived implements Serializable, Parcelable {
 
     }
 
-    public SOReceived(int soRID, int profID, int customerID,String sorCusName, int soRSoID, int soRManagerID, int sorSoAcctNo, int sorOfficeID, double sorAmount, String sor_txRef, String date, String managerName, String soPlatform,String soComment, String soStatus) {
+    public SOReceived(int soRID, int profID, int customerID, String sorCusName, int soRSoID, int soRManagerID, int sorSoAcctNo, String sorOffice, double sorAmount, String sor_txRef, String date, String managerName, String soPlatform, String soComment, String soStatus) {
         this.sorID = soRID;
         this.sorProfileID = profID;
         this.sorCusID = customerID;
@@ -94,7 +92,7 @@ public class SOReceived implements Serializable, Parcelable {
         this.sorManagerID = soRManagerID;
         this.sorTranxDate = date;
         this.sorSOAcctNo = sorSoAcctNo;
-        this.sorOfficeID = sorOfficeID;
+        this.sorOffice = sorOffice;
         this.sorAmount = sorAmount;
         this.sorTranxRef = sor_txRef;
         this.sorTranxDate = date;
@@ -178,12 +176,12 @@ public class SOReceived implements Serializable, Parcelable {
         this.sorManagerName = sorManagerName;
     }
 
-    public int getSorOfficeID() {
-        return sorOfficeID;
+    public String getSorOffice() {
+        return sorOffice;
     }
 
-    public void setSorOfficeID(int sorOfficeID) {
-        this.sorOfficeID = sorOfficeID;
+    public void setSorOffice(String sorOffice) {
+        this.sorOffice = sorOffice;
     }
 
     public int getSorSOAcctNo() {
@@ -211,7 +209,7 @@ public class SOReceived implements Serializable, Parcelable {
         parcel.writeDouble(sorAmount);
         parcel.writeInt(sorManagerID);
         parcel.writeString(sorManagerName);
-        parcel.writeInt(sorOfficeID);
+        parcel.writeString(sorOffice);
         parcel.writeString(sorComment);
 
     }

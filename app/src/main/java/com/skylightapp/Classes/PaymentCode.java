@@ -3,8 +3,6 @@ package com.skylightapp.Classes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
@@ -17,7 +15,7 @@ import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 
-@Entity(tableName = CODE_TABLE)
+//@Entity(tableName = CODE_TABLE)
 public class PaymentCode  implements Parcelable, Serializable {
     private String ownerPhone;
     private long code;
@@ -25,7 +23,7 @@ public class PaymentCode  implements Parcelable, Serializable {
     private String codeStatus;
     private String codeManager;
     private int cod_customer_ID;
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     private int code_ID=101401;
     private int code_savingsID;
 

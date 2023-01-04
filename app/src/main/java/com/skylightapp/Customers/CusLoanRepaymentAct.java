@@ -1,5 +1,7 @@
 package com.skylightapp.Customers;
 
+import static com.skylightapp.Classes.Profile.PROFILE_PHONE;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -56,8 +58,11 @@ import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.Database.TransactionGrantingDAO;
 import com.skylightapp.Database.WorkersDAO;
 import com.skylightapp.FlutterWavePayments.FluPaywithBank;
+import com.skylightapp.GooglePayAct;
 import com.skylightapp.PayNowActivity;
+import com.skylightapp.QuickTellerPayAct;
 import com.skylightapp.R;
+import com.skylightapp.SMSAct;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 
@@ -72,74 +77,30 @@ import java.util.Random;
 
 public class CusLoanRepaymentAct extends AppCompatActivity {
     SharedPreferences userPreferences;
-    AppCompatEditText phone_number, email_address, firstName, surname1, userName, password, address_2;
+    AppCompatEditText phone_number;
     protected DatePickerDialog datePickerDialog;
     Random ran = new Random();
     SecureRandom random = new SecureRandom();
-    //int virtualAccountNumber = ran.nextInt((int) (Math.random() * 900000) + 100000);
-    //long customerID1 = random.nextInt((int) (Math.random() * 900) + 1001);
-    //long profileID1 = random.nextInt((int) (Math.random() * 900) + 100);
     Context context;
-    String dateOfBirth;
-    PreferenceManager preferenceManager;
     private Bundle bundle;
     String uPhoneNumber;
-    long profileID;
-    //private FirebaseAuth mAuth;
-   // private ProgressBar loadingPB;
+    int profileID;
     String userSurname;
     String userFirstName, uPassword;
     String userPhoneNumber;
     String userEmail;
     String userAddress;
     String profileUserName;
-    String mLastUpdateTime, selectedGender, selectedOffice, selectedState;
 
-    AppCompatButton dob1;
-    AppCompatRadioButton customerManager;
     Customer customer;
-    String uFirstName, uEmail, uSurname, uAddress, uUserName;
-    //Random ran = new Random();
-    //SecureRandom random =new SecureRandom();
-    int virtualAccountNumber = ran.nextInt((int) (Math.random() * 900000) + 100000);
-    long customerID1 = random.nextInt((int) (Math.random() * 900) + 1001);
-    long profileID1 = random.nextInt((int) (Math.random() * 900) + 100);
 
-    AppCompatSpinner state, office, gender;
     DBHelper dbHelper;
-    public final static String MODE_KEY = "key_mode";
-    public final static String DATE_KEY = "key_date";
-    public final static String MONTH_KEY = "key_month";
-    public final static String SHOW_YEAR_KEY = "key_show_year";
-    public final static String YEAR_KEY = "key_year";
-    public final static String UID_KEY = "key_uid";
-    public final static String SURNAME_KEY = "key_surname";
-    public final static String PHONE_NUMBER_KEY = "key_phone_number";
-    public final static String DATE_OF_BIRTH_KEY = "key_dob";
-    public final static String ADDRESS_KEY = "key_Address";
-    public final static String GENDER_KEY = "key_gender";
-    public final static String ROLE_KEY = "key_role";
-    public final static String STATE_KEY = "key_gender";
-    public final static String FIRST_NAME_KEY = "first_name";
-    public static final String USER_KEY = "clientKey";
-    public static final String CHOSEN_OFFICE = "clientKey";
-    public static final String USER_NAME = "clientKey";
-    public static final String EMAIL_ADDRESS = "clientKey";
-    public static final String STATUS_KEY = "statusKey";
-    public final static String KEY_EXTRA_PROFILE_ID = "KEY_EXTRA_SIGN_UP_ID";
 
     public static final String ACCOUNT_SID = System.getenv("ACb6e4c829a5792a4b744a3e6bd1cf2b4e");
     public static final String AUTH_TOKEN = System.getenv("0d5cbd54456dd0764786db0c37212578");
 
     Calendar calendar = Calendar.getInstance();
-    @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy");
-    String timeLineTime = mdformat.format(calendar.getTime());
     Profile userProfile;
-    AppCompatButton nextBtn, sign_up;
-    Location mCurrentLocation = null;
-    String daysRemaining;
-    int daysBTWN;
     Gson gson;
     String userType;
     String skylightFee="0.03";
@@ -147,28 +108,17 @@ public class CusLoanRepaymentAct extends AppCompatActivity {
     AppCompatEditText amountToRepay;
     AppCompatButton btnPay;
     AppCompatTextView loanBalance;
-    private SODAO sodao;
     private TranXDAO tranXDAO;
     private MessageDAO messageDAO;
     private LoanDAO loanDAO;
-    private AcctDAO acctDAO;
     private CodeDAO codeDAO;
-    private PaymDocDAO paymDocDAO;
-    private CusDAO cusDAO;
     private PaymentCodeDAO paymentCodeDAO;
     private ProfDAO profileDao;
-    private TCashDAO cashDAO;
-    private TReportDAO tReportDAO;
     private PaymentDAO paymentDAO;
     private AdminBalanceDAO adminBalanceDAO;
     private TimeLineClassDAO timeLineClassDAO;
-    private GrpProfileDAO grpProfileDAO;
-    private StocksDAO stocksDAO;
     private WorkersDAO workersDAO;
-    private StockTransferDAO stockTransferDAO;
     private OfficeBranchDAO officeBranchDAO;
-    private BirthdayDAO birthdayDAO;
-    private TransactionGrantingDAO grantingDAO;
 
     Long userID;
     int loanID;
@@ -179,13 +129,14 @@ public class CusLoanRepaymentAct extends AppCompatActivity {
     String currentDate ;
     double loanAmount;
     ArrayAdapter<Loan> loanAdapter;
-    int loanIndex;
+    int loanIndex,initIndex;
     Loan loan;
     double unpaidLoanBalance,residueAmt;
     SharedPreferences sharedpreferences;
-    String json,customerName;
-    private static final String PREF_NAME = "skylight";
+    String json,customerName,cusPhoneNo,loanCurrency,emailAddress;
+    private static final String PREF_NAME = "awajima";
     Bundle loanBundle, bundle1;
+    private Customer loanCustomer;
     ActivityResultLauncher<Intent> mStartLoanRepaymentForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
@@ -197,13 +148,14 @@ public class CusLoanRepaymentAct extends AppCompatActivity {
                         residueAmt=unpaidLoanBalance-loanAmount;
                         loan.setLoanBalance(residueAmt);
                         loanDAO.updateLoan("paid",loanID,residueAmt);
-                        SimpleDateFormat dateFormatWithZone = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                        String currentDate = dateFormatWithZone.format(date);
+                        dateFormatWithZone= new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                        currentDate = dateFormatWithZone.format(date);
+                        sendSMSMessageD();
 
                         String timelineDetails = userSurname + "," + userFirstName + "Repaid Loan" + "for" + customerName;
                         String tittle = "Loan repayment Alert!";
-                        String mYtimelineDetails = "You made loan payment of N" + loanAmount + " for"  + customerName+ "on" + timeLineTime;
-                        String custimelineDetails = "loan repayment of N" + loanAmount + " was recorded at" + timeLineTime;
+                        String mYtimelineDetails = "You made loan payment of N" + loanAmount + " for"  + customerName+ "on" + currentDate;
+                        String custimelineDetails = "loan repayment of N" + loanAmount + " was recorded at" + currentDate;
                         timeLineClassDAO.insertTimeLine(tittle,timelineDetails,currentDate,null);
                         userProfile.addPTimeLine(tittle,mYtimelineDetails);
                         customer.addCusTimeLine(tittle,custimelineDetails);
@@ -218,32 +170,19 @@ public class CusLoanRepaymentAct extends AppCompatActivity {
         setContentView(R.layout.act_loan_repayment);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
+        loanCustomer= new Customer();
         workersDAO= new WorkersDAO(this);
-        grantingDAO= new TransactionGrantingDAO(this);
-        stocksDAO= new StocksDAO(this);
-        cusDAO= new CusDAO(this);
-        birthdayDAO= new BirthdayDAO(this);
         officeBranchDAO= new OfficeBranchDAO(this);
-        stockTransferDAO= new StockTransferDAO(this);
-
         paymentCodeDAO= new PaymentCodeDAO(this);
         profileDao= new ProfDAO(this);
-        cashDAO= new TCashDAO(this);
-        paymDocDAO= new PaymDocDAO(this);
-        tReportDAO= new TReportDAO(this);
         paymentDAO= new PaymentDAO(this);
         adminBalanceDAO= new AdminBalanceDAO(this);
         timeLineClassDAO= new TimeLineClassDAO(this);
-        grpProfileDAO= new GrpProfileDAO(this);
-
-        sodao= new SODAO(this);
         tranXDAO= new TranXDAO(this);
-        sodao= new SODAO(this);
         messageDAO= new MessageDAO(this);
         loanDAO= new LoanDAO(this);
 
         codeDAO= new CodeDAO(this);
-        acctDAO= new AcctDAO(this);
         random= new SecureRandom();
         loanBundle=new Bundle();
         userProfile=new Profile();
@@ -259,13 +198,8 @@ public class CusLoanRepaymentAct extends AppCompatActivity {
         bundle =getIntent().getExtras();
         if(bundle1 !=null){
             loan= bundle.getParcelable("Loan");
-            loanID=loan.getLoanId();
-            loanBalance.setText(MessageFormat.format("Loan Balance:N{0}", loan.getLoanBalance()));
-            unpaidLoanBalance=loan.getLoanBalance();
             spn_loan.setVisibility(View.GONE);
         }
-        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        //mAuth=FirebaseAuth.getInstance();
         Twilio.init("ACb6e4c829a5792a4b744a3e6bd1cf2b4e", "0d5cbd54456dd0764786db0c37212578");
         dbHelper= new DBHelper(this);
         if(userProfile !=null) {
@@ -275,26 +209,44 @@ public class CusLoanRepaymentAct extends AppCompatActivity {
             spn_loan.setSelection(0);
 
             loanIndex = spn_loan.getSelectedItemPosition();
-            loan = (Loan) spn_loan.getItemAtPosition(loanIndex);
-            loanID=loan.getLoanId();
-            loanBalance.setText(MessageFormat.format("Loan Balance:N{0}", loan.getLoanBalance()));
-            customerName=loan.getLoan_customer().getCusSurname()+","+loan.getLoan_customer().getCusFirstName();
-
 
             spn_loan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    loan = (Loan) parent.getSelectedItem();
-                    loanID=loan.getLoanId();
-                    customerName=loan.getLoan_customer().getCusSurname()+","+loan.getLoan_customer().getCusFirstName();
-                    Toast.makeText(context, "Customer's Amount: " + loan.getResidue()  , Toast.LENGTH_SHORT).show();
+                    if(initIndex==position){
+                        return;
+                    }else {
+                        //loan = (Loan) parent.getSelectedItem();
+                        loan = (Loan) spn_loan.getItemAtPosition(loanIndex);
+
+                    }
+
+
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                 }
             });
-            unpaidLoanBalance=loan.getLoanBalance();
+            if(loan !=null){
+                loanID=loan.getLoanId();
+                unpaidLoanBalance=loan.getLoanBalance();
+                loanCustomer=loan.getLoan_customer();
+                loanCurrency =loan.getloanCurrency();
+                if(loanCurrency.isEmpty()){
+                    loanCurrency="NGN";
+                }
+                loanBalance.setText("Loan Balance"+loanCurrency+loan.getLoanBalance());
+                unpaidLoanBalance=loan.getLoanBalance();
+
+
+            }
+            if(loanCustomer !=null){
+                customerName=loanCustomer.getCusSurname()+","+loanCustomer.getCusFirstName();
+                cusPhoneNo=loanCustomer.getCusPhoneNumber();
+                emailAddress=loanCustomer.getCusEmailAddress();
+            }
+
             userSurname = userPreferences.getString("PROFILE_SURNAME", "userSurname");
             userFirstName = userPreferences.getString("PROFILE_FIRSTNAME", "firstName1");
             userPhoneNumber = userPreferences.getString("PROFILE_PHONE", "phoneNumber");
@@ -307,48 +259,56 @@ public class CusLoanRepaymentAct extends AppCompatActivity {
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startPaymentActivity();
+                startPaymentActivity(loanID,unpaidLoanBalance,loanCustomer,customerName,cusPhoneNo,loan);
 
             }
         });
     }
-    protected void sendSMSMessage() {
+    protected void sendSMSMessageD() {
         String welcomeMessage = "Awajima appreciates your efforts in repaying  your loan";
-        phone_number = findViewById(R.id.phone_number);
-        uPhoneNumber = Objects.requireNonNull(phone_number.getText()).toString();
-        Twilio.init("ACb6e4c829a5792a4b744a3e6bd1cf2b4e", "0d5cbd54456dd0764786db0c37212578");
-        //Twilio.init(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
-        Message message = Message.creator(
-                new com.twilio.type.PhoneNumber(userPhoneNumber),
-                new com.twilio.type.PhoneNumber("234" + userPhoneNumber),
-                welcomeMessage)
-                .create();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        String machine = userPreferences.getString("machine","");
+        Bundle bundle = new Bundle();
+        bundle.putInt("ProfileID", profileID);
+        bundle.putString(machine, machine);
+        bundle.putString(PROFILE_PHONE, this.cusPhoneNo);
+        bundle.putString("smsMessage", welcomeMessage);
+        bundle.putString("emailAddress", this.emailAddress);
+        Intent intent = new Intent(this, SMSAct.class);
+        intent.putExtras(bundle);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
 
     }
-    public void startPaymentActivity() {
+    public void startPaymentActivity(int loanID,double unpaidLoanBalance,Customer loanCustomer,String customerName,String cusPhoneNo,Loan loan) {
 
 
         try {
-            loanAmount = Double.parseDouble(Objects.requireNonNull(amountToRepay.getText()).toString().trim());
+            try {
+
+                loanAmount = Double.parseDouble(Objects.requireNonNull(amountToRepay.getText()).toString().trim());
+
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
             if(loanAmount>unpaidLoanBalance){
 
                 Toast.makeText(this, "The amount to pay is invalid", Toast.LENGTH_LONG).show();
                 amountToRepay.requestFocus();
 
             }else {
-                DBHelper applicationDb = new DBHelper(this);
-                loanIndex = spn_loan.getSelectedItemPosition();
-                loan = (Loan) spn_loan.getItemAtPosition(loanIndex);
-                loanID=loan.getLoanId();
-                customerName=loan.getLoan_customer().getCusSurname()+","+loan.getLoan_customer().getCusFirstName();
                 loanBundle.putParcelable("Loan", loan);
                 loanBundle.putDouble("Total", loanAmount);
                 loanBundle.putDouble("LoanID", loanID);
                 loanBundle.putParcelable("Profile", userProfile);
-                loanBundle.putParcelable("Customer", loan.getLoan_customer());
+                loanBundle.putParcelable("Customer", loanCustomer);
                 loanBundle.putString("Name", customerName);
+                loanBundle.putString("PaymentFor", "Loan Repayment");
 
-                String[] Options = {"Pay with Bank", "Pay with card"};
+                String[] Options = {"Pay with QuickTeller", "Pay with Google Pay"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Select mode of repayment")
 
@@ -368,19 +328,19 @@ public class CusLoanRepaymentAct extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(which == 0){
-                            Intent intent3 = new Intent(CusLoanRepaymentAct.this, FluPaywithBank.class);
+                            Intent intent3 = new Intent(CusLoanRepaymentAct.this, QuickTellerPayAct.class);
                             intent3.putExtras(loanBundle);
                             //startActivity(intent3);
                             mStartLoanRepaymentForResult.launch(new Intent(intent3));
 
                         }else if(which == 1){
-                            Intent i = new Intent(CusLoanRepaymentAct.this, PayNowActivity.class);
+                            Intent i = new Intent(CusLoanRepaymentAct.this, GooglePayAct.class);
                             i.putExtras(loanBundle);
                             //startActivity(intent3);
                             mStartLoanRepaymentForResult.launch(new Intent(i));
 
                         }else{
-                            Toast.makeText(getApplicationContext(), "Something went wrong " , Toast.LENGTH_LONG).show();
+                            Toast.makeText(CusLoanRepaymentAct.this, "Something went wrong " , Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -394,7 +354,7 @@ public class CusLoanRepaymentAct extends AppCompatActivity {
             amountToRepay.requestFocus();
         }
 
-        BroadcastUtils.sendExplicitBroadcast(this, new Intent(), "skylight Loan Repayment action");
+        BroadcastUtils.sendExplicitBroadcast(this, new Intent(), "Awajima Loan Repayment action");
 
     }
 }

@@ -49,7 +49,7 @@ public class TripDAO extends DBHelperDAO{
         cursor.close();
         return cursor.getCount();
     }
-    public long insertNewTrip(int tripID, int profID, String state, double amtForAdult, double amtForChildren, int noOfSits, String takeOffPoint, String destination, String date, String startTime, String endTime, LatLng takeOffLatLng, String status) {
+    public long insertNewTrip(int tripID, int profID, String state, double amtForAdult, double amtForChildren, int noOfSits, String takeOffPoint, String destination, String date, String startTime, String endTime, LatLng takeOffLatLng,String type, String status) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(A_TRIP_ID, tripID);
@@ -64,6 +64,7 @@ public class TripDAO extends DBHelperDAO{
         contentValues.put(A_TRIP_ENDT, endTime);
         contentValues.put(A_TRIP_TAKE_OFF_POINT, takeOffPoint);
         contentValues.put(A_TRIP_DATE, date);
+        contentValues.put(A_TRIP_TYPE, type);
         contentValues.put(A_TRIP_TAKE_OFF_LATLNG, String.valueOf(takeOffLatLng));
         return sqLiteDatabase.insert(A_TRIP_TABLE, null, contentValues);
 
@@ -205,7 +206,7 @@ public class TripDAO extends DBHelperDAO{
         calendar = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         tripDate = mdformat.format(calendar.getTime());
-        String selection = "STRFTIME('%Y-%m',BOAT_TRIP_DATE)" + "=? AND " + A_TRIP_TAKE_OFF_POINT + "=? AND " + A_TRIP_TYPE + "=?";
+        String selection = "STRFTIME('%Y-%m',A_TRIP_DATE)" + "=? AND " + A_TRIP_TAKE_OFF_POINT + "=? AND " + A_TRIP_TYPE + "=?";
         //String selection1 = "substr(" + REPORT_DATE + ",4)" + "=? AND " + CUSTOMER_ID + "=?";
         String grpBy = "substr(" + A_TRIP_DATE + ",4)";
 
@@ -233,7 +234,7 @@ public class TripDAO extends DBHelperDAO{
         calendar = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         tripDate = mdformat.format(calendar.getTime());
-        String selection = "STRFTIME('%Y-%m',BOAT_TRIP_DATE)" + "=? AND " + A_TRIP_DEST_NAME + "=? AND " + A_TRIP_TYPE + "=?";
+        String selection = "STRFTIME('%Y-%m',A_TRIP_DATE)" + "=? AND " + A_TRIP_DEST_NAME + "=? AND " + A_TRIP_TYPE + "=?";
         //String selection1 = "substr(" + REPORT_DATE + ",4)" + "=? AND " + CUSTOMER_ID + "=?";
         String grpBy = "substr(" + A_TRIP_DATE + ",4)";
 
@@ -261,7 +262,7 @@ public class TripDAO extends DBHelperDAO{
         calendar = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         tripDate = mdformat.format(calendar.getTime());
-        String selection = "STRFTIME('%Y-%m',BOAT_TRIP_DATE)" + "=? AND " + A_TRIP_TAKE_OFF_POINT + "=? AND "+ A_TRIP_DEST_NAME + "=? AND " + A_TRIP_TYPE + "=?";
+        String selection = "STRFTIME('%Y-%m',A_TRIP_DATE)" + "=? AND " + A_TRIP_TAKE_OFF_POINT + "=? AND "+ A_TRIP_DEST_NAME + "=? AND " + A_TRIP_TYPE + "=?";
         //String selection1 = "substr(" + REPORT_DATE + ",4)" + "=? AND " + CUSTOMER_ID + "=?";
         String grpBy = "substr(" + A_TRIP_DATE + ",4)";
 
@@ -287,7 +288,7 @@ public class TripDAO extends DBHelperDAO{
     public ArrayList<Trip> getAllTripsByDate(String date) {
         ArrayList<Trip> tripArrayList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String selection = "STRFTIME('%Y-%m-%d',BOAT_TRIP_DATE)" + "=?";
+        String selection = "STRFTIME('%Y-%m-%d',A_TRIP_DATE)" + "=?";
         //String selection1 = "substr(" + REPORT_DATE + ",4)" + "=? AND " + CUSTOMER_ID + "=?";
         String grpBy = "substr(" + A_TRIP_DATE + ",4)";
 
@@ -314,7 +315,7 @@ public class TripDAO extends DBHelperDAO{
         ArrayList<Trip> tripArrayList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String selection = "STRFTIME('%Y-%m-%d',BOAT_TRIP_DATE)" + "=? AND " + A_TRIP_TYPE + "=?AND " + A_TRIP_STATE + "=?";
+        String selection = "STRFTIME('%Y-%m-%d',A_TRIP_DATE)" + "=? AND " + A_TRIP_TYPE + "=?AND " + A_TRIP_STATE + "=?";
         //String selection1 = "substr(" + REPORT_DATE + ",4)" + "=? AND " + CUSTOMER_ID + "=?";
         String grpBy = "substr(" + A_TRIP_DATE + ",4)";
 

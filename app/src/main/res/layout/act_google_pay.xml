@@ -14,16 +14,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:orientation="vertical">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="match_parent"
             android:layout_height="350dp"
             android:layout_marginTop="20dp"
             android:src="@drawable/awajima_logo" />
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -33,7 +33,7 @@
             android:textStyle="bold" />
 
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -68,7 +68,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="match_parent"
             android:text="Continue"
-            android:onClick="continueToG"
+            android:padding="20dp"
             android:id="@+id/con_to_Checkout"
             android:background="@drawable/rect6d"
             android:layout_height="wrap_content"/>
@@ -88,7 +88,7 @@
             android:layout_marginBottom="20dp"
             android:visibility="gone">
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="?android:textColorSecondary"

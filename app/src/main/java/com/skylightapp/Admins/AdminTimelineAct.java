@@ -2,6 +2,7 @@ package com.skylightapp.Admins;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,9 +18,11 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.melnykov.fab.FloatingActionButton;
+import com.skylightapp.Adapters.AccountRecylerAdap;
 import com.skylightapp.Adapters.TimeLineAdapter;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.TimeLine;
+import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Database.AcctDAO;
 import com.skylightapp.Database.AdminBalanceDAO;
 import com.skylightapp.Database.CodeDAO;
@@ -103,9 +106,13 @@ public class AdminTimelineAct extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
         recyclerView.setNestedScrollingEnabled(false);
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                linearLayoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
     }
 }

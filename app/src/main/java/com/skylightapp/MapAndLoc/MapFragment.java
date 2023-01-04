@@ -44,9 +44,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.maps.android.PolyUtil;
 import com.skylightapp.R;
-import com.webgeoservices.woosmapgeofencing.Woosmap;
-import com.webgeoservices.woosmapgeofencingcore.database.Region;
-import com.webgeoservices.woosmapgeofencingcore.database.ZOI;
+
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -68,9 +66,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     List<MarkerOptions> markersPOI = new ArrayList<MarkerOptions>();
     List<MarkerOptions> markersVisit = new ArrayList<MarkerOptions>();
     List<Polygon> polygonsZOI = new ArrayList<Polygon>();
-    List<ZOI> zois = new ArrayList<>();
+    ArrayList<ZOI> zois = new ArrayList<>();
     List<Circle> circleGeofence = new ArrayList<Circle>();
-    List<Region> regions = new ArrayList<>();
+    ArrayList<Region> regions = new ArrayList<>();
     Location currentLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 101;
@@ -246,14 +244,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
                     Marker visitMarker = null;
                     if (isMarkerInsideZoi){
-                        if(zoiSelected.period.equals("HOME_PERIOD")) {
-                            marker.zIndex(1.0F);
-                            visitMarker = mGoolgeMap.addMarker(marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-                        }else if (zoiSelected.period.equals("WORK_PERIOD")) {
-                            marker.zIndex(1.0F);
-                            visitMarker = mGoolgeMap.addMarker(marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-                        } else {
-                            visitMarker = mGoolgeMap.addMarker(marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                        if (zoiSelected != null) {
+                            if(zoiSelected.getPeriod().equals("HOME_PERIOD")) {
+                                marker.zIndex(1.0F);
+                                visitMarker = mGoolgeMap.addMarker(marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                            }else if (zoiSelected.getPeriod().equals("WORK_PERIOD")) {
+                                marker.zIndex(1.0F);
+                                visitMarker = mGoolgeMap.addMarker(marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                            } else {
+                                visitMarker = mGoolgeMap.addMarker(marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                            }
                         }
                     }else {
                         visitMarker = mGoolgeMap.addMarker(marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
@@ -281,11 +281,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 int strokeZoiColor = Color.BLUE;
                 float zindex = 0.0F;
 
-                if(zoiPoint.period.equals("HOME_PERIOD")){
+                if(zoiPoint.getPeriod().equals("HOME_PERIOD")){
                     fillZoiColor = Color.GREEN;
                     strokeZoiColor = Color.YELLOW;
                     zindex = 1.0F;
-                } else if (zoiPoint.period.equals("WORK_PERIOD")){
+                } else if (zoiPoint.getPeriod().equals("WORK_PERIOD")){
                     fillZoiColor = Color.RED;
                     strokeZoiColor = Color.YELLOW;
                     zindex = 1.0F;
@@ -293,7 +293,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
                 Polygon polygon = mGoolgeMap.addPolygon(
                         new PolygonOptions()
-                                .add(GetPolygonPoints(zoiPoint.wktPolygon))
+                                .add(GetPolygonPoints(zoiPoint.getWktPolygon()))
                                 .strokeWidth(7)
                                 .fillColor(fillZoiColor)
                                 .strokeColor(strokeZoiColor)
@@ -308,10 +308,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                     public void onPolygonClick(Polygon polygon) {
                         SimpleDateFormat displayDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                         ZOI zoiSelected = (ZOI) polygon.getTag();
-                        String startFormatedDate = displayDateFormat.format(zoiSelected.startTime);
-                        String endFormatedDate = displayDateFormat.format(zoiSelected.endTime);
+                        String startFormatedDate = displayDateFormat.format(zoiSelected.getStartTime());
+                        String endFormatedDate = displayDateFormat.format(zoiSelected.getEndTime());
 
-                        long timeSec= zoiSelected.duration/1000;
+                        long timeSec= zoiSelected.getDuration()/1000;
                         int hours = (int) timeSec/ 3600;
                         int temp = (int) timeSec- hours * 3600;
                         int mins = temp / 60;
@@ -321,9 +321,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                         String duration = String.format("%02d", hours) + " hours "+ String.format("%02d", mins) +" mins "+ String.format("%02d", secs) +" secs";
 
                         Toast.makeText(getContext(),  "--> start: " + startFormatedDate + "\n--> end: " + endFormatedDate +
-                                "\n" + "Nb visits: " + zoiSelected.idVisits.size() +
+                                "\n" + "Nb visits: " + zoiSelected.getWeekly_density().size() +
                                 "\n" + "Duration: " + duration +
-                                "\n" + "Qualifier: " + zoiSelected.period, Toast.LENGTH_SHORT).show();
+                                "\n" + "Qualifier: " + zoiSelected.getPeriod(), Toast.LENGTH_SHORT).show();
                     }
 
                 });

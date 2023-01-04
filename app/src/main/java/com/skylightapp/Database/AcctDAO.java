@@ -19,15 +19,18 @@ import java.util.ArrayList;
 import static com.skylightapp.Classes.Account.ACCOUNTS_TABLE;
 import static com.skylightapp.Classes.Account.ACCOUNT_BALANCE;
 import static com.skylightapp.Classes.Account.ACCOUNT_BANK;
+import static com.skylightapp.Classes.Account.ACCOUNT_CURRENCY;
 import static com.skylightapp.Classes.Account.ACCOUNT_CUS_ID;
 import static com.skylightapp.Classes.Account.ACCOUNT_NAME;
 import static com.skylightapp.Classes.Account.ACCOUNT_NO;
 import static com.skylightapp.Classes.Account.ACCOUNT_PROF_ID;
+import static com.skylightapp.Classes.Account.ACCOUNT_STATUS;
 import static com.skylightapp.Classes.Account.ACCOUNT_TYPE;
 import static com.skylightapp.Classes.Account.ACCOUNT_TYPES_TABLE;
 import static com.skylightapp.Classes.Account.ACCOUNT_TYPE_ID;
 import static com.skylightapp.Classes.Account.ACCOUNT_TYPE_INTEREST;
 import static com.skylightapp.Classes.Account.ACCOUNT_TYPE_NAME;
+import static com.skylightapp.Classes.Account.ACCOUNT_TYPE_NEW;
 import static com.skylightapp.Classes.Account.BANK_ACCT_BALANCE;
 import static com.skylightapp.Classes.Account.BANK_ACCT_NO;
 import static com.skylightapp.Classes.PaymentDoc.DOCUMENT_ID;
@@ -56,6 +59,35 @@ public class AcctDAO extends DBHelperDAO{
         sqLiteDatabase.insert(ACCOUNTS_TABLE, null, contentValues);
 
         return accountNumber;
+    }
+    public long insertAccounts(ArrayList<Account> accountArrayList) {
+
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        int count = 0;
+        for (int i = 0; i < accountArrayList.size(); i++) {
+            Account account = accountArrayList.get(i);
+            ContentValues values = new ContentValues();
+            contentValues.put(ACCOUNT_PROF_ID, account.getAcctProfID());
+            contentValues.put(ACCOUNT_NAME, account.getAccName());
+            contentValues.put(ACCOUNT_CUS_ID, account.getAcctCusID());
+            contentValues.put(ACCOUNT_CURRENCY, account.getAccountCurrSymbol());
+            contentValues.put(ACCOUNT_NO, account.getAwajimaAcctNo());
+            contentValues.put(BANK_ACCT_NO, account.getAcctNo());
+            contentValues.put(ACCOUNT_BALANCE, account.getAccountBalance());
+            contentValues.put(ACCOUNT_STATUS, account.getAccountStatus());
+            contentValues.put(ACCOUNT_TYPE_NEW, account.getAcctType());
+
+            //sqLiteDatabase.insert(ACCOUNTS_TABLE, null, contentValues);
+            long id = sqLiteDatabase.insert(ACCOUNTS_TABLE, null, contentValues);
+            if (id != -1)
+                count += 1;
+        }
+        return count;
+
+
+
     }
     protected Cursor getAccountDetails(int accountId) {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
@@ -153,7 +185,7 @@ public class AcctDAO extends DBHelperDAO{
 
     public ArrayList<Account> getAccountsFromCurrentCustomer(int customerID) {
         ArrayList<Account> accounts = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = ACCOUNT_CUS_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(customerID)};
         Cursor cursor = db.query(ACCOUNTS_TABLE, null, selection, selectionArgs, null,
@@ -167,7 +199,7 @@ public class AcctDAO extends DBHelperDAO{
     }
     public ArrayList<Account> getAccountsFromCurrentProfile(int profileID) {
         ArrayList<Account> accounts = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = ACCOUNT_PROF_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(profileID)};
         @SuppressLint("Recycle") Cursor cursor = db.query(ACCOUNTS_TABLE, null, selection, selectionArgs, null,
@@ -193,13 +225,15 @@ public class AcctDAO extends DBHelperDAO{
 
     private void getAccountsFromCursor(ArrayList<Account> accounts, Cursor cursor) {
         while (cursor.moveToNext()) {
-            int id = cursor.getInt(0);
-            String accountNo = cursor.getString(1);
+            long acctID = cursor.getInt(0);
+            String bankAccountNo = cursor.getString(1);
             String accountType = cursor.getString(5);
-            String accountBank = cursor.getString(6);
+            String bank = cursor.getString(6);
             String accountName = cursor.getString(7);
             double accountBalance = cursor.getDouble(8);
-            accounts.add(new Account(id, accountBank, accountName, accountNo, accountBalance, AccountTypes.valueOf(accountType)));
+            String currency = cursor.getString(13);
+            String status = cursor.getString(15);
+            accounts.add(new Account(acctID, bank, accountName, bankAccountNo, accountBalance, AccountTypes.valueOf(accountType),currency,status));
         }
 
 
@@ -253,7 +287,7 @@ public class AcctDAO extends DBHelperDAO{
         cv.put(ACCOUNT_NAME, account.getAccountName());
         cv.put(ACCOUNT_BALANCE, account.getAccountBalance());
         cv.put(BANK_ACCT_BALANCE, account.getBankAccountBalance());
-        String selection = ACCOUNT_PROF_ID + "=? AND " + ACCOUNT_NO + "=? AND " + ACCOUNT_CUS_ID + "=?";
+        String selection = ACCOUNT_PROF_ID + "=? AND " + BANK_ACCT_NO + "=? AND " + ACCOUNT_CUS_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(userProfile.getPID()), valueOf(account.getAwajimaAcctNo()),valueOf(cusID)};
 
         db.update(ACCOUNTS_TABLE, cv, selection,
@@ -267,11 +301,29 @@ public class AcctDAO extends DBHelperDAO{
         Customer customer = new Customer();
         Account account = customer.getCusAccount();
         ContentValues cv = new ContentValues();
-        cv.put(ACCOUNT_NO, acctID);
+        cv.put(BANK_ACCT_NO, acctID);
         cv.put(ACCOUNT_BALANCE, balance);
         cv.put(BANK_ACCT_BALANCE, bankAcctBalance);
-        String selection = ACCOUNT_CUS_ID + "=? AND " + ACCOUNT_NO + "=?";
+        String selection = ACCOUNT_CUS_ID + "=? AND " + BANK_ACCT_NO + "=?";
         String[] selectionArgs = new String[]{valueOf(cusID), valueOf(acctID)};
+
+        db.update(ACCOUNTS_TABLE, cv, selection,
+                selectionArgs);
+        //db.close();
+
+
+
+    }
+    public void overwriteFAccount1(int walletID,int acctID,int cusID,double balance,double bankAcctBalance) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Customer customer = new Customer();
+        Account account = customer.getCusAccount();
+        ContentValues cv = new ContentValues();
+        cv.put(BANK_ACCT_NO, acctID);
+        cv.put(ACCOUNT_BALANCE, balance);
+        cv.put(BANK_ACCT_BALANCE, bankAcctBalance);
+        String selection = ACCOUNT_CUS_ID + "=? AND " + BANK_ACCT_NO + "=? AND " + ACCOUNT_NO + "=?";
+        String[] selectionArgs = new String[]{valueOf(cusID), valueOf(acctID),valueOf(walletID)};
 
         db.update(ACCOUNTS_TABLE, cv, selection,
                 selectionArgs);

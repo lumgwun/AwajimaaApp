@@ -173,7 +173,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.RecyclerViewHo
                 if(type.equalsIgnoreCase("Boat")){
                    // Picasso.get().load(type).into(viewHolder.tImg);
                     Glide.with(mcontext)
-                            .load(type)
+                            .load(R.drawable.boat33)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .error(R.drawable.ic_alert)
                             .skipMemoryCache(true)
@@ -183,7 +183,31 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.RecyclerViewHo
 
                 }
                 if(type.equalsIgnoreCase("Train")){
-                    Picasso.get().load(type).into(viewHolder.tImg);
+                    // Picasso.get().load(type).into(viewHolder.tImg);
+                    Glide.with(mcontext)
+                            .load(R.drawable.train)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .error(R.drawable.ic_alert)
+                            .skipMemoryCache(true)
+                            .fitCenter()
+                            .centerCrop()
+                            .into(viewHolder.tImg);
+
+                }
+                /*if(type.equalsIgnoreCase("Train")){
+                    Picasso.get().load(R.drawable.train).into(viewHolder.tImg);
+
+                }*/
+                if(type.equalsIgnoreCase("Taxi")){
+                    // Picasso.get().load(type).into(viewHolder.tImg);
+                    Glide.with(mcontext)
+                            .load(R.drawable.ic_taxi33)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .error(R.drawable.ic_alert)
+                            .skipMemoryCache(true)
+                            .fitCenter()
+                            .centerCrop()
+                            .into(viewHolder.tImg);
 
                 }
             }

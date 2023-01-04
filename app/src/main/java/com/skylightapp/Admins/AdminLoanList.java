@@ -42,7 +42,7 @@ public class AdminLoanList extends AppCompatActivity implements LoanAdapter.OnLo
     private RecyclerView recyclerView;
     TextView txtLoanMessage;
     private static final String TAG = AdminLoanList.class.getSimpleName();
-    private static final String URL = "https://skylightciacs.com";
+    private static final String URL = "https://awajima.com";
     private LoanAdapter loanAdapter;
     private List<Loan> loans;
     private ArrayList<Loan> loanArrayList;

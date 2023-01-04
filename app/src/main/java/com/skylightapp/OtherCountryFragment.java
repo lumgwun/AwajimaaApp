@@ -9,7 +9,7 @@ public class OtherCountryFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         try {
-            setPreferencesFromResource(R.xml.other_country_pref, rootKey);
+            setPreferencesFromResource(R.xml.user_pref, rootKey);
 
         } catch (ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();

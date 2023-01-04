@@ -20,6 +20,7 @@ public class TripBooking implements Parcelable, Serializable {
     public static final String TRIP_BOOKING_ID = "trip_Booking_id";
     public static final String TRIP_BOOKING_DBID = "trip_Booking_DB_id";
     public static final String TRIP_BOOKING_PROF_ID = "trip_Booking_Prof_id";
+    public static final String TRIP_BOOKING_CUS_ID = "trip_Booking_Customer_id";
     public static final String TRIP_BOOKING_TRIP_ID = "trip_Booking_TRIP_id";
     public static final String TRIP_BOOKING_DEST = "trip_Booking_Dest";
     public static final String TRIP_BOOKING_DATE = "trip_Booking_Date";
@@ -51,11 +52,10 @@ public class TripBooking implements Parcelable, Serializable {
     public static final String TRIP_B_NIN_EXPIRYD = "trip_B_Expiry_Date";
     public static final String TRIP_B_NIN_STATUS = "trip_B_NIN_STATUS";
 
-
     public static final String CREATE_TRIP_BOOKING_TABLE = "CREATE TABLE IF NOT EXISTS " + TRIP_BOOKING_TABLE + " (" + TRIP_BOOKING_DBID + " INTEGER, " + TRIP_BOOKING_ID + " INTEGER , " +
             TRIP_BOOKING_PROF_ID + " INTEGER , " + TRIP_BOOKING_TRIP_ID + " INTEGER , " + TRIP_BOOKING_DATE + " TEXT, " + TRIP_BOOKING_DEST + " TEXT, " +
             TRIP_BOOKING_NAME + " TEXT, " + TRIP_BOOKING_SLOTS + " INTEGER, " + TRIP_BOOKING_AMT + " REAL, " + TRIP_BOOKING_MOP + " TEXT, " +
-            TRIP_BOOKING_TYPEOS + " TEXT, " + TRIP_BOOKING_ADULT + " INTEGER, " + TRIP_BOOKING_CHILDREN + " INTEGER, "+ TRIP_BOOKING_NIN_ID + " TEXT, " +TRIP_BOOKING_LUGGAGE + " TEXT, "+  TRIP_BOOKING_LAMT + " TEXT, " + TRIP_BOOKING_STATUS + " INTEGER, "+ TRIP_BOOKING_CURRENCY + " TEXT , "+ TRIP_BOOKING_STATE + " TEXT , "+ TRIP_BOOKING_COUNTRY + " TEXT , " + TRIP_BOOKING_FROM + " TEXT , "+ TRIP_BOOKING_OFFICE + " TEXT , " + "PRIMARY KEY(" +TRIP_BOOKING_DBID + "), " +"FOREIGN KEY(" + TRIP_BOOKING_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + TRIP_BOOKING_TRIP_ID  + ") REFERENCES " + A_TRIP_TABLE + "(" + A_TRIP_ID + ")," +"FOREIGN KEY(" + TRIP_BOOKING_TX_ID + ") REFERENCES " + TRANSACTIONS_TABLE + "(" + TRANSACTION_ID + "))";
+            TRIP_BOOKING_TYPEOS + " TEXT, " + TRIP_BOOKING_ADULT + " INTEGER, " + TRIP_BOOKING_CHILDREN + " INTEGER, "+ TRIP_BOOKING_NIN_ID + " TEXT, " +TRIP_BOOKING_LUGGAGE + " TEXT, "+  TRIP_BOOKING_LAMT + " TEXT, " + TRIP_BOOKING_STATUS + " INTEGER, "+ TRIP_BOOKING_CURRENCY + " TEXT , "+ TRIP_BOOKING_STATE + " TEXT , "+ TRIP_BOOKING_COUNTRY + " TEXT , " + TRIP_BOOKING_FROM + " TEXT , "+ TRIP_BOOKING_OFFICE + " TEXT , " + TRIP_BOOKING_CUS_ID + " INTEGER , "+ "PRIMARY KEY(" +TRIP_BOOKING_DBID + "), " +"FOREIGN KEY(" + TRIP_BOOKING_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + TRIP_BOOKING_TRIP_ID  + ") REFERENCES " + A_TRIP_TABLE + "(" + A_TRIP_ID + ")," +"FOREIGN KEY(" + TRIP_BOOKING_TX_ID + ") REFERENCES " + TRANSACTIONS_TABLE + "(" + TRANSACTION_ID + "))";
 
 
     public static final String CREATE_TRIP_B_NIN_TABLE = "CREATE TABLE IF NOT EXISTS " + TRIP_B_NIN_TABLE + " (" + TRIP_B_NIN_ID + " INTEGER, " + TRIP_B_TB_ID + " INTEGER , " +
@@ -85,6 +85,7 @@ public class TripBooking implements Parcelable, Serializable {
     private String tripBCountry;
     private String tripBFrom;
     private String tripBOffice;
+    private  int tripBCusID;
 
     public TripBooking() {
         super();
@@ -139,6 +140,29 @@ public class TripBooking implements Parcelable, Serializable {
         this.tripBModeOfPayment = modeOfPayment;
         this.tripBTime = date;
         this.tripBStatus = status;
+    }
+
+    public TripBooking(int bookingID, int tripID, int bundleProfID, int bundleCusID, String paymentFor, int sitCount, String stopPointName, long bookingAmt, String modeOfPayment, String subDate, String paid,String nin,int noOfMinors,String state,String office,String country,String bookingName,String currency,String takeOffPoint) {
+        this.tripBID = bookingID;
+        this.tripBTripID = tripID;
+        this.tripBProfID = bundleProfID;
+        this.tripBCusID = bundleCusID;
+        this.tripBTypeOfService = paymentFor;
+        this.tripBSlots = sitCount;
+        this.tripBDest = stopPointName;
+        this.tripBAmount = bookingAmt;
+        this.tripBLuggageAmt = bookingAmt;
+        this.tripBNIN = nin;
+        this.tripBName = bookingName;
+        this.tripBCurStrng = currency;
+        this.tripBFrom = takeOffPoint;
+        this.tripBNoOfChildren = noOfMinors;
+        this.tripBOffice = office;
+        this.tripBState = state;
+        this.tripBCountry = country;
+        this.tripBModeOfPayment = modeOfPayment;
+        this.tripBTime = subDate;
+        this.tripBStatus = paid;
     }
 
     public void addBookerNIN(String bookerNin) {
@@ -362,5 +386,13 @@ public class TripBooking implements Parcelable, Serializable {
 
     public void setTripBOffice(String tripBOffice) {
         this.tripBOffice = tripBOffice;
+    }
+
+    public int getTripBCusID() {
+        return tripBCusID;
+    }
+
+    public void setTripBCusID(int tripBCusID) {
+        this.tripBCusID = tripBCusID;
     }
 }

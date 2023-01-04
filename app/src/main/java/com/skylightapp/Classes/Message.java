@@ -6,8 +6,7 @@ import android.os.Parcelable;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+
 
 import java.io.Serializable;
 
@@ -20,7 +19,7 @@ import static com.skylightapp.MarketClasses.Market.MARKET_TABLE;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_ID;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TABLE;
 
-@Entity(tableName = Message.MESSAGE_TABLE)
+//@Entity(tableName = Message.MESSAGE_TABLE)
 public class Message implements Serializable, Parcelable {
     public static final String MESSAGE_TABLE = "message_table";
     public static final String MESSAGE_ID = "_message_id";
@@ -116,7 +115,7 @@ public class Message implements Serializable, Parcelable {
     private String messageOffice;
     private String messageTime;
     private String messageType;
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     private int messageNo =150;
     private int messageBizID;
     private int messageMarketID;

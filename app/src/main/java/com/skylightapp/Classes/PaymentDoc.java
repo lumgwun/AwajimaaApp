@@ -4,8 +4,7 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+
 
 import java.io.Serializable;
 
@@ -16,10 +15,10 @@ import static com.skylightapp.Classes.CustomerDailyReport.REPORT_ID;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
-@Entity(tableName = PaymentDoc.DOCUMENT_TABLE)
+//@Entity(tableName = PaymentDoc.DOCUMENT_TABLE)
 public class PaymentDoc implements Parcelable, Serializable {
 
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     private int documentId=211;
     private String docTittle;
     private String docStatus;

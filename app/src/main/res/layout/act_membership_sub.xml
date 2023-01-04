@@ -4,15 +4,98 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:background="@drawable/sky4"
+    android:orientation="vertical"
+    android:background="@drawable/rect_their_message"
     tools:context="com.skylightapp.MembershipSubAct">
-    <WebView
 
-        android:id="@+id/membership_webview"
-
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtSpn3"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="19sp"
+        android:focusable="false"
+        android:drawableTop="@drawable/ic_icon_foreground"
+        android:layout_marginBottom="30dp"
+        android:textColor="@color/black"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:background="@null"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
+        android:text="Select the Membership Type" />
 
-        android:layout_height="match_parent" />
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="2dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        app:cardPreventCornerOverlap="false"
+        app:contentPadding="0dp">
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/m_Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:background="@drawable/rect6h"
+            android:drawableStart="@drawable/ic_icon_foreground"
+            android:entries="@array/coop_membership"
+            android:padding="30dp"
+            android:textSize="20sp"
+            android:layout_gravity="center_vertical|start"
+            android:gravity="center_vertical|start"
+            android:clickable="false" />
+
+    </androidx.cardview.widget.CardView>
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:text="Go to Payment Area"
+        android:textSize="20sp"
+        android:padding="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:textStyle="bold"
+        android:onClick="doMPayment"
+        android:id="@+id/p_Make_Sub"
+        android:textColor="@android:color/holo_red_dark"
+        android:background="@drawable/rect6h"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_membership"
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:gravity="end"
+        android:onClick="doMSubHome"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_gravity="end"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/home2" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+            <WebView
+                android:id="@+id/membership_webview"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_marginBottom="5dp"
+                android:layout_height="match_parent" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </ScrollView>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

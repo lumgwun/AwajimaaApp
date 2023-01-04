@@ -4,8 +4,6 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
@@ -13,7 +11,7 @@ import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
-@Entity(tableName = AcctStatement.ACCT_STATEMENT_TABLE)
+//@Entity(tableName = AcctStatement.ACCT_STATEMENT_TABLE)
 public class AcctStatement implements Serializable, Parcelable {
 
     public static final String ACCT_STATEMENT_TABLE = "Acct_Statement_Table";
@@ -40,7 +38,7 @@ public class AcctStatement implements Serializable, Parcelable {
             "PRIMARY KEY(" + ACCT_STATEMENT_ID +  "))";*/
 
 
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     private int statementId=152;
     private int walletAcct_No;
     private int soNo;

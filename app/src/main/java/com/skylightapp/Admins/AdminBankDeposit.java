@@ -3,8 +3,7 @@ package com.skylightapp.Admins;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,7 +11,7 @@ import java.util.Date;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
-@Entity(tableName = AdminBankDeposit.DEPOSIT_TABLE)
+//@Entity(tableName = AdminBankDeposit.DEPOSIT_TABLE)
 public class AdminBankDeposit implements Serializable, Parcelable {
     public static final String DEPOSIT_TABLE = "Deposit_Table";
     public static final String DEPOSIT_ID = "D_id";
@@ -39,7 +38,7 @@ public class AdminBankDeposit implements Serializable, Parcelable {
             DEPOSIT_CONFIRMATION_DATE + " TEXT, " + DEPOSIT_TRANSACTION_STATUS + " TEXT, " +  DEPOSIT_DOC + " TEXT, "+  DEPOSIT_BIZ_ID + " TEXT, "+  DEPOSIT_OFFICE_ID22 + " INTEGER, " +"PRIMARY KEY(" +DEPOSIT_ID + "), " +"FOREIGN KEY(" + DEPOSIT_PROFILE_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
 
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     int depositID=1182;
 
     int depositProfileID;

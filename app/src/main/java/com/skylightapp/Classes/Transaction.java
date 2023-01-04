@@ -6,7 +6,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
-import androidx.room.Entity;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -22,7 +21,7 @@ import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 
 
-@Entity(tableName = Transaction.TRANSACTIONS_TABLE)
+//@Entity(tableName = Transaction.TRANSACTIONS_TABLE)
 public class Transaction implements Parcelable, Serializable {
     public static final String TRANSACTIONS_TABLE = "transactions_Tables";
     public static final String TRANSACTION_ID = "transaction_id";

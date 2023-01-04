@@ -58,7 +58,7 @@ public class CusDAO extends DBHelperDAO{
     }
     public ArrayList<Customer> getCustomersFromCurrentProfile(int profileID) {
         ArrayList<Customer> customerArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
         String selection = CUSTOMER_PROF_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(profileID)};
@@ -81,7 +81,7 @@ public class CusDAO extends DBHelperDAO{
     }
     public ArrayList<Customer> getAwajimaCus_RB(String awajima,String bizStatus) {
         ArrayList<Customer> customerArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
         String selection = CUSTOMER_ROLE + "=? AND " + CUSTOMER_BIZ_STATUS + "=?";
         String[] selectionArgs = new String[]{valueOf(awajima), valueOf(bizStatus)};
@@ -104,7 +104,7 @@ public class CusDAO extends DBHelperDAO{
     }
     public ArrayList<Customer> getAwajimaCusRole(String awajima) {
         ArrayList<Customer> customerArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
         String selection = CUSTOMER_ROLE + "=?";
         String[] selectionArgs = new String[]{valueOf(awajima)};
@@ -173,7 +173,7 @@ public class CusDAO extends DBHelperDAO{
 
     public ArrayList<Customer> getAllCustomers11() {
         ArrayList<Customer> customers = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(CUSTOMER_TABLE, null, null, null, null,
                 null, null);
         if(cursor!=null && cursor.getCount() > 0) {
@@ -342,7 +342,7 @@ public class CusDAO extends DBHelperDAO{
     }
     public ArrayList<Customer> getCusForItemsPurchase(String items) {
         ArrayList<Customer> customers = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String rawQuery = "SELECT * FROM " + PACKAGE_TABLE + " INNER JOIN " + CUSTOMER_TABLE
                 + " ON " + PACKAGE_CUSTOMER_ID_FOREIGN + " = " + CUSTOMER_ID
                 + " WHERE " + PACKAGE_TYPE + " = " +  items;
@@ -358,7 +358,7 @@ public class CusDAO extends DBHelperDAO{
     }
     public ArrayList<Customer> getCusForSavings(String savings) {
         ArrayList<Customer> customers = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String rawQuery = "SELECT * FROM " + PACKAGE_TABLE + " INNER JOIN " + CUSTOMER_TABLE
                 + " ON " + PACKAGE_CUSTOMER_ID_FOREIGN + " = " + CUSTOMER_ID
                 + " WHERE " + PACKAGE_TYPE + " = " +  savings;
@@ -372,7 +372,7 @@ public class CusDAO extends DBHelperDAO{
     }
     public ArrayList<Customer> getCusWithoutPackage() {
         ArrayList<Customer> customers = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String rawQuery = "SELECT * FROM " + PACKAGE_TABLE + " INNER JOIN " + CUSTOMER_TABLE
                 + " ON " + PACKAGE_CUSTOMER_ID_FOREIGN + " = " + CUSTOMER_ID
                 + " WHERE " + PACKAGE_TYPE + " = ?" +  "";
@@ -388,7 +388,7 @@ public class CusDAO extends DBHelperDAO{
 
     public ArrayList<Customer> getCustomersBlockedForBiz(long bizID,String blocked) {
         ArrayList<Customer> customerArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
         String selection = CUS_BIZ_ID1 + "=? AND " + CUSTOMER_STATUS + "=?";
         String[] selectionArgs = new String[]{valueOf(bizID), valueOf(blocked)};
@@ -411,7 +411,7 @@ public class CusDAO extends DBHelperDAO{
     }
     public ArrayList<Customer> getCustomersForBizJoinedThisYear(long bizID,String year) {
         ArrayList<Customer> customerArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
         String selection = CUS_BIZ_ID1 + "=? AND " + CUSTOMER_DATE_JOINED + "=?";
         String[] selectionArgs = new String[]{valueOf(bizID), valueOf(year)};
@@ -438,7 +438,7 @@ public class CusDAO extends DBHelperDAO{
     }
     public ArrayList<Customer> getCusForInvestment(String investment) {
         ArrayList<Customer> customers = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String rawQuery = "SELECT * FROM " + PACKAGE_TABLE + " INNER JOIN " + CUSTOMER_TABLE
                 + " ON " + PACKAGE_CUSTOMER_ID_FOREIGN + " = " + CUSTOMER_ID
                 + " WHERE " + PACKAGE_TYPE + " = " +  investment;
@@ -452,7 +452,7 @@ public class CusDAO extends DBHelperDAO{
     }
     public ArrayList<Customer> getCusForPromo(String promo) {
         ArrayList<Customer> customers = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String rawQuery = "SELECT * FROM " + PACKAGE_TABLE + " INNER JOIN " + CUSTOMER_TABLE
                 + " ON " + PACKAGE_CUSTOMER_ID_FOREIGN + " = " + CUSTOMER_ID
                 + " WHERE " + PACKAGE_TYPE + " = " +  promo;
@@ -678,7 +678,7 @@ public class CusDAO extends DBHelperDAO{
     }
     public ArrayList<Customer> getCustomerFromMachine(String Customer) {
         ArrayList<Customer> customers = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = PROFILE_ROLE + "=?";
         String[] selectionArgs = new String[]{Customer};
 
@@ -701,7 +701,7 @@ public class CusDAO extends DBHelperDAO{
 
     public ArrayList<Customer> getAllCustomers() {
         ArrayList<Customer> customers = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(CUSTOMER_TABLE, null, null, null, null,
                 null, null);
@@ -720,7 +720,7 @@ public class CusDAO extends DBHelperDAO{
     }
     public ArrayList<Customer> getAllCustomersNames() {
         ArrayList<Customer> customers = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(CUSTOMER_TABLE, null, null, null, null,
                 null, null);
@@ -740,7 +740,7 @@ public class CusDAO extends DBHelperDAO{
 
     public ArrayList<Customer> getAllCusForBizWithoutPacksr() {
         ArrayList<Customer> customers = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String rawQuery = "SELECT * FROM " + CUSTOMER_TABLE + " INNER JOIN " + PACKAGE_TABLE
                 + " ON " + CUSTOMER_ID + " = " + PACKAGE_CUSTOMER_ID_FOREIGN;
         Cursor cursor = db.rawQuery(rawQuery,
@@ -753,7 +753,7 @@ public class CusDAO extends DBHelperDAO{
     }
     public ArrayList<Customer> getAllCusForBizPacks(long bizID,int packageID) {
         ArrayList<Customer> customers = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
         String selection = CUS_BIZ_ID1 + "=?AND " + PACKAGE_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(bizID), valueOf(packageID)};
@@ -779,7 +779,7 @@ public class CusDAO extends DBHelperDAO{
 
     public ArrayList<Customer> getCustomerFromCurrentProfile(int profileID) {
         ArrayList<Customer> customers = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = PROFILE_ROLE + "=?";
         String[] selectionArgs = new String[]{String.valueOf(profileID)};
 
@@ -858,7 +858,7 @@ public class CusDAO extends DBHelperDAO{
 
     public ArrayList<Customer> getAllCustomerSpinner() {
         ArrayList<Customer> customers = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(CUSTOMER_TABLE, null, null, null, null,
                 null, null);
@@ -879,7 +879,7 @@ public class CusDAO extends DBHelperDAO{
 
     public ArrayList<Customer> getAllCustomerBranchSpinner(String branchOffice) {
         ArrayList<Customer> customers = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = CUSTOMER_OFFICE + "=?";
         String[] selectionArgs = new String[]{valueOf(branchOffice)};
 
@@ -923,7 +923,7 @@ public class CusDAO extends DBHelperDAO{
 
     public ArrayList<Customer> getAllCusForSo() {
         ArrayList<Customer> customers = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String rawQuery = "SELECT * FROM " + STANDING_ORDER_TABLE + " INNER JOIN " + CUSTOMER_TABLE
                 + " ON " + SO_CUS_ID + " = " + CUSTOMER_ID;
         Cursor cursor = db.rawQuery(rawQuery,
@@ -951,7 +951,7 @@ public class CusDAO extends DBHelperDAO{
 
     public ArrayList<Customer> getCustomersFromCurrentCustomer(int customerID) {
         ArrayList<Customer> customers = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = CUSTOMER_ID + "=?";
         String[] selectionArgs = new String[]{String.valueOf(customerID)};
 
@@ -1125,7 +1125,7 @@ public class CusDAO extends DBHelperDAO{
 
 
     public Cursor queueAll() {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = new String[]{CUSTOMER_ID, CUSTOMER_USER_NAME, CUSTOMER_PHONE_NUMBER, CUSTOMER_FIRST_NAME, CUSTOMER_EMAIL_ADDRESS, CUSTOMER_SURNAME};
         Cursor cursor = db.query(CUSTOMER_TABLE, columns,
                 null, null, CUSTOMER_PHONE_NUMBER, null, null);
@@ -1167,7 +1167,7 @@ public class CusDAO extends DBHelperDAO{
 
     public ArrayList<Customer> getCustomersFromProfileWithDate(int profileID,String date) {
         ArrayList<Customer> customers = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {CUSTOMER_SURNAME,CUSTOMER_FIRST_NAME,CUSTOMER_OFFICE};
         String selection = CUSTOMER_PROF_ID + "=? AND " + CUSTOMER_DATE_JOINED + "=?";
         String[] selectionArgs = new String[]{valueOf(profileID), valueOf(date)};
@@ -1247,7 +1247,7 @@ public class CusDAO extends DBHelperDAO{
 
 
     public Cursor queueAll_SortBy_PhoneNumber_And_Id() {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = new String[]{PROFILE_ID, CUSTOMER_PHONE_NUMBER, CUSTOMER_ID};
 
         return db.query(CUSTOMER_TABLE, columns,
@@ -1256,7 +1256,7 @@ public class CusDAO extends DBHelperDAO{
     }
 
     public Cursor queueAll_SortBy_Office_And_Gender() {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = new String[]{PROFILE_ID, CUSTOMER_OFFICE, CUSTOMER_GENDER};
         Cursor cursor = db.query(CUSTOMER_TABLE, columns,
                 null, null, null, CUSTOMER_OFFICE, CUSTOMER_OFFICE);
@@ -1278,7 +1278,7 @@ public class CusDAO extends DBHelperDAO{
     public ArrayList<Customer> getCusForBiz(long bizID) {
 
         ArrayList<Customer> customers = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {CUSTOMER_SURNAME,CUSTOMER_FIRST_NAME,CUSTOMER_OFFICE,CUSTOMER_ID,CUSTOMER_DATE_JOINED,CUS_BIZ_ID1};
         String selection = CUS_BIZ_ID1 + "=?";
         String[] selectionArgs = new String[]{String.valueOf(bizID)};
@@ -1291,7 +1291,7 @@ public class CusDAO extends DBHelperDAO{
 
     public ArrayList<Customer> getAllCustomerSpinner(long bizID) {
         ArrayList<Customer> customers = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = CUS_BIZ_ID1 + "=?";
         String[] selectionArgs = new String[]{String.valueOf(bizID)};
         Cursor cursor = db.query(CUSTOMER_TABLE, null, selection, selectionArgs, null, null, null);
@@ -1302,7 +1302,7 @@ public class CusDAO extends DBHelperDAO{
     }
     public ArrayList<Customer> getCustomerFromBiz(long bizID) {
         ArrayList<Customer> customers = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = CUS_BIZ_ID1 + "=?";
         String[] selectionArgs = new String[]{String.valueOf(bizID)};
 
@@ -1325,7 +1325,7 @@ public class CusDAO extends DBHelperDAO{
 
     public ArrayList<Customer> getCustomersForBizToday(long bizID,String date) {
         ArrayList<Customer> customerArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
         String selection = CUS_BIZ_ID1 + "=? AND " + CUSTOMER_DATE_JOINED + "=?";
         String[] selectionArgs = new String[]{valueOf(bizID), valueOf(date)};

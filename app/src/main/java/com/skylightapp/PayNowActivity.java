@@ -80,46 +80,31 @@ import static java.lang.String.valueOf;
 
 public class PayNowActivity extends AppCompatActivity  {
     SharedPreferences sp;
-    Button paynow, homeBack,addCustomer;
-    TextView p_id2, p_des2, c_total2, item_number2,aamount, item_date, totalAmount;
-
+    Button paynow, homeBack;
     private Card card;
     private Charge charge;
 
-    private EditText emailField,c_name1,c_name2,c_phone2,cEmail2,cAddress2;
     private EditText cardNumberField;
     private EditText expiryMonthField;
     private EditText expiryYearField;
     private EditText cvvField;
 
-    private String email, cardNumber, cvv;
+    private String  cardNumber, cvv;
     private int expiryMonth, expiryYear;
-
-    String ManagersBundleString;
-    String iDBundleString;
     String PackageName;
-    String amountBundleString;
-    String dateBundleString;
-    String imageBundleString;
-    double totalBundleString;
 
 
     private SharedPreferences userPreferences;
     private Gson gson;
     private String json;
-    EditText edtAccountName,edtNoOfDays;
-    Button btnCancel,btnAddAccount,addNewCustomer,home_from_;
-    TextView bankNameVerification;
+    EditText edtNoOfDays;
+    Button home_from_;
     private  Customer customer;
 
     private Profile userProfile;
     DBHelper dbHelper;
 
-    private boolean displayAddAccountDialogOnLaunch,isDisplayAddCustomerDialogOnLaunch ;
-    private Dialog accountDialog,customerDialog;
-
     private GoogleMap mMap;
-    private final int MY_LOCATION_REQUEST_CODE = 100;
 
     private Handler handler;
     private Marker m;
@@ -132,15 +117,9 @@ public class PayNowActivity extends AppCompatActivity  {
     public final static int SHUTDOWN = 5;
 
     private static final String TAG = PayNowActivity.class.getSimpleName();
-    private static final String URL = "https://skylightciacs.com/wc-api/Tbz_WC_Paystack_Webhook/";
-    private static final long INTERVAL = 1000 * 10;
-    private static final long FASTEST_INTERVAL = 1000 * 5;
-    Button btnFusedLocation;
-    TextView tvLocation;
-    LocationRequest mLocationRequest;
+    private static final String URL = "https://eod04os6ldlez5q.m.pipedream.net";
+
     Location mCurrentLocation;
-    String mLastUpdateTime;
-    private Location previousLocation;
     double newAccountBalance;
     SecureRandom random =new SecureRandom();
     int transactionID ;
@@ -175,10 +154,7 @@ public class PayNowActivity extends AppCompatActivity  {
     int reportID;
     String dateOfReport;
     String accessCode,title,packageType;
-    Toolbar toolbar;
-    Customer allCustomer;
     MarketBizPackage marketBizPackage;
-    int packageIndex;
     Account account;
     private CustomerDailyReport customerDailyReport;
     String inProgress;
@@ -583,7 +559,7 @@ public class PayNowActivity extends AppCompatActivity  {
                 newSavingsID = random.nextInt((int) (Math.random() * 1201) + 10876);
                 transactionID = random.nextInt((int) (Math.random() * 401) + 1780);
 
-                refID = "SkyLightT/"+ random.nextInt((int) (Math.random() * 900000) + 100000);
+                refID = "Awajima/"+ random.nextInt((int) (Math.random() * 900000) + 100000);
                 @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 String currentDateAndTime = sdf.format(new Date());
 
@@ -622,42 +598,47 @@ public class PayNowActivity extends AppCompatActivity  {
     }
     private void saveToDB(String tittle, String tittle1, String details, MarketBizPackage marketBizPackage, Customer customer, int profileID, String customerPhoneNo, int customerId8, String packageName, double packageAmount, double newAccountBalance, int newSavingsID, double amount, int transactionID, String currentDateAndTime, int accountID, String customerName, int selectedNumberOfDays, double totalToday, int numberOfDaysRemaining, double amountRemaining, String dateAndTime){
         dbHelper = new DBHelper(this);
-        sqLiteDatabase = dbHelper.getWritableDatabase();
+        TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(this);
+        TranXDAO tranXDAO= new TranXDAO(this);
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.openDataBase();
-            dbHelper.insertDailyReport(packageID, newSavingsID, profileID, customerId8,currentDateAndTime, packageAmount, selectedNumberOfDays, totalToday,amountSoFar+ totalToday, amountRemaining, numberOfDaysRemaining,"paid");
+            if(dbHelper !=null){
+                try {
+                    dbHelper.insertDailyReport(packageID, newSavingsID, profileID, customerId8,currentDateAndTime, packageAmount, selectedNumberOfDays, totalToday,amountSoFar+ totalToday, amountRemaining, numberOfDaysRemaining,"paid");
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+            }
 
 
 
         }
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(this);
-            dbHelper.openDataBase();
-            timeLineClassDAO.insertTimeLine(tittle,details,currentDateAndTime,mCurrentLocation);
+            if(timeLineClassDAO !=null){
+                try {
+                    timeLineClassDAO.insertTimeLine(tittle,details,currentDateAndTime,mCurrentLocation);
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+            }
 
 
 
         }
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            TranXDAO tranXDAO= new TranXDAO(this);
-            dbHelper.openDataBase();
-            tranXDAO.saveNewTransaction(profileID, customerId8,Skylightransaction, accountID, "Awajima", customerName, Transaction.TRANSACTION_TYPE.DEPOSIT, totalToday, transactionID, officeBranch, currentDateAndTime);
+            if(tranXDAO !=null){
+                try {
+                    tranXDAO.saveNewTransaction(profileID, customerId8,Skylightransaction, accountID, "Awajima", customerName, Transaction.TRANSACTION_TYPE.DEPOSIT, totalToday, transactionID, officeBranch, currentDateAndTime);
 
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
 
+            }
 
-        }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.openDataBase();
-
-
-        }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.openDataBase();
 
 
         }

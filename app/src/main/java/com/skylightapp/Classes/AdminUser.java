@@ -5,9 +5,6 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 
 import com.skylightapp.Admins.AdminBankDeposit;
 import com.skylightapp.MarketClasses.BusinessOthers;
@@ -25,7 +22,7 @@ import java.util.Date;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
-@Entity(tableName = AdminUser.ADMIN_TABLE)
+//@Entity(tableName = AdminUser.ADMIN_TABLE)
 public class AdminUser  implements Parcelable, Serializable {
     //@Ignore
     public static final String ADMIN_ID = "admin_id";
@@ -100,7 +97,7 @@ public class AdminUser  implements Parcelable, Serializable {
     public enum ADMIN_TYPE {
         REGULATOR, TELLER, RECORD_KEEPER,PARTNER, WORKER,INVESTOR;
     }
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     private int adminID=1013;
     String adminFirstName;
     String adminSurname;
@@ -116,7 +113,7 @@ public class AdminUser  implements Parcelable, Serializable {
     String adminDob;
     String adminDateJoined;
     String adminAddress;
-    @Ignore
+    //@Ignore
     private OfficeBranch officeBranch;
     private String adminRole;
     String adminNextOfKin;
@@ -335,17 +332,17 @@ public class AdminUser  implements Parcelable, Serializable {
     public Uri getAdminPhoto() {
         return adminPhoto;
     }
-    @Ignore
+    //@Ignore
     ArrayList<TellerReport> tellerReportArrayList;
-    @Ignore
+    //@Ignore
     ArrayList<Transaction> transactions;
-    @Ignore
+    //@Ignore
     ArrayList<Payment> payments;
-    @Ignore
+    //@Ignore
     boolean alreadyAdded;
-    @Ignore
+    //@Ignore
     private ArrayList<TimeLine> timeLines;
-    @Ignore
+    //@Ignore
     private transient boolean authenticated;
 
     public AdminUser() {
@@ -427,16 +424,16 @@ public class AdminUser  implements Parcelable, Serializable {
         }
         return builder.toString();
     }*/
-    @Ignore
+    //@Ignore
 
     public boolean isAlreadyAdded() {
         return false;
     }
-    @Ignore
+    //@Ignore
     public void setAlreadyAdded(boolean alreadyAdded) {
 
     }
-    @Ignore
+    //@Ignore
     public boolean getAlreadyAdded() {
         return alreadyAdded;
     }
@@ -444,7 +441,7 @@ public class AdminUser  implements Parcelable, Serializable {
 
 
 
-    @Ignore
+    //@Ignore
     public AdminUser(int uid, String adminSurname, String adminFirstName, String customerPhoneNumber, String customerEmailAddress, String customerAddress, String customerGender, String customerOffice, String customerState, String adminUserName, String adminPassword) {
         super();
         this.adminID = uid;
@@ -454,28 +451,28 @@ public class AdminUser  implements Parcelable, Serializable {
         this.adminUserName = adminUserName;
         this.adminOffice = customerOffice;
     }
-    @Ignore
+    //@Ignore
     public void addReport(int dbaseID,int reportID,String date,String status) {
         ArrayList<TellerReport> tellerReports = null;
         reportID = tellerReportArrayList.size() + 1;
         TellerReport dailyReport = new TellerReport(reportID, dbaseID,date,status);
         tellerReportArrayList.add(dailyReport);
     }
-    @Ignore
+    //@Ignore
     public void addPayment(int dbaseID,int reportID,Date date,String status) {
         ArrayList<Payment> payments = null;
         reportID = payments.size() + 1;
         Payment payment = new Payment(reportID, dbaseID,date,status);
         payments.add(payment);
     }
-    @Ignore
+    //@Ignore
 
     public void setTransactions(ArrayList<Transaction> transactionArrayList) {
         this.transactions = transactionArrayList;
     }
 
 
-    @Ignore
+    //@Ignore
 
     public void addTransaction(int transactionID) {
         ArrayList<Transaction> transactions = null;
@@ -483,38 +480,38 @@ public class AdminUser  implements Parcelable, Serializable {
         Transaction transaction = new Transaction();
         transactions.add(transaction);
     }
-    @Ignore
+    //@Ignore
     public void addTellerReport(int dbaseID, int reportID, String date, double balance, String status) {
         ArrayList<TellerReport> tellerReports = null;
         reportID = tellerReportArrayList.size() + 1;
         TellerReport dailyReport = new TellerReport(reportID, dbaseID,date,balance,status);
         tellerReportArrayList.add(dailyReport);
     }
-    @Ignore
+    //@Ignore
     public void addTellerReport(int keyExtraReportId, long bizID,String bizName, String officeBranch, double amountEntered, double amountExpected, int noOfSavings, String reportDate, String status) {
         ArrayList<TellerReport> tellerReports = null;
         keyExtraReportId = tellerReportArrayList.size() + 1;
         TellerReport dailyReport = new TellerReport(keyExtraReportId, bizID, officeBranch,amountEntered,noOfSavings,reportDate);
         tellerReportArrayList.add(dailyReport);
     }
-    @Ignore
+    //@Ignore
 
     public ArrayList<Transaction> getTransactions() { return transactions; }
-    @Ignore
+    //@Ignore
     public void addTimeLine(int iD,String tittle,String timelineDetails) {
         timeLines= new ArrayList<>();
         String history = "History" + (timeLines.size() + 1);
         TimeLine timeLine = new TimeLine(iD, tittle,timelineDetails);
         timeLines.add(timeLine);
     }
-    @Ignore
+    //@Ignore
     public void addTimeLine(String tittle,String timelineDetails) {
         timeLines= new ArrayList<>();
         String history = "History" + (timeLines.size() + 1);
         TimeLine timeLine = new TimeLine(tittle,timelineDetails);
         timeLines.add(timeLine);
     }
-    @Ignore
+    //@Ignore
 
     public void addTellerReport(int tellerReportID, long bizName,String officeBranch, double amountEntered, double amountExpected, int noOfSavings, String reportDate, String status) {
         ArrayList<TellerReport> tellerReports = null;
@@ -522,7 +519,7 @@ public class AdminUser  implements Parcelable, Serializable {
         TellerReport dailyReport = new TellerReport(keyExtraReportId, bizName, officeBranch,amountEntered,noOfSavings,reportDate);
         tellerReportArrayList.add(dailyReport);
     }
-    @Ignore
+    //@Ignore
 
     public void addDepositReport(int keyExtraReportId, String adminName,String officeBranch, String selectedBank, double amountEntered, Date reportDate) {
         ArrayList<AdminBankDeposit> adminBankDeposits = null;
@@ -530,12 +527,12 @@ public class AdminUser  implements Parcelable, Serializable {
         AdminBankDeposit adminBankDeposit = new AdminBankDeposit(keyExtraReportId, officeBranch,selectedBank,amountEntered,reportDate);
         adminBankDeposits.add(adminBankDeposit);
     }
-    @Ignore
+    //@Ignore
 
     public OfficeBranch getOfficeBranch() {
         return officeBranch;
     }
-    @Ignore
+    //@Ignore
     public void setOfficeBranch(OfficeBranch officeBranch) {
         this.officeBranch = officeBranch;
     }

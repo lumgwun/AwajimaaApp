@@ -3,8 +3,7 @@ package com.skylightapp.MapAndLoc;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,7 +15,8 @@ import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.gms.location.places.Place;
 import com.skylightapp.Classes.Profile;
 
-@Entity(tableName = EmergencyReport.EMERGENCY_REPORT_TABLE)
+
+//@Entity(tableName = EmergencyReport.EMERGENCY_REPORT_TABLE)
 public class EmergencyReport implements Parcelable, Serializable {
     public static final String EMERG_REPORT_ID = "emerg_id";
     public static final String EMERG_R_TIME = "Emeg_locTime";
@@ -44,11 +44,19 @@ public class EmergencyReport implements Parcelable, Serializable {
     public static final String EMERG_R_MORE_INFO = "emerg_report_More";
     public static final String EMERG_R_PLACE_LATLNG = "emerg_Place_LatLng";
 
+
     public static final String CREATE_EMERGENCY_REPORT_TABLE = "CREATE TABLE IF NOT EXISTS " + EMERGENCY_REPORT_TABLE + " (" + EMERG_REPORT_ID + " INTEGER , " + EMERG_R_PROF_ID + " INTEGER , " +
             EMERG_R_TIME + " TEXT , " + EMERG_R_TYPE + " TEXT , " + EMERG_R_LAT + " REAL , "+ EMERG_R_LNG + " REAL , " + EMERG_R_STATUS + " TEXT , " + EMERG_REPORT + " TEXT , " + EMERG_R_ADDRESS + " TEXT , " + EMERG_R_LATLNG + " REAL , "+ EMERG_R_SUBLOCALE + " TEXT , " + EMERG_R_DB_ID + " INTEGER , "+ EMERG_R_BG_ADDRESS + " TEXT , "+ EMERG_R_TOWN + " TEXT , "+ EMERG_R_STATE + " TEXT , "+ EMERG_R_BIZ_ID + " INTEGER , "+ EMERG_R_MARKET_ID + " INTEGER , "+ EMERG_R_COUNTRY + " TEXT , "+ EMERG_R_GROUP + " TEXT , "+ EMERG_R_QUESTION + " TEXT , "+ EMERG_R_LGA + " TEXT , "+ EMERG_R_COMPANY + " TEXT , "+ EMERG_R_MORE_INFO + " TEXT , "+ EMERG_R_PLACE_LATLNG + " TEXT , "+ "PRIMARY KEY(" + EMERG_R_DB_ID + "), " +
             "FOREIGN KEY(" + EMERG_R_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+
+
+
     private Place emerGPlace;
     private boolean selected;
+    private ArrayList<Region> emrRegions;
+    private ArrayList<ZOI> emrZOIs;
+    private ArrayList<RegionLog> emrRegionLog;
+    private ArrayList<MovingPosition> emrMovingPosition;
 
 
     public EmergencyReport() {
@@ -56,7 +64,7 @@ public class EmergencyReport implements Parcelable, Serializable {
 
     }
     int profileID;
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     private int emergReportDBID;
     Profile userProfile;
     private int emergReportID;
@@ -91,6 +99,10 @@ public class EmergencyReport implements Parcelable, Serializable {
     private ArrayList<Fence> emergReportFences;
     private ArrayList<CircularFence> emrCircularFences;
     private String emrPlaceLatLng;
+    private ArrayList<POI> emrPOIList;
+    private POI emrPoi;
+    private Visit emrVisit;
+    private ArrayList<Visit> emrVisitList;
 
 
     public EmergencyReport(int reportID, int profileID, long bizID, String dateOfToday, String selectedType, String stringLatLng, String locality, String bgAddress, String address, String country) {
@@ -144,6 +156,12 @@ public class EmergencyReport implements Parcelable, Serializable {
         emergReportFenceEs.add(fenceEvent);
 
     }
+    public void addEmergPOI(POI emrPoi) {
+        emrPOIList= new ArrayList<>();
+        emrPOIList.add(emrPoi);
+
+    }
+
 
     public void removeEmergLocFence(ArrayList<ERGeofenceResponse> ERGeofenceResponses, ERGeofenceResponse ERGeofenceResponse) {
         ERGeofenceResponses.remove(ERGeofenceResponse);
@@ -178,6 +196,30 @@ public class EmergencyReport implements Parcelable, Serializable {
 
 
     }
+    public void addEmergVisit(Visit emrVisit) {
+        emrVisitList= new ArrayList<>();
+        emrVisitList.add(emrVisit);
+
+
+
+    }
+
+
+    public void addEmergReportRegions(Region region) {
+        emrRegions= new ArrayList<>();
+        emrRegions.add(region);
+
+
+
+    }
+
+    public void addZOI(ZOI zoi) {
+        emrZOIs= new ArrayList<>();
+        emrZOIs.add(zoi);
+
+
+
+    }
     public void addMoreEmergReports(EmergencyReport emergencyReport) {
         emergReportMoreReports= new ArrayList<>();
         emergReportMoreReports.add(emergencyReport);
@@ -185,6 +227,22 @@ public class EmergencyReport implements Parcelable, Serializable {
 
 
     }
+    public void addEmergRegionLog(RegionLog regionLog) {
+        emrRegionLog= new ArrayList<>();
+        emrRegionLog.add(regionLog);
+
+
+
+    }
+    public void addMovingPosition(MovingPosition movingPosition) {
+        emrMovingPosition= new ArrayList<>();
+        emrMovingPosition.add(movingPosition);
+
+
+
+    }
+
+
 
 
 
@@ -515,5 +573,69 @@ public class EmergencyReport implements Parcelable, Serializable {
 
     public void setEmrPlaceLatLng(String emrPlaceLatLng) {
         this.emrPlaceLatLng = emrPlaceLatLng;
+    }
+
+    public ArrayList<POI> getEmrPOIList() {
+        return emrPOIList;
+    }
+
+    public void setEmrPOIList(ArrayList<POI> emrPOIList) {
+        this.emrPOIList = emrPOIList;
+    }
+
+    public POI getEmrPoi() {
+        return emrPoi;
+    }
+
+    public void setEmrPoi(POI emrPoi) {
+        this.emrPoi = emrPoi;
+    }
+
+    public Visit getEmrVisit() {
+        return emrVisit;
+    }
+
+    public void setEmrVisit(Visit emrVisit) {
+        this.emrVisit = emrVisit;
+    }
+
+    public ArrayList<Visit> getEmrVisitList() {
+        return emrVisitList;
+    }
+
+    public void setEmrVisitList(ArrayList<Visit> emrVisitList) {
+        this.emrVisitList = emrVisitList;
+    }
+
+    public ArrayList<Region> getEmrRegions() {
+        return emrRegions;
+    }
+
+    public void setEmrRegions(ArrayList<Region> emrRegions) {
+        this.emrRegions = emrRegions;
+    }
+
+    public ArrayList<com.skylightapp.MapAndLoc.ZOI> getEmrZOIs() {
+        return emrZOIs;
+    }
+
+    public void setEmrZOIs(ArrayList<ZOI> emrZOIs) {
+        this.emrZOIs = emrZOIs;
+    }
+
+    public ArrayList<com.skylightapp.MapAndLoc.RegionLog> getEmrRegionLog() {
+        return emrRegionLog;
+    }
+
+    public void setEmrRegionLog(ArrayList<RegionLog> emrRegionLog) {
+        this.emrRegionLog = emrRegionLog;
+    }
+
+    public ArrayList<com.skylightapp.MapAndLoc.MovingPosition> getEmrMovingPosition() {
+        return emrMovingPosition;
+    }
+
+    public void setEmrMovingPosition(ArrayList<MovingPosition> emrMovingPosition) {
+        this.emrMovingPosition = emrMovingPosition;
     }
 }

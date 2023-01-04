@@ -4,10 +4,12 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.LinearLayoutCompat;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -17,13 +19,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.location.Geocoder;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -73,6 +80,7 @@ import java.util.Locale;
 import co.paystack.android.PaystackSdk;
 import co.paystack.android.Transaction;
 
+import static com.skylightapp.Classes.AppConstants.AWAJIMA_SO_WEBHOOK;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 import static com.skylightapp.Classes.Profile.PROFILE_PHONE;
 import static com.skylightapp.Classes.SavingsLinkUtil.SAVINGS_100K_M12;
@@ -145,10 +153,10 @@ import static com.skylightapp.Transactions.OurConfig.PUBLIC_KEY_PAYSTACK;
 import static com.skylightapp.Transactions.OurConfig.SKYLIGHT_PAYSTACK_PLAN_UPDATE;
 
 @SuppressWarnings({"ResultOfMethodCallIgnored", "EqualsBetweenInconvertibleTypes"})
-public class SavingsSOAct extends AppCompatActivity {
+public class SavingsSOAct extends AppCompatActivity implements View.OnClickListener{
     public static final String KEY = "SavingsSOAct.KEY";
     AppCompatSpinner freqSpn;
-    String callUri ="https://eo5masw7fp9k6kz.m.pipedream.net";
+    String callUri =AWAJIMA_SO_WEBHOOK;
     String selectedPlan,planCode,PLAN_CODE,phoneNo,PHONE_NO,reference,REF,authorization_code,AUTORIZATION,email,EMAIL,CALL_BACK_LINK,
             callback_url;
     Customer customer;
@@ -171,7 +179,6 @@ public class SavingsSOAct extends AppCompatActivity {
 
     int soNo ;
     String cusNames,machine;
-    double soBalance=0.00;
     double expectedAmount,totalForToday;
     double amountDiff;
     double newBalance;
@@ -207,7 +214,10 @@ public class SavingsSOAct extends AppCompatActivity {
     private MaterialCardView cardView;
     private Bundle bundle;
     private DBHelper dbHelper;
+    private AppCompatButton proceed_Button;
     com.skylightapp.Classes.Transaction Skylightransaction;
+    private Animation translater, translER;
+    private Date date;
     com.skylightapp.Classes.Transaction.TRANSACTION_TYPE transaction_type;
     ActivityResultLauncher<Intent> standingOrderUpdateStartForResult = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -320,6 +330,60 @@ public class SavingsSOAct extends AppCompatActivity {
                 }*/
             });
     private SQLiteDatabase sqLiteDatabase;
+    int currentItem = 0;
+    int currentPlan = 0;
+    private LinearLayoutCompat planLayout;
+
+    private AdapterView.OnItemSelectedListener freq_listener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if(currentItem == position){
+                return; //do nothing
+            }
+            else {
+                frequency = freqSpn.getSelectedItem().toString();
+
+            }
+            //currentItem = position;
+
+            if(frequency !=null){
+                planLayout.setVisibility(View.VISIBLE);
+                dogetPlan(frequency);
+
+            }
+
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+
+    };
+    private AdapterView.OnItemSelectedListener plan_listener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if(currentPlan == position){
+                return; //do nothing
+            }
+            else {
+                selectedPlan = spnPlans.getSelectedItem().toString();
+
+            }
+            //currentItem = position;
+
+            if(selectedPlan !=null){
+                doFinalProcessing(selectedPlan);
+
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+
+    };
 
 
     @Override
@@ -328,16 +392,22 @@ public class SavingsSOAct extends AppCompatActivity {
         setContentView(R.layout.act_savings_so);
         setTitle("Automated Savings");
         bundle= new Bundle();
+        PaystackSdk.initialize(SavingsSOAct.this);
+        PaystackSdk.setPublicKey(PUBLIC_KEY_PAYSTACK);
         standingOrderAcct= new StandingOrderAcct();
         freqSpn = findViewById(R.id.freq_Spinner);
+        spnPlans = findViewById(R.id.all_plans);
+        translater = AnimationUtils.loadAnimation(this, R.anim.bounce);
+         translER = AnimationUtils.loadAnimation(this, R.anim.pro_animation);
+        proceed_Button=findViewById(R.id.proceed_Button);
+        spnPlans.setOnItemSelectedListener(plan_listener);
+        freqSpn.setOnItemSelectedListener(freq_listener);
+
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         userProfile= new Profile();
         customer= new Customer();
-        spnPlans = findViewById(R.id.all_plans);
-        txtResult = findViewById(R.id.txtResult4);
-        cardView = findViewById(R.id.cd_material);
 
-        Date date = new Date();
+        date = new Date();
         profileDao= new ProfDAO(this);
 
         timeLineClassDAO= new TimeLineClassDAO(this);
@@ -346,12 +416,13 @@ public class SavingsSOAct extends AppCompatActivity {
         tranXDAO= new TranXDAO(this);
         sodao= new SODAO(this);
         messageDAO= new MessageDAO(this);
+        proceed_Button.setOnClickListener(this);
 
         transaction_type=null;
         Skylightransaction= new com.skylightapp.Classes.Transaction();
 
         SimpleDateFormat dateFormatWithZone = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String currentDate = dateFormatWithZone.format(date);
+        currentDate = dateFormatWithZone.format(date);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         refID= "Awajima/"+currentDate+ random.nextInt((int) (Math.random() * 9091) + 19);
         soAccountNumber = random.nextInt((int) (Math.random() * 1044) + 100125);
@@ -361,41 +432,7 @@ public class SavingsSOAct extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         gson = new Gson();
         gson1 = new Gson();
-        freqSpn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                frequency = freqSpn.getSelectedItem().toString();
-                //frequency = (String) adapterView.getItemAtPosition(i);
-
-
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-        if(frequency !=null){
-            if(frequency.equalsIgnoreCase("Weekly")){
-                ArrayAdapter<String> myAdaptor = new ArrayAdapter<String>(SavingsSOAct.this,
-                        android.R.layout.simple_spinner_item,
-                        getResources().getStringArray(R.array.savings_weekly_plans));
-
-                myAdaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-                spnPlans.setAdapter(myAdaptor);
-
-            }
-            if(frequency.equalsIgnoreCase("Monthly")){
-                ArrayAdapter<String> myAdaptor = new ArrayAdapter<String>(SavingsSOAct.this,
-                        android.R.layout.simple_spinner_item,
-                        getResources().getStringArray(R.array.savings_monthly_plans));
-
-                myAdaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-                spnPlans.setAdapter(myAdaptor);
-
-            }
-        }
+        doSpinnerInt();
 
 
         json = userPreferences.getString("LastProfileUsed", "");
@@ -441,32 +478,63 @@ public class SavingsSOAct extends AppCompatActivity {
         Bundle planBundle = new Bundle();
 
 
-        AppCompatButton proceed_Button=findViewById(R.id.proceed_Button);
+        dbHelper= new DBHelper(this);
 
+    }
 
-        spnPlans.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    private void doSpinnerInt() {
+        freqSpn = findViewById(R.id.freq_Spinner);
+        spnPlans = findViewById(R.id.all_plans);
+        txtResult = findViewById(R.id.txtResult4);
+        cardView = findViewById(R.id.cd_material);
+        planLayout = findViewById(R.id.all_plans_Layout);
 
-            public void onClick(View v) {
+        freqSpn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                //frequency = freqSpn.getSelectedItem().toString();
+
 
             }
 
             @Override
-            public void onItemSelected(AdapterView<?> arg0, View view, int position, long row_id) {
-                selectedPlan = spnPlans.getSelectedItem().toString();
-                //selectedPlan = (String) arg0.getItemAtPosition(position);
-                Toast.makeText(SavingsSOAct.this, selectedPlan, Toast.LENGTH_SHORT).show();
-                //selectedPlan = String.valueOf(planSpn.getSelectedItem());
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
 
         });
-        dbHelper= new DBHelper(this);
+
+
+
+    }
+    private void dogetPlan(String frequency) {
+        if(frequency !=null){
+            if(frequency.equalsIgnoreCase("Weekly")){
+                ArrayAdapter<String> myAdaptor = new ArrayAdapter<String>(SavingsSOAct.this,
+                        android.R.layout.simple_spinner_item,
+                        getResources().getStringArray(R.array.savings_weekly_plans));
+
+                myAdaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                spnPlans.setAdapter(myAdaptor);
+
+            }
+            if(frequency.equalsIgnoreCase("Monthly")){
+                ArrayAdapter<String> myAdaptor = new ArrayAdapter<String>(SavingsSOAct.this,
+                        android.R.layout.simple_spinner_item,
+                        getResources().getStringArray(R.array.savings_monthly_plans));
+
+                myAdaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                spnPlans.setAdapter(myAdaptor);
+
+            }
+
+        }
+
+    }
+
+    public  void doFinalProcessing(String selectedPlan){
         if(selectedPlan !=null){
             if (selectedPlan.equalsIgnoreCase("SAVINGS N100 for 31 Weeks")) {
                 weblink=SAVINGS_100_W31;
@@ -1046,188 +1114,7 @@ public class SavingsSOAct extends AppCompatActivity {
 
 
             }
-
-        }
-
-        proceed_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PaystackSdk.initialize(SavingsSOAct.this);
-                PaystackSdk.setPublicKey(PUBLIC_KEY_PAYSTACK);
-                sOAmount=AMOUNT;
-                SimpleDateFormat dateFormatWithZone = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                String soDate = dateFormatWithZone.format(date);
-                userProfile= new Profile();
-                userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-                //userPreferences = PreferenceManager.getDefaultSharedPreferences(SavingsSOAct.this);
-                json = userPreferences.getString("LastProfileUsed", "");
-                userProfile = gson.fromJson(json, Profile.class);
-                //processQuickTeller(weblink);
-                Calendar c = Calendar.getInstance();
-                c.add(Calendar.DATE, noOfDays);
-                Date resultdate = new Date(c.getTimeInMillis());
-                Enddate = sdf.format(resultdate);
-                String planName="N"+sOAmount+""+frequency+""+"plan";
-                //String plan_code= "SkylightSO"+sOAmount+currentDate;
-                String description="My Awajima Standing Order"+""+"NGN"+sOAmount;
-
-                String managerFullNames = ManagerSurname + "," + managerFirstName;
-
-                String timelineAwajima = uSurname + "," + uFirstName + "'s new Package:" + selectedPlan + "plan was initiated by" + managerFullNames + "@" + currentDate;
-                String tittleT = "Standing order package Alert!";
-                String namesT = uSurname + uFirstName;
-
-                String timelineUser = selectedPlan + "was initiated for you by" + managerFullNames + "@" + currentDate;
-                String timelineUserProfile = selectedPlan + "was initiated by you for" + namesT + "@" + currentDate;
-                String tittle = "Standing order package Alert";
-                transaction_type= com.skylightapp.Classes.Transaction.TRANSACTION_TYPE.STANDING_ORDER;
-                refID= "Awajima/SO"+ random.nextInt((int) (Math.random() * 101) + 191);
-                if(userProfile !=null){
-                    officeBranch=userProfile.getProfOfficeName();
-                    userProfile.addPTransaction(transactionID,uSurname,uFirstName,phoneNo,sONowAmount,PHONE_NO,"Standing order payment",currentDate,"Standing Order");
-
-                }
-                if(customer !=null){
-                    customerPhoneNo=customer.getCusPhoneNumber();
-                    customerID=customer.getCusUID();
-                    customerEmail=customer.getCusEmailAddress();
-                    standingOrderAcct = customer.getCusStandingOrderAcct();
-                    customerSurname=customer.getCusSurname();
-                    customerFirstName=customer.getCusFirstName();
-                    customerName=customer.getCusSurname()+""+customer.getCusFirstName();
-
-                }
-                Skylightransaction= new com.skylightapp.Classes.Transaction(transactionID, soAcctNo, soDate, 100001, soAcctNo, "Awajima", namesT, sONowAmount, transaction_type, "QuickTeller",officeBranch, "", "", "Pending");
-
-                if(customer !=null){
-
-                    //customer.addCusTransactions(sONowAmount);
-                    //customer.setCusStandingOrder(standingOrder);
-                    customer.addCusTimeLine(tittleT,timelineUser);
-                    //customer.setCusCurrency(currency);
-                    //customer.addCusStandingOrder(transactionID,soNo,sONowAmount,currentDate,expectedAmount, AMOUNT,amountDiff,"just started", endDate);
-
-
-                }
-                if(userProfile !=null){
-                    officeBranch=userProfile.getProfOfficeName();
-                    userProfile.addPTimeLine(tittle,timelineUserProfile);
-                    userProfile.addPTransaction(transactionID,uSurname,uFirstName,phoneNo,sONowAmount,PHONE_NO,"Standing order payment",soDate,"Standing Order");
-
-                }
-                if(standingOrderAcct !=null){
-                    soAccountNumber=standingOrderAcct.getSoAcctNo();
-
-                }
-
-                if(standingOrderAcct !=null){
-                    soAcctNo=standingOrderAcct.getSoAcctNo();
-
-                }
-                if(dbHelper !=null){
-                    try {
-
-                        if(sqLiteDatabase !=null){
-                            sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
-                        }
-                        if(tranXDAO !=null){
-                            try {
-                                tranXDAO.saveNewTransaction(profileID, customerID,Skylightransaction, soAcctNo, "Awajima", namesT,transaction_type,sONowAmount, transactionID, officeBranch, soDate);
-                            } catch (NullPointerException e) {
-                                System.out.println("Oops!");
-                            }
-                        }
-                        if(timeLineClassDAO !=null){
-                            try {
-                                timeLineClassDAO.insertTimeLine(tittle, timelineAwajima, soDate, null);
-
-                            } catch (NullPointerException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                    } catch (SQLiteException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
-
-                Location mCurrentLocation=null;
-                if(userProfile !=null){
-                    ManagerSurname=userProfile.getProfileLastName();
-                    managerFirstName=userProfile.getProfileFirstName();
-                    uFirstName= customer.getCusFirstName();
-                    profileID=userProfile.getPID();
-                    customer=userProfile.getProfileCus();
-
-
-                    standingOrder= new StandingOrder(soNo,profileID,customerID,customerName,sOAmount,selectedPlan,frequency,soDate);
-
-                    if(standingOrder !=null){
-                        standingOrder.setSoAcctNo(soAccountNumber);
-                        standingOrder.setStandingOrderAcct(standingOrderAcct);
-                        standingOrder.setCustomerID(customerID);
-                        standingOrder.setProfileID(profileID);
-                        standingOrder.setSo_frequency(frequency);
-                        standingOrder.setSo_Req_Platform("QuickTeller");
-                        standingOrder.setSo_plan(selectedPlan);
-                        standingOrder.setSo_TotalDays(noOfDays);
-                        standingOrder.setSoExpectedAmount(expectedAmount);
-                        standingOrder.setSo_Customer(customer);
-                        standingOrder.setSoStatus("pending");
-                        standingOrder.setSo_Names(customerName);
-                        standingOrder.setSo_request_date(soDate);
-                    }
-                    if(customer !=null){
-                       customer.addCusStandingOrder(standingOrder);
-                   }
-
-                    if(dbHelper !=null){
-                        try {
-
-                            if(sqLiteDatabase !=null){
-                                sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
-                            }
-                        } catch (SQLiteException e) {
-                            e.printStackTrace();
-                        }
-                        if(sodao !=null){
-                            try {
-                                sodao.insertStandingOrder(standingOrder,customerID);
-                            } catch (NullPointerException e) {
-                                e.printStackTrace();
-                            }
-
-
-                        }
-
-
-                    }
-
-
-
-                    bundle.putParcelable("Customer",customer);
-                    bundle.putParcelable("Profile",userProfile);
-                    bundle.putString("weblink",weblink);
-                    bundle.putDouble("Amount",AMOUNT);
-                    bundle.putString("weblink",weblink);
-                    bundle.putString("Date",soDate);
-                    bundle.putParcelable("StandingOrder",standingOrder);
-                    Intent itemPurchaseIntent = new Intent(SavingsSOAct.this, QuickTellerPlanAct.class);
-                    itemPurchaseIntent.putExtras(bundle);
-                    itemPurchaseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(itemPurchaseIntent);
-
-
-
-
-                }
-
-
-
-
-                /*if(selectedPlan !=null){
+            /*if(selectedPlan !=null){
                     if (selectedPlan.equalsIgnoreCase("NGN100")) {
                         AMOUNT=100;
                         PLAN_CODE= String.valueOf(R.string.NGN100);
@@ -1431,54 +1318,220 @@ public class SavingsSOAct extends AppCompatActivity {
                 }*/
 
 
-                //applicationDb = new DBHelper(SavingsSOAct.this);
-                //sendPostRequest(reference, PLAN_CODE, authorization_code, sOAmount, email,callback_url,phoneNo,expectedAmount,sONowAmount,amtDiff,daysRemaining,customerName,frequency,currency,description,endDate,standingOrder,profileID,planName,customerSurname,customerFirstName);
-
-
-
-            }
-
-        });
-
-    }
-    @SuppressLint("SetJavaScriptEnabled")
-    public  void processQuickTeller(String weblink){
-        mywebView =  findViewById(R.id.webview_privacy_policy);
-        mywebView.setWebViewClient(new MyWebViewClient());
-        WebSettings webViewSettings = mywebView.getSettings();
-        webViewSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        webViewSettings.setJavaScriptEnabled(true);
-        webViewSettings.setPluginState(WebSettings.PluginState.ON);
-        mywebView.loadUrl(weblink);
-        mywebView.setWebViewClient(new MyWebViewClient());
-
-
-
-    }
-    private class MyWebViewClient extends WebViewClient {
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            if (weblink.equals(request.getUrl().getHost())) {
-                // This is my website, so do not override; let my WebView load the page
-                return false;
-            }
-            Intent intent = new Intent(Intent.ACTION_VIEW, request.getUrl());
-            startActivity(intent);
-            return true;
         }
+        //sendPostRequest(reference, PLAN_CODE, authorization_code, sOAmount, email,callback_url,phoneNo,expectedAmount,sONowAmount,amtDiff,daysRemaining,customerName,frequency,currency,description,endDate,standingOrder,profileID,planName,customerSurname,customerFirstName);
+
+
+
+
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        selectedPlan = spnPlans.getSelectedItem().toString();
+        frequency = freqSpn.getSelectedItem().toString();
+        translater = AnimationUtils.loadAnimation(this, R.anim.bounce);
+        translER = AnimationUtils.loadAnimation(this, R.anim.pro_animation);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        SimpleDateFormat dateFormatWithZone = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        currentDate = dateFormatWithZone.format(date);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        refID= "Awajima/"+currentDate+ random.nextInt((int) (Math.random() * 9091) + 19);
+        soAccountNumber = random.nextInt((int) (Math.random() * 1044) + 100125);
+        transactionID = random.nextInt((int) (Math.random() * 91) + 19);
+        soNo = random.nextInt((int) (Math.random() * 75310) + 13570);
+        int id = view.getId();
+        view.startAnimation(translater);
+        if (id == R.id.proceed_Button) {
+            sOAmount=AMOUNT;
+            String soDate = dateFormatWithZone.format(date);
+            userProfile= new Profile();
+            userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+            //userPreferences = PreferenceManager.getDefaultSharedPreferences(SavingsSOAct.this);
+            json = userPreferences.getString("LastProfileUsed", "");
+            userProfile = gson.fromJson(json, Profile.class);
+            //processQuickTeller(weblink);
+            Calendar c = Calendar.getInstance();
+            c.add(Calendar.DATE, noOfDays);
+            Date resultdate = new Date(c.getTimeInMillis());
+            Enddate = sdf.format(resultdate);
+            String planName="N"+sOAmount+""+frequency+""+"plan";
+            //String plan_code= "SkylightSO"+sOAmount+currentDate;
+            String description="My Awajima Standing Order"+""+"NGN"+sOAmount;
+
+            String managerFullNames = ManagerSurname + "," + managerFirstName;
+
+            String timelineAwajima = uSurname + "," + uFirstName + "'s new Package:" + selectedPlan + "plan was initiated by" + managerFullNames + "@" + currentDate;
+            String tittleT = "Standing order package Alert!";
+            String namesT = uSurname + uFirstName;
+
+            String timelineUser = selectedPlan + "was initiated for you by" + managerFullNames + "@" + currentDate;
+            String timelineUserProfile = selectedPlan + "was initiated by you for" + namesT + "@" + currentDate;
+            String tittle = "Standing order package Alert";
+            transaction_type= com.skylightapp.Classes.Transaction.TRANSACTION_TYPE.STANDING_ORDER;
+            refID= "Awajima/SO"+ random.nextInt((int) (Math.random() * 101) + 191);
+            if(userProfile !=null){
+                officeBranch=userProfile.getProfOfficeName();
+                userProfile.addPTransaction(transactionID,uSurname,uFirstName,phoneNo,sONowAmount,PHONE_NO,"Standing order payment",currentDate,"Standing Order");
+
+            }
+            if(customer !=null){
+                customerPhoneNo=customer.getCusPhoneNumber();
+                customerID=customer.getCusUID();
+                customerEmail=customer.getCusEmailAddress();
+                standingOrderAcct = customer.getCusStandingOrderAcct();
+                customerSurname=customer.getCusSurname();
+                customerFirstName=customer.getCusFirstName();
+                customerName=customer.getCusSurname()+""+customer.getCusFirstName();
+
+            }
+            Skylightransaction= new com.skylightapp.Classes.Transaction(transactionID, soAcctNo, soDate, 100001, soAcctNo, "Awajima", namesT, sONowAmount, transaction_type, "QuickTeller",officeBranch, "", "", "Pending");
+
+            if(customer !=null){
+
+                //customer.addCusTransactions(sONowAmount);
+                //customer.setCusStandingOrder(standingOrder);
+                customer.addCusTimeLine(tittleT,timelineUser);
+                //customer.setCusCurrency(currency);
+                //customer.addCusStandingOrder(transactionID,soNo,sONowAmount,currentDate,expectedAmount, AMOUNT,amountDiff,"just started", endDate);
+
+
+            }
+            if(userProfile !=null){
+                officeBranch=userProfile.getProfOfficeName();
+                userProfile.addPTimeLine(tittle,timelineUserProfile);
+                userProfile.addPTransaction(transactionID,uSurname,uFirstName,phoneNo,sONowAmount,PHONE_NO,"Standing order payment",soDate,"Standing Order");
+
+            }
+            if(standingOrderAcct !=null){
+                soAccountNumber=standingOrderAcct.getSoAcctNo();
+
+            }
+
+            if(standingOrderAcct !=null){
+                soAcctNo=standingOrderAcct.getSoAcctNo();
+
+            }
+            if(dbHelper !=null){
+                try {
+
+                    if(sqLiteDatabase !=null){
+                        sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                    }
+                    if(tranXDAO !=null){
+                        try {
+                            tranXDAO.saveNewTransaction(profileID, customerID,Skylightransaction, soAcctNo, "Awajima", namesT,transaction_type,sONowAmount, transactionID, officeBranch, soDate);
+                        } catch (NullPointerException e) {
+                            System.out.println("Oops!");
+                        }
+                    }
+                    if(timeLineClassDAO !=null){
+                        try {
+                            timeLineClassDAO.insertTimeLine(tittle, timelineAwajima, soDate, null);
+
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+
+            Location mCurrentLocation=null;
+            if(userProfile !=null){
+                ManagerSurname=userProfile.getProfileLastName();
+                managerFirstName=userProfile.getProfileFirstName();
+                uFirstName= customer.getCusFirstName();
+                profileID=userProfile.getPID();
+                customer=userProfile.getProfileCus();
+
+
+                standingOrder= new StandingOrder(soNo,profileID,customerID,customerName,sOAmount,selectedPlan,frequency,soDate);
+
+                if(standingOrder !=null){
+                    standingOrder.setSoAcctNo(soAccountNumber);
+                    standingOrder.setStandingOrderAcct(standingOrderAcct);
+                    standingOrder.setCustomerID(customerID);
+                    standingOrder.setProfileID(profileID);
+                    standingOrder.setSo_frequency(frequency);
+                    standingOrder.setSo_Req_Platform("QuickTeller");
+                    standingOrder.setSo_plan(selectedPlan);
+                    standingOrder.setSo_TotalDays(noOfDays);
+                    standingOrder.setSoExpectedAmount(expectedAmount);
+                    standingOrder.setSo_Customer(customer);
+                    standingOrder.setSoStatus("pending");
+                    standingOrder.setSo_Names(customerName);
+                    standingOrder.setSo_request_date(soDate);
+                }
+                if(customer !=null){
+                    customer.addCusStandingOrder(standingOrder);
+                }
+
+                if(dbHelper !=null){
+                    try {
+
+                        if(sqLiteDatabase !=null){
+                            sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                        }
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+                    if(sodao !=null){
+                        try {
+                            sodao.insertStandingOrder(standingOrder,customerID);
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+
+
+                }
+                planName=this.selectedPlan;
+
+                bundle.putParcelable("Customer",customer);
+                bundle.putParcelable("Profile",userProfile);
+                bundle.putString("weblink",this.weblink);
+                bundle.putDouble("Amount",this.AMOUNT);
+                bundle.putString("weblink",this.weblink);
+                bundle.putString("Date",soDate);
+                bundle.putInt("noOfDays",this.noOfDays);
+                bundle.putDouble("expectedAmount",this.expectedAmount);
+                bundle.putParcelable("StandingOrder",standingOrder);
+                bundle.putString("EndDate", endDate);
+                bundle.putLong(PROFILE_ID, profileID);
+                bundle.putDouble("AmountRemaining", amtDiff);
+                bundle.putDouble("DaysRemaining", daysRemaining);
+                bundle.putDouble("GrandTotal", expectedAmount);
+                bundle.putString("PlanName", planName);
+                bundle.putDouble("Total", sONowAmount);
+                bundle.putString("Currency", currency);
+                bundle.putString("Frequency", frequency);
+                bundle.putParcelable("StandingOrderAcct", standingOrderAcct);
+                bundle.putParcelable("DBHelper", (Parcelable) applicationDb);
+                Intent itemPurchaseIntent = new Intent(SavingsSOAct.this, QuickTellerPlanAct.class);
+                itemPurchaseIntent.putExtras(bundle);
+                itemPurchaseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                standingOrderUpdateStartForResult.launch(new Intent(itemPurchaseIntent));
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+
+            }
+        }
+        //processQuickTeller(weblink);
+
     }
 
     @Override
     public void onBackPressed() {
-        if(mywebView.canGoBack())
-        {
-            mywebView.goBack();
-        }
-
-        else
-        {
-            super.onBackPressed();
-        }
+        super.onBackPressed();
 
 
     }
@@ -1619,7 +1672,7 @@ public class SavingsSOAct extends AppCompatActivity {
                     txtResult.setText("Response"+result);
                     if(result !=null){
 
-                        doPayStackCardPayment(sONowAmount,standingOrderAcct,applicationDb,standingOrder,endDate,expectedAmount,amtDiff,daysRemaining,profileID,planName,frequency,currency);
+                        //doPayStackCardPayment(sONowAmount,standingOrderAcct,applicationDb,standingOrder,endDate,expectedAmount,amtDiff,daysRemaining,profileID,planName,frequency,currency);
 
                     }
 
@@ -1646,7 +1699,7 @@ public class SavingsSOAct extends AppCompatActivity {
 
     }
 
-    private void doPayStackCardPayment(double sONowAmount, StandingOrderAcct standingOrderAcct, DBHelper applicationDb, StandingOrder standingOrder, String endDate, double expectedAmount, Double amtDiff, int daysRemaining, long profileID, String planName, String frequency, String currency) {
+    private void doPayStackCardPayment33(double sONowAmount, StandingOrderAcct standingOrderAcct, DBHelper applicationDb, StandingOrder standingOrder, String endDate, double expectedAmount, Double amtDiff, int daysRemaining, long profileID, String planName, String frequency, String currency) {
         Bundle paymentBundle=new Bundle();
         Intent intent8 = new Intent(this, PayNowActivity.class);
         paymentBundle.putDouble("Total", sONowAmount);
@@ -1664,6 +1717,46 @@ public class SavingsSOAct extends AppCompatActivity {
         intent8.putExtras(paymentBundle);
         startActivity(intent8);
         standingOrderUpdateStartForResult.launch(new Intent(intent8));
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        //overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        overridePendingTransition(R.anim.base_slide_left_out, R.anim.bounce);
+
+    }
+    public boolean hasInternetConnection() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        @SuppressLint("MissingPermission") NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
+
+    public boolean checkInternetConnection() {
+        boolean hasInternetConnection = hasInternetConnection();
+        if (!hasInternetConnection) {
+            showWarningDialog("Internet connection failed");
+        }
+
+        return hasInternetConnection;
+    }
+
+    public void showWarningDialog(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.setPositiveButton(R.string.button_ok, null);
+        builder.show();
     }
 
 }

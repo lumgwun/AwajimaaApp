@@ -12,6 +12,13 @@
         <item>To</item>
         <item>From</item>
     </string-array>
+    <string-array name="payment_channels">
+        <item>QuickTeller</item>
+        <item>Google Pay</item>
+        <item>Flutter Wave</item>
+        <item>PayStack</item>
+        <item>GT Pay</item>
+    </string-array>
     <string-array name="spillage_states">
         <item>Rivers State</item>
         <item>Bayelsa State</item>
@@ -25,11 +32,21 @@
         <item>Others</item>
     </string-array>
     <string-array name="savings_scheme">
+        <item> </item>
         <item>Weekly</item>
         <item>Monthly</item>
     </string-array>
 
+    <string-array name="coop_membership">
+        <item>Premium</item>
+        <item>Premium Life</item>
+        <item>Gold</item>
+        <item>Gold Life</item>
+        <item>General</item>
+    </string-array>
+
     <string-array name="savings_weekly_plans">
+        <item> </item>
         <item>SAVINGS N100 for 31 Weeks </item>
         <item>SAVINGS N200 for 31 Weeks</item>
         <item>SAVINGS N300 for 31 Weeks</item>
@@ -60,6 +77,7 @@
     </string-array>
 
     <string-array name="savings_monthly_plans">
+        <item> </item>
         <item>SAVINGS N10,000,000 for 12 months </item>
         <item>SAVINGS N1,000,000 for 12 months </item>
         <item>SAVINGS N900,000 for 12 months </item>
@@ -105,6 +123,7 @@
 
     </string-array>
     <string-array name="all_savings_plans">
+        <item> </item>
         <item>SAVINGS N100 for 31 Weeks </item>
         <item>SAVINGS N200 for 31 Weeks</item>
         <item>SAVINGS N300 for 31 Weeks</item>
@@ -440,6 +459,10 @@
         <item>3* per week</item>
         <item>4* per week</item>
         <item>5* per week</item>
+    </string-array>
+    <string-array name="packs_stuff">
+        <item>Savings</item>
+        <item>Others</item>
     </string-array>
 
 

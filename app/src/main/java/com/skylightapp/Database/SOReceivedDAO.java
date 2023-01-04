@@ -9,7 +9,8 @@ import static com.skylightapp.Classes.SOReceived.SOR_DATE;
 import static com.skylightapp.Classes.SOReceived.SOR_ID;
 import static com.skylightapp.Classes.SOReceived.SOR_MANAGER_NAME;
 import static com.skylightapp.Classes.SOReceived.SOR_ManagerID;
-import static com.skylightapp.Classes.SOReceived.SOR_OFFICE_ID;
+import static com.skylightapp.Classes.SOReceived.SOR_OFFICE;
+import static com.skylightapp.Classes.SOReceived.SOR_PLATFORM;
 import static com.skylightapp.Classes.SOReceived.SOR_PROF_ID;
 import static com.skylightapp.Classes.SOReceived.SOR_SOACCT_NO;
 import static com.skylightapp.Classes.SOReceived.SOR_SO_ID;
@@ -47,7 +48,7 @@ public class SOReceivedDAO extends DBHelperDAO{
         db.close();
 
     }
-    public long insertSOReceived(int profileID, int customerID, int soID, long soAcctNo,int soReceivedID,double amount, String date,  int officeID, int managerID, String txRef,String managerName,String comment, String status,String cusName) {
+    public long insertSOReceived(int profileID, int customerID, int soID, long soAcctNo,int soReceivedID,double amount, String date,  String officebranch, int managerID, String txRef,String managerName,String comment, String status,String cusName,String paymentGateway) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(SOR_PROF_ID, profileID);
@@ -56,7 +57,7 @@ public class SOReceivedDAO extends DBHelperDAO{
         contentValues.put(SOR_ID, soReceivedID);
         contentValues.put(SOR_AMOUNT, amount);
         contentValues.put(SOR_DATE, date);
-        contentValues.put(SOR_OFFICE_ID, officeID);
+        contentValues.put(SOR_OFFICE, officebranch);
         contentValues.put(SOR_SOACCT_NO, soAcctNo);
         contentValues.put(SOR_STATUS, status);
         contentValues.put(SOR_ManagerID, managerID);
@@ -64,6 +65,7 @@ public class SOReceivedDAO extends DBHelperDAO{
         contentValues.put(SOR_COMMENT, comment);
         contentValues.put(SOR_TX_REF, txRef);
         contentValues.put(SOR_CUS_NAME, cusName);
+        contentValues.put(SOR_PLATFORM, paymentGateway);
         return sqLiteDatabase.insert(SO_RECEIVED_TABLE, null, contentValues);
 
     }
@@ -104,7 +106,7 @@ public class SOReceivedDAO extends DBHelperDAO{
             String sor_TxRef = cursor.getString(8);
             String date = cursor.getString(9);
             String managerName = cursor.getString(10);
-            int sorOfficeID = cursor.getInt(11);
+            String sorOfficeID = cursor.getString(11);
             String soStatus = cursor.getString(12);
             String soComment = cursor.getString(13);
             String soCusName = cursor.getString(14);
@@ -134,7 +136,7 @@ public class SOReceivedDAO extends DBHelperDAO{
     public ArrayList<SOReceived> getAllSORForOffice(int officeID) {
         ArrayList<SOReceived> standingOrders = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
-        String selection = SOR_OFFICE_ID + "=?";
+        String selection = SOR_OFFICE + "=?";
         String[] selectionArgs = new String[]{String.valueOf((officeID))};
 
         Cursor cursor = db.query(SO_RECEIVED_TABLE, null, selection, selectionArgs, null,

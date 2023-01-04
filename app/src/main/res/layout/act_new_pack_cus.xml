@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.skylightapp.Customers.NewPackCusAct"
+    tools:context="com.skylightapp.Customers.NewManualPackCusAct"
     android:background="@drawable/event_rect">
     <ScrollView
         android:layout_width="match_parent"
@@ -52,7 +52,7 @@
                     android:textStyle="bold"
                     android:textAlignment="center"
                     android:gravity="center_horizontal"
-                    android:entries="@array/awajima_packages"
+                    android:entries="@array/packs_stuff"
                     android:textColor="@color/colorPrimary"
                     android:id="@+id/cus_pack_Type"
                     android:padding="50dp"

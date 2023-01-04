@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 import com.skylightapp.Admins.UserListFragment;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.MarketClasses.MarketStock;
 import com.skylightapp.MarketClasses.MyStockAdapter;
 import com.skylightapp.MyMessageFragment;
@@ -34,6 +35,7 @@ import com.skylightapp.TransactionFragment;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class TopStatsAct extends FragmentActivity implements ActionBar.TabListener, android.app.ActionBar.TabListener {
 
@@ -54,11 +56,11 @@ public class TopStatsAct extends FragmentActivity implements ActionBar.TabListen
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
         private TopListFragment topListFragment;
-        private TransactionFragment transactionFragment;
+        //private TransactionFragment transactionFragment;
         private TopBenefitsListFragment topBenefitsListFragment;
         private TopSalesListFragment topSalesFrag;
-        private MyMessageFragment myMessageFragment;
-        private UserListFragment userListFragment;
+        //private MyMessageFragment myMessageFragment;
+        //private UserListFragment userListFragment;
 
 
         public SectionsPagerAdapter(FragmentManager fragmentManager) {
@@ -68,7 +70,7 @@ public class TopStatsAct extends FragmentActivity implements ActionBar.TabListen
         @Override
         public int getCount() {
 
-            return 6;
+            return 3;
         }
 
         @Override
@@ -81,18 +83,9 @@ public class TopStatsAct extends FragmentActivity implements ActionBar.TabListen
                     this.topSalesFrag = new TopSalesListFragment();
                     break;
                 case 2:
-                    this.transactionFragment = new TransactionFragment();
-                    break;
-                case 3:
                     this.topListFragment = new TopListFragment();
                     break;
-                case 4:
-                    this.userListFragment = new UserListFragment();
-                    break;
 
-                case 5:
-                    this.myMessageFragment = new MyMessageFragment();
-                    break;
             }
 
             return this.topListFragment;
@@ -108,15 +101,8 @@ public class TopStatsAct extends FragmentActivity implements ActionBar.TabListen
                 case 1:
                     return getString(R.string.title_top_sales_section).toUpperCase(l);
                 case 2:
-                    return getString(R.string.my_transactions).toUpperCase(l);
-                case 3:
                     return getString(R.string.top_list).toUpperCase(l);
 
-                case 4:
-                    return getString(R.string.user_list).toUpperCase(l);
-
-                case 5:
-                    return getString(R.string.my_messages).toUpperCase(l);
             }
             return null;
         }
@@ -126,11 +112,20 @@ public class TopStatsAct extends FragmentActivity implements ActionBar.TabListen
         public TopBenefitsListFragment(){}
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+            this.db = new DBHelper(getContext());
+            SharedPreferences sharedPreferences = requireContext().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
             int length = Integer.parseInt(sharedPreferences.getString(StockSettingAct.PREF_TOP_LENGTH, "10"));
-            setListData(db.getTopNBenefits(length));
+
+            if(db !=null){
+                try {
+                    setListData(db.getTopNBenefits(length));
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
             return super.onCreateView(inflater, container, savedInstanceState);
         }
     }
@@ -176,9 +171,20 @@ public class TopStatsAct extends FragmentActivity implements ActionBar.TabListen
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            this.db = new DBHelper(getContext());
+            MarketBusiness marketBusiness= new MarketBusiness();
+            SharedPreferences sharedPreferences = requireContext().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+            //SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             int length = Integer.parseInt(sharedPreferences.getString(StockSettingAct.PREF_TOP_LENGTH, "10"));
-            setListData(db.getTopNSales(length));
+            if(db !=null){
+                try {
+                    setListData(db.getTopNSales(length));
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
             return super.onCreateView(inflater, container, savedInstanceState);
         }
     }
@@ -193,8 +199,11 @@ public class TopStatsAct extends FragmentActivity implements ActionBar.TabListen
     int profileUID;
     Bundle bundle;
     private Profile userProfile;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
+    SharedPreferences sharedPreferences;
+    private android.app.ActionBar actionBar;
+    private MarketBusiness marketBusiness;
 
 
     private void navigateUpFromSameTask() {
@@ -209,6 +218,7 @@ public class TopStatsAct extends FragmentActivity implements ActionBar.TabListen
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         userProfile=new Profile();
+        marketBusiness= new MarketBusiness();
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
@@ -219,30 +229,46 @@ public class TopStatsAct extends FragmentActivity implements ActionBar.TabListen
         SharedPrefProfileID=userPreferences.getString("PROFILE_ID", "");
 
         // Set up the action bar.
-        final android.app.ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        try {
+            actionBar = getActionBar();
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+
 
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         mViewPager = (ViewPager) findViewById(R.id.pagerMyStock);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        mViewPager
-                .setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-                    @Override
-                    public void onPageSelected(int position) {
-                        actionBar.setSelectedNavigationItem(position);
-                    }
-                });
-
-        for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-
-            actionBar.addTab(actionBar.newTab()
-                    .setText(mSectionsPagerAdapter.getPageTitle(i))
-                    .setTabListener(this));
+        try {
+            mViewPager
+                    .setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+                        @Override
+                        public void onPageSelected(int position) {
+                            actionBar.setSelectedNavigationItem(position);
+                        }
+                    });
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
+
+
+
+        try {
+            for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
+
+                actionBar.addTab(actionBar.newTab()
+                        .setText(mSectionsPagerAdapter.getPageTitle(i))
+                        .setTabListener(this));
+            }        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     @Override

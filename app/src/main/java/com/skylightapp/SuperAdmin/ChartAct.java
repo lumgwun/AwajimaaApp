@@ -4,7 +4,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -98,7 +97,6 @@ public class ChartAct extends AppCompatActivity {
     BarDataSet packageBarDataSet;
     private BarChart payoutChart,customersCharts,transXBarChart,savingsBarChart,paymentChart,packageChart,invBarChart,promoBarChart,itemsBarchart;
     private  ChartData chartDataPackage,chartDataSavings,chartDataPromo,chartDataItems,chartDataTransaction,chartDataInvestment,chartDataCustomers,chartDataPayment;
-    SupportSQLiteDatabase supportSQLiteDatabase;
     String SharedPrefUserPassword, stringNoOfSavings, todayYearMonth,dateOfChart,todayDate,officeBranch,dateOfReport, cmFirstName,cmLastName,cmName,SharedPrefUserMachine,phoneNo,SharedPrefUserName,SharedPrefProfileID,adminName;
 
 

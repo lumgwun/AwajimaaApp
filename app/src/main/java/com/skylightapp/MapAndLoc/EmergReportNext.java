@@ -3,8 +3,7 @@ package com.skylightapp.MapAndLoc;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 import static com.skylightapp.MapAndLoc.EmergencyReport.EMERG_REPORT_ID;
 import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_TABLE;
 
-@Entity(tableName = EmergReportNext.EMERGENCY_NEXT_REPORT_TABLE)
+//@Entity(tableName = EmergReportNext.EMERGENCY_NEXT_REPORT_TABLE)
 public class EmergReportNext implements Parcelable, Serializable {
     public static final String EMERGENCY_NEXT_LOCID = "emerg_Next_id";
     public static final String EMERGENCY_NEXT_LOCTIME = "emerg_next_locTime";
@@ -27,7 +26,7 @@ public class EmergReportNext implements Parcelable, Serializable {
             "FOREIGN KEY(" + EMERGENCY_NEXT_REPORT_ID + ") REFERENCES " + EMERGENCY_REPORT_TABLE + "(" + EMERG_REPORT_ID + "))";
 
 
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     private int reportNextID=12;
     private String reportNextTime;
     private String latLng;

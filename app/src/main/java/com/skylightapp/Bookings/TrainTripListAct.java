@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -14,8 +15,10 @@ import com.google.gson.Gson;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Database.TripDAO;
 import com.skylightapp.R;
+import com.skylightapp.SMSAct;
 
 import java.util.ArrayList;
 
@@ -65,7 +68,7 @@ public class TrainTripListAct extends AppCompatActivity implements  TripAdapter.
 
         try {
             if(tripDAO !=null){
-                trips= tripDAO.getAllTripsByType();
+                trips= tripDAO.getAllTripsByType(tripType);
 
             }
 
@@ -117,6 +120,14 @@ public class TrainTripListAct extends AppCompatActivity implements  TripAdapter.
 
     }
     public void onResume(){
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
+        SharedPrefCusID=userPreferences.getString("CUSTOMER_ID", "");
+        SharedPrefUserMachine=userPreferences.getString("machine", "");
+        SharedPrefUserMachine = userPreferences.getString("PROFILE_ROLE", "");
+        SharedPrefProfileID=userPreferences.getInt("PROFILE_ID", 0);
+
         super.onResume();
         //this will refresh the osmdroid configuration on resuming.
         //if you make changes to the configuration, use
@@ -127,6 +138,27 @@ public class TrainTripListAct extends AppCompatActivity implements  TripAdapter.
 
     @Override
     public void onItemClick(Trip item) {
+        userProfile=new Profile();
+        gson1 = new Gson();
+        gson = new Gson();
+        customer=new Customer();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        json = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastCustomerUsed", "");
+        customer = gson1.fromJson(json1, Customer.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("ProfileID", profileID);
+        bundle.putParcelable("Trip", item);
+        bundle.putParcelable("Profile", userProfile);
+        bundle.putParcelable("Customer", customer);
+        Intent intent = new Intent(this, NewCustomerDrawer.class);
+        intent.putExtras(bundle);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
 
     }
 }

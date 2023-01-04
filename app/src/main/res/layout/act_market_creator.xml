@@ -176,7 +176,7 @@
 
                 </androidx.cardview.widget.CardView>
                 <androidx.fragment.app.FragmentContainerView
-                    android:id="@+id/autocomplete_fragment"
+                    android:id="@+id/autoM_frag"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment" />
@@ -365,7 +365,7 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
             <fragment
-                android:id="@+id/map"
+                android:id="@+id/map_Market_New"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"

@@ -55,7 +55,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
-public class SubRecordAct extends AppCompatActivity {
+public class SubRecordAct extends AppCompatActivity implements  View.OnClickListener{
     private Calendar cal;
     private Calendar beginTime;
     private Calendar endTime,calendar;
@@ -439,5 +439,10 @@ public class SubRecordAct extends AppCompatActivity {
     public void onResume(){
         super.onResume();
         overridePendingTransition(R.anim.base_slide_left_out, R.anim.bounce);
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 }

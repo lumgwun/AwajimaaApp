@@ -1,25 +1,23 @@
 package com.skylightapp.Interfaces;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.Update;
+
 
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.TellerReport;
 
 import java.util.List;
 
-@androidx.room.Dao
+//@androidx.room.Dao
 public interface TellerReportDao {
-    @Insert
+    //@Insert
     void insert(TellerReport tellerReport);
 
 
-    @Update
+    //@Update
     void update(TellerReport tellerReport);
 
-    @Delete
+    //@Delete
     void delete(TellerReport tellerReport);
 
     //@Query("DELETE FROM PROFILE_TABLE")

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:background="@drawable/rect_their44"
@@ -263,12 +263,11 @@
             android:layout_height="0.1dp"
             android:background="@drawable/rect_my_message"/>
 
-
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_marginTop="5dp"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_marginBottom="5dp"
             android:background="@drawable/shape_layer_3b"
             android:layout_height="wrap_content">
@@ -336,6 +335,189 @@
                 android:text="Naira 0.00 :"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="50dp"
+            android:id="@+id/card_l1"
+            app:cardBackgroundColor="#f3f5f7"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/id_l1"
+                android:padding="3dp"
+                android:orientation="vertical"
+                android:background="@drawable/rect_new"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="200dp"
+                    app:cardElevation="2dp"
+                    android:onClick="verifyEmailAddress"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/bd_card_E"
+                    app:cardBackgroundColor="@color/white"
+                    android:layout_marginTop="3dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:text=" Email Address"
+                        android:id="@+id/account_bank4"
+                        android:layout_marginEnd="2dp"
+                        android:textStyle="bold"
+                        android:drawableRight="@drawable/ic_verified_t"
+                        android:drawableLeft="@drawable/ic_icon2"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/red_brown_dark"
+                        android:layout_height="wrap_content"/>
+
+
+                </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="200dp"
+                    app:cardElevation="2dp"
+                    android:onClick="verifyPhoneNo"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/bd_card_P"
+                    app:cardBackgroundColor="@color/white"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:text=" Phone Number"
+                        android:id="@+id/account_name4"
+                        android:layout_marginEnd="2dp"
+                        android:textStyle="bold"
+                        android:drawableRight="@drawable/ic_verified_t"
+                        android:drawableLeft="@drawable/ic_star"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/red_brown_dark"
+                        android:layout_height="wrap_content"/>
+
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="200dp"
+                    app:cardElevation="2dp"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/bd_card_I"
+                    android:onClick="verifyIDCard"
+                    app:cardBackgroundColor="@color/white"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:text=" ID Card"
+                        android:drawableLeft="@drawable/ic_icon2"
+                        android:drawableRight="@drawable/ic_not_verified"
+                        android:id="@+id/account_no4"
+                        android:textStyle="bold"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginEnd="2dp"
+                        android:textColor="@color/red_brown_dark"
+                        android:layout_height="wrap_content"/>
+
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="200dp"
+                    app:cardElevation="2dp"
+                    android:onClick="checkMembership"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/bd_card_M"
+                    app:cardBackgroundColor="@color/white"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txt_account_type4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:drawableLeft="@drawable/ic_star"
+                        android:drawableRight="@drawable/ic_member"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/red_brown_dark"
+                        tools:text="Membership" />
+
+
+                </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="200dp"
+                    app:cardElevation="2dp"
+                    android:onClick="verifyAddress"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/bd_card_A"
+                    app:cardBackgroundColor="@color/white"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txt_account_ty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:drawableLeft="@drawable/ic_icon2"
+                        android:drawableRight="@drawable/ic_not_verified"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/red_brown_dark"
+                        tools:text="Address" />
+
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycl_accts"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            tools:listitem="@layout/account_list_row"
+            android:clipToPadding="false"
+            android:layout_marginStart="5dp"
+            android:foregroundGravity="center"
+            android:orientation="horizontal" />
 
         <include layout="@layout/content_cus_home_page" />
 

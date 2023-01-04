@@ -30,7 +30,7 @@ public class LocationUpdatesIntentService extends IntentService {
     private static final String EXTRA_PARAM1 = "coop.skylightapp.Classes.extra.PARAM1";
     private static final String EXTRA_PARAM2 = "coop.skylightapp.Classes.extra.PARAM2";
 
-    private static final String ACTION_PROCESS_UPDATES =
+    public static final String ACTION_PROCESS_UPDATES =
             "com.google.android.gms.location.sample.locationupdatespendingintent.action" +
                     ".PROCESS_UPDATES";
     private static final String TAG = LocationUpdatesIntentService.class.getSimpleName();

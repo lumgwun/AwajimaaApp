@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--suppress ALL -->
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -83,7 +84,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableTop="@drawable/ic_icon2"
-                    android:text="Also Note that the Awajima App would take 0.5% as commission"
+                    android:text="Also Note that the Awajima App would Pay 40% yearly, as interest"
                     android:textColor="@color/gradient"
                     android:textSize="20sp"
                     android:ellipsize="marquee"
@@ -131,7 +132,7 @@
             <androidx.appcompat.widget.AppCompatSpinner
                 android:layout_width="match_parent"
                 android:entries="@array/savings_scheme"
-                android:padding="20dp"
+                android:padding="30dp"
                 android:id="@+id/freq_Spinner"
                 android:textStyle="bold"
                 android:layout_marginTop="20dp"
@@ -143,6 +144,8 @@
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:orientation="vertical"
+                android:id="@+id/all_plans_Layout"
+                android:visibility="gone"
                 android:layout_height="wrap_content">
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
@@ -154,7 +157,7 @@
 
                 <Spinner
                     android:layout_width="match_parent"
-                    android:padding="20dp"
+                    android:padding="30dp"
                     android:layout_marginStart="10dp"
                     android:gravity="center_horizontal"
                     android:layout_gravity="center_horizontal"
@@ -162,22 +165,21 @@
                     android:background="@drawable/shape_layer_3b"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
-                    android:entries="@array/all_savings_plans"
                     android:layout_height="wrap_content"/>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="wrap_content"
+                android:id="@+id/proceed_Button"
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:padding="20dp"
-                android:id="@+id/proceed_Button"
                 android:background="@drawable/shape_layer_3b"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="30dp"
                 android:text="Proceed to Payment"
                 android:layout_height="wrap_content"/>
 

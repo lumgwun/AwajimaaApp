@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ListAdapter;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -22,7 +21,6 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.SOReceived;
 import com.skylightapp.Classes.Utils;
-import com.skylightapp.Interfaces.SkylightPackageListener;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -220,7 +218,7 @@ public class SOReceivedAd extends RecyclerView.Adapter<SOReceivedAd.ViewHolder> 
             managerName.setText(MessageFormat.format("Manager:{0}", soReceived.getSorManagerName()));
             status.setText(MessageFormat.format("Status:{0}", soReceived.getSorStatus()+"/"+soReceived.getSorID()));
             comments.setText(soReceived.getSorComment());
-            officeID.setText( soReceived.getSorOfficeID());
+            officeID.setText( soReceived.getSorOffice());
             amtRemaining.setText(MessageFormat.format("Amt Rem:{0}", Utils.awajimaAmountFormat(soReceived.getSorAmountRem())));
 
 
@@ -256,7 +254,7 @@ public class SOReceivedAd extends RecyclerView.Adapter<SOReceivedAd.ViewHolder> 
         holder.managerName.setText(MessageFormat.format("Manager:{0}", received.getSorManagerName()));
         holder.status.setText(MessageFormat.format("Status:{0}", received.getSorStatus()+"/"+received.getSorID()));
         holder.comments.setText(received.getSorComment());
-        holder.officeID.setText( received.getSorOfficeID());
+        holder.officeID.setText( received.getSorOffice());
         holder.amtRemaining.setText(MessageFormat.format("Amt Rem:{0}", Utils.awajimaAmountFormat(received.getSorAmountRem())));
 
 

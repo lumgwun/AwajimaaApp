@@ -3,8 +3,7 @@ package com.skylightapp.Classes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -15,7 +14,7 @@ import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
-@Entity(tableName = Payment.PAYMENTS_TABLE)
+//@Entity(tableName = Payment.PAYMENTS_TABLE)
 public class Payment implements Parcelable,Serializable {
 
     public static final String PAYMENTS_TABLE = "payment_Table";
@@ -109,7 +108,7 @@ public class Payment implements Parcelable,Serializable {
     private Integer nr = 0;
     private  double paymentAmtToWithdraw;
     private  int paymentProfileID, paymentCusID;
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     private int paymentID=1015;
     private  String paymentDate;
     private  String paymentApprovalDate;

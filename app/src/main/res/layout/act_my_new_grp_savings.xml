@@ -7,6 +7,7 @@
     android:background="@drawable/rect_their_message"
     android:layout_height="match_parent"
     tools:context=".MyNewGrpSavings">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

@@ -42,7 +42,7 @@ public class TestAct extends AppCompatActivity {
     private Customer selectedCustomer;
     private Profile userProfile;
     private StandingOrderAcct standingOrderAcct;
-    long profileID;
+    int profileID;
     private static final String PREF_NAME = "awajima";
     private GridLayout maingrid;
     private AppCompatButton btn_Customer,btnAdmin,btnShop,btnTeller,btnSuperAdmin,btnSign,btnAccountant;
@@ -81,7 +81,7 @@ public class TestAct extends AppCompatActivity {
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
-        bundle.putLong("ProfileID", profileID);
+        bundle.putInt("ProfileID", profileID);
         bundle.putString(machine, machine);
         Intent intent = new Intent(this, AdminHomeChoices.class);
         intent.putExtras(bundle);
@@ -96,7 +96,7 @@ public class TestAct extends AppCompatActivity {
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
-        bundle.putLong("ProfileID", profileID);
+        bundle.putInt("ProfileID", profileID);
         bundle.putString(machine, machine);
         //bundle.putString("machine", "machine");
         //bundle.putString("FirstName", profileFirstName);
@@ -113,7 +113,7 @@ public class TestAct extends AppCompatActivity {
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
-        bundle.putLong("ProfileID", profileID);
+        bundle.putInt("ProfileID", profileID);
         bundle.putString(machine, machine);
         //bundle.putString("machine", "machine");
         //bundle.putString("FirstName", profileFirstName);
@@ -130,7 +130,7 @@ public class TestAct extends AppCompatActivity {
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
-        bundle.putLong("ProfileID", profileID);
+        bundle.putInt("ProfileID", profileID);
         bundle.putString(machine, machine);
         //bundle.putString("machine", "machine");
         //bundle.putString("FirstName", profileFirstName);
@@ -147,7 +147,7 @@ public class TestAct extends AppCompatActivity {
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
-        bundle.putLong("ProfileID", profileID);
+        bundle.putInt("ProfileID", profileID);
         bundle.putString(machine, machine);
         Intent intent = new Intent(this, MarketTab.class);
         intent.putExtras(bundle);
@@ -162,7 +162,7 @@ public class TestAct extends AppCompatActivity {
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
-        bundle.putLong("ProfileID", profileID);
+        bundle.putInt("ProfileID", profileID);
         bundle.putString(machine, machine);
         //bundle.putString("machine", "machine");
         //bundle.putString("FirstName", profileFirstName);
@@ -180,7 +180,7 @@ public class TestAct extends AppCompatActivity {
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
-        bundle.putLong("ProfileID", profileID);
+        bundle.putInt("ProfileID", profileID);
         bundle.putString(machine, machine);
         //bundle.putString("machine", "machine");
         //bundle.putString("FirstName", profileFirstName);
@@ -198,7 +198,7 @@ public class TestAct extends AppCompatActivity {
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
-        bundle.putLong("ProfileID", profileID);
+        bundle.putInt("ProfileID", profileID);
         bundle.putString(machine, machine);
         Intent intent = new Intent(this, MarketTab.class);
         intent.putExtras(bundle);
@@ -212,7 +212,7 @@ public class TestAct extends AppCompatActivity {
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
-        bundle.putLong("ProfileID", profileID);
+        bundle.putInt("ProfileID", profileID);
         bundle.putString(machine, machine);
         //bundle.putString("machine", "machine");
         //bundle.putString("FirstName", profileFirstName);
@@ -229,7 +229,7 @@ public class TestAct extends AppCompatActivity {
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
-        bundle.putLong("ProfileID", profileID);
+        bundle.putInt("ProfileID", profileID);
         bundle.putString(machine, machine);
         //bundle.putString("machine", "machine");
         //bundle.putString("FirstName", profileFirstName);
@@ -246,7 +246,7 @@ public class TestAct extends AppCompatActivity {
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
-        bundle.putLong("ProfileID", profileID);
+        bundle.putInt("ProfileID", profileID);
         bundle.putString(machine, machine);
         //bundle.putString("machine", "machine");
         //bundle.putString("FirstName", profileFirstName);
@@ -263,7 +263,7 @@ public class TestAct extends AppCompatActivity {
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
-        bundle.putLong("ProfileID", profileID);
+        bundle.putInt("ProfileID", profileID);
         bundle.putString(machine, machine);
         //bundle.putString("machine", "machine");
         //bundle.putString("FirstName", profileFirstName);
@@ -280,7 +280,7 @@ public class TestAct extends AppCompatActivity {
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
-        bundle.putLong("ProfileID", profileID);
+        bundle.putInt("ProfileID", profileID);
         bundle.putString(machine, machine);
         //bundle.putString("machine", "machine");
         //bundle.putString("FirstName", profileFirstName);
@@ -297,7 +297,7 @@ public class TestAct extends AppCompatActivity {
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
-        bundle.putLong("ProfileID", profileID);
+        bundle.putInt("ProfileID", profileID);
         bundle.putString(machine, machine);
         //bundle.putString("machine", "machine");
         //bundle.putString("FirstName", profileFirstName);
@@ -314,7 +314,7 @@ public class TestAct extends AppCompatActivity {
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
-        bundle.putLong("ProfileID", profileID);
+        bundle.putInt("ProfileID", profileID);
         bundle.putString(machine, machine);
         //bundle.putString("machine", "machine");
         //bundle.putString("FirstName", profileFirstName);
@@ -331,7 +331,7 @@ public class TestAct extends AppCompatActivity {
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
-        bundle.putLong("ProfileID", profileID);
+        bundle.putInt("ProfileID", profileID);
         bundle.putString(machine, machine);
         //bundle.putString("machine", "machine");
         //bundle.putString("FirstName", profileFirstName);
@@ -348,7 +348,7 @@ public class TestAct extends AppCompatActivity {
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
-        bundle.putLong("ProfileID", profileID);
+        bundle.putInt("ProfileID", profileID);
         bundle.putString(machine, machine);
         //bundle.putString("machine", "machine");
         //bundle.putString("FirstName", profileFirstName);
@@ -365,7 +365,7 @@ public class TestAct extends AppCompatActivity {
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
-        bundle.putLong("ProfileID", profileID);
+        bundle.putInt("ProfileID", profileID);
         bundle.putString(machine, machine);
         //bundle.putString("machine", "machine");
         //bundle.putString("FirstName", profileFirstName);

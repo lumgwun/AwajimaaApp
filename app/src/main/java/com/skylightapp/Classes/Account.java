@@ -3,7 +3,7 @@ package com.skylightapp.Classes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.Entity;
+
 
 import com.blongho.country_data.Currency;
 import com.skylightapp.Database.DBHelper;
@@ -25,10 +25,11 @@ import static com.skylightapp.MarketClasses.Market.MARKET_TABLE;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_ID;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TABLE;
 
-@Entity(tableName = Account.ACCOUNTS_TABLE)
+//@Entity(tableName = Account.ACCOUNTS_TABLE)
 public class Account implements Serializable, Parcelable {
     private BigDecimal savingsAcctBalance;
     private BigDecimal itemAcctBalance;
+    private String acctType;
 
     public Account(){
         super();
@@ -57,6 +58,9 @@ public class Account implements Serializable, Parcelable {
     public static final String ACCOUNT_MARKET_BUSINESS_ID = "acct_Biz_ID";
     public static final String ACCOUNT_MARKET_ID = "acct_Market_ID";
     public static final String ACCOUNT_DB_ID = "acct_DB_ID";
+    public static final String ACCOUNT_IBAN = "acct_Iban";
+    public static final String ACCOUNT_STATUS = "acct_Status";
+    public static final String ACCOUNT_TYPE_NEW = "acct_Type_New";
 
 
     public static final String CREATE_ACCOUNT_TYPE_TABLE = "CREATE TABLE " + ACCOUNT_TYPES_TABLE + " (" + ACCOUNT_TYPE_ID + " INTEGER, " +
@@ -66,8 +70,8 @@ public class Account implements Serializable, Parcelable {
 
     public static final String CREATE_ACCOUNTS_TABLE = "CREATE TABLE IF NOT EXISTS " + ACCOUNTS_TABLE + " (" + ACCOUNT_NO + " INTEGER , " + BANK_ACCT_NO + "TEXT," + ACCOUNT_PROF_ID + " INTEGER , " +
             ACCOUNT_CUS_ID + " INTEGER , " + ACCOUNT_TX_ID + " INTEGER , " +
-            ACCOUNT_TYPE + " TEXT , " + ACCOUNT_BANK + " TEXT , " + ACCOUNT_NAME + " TEXT, " + ACCOUNT_BALANCE + " REAL, " +
-            ACCOUNT_EXPECTED_SAVINGS + " TEXT, " + ACCOUNT_SAVED_AMOUNT + " REAL, " + BANK_ACCT_BALANCE + "REAL, "+ ACCOUNT_DB_ID + "INTEGER, "+ ACCOUNT_CURRENCY + " TEXT , "+ "FOREIGN KEY(" + ACCOUNT_MARKET_BUSINESS_ID + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+ "FOREIGN KEY(" + ACCOUNT_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+"FOREIGN KEY(" + ACCOUNT_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + ACCOUNT_CUS_ID  + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + ")," + "FOREIGN KEY(" + ACCOUNT_TX_ID + ") REFERENCES " + TRANSACTIONS_TABLE + "(" + TRANSACTION_ID + ")," +
+            ACCOUNT_TYPE_NEW + " TEXT , " + ACCOUNT_BANK + " TEXT , " + ACCOUNT_NAME + " TEXT, " + ACCOUNT_BALANCE + " REAL, " +
+            ACCOUNT_EXPECTED_SAVINGS + " TEXT, " + ACCOUNT_SAVED_AMOUNT + " REAL, " + BANK_ACCT_BALANCE + "REAL, "+ ACCOUNT_DB_ID + "INTEGER, "+ ACCOUNT_CURRENCY + " TEXT , "+ ACCOUNT_IBAN + " REAL, " + ACCOUNT_STATUS + " TEXT , "+ "FOREIGN KEY(" + ACCOUNT_MARKET_BUSINESS_ID + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+ "FOREIGN KEY(" + ACCOUNT_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+"FOREIGN KEY(" + ACCOUNT_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + ACCOUNT_CUS_ID  + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + ")," + "FOREIGN KEY(" + ACCOUNT_TX_ID + ") REFERENCES " + TRANSACTIONS_TABLE + "(" + TRANSACTION_ID + ")," +
             "PRIMARY KEY(" + ACCOUNT_DB_ID + "))";
 
     protected Account(Parcel in) {
@@ -107,6 +111,8 @@ public class Account implements Serializable, Parcelable {
             return new Account[size];
         }
     };
+
+
 
     public String getBankAccountName() {
         return bankAccountName;
@@ -176,9 +182,57 @@ public class Account implements Serializable, Parcelable {
         this.acctBizDealID = acctBizDealID;
     }
 
-    public enum ACCOUNT_TYPE {
-        WALLET, STANDING_ORDER, GROUP_SAVINGS,BANK;
+    public String getAccountIban() {
+        return accountIban;
     }
+
+    public void setAccountIban(String accountIban) {
+        this.accountIban = accountIban;
+    }
+
+    public String getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(String accountStatus) {
+        this.accountStatus = accountStatus;
+    }
+
+    public String getAccountCurrSymbol() {
+        return accountCurrencyCode;
+    }
+
+    public void setAccountCurrencyCode(String accountCurrencyCode) {
+        this.accountCurrencyCode = accountCurrencyCode;
+    }
+
+    public int getAcctCusID() {
+        return acctCusID;
+    }
+
+    public void setAcctCusID(int acctCusID) {
+        this.acctCusID = acctCusID;
+    }
+
+    public int getAcctProfID() {
+        return acctProfID;
+    }
+
+    public void setAcctProfID(int acctProfID) {
+        this.acctProfID = acctProfID;
+    }
+
+    public long getAcctNo() {
+        return acctNo;
+    }
+
+    public void setAcctNo(long acctNo) {
+        this.acctNo = acctNo;
+    }
+
+    /*public enum ACCOUNT_TYPE {
+        WALLET, STANDING_ORDER, GROUP_SAVINGS,BANK;
+    }*/
 
     private static int nextAcNum = 88769912;
     //@PrimaryKey(autoGenerate = true)
@@ -197,6 +251,7 @@ public class Account implements Serializable, Parcelable {
     private Currency currency;
     String sortCode;
     String country;
+
     Transaction transaction;
     CustomerDailyReport record;
     Loan loan;
@@ -226,6 +281,12 @@ public class Account implements Serializable, Parcelable {
     private ArrayList<Loan> loans;
 
     protected AccountTypesEnumMap enumMap;
+    private String accountIban;
+    private String accountStatus;
+    private String accountCurrencyCode;
+    private int acctCusID;
+    private int acctProfID;
+    private long acctNo;
 
     public Account(String accountName, double accountBalance) {
 
@@ -267,8 +328,21 @@ public class Account implements Serializable, Parcelable {
 
         super();
     }
+    public Account(long acctID, String bank, String accountName, String bankAccountNo, double accountBalance, AccountTypes valueOf, String currency, String status) {
+        super();
+        this.acctNo = acctID;
+        this.awajimaAcctName = accountName;
+        this.accountBalance = accountBalance;
+        this.sortCode = bankAccountNo;
+        this.acctType = String.valueOf(valueOf);
+        this.country = currency;
+        this.country = status;
+        this.country = bank;
+
+    }
 
     public Account(String accountName, String bankAcct_No, double accountBalance, int awajimaAcctNo) {
+        super();
         this.awajimaAcctName = accountName;
         this.bankAcct_No = bankAcct_No;
         this.accountBalance = accountBalance;
@@ -282,6 +356,7 @@ public class Account implements Serializable, Parcelable {
     }
 
     public Account(String skylightMFb, String accountName, int accountNumber, double accountBalance, AccountTypes accountTypeStr) {
+        super();
         this.accountBalance = accountBalance;
         this.awajimaAcctName = accountName;
         this.awajimaAcctNo = accountNumber;
@@ -297,6 +372,18 @@ public class Account implements Serializable, Parcelable {
         this.bankAcct_No = accountNo;
         this.type = accountType;
         this.bankName = accountBank;
+    }
+
+    public Account(int awajimaAcctNo,int profileID, int cusID, String accountName, String currencyCode,long accountNo, double accountBalance, AccountTypes accountType,String status) {
+        this.awajimaAcctNo = awajimaAcctNo;
+        this.accountBalance = accountBalance;
+        this.awajimaAcctName = accountName;
+        this.acctNo = accountNo;
+        this.type = accountType;
+        this.accountCurrencyCode = currencyCode;
+        this.accountStatus = status;
+        this.acctCusID = cusID;
+        this.acctProfID = profileID;
     }
 
 
@@ -445,7 +532,7 @@ public class Account implements Serializable, Parcelable {
         this.currency = currency;
     }
 
-    public com.blongho.country_data.Currency getCurrency() {
+    public Currency getCurrency() {
         return currency;
     }
     public void setBankName(String bankName) {
@@ -613,4 +700,11 @@ public class Account implements Serializable, Parcelable {
         return type;
     }
 
+    public String getAcctType() {
+        return acctType;
+    }
+
+    public void setAcctType(String acctType) {
+        this.acctType = acctType;
+    }
 }

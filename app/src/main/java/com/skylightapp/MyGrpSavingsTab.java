@@ -37,6 +37,7 @@ public class MyGrpSavingsTab extends TabActivity {
     String name;
     com.github.clans.fab.FloatingActionButton fab;
     private SharedPreferences userPreferences;
+    private static final String PREF_NAME = "awajima";
     Gson gson;
     String json,tittle,purpose,firstName,phoneNo,emailAddress,machine,bundleID,bundleMachine;
     SecureRandom random;
@@ -55,11 +56,12 @@ public class MyGrpSavingsTab extends TabActivity {
         // setting up the tab host
         tabhost.setup(getLocalActivityManager());
         Resources resources = getResources();
-        userPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         userProfile=new Profile();
         random= new SecureRandom();
         json = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
         //Toolbar toolbar = (Toolbar) findViewById(R.id.sign_toolbar);
         floatingActionButton = findViewById(R.id.fab_grpSTab);
         Bundle bundle = getIntent().getExtras() ;
@@ -82,7 +84,7 @@ public class MyGrpSavingsTab extends TabActivity {
 
         Intent intentSignIn = new Intent().setClass(this, MyNewGrpSavings.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecNew = tabhost
-                .newTabSpec("Sign in")
+                .newTabSpec("New Savings")
                 .setIndicator("", resources.getDrawable(R.drawable.ic__category))
                 .setContent(intentSignIn);
 
@@ -107,7 +109,7 @@ public class MyGrpSavingsTab extends TabActivity {
 
     }
     public void home() {
-        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
         bundle.putLong("ProfileID", profileID);

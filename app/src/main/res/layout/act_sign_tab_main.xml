@@ -8,8 +8,9 @@
     android:id="@android:id/tabhost"
     tools:actionBarNavMode="standard"
     android:theme="@style/Theme.SkylightAppTab"
-    android:background="@drawable/rect_their_message"
+    android:background="@drawable/rect_my_message"
     tools:context="com.skylightapp.SignTabMainActivity">
+    <include layout="@layout/tool_bar11tab"/>
 
 
     <LinearLayout
@@ -36,6 +37,7 @@
         android:src="@drawable/icon_tab1"
         android:id="@+id/fab_signinOut5"
         android:layout_gravity="end|bottom"
+        app:fab_colorNormal="@color/white_good"
         android:foregroundGravity="center_horizontal"
         android:theme="@style/ThemeOverlay.MaterialComponents"
         android:layout_marginEnd="17dp"

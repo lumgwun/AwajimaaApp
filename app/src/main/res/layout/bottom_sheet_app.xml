@@ -7,12 +7,13 @@
     android:id="@+id/bottomSheet_Coord"
     android:background="@drawable/rect_their_message"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    android:fitsSystemWindows="true"
+    tools:showIn="@layout/act_sign_up">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/bottomSheet_child"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        android:id="@+id/bottomSheet_child">
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -44,7 +45,7 @@
                     android:paddingHorizontal="20dp"
                     android:paddingVertical="12dp">
 
-                    <ImageView
+                    <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/btn_closeT"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
@@ -56,7 +57,7 @@
 
                         />
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_headingT"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

@@ -1,13 +1,16 @@
 package com.skylightapp.Database;
 
 import static com.skylightapp.Bookings.TripBooking.TRIP_BOOKING_AMT;
+import static com.skylightapp.Bookings.TripBooking.TRIP_BOOKING_CHILDREN;
 import static com.skylightapp.Bookings.TripBooking.TRIP_BOOKING_COUNTRY;
 import static com.skylightapp.Bookings.TripBooking.TRIP_BOOKING_CURRENCY;
+import static com.skylightapp.Bookings.TripBooking.TRIP_BOOKING_CUS_ID;
 import static com.skylightapp.Bookings.TripBooking.TRIP_BOOKING_DATE;
 import static com.skylightapp.Bookings.TripBooking.TRIP_BOOKING_DEST;
 import static com.skylightapp.Bookings.TripBooking.TRIP_BOOKING_FROM;
 import static com.skylightapp.Bookings.TripBooking.TRIP_BOOKING_ID;
 import static com.skylightapp.Bookings.TripBooking.TRIP_BOOKING_MOP;
+import static com.skylightapp.Bookings.TripBooking.TRIP_BOOKING_NAME;
 import static com.skylightapp.Bookings.TripBooking.TRIP_BOOKING_NIN_ID;
 import static com.skylightapp.Bookings.TripBooking.TRIP_BOOKING_OFFICE;
 import static com.skylightapp.Bookings.TripBooking.TRIP_BOOKING_PROF_ID;
@@ -70,6 +73,31 @@ public class TripBookingDAO extends DBHelperDAO{
         contentValues.put(TRIP_BOOKING_DATE, date);
         return sqLiteDatabase.insert(TRIP_BOOKING_TABLE, null, contentValues);
 
+    }
+    public long insertTripBooking(int bookingID, int tripID, int bundleProfID, int bundleCusID, String nin, String paymentFor, int sitCount, String stopPointName, long bookingAmt, String modeOfPayment, String subDate, String paid, String nin1, int noOfMinors, String state, String office, String country, String bookingName, String currency, String takeOffPoint) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TRIP_BOOKING_ID, bookingID);
+        contentValues.put(TRIP_BOOKING_PROF_ID, bundleProfID);
+        contentValues.put(TRIP_BOOKING_CUS_ID, bundleCusID);
+        contentValues.put(TRIP_BOOKING_TRIP_ID, tripID);
+        contentValues.put(TRIP_BOOKING_DEST, stopPointName);
+        contentValues.put(TRIP_BOOKING_NIN_ID, nin);
+        contentValues.put(TRIP_BOOKING_SLOTS, sitCount);
+        contentValues.put(TRIP_BOOKING_TYPEOS, paymentFor);
+        contentValues.put(TRIP_BOOKING_STATUS, paid);
+        contentValues.put(TRIP_BOOKING_AMT, bookingAmt);
+        contentValues.put(TRIP_BOOKING_MOP, modeOfPayment);
+        contentValues.put(TRIP_BOOKING_DATE, subDate);
+        contentValues.put(TRIP_BOOKING_CHILDREN, noOfMinors);
+        contentValues.put(TRIP_BOOKING_STATE, state);
+        contentValues.put(TRIP_BOOKING_OFFICE, office);
+        contentValues.put(TRIP_BOOKING_COUNTRY, country);
+        contentValues.put(TRIP_BOOKING_NAME, bookingName);
+        contentValues.put(TRIP_BOOKING_CURRENCY, currency);
+        contentValues.put(TRIP_BOOKING_FROM, takeOffPoint);
+
+        return sqLiteDatabase.insert(TRIP_BOOKING_TABLE, null, contentValues);
     }
     public long insertTripBooking(int bookingID, int tripID, int profID, String nin, String tripType, long amt, String date,LatLng startPoint, LatLng destination,String status) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
@@ -146,7 +174,7 @@ public class TripBookingDAO extends DBHelperDAO{
     public ArrayList<TripBooking> getAllTripBookingByDate(String todayDate) {
 
         ArrayList<TripBooking> dailyReports = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = TRIP_BOOKING_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(todayDate)};
         Cursor cursor = db.query(TRIP_BOOKING_TABLE, null, selection, selectionArgs, null, null, null);
@@ -167,7 +195,7 @@ public class TripBookingDAO extends DBHelperDAO{
     public ArrayList<TripBooking> getAllTripBookingToday(String todayDate) {
 
         ArrayList<TripBooking> dailyReports = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = TRIP_BOOKING_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(todayDate)};
         Cursor cursor = db.query(TRIP_BOOKING_TABLE, null, selection, selectionArgs, null, null, null);
@@ -187,7 +215,7 @@ public class TripBookingDAO extends DBHelperDAO{
     }
     public ArrayList<TripBooking> getTripBookingForOfficeByDate(String office,String date) {
         ArrayList<TripBooking> dailyReports = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = TRIP_BOOKING_OFFICE + "=? AND " + TRIP_BOOKING_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(office), valueOf(date)};
         Cursor cursor = db.query(TRIP_BOOKING_TABLE, null, selection, selectionArgs, null, null, null);
@@ -208,7 +236,7 @@ public class TripBookingDAO extends DBHelperDAO{
     public ArrayList<TripBooking> getTripBookingForOffice(String officeName) {
 
         ArrayList<TripBooking> dailyReports = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = TRIP_BOOKING_OFFICE + "=?";
         String[] selectionArgs = new String[]{valueOf(officeName)};
         Cursor cursor = db.query(TRIP_BOOKING_TABLE, null, selection, selectionArgs, null, null, null);
@@ -229,7 +257,7 @@ public class TripBookingDAO extends DBHelperDAO{
     public ArrayList<TripBooking> getTripBookingForProf(int profID) {
 
         ArrayList<TripBooking> dailyReports = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = TRIP_BOOKING_PROF_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(profID)};
         Cursor cursor = db.query(TRIP_BOOKING_TABLE, null, selection, selectionArgs, null, null, null);
@@ -250,7 +278,7 @@ public class TripBookingDAO extends DBHelperDAO{
     public ArrayList<TripBooking> getTripBookingForProfByDate(int profID,String date) {
 
         ArrayList<TripBooking> dailyReports = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = TRIP_BOOKING_PROF_ID + "=? AND " + TRIP_BOOKING_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(profID), valueOf(date)};
         Cursor cursor = db.query(TRIP_BOOKING_TABLE, null, selection, selectionArgs, null, null, null);
@@ -271,7 +299,7 @@ public class TripBookingDAO extends DBHelperDAO{
     public ArrayList<TripBooking> getTripBookingForStateToday(String state,String date) {
 
         ArrayList<TripBooking> dailyReports = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = TRIP_BOOKING_STATE + "=? AND " + TRIP_BOOKING_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(state), valueOf(date)};
         Cursor cursor = db.query(TRIP_BOOKING_TABLE, null, selection, selectionArgs, null, null, null);
@@ -292,7 +320,7 @@ public class TripBookingDAO extends DBHelperDAO{
     public ArrayList<TripBooking> getAllTripBookingsForState(String state) {
 
         ArrayList<TripBooking> dailyReports = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = TRIP_BOOKING_STATE + "=?";
         String[] selectionArgs = new String[]{valueOf(state)};
         Cursor cursor = db.query(TRIP_BOOKING_TABLE, null, selection, selectionArgs, null, null, null);
@@ -313,7 +341,7 @@ public class TripBookingDAO extends DBHelperDAO{
     public ArrayList<TripBooking> getTripBookingForCountryDate(String country,String date) {
 
         ArrayList<TripBooking> dailyReports = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = TRIP_BOOKING_COUNTRY + "=? AND " + TRIP_BOOKING_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(country), valueOf(date)};
         Cursor cursor = db.query(TRIP_BOOKING_TABLE, null, selection, selectionArgs, null, null, null);
@@ -334,7 +362,7 @@ public class TripBookingDAO extends DBHelperDAO{
     public ArrayList<TripBooking> getAllTripBookingForNINAndDate(String nin,String date) {
 
         ArrayList<TripBooking> dailyReports = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = TRIP_BOOKING_NIN_ID + "=? AND " + TRIP_BOOKING_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(nin), valueOf(date)};
         Cursor cursor = db.query(TRIP_BOOKING_TABLE, null, selection, selectionArgs, null, null, null);
@@ -355,7 +383,7 @@ public class TripBookingDAO extends DBHelperDAO{
     public ArrayList<TripBooking> getAllTripBookingForNIN(String nin) {
 
         ArrayList<TripBooking> dailyReports = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = TRIP_BOOKING_NIN_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(nin)};
         Cursor cursor = db.query(TRIP_BOOKING_TABLE, null, selection, selectionArgs, null, null, null);
@@ -376,7 +404,7 @@ public class TripBookingDAO extends DBHelperDAO{
     public ArrayList<TripBooking> getAllTripBookingsForTypeAndDate(String type, String date) {
 
         ArrayList<TripBooking> dailyReports = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = TRIP_BOOKING_TYPEOS + "=? AND " + TRIP_BOOKING_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(type), valueOf(date)};
         Cursor cursor = db.query(TRIP_BOOKING_TABLE, null, selection, selectionArgs, null, null, null);
@@ -397,7 +425,7 @@ public class TripBookingDAO extends DBHelperDAO{
     public ArrayList<TripBooking> getAllTripBookingForType(String type) {
 
         ArrayList<TripBooking> dailyReports = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = TRIP_BOOKING_TYPEOS + "=?";
         String[] selectionArgs = new String[]{valueOf(type)};
         Cursor cursor = db.query(TRIP_BOOKING_TABLE, null, selection, selectionArgs, null, null, null);
@@ -418,7 +446,7 @@ public class TripBookingDAO extends DBHelperDAO{
     public ArrayList<TripBooking> getAllTripBookingForCurrencyAndDate(String currency,String date) {
 
         ArrayList<TripBooking> dailyReports = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = TRIP_BOOKING_CURRENCY + "=? AND " + TRIP_BOOKING_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(currency), valueOf(date)};
         Cursor cursor = db.query(TRIP_BOOKING_TABLE, null, selection, selectionArgs, null, null, null);
@@ -439,7 +467,7 @@ public class TripBookingDAO extends DBHelperDAO{
     public ArrayList<TripBooking> getAllTripBookingForCurrency(String currency) {
 
         ArrayList<TripBooking> dailyReports = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = TRIP_BOOKING_CURRENCY + "=?";
         String[] selectionArgs = new String[]{valueOf(currency)};
         Cursor cursor = db.query(TRIP_BOOKING_TABLE, null, selection, selectionArgs, null, null, null);
@@ -457,4 +485,6 @@ public class TripBookingDAO extends DBHelperDAO{
 
         return dailyReports;
     }
+
+
 }

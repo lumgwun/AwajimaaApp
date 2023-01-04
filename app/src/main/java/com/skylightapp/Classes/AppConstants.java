@@ -19,8 +19,12 @@ public class AppConstants {
     public static final String FLUTTERWAVE_PUBLIC_KEY = "FLWPUBK_TEST-ddff7f1daad11fb95203bec5a21b4d6e-X";
     public static final String FLUTTERWAVE_SECRET_KEY = "FLWSECK_TEST-b5f18fe0c0f22172e340a1827668a0be-X";
     public static final String FLUTTERWAVE_ENCRYPTION_KEY = "FLWSECK_TEST010c1328202c";
-    public static final String AWAJIMA_WEBHOOK = "https://eo5masw7fp9k6kz.m.pipedream.net";
+    public static final String AWAJIMA_SO_WEBHOOK = "https://eod04os6ldlez5q.m.pipedream.net";
+    public static final String AWAJIMA_SUB_WEBHOOK = "https://eob03piz55v4647.m.pipedream.net";
 
+    //curl -d '{
+    //  "test": "event"
+    //}'   -H "Content-Type: application/json"   https://eob03piz55v4647.m.pipedream.net
 
     public static final String FIRST_TIME = "FirstTime";
     public static final String WHATS_NEW_LAST_SHOWN = "whats_new_last_shown";
@@ -35,6 +39,10 @@ public class AppConstants {
     public final static String THREE_MONTHS_R = "https://business.quickteller.com/link/pay/LumgwunXwipB";
     public final static String SIX_MONTHS_R = "https://business.quickteller.com/link/pay/LumgwunQsB8s";
     public final static String RECURRENT_SUB = "https://business.quickteller.com/link/pay/LumgwunMa0s9";
+    public final static String SIX_PREMIUM = "https://business.quickteller.com/link/pay/Lumgwunk9VxY";
+    public final static String SIX_GOLD = "https://business.quickteller.com/link/pay/LumgwunjhyjH";
+    public final static String PREMIUM_LIFE = "https://business.quickteller.com/link/pay/LumgwunvvGKi";
+    public final static String GOLD_LIFE = "https://business.quickteller.com/link/pay/LumgwunQxPrd";
 
     public static final String FILENAME = "birthdays.json";
     public static final int NO_REQUEST = -1;

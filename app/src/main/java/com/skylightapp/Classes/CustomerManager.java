@@ -8,10 +8,7 @@ import android.os.Parcelable;
 import android.provider.BaseColumns;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.TypeConverters;
+
 
 import com.google.android.gms.maps.model.LatLng;
 import com.skylightapp.MarketClasses.MarketBusiness;
@@ -31,7 +28,7 @@ import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
-@Entity(tableName = CustomerManager.CUSTOMER_TELLER_TABLE)
+//@Entity(tableName = CustomerManager.CUSTOMER_TELLER_TABLE)
 public class CustomerManager  implements Parcelable, Serializable , BaseColumns {
 
     public static final String CUSTOMER_TELLER_ID = "ct_idT";
@@ -96,49 +93,49 @@ public class CustomerManager  implements Parcelable, Serializable , BaseColumns 
     //@Ignore
     private static final long serialVersionUID = 8924708152697574031L;
     @SuppressLint("SimpleDateFormat")
-    @Ignore
+    //@Ignore
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     //@PrimaryKey(autoGenerate = true)
     //@ColumnInfo(name = CUSTOMER_TELLER_ID)
     private int tID=1012;
-    @ColumnInfo(name = CUSTOMER_TELLER_FIRST_NAME)
+    //@ColumnInfo(name = CUSTOMER_TELLER_FIRST_NAME)
     String tFirstName;
-    @ColumnInfo(name = CUSTOMER_TELLER_SURNAME)
+    //@ColumnInfo(name = CUSTOMER_TELLER_SURNAME)
     String tSurname;
-    @ColumnInfo(name = CUSTOMER_TELLER_STATUS)
+    //@ColumnInfo(name = CUSTOMER_TELLER_STATUS)
     String tStatus;
     //@Ignore
     String tMiddleName;
-    @ColumnInfo(name = CUSTOMER_TELLER_GENDER)
+    //@ColumnInfo(name = CUSTOMER_TELLER_GENDER)
     String tGender;
-    @ColumnInfo(name = CUSTOMER_TELLER_OFFICE)
+    //@ColumnInfo(name = CUSTOMER_TELLER_OFFICE)
     String tOffice;
     //@Ignore
     String tState;
     //@Ignore
     String tLga;
-    @ColumnInfo(name = CUSTOMER_TELLER_ADDRESS)
+    //@ColumnInfo(name = CUSTOMER_TELLER_ADDRESS)
     String tAddress;
-    @ColumnInfo(name = CUSTOMER_TELLER_DOB)
+    //@ColumnInfo(name = CUSTOMER_TELLER_DOB)
     String tDob;
     //@Ignore
     private  LatLng lastLocation;
-    @ColumnInfo(name = CUSTOMER_TELLER_PASSWORD)
+    //@ColumnInfo(name = CUSTOMER_TELLER_PASSWORD)
     private String tPassword;
-    @ColumnInfo(name = CUSTOMER_TELLER_EMAIL_ADDRESS)
+    //@ColumnInfo(name = CUSTOMER_TELLER_EMAIL_ADDRESS)
     private String tEmailAddress;
-    @ColumnInfo(name = CUSTOMER_TELLER_PHONE_NUMBER)
+    //@ColumnInfo(name = CUSTOMER_TELLER_PHONE_NUMBER)
     private String tPhoneNumber;
-    @ColumnInfo(name = CUSTOMER_TELLER_DATE_JOINED)
+    //@ColumnInfo(name = CUSTOMER_TELLER_DATE_JOINED)
     private String tDateJoined;
     //@Ignore
     String tNextOfKin;
-    @ColumnInfo(name = CUSTOMER_TELLER_USER_NAME)
+    //@ColumnInfo(name = CUSTOMER_TELLER_USER_NAME)
     private String tUserName;
 
-    @TypeConverters
-    @ColumnInfo(name = CUSTOMER_TELLER_PIX)
+    //@TypeConverters
+    //@ColumnInfo(name = CUSTOMER_TELLER_PIX)
     private Uri tPhoto;
     private int tellerProfileID;
     private long tellerMarketBizID;
@@ -493,22 +490,22 @@ public class CustomerManager  implements Parcelable, Serializable , BaseColumns 
 
     }
 
-    @Ignore
+    //@Ignore
     public void setAddress1(String address) {
         this.tAddress =address;
 
     }
-    @Ignore
+    //@Ignore
     public LatLng getLastKnownLocation() {
         return lastLocation;
     }
-    @Ignore
+    //@Ignore
     public LatLng setLastKnownLocation(LatLng lastLocation) {
         this.lastLocation = lastLocation;
 
         return lastLocation;
     }
-    @Ignore
+    //@Ignore
     public void addTimeLine(String tittle,String timelineDetails) {
         timeLines= new ArrayList<>();
         String history = "History" + (timeLines.size() + 1);
@@ -525,26 +522,26 @@ public class CustomerManager  implements Parcelable, Serializable , BaseColumns 
     }
 
 
-    @Ignore
+    //@Ignore
     public void addTimeLine(int timeLineID,String tittle,String timelineDetails) {
         timeLines= new ArrayList<>();
         String history = "History" + (timeLines.size() + 1);
         TimeLine timeLine = new TimeLine(timeLineID, tittle,timelineDetails);
         timeLines.add(timeLine);
     }
-    @Ignore
+    //@Ignore
 
 
     private static void addItem(Customer.CustomerItem item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
     }
-    @Ignore
+    //@Ignore
 
     private static Customer.CustomerItem createCustomerItem(int position) {
         return new Customer.CustomerItem(String.valueOf(position), "Item " + position, makeDetails(position));
     }
-    @Ignore
+    //@Ignore
 
     private static String makeDetails(int position) {
         StringBuilder builder = new StringBuilder();
@@ -554,17 +551,17 @@ public class CustomerManager  implements Parcelable, Serializable , BaseColumns 
         }
         return builder.toString();
     }
-    @Ignore
+    //@Ignore
 
     public boolean isAlreadyAdded() {
         return false;
     }
-    @Ignore
+    //@Ignore
 
     public void setAlreadyAdded(boolean alreadyAdded) {
 
     }
-    @Ignore
+    //@Ignore
     public boolean getAlreadyAdded() {
         return alreadyAdded;
     }
@@ -700,20 +697,20 @@ public class CustomerManager  implements Parcelable, Serializable , BaseColumns 
         Customer customer = new Customer( count,customerID,customerName,customerPhoneNo, dateJoined, customerStatus);
         customerArrayList.add(customer);
     }
-    @Ignore
+    //@Ignore
 
     public void setReportFromDB(ArrayList<CustomerDailyReport> dailyReports) {
         this.dailyReports = dailyReports;
     }
-    @Ignore
+    //@Ignore
     public List<Address> getTAddresses() {
         return addresses;
     }
-    @Ignore
+    //@Ignore
     public Profile getTellerProfile() {
         return tellerProfile;
     }
-    @Ignore
+    //@Ignore
     public void setTellerProfile(Profile tellerProfile) {
         this.tellerProfile = tellerProfile;
 

@@ -42,7 +42,7 @@
                 android:layout_gravity="center"
                 android:elevation="2dp"
                 android:layout_weight="1"
-                android:text="Oyorokoto"
+                android:text="Port Harcourt"
                 android:gravity="center"
                 android:textStyle="italic"
                 android:paddingEnd="10dp"
@@ -71,7 +71,7 @@
                 android:paddingStart="1dp"
                 android:scaleX=".85"
                 android:scaleY=".85"
-                android:src="@drawable/boat33" />
+                android:src="@drawable/train" />
 
 
         </LinearLayout>

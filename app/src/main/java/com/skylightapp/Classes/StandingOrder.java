@@ -4,8 +4,7 @@ package com.skylightapp.Classes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+
 
 import java.io.Serializable;
 
@@ -16,7 +15,7 @@ import static com.skylightapp.Classes.Profile.PROFILE_ID;
 import static com.skylightapp.Classes.StandingOrderAcct.SO_ACCOUNT_NO;
 import static com.skylightapp.Classes.StandingOrderAcct.SO_ACCT_TABLE;
 
-@Entity(tableName = StandingOrder.STANDING_ORDER_TABLE)
+//@Entity(tableName = StandingOrder.STANDING_ORDER_TABLE)
 public class StandingOrder implements Serializable, Parcelable {
     public static final String STANDING_ORDER_TABLE = "standingOrderTable";
     public static final String SO_ID = "sO_id";
@@ -45,7 +44,7 @@ public class StandingOrder implements Serializable, Parcelable {
             SO_CUS_ID + " INTEGER , " + SO_EXPECTED_AMOUNT + " REAL , " + SO_RECEIVED_AMOUNT + " REAL , " + SO_TOTAL_DAYS + " REAL , " + SO_AMOUNT_DIFF + " REAL , " +
             SO_DAYS_REMAINING + " REAL , " + SO_STATUS + " TEXT , " + SO_ACCT_NO + " INTEGER , " + SO_START_DATE + " TEXT, " + SO_END_DATE + " TEXT, "+ SO_APPROF_DATE + " TEXT, " + SO_PROF_ID + " INTEGER, "+ SO_REQUEST_DATE + " TEXT, "+ SO_PLAN + " TEXT , " + SO_FREQUENCY + " TEXT , " + SO_REQUEST_PLATFORM + " TEXT , " + SO_NAME + " TEXT , "+ SO_PURPOSE + " TEXT , "+"FOREIGN KEY(" + SO_ACCT_NO + ") REFERENCES " + SO_ACCT_TABLE + "(" + SO_ACCOUNT_NO + ")," +"FOREIGN KEY(" + SO_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + SO_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     private int soID;
     double so_ExpectedAmount;
     double so_ReceivedAmount;

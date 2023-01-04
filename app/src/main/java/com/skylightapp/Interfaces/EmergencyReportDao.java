@@ -1,25 +1,23 @@
 package com.skylightapp.Interfaces;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.Update;
+
 
 import com.skylightapp.MapAndLoc.EmergencyReport;
 import com.skylightapp.Classes.Profile;
 
 import java.util.List;
 
-@androidx.room.Dao
+//@androidx.room.Dao
 public interface EmergencyReportDao {
-    @Insert
+    //@Insert
     void insert(EmergencyReport emergencyReport);
 
 
-    @Update
+    //@Update
     void update(EmergencyReport emergencyReport);
 
-    @Delete
+    //@Delete
     void delete(EmergencyReport emergencyReport);
 
     //@Query("DELETE FROM PROFILE_TABLE")

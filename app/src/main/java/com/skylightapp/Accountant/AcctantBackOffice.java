@@ -46,7 +46,7 @@ import com.skylightapp.Customers.CustomerHelpActTab;
 import com.skylightapp.Customers.CusLoanTab;
 import com.skylightapp.Customers.CusPackForPayment;
 import com.skylightapp.Customers.CusDocCodeSavingsAct;
-import com.skylightapp.Customers.NewPackCusAct;
+import com.skylightapp.Customers.NewManualPackCusAct;
 import com.skylightapp.Customers.PackageTab;
 import com.skylightapp.Customers.SOTab;
 import com.skylightapp.Database.AdminBalanceDAO;
@@ -470,7 +470,7 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
                 return true;
 
             case R.id.all_new:
-                Intent wIntent = new Intent(this, NewPackCusAct.class);
+                Intent wIntent = new Intent(this, NewManualPackCusAct.class);
                 wIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(wIntent);
                 return true;

@@ -162,19 +162,19 @@ public class MarketTab extends TabActivity implements NavigationView.OnNavigatio
 
         Intent intentMarkets = new Intent().setClass(this, MarketHub.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecMarketBiz = tabhost
-                .newTabSpec("Market Hub")
+                .newTabSpec("African Market")
                 .setIndicator("", resources.getDrawable(R.drawable.ic_admin_panel))
                 .setContent(intentMarkets);
 
         Intent intentProducts = new Intent().setClass(this, SavingsSOAct.class);
-        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecSignUp = tabhost
+        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecSavings = tabhost
                 .newTabSpec("Savings")
                 .setIndicator("", resources.getDrawable(R.drawable.ic_icon2))
                 .setContent(intentProducts);
 
         Intent intentMarketHub = new Intent().setClass(this, MarketCreatorAct.class);
-        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecHub = tabhost
-                .newTabSpec("Market Hub")
+        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabNewMarket = tabhost
+                .newTabSpec("New Market")
                 .setIndicator("", resources.getDrawable(R.drawable.ic_icon2))
                 .setContent(intentMarketHub);
 
@@ -183,11 +183,11 @@ public class MarketTab extends TabActivity implements NavigationView.OnNavigatio
                 .newTabSpec("Logistics Park")
                 .setIndicator("", resources.getDrawable(R.drawable.ic_admin_panel))
                 .setContent(intentLogistics);
-
-        tabhost.addTab(tabSpecSignUp);
-        tabhost.addTab(tabSpecHub);
-        tabhost.addTab(tabSpecLogistics);
         tabhost.addTab(tabSpecMarketBiz);
+        tabhost.addTab(tabSpecSavings);
+        tabhost.addTab(tabSpecLogistics);
+        tabhost.addTab(tabNewMarket);
+
 
         tabhost.setCurrentTab(0);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {

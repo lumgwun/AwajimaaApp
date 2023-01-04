@@ -18,9 +18,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:id="@+id/id_l1"
-            android:padding="20dp"
+            android:padding="10dp"
             android:orientation="vertical"
-            android:background="@drawable/rect_their_black"
+            android:background="@drawable/rect_new"
             android:layout_height="wrap_content">
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -32,17 +32,17 @@
                     android:layout_height="55dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/user3"
+                    app:srcCompat="@drawable/ic_icon2"
                     android:contentDescription="Account Image" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:text=" ID"
                     android:id="@+id/account_id4"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginEnd="2dp"
                     android:padding="15dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginBottom="5dp"
                     android:textColor="@color/red_brown_dark"
                     android:layout_height="wrap_content"/>
 
@@ -52,20 +52,20 @@
                 android:layout_width="match_parent"
                 android:text=" Bank Name"
                 android:id="@+id/account_bank4"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="2dp"
                 android:textStyle="bold"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginBottom="5dp"
                 android:textColor="@color/red_brown_dark"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:layout_width="match_parent"
                 android:text=" AccountName"
                 android:id="@+id/account_name4"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="2dp"
                 android:textStyle="bold"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginBottom="5dp"
                 android:textColor="@color/red_brown_dark"
                 android:layout_height="wrap_content"/>
             <TextView
@@ -73,18 +73,18 @@
                 android:text=" Account No."
                 android:id="@+id/account_no4"
                 android:textStyle="bold"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="2dp"
                 android:textColor="@color/red_brown_dark"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:id="@+id/txt_account_type4"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="5dp"
                 android:textColor="@color/red_brown_dark"
                 tools:text="ACCOUNT TYPE:" />
 
@@ -94,8 +94,8 @@
                 android:text=" Balance."
                 android:textStyle="bold"
                 android:id="@+id/account_balance4"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
                 android:textSize="20sp"
                 android:textColor="@color/red_brown_dark"
                 android:layout_height="wrap_content"/>

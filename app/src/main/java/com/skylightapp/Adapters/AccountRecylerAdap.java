@@ -31,7 +31,7 @@ public class AccountRecylerAdap extends RecyclerView.Adapter<AccountRecylerAdap.
     private List<Account> mAccountList;
     private Account recyclerData;
     private Currency currency;
-    private String symbol;
+    private String currencyCode;
 
     public AccountRecylerAdap(ArrayList<Account> recyclerDataArrayList, Context mcontext) {
         this.accountArrayList = recyclerDataArrayList;
@@ -85,14 +85,14 @@ public class AccountRecylerAdap extends RecyclerView.Adapter<AccountRecylerAdap.
         if(recyclerData !=null){
             currency= recyclerData.getCurrency();
             if(currency !=null){
-                symbol=currency.getCode();
+                currencyCode=currency.getCode();
             }
-            holder.txtAccountName.setText(MessageFormat.format("Acct Name:{0}", recyclerData.getAccountName()));
-            holder.txtAccountID.setText(MessageFormat.format("Acct No:{0}", recyclerData.getAwajimaAcctNo()));
+            holder.txtAccountName.setText(MessageFormat.format("Acct. Name{0}", recyclerData.getAccountName()));
+            holder.txtAccountID.setText(MessageFormat.format("Acct No:{0}", recyclerData.getAcctNo()));
             holder.txtAccountBank.setText(MessageFormat.format("Bank:{0}", recyclerData.getBankName()));
-            holder.txtAccountBalance.setText(MessageFormat.format("Account balance: {0}{1}", symbol, String.format("%.2f", recyclerData.getAccountBalance())));
-            holder.txtAccountType.setText(MessageFormat.format("Acct Type:{0}", String.valueOf(recyclerData.getType())));
-            holder.txtAccountID.setText(MessageFormat.format("Acct ID:{0}", String.valueOf(recyclerData.getAwajimaAcctNo())));
+            holder.txtAccountBalance.setText(MessageFormat.format("Account balance: {0}{1}", recyclerData.getAccountCurrSymbol(), String.format("%.2f", recyclerData.getAccountBalance())));
+            holder.txtAccountType.setText(MessageFormat.format("Acct Type:{0}", String.valueOf(recyclerData.getAcctType())));
+
 
         }
 

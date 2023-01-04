@@ -111,6 +111,8 @@ import static com.skylightapp.Classes.DailyAccount.CREATE_DAILY_ACCOUNTING_TABLE
 
 import static com.skylightapp.Classes.DailyAccount.DAILY_ACCOUNTING_TABLE;
 
+import static com.skylightapp.Classes.ExchangeRate.CREATE_EXCHANGER_TABLE;
+import static com.skylightapp.Classes.ExchangeRate.EXCHANGER_TABLE;
 import static com.skylightapp.Classes.Profile.CREATE_NIN_TABLE;
 import static com.skylightapp.Classes.Profile.CREATE_USER_TYPE_TABLE;
 import static com.skylightapp.Classes.Profile.NIN_TABLE;
@@ -119,8 +121,19 @@ import static com.skylightapp.Bookings.TripStopPoint.TRIP_STOP_POINT_TABLE;
 import static com.skylightapp.Bookings.TripStopPoint.CREATE_TRIP_STOP_POINT_TABLE;
 import static com.skylightapp.Classes.SOReceived.CREATE_SO_RECEIVED_TABLE;
 import static com.skylightapp.Classes.SOReceived.SO_RECEIVED_TABLE;
+
+import static com.skylightapp.MapAndLoc.Distance.CREATE_DISTANCE_TABLE;
+import static com.skylightapp.MapAndLoc.Distance.DISTANCE_TABLE;
 import static com.skylightapp.MapAndLoc.Fence.CREATE_FENCE_TABLE;
 import static com.skylightapp.MapAndLoc.Fence.FENCE_TABLE;
+import static com.skylightapp.MapAndLoc.POI.CREATE_POI_REPORT_TABLE;
+import static com.skylightapp.MapAndLoc.POI.EMER_POI_TABLE;
+import static com.skylightapp.MapAndLoc.POIVisit.CREATE_POI_VISIT_TABLE;
+import static com.skylightapp.MapAndLoc.POIVisit.POI_VISIT_TABLE;
+import static com.skylightapp.MapAndLoc.Region.CREATE_REGION_TABLE;
+import static com.skylightapp.MapAndLoc.Region.REGION_TABLE;
+import static com.skylightapp.MapAndLoc.Visit.CREATE_VISIT_TABLE;
+import static com.skylightapp.MapAndLoc.Visit.VISIT_TABLE;
 import static com.skylightapp.StateDir.State.CREATE_STATE_TABLE;
 import static com.skylightapp.StateDir.State.STATE_TABLE;
 import static com.skylightapp.StateDir.StateMinistry.CREATE_STATE_MIN_TABLE;
@@ -554,6 +567,15 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.d("table", CREATE_TRIP_B_NIN_TABLE);
         Log.d("table", CREATE_NIN_TABLE);
         Log.d("table", CREATE_FENCE_TABLE);
+        Log.d("table", CREATE_POI_REPORT_TABLE);
+        Log.d("table", CREATE_POI_VISIT_TABLE);
+        Log.d("table", CREATE_DISTANCE_TABLE);
+        Log.d("table", CREATE_REGION_TABLE);
+        Log.d("table", CREATE_VISIT_TABLE);
+        Log.d("table", CREATE_EXCHANGER_TABLE);
+
+
+
 
         try {
             sharedPreferences = mContext.getSharedPreferences(PREF_NAME, 0);
@@ -601,7 +623,6 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_CUSTOMERS_TABLE);
             db.execSQL(CREATE_PACKAGE_TABLE);
             db.execSQL(CREATE_PIXTURE_TABLE);
-
             db.execSQL(CREATE_ADMIN_BALANCE_TABLE);
             db.execSQL(CREATE_PROJECT_SAVINGS_GROUP_TABLE);
             db.execSQL(CREATE_BOOKING_TABLE);
@@ -659,6 +680,13 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_NIN_TABLE);
             db.execSQL(CREATE_FENCE_TABLE);
             db.execSQL(CREATE_SO_RECEIVED_TABLE);
+            db.execSQL(CREATE_POI_REPORT_TABLE);
+            db.execSQL(CREATE_POI_VISIT_TABLE);
+            db.execSQL(CREATE_DISTANCE_TABLE);
+            db.execSQL(CREATE_REGION_TABLE);
+            db.execSQL(CREATE_VISIT_TABLE);
+            db.execSQL(CREATE_EXCHANGER_TABLE);
+
 
             db.execSQL("create table ROLES " + "(role_ID integer primary key, roleUserName text,rolePassword text,rolePhoneNo text,role text)");
             //db.setTransactionSuccessful();
@@ -755,6 +783,12 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TRIP_B_NIN_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + FENCE_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + SO_RECEIVED_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + EMER_POI_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + POI_VISIT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + DISTANCE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + REGION_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + VISIT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + EXCHANGER_TABLE);
 
         onCreate(db);
 
@@ -841,6 +875,12 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TRIP_B_NIN_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + FENCE_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + SO_RECEIVED_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + EMER_POI_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + POI_VISIT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + DISTANCE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + REGION_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + VISIT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + EXCHANGER_TABLE);
         onCreate(db);
     }
 

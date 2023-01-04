@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.sqlite.db.SupportSQLiteDatabase;
+
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -106,7 +106,7 @@ public class TellerWorkAct extends AppCompatActivity {
     private  BarData data;
     private BarChart payoutChart,customersCharts,transXBarChart,savingsBarChart,paymentChart,packageChart,invBarChart,promoBarChart,itemsBarchart;
     private ChartData chartDataPackage,chartDataSavings,chartDataPromo,chartDataItems,chartDataTransaction,chartDataInvestment,chartDataCustomers,chartDataPayment;
-    SupportSQLiteDatabase supportSQLiteDatabase;
+
     RecyclerView recyclerViewCusC,recyclerPayment,recyclerInv,recyclerItems,recyclerPromo,recyclerReports,recyclerSavings;
     String SharedPrefUserPassword,stringDate,SharedPrefUserMachine,phoneNo,SharedPrefUserName,SharedPrefProfileID,adminName;
 

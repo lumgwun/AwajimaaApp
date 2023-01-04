@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--suppress ALL -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,7 +12,6 @@
         android:layout_height="2dp"
         android:background="@drawable/rect6b"
         android:backgroundTint="@color/gray_light_pro" />
-
 
     <ScrollView
         android:layout_width="match_parent"
@@ -36,15 +36,26 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:drawableTop="@drawable/ic_icon2"
                 android:text="Save and Achieve your dreams!"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:ellipsize="marquee"
+                android:focusable="true"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/gilroy_black"
                 android:background="@null"
-                android:gravity="center_horizontal"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
+                android:clickable="true"
                 android:padding="20dp"
-                android:textStyle="bold" />
+                android:focusableInTouchMode="true"
+                android:singleLine="true"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:scrollHorizontally="true">
+                <requestFocus />
+            </androidx.appcompat.widget.AppCompatTextView>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"

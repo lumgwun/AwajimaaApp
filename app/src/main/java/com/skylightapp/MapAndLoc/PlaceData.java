@@ -94,6 +94,11 @@ public class PlaceData implements Parcelable, Serializable {
         }
     };
 
+    public PlaceData(com.skylightapp.MapAndLoc.RegionLog regionLogToShow) {
+        this.regionLog=regionLogToShow;
+
+    }
+
     public String getPlaceAddress() {
         return placeAddress;
     }
@@ -215,6 +220,14 @@ public class PlaceData implements Parcelable, Serializable {
         this.placeDataEmergReport = placeDataEmergReport;
     }
 
+    public com.skylightapp.MapAndLoc.RegionLog getRegionLog() {
+        return regionLog;
+    }
+
+    public void setRegionLog(com.skylightapp.MapAndLoc.RegionLog regionLog) {
+        this.regionLog = regionLog;
+    }
+
     public enum dataType {
         POI,
         location,
@@ -252,6 +265,7 @@ public class PlaceData implements Parcelable, Serializable {
     private String placeDateTime;
     private LatLngBounds placeLatLngBounds;
     private EmergencyReport placeDataEmergReport;
+    private com.skylightapp.MapAndLoc.RegionLog regionLog;
 
 
     public String getTypeRegion() {

@@ -1,4 +1,4 @@
-package com.skylightapp.Classes;
+package com.skylightapp.Database;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;

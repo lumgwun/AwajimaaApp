@@ -61,7 +61,7 @@ public class PackageTab extends TabActivity {
 
 
 
-        Intent intentNew = new Intent().setClass(this, NewPackCusAct.class);
+        Intent intentNew = new Intent().setClass(this, NewManualPackCusAct.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecNew = tabHost
                 .newTabSpec("New Pack")
                 .setIndicator("", resources.getDrawable(R.drawable.ic_add_business))

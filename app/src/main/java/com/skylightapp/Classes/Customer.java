@@ -7,7 +7,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
-import androidx.room.PrimaryKey;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.skylightapp.Inventory.Stocks;
@@ -79,7 +78,7 @@ public class Customer  implements Parcelable, Serializable {
     private static final long serialVersionUID = 8924708152697574031L;
     @SuppressLint("SimpleDateFormat")
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     private int cusID=1112;
     String cusFirstName;
     String cusSurname;
@@ -159,6 +158,7 @@ public class Customer  implements Parcelable, Serializable {
     }
 
     private ArrayList<MarketBusiness> cusMarketBusinesses;
+    private ArrayList<Account> cusAccounts;
 
     public Customer(String refID, String cusPhoneNumber) {
 
@@ -675,7 +675,13 @@ public class Customer  implements Parcelable, Serializable {
         this.customerRole = customerRole;
     }
 
+    public void setCusAccounts(ArrayList<Account> cusAccounts) {
+        this.cusAccounts = cusAccounts;
+    }
 
+    public ArrayList<Account> getCusAccounts() {
+        return cusAccounts;
+    }
 
 
     public static class CustomerItem {

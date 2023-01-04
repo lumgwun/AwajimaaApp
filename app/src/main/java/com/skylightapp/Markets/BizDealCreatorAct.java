@@ -3,7 +3,6 @@ package com.skylightapp.Markets;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatSpinner;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;

@@ -9,7 +9,7 @@
     android:theme="@style/Theme.OurCApp"
     android:background="@drawable/rect_their_message"
     tools:context="com.skylightapp.Customers.SOTab">
-    <include layout="@layout/tool_bar11d"/>
+    <include layout="@layout/tool_bar11tab"/>
     <LinearLayout
         android:orientation="vertical"
         android:layout_marginTop="100dp"

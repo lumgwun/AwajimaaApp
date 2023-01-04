@@ -7,8 +7,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.format.DateFormat;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import com.skylightapp.R;
 
@@ -28,7 +26,7 @@ import static com.skylightapp.Classes.Profile.PROFILE_ID;
 import static java.sql.Date.valueOf;
 
 @SuppressWarnings("deprecation")
-@Entity(tableName = Birthday.BIRTHDAY_TABLE)
+//@Entity(tableName = Birthday.BIRTHDAY_TABLE)
 public class Birthday implements Serializable, Parcelable {
     public static final String BIRTHDAY_STATUS = "bbirthday_status";
     public static final String BIRTHDAY_ID = "bbirth_id";
@@ -67,7 +65,7 @@ public class Birthday implements Serializable, Parcelable {
     public String bFirstName;
     private String bSurName;
     public String bGender;
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     private int birthdayID=12;
     public int bProfileID;
     public String bPhoneNumber;

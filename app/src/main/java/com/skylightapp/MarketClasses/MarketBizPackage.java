@@ -9,8 +9,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.RequiresApi;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+
 
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
@@ -40,7 +39,7 @@ import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_ID;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TABLE;
 import static java.lang.String.valueOf;
 
-@Entity(tableName = MarketBizPackage.PACKAGE_TABLE)
+//@Entity(tableName = MarketBizPackage.PACKAGE_TABLE)
 public class MarketBizPackage implements Parcelable, Serializable {
 
     public static final String PACKAGE_TABLE = "package_table";
@@ -79,7 +78,7 @@ public class MarketBizPackage implements Parcelable, Serializable {
     private String packageOfficeBranch;
     private DBHelper dbHelper;
     //private int numberOfDays;
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     private int packageId;
     private int packageProfileId;
     private int packageCustomerId;

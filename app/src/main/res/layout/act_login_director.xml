@@ -5,6 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/Theme.SkylightApp3"
-    android:background="@drawable/sky4"
+    android:background="@drawable/event_rect"
     tools:context=".LoginDirAct">
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,7 +13,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.PrimaryKey;
+
 
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.MarketClasses.MarketBizPackage;
@@ -90,7 +90,7 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
     private int recordCount;
     int recordProfileId;
     int recordPackageId;
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     private int recordID =142;
     double recordAmountRemaining;
     private boolean recordRemind;

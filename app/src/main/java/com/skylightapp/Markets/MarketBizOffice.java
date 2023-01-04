@@ -53,7 +53,7 @@ import com.skylightapp.Customers.CusDocCodeSavingsAct;
 import com.skylightapp.Customers.CustUtilTab;
 import com.skylightapp.Customers.CustomerHelpActTab;
 import com.skylightapp.Customers.NewCustomerDrawer;
-import com.skylightapp.Customers.NewPackCusAct;
+import com.skylightapp.Customers.NewManualPackCusAct;
 import com.skylightapp.Customers.PackListTab;
 import com.skylightapp.Customers.PackageTab;
 import com.skylightapp.Customers.SOTab;
@@ -449,7 +449,7 @@ public class MarketBizOffice extends AppCompatActivity implements NavigationView
                 return true;
 
             case R.id.all_new:
-                Intent wIntent = new Intent(this, NewPackCusAct.class);
+                Intent wIntent = new Intent(this, NewManualPackCusAct.class);
                 wIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);

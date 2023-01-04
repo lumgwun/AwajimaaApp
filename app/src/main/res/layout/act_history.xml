@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:visibility="gone" >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/fromDateBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_layer_3b"
+            android:gravity="center"
+            android:text="from_date"
+            android:textColor="@color/red_brown_dark" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/toDateBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_layer_3b"
+            android:gravity="center"
+            android:text="To date"
+            android:textColor="@color/red_brown_dark" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btnSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:padding="20dp"
+            android:background="@drawable/shape_layer_3b"
+            android:src="@drawable/searchpreference_ic_search"
+            android:text="Search" />
+    </LinearLayout>
+
+    <de.halfbit.pinnedsection.PinnedSectionListView
+        android:id="@+id/lvHistory"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:visibility="gone" >
+    </de.halfbit.pinnedsection.PinnedSectionListView>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/ivEmptyView"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="No History"
+        android:background="@null"
+        android:gravity="center" />
+
+</LinearLayout>

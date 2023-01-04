@@ -5,9 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/m_Layout_Booking"
+    android:background="@drawable/taxi2"
     android:fitsSystemWindows="true"
     tools:openDrawer="start"
     tools:context="com.skylightapp.Bookings.BookingHomeAct">
+    <include
+        layout="@layout/act_fake_maps"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_height="match_parent" />
 
     <include
         layout="@layout/app_bar_booking"
@@ -31,10 +37,10 @@
         android:paddingVertical="20dp"
         app:itemHorizontalPadding="40dp"
         app:itemVerticalPadding="10dp"
-        app:itemIconTint="@color/white_good"
-        app:itemTextColor="@color/white_good"
+        app:itemIconTint="@color/red_brown_dark"
+        app:itemTextColor="@color/red_brown_dark"
         android:layout_marginBottom="5dp"
-        app:itemBackground="@drawable/rect_new"
+        app:itemBackground="@drawable/rect6g_a"
         app:itemTextAppearance="@style/TextAppearance.AppCompat.Headline"
         android:stateListAnimator="@anim/bounce"
         android:id="@+id/booking_nav_view"

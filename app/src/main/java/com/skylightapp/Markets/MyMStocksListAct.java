@@ -37,7 +37,7 @@ public class MyMStocksListAct extends ListActivity {
     String json,machine;
     int profileUID;
     Bundle bundle;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private Profile userProfile;
     private FloatingActionButton floatingActionButtonAdd;
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
@@ -84,7 +84,7 @@ public class MyMStocksListAct extends ListActivity {
         SharedPrefProfileID=userPreferences.getString("PROFILE_ID", "");
 
         this.db = new DBHelper(this);
-        this.db.open();
+        //this.db.open();
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 

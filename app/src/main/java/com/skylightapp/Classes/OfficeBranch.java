@@ -3,8 +3,7 @@ package com.skylightapp.Classes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+
 
 import java.io.Serializable;
 
@@ -17,7 +16,7 @@ import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TABLE;
 
 import com.skylightapp.SuperAdmin.Awajima;
 
-@Entity(tableName = OfficeBranch.OFFICE_BRANCH_TABLE)
+//@Entity(tableName = OfficeBranch.OFFICE_BRANCH_TABLE)
 public class OfficeBranch implements Parcelable, Serializable{
     public static final String OFFICE_BRANCH_TABLE = "office_branch_table";
     public static final String OFFICE_BRANCH_ID = "office_space_id";
@@ -146,7 +145,7 @@ public class OfficeBranch implements Parcelable, Serializable{
         BRANCH_OFFICE, AFFILIATE_CENTER;
     }
 
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     private int officeBranchID=12;
     private String officeBranchName;
     private String officeBranchDate;

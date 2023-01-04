@@ -100,7 +100,7 @@
             android:scrollHorizontally="true"
             android:singleLine="false"
             android:background="@drawable/rect_new"
-            android:text="Digital ,  Automated and stress free Akawo is here ! The Awajima App has MarketPlace, Savings (Individual and Group ), and Bookings"
+            android:text="Digital , Automated, and stress free Akawo is here ! The Awajima App has MarketPlace, Savings (Individual and Group ), and Bookings"
             android:textAlignment="center"
             android:fontFamily="@font/proxima_nova_light"
             android:textColor="@color/darkSlateBlue"

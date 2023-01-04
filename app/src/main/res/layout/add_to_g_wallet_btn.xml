@@ -2,15 +2,16 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:clickable="true"
     android:focusable="true"
+    android:id="@+id/addToG"
     android:layout_width="match_parent"
     android:minWidth="267dp"
-    android:layout_height="48dp"
+    android:layout_height="78dp"
     android:background="@drawable/rect6h">
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="227dp"
         android:layout_height="26dp"
         android:id="@+id/addG"
         android:layout_gravity="center"
         android:duplicateParentState="true"
-        android:src="@drawable/ic_add_media"/>
+        android:src="@drawable/ic_add_business"/>
 </FrameLayout>

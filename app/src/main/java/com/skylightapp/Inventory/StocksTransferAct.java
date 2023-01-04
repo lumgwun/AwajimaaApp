@@ -1,5 +1,7 @@
 package com.skylightapp.Inventory;
 
+import static com.skylightapp.Database.DBHelper.DATABASE_NAME;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -16,6 +18,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -293,11 +296,23 @@ public class StocksTransferAct extends AppCompatActivity {
             profName=userProfile.getProfileLastName()+","+userProfile.getProfileFirstName();
             profileID=userProfile.getPID();
         }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            marketBusinessList=marketBizDAO.getAllBusinessesForProfile(profileID);
+        try {
+            if(dbHelper !=null){
+                if(marketBizDAO !=null){
+                    try {
+                        marketBusinessList=marketBizDAO.getAllBusinessesForProfile(profileID);
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
         }
+
+
 
         mBizAdapter = new MarketBizArrayAdapter(StocksTransferAct.this,R.layout.item_market_biz, marketBusinessList);
         spnBiz.setAdapter(mBizAdapter);
@@ -366,108 +381,114 @@ public class StocksTransferAct extends AppCompatActivity {
         }
 
         selectedOffice=officeName;
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            stocksArrayList =stockTransferDAO.getAllStockForProfile(profileID);
+        if(stockTransferDAO !=null){
+            try {
+                stocksArrayList =stockTransferDAO.getAllStockForProfile(profileID);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
         }
+
         if(userRole !=null){
             if(userRole.equalsIgnoreCase("AwajimaSuperAdmin")){
-                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                    sqLiteDatabase = dbHelper.getReadableDatabase();
+
+                if(stocksDAO !=null){
                     try {
                         stocksArrayList=stocksDAO.getALLStocksSuper();
-                    } catch (Exception e) {
-                        System.out.println("Oops!");
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
                     }
-
 
                 }
 
-
-                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                if(officeBranchDAO !=null){
                     try {
                         officeBranchArrayList=officeBranchDAO.getAllOfficeBranches("awajima");
-                    } catch (Exception e) {
-                        System.out.println("Oops!");
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
                     }
 
-
                 }
+
+
+
                 /*if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
                     dbHelper.openDataBase();
                     sqLiteDatabase = dbHelper.getReadableDatabase();
                     dbHelper= new DBHelper(this);
                     officeBranchArrayList=dbHelper.getAllBranchOffices();
                 }*/
-                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                if(marketBizDAO !=null){
                     try {
                         marketBusinessList=marketBizDAO.getAllBusinesses();
                     } catch (Exception e) {
-                        System.out.println("Oops!");
+                        e.printStackTrace();
                     }
 
-
                 }
-                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                    sqLiteDatabase = dbHelper.getReadableDatabase();
+
+                if(cusDAO !=null){
                     try {
                         customers=cusDAO.getAwajimaCusRole("awajima");
                     } catch (Exception e) {
-                        System.out.println("Oops!");
+                        e.printStackTrace();
                     }
 
-
                 }
+
+
                 from="Awajima";
                 transferer=profName;
 
             }
             if(userRole.equalsIgnoreCase("AwajimaAdmin")){
 
-                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                if(cusDAO !=null){
                     try {
                         stocksArrayList=stocksDAO.getALLStocksSuperAwajima("awajima");
                     } catch (Exception e) {
-                        System.out.println("Oops!");
+                        e.printStackTrace();
                     }
-
 
                 }
 
-                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                if(cusDAO !=null){
+                    try {
+                        stocksArrayList=stocksDAO.getALLStocksSuperAwajima("awajima");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                if(cusDAO !=null){
                     try {
                         customers=cusDAO.getAwajimaCusRole("awajima");
                     } catch (Exception e) {
-                        System.out.println("Oops!");
+                        e.printStackTrace();
                     }
 
-
                 }
-                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                    sqLiteDatabase = dbHelper.getReadableDatabase();
+
+                if(officeBranchDAO !=null){
                     try {
                         officeBranchArrayList=officeBranchDAO.getAllOfficeBranches("awajima");
                     } catch (Exception e) {
-                        System.out.println("Oops!");
+                        e.printStackTrace();
                     }
 
-
                 }
-                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                    sqLiteDatabase = dbHelper.getReadableDatabase();
+
+                if(officeBranchDAO !=null){
                     try {
                         marketBusinessList=marketBizDAO.getAllBusinesses();
                     } catch (Exception e) {
-                        System.out.println("Oops!");
+                        e.printStackTrace();
                     }
 
-
                 }
+
                 from="Awajima";
                 transferer=profName;
 
@@ -571,10 +592,6 @@ public class StocksTransferAct extends AppCompatActivity {
         }
 
 
-
-
-
-
         stocksArrayAdapter = new StocksArrayAdapter(this, android.R.layout.simple_spinner_item, stocksArrayList);
         spnStocks.setAdapter(stocksArrayAdapter);
         spnStocks.setSelection(0);
@@ -601,17 +618,21 @@ public class StocksTransferAct extends AppCompatActivity {
         }
 
 
-
-
-
-
-
         btnRunStocksTransfer.setOnClickListener(this::doRunTransfer);
         btnRunStocksTransfer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 to="Branch";
-                recipientStock =stockTransferDAO.getRecipientAndStock(receiverID,stocksName);
+
+                if(stockTransferDAO !=null){
+                    try {
+                        recipientStock =stockTransferDAO.getRecipientAndStock(receiverID,stocksName);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
 
                 if(recipientStock !=null){
                     recipientStockQty=recipientStock.getStockItemQty();
@@ -682,17 +703,24 @@ public class StocksTransferAct extends AppCompatActivity {
                             recipientProfile.addPStocks(selectedStocksID,stocksName,null,qty,transferCode,"",transferDate,"UnVerified");
 
                         }
-                        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                            dbHelper.openDataBase();
-                            sqLiteDatabase = dbHelper.getWritableDatabase();
-                            stockTransferDAO.saveNewStocksTransfer(transferID,selectedStocksID,profileID,receiverID,stocksName,qty,transferer,transferAccepter,from,to,transferDate, this.transferCode,"UnVerified");
+                        if(stockTransferDAO !=null){
+                            try {
+                                stockTransferDAO.saveNewStocksTransfer(transferID,selectedStocksID,profileID,receiverID,stocksName,qty,transferer,transferAccepter,from,to,transferDate, this.transferCode,"UnVerified");
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
 
                         }
-                        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                            dbHelper.openDataBase();
-                            sqLiteDatabase = dbHelper.getWritableDatabase();
-                            stockTransferDAO.updateStocksQty(selectedStocksID,newQuantity);
+                        if(stockTransferDAO !=null){
+                            try {
+                                stockTransferDAO.updateStocksQty(selectedStocksID,newQuantity);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
                         }
+                        
 
 
                         selectedStocks.setStockItemQty(newQuantity);

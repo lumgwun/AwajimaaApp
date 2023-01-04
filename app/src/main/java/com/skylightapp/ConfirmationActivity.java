@@ -21,6 +21,8 @@ import com.skylightapp.Customers.CusLoanTab;
 import com.skylightapp.Customers.CusOrderTab;
 import com.skylightapp.Customers.CustomerHelpActTab;
 import com.skylightapp.Customers.NewCustomerDrawer;
+import com.skylightapp.Customers.NewLoanOptions;
+import com.skylightapp.Customers.PackageTab;
 import com.skylightapp.Customers.SOTab;
 import com.skylightapp.Customers.SavingsSOAct;
 import com.skylightapp.MapAndLoc.EmergReportMapA;
@@ -28,6 +30,7 @@ import com.skylightapp.MapAndLoc.GoogleMapAct;
 import com.skylightapp.MapAndLoc.MapPanoramaStVAct;
 import com.skylightapp.MapAndLoc.ReportSceneMAct;
 import com.skylightapp.MapAndLoc.UserReportEmergAct;
+import com.skylightapp.Markets.BizAdminOffice;
 import com.skylightapp.Markets.BizDSelectPartnerAct;
 import com.skylightapp.Markets.BizRegAct;
 import com.skylightapp.Markets.ChatActCon;
@@ -70,7 +73,7 @@ public class ConfirmationActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
                             prefManager.setFirstTimeLaunch(false);
-                                    Intent loginRIntent = new Intent(ConfirmationActivity.this, UserPrefActivity.class);
+                                    Intent loginRIntent = new Intent(ConfirmationActivity.this, TestAct.class);
                             loginRIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(loginRIntent);
                             overridePendingTransition(R.anim.slide_in_right,
@@ -87,7 +90,7 @@ public class ConfirmationActivity extends AppCompatActivity {
     }
     private void launchHomeScreen() {
         prefManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(ConfirmationActivity.this, UserPrefActivity.class));
+        startActivity(new Intent(ConfirmationActivity.this, TestAct.class));
         overridePendingTransition(R.anim.slide_in_right,
                 R.anim.slide_out_left);
         finish();

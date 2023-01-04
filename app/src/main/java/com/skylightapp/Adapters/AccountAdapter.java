@@ -73,11 +73,11 @@ public class AccountAdapter extends ArrayAdapter<Account> {
         AppCompatTextView txtAccountNo = convertView.findViewById(R.id.account_no2);
         if (account != null) {
             txtAccountName.setText(account.getAccountName());
-            txtAccountCurrency.setText(String.format("%s %s", "", currencySymbol));
-            txtAccountID.setText(MessageFormat.format("", account.getAwajimaAcctNo()));
+            txtAccountCurrency.setText(String.format("%s %s", "", currencyCode));
+            txtAccountID.setText(MessageFormat.format("", account.getAcctNo()));
             txtAccountBank.setText(MessageFormat.format("Bank:{0}", account.getBankName()));
-            txtAccountBalance.setText(MessageFormat.format("Account balance:", currencySymbol+String.format("%.2f", account.getAccountBalance())));
-            txtAccountNo.setText(String.format("%s %s", context.getString(R.string.account_no), account.getAwajimaAcctNo()));
+            txtAccountBalance.setText(MessageFormat.format("Account balance:", currencyCode+String.format("%.2f", account.getAccountBalance())));
+            txtAccountNo.setText(String.format("%s %s", context.getString(R.string.account_no), account.getAcctNo()));
 
         }
 

@@ -4,8 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
@@ -15,7 +13,7 @@ import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 
-@Entity(tableName = Payee.PAYEES_TABLE)
+//@Entity(tableName = Payee.PAYEES_TABLE)
 public class Payee implements Serializable, Parcelable {
     public static final String PAYEES_TABLE = "payees_table";
     public static final String PAYEE_ID = "payee_id";
@@ -39,7 +37,7 @@ public class Payee implements Serializable, Parcelable {
     private int payeeCusID;
     private int payeeProfileID;
     private String payeeStatus;
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     private int payeeID=1013;
 
     public Payee () {

@@ -1,24 +1,22 @@
 package com.skylightapp.Interfaces;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.Update;
+
 
 import com.skylightapp.Classes.AppCash;
 
 import java.util.List;
 
-@androidx.room.Dao
+//@androidx.room.Dao
 public interface SkylightCashDao {
-    @Insert
+    //@Insert
     void insert(AppCash appCash);
 
 
-    @Update
+    //@Update
     void update(AppCash appCash);
 
-    @Delete
+    //@Delete
     void delete(AppCash appCash);
 
     //@Query("DELETE FROM PROFILE_TABLE")

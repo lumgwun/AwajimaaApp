@@ -96,8 +96,13 @@ public class ViewPaymentAct extends ActionBarBaseAct {
 
         btnAddNewPayment.setOnClickListener(this);
         if(prefManager !=null){
-            paymentMode=prefManager.getPaymentMode();
-            paymentCard=prefManager.getDefaultCard();
+            try {
+                paymentMode=prefManager.getPaymentMode();
+                paymentCard=prefManager.getDefaultCard();
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
 
         }
         //paymentMode = (int) new PrefManager(this).getPaymentMode();
@@ -148,8 +153,13 @@ public class ViewPaymentAct extends ActionBarBaseAct {
     }
 
     private void getCards() {
-        UtilsExtra.showCustomProgressDialog(this,
-                getString(R.string.loading1), false, null);
+        try {
+            UtilsExtra.showCustomProgressDialog(this,
+                    getString(R.string.loading1), false, null);
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
+
         HashMap<String, String> map = new HashMap<String, String>();
         map.put(URL,
                 BookingConstant.ServiceType.GET_CARDS + BookingConstant.Params.ID + "="
