@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rect_their5"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:padding="20dp"
+        android:text="Select payment"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/red_brown_dark" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal" >
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivCash"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="5dp"
+            android:background="@null"
+            android:src="@drawable/cash" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivCredit"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:src="@drawable/master_card_logo_svg" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="horizontal" >
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnCancelRequest"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_layer_3b"
+            android:gravity="center"
+            android:text="Cancel"
+            android:layout_marginEnd="5dp"
+            android:textColor="@color/red_brown_dark"
+            android:textSize="17sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSendRequest"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/shape_layer_3b"
+            android:gravity="center"
+            android:text="Request"
+            android:textColor="@color/red_brown_dark"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+</LinearLayout>
