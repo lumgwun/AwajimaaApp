@@ -23,9 +23,7 @@ import com.skylightapp.SignUpAct;
 public class BoatBookingTab extends TabActivity {
     com.melnykov.fab.FloatingActionButton floatingActionButton;
     Profile userProfile;
-    com.github.clans.fab.FloatingActionButton fab;
     SharedPreferences userPreferences;
-    DBHelper dbHelper;
     Gson gson;
     String json,machine;
     int profileUID;

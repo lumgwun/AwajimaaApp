@@ -28,8 +28,7 @@ import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Customers.CustomerHelpActTab;
 import com.skylightapp.Customers.NewCustomerDrawer;
-import com.skylightapp.Customers.PackListTab;
-import com.skylightapp.MarketClasses.MarketBizSubScription;
+import com.skylightapp.MarketClasses.MarketBizSub;
 import com.skylightapp.Markets.MarketTab;
 
 import java.util.ArrayList;
@@ -60,7 +59,7 @@ public class HQLogisticsOffice extends TabActivity {
     private  Customer customer;
     private  Account account;
     private ArrayList<Account> accountArrayList;
-    private ArrayList<MarketBizSubScription> marketBizSubScriptions;
+    private ArrayList<MarketBizSub> marketBizSubs;
 
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
     CardView cardViewPackges,cardViewGrpSavings,cardViewHistory, cardViewStandingOrders, cardViewOrders, cardViewSupport;
@@ -135,7 +134,7 @@ public class HQLogisticsOffice extends TabActivity {
 
                             case R.id.cTimeLine:
 
-                                Intent chat = new Intent(HQLogisticsOffice.this, LogisticParkAct.class);
+                                Intent chat = new Intent(HQLogisticsOffice.this, LogisticDetailsAct.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
                                 chat.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

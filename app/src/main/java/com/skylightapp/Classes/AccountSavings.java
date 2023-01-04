@@ -8,7 +8,7 @@ public class AccountSavings extends Account {
 
     public AccountSavings(String bank,String name, int dbID, long accountNo, BigDecimal accountBalance, String type, Context context) {
         this.enumMap = new AccountTypesEnumMap(context);
-        this.setSkyLightAcctNo(dbID);
+        this.setAwajimaAcctNo(dbID);
         this.setType_BigDecimal(this.enumMap.getAccountId("SAVING"));
         this.setSavingsAcctName(name);
         this.setSavingsAcctBalance(accountBalance);

@@ -16,7 +16,7 @@
 
     <gradient
         android:useLevel="false"
-        android:type="radial"
-        android:gradientRadius="300"/>
+        android:type="linear"
+        android:gradientRadius="3"/>
 
 </shape>

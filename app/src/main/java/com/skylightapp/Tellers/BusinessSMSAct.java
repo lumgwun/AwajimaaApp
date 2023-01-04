@@ -28,7 +28,6 @@ import com.skylightapp.Database.MessageDAO;
 import com.skylightapp.R;
 import com.skylightapp.SMSAct;
 import com.twilio.Twilio;
-import com.twilio.rest.api.v2010.account.Message;
 
 import java.util.Random;
 
@@ -41,7 +40,7 @@ import static com.skylightapp.Classes.CustomerDailyReport.REPORT_DATE;
 import static com.skylightapp.Classes.CustomerDailyReport.REPORT_ID;
 import static com.skylightapp.Classes.CustomerDailyReport.REPORT_TOTAL;
 import static com.skylightapp.Classes.PaymentCode.CODE_DATE;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ID;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_ID;
 
 public class BusinessSMSAct extends AppCompatActivity {
     int customerID,packageID, savingsID;

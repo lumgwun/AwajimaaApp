@@ -20,7 +20,7 @@
         android:padding="5dp">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/card"
+            android:id="@+id/payStackCard"
             android:layout_width="50dp"
             app:cardBackgroundColor="@color/cardview_shadow_start_color"
             android:layout_height="50dp"
@@ -41,7 +41,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/card"
+            android:layout_toEndOf="@id/payStackCard"
             android:orientation="vertical">
 
             <LinearLayout
@@ -49,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:layout_toEndOf="@id/card"
+                android:layout_toEndOf="@id/payStackCard"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lout_name"
                 android:layout_marginTop="3dp"
-                android:layout_toEndOf="@id/card"
+                android:layout_toEndOf="@id/payStackCard"
                 android:ellipsize="end"
                 android:fontFamily="@font/gilroy_semi_bold"
                 android:textColor="@color/black"

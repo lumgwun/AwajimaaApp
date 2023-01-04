@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/ma_Inv_Home"
+        android:title="Home"
+        app:cnb_backgroundColor="@color/dark_and_red"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#2196F3"
+        android:icon="@drawable/ic_admin_panel"/>
+
+    <item
+        android:id="@+id/inv_Market"
+        android:title="Market Area"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#F44336"
+        android:icon="@drawable/ic_home_black_24dp"/>
+
+    <item
+        android:id="@+id/inv_statis"
+        android:title="Biz Statistics"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#F44336"
+        android:icon="@drawable/ic_add_business"/>
+
+    <item
+        android:id="@+id/inv_cus"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#4CAF50"
+        android:icon="@drawable/ic_chats"
+        android:title="My Customer Office" />
+    <item
+        android:id="@+id/inv_Support"
+        android:title="Support"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#FF9800"
+        android:icon="@drawable/ic_admin_panel"/>
+
+</menu>

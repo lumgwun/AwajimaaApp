@@ -269,7 +269,7 @@ public class StocksTransferAct extends AppCompatActivity {
         json4 = userPreferences.getString("LastAwajimaUsed", "");
         awajima = gson4.fromJson(json4, Awajima.class);
         if(awajima !=null){
-            awajimaProfile=awajima.getSkyProfile();
+            awajimaProfile=awajima.getAwajimaProf();
 
         }
         if(awajimaProfile !=null){

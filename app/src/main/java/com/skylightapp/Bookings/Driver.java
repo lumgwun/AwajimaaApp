@@ -8,7 +8,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.skylightapp.Classes.Bill;
 import com.skylightapp.MapAndLoc.EmergencyReport;
+import com.skylightapp.MarketClasses.MarketBizSub;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,9 +30,12 @@ public class Driver implements Parcelable, Serializable {
     public static final String DRIVER_COMPLAINS = "driver_Complains";
     public static final String DRIVER_REPORTS = "driver_Reports";
     public static final String DRIVER_PICTURE = "driver_Picture";
+    public static final String DRIVER_TYPE = "driver_Type";
+    public static final String DRIVER_RATING = "driver_Rating";
+    public static final String DRIVER_LAST_SEEN = "driver_Seen";
 
     public static final String CREATE_DRIVER_TABLE = "CREATE TABLE " + DRIVER_TABLE + " (" + DRIVER_DBID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DRIVER_ID + " TEXT, " + DRIVER_PROF_ID + " INTEGER , " +
-            DRIVER_NAME + " TEXT ,"+ DRIVER_VEHICLE + " TEXT, "+ DRIVER_TRIPS + " INTEGER, "+ DRIVER_REVENUE + " FLOAT, "+ DRIVER_JOINED_D + " TEXT, "+ DRIVER_POSITION + " TEXT, "+ DRIVER_STATUS + " TEXT, "+ DRIVER_COMPLAINS + " TEXT, "+ DRIVER_REPORTS + " TEXT, "+ DRIVER_PICTURE + " BLOB, "+"FOREIGN KEY(" + DRIVER_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+            DRIVER_NAME + " TEXT ,"+ DRIVER_VEHICLE + " TEXT, "+ DRIVER_TRIPS + " INTEGER, "+ DRIVER_REVENUE + " FLOAT, "+ DRIVER_JOINED_D + " TEXT, "+ DRIVER_POSITION + " TEXT, "+ DRIVER_STATUS + " TEXT, "+ DRIVER_COMPLAINS + " TEXT, "+ DRIVER_REPORTS + " TEXT, "+ DRIVER_PICTURE + " BLOB, "+ DRIVER_TYPE + " TEXT, "+ DRIVER_RATING + " TEXT, "+ DRIVER_LAST_SEEN + " TEXT, "+"FOREIGN KEY(" + DRIVER_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
     private String driverID;
     private String driverName;
@@ -48,6 +53,23 @@ public class Driver implements Parcelable, Serializable {
     private int driverProfID;
     private ArrayList<EmergencyReport> driverEmergRs;
     private ArrayList<String> driverTypeOfTrips;
+    private ArrayList<LatLng> driverLatLngs;
+    private String driverType;
+    private double rating;
+    private String lastTime;
+    private String lastDistance;
+    private Bill bill;
+    private ArrayList<MarketBizSub> driverSubS;
+    private double latitude;
+    private double longitude;
+    private double bearing;
+    private int vehicleTypeId;
+    private String DVehicleModel;
+    private Uri driverPicture;
+    private String driverPhone;
+    private String driverLastName;
+    private String driverFirstName;
+    private String driverGender;
 
     public Driver() {
         super();
@@ -63,17 +85,36 @@ public class Driver implements Parcelable, Serializable {
         this.driverJoinedDate = dateJoined;
         this.driverStatus = status;
     }
+    public Driver(int driverId, int profID, String name, Uri picture, String vehicle, String dateJoined, String status) {
+        super();
+        this.driverID = String.valueOf(driverId);
+        this.driverProfID = profID;
+        this.driverName = name;
+        this.driverVehiclePix = picture;
+        this.driverVehicle = vehicle;
+        this.driverJoinedDate = dateJoined;
+        this.driverStatus = status;
+    }
 
     public Driver(int driverId, String john, String adams, String picture, int i, int i1, float v, int i2, int i3, String s, float v1, int i4, String toyota_corolla) {
         this.driverID = String.valueOf(driverId);
         this.driverName = adams;
 
     }
+    public void addDriverSub(MarketBizSub sub) {
+        driverEmergRs = new ArrayList<>();
+        driverSubS.add(sub);
+    }
 
     public void addDriverEmergReport(EmergencyReport emergencyReport) {
         driverEmergRs = new ArrayList<>();
         driverEmergRs.add(emergencyReport);
     }
+    public void addDriverLatLng(LatLng latLng) {
+        driverLatLngs = new ArrayList<>();
+        driverLatLngs.add(latLng);
+    }
+
     public void addDriverTypeOfTrip(String typeOfTrip) {
         driverTypeOfTrips = new ArrayList<>();
         driverTypeOfTrips.add(typeOfTrip);
@@ -247,5 +288,141 @@ public class Driver implements Parcelable, Serializable {
 
     public void setDriverTypeOfTrips(ArrayList<String> driverTypeOfTrips) {
         this.driverTypeOfTrips = driverTypeOfTrips;
+    }
+
+    public ArrayList<LatLng> getDriverLatLngs() {
+        return driverLatLngs;
+    }
+
+    public void setDriverLatLngs(ArrayList<LatLng> driverLatLngs) {
+        this.driverLatLngs = driverLatLngs;
+    }
+
+    public String getDriverType() {
+        return driverType;
+    }
+
+    public void setDriverType(String driverType) {
+        this.driverType = driverType;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public String getLastTime() {
+        return lastTime;
+    }
+
+    public void setLastTime(String lastTime) {
+        this.lastTime = lastTime;
+    }
+
+    public String getLastDistance() {
+        return lastDistance;
+    }
+
+    public void setLastDistance(String lastDistance) {
+        this.lastDistance = lastDistance;
+    }
+
+    public Bill getBill() {
+        return bill;
+    }
+
+    public void setBill(Bill bill) {
+        this.bill = bill;
+    }
+
+    public ArrayList<MarketBizSub> getDriverSubS() {
+        return driverSubS;
+    }
+
+    public void setDriverSubS(ArrayList<MarketBizSub> driverSubS) {
+        this.driverSubS = driverSubS;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setBearing(double bearing) {
+        this.bearing = bearing;
+    }
+
+    public double getBearing() {
+        return bearing;
+    }
+
+    public void setVehicleTypeId(int vehicleTypeId) {
+        this.vehicleTypeId = vehicleTypeId;
+    }
+
+    public int getVehicleTypeId() {
+        return vehicleTypeId;
+    }
+
+    public void setDVehicleModel(String dVehicleModel) {
+        this.DVehicleModel = dVehicleModel;
+    }
+
+    public String getDVehicleModel() {
+        return DVehicleModel;
+    }
+
+    public void setDriverPicture(Uri driverPicture) {
+        this.driverPicture = driverPicture;
+    }
+
+    public Uri getDriverPicture() {
+        return driverPicture;
+    }
+
+    public void setDriverPhone(String driverPhone) {
+        this.driverPhone = driverPhone;
+    }
+
+    public String getDriverPhone() {
+        return driverPhone;
+    }
+
+    public void setDriverLastName(String driverLastName) {
+        this.driverLastName = driverLastName;
+    }
+
+    public String getDriverLastName() {
+        return driverLastName;
+    }
+
+    public void setDriverFirstName(String driverFirstName) {
+        this.driverFirstName = driverFirstName;
+    }
+
+    public String getDriverFirstName() {
+        return driverFirstName;
+    }
+
+    public void setDriverGender(String driverGender) {
+        this.driverGender = driverGender;
+    }
+
+    public String getDriverGender() {
+        return driverGender;
     }
 }

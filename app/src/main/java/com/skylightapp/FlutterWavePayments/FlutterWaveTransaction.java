@@ -17,7 +17,7 @@ public class FlutterWaveTransaction {
         ApiQuery api= new ApiQuery();
         api.putParams("txref", this.getTxRef());
         api.putParams("flw_ref", this.getFlwref());
-        api.putParams("SECKEY", OurConfig.SKYLIGHT_SECRET_KEY );
+        api.putParams("SECKEY", OurConfig.AWAJIMA_PAYSTACK_SECRET_KEY);
 
         return this.apiConnection.connectAndQuery(api);
     }
@@ -31,7 +31,7 @@ public class FlutterWaveTransaction {
 
         api.putParams("txref", this.getTxRef());
         api.putParams("txref", this.getTxRef());
-        api.putParams("SECKEY", OurConfig.SKYLIGHT_SECRET_KEY);
+        api.putParams("SECKEY", OurConfig.AWAJIMA_PAYSTACK_SECRET_KEY);
         api.putParams("last_attempt", 1);
         api.putParams("only_successful", 1);
 

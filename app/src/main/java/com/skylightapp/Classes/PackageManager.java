@@ -8,6 +8,7 @@ import com.skylightapp.Interfaces.OnDataChangedListener;
 import com.skylightapp.Interfaces.OnPackageChangedListener;
 import com.skylightapp.Interfaces.OnPackageExistListener;
 import com.skylightapp.Interfaces.OnTaskCompleteListener;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 
 
 public class PackageManager extends FirebaseListenersManager {
@@ -33,7 +34,7 @@ public class PackageManager extends FirebaseListenersManager {
         packageInteractor = PackageInteractor.getInstance(context);
     }
 
-    public void createOrUpdatePost(SkyLightPackage lightPackage) {
+    public void createOrUpdatePost(MarketBizPackage lightPackage) {
         try {
             packageInteractor.createOrUpdatePackages(lightPackage);
         } catch (Exception e) {
@@ -41,11 +42,11 @@ public class PackageManager extends FirebaseListenersManager {
         }
     }
 
-    public void getPostsList(OnPackageChangedListener<SkyLightPackage> onDataChangedListener, long date) {
+    public void getPostsList(OnPackageChangedListener<MarketBizPackage> onDataChangedListener, long date) {
         packageInteractor.getPackageList(onDataChangedListener, date);
     }
 
-    public void getPostsListByUser(OnDataChangedListener<SkyLightPackage> onDataChangedListener, String userId) {
+    public void getPostsListByUser(OnDataChangedListener<MarketBizPackage> onDataChangedListener, String userId) {
         packageInteractor.getPackageListByUser(onDataChangedListener, userId);
     }
 
@@ -59,16 +60,16 @@ public class PackageManager extends FirebaseListenersManager {
     }
 
 
-    public void removePost(final SkyLightPackage skyLightPackage, final OnTaskCompleteListener onTaskCompleteListener) {
-        packageInteractor.removePackage(skyLightPackage);
+    public void removePost(final MarketBizPackage marketBizPackage, final OnTaskCompleteListener onTaskCompleteListener) {
+        packageInteractor.removePackage(marketBizPackage);
     }
 
-    public void addComplain(SkyLightPackage skyLightPackage) {
-        packageInteractor.addComplainToPackage(skyLightPackage);
+    public void addComplain(MarketBizPackage marketBizPackage) {
+        packageInteractor.addComplainToPackage(marketBizPackage);
     }
 
 
-    public void isPostExistSingleValue(String postId, final OnPackageExistListener<SkyLightPackage> onObjectExistListener) {
+    public void isPostExistSingleValue(String postId, final OnPackageExistListener<MarketBizPackage> onObjectExistListener) {
         packageInteractor.isPackageExistSingleValue(postId, onObjectExistListener);
     }
 
@@ -104,7 +105,7 @@ public class PackageManager extends FirebaseListenersManager {
         FollowInteractor.getInstance(context).getFollowingPosts(userId, listener);
     }*/
 
-    public void searchByTitle(String searchText, OnDataChangedListener<SkyLightPackage> onDataChangedListener) {
+    public void searchByTitle(String searchText, OnDataChangedListener<MarketBizPackage> onDataChangedListener) {
         /*closeListeners(context);
         ValueEventListener valueEventListener = packageInteractor.searchPackagesByTitle(searchText, onDataChangedListener);
         addListenerToMap(context, valueEventListener);*/

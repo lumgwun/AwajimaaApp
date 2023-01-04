@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatSpinner;
-import androidx.preference.PreferenceManager;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -82,7 +81,7 @@ import java.util.TimeZone;
 import static com.skylightapp.Transactions.OurConfig.INTERSWITCH_LS_SECRET_KEY;
 import static com.skylightapp.Transactions.OurConfig.PAYSTACK_CREATE_TRANSFER_RECEPIENT;
 import static com.skylightapp.Transactions.OurConfig.PAYSTACK_EXECUTE_TRANSFER;
-import static com.skylightapp.Transactions.OurConfig.SKYLIGHT_SECRET_KEY;
+import static com.skylightapp.Transactions.OurConfig.AWAJIMA_PAYSTACK_SECRET_KEY;
 
 public class CusLoanAct extends AppCompatActivity {
     private SharedPreferences userPreferences;
@@ -122,7 +121,7 @@ public class CusLoanAct extends AppCompatActivity {
     private Account account;
     private AppCommission appCommission;
     private TransactionGranting granting;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private SQLiteDatabase sqLiteDatabase;
     private SODAO sodao;
     private TranXDAO tranXDAO;
@@ -209,23 +208,23 @@ public class CusLoanAct extends AppCompatActivity {
 
         if(userProfile !=null){
             selectedCustomer=userProfile.getProfileCus();
-            standingOrderAcct=selectedCustomer.getCusStandingOrderAcct();
-            standingOrderBalance=standingOrderAcct.getSoAcctBalance();
             account=userProfile.getProfileAccount();
             standingOrderAcct=userProfile.getProfileSOAcct();
             profileID=userProfile.getPID();
 
 
         }
+        if(selectedCustomer !=null){
+            customerID=selectedCustomer.getCusUID();
+            standingOrderAcct=selectedCustomer.getCusStandingOrderAcct();
+            loanOffice=selectedCustomer.getCusOfficeBranch();
+            customerName=selectedCustomer.getCusSurname()+","+customer.getCusFirstName();
+        }
         if(standingOrderAcct !=null){
             standingOrderBalance=standingOrderAcct.getSoAcctBalance();
             balance=standingOrderBalance;
         }
-        if(selectedCustomer !=null){
-            customerID=selectedCustomer.getCusUID();
-            loanOffice=selectedCustomer.getCusOfficeBranch();
-            customerName=selectedCustomer.getCusSurname()+","+customer.getCusFirstName();
-        }
+
         if(account !=null){
             accountBalance1=account.getAccountBalance();
 
@@ -542,26 +541,34 @@ public class CusLoanAct extends AppCompatActivity {
                         loan.setLoanOfficeBranch(loanOffice);
                         granting= new TransactionGranting(loanNumber,profileID,customerID,customerName,selectedBank,acctName,bankAccountNo,amountDouble1,"",loanDate,"","","inProgress");
 
+
                         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                            dbHelper.openDataBase();
-                            timeLineClassDAO.insertTimeLine(timelineTittle,timelineDetails,loanDate,location);
+                            //dbHelper = new DBHelper(this);
+                            sqLiteDatabase = dbHelper.getWritableDatabase();
+                            try {
+                                grantingDAO.insertTransaction_Granting(loanNumber,profileID,customerID,customerName,amountDouble1,loanDate,selectedBank,acctName,bankAccountNo,"Loan","","","Loan","inProgress");
+
+
+                            } catch (NullPointerException e) {
+                                e.printStackTrace();
+                            }
 
 
                         }
                         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                            dbHelper.openDataBase();
-                            grantingDAO.insertTransaction_Granting(loanNumber,profileID,customerID,customerName,amountDouble1,loanDate,selectedBank,acctName,bankAccountNo,"Loan","","","Loan","inProgress");
+                            //dbHelper = new DBHelper(this);
+                            sqLiteDatabase = dbHelper.getWritableDatabase();
+                            try {
+                                loanDAO.insertNewLoan(profileID,customerID,loanNumber,0.00,amountDouble1,loanDate, accountNo,loanType,loanCode,"inProgress");
 
+
+                            } catch (NullPointerException e) {
+                                e.printStackTrace();
+                            }
 
 
                         }
-                        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                            dbHelper.openDataBase();
-                            loanDAO.insertNewLoan(profileID,customerID,loanNumber,0.00,amountDouble1,loanDate, accountNo,loanType,loanCode,"inProgress");
 
-
-
-                        }
 
                         granting.setTe_Type("Loan");
                         granting.setTe_Loan(loan);
@@ -619,7 +626,7 @@ public class CusLoanAct extends AppCompatActivity {
         edtAcctNO = findViewById(R.id._deposit_account_no34);
         edtAcctName = findViewById(R.id._deposit_account_name33);
         edt_Amount.addTextChangedListener(textWatcher);
-        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         userProfile= new Profile();
         json = userPreferences.getString("LastProfileUsed", "");
@@ -712,7 +719,7 @@ public class CusLoanAct extends AppCompatActivity {
                 granting= new TransactionGranting(loanNumber,profileID,customerID,customerName,selectedBank,acctName,bankAccountNo,amountDouble1,"",loanDate,"","","inProgress");
                 timeLineClassDAO= new TimeLineClassDAO(this);
                 if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                    dbHelper.openDataBase();
+
                     timeLineClassDAO.insertTimeLine(timelineTittle,timelineDetails,loanDate,location);
 
                 }
@@ -721,20 +728,36 @@ public class CusLoanAct extends AppCompatActivity {
                 loan.setLoan_granting(granting);
                 customer.addLoans(loanNumber,amountDouble,loanDate,"inProgress","",0.00);
                 userProfile.addPLoans(loanNumber,amountDouble,loanDate,"inProgress","",0.00);
-                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                    dbHelper.openDataBase();
-                    grantingDAO.insertTransaction_Granting(loanNumber,profileID,customerID,customerName,amountDouble1,loanDate,selectedBank,acctName,bankAccountNo,"Loan","","","Loan","inProgress");
 
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    //dbHelper = new DBHelper(this);
+                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    try {
+                        loanDAO.insertNewLoan(profileID,customerID,loanNumber,0.00,amountDouble1,loanDate, accountNo,loanType,loanCode,"inProgress");
+
+
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
 
 
                 }
-                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                    dbHelper.openDataBase();
-                    loanDAO.insertNewLoan(profileID,customerID,loanNumber,0.00,amountDouble1,loanDate, accountNo,loanType,loanCode,"inProgress");
 
+
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    //dbHelper = new DBHelper(this);
+                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    try {
+                        grantingDAO.insertTransaction_Granting(loanNumber,profileID,customerID,customerName,amountDouble1,loanDate,selectedBank,acctName,bankAccountNo,"Loan","","","Loan","inProgress");
+
+
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
 
 
                 }
+
 
             }
 
@@ -870,7 +893,7 @@ public class CusLoanAct extends AppCompatActivity {
             @Override
             protected String doInBackground(String... params) {
                 JSONObject jsonObject = new JSONObject();
-                userPreferences = PreferenceManager.getDefaultSharedPreferences(CusLoanAct.this);
+                userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
                 gson = new Gson();
                 userProfile= new Profile();
                 json = userPreferences.getString("LastProfileUsed", "");
@@ -906,7 +929,7 @@ public class CusLoanAct extends AppCompatActivity {
                     json1 = jsonObject.toString();
                     StringEntity stringEntity1 = new StringEntity(json1);
                     httpPost.setEntity(stringEntity1);
-                    httpPost.setHeader("Authorization", SKYLIGHT_SECRET_KEY);
+                    httpPost.setHeader("Authorization", AWAJIMA_PAYSTACK_SECRET_KEY);
                     httpPost.setHeader("Content-type", "application/json");
                     //httpPost.setHeader("Accept", "application/json");
                     HttpResponse httpResponse1 = httpclient.execute(httpPost);
@@ -963,9 +986,32 @@ public class CusLoanAct extends AppCompatActivity {
             }
         }
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
 
     public void goHome(View view) {
-        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
         bundle.putLong("ProfileID", profileID);

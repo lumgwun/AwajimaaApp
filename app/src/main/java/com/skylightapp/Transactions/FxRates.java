@@ -2,10 +2,12 @@ package com.skylightapp.Transactions;
 
 public class FxRates {
     private int page;
-    private int amount; //lost, won, initiated, accepted, declined .
+    private double amount; //lost, won, initiated, accepted, declined .
     private String fromCurrency;//YYYY-MM-DD
     private String toCurrency;//YYYY-MM-DD
     private String authorization;
+    private double resultantAmount;
+    private String currencyDate;
 
     public int getPage() {
         return page;
@@ -15,12 +17,12 @@ public class FxRates {
         this.page = page;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
@@ -53,5 +55,21 @@ public class FxRates {
 
     public void setAuthorization(String authorization) {
         this.authorization = authorization;
+    }
+
+    public double getResultantAmount() {
+        return resultantAmount;
+    }
+
+    public void setResultantAmount(double resultantAmount) {
+        this.resultantAmount = resultantAmount;
+    }
+
+    public String getCurrencyDate() {
+        return currencyDate;
+    }
+
+    public void setCurrencyDate(String currencyDate) {
+        this.currencyDate = currencyDate;
     }
 }

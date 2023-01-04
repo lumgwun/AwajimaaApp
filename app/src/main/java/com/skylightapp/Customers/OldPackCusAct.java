@@ -46,8 +46,8 @@ import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.AccountTypes;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerDailyReport;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.LoginDirAct;
@@ -95,10 +95,10 @@ public class OldPackCusAct extends AppCompatActivity {
     //int profileID;
 
     private ArrayAdapter<Account> accountAdapter;
-    private ArrayAdapter<SkyLightPackage> skyLightPackageArrayAdapter;
+    private ArrayAdapter<MarketBizPackage> skyLightPackageArrayAdapter;
     private ArrayList<Account> accountArrayList;
-    private ArrayList<SkyLightPackage> skyLightPackageArrayList;
-    private List<SkyLightPackage> skyLightPackageList;
+    private ArrayList<MarketBizPackage> marketBizPackageArrayList;
+    private List<MarketBizPackage> marketBizPackageList;
 
     private SharedPreferences userPreferences;
     private Gson gson;
@@ -134,10 +134,10 @@ public class OldPackCusAct extends AppCompatActivity {
     DatePicker date_picker_dob;
 
     String packageType;
-    //SkyLightPackage.SkylightPackage_Type packageType;
+    //MarketBizPackage.SkylightPackage_Type packageType;
     AppCompatSpinner state_spn, spn_select_packageOngoing, spn_my_cus;
-    SkyLightPackage selectedPackage;
-    SkyLightPackage skyLightPackage;
+    MarketBizPackage selectedPackage;
+    MarketBizPackage marketBizPackage;
     String customerBank;
     double accountBalance1;
     double newAmount;
@@ -230,14 +230,14 @@ public class OldPackCusAct extends AppCompatActivity {
         userProfile = gson.fromJson(json, Profile.class);
         dbHelper = new DBHelper(this);
         customerDailyReport= new CustomerDailyReport();
-        skyLightPackage = new SkyLightPackage();
+        marketBizPackage = new MarketBizPackage();
         String incompleteStatus="inProgress";
         paymentBundle=getIntent().getExtras();
         if(paymentBundle !=null){
             selectedPackage=paymentBundle.getParcelable("Package");
-            selectedPackage=paymentBundle.getParcelable("SkyLightPackage");
-            skyLightPackage=paymentBundle.getParcelable("Account");
-            skyLightPackage=paymentBundle.getParcelable("Customer");
+            selectedPackage=paymentBundle.getParcelable("MarketBizPackage");
+            marketBizPackage =paymentBundle.getParcelable("Account");
+            marketBizPackage =paymentBundle.getParcelable("Customer");
             savingsAmount=paymentBundle.getDouble("Amount");
             spnOldPackage.setVisibility(View.GONE);
             txtAmountPerDay.setVisibility(View.GONE);
@@ -247,9 +247,9 @@ public class OldPackCusAct extends AppCompatActivity {
                 profileID = userProfile.getPID();
 
                 try {
-                    skyLightPackageArrayList = dbHelper.getProfileIncompletePack(profileID, incompleteStatus);
+                    marketBizPackageArrayList = dbHelper.getProfileIncompletePack(profileID, incompleteStatus);
 
-                    skyLightPackageArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, skyLightPackageArrayList);
+                    skyLightPackageArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, marketBizPackageArrayList);
                     skyLightPackageArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spnOldPackage.setAdapter(skyLightPackageArrayAdapter);
                     spnOldPackage.setSelection(0);
@@ -260,7 +260,7 @@ public class OldPackCusAct extends AppCompatActivity {
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                             try {
-                                selectedPackage = (SkyLightPackage) parent.getItemAtPosition(position);
+                                selectedPackage = (MarketBizPackage) parent.getItemAtPosition(position);
                                 savingsAmount = selectedPackage.getPackageDailyAmount();
                                 txtAmountPerDay.setText(MessageFormat.format("Amount per day:{0}", savingsAmount));
                             } catch (NullPointerException e) {
@@ -368,7 +368,7 @@ public class OldPackCusAct extends AppCompatActivity {
             {
 
                 try {
-                    selectedPackage = (SkyLightPackage) parent.getItemAtPosition(position);
+                    selectedPackage = (MarketBizPackage) parent.getItemAtPosition(position);
                     savingsAmount=selectedPackage.getPackageDailyAmount();
                 } catch (NullPointerException e) {
                     System.out.println("Oops!");
@@ -461,18 +461,18 @@ public class OldPackCusAct extends AppCompatActivity {
                         } else {
                             if (newAmountContributedSoFar < newGrandTotal) {
                                 btn_backTo_dashboard.setVisibility(View.VISIBLE);
-                                skyLightPackage.addPSavings(profileID, customerID, reportID, savingsAmount, numberOfDays, newTotal, newDaysRemaining, newAmountRemaining, reportDate, status);
+                                marketBizPackage.addPSavings(profileID, customerID, reportID, savingsAmount, numberOfDays, newTotal, newDaysRemaining, newAmountRemaining, reportDate, status);
                                 customer.addCusNewSavings(packageID, reportID, savingsAmount, numberOfDays, totalAmountSum, daysRemaining, amountRemaining, reportDate, "In progress");
                                 customer.addCusTimeLine(timelineTittle1, timelineDetails2);
                                 userProfile.addPTimeLine(timelineTittle1, timelineDetails2);
                                 userProfile.addPSavings(profileID, customerId, reportID, savingsAmount, numberOfDays, newTotal, newDaysRemaining, newAmountRemaining, reportDate, "In progress");
 
                                 customer.getCusAccount().setAccountBalance(newBalance);
-                                skyLightPackage.setPackageBalance(newAmountContributedSoFar);
-                                skyLightPackage.addPProfileManager(userProfile);
+                                marketBizPackage.setPackageBalance(newAmountContributedSoFar);
+                                marketBizPackage.addPProfileManager(userProfile);
                                 account1.setAccountBalance(newBalance);
-                                skyLightPackage.setPackageAmount_collected(newAmountContributedSoFar);
-                                skyLightPackage.setPackageStatus("inComplete");
+                                marketBizPackage.setPackageAmount_collected(newAmountContributedSoFar);
+                                marketBizPackage.setPackageStatus("inComplete");
 
                                 /*try {
 
@@ -536,7 +536,7 @@ public class OldPackCusAct extends AppCompatActivity {
 
                                 try {
 
-                                    dbHelper.overwriteCustomerPackage(skyLightPackage, selectedCustomer, customerDailyReport, account1);
+                                    dbHelper.overwriteCustomerPackage(marketBizPackage, selectedCustomer, customerDailyReport, account1);
                                     dbHelper.updatePackage(customerID, oldPackageId, 0, "Completed");
                                     dbHelper.getPackageReminder(String.valueOf(oldPackageId));
 

@@ -1,12 +1,12 @@
 package com.skylightapp.FlutterWavePayments;
 
 import com.skylightapp.Classes.SavedCard;
-import com.skylightapp.Transactions.Card;
+import com.skylightapp.Transactions.PayStackCard;
 
 public class CardPaymentManager {
-    Card card;
+    PayStackCard payStackCard;
     SavedCard savedCard;
     /*cardPayManager.fetchSavedCards();
-               cardPayManager.fetchTransactionFee(card,this);
-                cardPayManager.chargeCard(card);*/
+               cardPayManager.fetchTransactionFee(payStackCard,this);
+                cardPayManager.chargeCard(payStackCard);*/
 }

@@ -10,6 +10,7 @@ import android.widget.TabHost;
 import com.skylightapp.R;
 
 public class AdminTabActivity extends TabActivity {
+    private static final String PREF_NAME = "awajima";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

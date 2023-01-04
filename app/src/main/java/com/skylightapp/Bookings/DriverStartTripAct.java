@@ -112,7 +112,7 @@ public class DriverStartTripAct extends AppCompatActivity implements OnSuccessLi
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    PushData pushData = new PushData("Ataku Uda");
+                    PushData pushData = new PushData("Ataisi Nte");
                     pushData.setMessage("trip started");
                     pushData.setPayload("1");
                     TripBuilder tripBuilder = new TripBuilder(trackingId).
@@ -122,7 +122,7 @@ public class DriverStartTripAct extends AppCompatActivity implements OnSuccessLi
                         @Override
                         public void onTripStarted(Trip tripDetails) {
                             application.storeBooleanInPref("switch_state", true);
-                            Log.d("TELIVER::", "onTripStarted: " + tripDetails.getTrackingId());
+                            Log.d("Awajima Trip::", "onTripStarted: " + tripDetails.getTrackingId());
                             txtSendPush.setTextColor(ContextCompat.getColor(DriverStartTripAct.this, R.color.black));
                             edtPushMessage.setEnabled(true);
                             edtPushMessage.setHintTextColor(ContextCompat.getColor(DriverStartTripAct.this, R.color.white_good));
@@ -147,7 +147,7 @@ public class DriverStartTripAct extends AppCompatActivity implements OnSuccessLi
 
                 } else if (!isChecked) {
                     application.storeBooleanInPref("switch_state", false);
-                    PushData pushData = new PushData("selvakumar");
+                    PushData pushData = new PushData("Ataisi Nte");
                     pushData.setMessage("trip_stopped");
                     pushData.setPayload("0");
                     Teliver.sendEventPush(trackingId, pushData, "trip stopped");
@@ -193,6 +193,29 @@ public class DriverStartTripAct extends AppCompatActivity implements OnSuccessLi
                 edtPushMessage.setText("");
             }
         });
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
 
     private void toYourServer() {

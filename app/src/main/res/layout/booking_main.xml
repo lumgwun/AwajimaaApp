@@ -7,7 +7,7 @@
     android:id="@+id/booking_drawer"
     android:fitsSystemWindows="true"
     tools:openDrawer="start"
-    tools:context="com.skylightapp.Bookings.BookingsMainAct">
+    tools:context="com.skylightapp.Bookings.BookingsMainTab">
     <include layout="@layout/act_bookings"/>
 
     <com.rom4ek.arcnavigationview.ArcNavigationView

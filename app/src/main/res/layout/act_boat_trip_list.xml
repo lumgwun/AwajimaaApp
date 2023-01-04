@@ -1,18 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
+    style="@style/AwajimaThemeNoBar"
     android:background="@drawable/shape_layer_3"
     android:layout_height="match_parent"
-    tools:context=".Bookings.MyBoatAct">
-    <androidx.appcompat.widget.AppCompatTextView
+    tools:context=".Bookings.BoatTripListAct">
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:text="Coming Soon"
-        android:gravity="center"
-        android:textColor="@color/red_brown_dark"
-        android:textSize="50sp"
-        android:layout_height="match_parent"/>
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:text="Search trips"
+            android:gravity="center"
+            android:textColor="@color/white_good"
+            android:textSize="20sp"
+            android:layout_height="wrap_content"/>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="6"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:text="from"
+                android:gravity="center_horizontal"
+                android:padding="17dp"
+                android:textColor="@color/white_good"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_weight="5"
+                android:padding="20dp"
+                android:entries="@array/trip_from"
+                android:id="@+id/spn_from"
+                android:background="@drawable/shape_layer_3b"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="6"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:text="to:"
+                android:gravity="center_horizontal"
+                android:padding="17dp"
+                android:textColor="@color/white_good"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_weight="5"
+                android:padding="20dp"
+                android:entries="@array/trip_from"
+                android:id="@+id/spn_to"
+                android:background="@drawable/shape_layer_3b"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:text="Search"
+            android:onClick="runSearchBT"
+            android:id="@+id/btn_SearchBT"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:background="@drawable/shape_layer_3b"
+            android:padding="20dp"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefB232"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_boat_param"
+                    android:layout_width="match_parent"
+                    tools:itemCount="@android:integer/status_bar_notification_info_maxnum"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/boat_trip_item"
+                    android:clipToPadding="false"
+                    android:scrollbars="vertical" />
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="6dp"
+                android:paddingTop="10dp"
+                android:text="ALL Boat Trips"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:id="@+id/tripText3"
+                android:layout_marginBottom="12dp"
+                android:textColor="@color/EOCOLOR"
+                android:textSize="20sp" />
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_boat_trips"
+                    android:layout_width="match_parent"
+                    tools:itemCount="@android:integer/status_bar_notification_info_maxnum"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/boat_trip_item"
+                    android:clipToPadding="false"
+                    android:scrollbars="vertical" />
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+        </LinearLayout>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</ScrollView>

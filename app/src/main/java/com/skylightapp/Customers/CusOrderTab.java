@@ -33,6 +33,7 @@ public class CusOrderTab extends TabActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_cus_order_tab);
+        userProfile= new Profile();
         FloatingActionButton floatingActionButton = findViewById(R.id.fab_HomeTab3);
         userPreferences = this.getSharedPreferences("LastProfileUsed", MODE_PRIVATE);
         gson = new Gson();
@@ -42,20 +43,14 @@ public class CusOrderTab extends TabActivity {
         TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);
         Toolbar toolbar = (Toolbar) findViewById(R.id.order_toolbar);
         tabHost.setup(getLocalActivityManager());
-
-
-
         Intent privacyPolicyIntent = new Intent(this, CusPackForPayment.class);
         TabHost.TabSpec cPFP = tabHost.newTabSpec("My Packs");
         cPFP.setIndicator("Packs", getResources().getDrawable(R.drawable.ic_icon2));
         cPFP.setContent(privacyPolicyIntent);
-
-
         Intent txIntent = new Intent(this, UserTxAct.class);
         TabHost.TabSpec txUser = tabHost.newTabSpec("Txs");
         txUser.setIndicator("Tx", getResources().getDrawable(R.drawable.ic_icon2));
         txUser.setContent(txIntent);
-
         tabHost.addTab(cPFP);
         tabHost.addTab(txUser);
 

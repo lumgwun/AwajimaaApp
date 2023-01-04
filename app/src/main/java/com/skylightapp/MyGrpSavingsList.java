@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -20,6 +21,7 @@ import com.skylightapp.Adapters.GroupSavingsAdapter;
 import com.skylightapp.Classes.GroupSavings;
 import com.skylightapp.Classes.MyTouchListener;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.GroupSavingsDAO;
 
@@ -68,11 +70,21 @@ public class MyGrpSavingsList extends AppCompatActivity implements GroupSavingsA
         if(userProfile !=null){
             profileID= userProfile.getPID();
         }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = groupSavingsDAO.getWritableDatabase();
-            groupSavingsArrayList = groupSavingsDAO.getGrpSavingsForCurrentProfile(profileID);
+        try {
 
+            if(dbHelper !=null){
+                try {
+
+                    if (groupSavingsDAO != null) {
+                        groupSavingsArrayList = groupSavingsDAO.getGrpSavingsForCurrentProfile(profileID);
+                    }
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
         }
 
 
@@ -126,7 +138,7 @@ public class MyGrpSavingsList extends AppCompatActivity implements GroupSavingsA
 
     }
     public void goHome(View view) {
-        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         Bundle bundle = new Bundle();
         bundle.putLong("ProfileID", profileID);

@@ -29,7 +29,6 @@ import com.skylightapp.R;
 
 import link.fls.swipestack.SwipeStack;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class SwipeFragment extends Fragment implements SwipeStack.SwipeStackListener {
 
@@ -141,7 +140,7 @@ public class SwipeFragment extends Fragment implements SwipeStack.SwipeStackList
                     }
                 }
             } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), "error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "error: " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
             if (result != null) {
                 UserSwipeReply userSwipeReply = App.getGson().fromJson(result, UserSwipeReply.class);

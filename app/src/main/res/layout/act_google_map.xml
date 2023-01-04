@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:theme="@style/NoActionBarTheme"
     android:layout_height="match_parent"
-    tools:context=".MapAndLoc.GoogleMapActivity">
+    tools:context=".MapAndLoc.GoogleMapAct">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -128,7 +128,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/shape_layer_3b"
             android:onClick="onAddPlaceButtonClicked"
             android:text="@string/add_new_location"
             android:textAppearance="@style/TextAppearance.AppCompat.Button"
@@ -148,7 +148,7 @@
             android:layout_marginTop="4dp"
             android:background="@color/colorPrimary" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/places_list_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

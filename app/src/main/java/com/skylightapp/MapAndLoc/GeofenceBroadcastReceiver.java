@@ -10,15 +10,12 @@ import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofenceStatusCodes;
 import com.google.android.gms.location.GeofencingEvent;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.skylightapp.R;
 import com.webgeoservices.woosmapgeofencing.WoosmapRebootJobService;
 
@@ -90,11 +87,11 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
     }
 
     private void sendNotification(String geofenceTransitionDetails, int geofenceTransition) {
-        Intent notificationIntent = new Intent(context, GoogleMapActivity.class);
+        Intent notificationIntent = new Intent(context, GoogleMapAct.class);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
 
-        stackBuilder.addParentStack(GoogleMapActivity.class);
+        stackBuilder.addParentStack(GoogleMapAct.class);
 
         stackBuilder.addNextIntent(notificationIntent);
 
@@ -136,11 +133,11 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
 
 
     private void sendNotification(Context context, int transitionType) {
-        Intent notificationIntent = new Intent(context, GoogleMapActivity.class);
+        Intent notificationIntent = new Intent(context, GoogleMapAct.class);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
 
-        stackBuilder.addParentStack(GoogleMapActivity.class);
+        stackBuilder.addParentStack(GoogleMapAct.class);
 
         stackBuilder.addNextIntent(notificationIntent);
 

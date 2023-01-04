@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.skylightapp.Database.BirthdayDAO;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -52,7 +53,7 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
             BirthdayDAO birthdayDAO= new BirthdayDAO(context.getApplicationContext());
 
             List<ImportantDates> reminders = rb.getAllReminders();
-            List<SkyLightPackage> skyLightPackages = rb.getAllPackagesAdmin();
+            List<MarketBizPackage> marketBizPackages = rb.getAllPackagesAdmin();
             List<Birthday> birthdays = birthdayDAO.getAllBirthDays();
 
             for (Birthday birthday : birthdays) {
@@ -102,13 +103,13 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
 
 
 
-            for (SkyLightPackage skyLightPackage : skyLightPackages) {
-                mPackReceivedID = skyLightPackage.getPackID();
-                mAmountColected = skyLightPackage.getPackageAmount_collected();
-                mPackageTotal = skyLightPackage.getPackageTotalAmount();
-                mDateStarted = skyLightPackage.getPackageDateStarted();
-                mDateEnded = skyLightPackage.getPackageDateEnded();
-                mCustomer = skyLightPackage.getPackageCustomer();
+            for (MarketBizPackage marketBizPackage : marketBizPackages) {
+                mPackReceivedID = marketBizPackage.getPackID();
+                mAmountColected = marketBizPackage.getPackageAmount_collected();
+                mPackageTotal = marketBizPackage.getPackageTotalAmount();
+                mDateStarted = marketBizPackage.getPackageDateStarted();
+                mDateEnded = marketBizPackage.getPackageDateEnded();
+                mCustomer = marketBizPackage.getPackageCustomer();
 
                 mDateSplit = mDate.split("/");
                 mTimeSplit = mTime.split(":");

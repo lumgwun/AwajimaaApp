@@ -21,7 +21,7 @@
         android:title="My TimeLine"
         app:cnb_iconTintMode="src_in"
         app:cnb_iconColor="#F44336"
-        android:icon="@drawable/material_drawer_ico_account"/>
+        android:icon="@drawable/timeline1"/>
 
     <item
         android:id="@+id/supplier_mesTab"

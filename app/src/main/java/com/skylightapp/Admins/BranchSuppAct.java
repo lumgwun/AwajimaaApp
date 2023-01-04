@@ -79,7 +79,7 @@ public class BranchSuppAct extends AppCompatActivity implements  MessageAdapter.
         userProfile = gson.fromJson(json, Profile.class);
 
         gson1 = new Gson();
-        json1 = userPreferences.getString("LastAdminUserProfileUsed", "");
+        json1 = userPreferences.getString("LastAdminUserUsed", "");
         adminUser = gson1.fromJson(json1, AdminUser.class);
         btnSearchMessages = findViewById(R.id.btnSearchMessages);
         txtMessageOutCome = findViewById(R.id.txtMessage);
@@ -233,10 +233,14 @@ public class BranchSuppAct extends AppCompatActivity implements  MessageAdapter.
         @Override
         public void onBindViewHolder(MyViewHolder holder, final int position) {
             final Message message = messageList.get(position);
-            holder.purposeOfMessage.setText(MessageFormat.format("Support Type:{0}", message.getMessageType()));
-            holder.message.setText(MessageFormat.format("Message:{0}", message.getMessageDetails()));
-            holder.sender.setText(MessageFormat.format("Sender:{0}", message.getMessageSender()));
-            holder.message_time.setText(MessageFormat.format("Time:{0}", message.getMessageTime()));
+            if(message !=null){
+                holder.purposeOfMessage.setText(MessageFormat.format("Support Type:{0}", message.getMessageType()));
+                holder.message.setText(MessageFormat.format("Message:{0}", message.getMessageDetails()));
+                holder.sender.setText(MessageFormat.format("Sender:{0}", message.getMessageSender()));
+                holder.message_time.setText(MessageFormat.format("Time:{0}", message.getMessageTime()));
+
+            }
+
 
         }
 

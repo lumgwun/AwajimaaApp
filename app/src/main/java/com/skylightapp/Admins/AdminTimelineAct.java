@@ -72,7 +72,7 @@ public class AdminTimelineAct extends AppCompatActivity {
     private TimeLineClassDAO timeLineClassDAO;
     private AdminBalanceDAO adminBalanceDAO;
     String json;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     SQLiteDatabase sqLiteDatabase;
 
     @Override

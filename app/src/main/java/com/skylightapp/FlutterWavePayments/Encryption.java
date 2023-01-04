@@ -19,7 +19,6 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import org.json.JSONObject;
 
 public class Encryption {
     OurConfig keys= new OurConfig();
@@ -84,7 +83,7 @@ public class Encryption {
 
         String message= api.toString();
 
-        String encrypt_secret_key=getKey(OurConfig.SKYLIGHT_SECRET_KEY);
+        String encrypt_secret_key=getKey(OurConfig.AWAJIMA_PAYSTACK_SECRET_KEY);
         String encrypted_message= encryptData(message,encrypt_secret_key);
 
 

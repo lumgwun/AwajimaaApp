@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    tools:context="com.skylightapp.MapAndLoc.DisplayLocAct"
+    tools:context="com.skylightapp.MapAndLoc.ReportSceneMAct"
     tools:showIn="@layout/act_report_scene">
     <ImageView
         android:id="@+id/awa_close_Img"
@@ -55,14 +55,15 @@
 
 
     <fragment
-        android:id="@+id/map_Details"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
         android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/map_Details"
         android:layout_width="match_parent"
         android:layout_height="500dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
     <androidx.appcompat.widget.AppCompatTextView

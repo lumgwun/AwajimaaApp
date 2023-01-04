@@ -1,86 +1,52 @@
 package com.skylightapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.GridLayout;
 
 import com.blongho.country_data.Country;
 import com.blongho.country_data.Currency;
-import com.blongho.country_data.World;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.gson.Gson;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
-import com.skylightapp.Adapters.CurrAdapter;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
-import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Customers.CustomerHelpActTab;
-import com.skylightapp.Customers.NewCustomerDrawer;
-import com.skylightapp.Customers.PackListTab;
-import com.skylightapp.MarketClasses.MarketBizSubScription;
-import com.skylightapp.MarketClasses.MarketInventory;
+import com.skylightapp.Markets.BizAdminOffice;
 import com.skylightapp.Markets.MarketTab;
-import com.skylightapp.Transactions.Subscriptions;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class BizLogisticsOffice extends AppCompatActivity {
     private static final String PREF_NAME = "awajima";
     public static final String KEY = "BizLogisticsOffice.KEY";
     ChipNavigationBar chipNavigationBar;
-    GridLayout maingrid;
     private SharedPreferences userPreferences;
-    PrefManager prefManager;
     private Gson gson,gson1;
     private String json,json1;
     private Profile userProfile;
-    private int profileID;
-    CircleImageView profileImage;
-    private Profile profile;
-    private Intent data;
-    private FloatingActionButton floatingActionButton;
+    private FloatingActionButton fab;
     private Customer customer;
-    private Toolbar toolbar;
-    private DrawerLayout drawer;
     private Account account;
-    private Currency currency;
-    private String currencySymbol;
     private List<Country> countries;
     private List<Currency> currencies;
-    private World world;
-    private CurrAdapter currencyAdapter;
-    private ArrayList<Account> accountArrayList;
-    private ArrayList<MarketBizSubScription> marketBizSubScriptions;
-    private ArrayList<MarketInventory> marketInventories;
-
-
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
-    CardView cardViewPackges,cardViewGrpSavings,cardViewHistory, cardViewStandingOrders, cardViewOrders, cardViewSupport;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_biz_logistics_office);
+        setContentView(R.layout.act_biz_logics_office);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        chipNavigationBar = findViewById(R.id.bottom_nav_barC);
+        chipNavigationBar = findViewById(R.id.nav_bar_logistics);
+        fab = findViewById(R.id.fab_Logistics);
         gson = new Gson();
-        World.init(this);
         countries=new ArrayList<>();
         gson1 = new Gson();
-        countries=World.getAllCountries();
         currencies= new ArrayList<>();
-        //currency= new Currency();
         userProfile=new Profile();
         customer=new Customer();
         account=new Account();
@@ -100,15 +66,15 @@ public class BizLogisticsOffice extends AppCompatActivity {
                     public void onItemSelected(int i) {
                         //Fragment fragment = null;
                         switch (i){
-                            case R.id.cHome:
-                                Intent myIntent = new Intent(BizLogisticsOffice.this, NewCustomerDrawer.class);
+                            case R.id.ome_logistics:
+                                Intent myIntent = new Intent(BizLogisticsOffice.this, BizLogisticsOffice.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
                                 myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(myIntent);
 
-                            case R.id.cTimeLine:
+                            case R.id.logistics_T:
 
                                 Intent chat = new Intent(BizLogisticsOffice.this, MyTimelineAct.class);
                                 overridePendingTransition(R.anim.slide_in_right,
@@ -118,7 +84,7 @@ public class BizLogisticsOffice extends AppCompatActivity {
                                 startActivity(chat);
 
 
-                            case R.id.cGeneralShop:
+                            case R.id.m_dLogistics:
 
                                 Intent shop = new Intent(BizLogisticsOffice.this, MarketTab.class);
                                 overridePendingTransition(R.anim.slide_in_right,
@@ -127,9 +93,9 @@ public class BizLogisticsOffice extends AppCompatActivity {
                                 shop.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(shop);
 
-                            case R.id.cPackageT:
+                            case R.id.ma_Biz_Log:
 
-                                Intent pIntent = new Intent(BizLogisticsOffice.this, PackListTab.class);
+                                Intent pIntent = new Intent(BizLogisticsOffice.this, BizAdminOffice.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
                                 pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -137,7 +103,7 @@ public class BizLogisticsOffice extends AppCompatActivity {
                                 startActivity(pIntent);
 
 
-                            case R.id.cSupport:
+                            case R.id.log_Sup:
                                 Intent helpIntent = new Intent(BizLogisticsOffice.this, CustomerHelpActTab.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
@@ -145,10 +111,30 @@ public class BizLogisticsOffice extends AppCompatActivity {
                                 helpIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(helpIntent);
                         }
-                        /*getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.fragment_container,
-                                        fragment).commit();*/
                     }
                 });
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
 }

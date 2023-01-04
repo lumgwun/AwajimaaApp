@@ -18,7 +18,6 @@ import static com.skylightapp.Classes.Profile.PROFILE_ID;
 @Entity(tableName = Payee.PAYEES_TABLE)
 public class Payee implements Serializable, Parcelable {
     public static final String PAYEES_TABLE = "payees_table";
-
     public static final String PAYEE_ID = "payee_id";
     public static final String PAYEE_NAME = "payee_name";
     public static final String PAYEE_CUS_ID = "payee_Cus_ID";

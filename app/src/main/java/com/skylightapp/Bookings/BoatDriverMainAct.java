@@ -6,16 +6,22 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.app.ActivityCompat;
+import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,20 +58,23 @@ public class BoatDriverMainAct extends AppCompatActivity implements View.OnClick
     private AppCompatTextView txtDriver;
     private AppCompatImageView imgDGreetings;
     private RecyclerView recyclerViewTrip;
-    private BoatTrip boatTrip;
+    private Trip trip;
     private TripBooking tripBooking;
     private ArrayList<TripBooking> tripBookings;
+    private ProgressDialog progressDialog;
+    ContentLoadingProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_boat_driver_main);
+        checkInternetConnection();
         userProfile = new Profile();
         gson1 = new Gson();
         gson = new Gson();
         customer = new Customer();
         bundle= new Bundle();
-        boatTrip= new BoatTrip();
+        trip = new Trip();
         tripBooking= new TripBooking();
         tripBookings= new ArrayList<>();
         txtDriver = findViewById(R.id.boat_DriverName);
@@ -83,12 +92,12 @@ public class BoatDriverMainAct extends AppCompatActivity implements View.OnClick
         customer = gson1.fromJson(json1, Customer.class);
         bundle=getIntent().getExtras();
         if(bundle !=null){
-            boatTrip= bundle.getParcelable("BoatTrip");
+            trip = bundle.getParcelable("Trip");
 
 
         }
-        if(boatTrip !=null){
-            tripBookings=boatTrip.getBtBookings();
+        if(trip !=null){
+            tripBookings= trip.getBtBookings();
         }
 
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -122,6 +131,7 @@ public class BoatDriverMainAct extends AppCompatActivity implements View.OnClick
     public void onDestroy() {
         mGoogleApiClient.disconnect();
         super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -184,8 +194,12 @@ public class BoatDriverMainAct extends AppCompatActivity implements View.OnClick
         }
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-        latitude = mLastLocation.getLatitude();
-        longitude = mLastLocation.getLongitude();
+        if (mLastLocation != null) {
+            latitude = mLastLocation.getLatitude();
+        }
+        if (mLastLocation != null) {
+            longitude = mLastLocation.getLongitude();
+        }
 
         login = findViewById(R.id.loginForRide);
 
@@ -274,18 +288,18 @@ public class BoatDriverMainAct extends AppCompatActivity implements View.OnClick
 
         SharedPreferences.Editor editor = userPreferences.edit();
 
-        editor.putString("name", name);
-        editor.putString("driver_id",SharedPrefUserName);
-        editor.putString("lastname", lastname);
-        editor.putString("vehicle", vehicle);
+        editor.putString("DRIVER_NAME", name);
+        editor.putString("DRIVER_ID",SharedPrefUserName);
+        editor.putString("PROFILE_SURNAME", lastname);
+        editor.putString("DRIVER_VEHICLE", vehicle);
         editor.apply();
 
         //showMSG("Welcome "+name + " " + lastname);
         bundle.putParcelable("Profile",userProfile);
-        bundle.putString("name", name);
-        bundle.putString("driver_id",SharedPrefUserName);
-        bundle.putString("lastname", lastname);
-        bundle.putString("vehicle", vehicle);
+        bundle.putString("DRIVER_NAME", name);
+        bundle.putString("DRIVER_ID",SharedPrefUserName);
+        bundle.putString("PROFILE_SURNAME", lastname);
+        bundle.putString("DRIVER_VEHICLE", vehicle);
         Intent rideIntent = new Intent(this, TaxiDriverRideAct.class);
         rideIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         overridePendingTransition(R.anim.slide_in_right,
@@ -298,5 +312,69 @@ public class BoatDriverMainAct extends AppCompatActivity implements View.OnClick
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+    private void hideProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.hide();
+        }
+    }
+
+    private void showProgressDialog() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(true);//you can cancel it by pressing back button
+        progressDialog.setMessage("signing up wait ...");
+        progressBar.show();//displays the progress bar
+    }
+    public boolean hasInternetConnection() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        @SuppressLint("MissingPermission") NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
+
+    public boolean checkInternetConnection() {
+        boolean hasInternetConnection = hasInternetConnection();
+        if (!hasInternetConnection) {
+            showWarningDialog("Internet connection failed");
+        }
+
+        return hasInternetConnection;
+    }
+
+    public void showWarningDialog(String message) {
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.setPositiveButton(R.string.button_ok, null);
+        builder.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        overridePendingTransition(R.anim.base_slide_left_out, R.anim.bounce);
+
+    }
+    public void onResume(){
+        super.onResume();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        overridePendingTransition(R.anim.base_slide_left_out, R.anim.bounce);
     }
 }

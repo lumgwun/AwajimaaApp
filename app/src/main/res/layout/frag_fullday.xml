@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/ivEmptyView"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:background="@null"
+        android:text="no items"
+        android:visibility="gone" />
+
+    <ScrollView
+        android:id="@+id/layoutFullDay"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_layer_3b"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="@string/text_tour_highlights"
+                android:textColor="@color/red_brown_dark" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvFDayHightLight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:text="Andoni Vacation Tour "
+                android:textColor="@color/red_brown_dark" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_layer_3b"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:layout_marginBottom="20dp"
+                android:text="@string/text_schedule"
+                android:textColor="@color/red_brown_dark" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp" >
+
+                <TableRow>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="@string/text_departure"
+                        android:textColor="@color/red_brown_dark" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text=" : "
+                        android:textColor="@color/red_brown_dark" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvFullDayDTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="8h30"
+                        android:textColor="@color/red_brown_dark" />
+                </TableRow>
+
+                <TableRow>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="@string/text_return"
+                        android:textColor="@color/red_brown_dark" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvTourTiming"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text=" : "
+                        android:textColor="@color/red_brown_dark" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvFullDayRTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="8h30"
+                        android:textColor="@color/red_brown_dark" />
+                </TableRow>
+            </TableLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_layer_3b"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/text_tarrif"
+                android:textColor="@color/red_brown_dark" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="5dp"
+                android:text="@string/text_common_tour"
+                android:textColor="@color/red_brown_dark" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:orientation="horizontal" >
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvFdayCommonPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_layer_3b"
+                    android:gravity="center"
+                    android:text="NGN810,000"
+                    android:padding="10dp"
+                    android:textColor="@color/red_brown_dark"
+                    android:textSize="16sp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:padding="10dp"
+                    android:background="@drawable/shape_layer_2a"
+                    android:gravity="center"
+                    android:text="Per Person"
+                    android:textColor="@color/red_brown_dark"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="5dp"
+                android:text="@string/private_luxury_tour"
+                android:textColor="@color/red_brown_dark" />
+
+            <TableLayout
+                android:id="@+id/tblFdayPrivateTours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp" >
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

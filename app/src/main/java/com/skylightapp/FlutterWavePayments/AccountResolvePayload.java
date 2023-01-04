@@ -254,7 +254,7 @@ public class AccountResolvePayload {
 
         String message= json.toString();
 
-        String encrypt_secret_key=Encryption.getKey(OurConfig.SKYLIGHT_SECRET_KEY);
+        String encrypt_secret_key=Encryption.getKey(OurConfig.AWAJIMA_PAYSTACK_SECRET_KEY);
         String client= encryptData(message,encrypt_secret_key);
 
         Charge ch=new Charge();

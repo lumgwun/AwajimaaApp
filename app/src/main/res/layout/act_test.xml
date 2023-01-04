@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="wrap_content">
-        <include layout="@layout/tool_bar_test"/>
+        <include layout="@layout/tool_bar11f"/>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -285,6 +285,24 @@
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/GetSign"
                 android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:text="State Dashboard"
+                android:drawableTop="@drawable/ic_menu_gallery"
+                android:onClick="goStateOffice"
+                android:textSize="20sp"
+                android:drawableTint="@color/ORANGE_CHAT"
+                android:padding="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/shape_rect_6"
+                android:layout_marginEnd="2dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/getState_DashB"
+                android:layout_height="wrap_content"/>
+
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>

@@ -31,7 +31,7 @@ import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import static com.skylightapp.Transactions.OurConfig.SKYLIGHT_SECRET_KEY;
+import static com.skylightapp.Transactions.OurConfig.AWAJIMA_PAYSTACK_SECRET_KEY;
 import static com.skylightapp.Transactions.OurConfig.TWILIO_ACCOUNT_SID;
 import static com.skylightapp.Transactions.OurConfig.TWILIO_AUTH_TOKEN;
 import static java.lang.String.valueOf;
@@ -393,7 +393,7 @@ public class LoanApprovalAct extends AppCompatActivity {
                     transferPayload.setAccount_bank(accountbank);
                     transferPayload.setAccount_number(valueOf(acctNumber));
                     transferPayload.setAmount(valueOf(loanAmt));
-                    transferPayload.setSeckey(SKYLIGHT_SECRET_KEY);
+                    transferPayload.setSeckey(AWAJIMA_PAYSTACK_SECRET_KEY);
                     transferPayload.setNarration(narration);
                     transferPayload.setCurrency("NGN");
                     transferPayload.setReference(refID);

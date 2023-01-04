@@ -1575,7 +1575,7 @@ public class TellerForCusLoanAct extends AppCompatActivity {
 
                         .build();*/
 
-                httpPost.setHeader("Authorization", OurConfig.SKYLIGHT_SECRET_KEY);
+                httpPost.setHeader("Authorization", OurConfig.AWAJIMA_PAYSTACK_SECRET_KEY);
                 httpPost.setHeader("Accept", "application/json");
                 httpPost.setHeader("Content-type", "application/json");
 

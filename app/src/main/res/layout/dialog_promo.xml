@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:paddingTop="10dp" >
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:text="Promo code"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/red_brown_dark" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rect_new" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etPromoCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="10dp"
+        android:padding="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shape_layer_3b"
+        android:hint="enter promo code"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="5dp"
+        android:textColorHint="@color/red_brown_dark"
+        android:paddingRight="5dp"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <LinearLayout
+        android:id="@+id/llErrorMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:orientation="horizontal"
+        android:visibility="invisible" >
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivPromoResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:src="@drawable/ic_distance" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPromoResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:text="@string/error"
+            android:textColor="@color/red_brown_dark"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="horizontal" >
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnPromoSkip"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="0.5dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_layer_3b"
+            android:gravity="center"
+            android:text="Cancel"
+            android:padding="20dp"
+            android:textColor="@color/red_brown_dark"
+            android:textSize="17sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnPromoSubmit"
+            android:layout_width="0dp"
+            android:padding="20dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/shape_layer_3b"
+            android:gravity="center"
+            android:text="Apply"
+            android:textColor="@color/red_brown_dark"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+</LinearLayout>

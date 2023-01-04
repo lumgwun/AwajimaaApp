@@ -92,6 +92,7 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
     private AppCompatButton btnByPayee, btnByAPayer,btnByDate,btnLayoutPayee,buttonSCTo,buttonSCFrom, btnLayoutPayer,btnLayoutTo, btnLayoutFrom,btnLayoutDate,btnAllDB;
     private  Bundle bundle;
     DatePicker picker;
+    private  WorkersDAO workersDAO;
     double tCTotalPayer,tCTotalBranch,tCTotalPayee;
     LinearLayout layoutCustomDate, layoutPayer, allTCLayout, layoutPayeeTittle,layoutTo,layoutFrom;
     CardView dateCard, cardPayer2, allTCCard, cardLayoutPayeeSpn,cardLayoutTo, cardATo,cardPayeeBtnLayout,dateCard2,cardLayoutAF, cardLayoutFrom,cardPayerLayout;
@@ -109,6 +110,7 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
         toCategoryOfSkylightUsers =new ArrayList<>();
         appCashAll =new ArrayList<>();
         workersNames =new ArrayList<>();
+        workersDAO = new WorkersDAO(this);
         txtTodayTotal = findViewById(R.id.tcTodayTotal);
 
         btnLayoutFrom = findViewById(R.id.buttonByFrom);
@@ -296,12 +298,10 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
 
 
         Calendar calendar1 = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-        WorkersDAO workersDAO = new WorkersDAO(this);
 
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getReadableDatabase();
+        if(dbHelper !=null){
             workersNames =workersDAO.getAllWorkers();
+
         }
 
 
@@ -380,23 +380,27 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
         if(dateOfSC !=null){
             dateOfSC =todayDate;
         }
-        todaySCAmount =dbHelper.getAllSkylightCashCountForDate(todayDate);
-        payeeOfAppCashes =dbHelper.getAllSkylightCashForPayee(selectedPayee);
-        appCashCustomDate =dbHelper.getAllSCashAtDate(dateOfSC);
-        payersOfAppCashes =dbHelper.getAllSkylightCashForPayer(selectedPayer);
+        if(dbHelper !=null){
+            todaySCAmount =dbHelper.getAllSkylightCashCountForDate(todayDate);
+            payeeOfAppCashes =dbHelper.getAllSkylightCashForPayee(selectedPayee);
+            appCashCustomDate =dbHelper.getAllSCashAtDate(dateOfSC);
+            payersOfAppCashes =dbHelper.getAllSkylightCashForPayer(selectedPayer);
 
-        fromCategoryOfSkylightUsers =dbHelper.getAllSkylightCashForFromCategory(selectedFrom);
-        toCategoryOfSkylightUsers =dbHelper.getAllSkylightCashForToCategory(selectedTo);
-        fromCategoryOfSkylightUsersWithDate =dbHelper.getAllSkylightCashForFromCategoryAndDate(selectedTo,dateOfSC);
-        toCategoryOfSkylightUsersWithDate =dbHelper.getAllSkylightCashForToCategoryAndDate(selectedTo,dateOfSC);
+            fromCategoryOfSkylightUsers =dbHelper.getAllSkylightCashForFromCategory(selectedFrom);
+            toCategoryOfSkylightUsers =dbHelper.getAllSkylightCashForToCategory(selectedTo);
+            fromCategoryOfSkylightUsersWithDate =dbHelper.getAllSkylightCashForFromCategoryAndDate(selectedTo,dateOfSC);
+            toCategoryOfSkylightUsersWithDate =dbHelper.getAllSkylightCashForToCategoryAndDate(selectedTo,dateOfSC);
 
-        tCCountPayer =dbHelper.getTellerCashCountForPayerWithDate(selectedPayer, dateOfSC);
-        tCTotalPayer =dbHelper.getSCashTotalForPayerAndDate(selectedPayer, dateOfSC);
-        tCTotalPayee =dbHelper.getSCashTotalForPayeeAndDate(selectedPayer, dateOfSC);
+            tCCountPayer =dbHelper.getTellerCashCountForPayerWithDate(selectedPayer, dateOfSC);
+            tCTotalPayer =dbHelper.getSCashTotalForPayerAndDate(selectedPayer, dateOfSC);
+            tCTotalPayee =dbHelper.getSCashTotalForPayeeAndDate(selectedPayer, dateOfSC);
 
-        tCCountAll =dbHelper.getAllTellerCashCountWithDate(dateOfSC);
-        tCCountPayee =dbHelper.getTellerCashCountForPayeeWithDate(selectedPayee, dateOfSC);
-        appCashAll =dbHelper.getAllSkylightCash();
+            tCCountAll =dbHelper.getAllTellerCashCountWithDate(dateOfSC);
+            tCCountPayee =dbHelper.getTellerCashCountForPayeeWithDate(selectedPayee, dateOfSC);
+            appCashAll =dbHelper.getAllSkylightCash();
+
+        }
+
 
         if(todaySCAmount >0){
             txtTodayTotal.setText(" Cash Today:"+ todaySCAmount);
@@ -629,6 +633,29 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
     public void onItemClick(int adapterPosition) {
 
 
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
 
     public void revealFromLayout(View view) {

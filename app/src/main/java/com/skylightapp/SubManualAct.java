@@ -30,8 +30,7 @@ public class SubManualAct extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(mywebView.canGoBack())
-        {
+        if(mywebView.canGoBack()) {
             mywebView.goBack();
         }
 
@@ -39,5 +38,35 @@ public class SubManualAct extends AppCompatActivity {
         {
             super.onBackPressed();
         }
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        overridePendingTransition(R.anim.base_slide_left_out, R.anim.bounce);
+
+    }
+    public void onResume(){
+        super.onResume();
+        overridePendingTransition(R.anim.base_slide_left_out, R.anim.bounce);
     }
 }

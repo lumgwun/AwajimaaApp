@@ -41,7 +41,7 @@ public class PackListTab extends TabActivity {
         tabHost.setup(getLocalActivityManager());
 
         TabHost.TabSpec oldPackTab = tabHost.newTabSpec("Packs by Cus");
-        oldPackTab.setIndicator("Packs Overview", getResources().getDrawable(R.drawable.ic__category));
+        oldPackTab.setIndicator("Packs Overview", getResources().getDrawable(R.drawable.ic_admin_panel));
         Intent customerIntent = new Intent(this, CusPackageList.class);
         oldPackTab.setContent(customerIntent);
 

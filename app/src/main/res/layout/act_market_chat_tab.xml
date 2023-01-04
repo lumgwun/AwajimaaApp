@@ -27,7 +27,7 @@
                 app:title="Awajima Chats Arena "
                 android:id="@+id/My_toolbar"
                 android:textAlignment="center"
-                android:layout_marginStart="45dp"
+                android:layout_marginStart="65dp"
                 app:titleTextColor="@color/red_brown_dark"
                 android:layout_height="90dp"/>
         </com.google.android.material.appbar.AppBarLayout>

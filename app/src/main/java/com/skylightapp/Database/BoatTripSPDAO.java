@@ -1,11 +1,11 @@
 package com.skylightapp.Database;
 
-import static com.skylightapp.Bookings.BoatTrip.BOAT_TRIP_STATUS;
 import static com.skylightapp.Bookings.TripStopPoint.TSP_AMOUNT;
 import static com.skylightapp.Bookings.TripStopPoint.TRIP_STOP_POINT_ID;
 import static com.skylightapp.Bookings.TripStopPoint.TSP_LATLNG;
 import static com.skylightapp.Bookings.TripStopPoint.TSP_NAME;
 import static com.skylightapp.Bookings.TripStopPoint.TRIP_STOP_POINT_TABLE;
+import static com.skylightapp.Bookings.TripStopPoint.TSP_STATUS;
 import static com.skylightapp.Bookings.TripStopPoint.TSP_TRIP_ID;
 import static java.lang.String.valueOf;
 
@@ -39,7 +39,7 @@ public class BoatTripSPDAO extends DBHelperDAO{
         contentValues.put(TSP_AMOUNT, amt);
         contentValues.put(TSP_NAME, nameOfPlace);
         contentValues.put(TSP_LATLNG, latlngStrng);
-        contentValues.put(BOAT_TRIP_STATUS, status);
+        contentValues.put(TSP_STATUS, status);
         return sqLiteDatabase.insert(TRIP_STOP_POINT_TABLE, null, contentValues);
 
     }

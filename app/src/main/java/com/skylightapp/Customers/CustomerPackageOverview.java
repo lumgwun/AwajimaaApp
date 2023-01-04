@@ -19,8 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.skylightapp.Adapters.PackageRecyclerAdapter;
 import com.skylightapp.Classes.Customer;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.R;
 
@@ -39,7 +39,7 @@ public class CustomerPackageOverview extends Fragment {
 
     private RecyclerView recyclerView;
 
-    private ArrayList<SkyLightPackage> skyLightPackages;
+    private ArrayList<MarketBizPackage> marketBizPackages;
     private PackageRecyclerAdapter mAdapter;
 
 
@@ -100,12 +100,12 @@ public class CustomerPackageOverview extends Fragment {
         json = userPreferences.getString("LastProfileUsed", "");
         customer = gson.fromJson(json, Customer.class);
 
-        skyLightPackages = new ArrayList<SkyLightPackage>();
-        mAdapter = new PackageRecyclerAdapter(getContext(), R.layout.package_list_row,skyLightPackages);
+        marketBizPackages = new ArrayList<MarketBizPackage>();
+        mAdapter = new PackageRecyclerAdapter(getContext(), R.layout.package_list_row, marketBizPackages);
         dbHelper = new DBHelper(getContext());
         if(customer !=null){
             int profileID = customer.getCusUID();
-            skyLightPackages = dbHelper.getPackagesFromCustomer(profileID);
+            marketBizPackages = dbHelper.getPackagesFromCustomer(profileID);
 
         }
 

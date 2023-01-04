@@ -4,10 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import com.blongho.country_data.Currency;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -48,7 +48,7 @@ public class Account implements Serializable, Parcelable {
     public static final String ACCOUNT_TYPES_TABLE = "account_type_table";
     public static final String ACCOUNT_TYPE_INTEREST = "acct_type_interest";
     public static final String ACCOUNT_TYPE_NAME = "acct_type_name";
-    public static final String ACCOUNT_TYPE_BANK = "acct_type_bank";
+    public static final String ACCOUNT_CURRENCY = "acct_Currency";
     public static final String ACCOUNT_TYPE_ID = "acct_type_id";
     public static final String ACCOUNT_CUS_ID = "acct_cus__number";
     public static final String ACCOUNT_TYPE_NO_F = "acct_F_Key";
@@ -67,15 +67,15 @@ public class Account implements Serializable, Parcelable {
     public static final String CREATE_ACCOUNTS_TABLE = "CREATE TABLE IF NOT EXISTS " + ACCOUNTS_TABLE + " (" + ACCOUNT_NO + " INTEGER , " + BANK_ACCT_NO + "TEXT," + ACCOUNT_PROF_ID + " INTEGER , " +
             ACCOUNT_CUS_ID + " INTEGER , " + ACCOUNT_TX_ID + " INTEGER , " +
             ACCOUNT_TYPE + " TEXT , " + ACCOUNT_BANK + " TEXT , " + ACCOUNT_NAME + " TEXT, " + ACCOUNT_BALANCE + " REAL, " +
-            ACCOUNT_EXPECTED_SAVINGS + " TEXT, " + ACCOUNT_SAVED_AMOUNT + " REAL, " + BANK_ACCT_BALANCE + "REAL, "+ ACCOUNT_DB_ID + "INTEGER, "+ "FOREIGN KEY(" + ACCOUNT_MARKET_BUSINESS_ID + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+ "FOREIGN KEY(" + ACCOUNT_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+"FOREIGN KEY(" + ACCOUNT_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + ACCOUNT_CUS_ID  + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + ")," + "FOREIGN KEY(" + ACCOUNT_TX_ID + ") REFERENCES " + TRANSACTIONS_TABLE + "(" + TRANSACTION_ID + ")," +
+            ACCOUNT_EXPECTED_SAVINGS + " TEXT, " + ACCOUNT_SAVED_AMOUNT + " REAL, " + BANK_ACCT_BALANCE + "REAL, "+ ACCOUNT_DB_ID + "INTEGER, "+ ACCOUNT_CURRENCY + " TEXT , "+ "FOREIGN KEY(" + ACCOUNT_MARKET_BUSINESS_ID + ") REFERENCES " + MARKET_BIZ_TABLE + "(" + MARKET_BIZ_ID + "),"+ "FOREIGN KEY(" + ACCOUNT_MARKET_ID + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+"FOREIGN KEY(" + ACCOUNT_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + ACCOUNT_CUS_ID  + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + ")," + "FOREIGN KEY(" + ACCOUNT_TX_ID + ") REFERENCES " + TRANSACTIONS_TABLE + "(" + TRANSACTION_ID + ")," +
             "PRIMARY KEY(" + ACCOUNT_DB_ID + "))";
 
     protected Account(Parcel in) {
-        skyLightAcctNo = in.readInt();
+        awajimaAcctNo = in.readInt();
         bankAcct_No = in.readString();
         grpAcctNo = in.readInt();
         accountBalance = in.readDouble();
-        skylightAccountName = in.readString();
+        awajimaAcctName = in.readString();
         bankAccountName = in.readString();
         bankAccountBalance = in.readString();
         bankName = in.readString();
@@ -84,12 +84,12 @@ public class Account implements Serializable, Parcelable {
         transaction = in.readParcelable(Transaction.class.getClassLoader());
         record = in.readParcelable(CustomerDailyReport.class.getClassLoader());
         loan = in.readParcelable(Loan.class.getClassLoader());
-        skyLightPackage = in.readParcelable(SkyLightPackage.class.getClassLoader());
+        marketBizPackage = in.readParcelable(MarketBizPackage.class.getClassLoader());
         totalAmountToSave = in.readDouble();
         interest = in.readDouble();
         image = in.readString();
         transactions = in.createTypedArrayList(Transaction.CREATOR);
-        packages = in.createTypedArrayList(SkyLightPackage.CREATOR);
+        packages = in.createTypedArrayList(MarketBizPackage.CREATOR);
         DailyPayments = in.createTypedArrayList(CustomerDailyReport.CREATOR);
         id_For_BigDecimal = in.readInt();
         type_BigDecimal = in.readInt();
@@ -116,12 +116,12 @@ public class Account implements Serializable, Parcelable {
         this.bankAccountName = bankAccountName;
     }
 
-    public String getSkylightAccountName() {
-        return skylightAccountName;
+    public String getAwajimaAcctName() {
+        return awajimaAcctName;
     }
 
-    public void setSkylightAccountName(String skylightAccountName) {
-        this.skylightAccountName = skylightAccountName;
+    public void setAwajimaAcctName(String awajimaAcctName) {
+        this.awajimaAcctName = awajimaAcctName;
     }
 
     public String getBankAccountBalance() {
@@ -177,19 +177,19 @@ public class Account implements Serializable, Parcelable {
     }
 
     public enum ACCOUNT_TYPE {
-        WALLET, STANDING_ORDER, GROUP_SAVINGS;
+        WALLET, STANDING_ORDER, GROUP_SAVINGS,BANK;
     }
 
     private static int nextAcNum = 88769912;
-    @PrimaryKey(autoGenerate = true)
-    private int skyLightAcctNo =100321;
+    //@PrimaryKey(autoGenerate = true)
+    private int awajimaAcctNo ;
 
     private String bankAcct_No;
     int grpAcctNo;
     double accountBalance;
     DBHelper dbHelper;
 
-    private String skylightAccountName;
+    private String awajimaAcctName;
     private String bankAccountName;
     private String bankAccountBalance;
 
@@ -200,8 +200,8 @@ public class Account implements Serializable, Parcelable {
     Transaction transaction;
     CustomerDailyReport record;
     Loan loan;
-    SkylightPackageModel shopPackage;
-    SkyLightPackage skyLightPackage;
+    AwajimaPackModel shopPackage;
+    MarketBizPackage marketBizPackage;
 
     double totalAmountToSave;
     double interest;
@@ -215,8 +215,8 @@ public class Account implements Serializable, Parcelable {
 
     AccountTypes type;
     private ArrayList<Transaction> transactions;
-    private ArrayList<SkyLightPackage> packages;
-    private ArrayList<SkylightPackageModel> shopPackages;
+    private ArrayList<MarketBizPackage> packages;
+    private ArrayList<AwajimaPackModel> shopPackages;
     private ArrayList<CustomerDailyReport> DailyPayments;
     private ArrayList<Promo> promos;
     private Promo promo;
@@ -231,9 +231,9 @@ public class Account implements Serializable, Parcelable {
 
         super();
     }
-    public Account(int acctNo, int skyLightAcctNo) {
+    public Account(int acctNo, int awajimaAcctNo) {
         this.grpAcctNo = acctNo;
-        this.skyLightAcctNo = skyLightAcctNo;
+        this.awajimaAcctNo = awajimaAcctNo;
 
     }
     /*public Account(String uName, String pass) {
@@ -248,14 +248,14 @@ public class Account implements Serializable, Parcelable {
     }*/
     public Account (String uName, String pass, double bal,String bankName) {
         this.transactions = new ArrayList<>();
-        this.skyLightAcctNo = nextAcNum;
+        this.awajimaAcctNo = nextAcNum;
         this.accountBalance = bal;
         nextAcNum++;
     }
     public Account(String name, int dbID, Currency currency, String country, String sortCode, int accountNo, double accountBalance) {
         this(name, accountNo, BigDecimal.valueOf(accountBalance), String.valueOf(currency),country,sortCode);
-        this.skyLightAcctNo = dbID;
-        this.skylightAccountName = name;
+        this.awajimaAcctNo = dbID;
+        this.awajimaAcctName = name;
         this.accountBalance = accountBalance;
         this.sortCode = sortCode;
         this.country = country;
@@ -268,11 +268,11 @@ public class Account implements Serializable, Parcelable {
         super();
     }
 
-    public Account(String accountName, String bankAcct_No, double accountBalance, int skyLightAcctNo) {
-        this.skylightAccountName = accountName;
+    public Account(String accountName, String bankAcct_No, double accountBalance, int awajimaAcctNo) {
+        this.awajimaAcctName = accountName;
         this.bankAcct_No = bankAcct_No;
         this.accountBalance = accountBalance;
-        this.skyLightAcctNo = skyLightAcctNo;
+        this.awajimaAcctNo = awajimaAcctNo;
     }
     public Account(String accountBank, String accountNo,String authorization) {
         this.accountBalance = accountBalance;
@@ -283,17 +283,17 @@ public class Account implements Serializable, Parcelable {
 
     public Account(String skylightMFb, String accountName, int accountNumber, double accountBalance, AccountTypes accountTypeStr) {
         this.accountBalance = accountBalance;
-        this.skylightAccountName = accountName;
-        this.skyLightAcctNo = accountNumber;
+        this.awajimaAcctName = accountName;
+        this.awajimaAcctNo = accountNumber;
         this.type = accountTypeStr;
         this.bankName = skylightMFb;
 
     }
 
-    public Account(int skyLightAcctNo, String accountBank, String accountName, String accountNo, double accountBalance, AccountTypes accountType) {
-        this.skyLightAcctNo = skyLightAcctNo;
+    public Account(int awajimaAcctNo, String accountBank, String accountName, String accountNo, double accountBalance, AccountTypes accountType) {
+        this.awajimaAcctNo = awajimaAcctNo;
         this.accountBalance = accountBalance;
-        this.skylightAccountName = accountName;
+        this.awajimaAcctName = accountName;
         this.bankAcct_No = accountNo;
         this.type = accountType;
         this.bankName = accountBank;
@@ -301,22 +301,22 @@ public class Account implements Serializable, Parcelable {
 
 
     public Account(int virtualAccountID, String customerNames, double accountBalance, AccountTypes accountTypeStr) {
-        this.skyLightAcctNo = virtualAccountID;
+        this.awajimaAcctNo = virtualAccountID;
         this.accountBalance = accountBalance;
-        this.skylightAccountName = customerNames;
+        this.awajimaAcctName = customerNames;
         this.type = accountTypeStr;
         this.accountBalance = accountBalance;
     }
 
     public Account(String customerBank, String customerNames, int accountNo, AccountTypes accountTypeStr) {
-        this.skylightAccountName = customerNames;
+        this.awajimaAcctName = customerNames;
         this.type = accountTypeStr;
-        this.skyLightAcctNo = accountNo;
+        this.awajimaAcctNo = accountNo;
         this.bankName = customerBank;
     }
 
     public Account(String reportID, int accountNumber) {
-        this.skyLightAcctNo = accountNumber;
+        this.awajimaAcctNo = accountNumber;
 
     }
 
@@ -363,8 +363,8 @@ public class Account implements Serializable, Parcelable {
     }
 
 
-    public void setSkyLightAcctNo(int acctNo) {
-        this.skyLightAcctNo = acctNo;
+    public void setAwajimaAcctNo(int acctNo) {
+        this.awajimaAcctNo = acctNo;
     }
 
     public void setBankAcctName(String bankName) {
@@ -421,7 +421,7 @@ public class Account implements Serializable, Parcelable {
 
 
     public int getAwajimaAcctNo() {
-        return skyLightAcctNo;
+        return awajimaAcctNo;
     }
     /*public void setId(int id) {
         this.acctID = id;
@@ -429,10 +429,10 @@ public class Account implements Serializable, Parcelable {
 
 
     public String getAccName() {
-        return skylightAccountName;
+        return awajimaAcctName;
     }
     public void setAcctName(String name) {
-        this.skylightAccountName = name;
+        this.awajimaAcctName = name;
     }
 
     public String getCountry() {
@@ -468,11 +468,11 @@ public class Account implements Serializable, Parcelable {
     }
 
 
-    public SkyLightPackage getSkyLightPackage() {
-        return skyLightPackage;
+    public MarketBizPackage getSkyLightPackage() {
+        return marketBizPackage;
     }
-    public void setSkyLightPackage(SkyLightPackage skyLightPackage) {
-        this.skyLightPackage = skyLightPackage;
+    public void setSkyLightPackage(MarketBizPackage marketBizPackage) {
+        this.marketBizPackage = marketBizPackage;
     }
     public Loan getLoan() {
         return loan;
@@ -481,10 +481,10 @@ public class Account implements Serializable, Parcelable {
         this.loan = loan;
     }
 
-    public SkylightPackageModel getShopPackage() {
+    public AwajimaPackModel getShopPackage() {
         return shopPackage;
     }
-    public void setTransactions(SkylightPackageModel loan) {
+    public void setTransactions(AwajimaPackModel loan) {
         this.shopPackage = shopPackage;
     }
     public double getAccountBalance() {
@@ -497,10 +497,10 @@ public class Account implements Serializable, Parcelable {
     public ArrayList<Transaction> getTransactions1() {
         return transactions;
     }
-    public ArrayList<SkyLightPackage> getpackages() {
+    public ArrayList<MarketBizPackage> getpackages() {
         return packages;
     }
-    public ArrayList<SkylightPackageModel> getShopPackages() {
+    public ArrayList<AwajimaPackModel> getShopPackages() {
         return shopPackages;
     }
     public ArrayList<Loan> getLoans() {
@@ -513,7 +513,7 @@ public class Account implements Serializable, Parcelable {
     public void setTransactions(ArrayList<Transaction> transactions) {
         this.transactions = transactions;
     }
-    public void setPackages(ArrayList<SkyLightPackage> packagesFromCurrentProfile) {
+    public void setPackages(ArrayList<MarketBizPackage> packagesFromCurrentProfile) {
         this.packages = packagesFromCurrentProfile;
 
 
@@ -570,11 +570,11 @@ public class Account implements Serializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(skyLightAcctNo);
+        parcel.writeInt(awajimaAcctNo);
         parcel.writeString(bankAcct_No);
         parcel.writeInt(grpAcctNo);
         parcel.writeDouble(accountBalance);
-        parcel.writeString(skylightAccountName);
+        parcel.writeString(awajimaAcctName);
         parcel.writeString(bankAccountName);
         parcel.writeString(bankAccountBalance);
         parcel.writeString(bankName);
@@ -583,7 +583,7 @@ public class Account implements Serializable, Parcelable {
         parcel.writeParcelable(transaction, i);
         parcel.writeParcelable(record, i);
         parcel.writeParcelable(loan, i);
-        parcel.writeParcelable(skyLightPackage, i);
+        parcel.writeParcelable(marketBizPackage, i);
         parcel.writeDouble(totalAmountToSave);
         parcel.writeDouble(interest);
         parcel.writeString(image);
@@ -602,7 +602,7 @@ public class Account implements Serializable, Parcelable {
     }
 
     public String getAccountName() {
-        return skylightAccountName;
+        return awajimaAcctName;
     }
 
     public void addBorrowingTransaction(double borrowedAmount) {

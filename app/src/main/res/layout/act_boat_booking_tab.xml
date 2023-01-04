@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:id="@android:id/tabhost"
     tools:actionBarNavMode="standard"
+    style="@style/Theme.OurCApp"
     android:theme="@style/Theme.SkylightAppTab"
     android:background="@drawable/rect_their_message"
     tools:context="com.skylightapp.Bookings.BoatBookingTab">

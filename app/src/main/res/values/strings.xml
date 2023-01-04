@@ -302,7 +302,7 @@
 
     <string name="card_cvv">CVV</string>
 
-    <string name="payment_prompt">Enter your card details to complete the payment</string>
+    <string name="payment_prompt">Enter your payStackCard details to complete the payment</string>
 
     <string name="make_payment">Make Payment</string>
 
@@ -2162,6 +2162,88 @@
     <string name="title_activity_show_location">Show Location</string>
     <string name="current_position">Current position</string>
     <string name="last_location">Last Location</string>
+    <string name="remove_location_updates">remove location update</string>
+    <string name="launch_activity">Launch</string>
+    <string name="location_updated">Location updated</string>
+    <string name="request_location_updates">location requested</string>
+    <string name="request_loc_updates">Request Location update</string>
+    <string name="err_msg_phone">Phone number is not correct</string>
+    <string name="err_msg_place">Something is wrong with the place</string>
+    <string name="err_msg_residence">"something is not right with the residence "</string>
+    <string name="plan">plan</string>
+    <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
+    <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
+    <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
+    <string name="action_delete_all_entries">delete all entries</string>
+    <string name="title_activity_fake_maps">FakeMapsAct</string>
+    <string name="txt_press_back">Tap one more time to exit</string>
+    <string name="enter_valid_id">enter a valid ID</string>
+    <string name="location_disabled">Location disabled</string>
+    <string name="txt_wait_start_trip">Please wait while the trip Starts.</string>
+    <string name="txt_wait_stop_trip">Please wait while the trip is being Stopped.</string>
+    <string name="txt_start_tracking">start tracking</string>
+    <string name="txtDriverIsHere">Your Awajima Driver is here!</string>
+    <string name="youHaveACus">You have a Ride Booking!</string>
+    <string name="arrived">Ride destination reached!</string>
+    <string name="error_mismatch_password">Passwords did not match</string>
+    <string name="text_enter_number">Enter phone Number</string>
+    <string name="text_enter_name">Enter First Name</string>
+    <string name="text_enter_lname">Enter Surname</string>
+    <string name="text_enter_email">Enter Email Address</string>
+    <string name="text_enter_valid_email">Enter a valid Email Adress!</string>
+    <string name="text_choosepicture">Choose picture</string>
+    <string name="toast_unable_to_selct_image">unable to select Image</string>
+    <string name="text_edit_profile">Edit Profile</string>
+    <string name="text_update_profile">Update Profile</string>
+    <string name="no_card">No Card!</string>
+    <string name="text_booking_date">Booking Date</string>
+    <string name="cost_per_mile">NGN200</string>
+    <string name="cost_per_hour">NGN5000</string>
+    <string name="dialog_enable_wifi">enable wifi</string>
+    <string name="dialog_enable">Enable internet connection</string>
+    <string name="no_loc_service">No Location service</string>
+    <string name="enable_loc_service">Enable location service</string>
+    <string name="loc_serv_imp">You can not operate without  this, on</string>
+    <string name="enable_gps">Enable GPS</string>
+    <string name="no_gps">No GPS ,on</string>
+    <string name="need_gps">This App neds your GPS, on.</string>
+    <string name="feedback">Feedback</string>
+    <string name="mins">mins</string>
+    <string name="rating">Rating</string>
+    <string name="feedback_completed">Feedback completed!</string>
+    <string name="miles">Miles</string>
+    <string name="done">done</string>
+    <string name="c_default_card">changing default card</string>
+    <string name="dialog_no_message" />
+    <string name="loc_not_found">location not found</string>
+    <string name="waiting_for_address">Waiting for Address</string>
+    <string name="text_select_type">Select Type</string>
+    <string name="creating_request">Creating Request</string>
+    <string name="contacting">Contacting</string>
+    <string name="canceling_request">Canceling request</string>
+    <string name="take_off_p">Take off Point</string>
+    <string name="dest_point">Destination Point</string>
+    <string name="driver_loc">Driver_location</string>
+    <string name="payment_unit">NGN</string>
+    <string name="text_for">For</string>
+    <string name="text_per">/</string>
+    <string name="text_blank_ref_code">Please enter referral code</string>
+    <string name="text_apply_promo">Apply promo</string>
+    <string name="job_accepted">Driver accepted the job</string>
+    <string name="driver_arrived">Driver has arrived at your location</string>
+    <string name="trip_started">Your trip has been started</string>
+    <string name="driver_started">Driver coming to your location</string>
+    <string name="drive_loc">Driver Location</string>
+    <string name="dest">Destination</string>
+    <string name="changing_payment_mode">CHANGING PAYMENT MODE</string>
+    <string name="adding_dest">Adding destination</string>
+    <string name="getting_ref_code">Checking referral code</string>
+    <string name="text_ref_code">"Please take a note of your Referral code - "</string>
+    <string name="from_date">FROM DATE</string>
+    <string name="to_date">TO DATE</string>
+    <string name="progress_getting_history">GETTING HISTORY</string>
+    <string name="pick_place">pick a place</string>
+    <string name="default_info_snippet">For Emergency Reporting</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 

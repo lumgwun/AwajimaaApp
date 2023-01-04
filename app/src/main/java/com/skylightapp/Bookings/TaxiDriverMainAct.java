@@ -1,10 +1,16 @@
 package com.skylightapp.Bookings;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.content.Intent;
@@ -39,23 +45,28 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Objects;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.PointOfInterest;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Classes.Utils;
 import com.skylightapp.Customers.CustomerHelpActTab;
 import com.skylightapp.R;
+import com.teliver.sdk.core.Teliver;
+import com.teliver.sdk.models.UserBuilder;
 
-public class TaxiDriverMainAct extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class TaxiDriverMainAct extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, FragmentManager.OnBackStackChangedListener {
     AppCompatButton login;
     private GoogleApiClient mGoogleApiClient;
     double latitude, longitude;
     private SharedPreferences userPreferences;
-    private Gson gson, gson1;
-    private String json, json1;
+    private Gson gson, gson1,gson2;
+    private String json, json1,json2;
     private Profile userProfile;
     private Customer customer;
     String SharedPrefUserPassword;
@@ -66,8 +77,22 @@ public class TaxiDriverMainAct extends AppCompatActivity implements View.OnClick
     private Calendar calendar;
     private static final String PREF_NAME = "awajima";
     private Bundle bundle;
-    private AppCompatTextView txtDriver;
-    private AppCompatImageView imgDGreetings;
+    private AppCompatTextView txtDriver,txtGreetings;
+    private Toolbar toolbar;
+    private TaxiDriver driver;
+
+    private FragmentManager fragmentManager;
+
+    private View rootView;
+
+    private Snackbar snackbar;
+    private String driverOnlineID;
+    private int driverID;
+
+    private FragDriver fragmentDriver;
+
+    private TaxiTrip taxiTrip;
+    //private TaxiTripDAO taxiTripDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +101,13 @@ public class TaxiDriverMainAct extends AppCompatActivity implements View.OnClick
         userProfile = new Profile();
         gson1 = new Gson();
         gson = new Gson();
+        gson2 = new Gson();
         customer = new Customer();
         bundle= new Bundle();
+        driver= new TaxiDriver();
+        bundle= new Bundle();
         txtDriver = findViewById(R.id.driverName);
+        txtGreetings = findViewById(R.id.driverGreetings);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPrefUserName = userPreferences.getString("PROFILE_USERNAME", "");
         SharedPrefUserPassword = userPreferences.getString("PROFILE_PASSWORD", "");
@@ -90,6 +119,8 @@ public class TaxiDriverMainAct extends AppCompatActivity implements View.OnClick
         userProfile = gson.fromJson(json, Profile.class);
         json1 = userPreferences.getString("LastCustomerUsed", "");
         customer = gson1.fromJson(json1, Customer.class);
+        json2 = userPreferences.getString("LastTaxiDriverUsed", "");
+        driver = gson2.fromJson(json2, TaxiDriver.class);
 
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -118,6 +149,89 @@ public class TaxiDriverMainAct extends AppCompatActivity implements View.OnClick
             alert.show();
         }
 
+    }
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setLogo(R.drawable.ic_arrow_back_black_24dp);
+        gson2 = new Gson();
+        driver= new TaxiDriver();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPrefUserName = userPreferences.getString("PROFILE_USERNAME", "");
+        setSupportActionBar(toolbar);
+        json2 = userPreferences.getString("LastTaxiDriverUsed", "");
+        driver = gson2.fromJson(json2, TaxiDriver.class);
+        //Utils.setUpToolBar(this, toolbar, getSupportActionBar(), getString(R.string.app_name));
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+        rootView = findViewById(R.id.view_root);
+        if(driver !=null){
+            driverID=driver.driverID;
+        }
+        driverOnlineID=SharedPrefUserName+driverID;
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.addOnBackStackChangedListener(this);
+        changeFragment(0);
+        Teliver.identifyUser(new UserBuilder(driverOnlineID)
+                .setUserType(UserBuilder.USER_TYPE.OPERATOR).build());
+    }
+
+    private void changeFragment(int caseValue) {
+        if (caseValue == 0) {
+            if (fragmentDriver == null)
+                fragmentDriver = new FragDriver();
+            switchView(fragmentDriver, getString(R.string.app_name));
+        }
+    }
+
+    private void switchView(final Fragment fragment, final String title) {
+        try {
+            toolbar.setTitle(title);
+            FragmentTransaction mFragmentTransaction = fragmentManager.beginTransaction();
+            Fragment mTempFragment = fragmentManager.findFragmentById(R.id.driver_container);
+            if (!fragment.equals(mTempFragment)) {
+                String className = fragment.getClass().getName();
+                boolean isAdded = fragmentManager.popBackStackImmediate(className, 0);
+                if (!isAdded) {
+                    mFragmentTransaction.addToBackStack(className);
+                    mFragmentTransaction.add(R.id.driver_container, fragment, title);
+                }
+            }
+            mFragmentTransaction.commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public void onBackStackChanged() {
+        Fragment fragment = fragmentManager.findFragmentById(R.id.driver_container);
+        if (fragment == null)
+            return;
+        String tag = fragment.getTag();
+        toolbar.setTitle(tag);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (fragmentManager.getBackStackEntryCount() > 1)
+            fragmentManager.popBackStackImmediate();
+        else if (snackbar != null && snackbar.isShown()) {
+            snackbar.dismiss();
+            finish();
+        } else {
+            snackbar = Snackbar.make(rootView, R.string.txt_press_back, 3000);
+            snackbar.show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 115)
+            fragmentDriver.onReqPermission(grantResults);
     }
 
     @Override
@@ -162,7 +276,7 @@ public class TaxiDriverMainAct extends AppCompatActivity implements View.OnClick
                 userProfile = gson.fromJson(json, Profile.class);
                 json1 = userPreferences.getString("LastCustomerUsed", "");
                 customer = gson1.fromJson(json1, Customer.class);
-                URLpetition petition = new URLpetition("login driver");
+                /*URLpetition petition = new URLpetition("login driver");
 
                 StringBuilder sb = new StringBuilder();
                 sb.append(getResources().getString(R.string.ip));
@@ -173,7 +287,7 @@ public class TaxiDriverMainAct extends AppCompatActivity implements View.OnClick
                 sb.append("&longitude=");
                 sb.append(longitude);
 
-                petition.execute(sb.toString());
+                petition.execute(sb.toString());*/
                 break;
         }
     }
@@ -241,6 +355,7 @@ public class TaxiDriverMainAct extends AppCompatActivity implements View.OnClick
 
     public void loginToRides(View view) {
     }
+
 
     private class URLpetition extends AsyncTask<String, Void, String> {
         String action;
@@ -310,7 +425,12 @@ public class TaxiDriverMainAct extends AppCompatActivity implements View.OnClick
         userProfile = new Profile();
         gson1 = new Gson();
         gson = new Gson();
+        gson2 = new Gson();
         customer = new Customer();
+        bundle= new Bundle();
+        driver= new TaxiDriver();
+        txtDriver = findViewById(R.id.driverName);
+        txtGreetings = findViewById(R.id.driverGreetings);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPrefUserName = userPreferences.getString("PROFILE_USERNAME", "");
         SharedPrefUserPassword = userPreferences.getString("PROFILE_PASSWORD", "");
@@ -322,6 +442,8 @@ public class TaxiDriverMainAct extends AppCompatActivity implements View.OnClick
         userProfile = gson.fromJson(json, Profile.class);
         json1 = userPreferences.getString("LastCustomerUsed", "");
         customer = gson1.fromJson(json1, Customer.class);
+        json2 = userPreferences.getString("LastTaxiDriverUsed", "");
+        driver = gson2.fromJson(json2, TaxiDriver.class);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             return;
@@ -357,7 +479,7 @@ public class TaxiDriverMainAct extends AppCompatActivity implements View.OnClick
         gson = new Gson();
         customer = new Customer();
         txtDriver = findViewById(R.id.driverName);
-        imgDGreetings = findViewById(R.id.driverGreetings);
+        txtGreetings = findViewById(R.id.driverGreetings);
 
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPrefUserName = userPreferences.getString("PROFILE_USERNAME", "");
@@ -381,13 +503,13 @@ public class TaxiDriverMainAct extends AppCompatActivity implements View.OnClick
 
         if (timeOfDay >= 5 && timeOfDay < 12) {
             //welcomeString.append(getString(R.string.good_morning));
-            imgDGreetings.setImageResource(R.drawable.good_morn3);
+            txtGreetings.setText(R.string.good_morning);
         } else if (timeOfDay >= 12 && timeOfDay < 17) {
-            welcomeString.append(getString(R.string.good_afternoon));
-            imgDGreetings.setImageResource(R.drawable.good_after1);
+            //welcomeString.append(getString(R.string.good_afternoon));
+            txtGreetings.setText(R.string.good_afternoon);
         } else {
-            welcomeString.append(getString(R.string.good_evening));
-            imgDGreetings.setImageResource(R.drawable.good_even2);
+            //welcomeString.append(getString(R.string.good_evening));
+            txtGreetings.setText(R.string.good_evening);
         }
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         String[] days = getResources().getStringArray(R.array.days);

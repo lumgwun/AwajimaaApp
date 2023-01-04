@@ -11,16 +11,16 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.skylightapp.Classes.SkyLightPackModel;
+import com.skylightapp.MarketClasses.MarketBizPackModel;
 import com.skylightapp.Markets.ProductDetailsAct;
 import com.skylightapp.R;
 
 import java.util.List;
 
 public class GridProductLayoutAdapter extends BaseAdapter {
-    List<SkyLightPackModel> horizontalProductScrollModelList;
+    List<MarketBizPackModel> horizontalProductScrollModelList;
 
-    public GridProductLayoutAdapter(List<SkyLightPackModel> horizontalProductScrollModelList) {
+    public GridProductLayoutAdapter(List<MarketBizPackModel> horizontalProductScrollModelList) {
         this.horizontalProductScrollModelList = horizontalProductScrollModelList;
     }
 

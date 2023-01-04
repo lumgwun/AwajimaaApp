@@ -10,6 +10,7 @@ import androidx.multidex.MultiDexApplication;
 
 import com.quickblox.auth.session.QBSettings;
 import com.quickblox.conference.ConferenceConfig;
+import com.skylightapp.CustomApplication;
 import com.skylightapp.Interfaces.QBUsersHolder;
 import com.skylightapp.R;
 
@@ -18,7 +19,7 @@ import static com.skylightapp.BuildConfig.QUICKBLOX_APP_ID;
 import static com.skylightapp.BuildConfig.QUICKBLOX_AUTH_KEY;
 import static com.skylightapp.BuildConfig.QUICKBLOX_SECRET_KEY;
 
-public class AppConference extends MultiDexApplication {
+public class AppConference extends CustomApplication {
     public static final int CHAT_PORT = 5223;
     public static final int SOCKET_TIMEOUT = 300;
     public static final boolean KEEP_ALIVE = true;

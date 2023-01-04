@@ -3,7 +3,9 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        gradlePluginPortal()
         mavenLocal()
+
         jcenter()
         maven {
             url 'https://jitpack.io'
@@ -60,15 +62,29 @@ buildscript {
 
         maven { url 'https://repo1.maven.org/maven2' }
         maven { url 'https://plugins.gradle.org/m2/'}
-        maven { url 'http://dl.bintray.com/amulyakhare/maven' }
+        maven { url 'https://dl.bintray.com/amulyakhare/maven' }
 
         maven { url 'https://repo1.maven.org/maven2' }
         maven { url 'https://plugins.gradle.org/m2/'}
         maven {
             url "https://github.com/QuickBlox/quickblox-android-sdk-releases/raw/master/"
         }
+        maven {
+            url "https://us-west2-maven.pkg.dev/gmp-artifacts/transportation"
+        }
+        maven {
+            url  'https://dl.bintray.com/techquest/maven-repo'
+        }
+
 
     }
+    /*dependencyResolutionManagement {
+        repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+        repositories {
+            google()
+            mavenCentral()
+        }
+    }*/
     ext {
         retrofit_version = '2.5.0'
         retrofit2_version = "2.5.0"
@@ -84,24 +100,36 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.0'
         classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.4.1"
         //classpath 'com.google.gms:google-services:4.3.0'
-        classpath 'com.google.gms:google-services:4.3.13'
+        //classpath("com.apollographql.apollo:apollo-gradle-plugin:2.4.6")
+        classpath 'com.google.gms:google-services:4.3.14'
         classpath 'io.fabric.tools:gradle:1.31.0'
         classpath 'io.fabric.tools:gradle:1.28.0'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
         classpath 'com.vanniktech:gradle-maven-publish-plugin:0.14.2'
         classpath 'org.jetbrains.dokka:dokka-gradle-plugin:1.4.10.2'
         classpath 'com.github.matthiasrobbers:shortbread-gradle-plugin:1.4.0'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.1'
-        classpath 'com.google.firebase:perf-plugin:1.4.1'
-        classpath ('com.google.firebase:perf-plugin:1.4.1') {
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.2'
+        classpath 'com.google.firebase:firebase-messaging:23.1.1'
+        classpath 'com.google.firebase:perf-plugin:1.4.2'
+        classpath 'com.google.firebase:perf-plugin:1.3.4'
+        //classpath 'com.google.firebase:perf-plugin:1.4.1'
+        classpath ('com.google.firebase:perf-plugin:1.4.2') {
             exclude group: 'com.google.guava', module: 'guava-jdk5'
         }
+        /*classpath ('com.google.firebase:perf-plugin:1.1.0') {
+            exclude group: 'com.google.guava', module: 'guava-jdk5'
+        }*/
+
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.38.1'
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.44.2'
+        classpath 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.0'
+
+        //classpath("com.apollographql.apollo:apollo-gradle-plugin:x.y.z")
 
 
 
@@ -116,9 +144,28 @@ allprojects {
         google()
         mavenCentral()
         maven {
+            url  'https://dl.bintray.com/techquest/maven-repo'
+        }
+        maven { url "https://dl.bintray.com/populov/maven" }
+        maven {
+
+            url "https://repositories.tomtom.com/artifactory/maps-sdk-legacy-android"
+
+        }
+        maven {
             url "https://github.com/QuickBlox/quickblox-android-sdk-releases/raw/master/"
         }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven {
+            url "https://us-west2-maven.pkg.dev/gmp-artifacts/transportation"
+        }
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
+        /*maven {
+            url "artifactregistry://us-west2-maven.pkg.dev/gmp-artifacts/transportation"
+        }*/
 
         //noinspection JcenterRepositoryObsolete
         jcenter() // Warning: this repository is going to shut down soon
@@ -128,6 +175,7 @@ ext {
     dimensionDefault = 'default'
     ext.kotlin_version = '1.2.41'
     ext.kotlin_version = '1.3.11'
+    lifecycle_version = "1.1.1"
 
     lintAbortOnError = false
 

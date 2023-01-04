@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_my_history"
+            android:icon="@drawable/timeline1"
+            android:title="History" />
+        <item
+            android:id="@+id/nav_booking_payment"
+            android:icon="@drawable/ic__category"
+            android:title="Bookings Payments" />
+        <item
+            android:id="@+id/nav_booking_Tab"
+            android:title="Booking Tab" />
+
+
+    </group>
+    <item
+        android:id="@+id/nav_my_profile"
+        android:icon="@drawable/ic__category"
+        android:title="Profile" />
+    <item
+        android:id="@+id/nav_booking_Home"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/b_sign_out"
+        android:title="Sign Out" />
+</menu>

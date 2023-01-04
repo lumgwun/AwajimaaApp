@@ -13,13 +13,13 @@ import com.skylightapp.R;
 
 import static com.skylightapp.Classes.CustomerDailyReport.REPORT_AMOUNT_COLLECTED_SO_FAR;
 import static com.skylightapp.Classes.CustomerDailyReport.REPORT_AMOUNT_REMAINING;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_DURATION;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_END_DATE;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ID;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_START_DATE;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_TOTAL_VALUE;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_TYPE;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_VALUE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_DURATION;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_END_DATE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_ID;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_START_DATE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_TOTAL_VALUE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_TYPE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_VALUE;
 
 public class SavingsPackAdapt extends CursorAdapter {
     public SavingsPackAdapt(Context context, Cursor cursor) {

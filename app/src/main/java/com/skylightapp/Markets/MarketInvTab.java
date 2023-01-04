@@ -14,12 +14,16 @@ import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.skylightapp.Admins.AdminTransActivity;
 import com.skylightapp.Admins.SkylightUsersActivity;
 import com.skylightapp.Customers.CustomerHelpActTab;
+import com.skylightapp.Customers.NewCustomerDrawer;
+import com.skylightapp.MapAndLoc.HotEmergAct;
+import com.skylightapp.MapAndLoc.UserReportEmergAct;
 import com.skylightapp.R;
 
 public class MarketInvTab extends TabActivity {
     private ChipNavigationBar chipNavigationBar;
     private FloatingActionButton fab;
     private BottomAppBar bottomAppBar;
+    private com.melnykov.fab.FloatingActionButton fabEmerg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +32,28 @@ public class MarketInvTab extends TabActivity {
         chipNavigationBar = findViewById(R.id.inv_nav_bar);
         fab = findViewById(R.id.fab_inv);
         bottomAppBar = findViewById(R.id.invAppBar);
+        fabEmerg = findViewById(R.id.ic_invTab);
+        fabEmerg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(MarketInvTab.this, HotEmergAct.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(myIntent);
+
+            }
+        });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent myIntent = new Intent(MarketInvTab.this, UserReportEmergAct.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(myIntent);
 
             }
         });
@@ -60,7 +83,7 @@ public class MarketInvTab extends TabActivity {
                     public void onItemSelected(int i) {
                         //Fragment fragment = null;
                         switch (i){
-                            case R.id.ma_Home:
+                            case R.id.ma_Inv_Home:
                                 Intent myIntent = new Intent(MarketInvTab.this, MarketInvTab.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
@@ -68,7 +91,7 @@ public class MarketInvTab extends TabActivity {
                                 myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(myIntent);
 
-                            case R.id.m_dTabs:
+                            case R.id.inv_statis:
                                 Intent chat = new Intent(MarketInvTab.this, TopStatsAct.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
@@ -77,7 +100,7 @@ public class MarketInvTab extends TabActivity {
                                 startActivity(chat);
 
 
-                            case R.id.ma_G_Market:
+                            case R.id.inv_Market:
 
                                 Intent shop = new Intent(MarketInvTab.this, MarketTab.class);
                                 overridePendingTransition(R.anim.slide_in_right,
@@ -86,9 +109,9 @@ public class MarketInvTab extends TabActivity {
                                 shop.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(shop);
 
-                            case R.id.ma_sendMT:
+                            case R.id.inv_cus:
 
-                                Intent pIntent = new Intent(MarketInvTab.this, MarketMessagingTab.class);
+                                Intent pIntent = new Intent(MarketInvTab.this, NewCustomerDrawer.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
                                 pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -96,7 +119,7 @@ public class MarketInvTab extends TabActivity {
                                 startActivity(pIntent);
 
 
-                            case R.id.ma_SupportO:
+                            case R.id.inv_Support:
                                 Intent helpIntent = new Intent(MarketInvTab.this, CustomerHelpActTab.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
@@ -104,9 +127,7 @@ public class MarketInvTab extends TabActivity {
                                 helpIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(helpIntent);
                         }
-                        /*getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.fragment_container,
-                                        fragment).commit();*/
+
                     }
                 });
 

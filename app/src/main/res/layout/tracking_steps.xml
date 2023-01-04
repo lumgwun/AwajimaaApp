@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/layoutTracker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/imgOne"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/transaction" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtpayment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@id/imgOne"
+            android:layout_toRightOf="@id/imgOne"
+            android:text="Payment Success"
+            android:textColor="@color/ORANGE_CHAT" />
+
+
+        <ImageView
+            android:id="@+id/viewOne"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginBottom="10dp"
+            android:src="@mipmap/ic_orange_line"
+            android:layout_below="@id/imgOne" />
+
+
+        <ImageView
+            android:id="@+id/imgTwo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/viewOne"
+            android:layout_marginStart="25dp"
+            android:src="@mipmap/ic_rec_item" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtInKitchen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/viewOne"
+            android:layout_toEndOf="@id/imgTwo"
+            android:layout_toRightOf="@id/imgTwo"
+            android:text="In the warehouse" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtDeliveryHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtInKitchen"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="30dp"
+            android:layout_toEndOf="@id/imgTwo"
+            android:layout_toRightOf="@id/imgTwo"
+            android:text="Delivery Assigned"
+            android:textColor="@color/blue_dark"
+            android:textSize="10sp" />
+
+
+        <View
+            android:layout_height="1dp"
+            android:layout_width="match_parent"
+            android:layout_below="@id/txtDeliveryHint"
+            android:layout_marginLeft="29dp"
+            android:background="@drawable/rect_new"
+            android:layout_marginStart="29dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@id/imgTwo"
+            android:layout_toRightOf="@id/imgTwo" />
+
+
+        <ImageView
+            android:id="@+id/viewTwo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgTwo" />
+
+        <ImageView
+            android:id="@+id/imgThree"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_below="@id/viewTwo"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/laptop" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/initTeliver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/viewTwo"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toEndOf="@id/imgThree"
+            android:layout_toRightOf="@id/imgThree"
+            android:text="On Route" />
+
+
+        <ImageView
+            android:id="@+id/viewThree"
+            style="@style/ImageViewHome"
+            android:layout_below="@id/imgThree" />
+
+
+        <ImageView
+            android:id="@+id/imgFour"
+            style="@style/ImageOk"
+            android:layout_below="@id/viewThree"
+            android:layout_marginBottom="15dp"
+            android:src="@mipmap/ic_re_ok" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtDelivered"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_below="@id/viewThree"
+            android:layout_toEndOf="@id/imgThree"
+            android:layout_toRightOf="@id/imgThree"
+            android:text="Order Delivered" />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutdelivered"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="40dp"
+            android:paddingTop="50dp"
+            android:src="@mipmap/ic_delivered_round" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="50dp"
+            android:text="Order Delivered"
+            android:textSize="18sp" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

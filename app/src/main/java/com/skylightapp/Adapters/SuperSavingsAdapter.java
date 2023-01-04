@@ -27,10 +27,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.ExpandableTextView;
-import com.skylightapp.Classes.PaymentCode;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.PaymentDoc;
 import com.skylightapp.Classes.ProfileManager;
-import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.PaymDocDAO;
 import com.skylightapp.Interfaces.OnTellerReportChangeListener;
@@ -67,7 +66,7 @@ public class SuperSavingsAdapter extends RecyclerView.Adapter<SuperSavingsAdapte
     private final MutableLiveData<Bitmap> mThumbnailLiveData = new MutableLiveData();
     private long savingsCode;
     private PaymentDoc document;
-    private SkyLightPackage skyLightPackage;
+    private MarketBizPackage marketBizPackage;
     private double total;
 
     public SuperSavingsAdapter(ArrayList<CustomerDailyReport> reports, Context mcontext) {
@@ -155,11 +154,11 @@ public class SuperSavingsAdapter extends RecyclerView.Adapter<SuperSavingsAdapte
         if(savings1 !=null){
             document = savings1.getRecordPaymentDoc();
             savingsCode = savings1.getRecordSavingsCode();
-            skyLightPackage=savings1.getRecordPackage();
+            marketBizPackage =savings1.getRecordPackage();
 
         }
-        if(skyLightPackage !=null){
-            total=skyLightPackage.getPackageTotalAmount();
+        if(marketBizPackage !=null){
+            total= marketBizPackage.getPackageTotalAmount();
 
         }
 

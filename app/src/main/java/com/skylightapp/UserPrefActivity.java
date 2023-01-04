@@ -62,12 +62,18 @@ public class UserPrefActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_user_pref);
-        FirebaseApp.initializeApp(this);
-        QBSettings.getInstance().init(this, APPLICATION_ID, AUTH_KEY, AUTH_SECRET);
-        QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
+        //FirebaseApp.initializeApp(this);
+        senderProfile= new Profile();
+        adminUser= new AdminUser();
+        marketBusiness= new MarketBusiness();
+        gson= new Gson();
+        gson1= new Gson();
+        gson2= new Gson();
+        //QBSettings.getInstance().init(this, APPLICATION_ID, AUTH_KEY, AUTH_SECRET);
+        //QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
         setTitle("My Preferences");
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        json1 = userPreferences.getString("LastProfileUsed", "");
+        json = userPreferences.getString("LastProfileUsed", "");
         senderProfile = gson.fromJson(json, Profile.class);
 
         json1 = userPreferences.getString("LastAdminProfileUsed", "");
@@ -93,6 +99,34 @@ public class UserPrefActivity extends AppCompatActivity {
                     () -> {
                         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
                             setTitle(R.string.title_activity_settings);
+
+                            getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.settings, new SettingsFragment())
+                                    .commit();
+                        }
+                    });
+
+
+            getSupportFragmentManager().addOnBackStackChangedListener(
+                    () -> {
+                        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+
+                            getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.settings, new CountryFragment())
+                                    .commit();
+                        }
+                    });
+
+            getSupportFragmentManager().addOnBackStackChangedListener(
+                    () -> {
+                        if (getSupportFragmentManager().getBackStackEntryCount() == 2) {
+
+                            getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.settings, new OtherCountryFragment())
+                                    .commit();
                         }
                     });
 
@@ -168,33 +202,4 @@ public class UserPrefActivity extends AppCompatActivity {
         }
     }
 
-    public static class CountryFragment extends PreferenceFragmentCompat {
-
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            try {
-                setPreferencesFromResource(R.xml.country_pref, rootKey);
-
-            } catch (ArrayIndexOutOfBoundsException e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
-    public static class OtherCountryFragment extends PreferenceFragmentCompat {
-
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            try {
-                setPreferencesFromResource(R.xml.other_country_pref, rootKey);
-
-            } catch (ArrayIndexOutOfBoundsException e) {
-                e.printStackTrace();
-            }
-
-
-
-        }
-
-    }
 }

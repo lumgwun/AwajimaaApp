@@ -48,7 +48,7 @@ import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.rom4ek.arcnavigationview.ArcNavigationView;
 import com.skylightapp.Accountant.AcctantBackOffice;
 import com.skylightapp.Admins.AdminLoanList;
-import com.skylightapp.Admins.AdminPackageActivity;
+import com.skylightapp.Admins.AdminPackageAct;
 import com.skylightapp.Admins.BranchSuppAct;
 import com.skylightapp.Admins.AdminTabActivity;
 import com.skylightapp.Admins.AdminTimelineAct;
@@ -111,7 +111,6 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
 
     private int profileID;
     Button btnMore;
-    CardView cardViewPackges,cardViewGrpSavings,cardViewHistory, cardViewStandingOrders, cardViewOrders, cardViewSupport;
 
     AppCompatTextView extName, textID, textAllCustomers, textCustomersToday, textInvestments, textAllUsers;
     FrameLayout frameLayout1,frameLayout2;
@@ -238,11 +237,9 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
         applicationDb = new DBHelper(this);
         profDAO=new ProfDAO(this);
         //applicationDb.openDataBase();
-        SharedPrefUserName=userPreferences.getString("USER_NAME", "");
-        SharedPrefUserPassword=userPreferences.getString("USER_PASSWORD", "");
+        SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
         SharedPrefUserMachine=userPreferences.getString("machine", "");
-        SharedPrefSuperUser=userPreferences.getString("UserSuperAdmin", "");
-        SharedPrefSuperUser=userPreferences.getString("SuperAdmin", "");
         SharedPrefProfileID=userPreferences.getString("PROFILE_ID", "");
         profileID = userPreferences.getInt("PROFILE_ID", 0);
         userName = userPreferences.getString("PROFILE_USERNAME", "");
@@ -250,6 +247,20 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
         state = userPreferences.getString("PROFILE_STATE", "");
         role = userPreferences.getString("PROFILE_ROLE", "");
         password = userPreferences.getString("PROFILE_PASSWORD", "");
+        joinedDate = userPreferences.getString("PROFILE_DATE_JOINED", "");
+        surname = userPreferences.getString("PROFILE_SURNAME", "");
+        email = userPreferences.getString("PROFILE_EMAIL", "");
+        phoneNO = userPreferences.getString("PROFILE_PHONE", "");
+        firstName = userPreferences.getString("PROFILE_FIRSTNAME", "");
+        dob = userPreferences.getString("PROFILE_DOB", "");
+        gender = userPreferences.getString("PROFILE_GENDER", "");
+        address = userPreferences.getString("PROFILE_ADDRESS", "");
+        pictureLink = Uri.parse(userPreferences.getString("PICTURE_URI", ""));
+
+        json1 = userPreferences.getString("LastProfileUsed", "");
+        json = userPreferences.getString("LastSuperAdminProfileUsed", "");
+        userProfile = gson1.fromJson(json1, Profile.class);
+        superAdminProfile = gson.fromJson(json, UserSuperAdmin.class);
 
         if (applicationDb != null) {
             sqLiteDatabase = applicationDb.getReadableDatabase();
@@ -262,22 +273,6 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
 
         }
 
-
-
-        joinedDate = userPreferences.getString("PROFILE_DATE_JOINED", "");
-        surname = userPreferences.getString("PROFILE_SURNAME", "");
-        email = userPreferences.getString("PROFILE_EMAIL", "");
-        phoneNO = userPreferences.getString("PROFILE_PHONE", "");
-        firstName = userPreferences.getString("PROFILE_FIRSTNAME", "");
-        dob = userPreferences.getString("PROFILE_DOB", "");
-        gender = userPreferences.getString("PROFILE_GENDER", "");
-        address = userPreferences.getString("PROFILE_ADDRESS", "");
-        pictureLink = Uri.parse(userPreferences.getString("PICTURE_URI", ""));
-
-        //json = userPreferences.getString("LastProfileUsed", "");
-        json = userPreferences.getString("LastSuperAdminProfileUsed", "");
-        userProfile = gson1.fromJson(json1, Profile.class);
-        superAdminProfile = gson.fromJson(json, UserSuperAdmin.class);
         txtUserName = findViewById(R.id.super_username);
         txtAllLoans = findViewById(R.id.super_loans);
         txtSuperBalance = findViewById(R.id.super_balance);
@@ -418,6 +413,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
 
             }
         });
+        chipNavigationBar = findViewById(R.id.bottom_nav_SuperOffice);
 
 
         ArcNavigationView navigationView = (ArcNavigationView) findViewById(R.id.nav_view_super);
@@ -429,17 +425,10 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
         toggle.setHomeAsUpIndicator(R.drawable.home2);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        getSupportActionBar().setElevation(0);
+        //getSupportActionBar().setElevation(0);
         getSupportActionBar().setTitle("Super Admin BackOffice");
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic__category);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
 
-        chipNavigationBar = findViewById(R.id.bottom_nav_bar);
-        chipNavigationBar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
         chipNavigationBar.setOnItemSelectedListener
                 (new ChipNavigationBar.OnItemSelectedListener() {
                     @Override
@@ -698,6 +687,29 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
             }
         });
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
 
     private void setupHeader() {
 
@@ -741,7 +753,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
                 public void onClick(View view) {
                     switch(finalI) {
                         case 0:
-                            Intent myIntent = new Intent(SuperAdminOffice.this, AdminPackageActivity.class);
+                            Intent myIntent = new Intent(SuperAdminOffice.this, AdminPackageAct.class);
                             overridePendingTransition(R.anim.slide_in_right,
                                     R.anim.slide_out_left);
                             myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -817,7 +829,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
 
 
                         case 8:
-                            Intent chartIntent = new Intent(SuperAdminOffice.this, ChartData.class);
+                            Intent chartIntent = new Intent(SuperAdminOffice.this, ChartAct.class);
                             overridePendingTransition(R.anim.slide_in_right,
                                     R.anim.slide_out_left);
                             chartIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -872,7 +884,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
                 startActivity(active);
                 return true;
             case R.id.nav_my_packageSuper:
-                Intent pIntent = new Intent(this, AdminPackageActivity.class);
+                Intent pIntent = new Intent(this, AdminPackageAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -947,7 +959,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
                 startActivity(active);
                 break;
             case R.id.nav_my_packageSuper:
-                Intent pIntent = new Intent(this, AdminPackageActivity.class);
+                Intent pIntent = new Intent(this, AdminPackageAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |

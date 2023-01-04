@@ -125,7 +125,7 @@ public class LocActivity extends AppCompatActivity implements NavigationView.OnN
         setSupportActionBar( toolbar );
 
         mapFragment = (MapFragment) getFragmentManager()
-                .findFragmentById( R.id.mapLoc );
+                .findFragmentById( R.id.map );
         mapView = mapFragment.getView();
         mapFragment.getMapAsync( this );
         CheckMapPermission();
@@ -159,7 +159,7 @@ public class LocActivity extends AppCompatActivity implements NavigationView.OnN
 
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(LocActivity.this,FindDriverAct.class);
+                Intent i = new Intent(LocActivity.this, TrackUserAct.class);
                 startActivity(i);
             }
         });
@@ -167,24 +167,7 @@ public class LocActivity extends AppCompatActivity implements NavigationView.OnN
     }
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        googleApiClient.connect();
-        //mGoogleApiClient.connect();
 
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById( R.id.drawer_layout_log );
-        if (drawer.isDrawerOpen( GravityCompat.START )) {
-            drawer.closeDrawer( GravityCompat.START );
-        } else {
-            super.onBackPressed();
-        }
-    }
 
     @Override
     protected void onResume() {
@@ -214,20 +197,6 @@ public class LocActivity extends AppCompatActivity implements NavigationView.OnN
 
     }
 
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (googleApiClient.isConnected()) {
-            googleApiClient.disconnect();
-        }
-    }
 
 
     @Override
@@ -619,7 +588,7 @@ public class LocActivity extends AppCompatActivity implements NavigationView.OnN
     private void locationButton() {
 
         MapFragment mapFragment = (MapFragment) getFragmentManager()
-                .findFragmentById(  R.id.mapLoc );
+                .findFragmentById(  R.id.map );
 
         View locationButton = ((View) mapFragment.getView().findViewById( Integer.parseInt( "1" ) ).
                 getParent()).findViewById( Integer.parseInt( "2" ) );
@@ -702,5 +671,46 @@ public class LocActivity extends AppCompatActivity implements NavigationView.OnN
         final AlertDialog alert = builder.create();
         alert.show();
 
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+        if (googleApiClient.isConnected()) {
+            googleApiClient.disconnect();
+        }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        googleApiClient.connect();
+        //mGoogleApiClient.connect();
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById( R.id.drawer_layout_log );
+        if (drawer.isDrawerOpen( GravityCompat.START )) {
+            drawer.closeDrawer( GravityCompat.START );
+        } else {
+            super.onBackPressed();
+        }
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+        finish();
     }
 }

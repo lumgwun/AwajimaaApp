@@ -164,7 +164,7 @@ public class User implements Parcelable, Serializable {
     //protected ArrayList<AdminUser> adminUser;
     @Ignore
     protected UserSuperAdmin superAdmin;
-    //protected ArrayList<SkyLightPackage> skyLightPackage;
+    //protected ArrayList<MarketBizPackage> marketBizPackage;
     //protected ArrayList<Customer> customers;
     //ArrayList<Account> accounts;
     @Ignore
@@ -224,7 +224,7 @@ public class User implements Parcelable, Serializable {
 
     private ArrayList<CustomerDailyReport> dailyReports;
     @Ignore
-    private ArrayList<SkyLightPackage> skyLightPackages;
+    private ArrayList<MarketBizPackage> marketBizPackages;
     @Ignore
     private ArrayList<Loan> loans;
     @Ignore
@@ -273,7 +273,7 @@ public class User implements Parcelable, Serializable {
     @Ignore
     private CustomerDailyReport customerDailyReport;
     @Ignore
-    private SkyLightPackage skyLightPackage;
+    private MarketBizPackage marketBizPackage;
     @Ignore
     private Payee payee;
     @Ignore
@@ -677,8 +677,8 @@ public class User implements Parcelable, Serializable {
         parcel.writeLong(id);
     }
 
-    /*public List<SkyLightPackage> getPackages() {
-        return (List<SkyLightPackage>) skyLightPackage;
+    /*public List<MarketBizPackage> getPackages() {
+        return (List<MarketBizPackage>) marketBizPackage;
     }
     public Customer getCustomer() {
         return customer;
@@ -833,11 +833,11 @@ public class User implements Parcelable, Serializable {
 
     }
 
-    public ArrayList<SkyLightPackage> getSkyLightPackages() {
-        return skyLightPackage;
+    public ArrayList<MarketBizPackage> getSkyLightPackages() {
+        return marketBizPackage;
     }
-    public void setSkyLightPackage(ArrayList<SkyLightPackage> skyLightPackages) {
-        this.skyLightPackage = skyLightPackages;
+    public void setSkyLightPackage(ArrayList<MarketBizPackage> marketBizPackages) {
+        this.marketBizPackage = marketBizPackages;
     }*/
     /*public ArrayList<Account> getAccounts() {
         return accounts;

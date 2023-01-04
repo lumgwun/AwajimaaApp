@@ -4,31 +4,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/sky4"
+    android:background="@drawable/rect_new"
     android:layout_height="match_parent"
     tools:context=".Bookings.TaxiDriverMainAct">
-    <androidx.appcompat.widget.AppCompatImageView
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:background="@drawable/rect6e"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
-        android:id="@+id/driverGreetings"
-        android:layout_marginBottom="20dp"
-        android:src="@drawable/good_afternoon1"
-        android:layout_height="100dp"/>
+        app:elevation="0dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            app:logo="@drawable/awajima_logo"
+            app:title="@string/app_name"
+            app:titleMarginStart="32dp" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:text="greetings"
+            android:gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:layout_marginStart="10dp"
+            android:id="@+id/driverGreetings"
+            android:layout_marginBottom="20dp"
+            android:layout_height="100dp"/>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:text="Chukwuma"
+        android:fontFamily="@font/hipster_script_pro"
         android:id="@+id/driverName"
-        android:textColor="@color/white_good"
-        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
         android:layout_marginBottom="20dp"
         android:layout_height="wrap_content"/>
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/loginForRide"
-        android:background="@drawable/rect_their4"
+        android:background="@drawable/shape_layer"
         android:layout_width="fill_parent"
         android:padding="40dp"
         android:layout_height="wrap_content"
         android:text="Login for Rides" />
+    <FrameLayout
+        android:id="@+id/driver_container"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

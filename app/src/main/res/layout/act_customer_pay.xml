@@ -6,8 +6,7 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context=".Customers.CustomerPayAct">
-    <include layout="@layout/tool_bar11e"/>
-    <include layout="@layout/tool_bar11fa"/>
+    <include layout="@layout/tool_bar8"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -138,7 +137,7 @@
                     android:layout_marginBottom="10dp"
                     android:textAllCaps="true"
                     android:background="@drawable/rect6h"
-                    android:textColor="@android:color/holo_red_dark"
+                    android:textColor="@color/White"
                     android:padding="20dp"
                     android:layout_gravity="center"
                     android:id="@+id/all_Flutter_Wave" />
@@ -149,7 +148,7 @@
                     android:layout_height="wrap_content"
                     android:text="PAY with Paystack"
                     android:background="@drawable/rect6h"
-                    android:textColor="@android:color/holo_red_dark"
+                    android:textColor="@color/White"
                     android:padding="27dp"
                     android:onClick="payWithPayStackCard"
                     android:layout_marginEnd="10dp"
@@ -326,15 +325,13 @@
                     </com.google.android.material.textfield.TextInputLayout>
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
-                        android:orientation="horizontal"
-                        android:weightSum="2"
+                        android:orientation="vertical"
                         android:layout_height="wrap_content">
                         <androidx.appcompat.widget.AppCompatButton
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Submit"
                             android:padding="10dp"
-                            android:layout_weight="1"
                             android:layout_marginStart="10dp"
                             android:layout_marginEnd="10dp"
                             android:layout_marginTop="8dp"
@@ -343,24 +340,23 @@
                             android:background="@drawable/shape_rect_6"
                             android:textColor="#fff"
                             android:onClick="SubmitPayWithCardP"
-                            android:layout_gravity="center"
+                            android:layout_gravity="center_horizontal"
                             android:id="@+id/submitPayWithCardP" />
 
 
                         <androidx.appcompat.widget.AppCompatButton
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Cancel"
                             android:padding="10dp"
                             android:layout_marginEnd="10dp"
-                            android:layout_weight="1"
                             android:layout_marginTop="8dp"
                             android:layout_marginBottom="10dp"
                             android:textAllCaps="true"
                             android:background="@drawable/shape_rect_6"
                             android:textColor="#fff"
                             android:onClick="CancelPayWithCardP"
-                            android:layout_gravity="center"
+                            android:layout_gravity="center_horizontal"
                             android:id="@+id/CancelPayWithCardP" />
 
 

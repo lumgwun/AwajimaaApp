@@ -7,7 +7,7 @@ import com.skylightapp.MarketClasses.Market;
 import com.skylightapp.MarketClasses.MarketAdmin;
 import com.skylightapp.MarketClasses.MarketAnnouncement;
 import com.skylightapp.MarketClasses.MarketBizRegulator;
-import com.skylightapp.MarketClasses.MarketBizSubScription;
+import com.skylightapp.MarketClasses.MarketBizSub;
 import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.MarketClasses.MarketCommodity;
 import com.skylightapp.MarketClasses.MarketCustomer;
@@ -25,7 +25,7 @@ public interface MarketService {
     ArrayList<MarketCommodity> findCurMCommodityList(int marketID);
     ArrayList<MarketCustomer> findCurMCusList(int marketID);
     ArrayList<MarketDays> findCurMDaysList(int marketID);
-    ArrayList<MarketBizSubScription> findCurMSubList(int marketID);
+    ArrayList<MarketBizSub> findCurMSubList(int marketID);
     ArrayList<MarketBizRegulator> findCurMRegList(int marketID);
     ArrayList<MarketTranx> findCurMTranxList(int marketID);
     ArrayList<MarketInventory> findCurMInvList(int marketID);

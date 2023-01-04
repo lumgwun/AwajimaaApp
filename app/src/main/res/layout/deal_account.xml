@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.payStackCard.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/dealer_container"
     android:layout_width="match_parent"
@@ -279,4 +279,4 @@
         android:layout_alignParentBottom="true"
         android:background="#1effffff" />
 
-</com.google.android.material.card.MaterialCardView>
+</com.google.android.material.payStackCard.MaterialCardView>

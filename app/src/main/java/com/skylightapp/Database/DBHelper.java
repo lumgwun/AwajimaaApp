@@ -26,6 +26,7 @@ import androidx.preference.PreferenceManager;
 import com.google.android.gms.maps.model.LatLng;
 import com.skylightapp.Classes.ChartData;
 import com.skylightapp.Classes.AppCash;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.OfficeBranch;
 import com.skylightapp.Classes.TellerCountData;
 import com.skylightapp.Classes.UserSuperAdmin;
@@ -43,7 +44,6 @@ import com.skylightapp.Classes.LoanInterest;
 import com.skylightapp.Classes.PasswordHelpers;
 import com.skylightapp.Classes.Payee;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.R;
 
 import java.io.File;
@@ -74,14 +74,16 @@ import static com.skylightapp.Admins.AdminBankDeposit.CREATE_ADMIN_DEPOSIT_TABLE
 import static com.skylightapp.Admins.AdminBankDeposit.DEPOSIT_TABLE;
 import static com.skylightapp.Awards.Award.AWARD_TABLE;
 import static com.skylightapp.Awards.Award.CREATE_AWARD_TABLE;
-import static com.skylightapp.Bookings.BoatTrip.BOAT_TRIP_TABLE;
-import static com.skylightapp.Bookings.BoatTrip.CREATE_BOAT_TRIP_TABLE;
-import static com.skylightapp.Bookings.BoatTripRoute.BOAT_TRIP_ROUTE_TABLE;
-import static com.skylightapp.Bookings.BoatTripRoute.CREATE_BOAT_TRIP_ROUTE_TABLE;
+import static com.skylightapp.Bookings.Trip.A_TRIP_TABLE;
+import static com.skylightapp.Bookings.Trip.CREATE_BOAT_TRIP_TABLE;
+import static com.skylightapp.Bookings.TripRoute.BOAT_TRIP_ROUTE_TABLE;
+import static com.skylightapp.Bookings.TripRoute.CREATE_BOAT_TRIP_ROUTE_TABLE;
 import static com.skylightapp.Bookings.Driver.CREATE_DRIVER_TABLE;
 import static com.skylightapp.Bookings.Driver.DRIVER_TABLE;
 import static com.skylightapp.Bookings.TripBooking.CREATE_TRIP_BOOKING_TABLE;
+import static com.skylightapp.Bookings.TripBooking.CREATE_TRIP_B_NIN_TABLE;
 import static com.skylightapp.Bookings.TripBooking.TRIP_BOOKING_TABLE;
+import static com.skylightapp.Bookings.TripBooking.TRIP_B_NIN_TABLE;
 import static com.skylightapp.Classes.Account.ACCOUNTS_TABLE;
 import static com.skylightapp.Classes.Account.ACCOUNT_TYPE;
 import static com.skylightapp.Classes.Account.ACCOUNT_TYPES_TABLE;
@@ -109,10 +111,20 @@ import static com.skylightapp.Classes.DailyAccount.CREATE_DAILY_ACCOUNTING_TABLE
 
 import static com.skylightapp.Classes.DailyAccount.DAILY_ACCOUNTING_TABLE;
 
+import static com.skylightapp.Classes.Profile.CREATE_NIN_TABLE;
 import static com.skylightapp.Classes.Profile.CREATE_USER_TYPE_TABLE;
+import static com.skylightapp.Classes.Profile.NIN_TABLE;
 import static com.skylightapp.Classes.Profile.USER_TYPE_TABLE;
 import static com.skylightapp.Bookings.TripStopPoint.TRIP_STOP_POINT_TABLE;
 import static com.skylightapp.Bookings.TripStopPoint.CREATE_TRIP_STOP_POINT_TABLE;
+import static com.skylightapp.Classes.SOReceived.CREATE_SO_RECEIVED_TABLE;
+import static com.skylightapp.Classes.SOReceived.SO_RECEIVED_TABLE;
+import static com.skylightapp.MapAndLoc.Fence.CREATE_FENCE_TABLE;
+import static com.skylightapp.MapAndLoc.Fence.FENCE_TABLE;
+import static com.skylightapp.StateDir.State.CREATE_STATE_TABLE;
+import static com.skylightapp.StateDir.State.STATE_TABLE;
+import static com.skylightapp.StateDir.StateMinistry.CREATE_STATE_MIN_TABLE;
+import static com.skylightapp.StateDir.StateMinistry.STATE_MINISTRY_TABLE;
 import static com.skylightapp.MapAndLoc.EmergReportNext.CREATE_EMERGENCY_NEXT_REPORT_TABLE;
 import static com.skylightapp.MapAndLoc.EmergResponse.CREATE_RESPONSE_TABLE;
 import static com.skylightapp.MapAndLoc.EmergResponse.RESPONSE_TABLE;
@@ -144,13 +156,14 @@ import static com.skylightapp.Classes.Profile.PROFID_FOREIGN_KEY_PIX;
 import static com.skylightapp.Classes.Profile.PROFILE_PIC_ID;
 import static com.skylightapp.Classes.Profile.PROF_ID_FOREIGN_KEY_PASSWORD;
 import static com.skylightapp.Classes.Profile.SPONSOR_TABLE;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_CODE;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_COLLECTION_STATUS;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_CUSTOMER_ID_FOREIGN;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ITEM;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_NAME;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_PROFILE_ID_FOREIGN;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_REPORT_ID;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_BIZ_ID;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_CODE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_COLLECTION_STATUS;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_CUSTOMER_ID_FOREIGN;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_ITEM;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_NAME;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_PROFILE_ID_FOREIGN;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_REPORT_ID;
 import static com.skylightapp.Classes.AppCash.CREATE_SKYLIGHT_CASH_TABLE;
 import static com.skylightapp.Classes.AppCash.APP_CASH_ADMIN_ID;
 import static com.skylightapp.Classes.AppCash.APP_CASH_PROFILE_ID;
@@ -181,10 +194,10 @@ import static com.skylightapp.MapAndLoc.FenceEvent.CREATE_FENCE_EVENT_TABLE;
 import static com.skylightapp.MapAndLoc.FenceEvent.FENCE_EVENT_TABLE;
 import static com.skylightapp.MapAndLoc.PlaceData.CREATE_PLACES_TABLE;
 import static com.skylightapp.MapAndLoc.PlaceData.PLACE_ENTRY_TABLE;
-import static com.skylightapp.MapAndLoc.TaxiDriver.CREATE_TAXI_DRIVER_TABLE;
-import static com.skylightapp.MapAndLoc.TaxiDriver.TAXI_DRIVER_TABLE;
-import static com.skylightapp.MapAndLoc.TaxiTrip.CREATE_TAXI_TRIP_TABLE;
-import static com.skylightapp.MapAndLoc.TaxiTrip.TAXI_TRIP_TABLE;
+import static com.skylightapp.Bookings.TaxiDriver.CREATE_TAXI_DRIVER_TABLE;
+import static com.skylightapp.Bookings.TaxiDriver.TAXI_DRIVER_TABLE;
+import static com.skylightapp.Bookings.TaxiTrip.CREATE_TAXI_TRIP_TABLE;
+import static com.skylightapp.Bookings.TaxiTrip.TAXI_TRIP_TABLE;
 import static com.skylightapp.MarketClasses.BizDealPartner.BDEAL_PARTNER_TABLE;
 import static com.skylightapp.MarketClasses.BizDealPartner.CREATE_BDEAL_PARTNER_TABLE;
 import static com.skylightapp.MarketClasses.BusinessDeal.BIZ_DEAL_CHAT_TABLE;
@@ -198,8 +211,8 @@ import static com.skylightapp.MarketClasses.Market.MARKET_ID;
 import static com.skylightapp.MarketClasses.Market.MARKET_NAME;
 import static com.skylightapp.MarketClasses.Market.MARKET_STATE;
 import static com.skylightapp.MarketClasses.Market.MARKET_TABLE;
-import static com.skylightapp.MarketClasses.MarketBizSubScription.CREATE_MARKET_BIZ_SUB_TABLE;
-import static com.skylightapp.MarketClasses.MarketBizSubScription.MARKET_BIZ_SUB_TABLE;
+import static com.skylightapp.MarketClasses.MarketBizSub.CREATE_MARKET_BIZ_SUB_TABLE;
+import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_TABLE;
 import static com.skylightapp.MarketClasses.MarketBizSupplier.CREATE_SUPPLIER_TABLE;
 import static com.skylightapp.MarketClasses.MarketBizSupplier.SUPPLIER_TABLE;
 import static com.skylightapp.MarketClasses.MarketBusiness.CREATE_BIZ_TABLE;
@@ -220,8 +233,8 @@ import static com.skylightapp.Classes.Birthday.BIRTHDAY_DAYS_REMAINING;
 import static com.skylightapp.Classes.Birthday.BIRTHDAY_TABLE;
 import static com.skylightapp.Classes.Birthday.CREATE_BIRTHDAY_TABLE;
 import static com.skylightapp.Classes.Birthday.BIRTHDAY_ID;
-import static com.skylightapp.Classes.Bookings.BOOKING_TABLE;
-import static com.skylightapp.Classes.Bookings.CREATE_BOOKING_TABLE;
+import static com.skylightapp.Bookings.Bookings.BOOKING_TABLE;
+import static com.skylightapp.Bookings.Bookings.CREATE_BOOKING_TABLE;
 import static com.skylightapp.Classes.Customer.CREATE_CUSTOMERS_TABLE;
 import static com.skylightapp.Classes.Customer.CREATE_CUSTOMER_LOCATION_TABLE;
 import static com.skylightapp.Classes.Customer.CUSTOMER_ADDRESS;
@@ -329,18 +342,18 @@ import static com.skylightapp.Classes.Profile.PROFILE_STATUS;
 import static com.skylightapp.Classes.Profile.PROFILE_SURNAME;
 import static com.skylightapp.Classes.ProjectSavingsGroup.CREATE_PROJECT_SAVINGS_GROUP_TABLE;
 import static com.skylightapp.Classes.ProjectSavingsGroup.PROJECT_SAVINGS_GROUP_TABLE;
-import static com.skylightapp.Classes.SkyLightPackage.CREATE_PACKAGE_TABLE;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_BALANCE;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_DURATION;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_END_DATE;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_EXPECTED_VALUE;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ID;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_START_DATE;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_STATUS;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_TABLE;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_TOTAL_VALUE;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_TYPE;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_VALUE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.CREATE_PACKAGE_TABLE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_BALANCE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_DURATION;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_END_DATE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_EXPECTED_VALUE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_ID;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_START_DATE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_STATUS;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_TABLE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_TOTAL_VALUE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_TYPE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_VALUE;
 import static com.skylightapp.Classes.StandingOrder.CREATE_SO_TABLE;
 import static com.skylightapp.Classes.StandingOrder.SO_DAILY_AMOUNT;
 import static com.skylightapp.Classes.StandingOrder.STANDING_ORDER_TABLE;
@@ -389,6 +402,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String TAG = DBHelper.class.getSimpleName();
     public static int flag;
     String outFileName = "";
+    private String myPath;
 
     private static final String BILL_CUSTOMER_ID = "billCus";
     private ContentResolver myCR;
@@ -410,7 +424,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private Bitmap missingPhoto;
 
     public static String DB_PATH = "dA/";
-    public static final String DATABASE_NAME = "A.DBase";
+    public static final String DATABASE_NAME = "Db.bD";
     private static final String LOG = DBHelper.class.getName();
 
     public static final String TABLE_MYTABLE = "mytable";
@@ -418,18 +432,21 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String COl_MYTABLE_NAME = "name";
 
     public static final String BILL_ID_WITH_PREFIX = "bill.id";
-    public static final int DATABASE_VERSION = 37;
-    public static final int DATABASE_NEW_VERSION = 39;
+    public static final int DATABASE_VERSION = 38;
+    public static final int DATABASE_NEW_VERSION = 40;
     private static final String TIME_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss.SSSZZZZZ";
     private SimpleDateFormat timeStamp;
     private DateTimeFormatter timeFormat;
     private static final String PREF_NAME = "awajima";
-    private static String sqlite_ext_shm = "-shm";
-    private static String sqlite_ext_wal = "-wal";
-    private static int copy_buffer_size = 1024 * 8;
-    private static String stck_trc_msg = " (see stack-trace above)";
-    private static String sqlite_ext_journal = "-journal";
-    private static int db_user_version, asset_user_version, user_version_offset = 60, user_version_length = 4;
+    private static final String sqlite_ext_shm = "-shm";
+    private static final String sqlite_ext_wal = "-wal";
+    private static final int copy_buffer_size = 1024 * 8;
+    private static final String stck_trc_msg = " (see stack-trace above)";
+    private static final String sqlite_ext_journal = "-journal";
+    private static int db_user_version;
+    private static int asset_user_version;
+    private static final int user_version_offset = 60;
+    private static final int user_version_length = 4;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -532,6 +549,11 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.d("table", CREATE_BIZ_DEAL_TABLE);
         Log.d("table", CREATE_BDEAL_PARTNER_TABLE);
         Log.d("table", CREATE_DEAL_CHAT_TABLE);
+        Log.d("table", CREATE_STATE_TABLE);
+        Log.d("table", CREATE_STATE_MIN_TABLE);
+        Log.d("table", CREATE_TRIP_B_NIN_TABLE);
+        Log.d("table", CREATE_NIN_TABLE);
+        Log.d("table", CREATE_FENCE_TABLE);
 
         try {
             sharedPreferences = mContext.getSharedPreferences(PREF_NAME, 0);
@@ -553,6 +575,275 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     }
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+
+        try {
+            db.beginTransaction();
+            db.execSQL(CREATE_PROFILES_TABLE);
+            db.execSQL(CREATE_LOAN_TABLE);
+            db.execSQL(CREATE_INTEREST_TABLE);
+            //db.execSQL(CREATE_USER_TABLE);
+            db.execSQL(CREATE_TANSACTION_EXTRA_TABLE);
+            db.execSQL(CREATE_BIRTHDAY_TABLE);
+            db.execSQL(CREATE_MESSAGE_TABLE);
+            db.execSQL(CREATE_TIMELINE_TABLE);
+            db.execSQL(CREATE_PASSWORD_TABLE);
+            db.execSQL(CREATE_ACCOUNT_TYPE_TABLE);
+            db.execSQL(CREATE_REMINDER_TABLE);
+            db.execSQL(CREATE_CODE_TABLE);
+            db.execSQL(CREATE_DOCUMENT_TABLE);
+            db.execSQL(CREATE_SO_TABLE);
+            db.execSQL(CREATE_PAYEES_TABLE);
+            db.execSQL(CREATE_ACCOUNTS_TABLE);
+            db.execSQL(CREATE_TRANSACTIONS_TABLE);
+            db.execSQL(CREATE_DAILY_REPORT_TABLE);
+            db.execSQL(CREATE_CUSTOMERS_TABLE);
+            db.execSQL(CREATE_PACKAGE_TABLE);
+            db.execSQL(CREATE_PIXTURE_TABLE);
+
+            db.execSQL(CREATE_ADMIN_BALANCE_TABLE);
+            db.execSQL(CREATE_PROJECT_SAVINGS_GROUP_TABLE);
+            db.execSQL(CREATE_BOOKING_TABLE);
+            db.execSQL(CREATE_EMERGENCY_REPORT_TABLE);
+            db.execSQL(CREATE_SO_ACCT_TABLE);
+            db.execSQL(CREATE_GROUP_SAVINGS_TABLE);
+            db.execSQL(CREATE_GRP_ACCT_TABLE);
+            db.execSQL(CREATE_GRP_PROFILE_TABLE);
+            db.execSQL(CREATE_GRP_TX_TABLE);
+            db.execSQL(CREATE_ADMIN_TABLE);
+            db.execSQL(CREATE_SUPER_ADMIN_TABLE);
+            db.execSQL(CREATE_CUSTOMERS_TELLER_TABLE);
+            db.execSQL(CREATE_CUSTOMER_LOCATION_TABLE);
+            db.execSQL(CREATE_OFFICE_BRANCH);
+            db.execSQL(CREATE_MESSAGE_REPLY_TABLE);
+            //db.execSQL(CREATE_ACCOUNTS_STATEMENT_TABLE);
+            db.execSQL(CREATE_PAYMENT_TABLE);
+            db.execSQL(CREATE_STOCK_TABLE);
+            db.execSQL(CREATE_AWARD_TABLE);
+            db.execSQL(CREATE_ADMIN_DEPOSIT_TABLE);
+            db.execSQL(CREATE_TELLER_CASH_TABLE);
+            db.execSQL(CREATE_WORKERS_TABLE);
+            db.execSQL(CREATE_T_STOCKS_TABLE);
+            db.execSQL(CREATE_SPONSOR_TABLE);
+            db.execSQL(CREATE_TELLER_REPORT_TABLE);
+            db.execSQL(CREATE_SKYLIGHT_CASH_TABLE);
+            db.execSQL(CREATE_MARKET_STOCK_TABLE);
+            db.execSQL(CREATE_MARKET_TABLE);
+            db.execSQL(CREATE_EMERGENCY_NEXT_REPORT_TABLE);
+            db.execSQL(CREATE_DAILY_ACCOUNTING_TABLE);
+            db.execSQL(CREATE_JOURNEY_TABLE);
+            db.execSQL(CREATE_JOURNEY_ACCOUNT_TABLE);
+            db.execSQL(CREATE_MARKET_TX_TABLE_TABLE);
+            db.execSQL(CREATE_BIZ_TABLE);
+            db.execSQL(CREATE_PLACES_TABLE);
+            db.execSQL(CREATE_RESPONSE_TABLE);
+            db.execSQL(CREATE_SUPPLIER_TABLE);
+            db.execSQL(CREATE_MARKET_BIZ_SUB_TABLE);
+            db.execSQL(CREATE_USER_TYPE_TABLE);
+            db.execSQL(CREATE_BOAT_TRIP_ROUTE_TABLE);
+            db.execSQL(CREATE_BOAT_TRIP_TABLE);
+            db.execSQL(CREATE_DRIVER_TABLE);
+            db.execSQL(CREATE_TRIP_STOP_POINT_TABLE);
+            db.execSQL(CREATE_TRIP_BOOKING_TABLE);
+            db.execSQL(CREATE_TAXI_TRIP_TABLE);
+            db.execSQL(CREATE_TAXI_DRIVER_TABLE);
+            db.execSQL(CREATE_FENCE_EVENT_TABLE);
+            db.execSQL(CREATE_BIZ_DEAL_CODE_TABLE);
+            db.execSQL(CREATE_BIZ_DEAL_TABLE);
+            db.execSQL(CREATE_BDEAL_PARTNER_TABLE);
+            db.execSQL(CREATE_DEAL_CHAT_TABLE);
+            db.execSQL(CREATE_STATE_TABLE);
+            db.execSQL(CREATE_STATE_MIN_TABLE);
+            db.execSQL(CREATE_TRIP_B_NIN_TABLE);
+            db.execSQL(CREATE_NIN_TABLE);
+            db.execSQL(CREATE_FENCE_TABLE);
+            db.execSQL(CREATE_SO_RECEIVED_TABLE);
+
+            db.execSQL("create table ROLES " + "(role_ID integer primary key, roleUserName text,rolePassword text,rolePhoneNo text,role text)");
+            //db.setTransactionSuccessful();
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+            android.util.Log.e("DBHelper Table error", e.getMessage());
+        }
+        finally{
+
+            db.endTransaction();
+        }
+
+    }
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion >= newVersion)
+            return;
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_REMINDERS);
+        db.execSQL("DROP TABLE IF EXISTS " + PROFILES_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + PAYEES_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + ACCOUNTS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TRANSACTIONS_TABLE);
+        //db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + DAILY_REPORT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CUSTOMER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + PACKAGE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + PICTURE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + LOAN_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + INTEREST_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BIRTHDAY_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TIMELINE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MESSAGE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + PASSWORD_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + ACCOUNT_TYPES_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + DOCUMENT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CODE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + STANDING_ORDER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + ADMIN_BALANCE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + PROJECT_SAVINGS_GROUP_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BOOKING_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + EMERGENCY_REPORT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + SO_ACCT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CUSTOMER_LOCATION_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + GRP_ACCT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + GROUP_SAVINGS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + GRP_PROFILE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + GRP_TRANX_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TELLER_REPORT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + ADMIN_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + SUPER_ADMIN_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CUSTOMER_TELLER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + OFFICE_BRANCH_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MESSAGE_REPLY_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + "ROLES");
+        db.execSQL("DROP TABLE IF EXISTS " + PAYMENTS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + STOCKS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + AWARD_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + DEPOSIT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + APP_CASH_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + SUPER_CASH_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + WORKER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + T_STOCKS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CUSTOMER_LOCATION_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TELLER_CASH_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TANSACTION_EXTRA_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + SPONSOR_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MARKET_STOCK_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MARKET_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + DAILY_ACCOUNTING_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + JOURNEY_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + JOURNEY_ACCOUNT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MARKET_TX_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MARKET_BIZ_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + PLACE_ENTRY_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + RESPONSE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + SUPPLIER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MARKET_BIZ_SUB_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + USER_TYPE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BOAT_TRIP_ROUTE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + A_TRIP_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + DRIVER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TRIP_STOP_POINT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TRIP_BOOKING_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TAXI_TRIP_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TAXI_DRIVER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + FENCE_EVENT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BIZ_DEAL_CODE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BIZ_DEAL_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BDEAL_PARTNER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BIZ_DEAL_CHAT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + STATE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + STATE_MINISTRY_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + NIN_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TRIP_B_NIN_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + FENCE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + SO_RECEIVED_TABLE);
+
+        onCreate(db);
+
+    }
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldV, int newV ){
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_REMINDERS);
+        db.execSQL("DROP TABLE IF EXISTS ROLES");
+        db.execSQL("DROP TABLE IF EXISTS " + PROFILES_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + PAYEES_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + ACCOUNTS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TRANSACTIONS_TABLE);
+        //db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + DAILY_REPORT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CUSTOMER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + PACKAGE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + PICTURE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + LOAN_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + INTEREST_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BIRTHDAY_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TIMELINE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MESSAGE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + PASSWORD_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + ACCOUNT_TYPES_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + DOCUMENT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CODE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + STANDING_ORDER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + ADMIN_BALANCE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + PROJECT_SAVINGS_GROUP_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BOOKING_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + EMERGENCY_REPORT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + SO_ACCT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CUSTOMER_LOCATION_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + GRP_ACCT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + GROUP_SAVINGS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + GRP_PROFILE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + GRP_TRANX_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TELLER_REPORT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + ADMIN_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + SUPER_ADMIN_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CUSTOMER_TELLER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + OFFICE_BRANCH_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MESSAGE_REPLY_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + PAYMENTS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + STOCKS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + AWARD_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + DEPOSIT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + APP_CASH_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + SUPER_CASH_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + WORKER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + T_STOCKS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + EMERGENCY_REPORT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CUSTOMER_LOCATION_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TELLER_CASH_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TANSACTION_EXTRA_TABLE);
+        //db.execSQL("DROP TABLE IF EXISTS " + TANSACTION_EXTRA_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + SPONSOR_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MARKET_STOCK_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MARKET_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + DAILY_ACCOUNTING_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + JOURNEY_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + JOURNEY_ACCOUNT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MARKET_TX_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MARKET_BIZ_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + RESPONSE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + SUPPLIER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MARKET_BIZ_SUB_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + USER_TYPE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BOAT_TRIP_ROUTE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + A_TRIP_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + DRIVER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TRIP_STOP_POINT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TRIP_BOOKING_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TAXI_TRIP_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TAXI_DRIVER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + FENCE_EVENT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BIZ_DEAL_CODE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BIZ_DEAL_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BDEAL_PARTNER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BIZ_DEAL_CHAT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + STATE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + STATE_MINISTRY_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + NIN_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TRIP_B_NIN_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + FENCE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + SO_RECEIVED_TABLE);
+        onCreate(db);
+    }
+
     private static int setUserVersionFromAsset(Context context, String assetname) {
         InputStream is = null;
         try {
@@ -715,259 +1006,8 @@ public class DBHelper extends SQLiteOpenHelper {
         this.context = context;
     }*/
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
 
-        try {
-            db.beginTransaction();
-            db.execSQL(CREATE_PROFILES_TABLE);
-            db.execSQL(CREATE_LOAN_TABLE);
-            db.execSQL(CREATE_INTEREST_TABLE);
-            //db.execSQL(CREATE_USER_TABLE);
-            db.execSQL(CREATE_TANSACTION_EXTRA_TABLE);
-            db.execSQL(CREATE_BIRTHDAY_TABLE);
-            db.execSQL(CREATE_MESSAGE_TABLE);
-            db.execSQL(CREATE_TIMELINE_TABLE);
-            db.execSQL(CREATE_PASSWORD_TABLE);
-            db.execSQL(CREATE_ACCOUNT_TYPE_TABLE);
-            db.execSQL(CREATE_REMINDER_TABLE);
-            db.execSQL(CREATE_CODE_TABLE);
-            db.execSQL(CREATE_DOCUMENT_TABLE);
-            db.execSQL(CREATE_SO_TABLE);
-            db.execSQL(CREATE_PAYEES_TABLE);
-            db.execSQL(CREATE_ACCOUNTS_TABLE);
-            db.execSQL(CREATE_TRANSACTIONS_TABLE);
-            db.execSQL(CREATE_DAILY_REPORT_TABLE);
-            db.execSQL(CREATE_CUSTOMERS_TABLE);
-            db.execSQL(CREATE_PACKAGE_TABLE);
-            db.execSQL(CREATE_PIXTURE_TABLE);
 
-            db.execSQL(CREATE_ADMIN_BALANCE_TABLE);
-            db.execSQL(CREATE_PROJECT_SAVINGS_GROUP_TABLE);
-            db.execSQL(CREATE_BOOKING_TABLE);
-            db.execSQL(CREATE_EMERGENCY_REPORT_TABLE);
-            db.execSQL(CREATE_SO_ACCT_TABLE);
-            db.execSQL(CREATE_GROUP_SAVINGS_TABLE);
-            db.execSQL(CREATE_GRP_ACCT_TABLE);
-            db.execSQL(CREATE_GRP_PROFILE_TABLE);
-            db.execSQL(CREATE_GRP_TX_TABLE);
-            db.execSQL(CREATE_ADMIN_TABLE);
-            db.execSQL(CREATE_SUPER_ADMIN_TABLE);
-            db.execSQL(CREATE_CUSTOMERS_TELLER_TABLE);
-            db.execSQL(CREATE_CUSTOMER_LOCATION_TABLE);
-            db.execSQL(CREATE_OFFICE_BRANCH);
-            db.execSQL(CREATE_MESSAGE_REPLY_TABLE);
-            //db.execSQL(CREATE_ACCOUNTS_STATEMENT_TABLE);
-            db.execSQL(CREATE_PAYMENT_TABLE);
-            db.execSQL(CREATE_STOCK_TABLE);
-            db.execSQL(CREATE_AWARD_TABLE);
-            db.execSQL(CREATE_ADMIN_DEPOSIT_TABLE);
-            db.execSQL(CREATE_TELLER_CASH_TABLE);
-            db.execSQL(CREATE_WORKERS_TABLE);
-            db.execSQL(CREATE_T_STOCKS_TABLE);
-            db.execSQL(CREATE_SPONSOR_TABLE);
-            db.execSQL(CREATE_TELLER_REPORT_TABLE);
-            db.execSQL(CREATE_SKYLIGHT_CASH_TABLE);
-            db.execSQL(CREATE_MARKET_STOCK_TABLE);
-            db.execSQL(CREATE_MARKET_TABLE);
-            db.execSQL(CREATE_EMERGENCY_NEXT_REPORT_TABLE);
-            db.execSQL(CREATE_DAILY_ACCOUNTING_TABLE);
-            db.execSQL(CREATE_JOURNEY_TABLE);
-            db.execSQL(CREATE_JOURNEY_ACCOUNT_TABLE);
-            db.execSQL(CREATE_MARKET_TX_TABLE_TABLE);
-            db.execSQL(CREATE_BIZ_TABLE);
-            db.execSQL(CREATE_PLACES_TABLE);
-            db.execSQL(CREATE_RESPONSE_TABLE);
-            db.execSQL(CREATE_SUPPLIER_TABLE);
-            db.execSQL(CREATE_MARKET_BIZ_SUB_TABLE);
-            db.execSQL(CREATE_USER_TYPE_TABLE);
-            db.execSQL(CREATE_BOAT_TRIP_ROUTE_TABLE);
-            db.execSQL(CREATE_BOAT_TRIP_TABLE);
-            db.execSQL(CREATE_DRIVER_TABLE);
-            db.execSQL(CREATE_TRIP_STOP_POINT_TABLE);
-            db.execSQL(CREATE_TRIP_BOOKING_TABLE);
-            db.execSQL(CREATE_TAXI_TRIP_TABLE);
-            db.execSQL(CREATE_TAXI_DRIVER_TABLE);
-            db.execSQL(CREATE_FENCE_EVENT_TABLE);
-            db.execSQL(CREATE_BIZ_DEAL_CODE_TABLE);
-            db.execSQL(CREATE_BIZ_DEAL_TABLE);
-            db.execSQL(CREATE_BDEAL_PARTNER_TABLE);
-            db.execSQL(CREATE_DEAL_CHAT_TABLE);
-
-            db.execSQL("create table ROLES " + "(role_ID integer primary key, roleUserName text,rolePassword text,rolePhoneNo text,role text)");
-            db.setTransactionSuccessful();
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-            android.util.Log.e("DBHelper Table error", e.getMessage());
-        }
-        finally{
-
-            db.endTransaction();
-        }
-
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion >= newVersion)
-            return;
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_REMINDERS);
-        db.execSQL("DROP TABLE IF EXISTS ROLES");
-        db.execSQL("DROP TABLE IF EXISTS " + PROFILES_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + PAYEES_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + ACCOUNTS_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TRANSACTIONS_TABLE);
-        //db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + DAILY_REPORT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + CUSTOMER_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + PACKAGE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + PICTURE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + LOAN_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + INTEREST_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + BIRTHDAY_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TIMELINE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + MESSAGE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + PASSWORD_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + ACCOUNT_TYPES_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + DOCUMENT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + CODE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + STANDING_ORDER_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + ADMIN_BALANCE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + PROJECT_SAVINGS_GROUP_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + BOOKING_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + EMERGENCY_REPORT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + SO_ACCT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + CUSTOMER_LOCATION_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + GRP_ACCT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + GROUP_SAVINGS_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + GRP_PROFILE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + GRP_TRANX_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TELLER_REPORT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + ADMIN_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + SUPER_ADMIN_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + CUSTOMER_TELLER_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + OFFICE_BRANCH_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + MESSAGE_REPLY_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + "ROLES");
-        db.execSQL("DROP TABLE IF EXISTS " + PAYMENTS_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + STOCKS_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + AWARD_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + DEPOSIT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + APP_CASH_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + SUPER_CASH_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + WORKER_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + T_STOCKS_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + CUSTOMER_LOCATION_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TELLER_CASH_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TANSACTION_EXTRA_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + SPONSOR_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + MARKET_STOCK_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + MARKET_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + DAILY_ACCOUNTING_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + JOURNEY_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + JOURNEY_ACCOUNT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + MARKET_TX_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + MARKET_BIZ_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + PLACE_ENTRY_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + RESPONSE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + SUPPLIER_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + MARKET_BIZ_SUB_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + USER_TYPE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + BOAT_TRIP_ROUTE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + BOAT_TRIP_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + DRIVER_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TRIP_STOP_POINT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TRIP_BOOKING_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TAXI_TRIP_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TAXI_DRIVER_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + FENCE_EVENT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + BIZ_DEAL_CODE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + BIZ_DEAL_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + BDEAL_PARTNER_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + BIZ_DEAL_CHAT_TABLE);
-
-        onCreate(db);
-
-    }
-    @Override
-    public void onDowngrade(SQLiteDatabase db, int oldV, int newV ){
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_REMINDERS);
-        db.execSQL("DROP TABLE IF EXISTS ROLES");
-        db.execSQL("DROP TABLE IF EXISTS " + PROFILES_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + PAYEES_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + ACCOUNTS_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TRANSACTIONS_TABLE);
-        //db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + DAILY_REPORT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + CUSTOMER_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + PACKAGE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + PICTURE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + LOAN_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + INTEREST_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + BIRTHDAY_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TIMELINE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + MESSAGE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + PASSWORD_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + ACCOUNT_TYPES_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + DOCUMENT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + CODE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + STANDING_ORDER_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + ADMIN_BALANCE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + PROJECT_SAVINGS_GROUP_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + BOOKING_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + EMERGENCY_REPORT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + SO_ACCT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + CUSTOMER_LOCATION_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + GRP_ACCT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + GROUP_SAVINGS_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + GRP_PROFILE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + GRP_TRANX_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TELLER_REPORT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + ADMIN_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + SUPER_ADMIN_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + CUSTOMER_TELLER_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + OFFICE_BRANCH_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + MESSAGE_REPLY_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + "ROLES");
-        db.execSQL("DROP TABLE IF EXISTS " + PAYMENTS_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + STOCKS_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + AWARD_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + DEPOSIT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + APP_CASH_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + SUPER_CASH_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + WORKER_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + T_STOCKS_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + EMERGENCY_REPORT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + CUSTOMER_LOCATION_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TELLER_CASH_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TANSACTION_EXTRA_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TANSACTION_EXTRA_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + SPONSOR_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + MARKET_STOCK_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + MARKET_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + DAILY_ACCOUNTING_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + JOURNEY_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + JOURNEY_ACCOUNT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + MARKET_TX_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + MARKET_BIZ_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + RESPONSE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + SUPPLIER_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + MARKET_BIZ_SUB_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + USER_TYPE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + BOAT_TRIP_ROUTE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + BOAT_TRIP_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + DRIVER_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TRIP_STOP_POINT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TRIP_BOOKING_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TAXI_TRIP_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TAXI_DRIVER_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + FENCE_EVENT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + BIZ_DEAL_CODE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + BIZ_DEAL_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + BDEAL_PARTNER_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + BIZ_DEAL_CHAT_TABLE);
-        onCreate(db);
-    }
 
     private String arrayToString(String table, String[] s) {
         String value = "";
@@ -1244,10 +1284,14 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
     public void openDataBase() throws SQLException {
-        //Open the database
-        String myPath = DB_PATH + DATABASE_NAME;
-        db = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
-        Log.e(TAG, "openDataBase: Open " + db.isOpen());
+        myPath = DB_PATH + DATABASE_NAME;
+        if (!db.isOpen()) {
+            db = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
+            //sqLiteDatabase.execSQL("PRAGMA foreign_keys=ON");
+            Log.e(TAG, "openDataBase: Open " + db.isOpen());
+
+        }
+
     }
     @Override
     public synchronized void close() {
@@ -1257,14 +1301,8 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.i(DBHelper.class.getName(), "Database is closed");
     }
 
-    /*public void openDataBase() throws SQLException {
-        String myPath = DB_PATH + DATABASE_NAME;
-        myDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
-        Log.e(TAG, "openDataBase: Open " + db.isOpen());
-        sqLiteDatabase.execSQL("PRAGMA foreign_keys=ON");
-
-    }*/
     public SQLiteDatabase openDataBase(SQLiteDatabase db) {
+        openDataBase();
         if(db.isOpen()){
             sqLiteDatabase.execSQL("PRAGMA foreign_keys=ON");
             return sqLiteDatabase;
@@ -1281,15 +1319,6 @@ public class DBHelper extends SQLiteOpenHelper {
         if (db != null && db.isOpen())
             db.close();
     }
-    /*public void openDB() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        if (db != null && (db.close(){
-            db.beginTransaction();
-
-        }
-
-    }*/
-
 
     @SuppressLint("StaticFieldLeak")
     private static DBHelper instance;
@@ -2715,12 +2744,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-
-
-
-
-
-
     public void updateSavingsStatus(int packageID,int reportId,Double packageBalance,String status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -3116,27 +3139,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    /*public void insertOfficeBranch(OfficeBranch officeBranch) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        try {
-            values.put(OFFICE_BRANCH_NAME, officeBranch.getOfficeBranchName());
-            values.put(OFFICE_BRANCH_DATE, String.valueOf(officeBranch.getOfficeBranchDate()));
-            values.put(OFFICE_BRANCH_ADDRESS, officeBranch.getOfficeBranchAddress());
-            values.put(OFFICE_BRANCH_APPROVER, officeBranch.getOfficeBranchApprover());
-            values.put(OFFICE_BRANCH_STATUS, officeBranch.getOfficeBranchAddressStatus());
-            int officeBranchID = (int) db.insert(OFFICE_BRANCH_TABLE, null, values);
-
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-
-
-    }*/
-
-
-
 
     public long insertCustomerLocation(int customerID, LatLng latLng) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
@@ -3145,16 +3147,6 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(CUSTOMER_LATLONG, String.valueOf(latLng));
         return sqLiteDatabase.insert(CUSTOMER_LOCATION_TABLE, null, contentValues);
     }
-    /*public Cursor getBillCursor(String tittle, Date bookingDate) {
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor;
-        if (bookingDate !=null ) {
-            cursor = db.rawQuery("SELECT * FROM " + BOOKING_TABLE + " WHERE BOOKING_DATE = '" + bookingDate + "' AND NBRBEDROOMS = '" + tittle + "'  ORDER BY BOOKING_ID;", null);
-        } else {
-            cursor = db.rawQuery("SELECT * FROM " + BOOKING_TABLE + " WHERE BOOKING_DATE = '" + bookingDate + "'  ORDER BY BOOKING_ID;", null);
-        }
-        return cursor;
-    }*/
 
 
     public long addReminder(ImportantDates reminder) {
@@ -3396,13 +3388,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    public int insertDailyReport4(Profile profile, Customer customer, SkyLightPackage skyLightPackage, CustomerDailyReport customerDailyReport, Account account) {
+    public int insertDailyReport4(Profile profile, Customer customer, MarketBizPackage marketBizPackage, CustomerDailyReport customerDailyReport, Account account) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues packageSavingsValue = new ContentValues();
         int reportNo = customerDailyReport.getRecordNumberOfDays();
         long reportCode =customerDailyReport.getRecordSavingsCode();
         packageSavingsValue.put(REPORT_PROF_ID_FK, profile.getPID());
-        packageSavingsValue.put(REPORT_PACK_ID_FK, skyLightPackage.getPackID());
+        packageSavingsValue.put(REPORT_PACK_ID_FK, marketBizPackage.getPackID());
         packageSavingsValue.put(REPORT_CUS_ID_FK, customer.getCusUID());
         packageSavingsValue.put(REPORT_ACCOUNT_NO_FK, account.getAwajimaAcctNo());
         packageSavingsValue.put(REPORT_AMOUNT, valueOf(customerDailyReport.getRecordAmount()));
@@ -3447,7 +3439,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public ArrayList<CustomerDailyReport> getCustomerDailyReportForCustomerToday(int customerID,String todayDate) {
 
         ArrayList<CustomerDailyReport> dailyReports = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {REPORT_AMOUNT, REPORT_NUMBER_OF_DAYS,REPORT_TOTAL,REPORT_DAYS_REMAINING,REPORT_DATE,REPORT_AMOUNT_REMAINING};
         String selection = REPORT_CUS_ID_FK + "=? AND " + REPORT_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(customerID), valueOf(todayDate)};
@@ -3462,7 +3454,6 @@ public class DBHelper extends SQLiteOpenHelper {
             }
 
         }
-
 
         db.close();
 
@@ -3542,34 +3533,34 @@ public class DBHelper extends SQLiteOpenHelper {
         return count;
     }
 
-    public List<SkyLightPackage> getAllPackageReminders() {
+    public List<MarketBizPackage> getAllPackageReminders() {
         try {
-            List<SkyLightPackage> packageReminderList = new ArrayList<>();
+            List<MarketBizPackage> packageReminderList = new ArrayList<>();
 
             // Select all Query
             String selectQuery = "SELECT * FROM " + PACKAGE_TABLE;
 
-            SQLiteDatabase db = this.getWritableDatabase();
+            SQLiteDatabase db = this.getReadableDatabase();
             try (Cursor cursor = db.rawQuery(selectQuery, null)) {
 
                 // Looping through all rows and adding to list
                 if (cursor.moveToFirst()) {
                     do {
-                        SkyLightPackage skyLightPackage = new SkyLightPackage();
-                        skyLightPackage.setRecordPackageId(Integer.parseInt(cursor.getString(0)));
-                        skyLightPackage.setPackageCustomerName(cursor.getString(1));
-                        skyLightPackage.setPackageTotalAmount(Double.valueOf(cursor.getString(2)));
-                        skyLightPackage.setPackageDailyAmount(Double.parseDouble(cursor.getString(3)));
-                        skyLightPackage.setPackageBalance(Double.parseDouble(cursor.getString(4)));
-                        skyLightPackage.setPackageDateStarted(cursor.getString(5));
-                        skyLightPackage.setDateEnded(cursor.getString(6));
-                        skyLightPackage.setPackageDuration(Integer.parseInt(cursor.getString(7)));
-                        skyLightPackage.setPackageStatus(cursor.getString(8));
-                        skyLightPackage.setPackageCustomerId(Integer.parseInt(cursor.getString(9)));
+                        MarketBizPackage marketBizPackage = new MarketBizPackage();
+                        marketBizPackage.setRecordPackageId(Integer.parseInt(cursor.getString(0)));
+                        marketBizPackage.setPackageCustomerName(cursor.getString(1));
+                        marketBizPackage.setPackageTotalAmount(Double.valueOf(cursor.getString(2)));
+                        marketBizPackage.setPackageDailyAmount(Double.parseDouble(cursor.getString(3)));
+                        marketBizPackage.setPackageBalance(Double.parseDouble(cursor.getString(4)));
+                        marketBizPackage.setPackageDateStarted(cursor.getString(5));
+                        marketBizPackage.setDateEnded(cursor.getString(6));
+                        marketBizPackage.setPackageDuration(Integer.parseInt(cursor.getString(7)));
+                        marketBizPackage.setPackageStatus(cursor.getString(8));
+                        marketBizPackage.setPackageCustomerId(Integer.parseInt(cursor.getString(9)));
 
 
                         // Adding Reminders to list
-                        packageReminderList.add(skyLightPackage);
+                        packageReminderList.add(marketBizPackage);
                     } while (cursor.moveToNext());
                 }
             }
@@ -3609,9 +3600,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    public ArrayList<SkyLightPackage> getAllPackagesCustomer(int customerID) {
-        ArrayList<SkyLightPackage> packages = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+    public ArrayList<MarketBizPackage> getAllPackagesCustomer(int customerID) {
+        ArrayList<MarketBizPackage> packages = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = PACKAGE_CUSTOMER_ID_FOREIGN + "=?";
         String[] selectionArgs = new String[]{valueOf(customerID)};
 
@@ -3633,9 +3624,9 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<SkyLightPackage> getAllPackagesAdmin() {
-        ArrayList<SkyLightPackage> packages = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+    public ArrayList<MarketBizPackage> getAllPackagesAdmin() {
+        ArrayList<MarketBizPackage> packages = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(PACKAGE_TABLE, null, null, null, null,
                 null, null);
         if(cursor!=null && cursor.getCount() > 0) {
@@ -3653,7 +3644,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return packages;
     }
 
-    private void getPackagesFromCursorAdmin(ArrayList<SkyLightPackage> packages, Cursor cursor) {
+    private void getPackagesFromCursorAdmin(ArrayList<MarketBizPackage> packages, Cursor cursor) {
         try {
             while (cursor.moveToNext()) {
 
@@ -3670,7 +3661,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 //ArrayList<Account> accounts = new ArrayList<>();
                 //ArrayList<Payee> payees = new ArrayList<>();
 
-                packages.add(new SkyLightPackage(packageID, name,type, amount, startDate, duration, total, balance, endDate, status));
+                packages.add(new MarketBizPackage(packageID, name,type, amount, startDate, duration, total, balance, endDate, status));
             }
 
         }catch (SQLException e)
@@ -3684,17 +3675,17 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    public void overwriteCustomerPackage(SkyLightPackage skyLightPackage, Customer customer, CustomerDailyReport customerDailyReport, Account account) {
+    public void overwriteCustomerPackage(MarketBizPackage marketBizPackage, Customer customer, CustomerDailyReport customerDailyReport, Account account) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
         cv.put(PACKAGE_CUSTOMER_ID_FOREIGN, customer.getCusUID());
         cv.put(PACKAGE_REPORT_ID, customerDailyReport.getRecordPackageId());
-        cv.put(PACKAGE_BALANCE, valueOf(skyLightPackage.getPackageBalance()));
-        cv.put(PACKAGE_STATUS, skyLightPackage.getPackageStatus());
-        cv.put(PACKAGE_END_DATE, skyLightPackage.getPackageDateEnded());
+        cv.put(PACKAGE_BALANCE, valueOf(marketBizPackage.getPackageBalance()));
+        cv.put(PACKAGE_STATUS, marketBizPackage.getPackageStatus());
+        cv.put(PACKAGE_END_DATE, marketBizPackage.getPackageDateEnded());
         String selection = PACKAGE_CUSTOMER_ID_FOREIGN + "=?AND " + PACKAGE_ID + "=?";
-        String[] selectionArgs = new String[]{valueOf(customer.getCusUID()), valueOf(skyLightPackage.getPackID())};
+        String[] selectionArgs = new String[]{valueOf(customer.getCusUID()), valueOf(marketBizPackage.getPackID())};
         db.update(PACKAGE_TABLE, cv, selection, selectionArgs);
         db.close();
 
@@ -3716,22 +3707,22 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             Account account = new Account();
-            SkyLightPackage skyLightPackage = new SkyLightPackage();
+            MarketBizPackage marketBizPackage = new MarketBizPackage();
             Customer customer = new Customer();
             CustomerDailyReport customerDailyReport = new CustomerDailyReport();
             ContentValues cv = new ContentValues();
             cv.put(CUSTOMER_ID, customerID);
             cv.put(REPORT_NUMBER, reportID);
-            cv.put(PACKAGE_BALANCE, valueOf(skyLightPackage.getBalance()));
-            cv.put(PACKAGE_STATUS, skyLightPackage.getStatus());
-            cv.put(PACKAGE_END_DATE, skyLightPackage.getDateEnded());
+            cv.put(PACKAGE_BALANCE, valueOf(marketBizPackage.getBalance()));
+            cv.put(PACKAGE_STATUS, marketBizPackage.getStatus());
+            cv.put(PACKAGE_END_DATE, marketBizPackage.getDateEnded());
             cv.put(REPORT_AMOUNT_REMAINING, customerDailyReport.getAmountRemaining());
             cv.put(REPORT_DAYS_REMAINING, customerDailyReport.getRemainingDays());
             cv.put(REPORT_STATUS, customerDailyReport.getStatus());
             cv.put("Round Completed", customerDailyReport.getCompleted());
 
             db.update(DAILY_REPORT_TABLE, cv, CUSTOMER_ID + "=? , " + PACKAGE_ID + "=? , " + REPORT_NUMBER + "=?",
-                    new String[]{valueOf(customer.getCusUID()), valueOf(skyLightPackage.getPackageId()),valueOf(customerDailyReport.getRecordNo())});
+                    new String[]{valueOf(customer.getCusUID()), valueOf(marketBizPackage.getPackageId()),valueOf(customerDailyReport.getRecordNo())});
             db.close();
 
         }catch (SQLException e)
@@ -3743,9 +3734,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    public ArrayList<SkyLightPackage> getPackagesFromCurrentProfile(int profileID) {
-        ArrayList<SkyLightPackage> skyLightPackages = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+    public ArrayList<MarketBizPackage> getPackagesFromCurrentProfile(int profileID) {
+        ArrayList<MarketBizPackage> marketBizPackages = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = PACKAGE_PROFILE_ID_FOREIGN + "=?";
         String[] selectionArgs = new String[]{valueOf(profileID)};
         Cursor cursor = db.query(PACKAGE_TABLE, null, null, null, null,
@@ -3753,7 +3744,7 @@ public class DBHelper extends SQLiteOpenHelper {
         if(cursor!=null && cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
                 do {
-                    getPackagesFromCursorCustomer(profileID, skyLightPackages);
+                    getPackagesFromCursorCustomer(profileID, marketBizPackages);
 
                 } while (cursor.moveToNext());
                 cursor.close();
@@ -3763,10 +3754,32 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.close();
 
-        return skyLightPackages;
+        return marketBizPackages;
+    }
+    public ArrayList<MarketBizPackage> getPackageFromTypeAndBiz(long bizID,String type) {
+        ArrayList<MarketBizPackage> marketBizPackages = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = PACKAGE_BIZ_ID + "=? AND " + PACKAGE_TYPE + "=?";
+        String[] selectionArgs = new String[]{valueOf(bizID), valueOf(type)};
+        Cursor cursor = db.query(PACKAGE_TABLE, null, null, null, null,
+                null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getPackagesFromCursorBiz(marketBizPackages);
+
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        db.close();
+
+        return marketBizPackages;
     }
     protected String getSpecificPackage(int packageId) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String skPackage=null;
         String selection = PACKAGE_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(packageId)};
@@ -3806,9 +3819,9 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
     }
-    public ArrayList<SkyLightPackage> getPackagesFromCustomer(int customerID) {
-        ArrayList<SkyLightPackage> skyLightPackages = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+    public ArrayList<MarketBizPackage> getPackagesFromCustomer(int customerID) {
+        ArrayList<MarketBizPackage> marketBizPackages = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
         String selection = PACKAGE_CUSTOMER_ID_FOREIGN + "=? ";
         String[] selectionArgs = new String[]{valueOf(customerID)};
 
@@ -3825,11 +3838,11 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         db.close();
 
-        return skyLightPackages;
+        return marketBizPackages;
     }
     private Cursor getPackagesFromCursorCustomer1(int customerID, Cursor cursor) {
         while (cursor.moveToNext()) {
-            ArrayList<SkyLightPackage> packages=new ArrayList<SkyLightPackage>();
+            ArrayList<MarketBizPackage> packages=new ArrayList<MarketBizPackage>();
 
             if (customerID == cursor.getLong(2)) {
                 int id = cursor.getInt(2);
@@ -3841,11 +3854,11 @@ public class DBHelper extends SQLiteOpenHelper {
                 String packageDuration = cursor.getString(7);
                 String packageStatus = cursor.getString(12);
 
-                packages.add(new SkyLightPackage(packageId, packageType, packageValue, packageStatus));
+                packages.add(new MarketBizPackage(packageId, packageType, packageValue, packageStatus));
             }
         }return cursor;
     }
-    private Cursor getPackagesFromCursorCustomer(int customerID, ArrayList<SkyLightPackage> packages) {
+    private Cursor getPackagesFromCursorCustomer(int customerID, ArrayList<MarketBizPackage> packages) {
         Cursor cursor = null;
 
         if (cursor != null) {
@@ -3860,8 +3873,21 @@ public class DBHelper extends SQLiteOpenHelper {
                     String packageDuration = cursor.getString(7);
                     String packageStatus = cursor.getString(12);
 
-                    packages.add(new SkyLightPackage(packageId, packageType, packageValue, packageStatus));
+                    packages.add(new MarketBizPackage(packageId, packageType, packageValue, packageStatus));
                 }
+            }
+        }return  cursor;
+    }
+    private Cursor getPackagesFromCursorBiz(ArrayList<MarketBizPackage> packages) {
+        Cursor cursor = null;
+
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                int packageId = cursor.getInt(0);
+                String packageType = cursor.getString(5);
+                Uri packageImage = Uri.parse(cursor.getString(20));
+
+                packages.add(new MarketBizPackage(packageId, packageType, packageImage));
             }
         }return  cursor;
     }
@@ -3920,39 +3946,39 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<SkyLightPackage> getPackagesForTellerProfileWithDate(int tellerID, String todayDate) {
-        ArrayList<SkyLightPackage> skyLightPackageArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+    public ArrayList<MarketBizPackage> getPackagesForTellerProfileWithDate(int tellerID, String todayDate) {
+        ArrayList<MarketBizPackage> marketBizPackageArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {PACKAGE_VALUE,PACKAGE_TYPE,PACKAGE_NAME,PACKAGE_CODE,PACKAGE_EXPECTED_VALUE,PACKAGE_START_DATE,PACKAGE_END_DATE,PACKAGE_DURATION,PACKAGE_TOTAL_VALUE,PACKAGE_ITEM,PACKAGE_NAME,PACKAGE_STATUS};
         String selection = PACKAGE_PROFILE_ID_FOREIGN + "=? AND " + PACKAGE_START_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(tellerID), valueOf(todayDate)};
 
         Cursor cursor = db.query(PACKAGE_TABLE, columns, selection, selectionArgs, null, null, null);
 
-        getPackagesFromCursorAdmin(skyLightPackageArrayList, cursor);
+        getPackagesFromCursorAdmin(marketBizPackageArrayList, cursor);
 
         cursor.close();
         db.close();
 
-        return skyLightPackageArrayList;
+        return marketBizPackageArrayList;
     }
-    public ArrayList<SkyLightPackage> getCusPackageEndingToday(int customerID, String todayDate) {
-        ArrayList<SkyLightPackage> skyLightPackageArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+    public ArrayList<MarketBizPackage> getCusPackageEndingToday(int customerID, String todayDate) {
+        ArrayList<MarketBizPackage> marketBizPackageArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {PACKAGE_VALUE,PACKAGE_TYPE,PACKAGE_NAME,PACKAGE_CODE,PACKAGE_EXPECTED_VALUE,PACKAGE_START_DATE,PACKAGE_END_DATE,PACKAGE_DURATION,PACKAGE_TOTAL_VALUE,PACKAGE_STATUS};
         String selection = PACKAGE_CUSTOMER_ID_FOREIGN + "=? AND " + PACKAGE_END_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(customerID), valueOf(todayDate)};
 
         Cursor cursor = db.query(PACKAGE_TABLE, columns, selection, selectionArgs, null, null, null);
 
-        getPackagesFromCursorAdmin(skyLightPackageArrayList, cursor);
+        getPackagesFromCursorAdmin(marketBizPackageArrayList, cursor);
 
         cursor.close();
         db.close();
 
-        return skyLightPackageArrayList;
+        return marketBizPackageArrayList;
     }
-    private Cursor getPackagesFromCursor(ArrayList<SkyLightPackage> packages,Cursor cursor) {
+    private Cursor getPackagesFromCursor(ArrayList<MarketBizPackage> packages, Cursor cursor) {
 
         while (cursor.moveToNext()) {
             int packageId = cursor.getInt(0);
@@ -3967,128 +3993,128 @@ public class DBHelper extends SQLiteOpenHelper {
             long code = cursor.getLong(11);
             String packageStatus = cursor.getString(12);
 
-            packages.add(new SkyLightPackage(packageId, packageName,packageType, packageValue,expectedValue,packageDuration,startDate,endDate, code,packageStatus));
+            packages.add(new MarketBizPackage(packageId, packageName,packageType, packageValue,expectedValue,packageDuration,startDate,endDate, code,packageStatus));
         }
         return cursor;
     }
-    public ArrayList<SkyLightPackage> getPackageByType(String type) {
-        ArrayList<SkyLightPackage> skyLightPackageArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+    public ArrayList<MarketBizPackage> getPackageByType(String type) {
+        ArrayList<MarketBizPackage> marketBizPackageArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {PACKAGE_VALUE,PACKAGE_TYPE,PACKAGE_NAME,PACKAGE_CODE,PACKAGE_EXPECTED_VALUE,PACKAGE_START_DATE,PACKAGE_END_DATE,PACKAGE_DURATION,PACKAGE_TOTAL_VALUE,PACKAGE_STATUS};
         String selection = PACKAGE_TYPE + "=?";
         String[] selectionArgs = new String[]{valueOf(type)};
 
         Cursor cursor = db.query(PACKAGE_TABLE, columns, selection, selectionArgs, null, null, null);
 
-        getPackagesFromCursor(skyLightPackageArrayList, cursor);
+        getPackagesFromCursor(marketBizPackageArrayList, cursor);
 
         cursor.close();
         db.close();
 
-        return skyLightPackageArrayList;
+        return marketBizPackageArrayList;
 
     }
-    public ArrayList<SkyLightPackage> getPackageByTypeAndEndDate(String type,String date) {
-        ArrayList<SkyLightPackage> skyLightPackageArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+    public ArrayList<MarketBizPackage> getPackageByTypeAndEndDate(String type, String date) {
+        ArrayList<MarketBizPackage> marketBizPackageArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {PACKAGE_VALUE,PACKAGE_TYPE,PACKAGE_NAME,PACKAGE_CODE,PACKAGE_EXPECTED_VALUE,PACKAGE_START_DATE,PACKAGE_END_DATE,PACKAGE_DURATION,PACKAGE_TOTAL_VALUE,PACKAGE_STATUS};
         String selection = PACKAGE_TYPE + "=? AND " + PACKAGE_END_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(type), valueOf(date)};
 
         Cursor cursor = db.query(PACKAGE_TABLE, columns, selection, selectionArgs, null, null, null);
 
-        getPackagesFromCursor(skyLightPackageArrayList, cursor);
+        getPackagesFromCursor(marketBizPackageArrayList, cursor);
 
         cursor.close();
         db.close();
 
-        return skyLightPackageArrayList;
+        return marketBizPackageArrayList;
     }
-    public ArrayList<SkyLightPackage> getPackageByTypeAndStartDate(String type,String date) {
-        ArrayList<SkyLightPackage> skyLightPackageArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+    public ArrayList<MarketBizPackage> getPackageByTypeAndStartDate(String type, String date) {
+        ArrayList<MarketBizPackage> marketBizPackageArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {PACKAGE_VALUE,PACKAGE_TYPE,PACKAGE_NAME,PACKAGE_CODE,PACKAGE_EXPECTED_VALUE,PACKAGE_START_DATE,PACKAGE_END_DATE,PACKAGE_DURATION,PACKAGE_TOTAL_VALUE,PACKAGE_STATUS};
         String selection = PACKAGE_TYPE + "=? AND " + PACKAGE_START_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(type), valueOf(date)};
 
         Cursor cursor = db.query(PACKAGE_TABLE, columns, selection, selectionArgs, null, null, null);
 
-        getPackagesFromCursor(skyLightPackageArrayList, cursor);
+        getPackagesFromCursor(marketBizPackageArrayList, cursor);
 
         cursor.close();
         db.close();
 
-        return skyLightPackageArrayList;
+        return marketBizPackageArrayList;
     }
-    public ArrayList<SkyLightPackage> getTellerPackagesEndingToday(int profileID,String todayDate) {
-        ArrayList<SkyLightPackage> skyLightPackageArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+    public ArrayList<MarketBizPackage> getTellerPackagesEndingToday(int profileID, String todayDate) {
+        ArrayList<MarketBizPackage> marketBizPackageArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {PACKAGE_VALUE, PACKAGE_TYPE,PACKAGE_START_DATE,PACKAGE_TOTAL_VALUE,PACKAGE_EXPECTED_VALUE,PACKAGE_BALANCE};
         String selection = PACKAGE_PROFILE_ID_FOREIGN + "=? AND " + PACKAGE_END_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(profileID), valueOf(todayDate)};
 
         Cursor cursor = db.query(PACKAGE_TABLE, columns, selection, selectionArgs, null, null, null);
 
-        getPackagesFromCursorAdmin(skyLightPackageArrayList, cursor);
+        getPackagesFromCursorAdmin(marketBizPackageArrayList, cursor);
 
         cursor.close();
         db.close();
 
-        return skyLightPackageArrayList;
+        return marketBizPackageArrayList;
     }
-    public ArrayList<SkyLightPackage> getTellerPackagesEnding2DAYS(int profileID,String todayDate) {
-        ArrayList<SkyLightPackage> skyLightPackageArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+    public ArrayList<MarketBizPackage> getTellerPackagesEnding2DAYS(int profileID, String todayDate) {
+        ArrayList<MarketBizPackage> marketBizPackageArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {PACKAGE_VALUE, PACKAGE_TYPE,PACKAGE_START_DATE,PACKAGE_TOTAL_VALUE,PACKAGE_EXPECTED_VALUE,PACKAGE_BALANCE};
         String selection = PACKAGE_PROFILE_ID_FOREIGN + "=? AND " + PACKAGE_END_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(profileID), valueOf(todayDate)};
 
         Cursor cursor = db.query(PACKAGE_TABLE, columns, selection, selectionArgs, null, null, null);
 
-        getPackagesFromCursorAdmin(skyLightPackageArrayList, cursor);
+        getPackagesFromCursorAdmin(marketBizPackageArrayList, cursor);
 
         cursor.close();
         db.close();
 
-        return skyLightPackageArrayList;
+        return marketBizPackageArrayList;
     }
-    public ArrayList<SkyLightPackage> getTellerPackagesEnding3DAYS(int profileID,String date) {
-        ArrayList<SkyLightPackage> skyLightPackageArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+    public ArrayList<MarketBizPackage> getTellerPackagesEnding3DAYS(int profileID, String date) {
+        ArrayList<MarketBizPackage> marketBizPackageArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {PACKAGE_VALUE, PACKAGE_TYPE,PACKAGE_START_DATE,PACKAGE_TOTAL_VALUE,PACKAGE_EXPECTED_VALUE,PACKAGE_BALANCE};
         String selection = PACKAGE_PROFILE_ID_FOREIGN + "=? AND " + PACKAGE_END_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(profileID), valueOf(date)};
 
         Cursor cursor = db.query(PACKAGE_TABLE, columns, selection, selectionArgs, null, null, null);
 
-        getPackagesFromCursorAdmin(skyLightPackageArrayList, cursor);
+        getPackagesFromCursorAdmin(marketBizPackageArrayList, cursor);
 
         cursor.close();
         db.close();
 
-        return skyLightPackageArrayList;
+        return marketBizPackageArrayList;
 
     }
-    public ArrayList<SkyLightPackage> getCustomerPackageEndingToday(int customerID,String todayDate) {
-        ArrayList<SkyLightPackage> skyLightPackageArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+    public ArrayList<MarketBizPackage> getCustomerPackageEndingToday(int customerID, String todayDate) {
+        ArrayList<MarketBizPackage> marketBizPackageArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {PACKAGE_VALUE, PACKAGE_TYPE,PACKAGE_START_DATE,PACKAGE_TOTAL_VALUE,PACKAGE_EXPECTED_VALUE,PACKAGE_BALANCE};
         String selection = PACKAGE_CUSTOMER_ID_FOREIGN + "=? AND " + PACKAGE_END_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(customerID), valueOf(todayDate)};
 
         Cursor cursor = db.query(PACKAGE_TABLE, columns, selection, selectionArgs, null, null, null);
 
-        getPackagesFromCursorAdmin(skyLightPackageArrayList, cursor);
+        getPackagesFromCursorAdmin(marketBizPackageArrayList, cursor);
 
         cursor.close();
         db.close();
 
-        return skyLightPackageArrayList;
+        return marketBizPackageArrayList;
     }
 
-    public ArrayList<SkyLightPackage> getCustomerCompleteUnCollectedPack(int customerId, String completed,String collectionStatus) {
-        ArrayList<SkyLightPackage> packages = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+    public ArrayList<MarketBizPackage> getCustomerCompleteUnCollectedPack(int customerId, String completed, String collectionStatus) {
+        ArrayList<MarketBizPackage> packages = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
         String incomplete = null;
         //inProgress=incomplete;
 
@@ -4114,27 +4140,27 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<SkyLightPackage> getCustomerSavingsCompletePackage(int customerID,String savings,String completed) {
-        ArrayList<SkyLightPackage> skyLightPackageArrayList = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+    public ArrayList<MarketBizPackage> getCustomerSavingsCompletePackage(int customerID, String savings, String completed) {
+        ArrayList<MarketBizPackage> marketBizPackageArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {PACKAGE_VALUE, PACKAGE_TYPE,PACKAGE_START_DATE,PACKAGE_TOTAL_VALUE,PACKAGE_EXPECTED_VALUE,PACKAGE_BALANCE};
         String selection = PACKAGE_CUSTOMER_ID_FOREIGN + "=? AND " + PACKAGE_TYPE + "=?AND " + PACKAGE_STATUS + "=?";
         String[] selectionArgs = new String[]{valueOf(customerID), valueOf(savings),valueOf(completed)};
 
         Cursor cursor = db.query(PACKAGE_TABLE, columns, selection, selectionArgs, null, null, null);
 
-        getPackagesFromCursorAdmin(skyLightPackageArrayList, cursor);
+        getPackagesFromCursorAdmin(marketBizPackageArrayList, cursor);
 
         cursor.close();
         db.close();
 
-        return skyLightPackageArrayList;
+        return marketBizPackageArrayList;
     }
     public int getPackageCountCustomDay(String dateOfCustomDays) {
         SQLiteDatabase db = this.getReadableDatabase();
         int count = 0;
 
-        ArrayList<SkyLightPackage> packages = new ArrayList<>();
+        ArrayList<MarketBizPackage> packages = new ArrayList<>();
 
         String selection = PACKAGE_END_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(dateOfCustomDays)};
@@ -4159,8 +4185,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return count;
     }
 
-    public ArrayList<SkyLightPackage> getPackEndingCustomDay(String dateOfCustomDays) {
-        ArrayList<SkyLightPackage> packages = new ArrayList<>();
+    public ArrayList<MarketBizPackage> getPackEndingCustomDay(String dateOfCustomDays) {
+        ArrayList<MarketBizPackage> packages = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
 
         String selection = PACKAGE_END_DATE + "=?";
@@ -4187,8 +4213,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    public ArrayList<SkyLightPackage> getProfileIncompletePack(int profileID, String inProgress) {
-        ArrayList<SkyLightPackage> packages = new ArrayList<>();
+    public ArrayList<MarketBizPackage> getProfileIncompletePack(int profileID, String inProgress) {
+        ArrayList<MarketBizPackage> packages = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
 
         String selection = PACKAGE_PROFILE_ID_FOREIGN + "=? AND " + PACKAGE_STATUS + "=?";
@@ -4261,8 +4287,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return count;
     }
 
-    public ArrayList<SkyLightPackage> getCustomerItemPurchaseCompletePackage(int customerID,String itemPurchase,String completed) {
-        ArrayList<SkyLightPackage> skyLightPackageArrayList = new ArrayList<>();
+    public ArrayList<MarketBizPackage> getCustomerItemPurchaseCompletePackage(int customerID, String itemPurchase, String completed) {
+        ArrayList<MarketBizPackage> marketBizPackageArrayList = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         String[] columns = {PACKAGE_VALUE, PACKAGE_TYPE,PACKAGE_START_DATE,PACKAGE_TOTAL_VALUE,PACKAGE_EXPECTED_VALUE,PACKAGE_BALANCE};
         String selection = PACKAGE_CUSTOMER_ID_FOREIGN + "=? AND " + PACKAGE_TYPE + "=?AND " + PACKAGE_STATUS + "=?";
@@ -4273,7 +4299,7 @@ public class DBHelper extends SQLiteOpenHelper {
         if(cursor!=null && cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
                 do {
-                    getPackagesFromCursorAdmin(skyLightPackageArrayList, cursor);
+                    getPackagesFromCursorAdmin(marketBizPackageArrayList, cursor);
                 } while (cursor.moveToNext());
                 cursor.close();
             }
@@ -4281,13 +4307,13 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         db.close();
 
-        return skyLightPackageArrayList;
+        return marketBizPackageArrayList;
     }
-    public ArrayList<SkyLightPackage> getPackagesSubscribedToday(String todayDate) {
+    public ArrayList<MarketBizPackage> getPackagesSubscribedToday(String todayDate) {
         Calendar calendar = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         todayDate = sdf.format(calendar.getTime().getDate());
-        ArrayList<SkyLightPackage> skyLightPackages = new ArrayList<>();
+        ArrayList<MarketBizPackage> marketBizPackages = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         String[] columns = {PACKAGE_TYPE, PACKAGE_VALUE,PACKAGE_DURATION,PACKAGE_TOTAL_VALUE,PACKAGE_STATUS};
         String selection = PACKAGE_START_DATE + "=?";
@@ -4298,7 +4324,7 @@ public class DBHelper extends SQLiteOpenHelper {
         if(cursor!=null && cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
                 do {
-                    getPackagesFromCursorAdmin(skyLightPackages, cursor);
+                    getPackagesFromCursorAdmin(marketBizPackages, cursor);
                 } while (cursor.moveToNext());
                 cursor.close();
             }
@@ -4306,10 +4332,10 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         db.close();
 
-        return skyLightPackages;
+        return marketBizPackages;
     }
 
-    public long insertNewPackage(Profile profile, Customer customer, SkyLightPackage skyLightPackage) {
+    public long insertNewPackage(Profile profile, Customer customer, MarketBizPackage marketBizPackage) {
 
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         Calendar calendar = null;
@@ -4317,20 +4343,20 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues packageValues = new ContentValues();
         packageValues.put(PACKAGE_PROFILE_ID_FOREIGN, profile.getPID());
         packageValues.put(PACKAGE_CUSTOMER_ID_FOREIGN, customer.getCusUID());
-        packageValues.put(PACKAGE_ID, skyLightPackage.getPackID());
-        packageValues.put(PACKAGE_NAME, skyLightPackage.getPackageName());
-        packageValues.put(PACKAGE_TYPE, skyLightPackage.getPackageType());
-        packageValues.put(PACKAGE_VALUE, skyLightPackage.getPackageDailyAmount());
-        packageValues.put(PACKAGE_DURATION, skyLightPackage.getPackageDuration());
-        packageValues.put(PACKAGE_START_DATE, skyLightPackage.getPackageDateStarted());
-        packageValues.put(PACKAGE_END_DATE, skyLightPackage.getPackageDateEnded());
-        packageValues.put(PACKAGE_BALANCE, skyLightPackage.getPackageBalance());
-        packageValues.put(PACKAGE_STATUS, skyLightPackage.getPackageStatus());
+        packageValues.put(PACKAGE_ID, marketBizPackage.getPackID());
+        packageValues.put(PACKAGE_NAME, marketBizPackage.getPackageName());
+        packageValues.put(PACKAGE_TYPE, marketBizPackage.getPackageType());
+        packageValues.put(PACKAGE_VALUE, marketBizPackage.getPackageDailyAmount());
+        packageValues.put(PACKAGE_DURATION, marketBizPackage.getPackageDuration());
+        packageValues.put(PACKAGE_START_DATE, marketBizPackage.getPackageDateStarted());
+        packageValues.put(PACKAGE_END_DATE, marketBizPackage.getPackageDateEnded());
+        packageValues.put(PACKAGE_BALANCE, marketBizPackage.getPackageBalance());
+        packageValues.put(PACKAGE_STATUS, marketBizPackage.getPackageStatus());
         return sqLiteDatabase.insert(PACKAGE_TABLE, null, packageValues);
 
     }
 
-    public SkyLightPackage getPackageReminder(String mReceivedID) {
+    public MarketBizPackage getPackageReminder(String mReceivedID) {
 
         try {
             SQLiteDatabase db = this.getReadableDatabase();
@@ -4354,14 +4380,14 @@ public class DBHelper extends SQLiteOpenHelper {
             if (cursor != null)
                 cursor.moveToFirst();
 
-            SkyLightPackage skyLightPackage = null;
+            MarketBizPackage marketBizPackage = null;
             /*if (cursor != null) {
-                skyLightPackage = new SkyLightPackage(cursor.getString(0)), cursor.getString(1),
+                marketBizPackage = new MarketBizPackage(cursor.getString(0)), cursor.getString(1),
                         Double.parseDouble(cursor.getString(2)), Double.parseDouble(cursor.getString(3)),
                         cursor.getString(4), Integer.parseInt(cursor.getString(5)), cursor.getString(6),Double.parseDouble(cursor.getString(7)),cursor.getString(6);
             }*/
 
-            return skyLightPackage;
+            return marketBizPackage;
 
         }catch (SQLException e)
         {
@@ -4370,12 +4396,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return null;
     }
-    public SkyLightPackage getPackageReminder2(long mReceivedID) {
+    public MarketBizPackage getPackageReminder2(long mReceivedID) {
 
         try {
             SQLiteDatabase db = this.getReadableDatabase();
 
-            SkyLightPackage skyLightPackage;
+            MarketBizPackage marketBizPackage;
             try (Cursor cursor = db.query(PACKAGE_TABLE, new String[]
                             {
                                     PACKAGE_CUSTOMER_ID_FOREIGN,
@@ -4395,15 +4421,15 @@ public class DBHelper extends SQLiteOpenHelper {
                 if (cursor != null)
                     cursor.moveToFirst();
 
-                skyLightPackage = null;
+                marketBizPackage = null;
                 /*if (cursor != null) {
-                    skyLightPackage = new SkyLightPackage(cursor.getString(0)), cursor.getString(1),
+                    marketBizPackage = new MarketBizPackage(cursor.getString(0)), cursor.getString(1),
                             Double.parseDouble(cursor.getString(2)), Double.parseDouble(cursor.getString(3)),
                             cursor.getString(4), Integer.parseInt(cursor.getString(5)), cursor.getString(6), Double.parseDouble(cursor.getString(7)), cursor.getString(6);
                 }*/
             }
 
-            return skyLightPackage;
+            return marketBizPackage;
 
         }catch (SQLException e)
         {
@@ -4494,7 +4520,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void updatePackage(SkyLightPackage skyLightPackage) {
+    public void updatePackage(MarketBizPackage marketBizPackage) {
         SQLiteDatabase db = this.getWritableDatabase();
         Customer customer = new Customer();
         Profile profile = new Profile();
@@ -4502,21 +4528,21 @@ public class DBHelper extends SQLiteOpenHelper {
         CustomerDailyReport customerDailyReport = new CustomerDailyReport();
         ContentValues values = new ContentValues();
         //values.put(PROFILE_ID, profile.getPID());
-        //values.put(PACKAGE_ID, skyLightPackage.getPackageId());
+        //values.put(PACKAGE_ID, marketBizPackage.getPackageId());
         //values.put(CUSTOMER_ID, customer.getCusUID());
         //values.put(REPORT_ID, customer.getCusUID());
         //values.put(ACCOUNT_NO, account.getSkyLightAcctNo());
         //values.put(ACCOUNT_BALANCE, account.getAccountBalance());
-        //values.put(PACKAGE_VALUE, skyLightPackage.getDailyAmount());
-        //values.put(PACKAGE_START_DATE, skyLightPackage.getDateStarted());
-        values.put(PACKAGE_BALANCE, skyLightPackage.getPackageBalance());
-        values.put(PACKAGE_END_DATE, skyLightPackage.getPackageDateEnded());
-        values.put(PACKAGE_STATUS, skyLightPackage.getPackageStatus());
-        //values.put(PACKAGE_DURATION, skyLightPackage.getPackageDuration());
+        //values.put(PACKAGE_VALUE, marketBizPackage.getDailyAmount());
+        //values.put(PACKAGE_START_DATE, marketBizPackage.getDateStarted());
+        values.put(PACKAGE_BALANCE, marketBizPackage.getPackageBalance());
+        values.put(PACKAGE_END_DATE, marketBizPackage.getPackageDateEnded());
+        values.put(PACKAGE_STATUS, marketBizPackage.getPackageStatus());
+        //values.put(PACKAGE_DURATION, marketBizPackage.getPackageDuration());
         values.put("ReportCount", "");
         long result = db.update(PACKAGE_TABLE, values,
                 PACKAGE_ID,
-                new String[]{valueOf(skyLightPackage.getPackID())});
+                new String[]{valueOf(marketBizPackage.getPackID())});
         Log.d("Update Result:", "=" + result);
 
 
@@ -4525,8 +4551,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    public ArrayList<SkyLightPackage> getCustomerPromoCompletePackage(int customerID,String promo,String completed) {
-        ArrayList<SkyLightPackage> skyLightPackageArrayList = new ArrayList<>();
+    public ArrayList<MarketBizPackage> getCustomerPromoCompletePackage(int customerID, String promo, String completed) {
+        ArrayList<MarketBizPackage> marketBizPackageArrayList = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         String[] columns = {PACKAGE_VALUE, PACKAGE_TYPE,PACKAGE_START_DATE,PACKAGE_TOTAL_VALUE,PACKAGE_EXPECTED_VALUE,PACKAGE_BALANCE};
         String selection = PACKAGE_CUSTOMER_ID_FOREIGN + "=? AND " + PACKAGE_TYPE + "=?AND " + PACKAGE_STATUS + "=?";
@@ -4536,7 +4562,7 @@ public class DBHelper extends SQLiteOpenHelper {
         if(cursor!=null && cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
                 do {
-                    getPackagesFromCursorAdmin(skyLightPackageArrayList, cursor);
+                    getPackagesFromCursorAdmin(marketBizPackageArrayList, cursor);
                 } while (cursor.moveToNext());
                 cursor.close();
             }
@@ -4545,7 +4571,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
 
 
-        return skyLightPackageArrayList;
+        return marketBizPackageArrayList;
     }
     public ArrayList<CustomerDailyReport> getCustomerDailyReportForCustomer(int customerID) {
 
@@ -4564,7 +4590,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return dailyReports;
     }
-    protected int insertSavingsReport(int i, Profile profile, SkyLightPackage skyLightPackage, CustomerDailyReport customerDailyReport, Customer customer) {
+    protected int insertSavingsReport(int i, Profile profile, MarketBizPackage marketBizPackage, CustomerDailyReport customerDailyReport, Customer customer) {
         return 0;
     }
 
@@ -5849,7 +5875,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    private void getPackCustomerSpinner(ArrayList<SkyLightPackage> packages, Cursor cursor) {
+    private void getPackCustomerSpinner(ArrayList<MarketBizPackage> packages, Cursor cursor) {
         try {
 
             try {
@@ -5860,7 +5886,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         String type = cursor.getString(5);
                         double balance = cursor.getDouble(11);
 
-                        packages.add(new SkyLightPackage(id, type, balance));
+                        packages.add(new MarketBizPackage(id, type, balance));
                     }
                 }
 
@@ -5874,8 +5900,8 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public ArrayList<SkyLightPackage> getPacksForCustomerSpinner(int customerID) {
-        ArrayList<SkyLightPackage> packages = new ArrayList<>();
+    public ArrayList<MarketBizPackage> getPacksForCustomerSpinner(int customerID) {
+        ArrayList<MarketBizPackage> packages = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         String selection = PACKAGE_CUSTOMER_ID_FOREIGN + "=?";
         String[] selectionArgs = new String[]{valueOf(customerID)};
@@ -5896,8 +5922,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return packages;
     }
-    public ArrayList<SkyLightPackage> getPacksFromCurrentCustomer(int customerID) {
-        ArrayList<SkyLightPackage> packages = new ArrayList<>();
+    public ArrayList<MarketBizPackage> getPacksFromCurrentCustomer(int customerID) {
+        ArrayList<MarketBizPackage> packages = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         String selection = PACKAGE_CUSTOMER_ID_FOREIGN + "=?";
         String[] selectionArgs = new String[]{valueOf(customerID)};
@@ -5919,8 +5945,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return packages;
     }
 
-    public ArrayList<SkyLightPackage> getAllPackagesProfile(int profileID) {
-        ArrayList<SkyLightPackage> packages = new ArrayList<>();
+    public ArrayList<MarketBizPackage> getAllPackagesProfile(int profileID) {
+        ArrayList<MarketBizPackage> packages = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.query(PACKAGE_TABLE, null, PACKAGE_PROFILE_ID_FOREIGN
                         + " = " + profileID, null, null,
@@ -5940,8 +5966,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return packages;
 
     }
-    public ArrayList<SkyLightPackage> getCustomerIncompletePack(int customerID, String inProgress) {
-        ArrayList<SkyLightPackage> packages = new ArrayList<>();
+    public ArrayList<MarketBizPackage> getCustomerIncompletePack(int customerID, String inProgress) {
+        ArrayList<MarketBizPackage> packages = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         String incomplete = null;
         inProgress=incomplete;
@@ -5993,8 +6019,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return customerDailyReports;
 
     }
-    public ArrayList<SkyLightPackage> getPackageEndingToday1(String dateOfToday) {
-        ArrayList<SkyLightPackage> packages = new ArrayList<>();
+    public ArrayList<MarketBizPackage> getPackageEndingToday1(String dateOfToday) {
+        ArrayList<MarketBizPackage> packages = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         String selection = PACKAGE_END_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(dateOfToday)};
@@ -6014,8 +6040,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return packages;
     }
 
-    public ArrayList<SkyLightPackage> getPackageEndingIn3Days(String dateOfTomorrow) {
-        ArrayList<SkyLightPackage> packages = new ArrayList<>();
+    public ArrayList<MarketBizPackage> getPackageEndingIn3Days(String dateOfTomorrow) {
+        ArrayList<MarketBizPackage> packages = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         String selection = PACKAGE_END_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(dateOfTomorrow)};
@@ -6035,8 +6061,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return packages;
     }
 
-    public ArrayList<SkyLightPackage> getPackageEnding7Days(String dateOfSevenDays) {
-        ArrayList<SkyLightPackage> packages = new ArrayList<>();
+    public ArrayList<MarketBizPackage> getPackageEnding7Days(String dateOfSevenDays) {
+        ArrayList<MarketBizPackage> packages = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         String selection = PACKAGE_END_DATE + "=?";
         String[] selectionArgs = new String[]{valueOf(dateOfSevenDays)};

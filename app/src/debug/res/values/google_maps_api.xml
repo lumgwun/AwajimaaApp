@@ -22,6 +22,9 @@
 
 
     AIzaSyDS7bVTjP-gEVTPJrz9bZdtImFHzRGBP7w
+
+    AIzaSyDKjP4_nSaYtg5OUxDLakjRUbpXu68h6-8
+    AIzaSyDKjP4_nSaYtg5OUxDLakjRUbpXu68h6-8
     -->
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDDKaGAQhPAGHtVOqnniIIIe_RF0yfG0jI</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDKjP4_nSaYtg5OUxDLakjRUbpXu68h6-8</string>
 </resources>

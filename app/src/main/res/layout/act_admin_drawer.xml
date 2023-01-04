@@ -6,6 +6,7 @@
     android:id="@+id/admin_drawer3"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    style="@style/Theme.OurCApp"
     tools:openDrawer="start"
     tools:context="com.skylightapp.Admins.AdminDrawerActivity">
     <include

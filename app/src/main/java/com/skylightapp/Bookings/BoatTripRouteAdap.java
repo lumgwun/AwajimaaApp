@@ -20,26 +20,26 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BoatTripRouteAdap extends ArrayAdapter<BoatTripRoute> {
+public class BoatTripRouteAdap extends ArrayAdapter<TripRoute> {
 
     private Context context;
     private int resource;
     private Currency currency;
     private String currencyCode,currencySymbol;
-    private List<BoatTripRoute> boatTripRouteList;
+    private List<TripRoute> tripRouteList;
 
-    public BoatTripRouteAdap(Context context, int resource, ArrayList<BoatTripRoute> boatTripRouteList) {
-        super(context, resource, boatTripRouteList);
+    public BoatTripRouteAdap(Context context, int resource, ArrayList<TripRoute> tripRouteList) {
+        super(context, resource, tripRouteList);
         this.context = context;
         this.resource = resource;
-        this.boatTripRouteList = boatTripRouteList;
+        this.tripRouteList = tripRouteList;
     }
 
-    public BoatTripRouteAdap(FragmentActivity activity, int boat_route_item, ArrayList<BoatTripRoute> routes) {
+    public BoatTripRouteAdap(FragmentActivity activity, int boat_route_item, ArrayList<TripRoute> routes) {
         super(activity, boat_route_item, routes);
         this.context = activity;
         this.resource = boat_route_item;
-        this.boatTripRouteList = routes;
+        this.tripRouteList = routes;
     }
 
     @SuppressLint("DefaultLocale")
@@ -52,7 +52,7 @@ public class BoatTripRouteAdap extends ArrayAdapter<BoatTripRoute> {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             convertView = inflater.inflate(resource, parent, false);
         }
-        BoatTripRoute boatTripRoute = getItem(position);
+        TripRoute tripRoute = getItem(position);
         currencyCode=currency.getCode();
         currencySymbol=currency.getSymbol();
         AppCompatTextView txtFrom = convertView.findViewById(R.id.route_from);
@@ -63,12 +63,12 @@ public class BoatTripRouteAdap extends ArrayAdapter<BoatTripRoute> {
         MaterialCardView cardView = convertView.findViewById(R.id.card_l1);
 
 
-        if (boatTripRoute != null) {
-            txtCountry.setText(MessageFormat.format("Country{0}", boatTripRoute.getBtRouteCountry()));
-            txtStatus.setText(MessageFormat.format("Status:{0}", boatTripRoute.getBtRouteStatus()));
-            txtTo.setText(MessageFormat.format("To", boatTripRoute.getBtRouteTo()));
-            txtFrom.setText(MessageFormat.format("From", boatTripRoute.getBtRouteFrom()));
-            txtThrough.setText(MessageFormat.format("Through:{0}", boatTripRoute.getBtRouteThrough()));
+        if (tripRoute != null) {
+            txtCountry.setText(MessageFormat.format("Country{0}", tripRoute.getBtRouteCountry()));
+            txtStatus.setText(MessageFormat.format("Status:{0}", tripRoute.getBtRouteStatus()));
+            txtTo.setText(MessageFormat.format("To", tripRoute.getBtRouteTo()));
+            txtFrom.setText(MessageFormat.format("From", tripRoute.getBtRouteFrom()));
+            txtThrough.setText(MessageFormat.format("Through:{0}", tripRoute.getBtRouteThrough()));
 
         }
 

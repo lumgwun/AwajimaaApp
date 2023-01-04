@@ -22,7 +22,6 @@ import com.skylightapp.Inventory.Stocks;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MarketBizSupplier implements Parcelable, Serializable {
     public static final String SUPPLIER_TABLE = "Supplier_Table";
@@ -67,7 +66,7 @@ public class MarketBizSupplier implements Parcelable, Serializable {
     private ArrayList<Loan> mBSupplierLoans;
     private ArrayList<MarketCommodity> mBSupplierCommodities;
     private ArrayList<MarketAnnouncement> mBSupplierMarketAnns;
-    private ArrayList<MarketBizSubScription> mBSupplierBizSubs;
+    private ArrayList<MarketBizSub> mBSupplierBizSubs;
     private ArrayList<MarketInventory> mBSupplierInvTs;
     private ArrayList<MarketStock> mBSupplierStocks;
     private ArrayList<BizDealAccount> mBSupplierBizDealAccts;
@@ -181,7 +180,7 @@ public class MarketBizSupplier implements Parcelable, Serializable {
         mBSupplierStocks = new ArrayList<>();
         mBSupplierStocks.add(marketStock);
     }
-    public void addSubscription(MarketBizSubScription subScription) {
+    public void addSubscription(MarketBizSub subScription) {
         mBSupplierBizSubs = new ArrayList<>();
         mBSupplierBizSubs.add(subScription);
     }
@@ -318,11 +317,11 @@ public class MarketBizSupplier implements Parcelable, Serializable {
         this.mBSupplierMarketAnns = mBSupplierMarketAnns;
     }
 
-    public ArrayList<MarketBizSubScription> getmBSupplierBizSubs() {
+    public ArrayList<MarketBizSub> getmBSupplierBizSubs() {
         return mBSupplierBizSubs;
     }
 
-    public void setmBSupplierBizSubs(ArrayList<MarketBizSubScription> mBSupplierBizSubs) {
+    public void setmBSupplierBizSubs(ArrayList<MarketBizSub> mBSupplierBizSubs) {
         this.mBSupplierBizSubs = mBSupplierBizSubs;
     }
 

@@ -79,7 +79,14 @@ public class GroupSavingsAcctList extends AppCompatActivity implements GroupAcct
 
         if(minAmount >0){
             if(maxAmount>0){
-                groupAccountAmtRange=groupAccountDAO.getGrpAccountForAmtRange(minAmount,maxAmount);
+
+                try {
+                    groupAccountAmtRange=groupAccountDAO.getGrpAccountForAmtRange(minAmount,maxAmount);
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
 
             }
         }else {
@@ -93,7 +100,14 @@ public class GroupSavingsAcctList extends AppCompatActivity implements GroupAcct
         }
         if(minDuration >0){
             if(maxDuration>0){
-                groupAccountDuration=groupAccountDAO.getGrpAccountDurationRange(minDuration,maxDuration);
+                try {
+                    groupAccountDuration=groupAccountDAO.getGrpAccountDurationRange(minDuration,maxDuration);
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+
 
             }
         }else {
@@ -116,7 +130,14 @@ public class GroupSavingsAcctList extends AppCompatActivity implements GroupAcct
 
 
         final CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true);
-        groupAccountArrayList = groupAccountDAO.getGrpAcctsForCurrentProfile(profileID);
+
+        try {
+            groupAccountArrayList = groupAccountDAO.getGrpAcctsForCurrentProfile(profileID);
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
         groupAcctAdapter = new GroupAcctAdapter(groupAccountArrayList, R.layout.grp_acct_row, this);
         recyclerView.setAdapter(groupAcctAdapter);
         recyclerView.setLayoutManager(layoutManager);
@@ -232,7 +253,14 @@ public class GroupSavingsAcctList extends AppCompatActivity implements GroupAcct
                         switch (which) {
                             case 0:
                                 if(groupAccount.getGrpAcctBalance()==0){
-                                    groupAccountDAO.deleteGroupAcct(groupAccount.getGrpAcctNo());
+                                    try {
+                                        groupAccountDAO.deleteGroupAcct(groupAccount.getGrpAcctNo());
+
+                                    } catch (NullPointerException e) {
+                                        e.printStackTrace();
+                                    }
+
+
 
                                 }else {
                                     Toast.makeText(GroupSavingsAcctList.this, "Sorry!,you can not delete an Account with funds", Toast.LENGTH_SHORT).show();
@@ -251,7 +279,12 @@ public class GroupSavingsAcctList extends AppCompatActivity implements GroupAcct
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         if(groupAccount.getGrpAcctBalance()==0){
-                            groupAccountDAO.deleteGroupAcct(groupAccount.getGrpAcctNo());
+                            try {
+                                groupAccountDAO.deleteGroupAcct(groupAccount.getGrpAcctNo());
+
+                            } catch (NullPointerException e) {
+                                e.printStackTrace();
+                            }
 
                         }else {
                             Toast.makeText(GroupSavingsAcctList.this, "Sorry!,you can not delete an Account with funds", Toast.LENGTH_SHORT).show();

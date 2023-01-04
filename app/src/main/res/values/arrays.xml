@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string-array name="reply_entries">
         <item>Reply</item>
         <item>Reply to all</item>
@@ -12,6 +12,444 @@
         <item>To</item>
         <item>From</item>
     </string-array>
+    <string-array name="spillage_states">
+        <item>Rivers State</item>
+        <item>Bayelsa State</item>
+        <item>Delta State</item>
+        <item>Akwa-Ibom State</item>
+        <item>Imo State</item>
+        <item>Abia State</item>
+        <item>Ondo State</item>
+        <item>Cross River State</item>
+        <item>Edo State</item>
+        <item>Others</item>
+    </string-array>
+    <string-array name="savings_scheme">
+        <item>Weekly</item>
+        <item>Monthly</item>
+    </string-array>
+
+    <string-array name="savings_weekly_plans">
+        <item>SAVINGS N100 for 31 Weeks </item>
+        <item>SAVINGS N200 for 31 Weeks</item>
+        <item>SAVINGS N300 for 31 Weeks</item>
+        <item>SAVINGS N400 for 31 Weeks </item>
+        <item>SAVINGS N500 for 31 Weeks</item>
+        <item>SAVINGS N1,000 for 31 Weeks</item>
+        <item>SAVINGS N2,000 for 31 Weeks </item>
+        <item>SAVINGS N5,000 for 31 Weeks</item>
+        <item>SAVINGS N10,000 for 31 Weeks</item>
+        <item>SAVINGS N20,000 for 31 Weeks </item>
+        <item>SAVINGS N30,000 for 31 Weeks</item>
+        <item>SAVINGS N40,000 for 31 Weeks</item>
+        <item>SAVINGS N50,000 for 31 Weeks </item>
+        <item>SAVINGS N60,000 for 31 Weeks</item>
+        <item>SAVINGS N70,000 for 31 Weeks</item>
+        <item>SAVINGS N80,000 for 31 Weeks </item>
+        <item>SAVINGS N90,000 for 31 Weeks</item>
+        <item>SAVINGS N100,000 for 31 Weeks</item>
+        <item>SAVINGS N200,000 for 31 Weeks </item>
+        <item>SAVINGS N300,000 for 31 Weeks</item>
+        <item>SAVINGS N400,000 for 31 Weeks</item>
+        <item>SAVINGS N500,000 for 31 Weeks </item>
+        <item>SAVINGS N600,000 for 31 Weeks</item>
+        <item>SAVINGS N700,000 for 31 Weeks</item>
+        <item>SAVINGS N800,000 for 31 Weeks </item>
+        <item>SAVINGS N900,000 for 31 Weeks</item>
+        <item>SAVINGS N1,000,000 for 31 Weeks</item>
+    </string-array>
+
+    <string-array name="savings_monthly_plans">
+        <item>SAVINGS N10,000,000 for 12 months </item>
+        <item>SAVINGS N1,000,000 for 12 months </item>
+        <item>SAVINGS N900,000 for 12 months </item>
+        <item>SAVINGS N800,000 for 12 months </item>
+        <item>SAVINGS N700,000 for 12 months </item>
+        <item>SAVINGS N600,000 for 12 months </item>
+        <item>SAVINGS N500,000 for 12 months </item>
+        <item>SAVINGS N400,000 for 12 months </item>
+        <item>SAVINGS N300,000 for 12 months </item>
+        <item>SAVINGS N200,000 for 12 months </item>
+        <item>SAVINGS N100,000 for 12 months </item>
+
+        <item>SAVINGS N90,000 for 12 months </item>
+        <item>SAVINGS N80,000 for 12 months </item>
+        <item>SAVINGS N70,000 for 12 months </item>
+        <item>SAVINGS N60,000 for 12 months </item>
+        <item>SAVINGS N50,000 for 12 months </item>
+        <item>SAVINGS N40,000 for 12 months </item>
+        <item>SAVINGS N30,000 for 12 months </item>
+        <item>SAVINGS N20,000 for 12 months </item>
+        <item>SAVINGS N10,000 for 12 months </item>
+
+        <item>SAVINGS N10,000,000 for 6 months </item>
+        <item>SAVINGS N1,000,000 for 6 months </item>
+        <item>SAVINGS N900,000 for 6 months </item>
+        <item>SAVINGS N800,000 for 6 months </item>
+        <item>SAVINGS N600,000 for 6 months </item>
+        <item>SAVINGS N500,000 for 6 months </item>
+        <item>SAVINGS N400,000 for 6 months </item>
+        <item>SAVINGS N300,000 for 6 months </item>
+        <item>SAVINGS N200,000 for 6 months </item>
+        <item>SAVINGS N100,000 for 6 months </item>
+
+        <item>SAVINGS N90,000 for 6 months </item>
+        <item>SAVINGS N80,000 for 6 months </item>
+        <item>SAVINGS N70,000 for 6 months </item>
+        <item>SAVINGS N60,000 for 6 months </item>
+        <item>SAVINGS N50,000 for 6 months </item>
+        <item>SAVINGS N40,000 for 6 months </item>
+        <item>SAVINGS N30,000 for 6 months </item>
+        <item>SAVINGS N20,000 for 6 months </item>
+        <item>SAVINGS N10,000 for 6 months </item>
+
+    </string-array>
+    <string-array name="all_savings_plans">
+        <item>SAVINGS N100 for 31 Weeks </item>
+        <item>SAVINGS N200 for 31 Weeks</item>
+        <item>SAVINGS N300 for 31 Weeks</item>
+        <item>SAVINGS N400 for 31 Weeks </item>
+        <item>SAVINGS N500 for 31 Weeks</item>
+        <item>SAVINGS N1,000 for 31 Weeks</item>
+        <item>SAVINGS N2,000 for 31 Weeks </item>
+        <item>SAVINGS N5,000 for 31 Weeks</item>
+        <item>SAVINGS N10,000 for 31 Weeks</item>
+        <item>SAVINGS N20,000 for 31 Weeks </item>
+        <item>SAVINGS N30,000 for 31 Weeks</item>
+        <item>SAVINGS N40,000 for 31 Weeks</item>
+        <item>SAVINGS N50,000 for 31 Weeks </item>
+        <item>SAVINGS N60,000 for 31 Weeks</item>
+        <item>SAVINGS N70,000 for 31 Weeks</item>
+        <item>SAVINGS N80,000 for 31 Weeks </item>
+        <item>SAVINGS N90,000 for 31 Weeks</item>
+        <item>SAVINGS N100,000 for 31 Weeks</item>
+        <item>SAVINGS N200,000 for 31 Weeks </item>
+        <item>SAVINGS N300,000 for 31 Weeks</item>
+        <item>SAVINGS N400,000 for 31 Weeks</item>
+        <item>SAVINGS N500,000 for 31 Weeks </item>
+        <item>SAVINGS N600,000 for 31 Weeks</item>
+        <item>SAVINGS N700,000 for 31 Weeks</item>
+        <item>SAVINGS N800,000 for 31 Weeks </item>
+        <item>SAVINGS N900,000 for 31 Weeks</item>
+        <item>SAVINGS N1,000,000 for 31 Weeks</item>
+
+        <item>SAVINGS N10,000,000 for 12 months </item>
+        <item>SAVINGS N1,000,000 for 12 months </item>
+        <item>SAVINGS N900,000 for 12 months </item>
+        <item>SAVINGS N800,000 for 12 months </item>
+        <item>SAVINGS N700,000 for 12 months </item>
+        <item>SAVINGS N600,000 for 12 months </item>
+        <item>SAVINGS N500,000 for 12 months </item>
+        <item>SAVINGS N400,000 for 12 months </item>
+        <item>SAVINGS N300,000 for 12 months </item>
+        <item>SAVINGS N200,000 for 12 months </item>
+        <item>SAVINGS N100,000 for 12 months </item>
+
+        <item>SAVINGS N90,000 for 12 months </item>
+        <item>SAVINGS N80,000 for 12 months </item>
+        <item>SAVINGS N70,000 for 12 months </item>
+        <item>SAVINGS N60,000 for 12 months </item>
+        <item>SAVINGS N50,000 for 12 months </item>
+        <item>SAVINGS N40,000 for 12 months </item>
+        <item>SAVINGS N30,000 for 12 months </item>
+        <item>SAVINGS N20,000 for 12 months </item>
+        <item>SAVINGS N10,000 for 12 months </item>
+
+        <item>SAVINGS N10,000,000 for 6 months </item>
+        <item>SAVINGS N1,000,000 for 6 months </item>
+        <item>SAVINGS N900,000 for 6 months </item>
+        <item>SAVINGS N800,000 for 6 months </item>
+        <item>SAVINGS N600,000 for 6 months </item>
+        <item>SAVINGS N500,000 for 6 months </item>
+        <item>SAVINGS N400,000 for 6 months </item>
+        <item>SAVINGS N300,000 for 6 months </item>
+        <item>SAVINGS N200,000 for 6 months </item>
+        <item>SAVINGS N100,000 for 6 months </item>
+
+        <item>SAVINGS N90,000 for 6 months </item>
+        <item>SAVINGS N80,000 for 6 months </item>
+        <item>SAVINGS N70,000 for 6 months </item>
+        <item>SAVINGS N60,000 for 6 months </item>
+        <item>SAVINGS N50,000 for 6 months </item>
+        <item>SAVINGS N40,000 for 6 months </item>
+        <item>SAVINGS N30,000 for 6 months </item>
+        <item>SAVINGS N20,000 for 6 months </item>
+        <item>SAVINGS N10,000 for 6 months </item>
+    </string-array>
+
+    <string-array name="oil_companies">
+        <item>Sterling Global</item>
+        <item>SPDC</item>
+        <item>Agip</item>
+        <item>Chevron</item>
+        <item>Belema Oil</item>
+        <item>AMNI</item>
+        <item>Green Energy</item>
+        <item>Others</item>
+    </string-array>
+    <string-array name="yesOrNo">
+        <item>Yes</item>
+        <item>No</item>
+        <item>I can not say</item>
+    </string-array>
+    <string-array name="awajima_sub_type">
+        <item>Unyeada Package</item>
+        <item>Okoroete Package</item>
+        <item>Ekede Package</item>
+        <item>Ebeke Package</item>
+    </string-array>
+
+    <string-array name="rivers_lga">
+        <item>Andoni</item>
+        <item>Omuma</item>
+        <item>Etche</item>
+        <item>Ogba–Egbema–Ndoni</item>
+        <item>Emohua</item>
+        <item>AMNI</item>
+        <item>Ahoada East</item>
+        <item>Ahoada West</item>
+        <item>Abua–Odual</item>
+        <item>Akuku-Toru</item>
+        <item>Asari-Toru</item>
+        <item>Degema</item>
+        <item>Bonny</item>
+        <item>Opobo–Nkoro</item>
+        <item>Oyigbo</item>
+        <item>Khana</item>
+        <item>Gokana</item>
+        <item>Tai</item>
+        <item>Eleme</item>
+        <item>Ogu–Bolo</item>
+        <item>Okrika</item>
+        <item>Obio-Akpor</item>
+        <item>Port Harcourt</item>
+    </string-array>
+
+    <string-array name="bayelsa_lga">
+        <item>Brass</item>
+        <item>Ekeremor</item>
+        <item>Kolokuma/Opokuma</item>
+        <item>Nembe</item>
+        <item>Ogbia</item>
+        <item>Sagbama</item>
+        <item>Southern Ijaw</item>
+        <item>Yenagoa</item>
+    </string-array>
+
+    <string-array name="edo_lga">
+        <item>Akoko-Edo</item>
+        <item>Egor</item>
+        <item>Esan Central</item>
+        <item>Esan North-East</item>
+        <item>Esan South-East</item>
+        <item>Esan West</item>
+        <item>Etsako Central</item>
+        <item>Etsako East</item>
+        <item>Etsako West</item>
+        <item>Igueben</item>
+        <item>Ikpoba-Okha</item>
+        <item>Oredo</item>
+        <item>Orhionmwon</item>
+        <item>Ovia North-East</item>
+        <item>Ovia South-West</item>
+        <item>Owan East</item>
+        <item>Owan West</item>
+        <item>Uhunmwonde</item>
+
+    </string-array>
+
+    <string-array name="cr_lga">
+        <item>Abi</item>
+        <item>Akamkpa</item>
+        <item>Akpabuyo</item>
+        <item>Bakassi</item>
+        <item>Bekwarra</item>
+        <item>Biase</item>
+        <item>Boki</item>
+        <item>Calabar Municipal</item>
+        <item>Calabar South</item>
+        <item>Etung</item>
+        <item>Ikom</item>
+        <item>Obanliku</item>
+        <item>Obubra</item>
+        <item>Obudu</item>
+        <item>Odukpani</item>
+        <item>Ogoja</item>
+        <item>Yakuur</item>
+        <item>Yala</item>
+
+    </string-array>
+    <string-array name="ondo_lga">
+        <item>Akoko North-East</item>
+        <item>Akoko North-West</item>
+        <item>Akoko South-East </item>
+        <item>Akoko South-West</item>
+        <item>Akure North</item>
+        <item>Akure South</item>
+        <item>Ese Odo</item>
+        <item>Idanre</item>
+        <item>Ifedore</item>
+        <item>Ilaje</item>
+        <item>Ile Oluji/Okeigbo</item>
+        <item>Irele</item>
+        <item>Odigbo</item>
+        <item>Okitipupa</item>
+        <item>Ondo East</item>
+        <item>Ondo West</item>
+        <item>Ose</item>
+        <item>Owo</item>
+
+    </string-array>
+
+
+    <string-array name="delta_lga">
+        <item>Aniocha North</item>
+        <item>Aniocha South</item>
+        <item>Bomadi</item>
+        <item>Burutu</item>
+        <item>Ethiope East</item>
+        <item>Ethiope West</item>
+        <item>Ika North East</item>
+        <item>Ika South</item>
+        <item>Isoko North</item>
+        <item>Isoko South</item>
+        <item>Ndokwa East</item>
+        <item>Ndokwa West</item>
+        <item>Okpe</item>
+        <item>Oshimili North</item>
+        <item>Oshimili South</item>
+        <item>Sapele</item>
+        <item>Udu</item>
+        <item>Ughelli North</item>
+        <item>Ughelli South</item>
+        <item>Ukwuani</item>
+        <item>Uvwie</item>
+        <item>Patani</item>
+        <item>Warri North</item>
+        <item>Warri South</item>
+        <item>Warri South West</item>
+    </string-array>
+
+    <string-array name="akwaibom_lga">
+        <item>Eastern Obolo</item>
+        <item>Abak</item>
+        <item>Etche</item>
+        <item>Eket</item>
+        <item>Emohua</item>
+        <item>Esit-Eket</item>
+        <item>Essien Udim</item>
+        <item>Etim-Ekpo</item>
+        <item>Etinan</item>
+        <item>Ibeno</item>
+        <item>Ibesikpo-Asutan</item>
+        <item>Ibiono-Ibom</item>
+        <item>Ika</item>
+        <item>Ikono</item>
+        <item>Ikot Abasi</item>
+        <item>Ikot Ekpene</item>
+        <item>Ini</item>
+        <item>Itu</item>
+        <item>Mbo</item>
+        <item>Mkpat-Enin</item>
+        <item>Nsit-Atai</item>
+        <item>Nsit-Ibom</item>
+        <item>Nsit-Ubium</item>
+        <item>Obot-Akara</item>
+        <item>Okobo</item>
+        <item>Onna</item>
+        <item>Oron</item>
+        <item>Ukanafun</item>
+        <item>Oruk Anam</item>
+        <item>Udung-Uko</item>
+        <item>Uruan</item>
+        <item>Urue-Offong/Oruko</item>
+        <item>Uyo</item>
+
+    </string-array>
+    <string-array name="abia_lga">
+        <item>Aba North</item>
+        <item>Aba South</item>
+        <item>Arochukwu</item>
+        <item>Bende</item>
+        <item>Ikwuano</item>
+        <item>Isiala Ngwa North</item>
+        <item>Isiala Ngwa South</item>
+        <item>Isuikwuato</item>
+        <item>Obi Ngwa</item>
+        <item>Ohafia</item>
+        <item>Osisioma Ngwa</item>
+        <item>Ugwunagbo</item>
+        <item>Ukwa East</item>
+        <item>Ukwa West</item>
+        <item>Umuahia North</item>
+        <item>Umuahia South</item>
+        <item>Umunneochi</item>
+
+    </string-array>
+
+    <string-array name="imo_lga">
+        <item>Aboh Mbaise</item>
+        <item>Ahiazu Mbaise</item>
+        <item>Ehime Mbano</item>
+        <item>Ezinihitte Mbaise</item>
+        <item>Ideato North</item>
+        <item>Ideato South</item>
+        <item>Ihitte-Uboma</item>
+        <item>Ikeduru</item>
+        <item>Isiala Mbano</item>
+        <item>Isu</item>
+        <item>Mbaitoli</item>
+        <item>Ngor Okpala</item>
+        <item>Njaba</item>
+        <item>Nkwerre</item>
+        <item>Nwangele</item>
+        <item>Obowo</item>
+        <item>Oguta</item>
+        <item>Ohaji/Egbema</item>
+        <item>Okigwe</item>
+        <item>Onuimo</item>
+        <item>Orlu</item>
+        <item>Orsu</item>
+        <item>Oru East</item>
+        <item>Oru West</item>
+        <item>Owerri Municipal</item>
+        <item>Owerri North</item>
+        <item>Owerri West</item>
+
+    </string-array>
+
+    <string-array name="client">
+        <item>Particular</item>
+        <item>Bar</item>
+        <item>Grocery store</item>
+        <item>Restaurant</item>
+        <item>Fast Food</item>
+        <item>Hotel</item>
+        <item>Church</item>
+        <item>School</item>
+        <item>Market</item>
+        <item>Local Waste Point</item>
+        <item>Occasion</item>
+        <item>Party</item>
+    </string-array>
+
+    <string-array name="frequency">
+        <item>One Shot</item>
+        <item>1* per week </item>
+        <item>2* per week </item>
+        <item>3* per week</item>
+        <item>4* per week</item>
+        <item>5* per week</item>
+    </string-array>
+
+
+    <string-array name="schedule">
+        <item>7h - 9h</item>
+        <item>10h - 12h</item>
+        <item>14h - 16h</item>
+        <item>17h - 18h</item>>
+    </string-array>
+
     <string-array name="market_type">
         <item>Fruit Market</item>
         <item>Yam Market</item>
@@ -39,16 +477,8 @@
     </string-array>
     <array name="range_slider_values" >
         <item>5</item>
-        <item>10</item>
-        <item>20</item>
-        <item>30</item>
-        <item>40</item>
-        <item>50</item>
-        <item>60</item>
-        <item>70</item>
-        <item>80</item>
-        <item>90</item>
         <item>100</item>
+
     </array>
     <string-array name="river_state">
         <item>Rivers State</item>
@@ -149,6 +579,7 @@
     <string-array name="tripTypes">
         <item>Full day Trip</item>
         <item>Half day Trip</item>
+        <item>Multiple days Trip</item>
     </string-array>
     <string-array name="tourPackage">
         <item>Common Tour</item>
@@ -232,16 +663,7 @@
         <item>Others</item>
     </string-array>
 
-    <string-array name="EmergencyType">
-        <item></item>
-        <item>Sickness</item>
-        <item>Rape</item>
-        <item>Accident</item>
-        <item>Robbery</item>
-        <item>Arrest</item>
-        <item>Unknown threat</item>
-        <item>Others</item>
-    </string-array>
+
     <string-array name="videoResolutions">
         <item>Default</item>
         <item>HD (1280 x 720)</item>
@@ -398,10 +820,10 @@
         <item>@color/dot_dark_screen2</item>
 
     </array>
-
     <string-array name="EmergencyReport">
         <item>Building Collapse</item>
         <item>Rape</item>
+        <item>Oil Spillage</item>
         <item>Flooding</item>
         <item>Landslide</item>
         <item>Outbreak of Disease</item>
@@ -703,6 +1125,16 @@
         <item>XAF</item>
         <item>XOF</item>
         <item>KES</item>
+    </string-array>
+
+    <string-array name="Awajima_Offices">
+        <item>Nigeria</item>
+        <item>Uk</item>
+        <item>Canada</item>
+        <item>USA</item>
+        <item>Australia</item>
+        <item>Other African Offices</item>
+        <item>Luxembourg</item>
     </string-array>
     <string-array name="glo_9ja_data">
         <item></item>
@@ -2024,10 +2456,9 @@
         <item>31</item>
     </string-array>
 
-    <string-array name="skylight_bank">
+    <string-array name="awajima_bank">
         <item></item>
-        <item>ACCESS BANK PLC</item>
-        <item>Zenith Bank</item>
+        <item>GTBank Plc</item>
         <item>Sterling Bank</item>
         <item>Wema Bank</item>
     </string-array>
@@ -2104,18 +2535,29 @@
         <item>Verified</item>
         <item>UnVerified</item>
     </string-array>
+    <string-array name="trip_from">
+        <item></item>
+        <item>Kaa Waterside</item>
+        <item>Marine Base</item>
+        <item>New Road Waterside</item>
+        <item>Bonny Waterside</item>
+        <item>Okirika Waterside</item>
+        <item>Nembe Waterside</item>
+        <item>Abonnima Waterside</item>
+        <item>Marine Base</item>
+        <item>Ngo</item>
+        <item>Ataba</item>
+        <item>Opobo Town</item>
+        <item>Ikuru Town</item>
+        <item>Oyorokoto</item>
+    </string-array>
 
     <string-array name="awajima_packages">
         <item></item>
-        <item>Savings</item>
-        <item>Item Purchase</item>
-        <item>Promo</item>
-        <item>Investment</item>
-        <item>Low cost Housing</item>
-        <item>Japa Package</item>
-        <item>Rent Package</item>
-        <item>Business Start-Up</item>
-        <item>Business Expansion</item>
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+        <item>Yearly</item>
     </string-array>
 
 
@@ -2216,6 +2658,46 @@
         <item>Yobe State</item>
         <item>Zamfara State</item>
         <item>All</item>
+    </string-array>
+
+    <string-array name="nig_state">
+        <item>Rivers State</item>
+        <item>Abia</item>
+        <item>Adamawa State</item>
+        <item>Akwa Ibom State</item>
+        <item>Anambra State</item>
+        <item>Bauchi State</item>
+        <item>Bayelsa State</item>
+        <item>Benue State</item>
+        <item>Borno State</item>
+        <item>Cross River State</item>
+        <item>Delta State</item>
+        <item>Ebonyi State</item>
+        <item>Edo State</item>
+        <item>Ekiti State</item>
+        <item>Enugu State</item>
+        <item>FCT</item>
+        <item>Gombe State</item>
+        <item>Imo State</item>
+        <item>Jigawa State</item>
+        <item>Kaduna State</item>
+        <item>Kano State</item>
+        <item>Katsina State</item>
+        <item>Kebbi State</item>
+        <item>Kogi State</item>
+        <item>Kwara State</item>
+        <item>Lagos State</item>
+        <item>Nasarawa State</item>
+        <item>Niger State</item>
+        <item>Ogun State</item>
+        <item>Ondo State</item>
+        <item>Osun State</item>
+        <item>Oyo State</item>
+        <item>Plateau State</item>
+        <item>Sokoto State</item>
+        <item>Taraba State</item>
+        <item>Yobe State</item>
+        <item>Zamfara State</item>
     </string-array>
 
     <string-array name="Package_Item_Purchase">

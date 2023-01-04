@@ -1,7 +1,6 @@
 package com.skylightapp.Customers;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,8 +16,8 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.melnykov.fab.FloatingActionButton;
 import com.skylightapp.Adapters.PackageRecyclerAdapter;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.R;
 import com.skylightapp.Tellers.PackageAllCusAct;
@@ -32,7 +30,7 @@ public class ProfilePackDetails extends AppCompatActivity {
 
     private RecyclerView recyclerView;
 
-    private ArrayList<SkyLightPackage> skyLightPackages;
+    private ArrayList<MarketBizPackage> marketBizPackages;
     private PackageRecyclerAdapter mAdapter;
 
 
@@ -65,12 +63,12 @@ public class ProfilePackDetails extends AppCompatActivity {
         json = userPreferences.getString("LastProfileUsed", "");
         profile = gson.fromJson(json, Profile.class);
 
-        skyLightPackages = new ArrayList<SkyLightPackage>();
-        mAdapter = new PackageRecyclerAdapter(this, R.layout.package_list_row,skyLightPackages);
+        marketBizPackages = new ArrayList<MarketBizPackage>();
+        mAdapter = new PackageRecyclerAdapter(this, R.layout.package_list_row, marketBizPackages);
         dbHelper = new DBHelper(this);
         if(profile !=null){
             int profileID = profile.getPID();
-            skyLightPackages = dbHelper.getPackagesFromCurrentProfile(profileID);
+            marketBizPackages = dbHelper.getPackagesFromCurrentProfile(profileID);
 
         }
 

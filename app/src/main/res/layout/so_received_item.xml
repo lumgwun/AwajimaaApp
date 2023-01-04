@@ -1,0 +1,290 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@drawable/rect11"
+    android:layout_height="wrap_content">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/sor_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="2dp"
+        android:clickable="true"
+        card_view:showDividers="middle"
+        card_view:dividerPadding="10dp"
+        card_view:divider="@drawable/shape_toolbar_dropshadow"
+        android:focusable="true"
+        android:elevation="3dp"
+        android:foreground="?attr/selectableItemBackground"
+        card_view:cardCornerRadius="10dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/p_14"
+                android:weightSum="2"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/thumbnail_sor"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:paddingTop="16dp"
+                    android:lines="1"
+                    android:src="@drawable/ic_icon2"
+                    android:scaleType="fitXY"
+                    android:contentDescription="Report" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/sor_cusName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lines="2"
+                    android:paddingStart="8dp"
+                    android:text="Customer Name"
+                    android:paddingEnd="16dp"
+                    android:layout_weight="1"
+                    android:paddingTop="16dp"
+                    android:textAlignment="center"
+                    android:textColor="#111"
+                    android:textSize="15sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/p_1"
+                android:layout_below="@+id/p_14"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/sor_share"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/ic_share"
+                    android:scaleType="fitXY"
+                    android:contentDescription="Share" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/sor_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lines="2"
+                    android:paddingStart="8dp"
+                    android:text="Package Type"
+                    android:paddingEnd="2dp"
+                    android:paddingTop="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_below="@id/p_1"
+                android:id="@+id/p_0"
+                android:weightSum="1"
+                android:visibility="visible"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/payment_REF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:text="Ref:"
+                    android:textColor="@color/dark_and_red"
+                    android:textSize="15sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/p_2"
+                android:weightSum="2"
+                android:layout_below="@id/p_0"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/payment_amount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:text="Payment Amount"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:textColor="#111"
+                    android:textSize="15sp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/payment_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title"
+                    android:layout_marginEnd="2dp"
+                    android:gravity="end"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:text="Date"
+                    android:textColor="@color/dark_and_red"
+                    android:textSize="15sp" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_below="@id/p_2"
+                android:id="@+id/p_3"
+                android:weightSum="1"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/sor_SO_id"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:layout_weight="1"
+                    android:text="SO ID"
+                    android:padding="10dp"
+                    android:textColor="@color/dark_and_red"
+                    android:textSize="15sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_below="@id/p_3"
+                android:id="@+id/p_34"
+                android:weightSum="1"
+                android:paddingBottom="10dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/payment_manager"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:text="Payment Manager"
+                    android:paddingBottom="20dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15sp" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_below="@id/p_34"
+                android:id="@+id/sor_office"
+                android:weightSum="2"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/sor_oID"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:text="Office ID:"
+                    android:textColor="@color/dark_and_red"
+                    android:textSize="15sp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/sor_officeID"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:text="23456"
+                    android:padding="10dp"
+                    android:gravity="end"
+                    android:layout_weight="1"
+                    android:textColor="@color/dark_and_red"
+                    android:textSize="15sp" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_below="@id/sor_office"
+                android:id="@+id/sor_comt"
+                android:weightSum="2"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/sor_c"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:text="Comments:"
+                    android:textColor="@color/dark_and_red"
+                    android:textSize="15sp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/sor_comments"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:text="He requested for Loan"
+                    android:padding="10dp"
+                    android:gravity="end"
+                    android:layout_weight="1"
+                    android:textColor="@color/dark_and_red"
+                    android:textSize="15sp" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_below="@id/sor_comt"
+                android:id="@+id/p_4"
+                android:weightSum="2"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/sor_amt_Rem"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:text="AMT Rem:"
+                    android:textColor="@color/dark_and_red"
+                    android:textSize="15sp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/sor_statusID"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:text="Accepted 2345"
+                    android:padding="10dp"
+                    android:gravity="end"
+                    android:layout_weight="1"
+                    android:textColor="@color/dark_and_red"
+                    android:textSize="15sp" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

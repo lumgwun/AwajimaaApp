@@ -81,7 +81,7 @@
 
     </TextView>
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.payStackCard.MaterialCardView
         android:id="@+id/transaction_date_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
@@ -111,7 +111,7 @@
 
         </TextView>
 
-    </com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.payStackCard.MaterialCardView>
 
     <TextView
         android:id="@+id/error_msg_transaction_date"
@@ -123,7 +123,7 @@
 
     </TextView>
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.payStackCard.MaterialCardView
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_centerHorizontal="true"
@@ -145,7 +145,7 @@
         </TextView>
 
 
-    </com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.payStackCard.MaterialCardView>
 
 
 </LinearLayout>

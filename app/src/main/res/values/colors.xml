@@ -517,6 +517,30 @@
 
 
     <color name="background_fragment_conversation">#323232</color>
+    <color name="snow">#fffafa</color>
+    <color name="dimwhite">#c5d6cc</color>
+    <color name="whitesmoke">#f5f5f5</color>
+    <color name="steelblue">#4682b4</color>
+    <color name="darkSlateBlue">#483d8b</color>
+    <color name="midnightBlue">#191970</color>
+    <color name="mediumPurple">#7b68ee</color>
+    <color name="dimGray">#696969</color>
+    <color name="darkSlateGray">#2F4F4F</color>
+    <color name="gradient">#3D5069</color>
+    <color name="yellowgreen">#2E8B57</color>
+    <color name="yellowgreen2">#297a4d</color>
+    <color name="limegreen">#32CD32</color>
+    <color name="com">#B3F7FF</color>
+    <color name="alphabet1">#4A7BA7</color>
+    <color name="alphabet2">#04B4B3</color>
+    <color name="alphabet3">#10CAC9</color>
+    <color name="alphabet4">#F5A623</color>
+    <color name="alphabet5">#FF7D50</color>
+    <color name="alphabet6">#FC6644</color>
+    <color name="alphabet7">#E75F40</color>
+    <color name="alphabet8">#E13A20</color>
+    <color name="alphabet9">#D93218</color>
+    <color name="alphabet10plus">#C03823</color>
 
 
 

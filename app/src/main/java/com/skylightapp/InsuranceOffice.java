@@ -28,7 +28,7 @@ import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Customers.CustomerHelpActTab;
 import com.skylightapp.Customers.PackListTab;
-import com.skylightapp.MarketClasses.MarketBizSubScription;
+import com.skylightapp.MarketClasses.MarketBizSub;
 import com.skylightapp.Markets.MarketTab;
 
 import java.util.ArrayList;
@@ -63,7 +63,7 @@ public class InsuranceOffice extends TabActivity {
     private World world;
     private CurrAdapter currencyAdapter;
     private ArrayList<Account> accountArrayList;
-    private ArrayList<MarketBizSubScription> marketBizSubScriptions;
+    private ArrayList<MarketBizSub> marketBizSubs;
 
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
     CardView cardViewPackges,cardViewGrpSavings,cardViewHistory, cardViewStandingOrders, cardViewOrders, cardViewSupport;

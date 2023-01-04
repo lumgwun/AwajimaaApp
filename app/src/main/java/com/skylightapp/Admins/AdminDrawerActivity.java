@@ -434,7 +434,7 @@ public class AdminDrawerActivity extends AppCompatActivity implements Navigation
                 public void onClick(View view) {
                     switch(finalI) {
                         case 0:
-                            Intent myIntent = new Intent(AdminDrawerActivity.this, AdminPackageActivity.class);
+                            Intent myIntent = new Intent(AdminDrawerActivity.this, AdminPackageAct.class);
                             myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                     Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(myIntent);

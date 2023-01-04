@@ -5,27 +5,26 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Update;
 
-import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 
 import java.util.List;
 
 @androidx.room.Dao
 public interface SkyLightPackageDao {
     @Insert
-    void insert(SkyLightPackage skyLightPackage);
+    void insert(MarketBizPackage marketBizPackage);
 
 
     @Update
-    void update(SkyLightPackage skyLightPackage);
+    void update(MarketBizPackage marketBizPackage);
 
     @Delete
-    void delete(SkyLightPackage skyLightPackage);
+    void delete(MarketBizPackage marketBizPackage);
 
     //@Query("DELETE FROM PROFILE_TABLE")
     void deleteAllSkyLightPackage();
 
 
     //@Query("SELECT * FROM PROFILE_TABLE ORDER BY courseName ASC")
-    LiveData<List<SkyLightPackage>> getAllSkyLightPackage();
+    LiveData<List<MarketBizPackage>> getAllSkyLightPackage();
 }

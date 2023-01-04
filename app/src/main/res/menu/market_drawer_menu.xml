@@ -8,13 +8,9 @@
         android:menuCategory="system">
         <item
             android:id="@+id/market_dashboard"
-            android:icon="@drawable/ic_dashboard_black_24dp"
+            android:icon="@drawable/ic_home_black_24dp"
             android:title="Market Home" />
 
-        <item
-            android:id="@+id/social_market"
-            android:icon="@drawable/ic_icon2"
-            android:title="Social" />
 
         <item
             android:id="@+id/market_insu"
@@ -51,6 +47,21 @@
             </menu>
         </item>
 
+        <item android:title="Market Security">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/emerg_marketM"
+                        android:icon="@drawable/location_pin"
+                        android:title="Emergency" />
+                    <item
+                        android:id="@+id/market_Hot"
+                        android:icon="@drawable/location_pin"
+                        android:title="Hot Emergency" />
+                </group>
+            </menu>
+        </item>
+
 
 
         <item android:title="Settings">
@@ -64,8 +75,16 @@
             </menu>
         </item>
 
-
-
+        <item android:title="Market Group Savings">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/market_savings_G"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Group Savings" />
+                </group>
+            </menu>
+        </item>
 
         <item android:title="Logout">
             <menu>

@@ -17,8 +17,8 @@ import androidx.viewpager.widget.PagerAdapter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestListener;
-import com.skylightapp.Classes.SkyLightPackage;
-import com.skylightapp.Classes.SkyLightPackModel;
+import com.skylightapp.MarketClasses.MarketBizPackModel;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -31,17 +31,17 @@ import java.util.List;
 public class NewSkylightPackageSlider extends PagerAdapter implements Filterable, View.OnClickListener {
 
     private Context Mcontext;
-    private List<SkyLightPackModel> theSlideItemsModelClassList = new ArrayList<>();
-    private List<SkyLightPackModel> itemsListFilter = new ArrayList<>();
+    private List<MarketBizPackModel> theSlideItemsModelClassList = new ArrayList<>();
+    private List<MarketBizPackModel> itemsListFilter = new ArrayList<>();
     Context context;
-    private ArrayList<SkyLightPackModel> packageList;
-    private ArrayList<SkyLightPackage> skyLightPackages;
+    private ArrayList<MarketBizPackModel> packageList;
+    private ArrayList<MarketBizPackage> marketBizPackages;
     private OnItemsClickListener listener;
-    private SkyLightPackModel skyLightPackModel;
+    private MarketBizPackModel skyLightPackModel;
     Bundle bundle;
     RequestListener<Drawable> imageListener;
 
-    public NewSkylightPackageSlider(Context Mcontext, List<SkyLightPackModel> theSlideItemsModelClassList,OnItemsClickListener listener) {
+    public NewSkylightPackageSlider(Context Mcontext, List<MarketBizPackModel> theSlideItemsModelClassList, OnItemsClickListener listener) {
         this.Mcontext = Mcontext;
         this.theSlideItemsModelClassList = theSlideItemsModelClassList;
         this.listener = listener;
@@ -53,7 +53,7 @@ public class NewSkylightPackageSlider extends PagerAdapter implements Filterable
 
         LayoutInflater inflater = (LayoutInflater) Mcontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View sliderLayout = inflater.inflate(R.layout.slider_layout3,null);
-        SkyLightPackModel listModel=theSlideItemsModelClassList.get(position);
+        MarketBizPackModel listModel=theSlideItemsModelClassList.get(position);
 
         ImageView featured_image = sliderLayout.findViewById(R.id.item_image5);
         TextView itemName = sliderLayout.findViewById(R.id.item_title66);
@@ -158,13 +158,13 @@ public class NewSkylightPackageSlider extends PagerAdapter implements Filterable
         Filter filter = new Filter() {
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                theSlideItemsModelClassList = (List<SkyLightPackModel>) results.values;
+                theSlideItemsModelClassList = (List<MarketBizPackModel>) results.values;
                 notifyDataSetChanged();
             }
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
-                List<SkyLightPackModel> filteredList = new ArrayList<>();
+                List<MarketBizPackModel> filteredList = new ArrayList<>();
                 String searchText = constraint.toString().toLowerCase();
                 String[] split = searchText.split(",");
                 ArrayList<String> stringArrayList = new ArrayList<>(split.length);
@@ -176,7 +176,7 @@ public class NewSkylightPackageSlider extends PagerAdapter implements Filterable
                         stringArrayList.add(trim);
                 }
 
-                for (SkyLightPackModel dataNames : itemsListFilter) {
+                for (MarketBizPackModel dataNames : itemsListFilter) {
                     // filter by title
                     if (dataNames.getpMItemName().toLowerCase().trim().contains(searchText)) {
                         filteredList.add(dataNames);
@@ -197,7 +197,7 @@ public class NewSkylightPackageSlider extends PagerAdapter implements Filterable
         if (pack.length() < 0) {
             itemsListFilter.addAll(packageList);
         } else {
-            for (SkyLightPackModel ls : packageList) {
+            for (MarketBizPackModel ls : packageList) {
 
                 if (ls.getpMItemName().contains(pack)) {
 
@@ -216,7 +216,7 @@ public class NewSkylightPackageSlider extends PagerAdapter implements Filterable
     }
 
     public interface OnItemsClickListener{
-        void onItemClick(SkyLightPackModel lightPackage);
+        void onItemClick(MarketBizPackModel lightPackage);
     }
 
 

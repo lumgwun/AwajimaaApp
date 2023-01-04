@@ -245,7 +245,7 @@ public class StockTransferDAO extends DBHelperDAO{
         db.close();
         return stockTransferArrayList;
     }
-    public ArrayList<StockTransfer> getStocksTransferFromSkylight(String Skylight) {
+    public ArrayList<StockTransfer> getStocksTransferFromAwajima(String Skylight) {
         ArrayList<StockTransfer> stockTransferArrayList = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         String selection = T_STOCK_FROM + "=?";

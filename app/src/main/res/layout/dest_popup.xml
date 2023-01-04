@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_layer_3b"
+            android:gravity="center_vertical"
+            android:padding="15dp"
+            android:orientation="horizontal" >
+
+            <AutoCompleteTextView
+                android:id="@+id/etPopupDestination"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:drawableLeft="@drawable/searchpreference_ic_search"
+                android:drawablePadding="5dp"
+                android:hint="Search destination"
+                android:imeOptions="actionDone"
+                android:inputType="textNoSuggestions"
+                android:paddingLeft="10dp"
+                android:paddingRight="2dp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="17sp" >
+
+                <requestFocus />
+            </AutoCompleteTextView>
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/imgClearDest"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@null"
+                android:padding="10dp"
+                android:src="@drawable/ic_close"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:id="@+id/layoutHomeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rect_their_message"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" >
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvHomeAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="2dp"
+                        android:singleLine="true"
+                        android:text="Home"
+                        android:textColor="@color/gray"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+
+                <ImageButton
+                    android:id="@+id/btnEditHome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_add_business"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutHomeEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rect_their_message"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone" >
+
+                <AutoCompleteTextView
+                    android:id="@+id/etHomeAddress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:drawableLeft="@drawable/searchpreference_ic_search"
+                    android:drawablePadding="5dp"
+                    android:hint="Home"
+                    android:imeOptions="actionDone"
+                    android:inputType="textNoSuggestions"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" >
+
+                    <requestFocus />
+                </AutoCompleteTextView>
+
+                <ImageButton
+                    android:id="@+id/imgClearHome"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@null"
+                    android:padding="20dp"
+                    android:src="@drawable/ic_close"
+                    android:visibility="visible" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:id="@+id/layoutWorkText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" >
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvWorkAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="2dp"
+                        android:singleLine="true"
+                        android:text="Work"
+                        android:textColor="@color/gray"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+
+                <ImageButton
+                    android:id="@+id/btnEditWork"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_add_business"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutWorkEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_layer_3b"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone" >
+
+                <AutoCompleteTextView
+                    android:id="@+id/etWorkAddress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:drawableLeft="@drawable/searchpreference_ic_search"
+                    android:drawablePadding="5dp"
+                    android:hint="Work"
+                    android:imeOptions="actionDone"
+                    android:inputType="textNoSuggestions"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" >
+
+                    <requestFocus />
+                </AutoCompleteTextView>
+
+                <ImageButton
+                    android:id="@+id/imgClearWork"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@null"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_close"
+                    android:visibility="visible" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ProgressBar
+                android:id="@+id/pbNearby"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+
+            <ListView
+                android:id="@+id/nearByList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" >
+            </ListView>
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_height="match_parent"
-    android:background="?android:attr/activatedBackgroundIndicator">
+    android:layout_height="wrap_content"
+    android:background="@drawable/rect_their_message">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:id="@+id/id_l1"
-            android:padding="20dp"
+            android:padding="5dp"
             android:orientation="vertical"
             android:background="@drawable/rect_their_black"
             android:layout_height="wrap_content">
@@ -34,21 +34,21 @@
                     android:layout_gravity="center_horizontal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/transfer3"
+                    app:srcCompat="@drawable/m4"
                     android:contentDescription="Account Image" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:text=" Creek Road Market"
                     android:id="@+id/marketName"
-                    android:layout_marginEnd="20dp"
-                    android:padding="15dp"
+                    android:layout_marginEnd="2dp"
+                    android:padding="5dp"
                     android:typeface="serif"
-                    android:textSize="18sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"
                     android:gravity="center_horizontal"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginBottom="10dp"
                     android:textColor="@color/black"
                     android:layout_height="wrap_content"/>
 
@@ -58,22 +58,22 @@
                 android:layout_width="match_parent"
                 android:text=" Port Harcourt"
                 android:id="@+id/lga_m"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="2dp"
                 android:textStyle="bold"
                 android:gravity="center_horizontal"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginBottom="10dp"
                 android:textColor="@color/red_brown_dark"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:layout_width="match_parent"
                 android:text=" Rivers State"
                 android:id="@+id/market_State"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="2dp"
                 android:textStyle="bold"
                 android:gravity="center_horizontal"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginBottom="10dp"
                 android:textColor="@color/red_brown_dark"
                 android:layout_height="wrap_content"/>
             <TextView
@@ -82,9 +82,9 @@
                 android:id="@+id/type_market"
                 android:textStyle="bold"
                 android:gravity="center_horizontal"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="2dp"
                 android:textColor="@color/red_brown_dark"
                 android:layout_height="wrap_content"/>
 
@@ -110,10 +110,10 @@
             android:id="@+id/textView28"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingStart="16dp"
+            android:paddingStart="6dp"
             android:layout_weight="1"
             android:paddingTop="6dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="6dp"
             android:paddingBottom="6dp"
             android:text="Edit"
             android:textAlignment="center"
@@ -123,10 +123,10 @@
             android:id="@+id/textView29"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingStart="16dp"
+            android:paddingStart="6dp"
             android:layout_weight="1"
             android:paddingTop="6dp"
-            android:paddingEnd="16dp"
+            android:paddingEnd="6dp"
             android:paddingBottom="6dp"
             android:text="Remove"
             android:textAlignment="center"

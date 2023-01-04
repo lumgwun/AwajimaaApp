@@ -65,17 +65,30 @@ public class SuperMPaymentListA extends AppCompatActivity implements PaymentAdap
         //profileID =userProfile.getuID();
         recyclerView = findViewById(R.id.recycler_vPayment);
         paymentArrayList = new ArrayList<Payment>();
-
-        mAdapter = new PaymentAdapterSuper(this, R.layout.super_payment_row, paymentArrayList);
+        PaymentDAO paymentDAO = new PaymentDAO(this);
 
         dbHelper = new DBHelper(this);
-        PaymentDAO paymentDAO = new PaymentDAO(this);
+
+
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             dbHelper.openDataBase();
             sqLiteDatabase = dbHelper.getReadableDatabase();
-            paymentArrayList = paymentDAO.getALLPaymentsSuper();
+            try {
+                if(paymentDAO !=null){
+                    paymentArrayList = paymentDAO.getALLPaymentsSuper();
+
+                }
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
         }
+        mAdapter = new PaymentAdapterSuper(this, R.layout.super_payment_row, paymentArrayList);
+
+
+
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);

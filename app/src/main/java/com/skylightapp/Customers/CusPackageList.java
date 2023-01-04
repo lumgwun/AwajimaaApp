@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 import com.skylightapp.Adapters.PackageRecyclerAdapter;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.R;
 
@@ -26,7 +26,7 @@ import java.util.ArrayList;
 public class CusPackageList extends AppCompatActivity implements PackageRecyclerAdapter.OnItemsClickListener{
     private RecyclerView recyclerView;
 
-    private ArrayList<SkyLightPackage> skyLightPackages;
+    private ArrayList<MarketBizPackage> marketBizPackages;
     private PackageRecyclerAdapter mAdapter;
     private Customer customer;
     private int customerID;
@@ -69,7 +69,7 @@ public class CusPackageList extends AppCompatActivity implements PackageRecycler
         recyclerView = findViewById(R.id.recycler_Customer_Packs);
         txtPackMessage = findViewById(R.id.pText);
         gson = new Gson();
-        skyLightPackages = new ArrayList<>();
+        marketBizPackages = new ArrayList<>();
         customer=new Customer();
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPrefUserName = sharedPreferences.getString("USER_NAME", "");
@@ -95,14 +95,14 @@ public class CusPackageList extends AppCompatActivity implements PackageRecycler
 
             }
         }
-        skyLightPackages = dbHelper.getPackagesFromCustomer(customerID);
+        marketBizPackages = dbHelper.getPackagesFromCustomer(customerID);
 
-        if(skyLightPackages.size()==0){
+        if(marketBizPackages.size()==0){
             txtPackMessage.setText(MessageFormat.format("Packs:", "0"));
         }else {
-            txtPackMessage.setText(MessageFormat.format("Packs:", skyLightPackages.size()));
+            txtPackMessage.setText(MessageFormat.format("Packs:", marketBizPackages.size()));
         }
-        mAdapter = new PackageRecyclerAdapter(this, skyLightPackages);
+        mAdapter = new PackageRecyclerAdapter(this, marketBizPackages);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -113,10 +113,10 @@ public class CusPackageList extends AppCompatActivity implements PackageRecycler
     }
 
     @Override
-    public void onItemClick(SkyLightPackage skyLightPackage) {
+    public void onItemClick(MarketBizPackage marketBizPackage) {
         Bundle bundle=new Bundle();
         Intent intent = new Intent(this, OldPackCusAct.class);
-        bundle.putParcelable("SkyLightPackage",skyLightPackage);
+        bundle.putParcelable("MarketBizPackage", marketBizPackage);
         startActivity(intent);
 
     }

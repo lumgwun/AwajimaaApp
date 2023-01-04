@@ -14,11 +14,10 @@ import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.Toast;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Customers.CusPacksAct;
+import com.skylightapp.Customers.CusDocCodeSavingsAct;
 import com.skylightapp.R;
 
 public class TellerHomeChoices extends TabActivity {
@@ -37,7 +36,7 @@ public class TellerHomeChoices extends TabActivity {
     SharedPreferences sharedPreferences;
     private Gson gson;
     private String json;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
 
 
     String SharedPrefUserPassword;
@@ -69,20 +68,20 @@ public class TellerHomeChoices extends TabActivity {
         SharedPrefUserMachine=sharedPreferences.getString("machine", "");
         SharedPrefProfileID=sharedPreferences.getInt("PROFILE_ID", 0);
 
-        Intent intentSignUp = new Intent().setClass(this, TellerDrawerAct.class);
-        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecSignUp = tabhost
+        Intent intentTW = new Intent().setClass(this, TellerDrawerAct.class);
+        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecT = tabhost
                 .newTabSpec("Home")
                 .setIndicator("", resources.getDrawable(R.drawable.ic_icon2))
-                .setContent(intentSignUp);
-        Intent intentSignIn = new Intent().setClass(this, CusPacksAct.class);
-        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecLogin = tabhost
+                .setContent(intentTW);
+        Intent intentC = new Intent().setClass(this, CusDocCodeSavingsAct.class);
+        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecC = tabhost
                 .newTabSpec("History")
                 .setIndicator("", resources.getDrawable(R.drawable.ic_icon2))
-                .setContent(intentSignIn);
+                .setContent(intentC);
 
 
-        tabhost.addTab(tabSpecSignUp);
-        tabhost.addTab(tabSpecLogin);
+        tabhost.addTab(tabSpecT);
+        tabhost.addTab(tabSpecC);
 
         tabhost.setCurrentTab(0);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {

@@ -1,24 +1,16 @@
 package com.skylightapp.Database;
 
-import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_ADDRESS;
-import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_APPROVER;
-import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_BIZ_ID;
-import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_DATE;
 import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_ID;
-import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_NAME;
-import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_STATUS;
-import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_TABLE;
-import static com.skylightapp.Classes.OfficeBranch.OFFICE_SUPERADMIN_ID;
-import static com.skylightapp.MarketClasses.MarketBizSubScription.MARKET_BIZ_SUB_AMOUNT1;
-import static com.skylightapp.MarketClasses.MarketBizSubScription.MARKET_BIZ_SUB_BIZ_ID;
-import static com.skylightapp.MarketClasses.MarketBizSubScription.MARKET_BIZ_SUB_DATE;
-import static com.skylightapp.MarketClasses.MarketBizSubScription.MARKET_BIZ_SUB_END_T;
-import static com.skylightapp.MarketClasses.MarketBizSubScription.MARKET_BIZ_SUB_MODE_OF_P;
-import static com.skylightapp.MarketClasses.MarketBizSubScription.MARKET_BIZ_SUB_NO_OF_MONTHS;
-import static com.skylightapp.MarketClasses.MarketBizSubScription.MARKET_BIZ_SUB_PROF_ID;
-import static com.skylightapp.MarketClasses.MarketBizSubScription.MARKET_BIZ_SUB_START_T;
-import static com.skylightapp.MarketClasses.MarketBizSubScription.MARKET_BIZ_SUB_STATUS;
-import static com.skylightapp.MarketClasses.MarketBizSubScription.MARKET_BIZ_SUB_TABLE;
+import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_AMOUNT1;
+import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_BIZ_ID;
+import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_DATE;
+import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_END_T;
+import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_MODE_OF_P;
+import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_NO_OF_MONTHS;
+import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_PROF_ID;
+import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_START_T;
+import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_STATUS;
+import static com.skylightapp.MarketClasses.MarketBizSub.MARKET_BIZ_SUB_TABLE;
 
 import static java.lang.String.valueOf;
 
@@ -29,8 +21,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.skylightapp.Classes.OfficeBranch;
-import com.skylightapp.MarketClasses.MarketBizSubScription;
+import com.skylightapp.MarketClasses.MarketBizSub;
 
 import java.util.ArrayList;
 
@@ -58,7 +49,7 @@ public class BizSubscriptionDAO extends DBHelperDAO{
         values.put(MARKET_BIZ_SUB_MODE_OF_P, modeOfPayment);
         return db.insert(MARKET_BIZ_SUB_TABLE, null, values);
     }
-    private void getSubscriptionCursor(ArrayList<MarketBizSubScription> bizSubScriptions, Cursor cursor) {
+    private void getSubscriptionCursor(ArrayList<MarketBizSub> bizSubScriptions, Cursor cursor) {
         while (cursor.moveToNext()) {
 
             int subID = cursor.getInt(0);
@@ -75,12 +66,12 @@ public class BizSubscriptionDAO extends DBHelperDAO{
             int noOfMonths = cursor.getInt(11);
             int profID = cursor.getInt(12);
 
-            bizSubScriptions.add(new MarketBizSubScription(subID,bizID,marketID, profID,type,amount,currency,noOfMonths,date,startTime,endTime,modeOfPayment,status));
+            bizSubScriptions.add(new MarketBizSub(subID,bizID,marketID, profID,type,amount,currency,noOfMonths,date,startTime,endTime,modeOfPayment,status));
         }
     }
-    public ArrayList<MarketBizSubScription> getAllSubscriptions() {
+    public ArrayList<MarketBizSub> getAllSubscriptions() {
         try {
-            ArrayList<MarketBizSubScription> subScriptions = new ArrayList<>();
+            ArrayList<MarketBizSub> subScriptions = new ArrayList<>();
             SQLiteDatabase db = this.getWritableDatabase();
             Cursor cursor = db.query(MARKET_BIZ_SUB_TABLE, null, null, null, null,
                     null, null);
@@ -104,8 +95,8 @@ public class BizSubscriptionDAO extends DBHelperDAO{
         return null;
     }
 
-    public ArrayList<MarketBizSubScription> getSubForBusiness(long bizID) {
-        ArrayList<MarketBizSubScription> subScriptionArrayList = new ArrayList<>();
+    public ArrayList<MarketBizSub> getSubForBusiness(long bizID) {
+        ArrayList<MarketBizSub> subScriptionArrayList = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         String selection = MARKET_BIZ_SUB_BIZ_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(bizID)};
@@ -124,8 +115,8 @@ public class BizSubscriptionDAO extends DBHelperDAO{
 
         return subScriptionArrayList;
     }
-    public ArrayList<MarketBizSubScription> getSubForProfile(int profID) {
-        ArrayList<MarketBizSubScription> subScriptionArrayList = new ArrayList<>();
+    public ArrayList<MarketBizSub> getSubForProfile(int profID) {
+        ArrayList<MarketBizSub> subScriptionArrayList = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         String selection = MARKET_BIZ_SUB_PROF_ID + "=?";
         String[] selectionArgs = new String[]{valueOf(profID)};

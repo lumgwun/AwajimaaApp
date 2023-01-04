@@ -22,7 +22,7 @@ public class VerificationServices {
     public String doBvnVerification(Bvnload bvnload) throws IOException, Exception {
         StringBuilder result = new StringBuilder();
         try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
-            String seckey = OurConfig.SKYLIGHT_SECRET_KEY;
+            String seckey = OurConfig.AWAJIMA_PAYSTACK_SECRET_KEY;
             String bvn = bvnload.getBvn();
             HttpGet httpGet = new HttpGet(OurConfig.BVN_LIVE + "/" + bvn + "?seckey=" + seckey + "");
 

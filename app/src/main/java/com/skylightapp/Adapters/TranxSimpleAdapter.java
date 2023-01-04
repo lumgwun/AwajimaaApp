@@ -20,7 +20,7 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.Payment;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Classes.User;
 import com.skylightapp.Database.DBHelper;
@@ -170,7 +170,7 @@ public class TranxSimpleAdapter extends RecyclerView.Adapter<TranxSimpleAdapter.
         holder.mItem = transactions.get(position);
         final Transaction transaction = transactions.get(position);
         final CustomerDailyReport customerDailyReport = new CustomerDailyReport();
-        final SkyLightPackage skyLightPackage = new SkyLightPackage();
+        final MarketBizPackage marketBizPackage = new MarketBizPackage();
         final Customer customer = new Customer();
         long customerID = customer.getCusUID();
         final Payment payee = new Payment();

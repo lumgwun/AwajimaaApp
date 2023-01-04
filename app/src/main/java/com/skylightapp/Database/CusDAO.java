@@ -11,7 +11,6 @@ import android.util.Log;
 
 import com.skylightapp.Classes.ChartData;
 import com.skylightapp.Classes.Customer;
-import com.skylightapp.Classes.TellerCountData;
 import com.skylightapp.Classes.Utils;
 
 import java.text.SimpleDateFormat;
@@ -35,27 +34,17 @@ import static com.skylightapp.Classes.Customer.CUSTOMER_SURNAME;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
 import static com.skylightapp.Classes.Customer.CUSTOMER_USER_NAME;
 import static com.skylightapp.Classes.Customer.CUS_BIZ_ID1;
-import static com.skylightapp.Classes.CustomerDailyReport.DAILY_REPORT_TABLE;
-import static com.skylightapp.Classes.CustomerDailyReport.REPORT_PROF_ID_FK;
-import static com.skylightapp.Classes.Loan.LOAN_PROF_ID;
-import static com.skylightapp.Classes.Loan.LOAN_TABLE;
-import static com.skylightapp.Classes.Message.MESSAGE_PROF_ID;
-import static com.skylightapp.Classes.Message.MESSAGE_TABLE;
-import static com.skylightapp.Classes.PaymentCode.CODE_PROFILE_ID;
-import static com.skylightapp.Classes.PaymentCode.CODE_TABLE;
+import static com.skylightapp.Classes.Payment.PAYMENT_DATE;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
-import static com.skylightapp.Classes.Profile.PROFILE_PASSWORD;
 import static com.skylightapp.Classes.Profile.PROFILE_ROLE;
 import static com.skylightapp.Classes.Profile.PROF_ID_FOREIGN_KEY_PASSWORD;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_CUSTOMER_ID_FOREIGN;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_PROFILE_ID_FOREIGN;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_TABLE;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_TYPE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_CUSTOMER_ID_FOREIGN;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_ID;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_TABLE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_TYPE;
 import static com.skylightapp.Classes.StandingOrder.SO_CUS_ID;
 import static com.skylightapp.Classes.StandingOrder.STANDING_ORDER_TABLE;
-import static com.skylightapp.Classes.Transaction.TRANSACTIONS_TABLE;
-import static com.skylightapp.Classes.Transaction.TRANSACTION_PROF_ID;
 import static java.lang.String.valueOf;
 
 public class CusDAO extends DBHelperDAO{
@@ -396,6 +385,57 @@ public class CusDAO extends DBHelperDAO{
 
         return customers;
     }
+
+    public ArrayList<Customer> getCustomersBlockedForBiz(long bizID,String blocked) {
+        ArrayList<Customer> customerArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String selection = CUS_BIZ_ID1 + "=? AND " + CUSTOMER_STATUS + "=?";
+        String[] selectionArgs = new String[]{valueOf(bizID), valueOf(blocked)};
+
+        Cursor cursor = db.query(CUSTOMER_TABLE, null,  selection, selectionArgs, null, null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getCustomerFromCursor(customerArrayList, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+        db.close();
+
+        cursor.close();
+
+        return customerArrayList;
+    }
+    public ArrayList<Customer> getCustomersForBizJoinedThisYear(long bizID,String year) {
+        ArrayList<Customer> customerArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String selection = CUS_BIZ_ID1 + "=? AND " + CUSTOMER_DATE_JOINED + "=?";
+        String[] selectionArgs = new String[]{valueOf(bizID), valueOf(year)};
+        String orderbyclause = "substr(" + CUSTOMER_DATE_JOINED + ",7,2)||substr(" + CUSTOMER_DATE_JOINED + ",4,2)";
+        String groupbyclause = "substr(" + CUSTOMER_DATE_JOINED + ",4)";
+
+        Cursor cursor = db.query(CUSTOMER_TABLE, null,  selection, selectionArgs, groupbyclause, null, orderbyclause);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getCustomerFromCursor(customerArrayList, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+        db.close();
+
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        return customerArrayList;
+    }
     public ArrayList<Customer> getCusForInvestment(String investment) {
         ArrayList<Customer> customers = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
@@ -469,7 +509,7 @@ public class CusDAO extends DBHelperDAO{
 
             String selection = "customerPhoneNumber = \"" + customerPhoneNumber + "\"";
 
-            int rowsDeleted = myCR.delete(UserContentProvider.CONTENT_URI,
+            int rowsDeleted = myCR.delete(UserContentProvider.BASE_CONTENT_URI,
                     selection, null);
 
             if (rowsDeleted > 0)
@@ -697,6 +737,46 @@ public class CusDAO extends DBHelperDAO{
         return customers;
 
     }
+
+    public ArrayList<Customer> getAllCusForBizWithoutPacksr() {
+        ArrayList<Customer> customers = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String rawQuery = "SELECT * FROM " + CUSTOMER_TABLE + " INNER JOIN " + PACKAGE_TABLE
+                + " ON " + CUSTOMER_ID + " = " + PACKAGE_CUSTOMER_ID_FOREIGN;
+        Cursor cursor = db.rawQuery(rawQuery,
+                null);
+        getCustomerFromCursor(customers, cursor);
+        cursor.close();
+        db.close();
+
+        return customers;
+    }
+    public ArrayList<Customer> getAllCusForBizPacks(long bizID,int packageID) {
+        ArrayList<Customer> customers = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String selection = CUS_BIZ_ID1 + "=?AND " + PACKAGE_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(bizID), valueOf(packageID)};
+
+        Cursor cursor = db.query(
+                CUSTOMER_TABLE + " , " + PACKAGE_TABLE,
+                Utils.concat(new String[]{CUSTOMER_TABLE, PACKAGE_TABLE}),
+                CUS_BIZ_ID1 + " = " + PACKAGE_ID + " AND " + CUS_BIZ_ID1 + " = " +  bizID ,
+                null, CUSTOMER_FIRST_NAME, null, CUSTOMER_GENDER);
+
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getCustomersFromCursor(customers, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        return customers;
+    }
+
     public ArrayList<Customer> getCustomerFromCurrentProfile(int profileID) {
         ArrayList<Customer> customers = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
@@ -721,6 +801,7 @@ public class CusDAO extends DBHelperDAO{
 
         return customers;
     }
+
     public int getCustomersCountAdmin() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor=null;
@@ -947,7 +1028,7 @@ public class CusDAO extends DBHelperDAO{
 
         String selection = "CUSTOMER_PHONE_NUMBER = \"" + phoneNumber + "\"";
 
-        Cursor cursor = myCR.query(UserContentProvider.CONTENT_URI,
+        Cursor cursor = myCR.query(UserContentProvider.BASE_CONTENT_URI,
                 projection, selection, null,
                 null);
 
@@ -1218,5 +1299,51 @@ public class CusDAO extends DBHelperDAO{
         cursor.close();
         db.close();
         return customers;
+    }
+    public ArrayList<Customer> getCustomerFromBiz(long bizID) {
+        ArrayList<Customer> customers = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = CUS_BIZ_ID1 + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(bizID)};
+
+        Cursor cursor = db.query(CUSTOMER_TABLE, null, selection, selectionArgs, null,
+                null, null);
+
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getSimpleCustomersFromCursor(customers, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+
+        return customers;
+    }
+
+    public ArrayList<Customer> getCustomersForBizToday(long bizID,String date) {
+        ArrayList<Customer> customerArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String selection = CUS_BIZ_ID1 + "=? AND " + CUSTOMER_DATE_JOINED + "=?";
+        String[] selectionArgs = new String[]{valueOf(bizID), valueOf(date)};
+
+        Cursor cursor = db.query(CUSTOMER_TABLE, null,  selection, selectionArgs, null, null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getCustomerFromCursor(customerArrayList, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+        db.close();
+
+        cursor.close();
+
+        return customerArrayList;
     }
 }

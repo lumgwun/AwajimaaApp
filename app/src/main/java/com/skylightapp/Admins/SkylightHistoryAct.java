@@ -88,7 +88,7 @@ public class SkylightHistoryAct extends AppCompatActivity {
 
     public void packageStuff() {
 
-        Intent intent = new Intent(this, AdminPackageActivity.class);
+        Intent intent = new Intent(this, AdminPackageAct.class);
         Toast.makeText(this, "Taking you to the Customer area", Toast.LENGTH_LONG).show();
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         //intent.putExtra("User", profileID);

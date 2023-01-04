@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="340dp"
+    android:layout_height="510dp"
     android:background="@drawable/shape_rect_7"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.skylightapp.Customers.NewCustomerDrawer"
@@ -14,17 +14,17 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:id="@+id/linearGrid"
-        android:weightSum="15">
+        android:weightSum="20">
 
         <androidx.gridlayout.widget.GridLayout
             android:id="@+id/ViewCus"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="10"
+            android:layout_weight="15"
             app:alignmentMode="alignMargins"
             app:columnCount="2"
             app:columnOrderPreserved="false"
-            android:paddingTop="14dp"
+            android:paddingTop="16dp"
             app:rowCount="2">
 
             <androidx.cardview.widget.CardView
@@ -52,7 +52,7 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Report Emergency"
+                        android:text="Digital Akawo{ Savings}"
                         android:drawableTint="@color/colorPrimaryDar"
                         android:drawableTintMode="src_in"
                         android:drawableTop="@drawable/ic_menu_gallery"
@@ -88,7 +88,7 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Customer Pay"
+                        android:text="Markets"
                         android:drawableTint="#BA55D3"
                         android:drawableTop="@drawable/ic_menu_gallery"
                         android:textAlignment="center"
@@ -121,7 +121,7 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Orders"
+                        android:text="Group Savings"
                         android:drawableTint="#ff0000"
                         android:drawableTop="@drawable/ic_menu_gallery"
                         android:textAlignment="center"
@@ -154,7 +154,7 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="My Subcriptions"
+                        android:text="Loans"
                         android:drawableTint="@color/color_green_qb"
                         android:drawableTop="@drawable/ic_menu_gallery"
                         android:textAlignment="center"
@@ -163,6 +163,77 @@
                         android:textStyle="bold" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardCusOrders"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_columnWeight="1"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                app:layout_rowWeight="1"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardBackgroundColor="#EBA34B"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_margin="16dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Orders"
+                        android:drawableTint="@color/colorPrimaryDar"
+                        android:drawableTintMode="src_in"
+                        android:drawableTop="@drawable/ic_menu_gallery"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardBookings"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_columnWeight="1"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                app:layout_rowWeight="1"
+                app:cardBackgroundColor="@color/FUCHSIA"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_margin="16dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bookings"
+                        android:drawableTint="#FF710B"
+                        android:drawableTop="@drawable/ic_menu_gallery"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
 
 
         </androidx.gridlayout.widget.GridLayout>
@@ -178,8 +249,8 @@
                 android:layout_height="match_parent"
                 android:layout_columnWeight="1"
                 android:layout_marginBottom="16dp"
-                android:layout_marginLeft="18dp"
-                android:layout_marginRight="18dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_rowWeight="1">
 
                 <LinearLayout

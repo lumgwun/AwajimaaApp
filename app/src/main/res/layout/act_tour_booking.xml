@@ -1,19 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@drawable/sky4"
     android:layout_height="match_parent"
-    tools:context=".Bookings.TourBookingAct">
-    <androidx.appcompat.widget.AppCompatTextView
+    android:orientation="vertical" >
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:text="Coming Soon!"
+        android:layout_height="wrap_content"
+        android:background="@drawable/event_rect"
+        android:gravity="center" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <Spinner
+                android:id="@+id/spnTourPackage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shadow_left" />
+
+            <Spinner
+                android:id="@+id/spnTourType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_layer_3b" />
+
+            <Spinner
+                android:id="@+id/spnTourSchedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_layer_3b" />
+
+            <Spinner
+                android:id="@+id/spnTourPersons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_layer_3b" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtTourDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_layer_3b"
+                android:gravity="center_vertical"
+                android:padding="20dp"
+                android:text="Booking date"
+                android:paddingLeft="5dp"
+                android:textColor="@color/red_brown_dark" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:gravity="center"
-        android:textColor="@color/ORANGE_CHAT"
-        android:layout_gravity="center"
-        android:textSize="40sp"
-        android:layout_height="match_parent"/>
+        android:orientation="vertical" >
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Tarrif"
+            android:textColor="@color/red_brown_dark" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTotalTarrif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NGN33,654,702"
+            android:textColor="@color/red_brown_dark"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnBooking"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:background="@drawable/event_circle"
+        android:gravity="center"
+        android:text="BOOK TOUR"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white" />
+
+</LinearLayout>

@@ -30,11 +30,10 @@ import com.skylightapp.ClimateCRepAct;
 import com.skylightapp.ClimateCRespAct;
 import com.skylightapp.Customers.CustomerHelpActTab;
 import com.skylightapp.Customers.NewCustomerDrawer;
-import com.skylightapp.Customers.PackListTab;
-import com.skylightapp.InsuranceOffice;
-import com.skylightapp.MarketClasses.MarketBizSubScription;
+
+import com.skylightapp.MarketClasses.MarketBizSub;
 import com.skylightapp.Markets.MarketTab;
-import com.skylightapp.MyTimelineAct;
+
 import com.skylightapp.R;
 
 import java.util.ArrayList;
@@ -69,7 +68,7 @@ public class ClimateCOffice extends TabActivity {
     private World world;
     private CurrAdapter currencyAdapter;
     private ArrayList<Account> accountArrayList;
-    private ArrayList<MarketBizSubScription> marketBizSubScriptions;
+    private ArrayList<MarketBizSub> marketBizSubs;
 
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
     CardView cardViewPackges,cardViewGrpSavings,cardViewHistory, cardViewStandingOrders, cardViewOrders, cardViewSupport;
@@ -193,5 +192,28 @@ public class ClimateCOffice extends TabActivity {
                                         fragment).commit();*/
                     }
                 });
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
 }

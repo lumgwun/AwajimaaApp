@@ -310,6 +310,21 @@ public class BranchMPayments extends AppCompatActivity implements  PaymentAdapte
 
     }
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.branch_m_payment, menu);
 

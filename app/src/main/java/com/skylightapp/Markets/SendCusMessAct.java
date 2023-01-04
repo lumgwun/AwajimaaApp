@@ -75,7 +75,7 @@ public class SendCusMessAct extends AppCompatActivity implements AdapterView.OnI
 
     private DBHelper selector;
     private  Profile sendeeProfile,senderProfile;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private static final String APPLICATION_ID = QUICKBLOX_APP_ID;   //QUICKBLOX_APP_ID
     private static final String AUTH_KEY = QUICKBLOX_AUTH_KEY;
     private static final String AUTH_SECRET = QUICKBLOX_SECRET_KEY;
@@ -221,7 +221,7 @@ public class SendCusMessAct extends AppCompatActivity implements AdapterView.OnI
             recipientId=cusQBUser.getId();
         }
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        json1 = userPreferences.getString("LastProfileUsed", "");
+        json = userPreferences.getString("LastProfileUsed", "");
         senderProfile = gson.fromJson(json, Profile.class);
 
         json1 = userPreferences.getString("LastAdminProfileUsed", "");

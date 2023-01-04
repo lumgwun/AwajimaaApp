@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import com.google.android.gms.maps.model.LatLng;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Inventory.Stocks;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -67,7 +68,7 @@ public class UserSuperAdmin implements  Parcelable, Serializable {
     String sProfilePicture;
     protected ArrayList<AdminUser> s_AdminUsers;
     protected UserSuperAdmin sSuperAdmin;
-    protected ArrayList<SkyLightPackage> superSkyLightPackages;
+    protected ArrayList<MarketBizPackage> superMarketBizPackages;
     protected ArrayList<Customer> superCustomers;
     protected Customer superCustomer;
     protected ArrayList<CustomerManager> sCustomerManagers;
@@ -165,8 +166,8 @@ public class UserSuperAdmin implements  Parcelable, Serializable {
         parcel.writeInt(superID);
     }
 
-    public List<SkyLightPackage> getPackages() {
-        return (List<SkyLightPackage>) superSkyLightPackages;
+    public List<MarketBizPackage> getPackages() {
+        return (List<MarketBizPackage>) superMarketBizPackages;
     }
     public Customer getSuperCustomer() {
         return superCustomer;
@@ -307,11 +308,11 @@ public class UserSuperAdmin implements  Parcelable, Serializable {
     }
 
 
-    public ArrayList<SkyLightPackage> getSuperSkyLightPackages() {
-        return superSkyLightPackages;
+    public ArrayList<MarketBizPackage> getSuperSkyLightPackages() {
+        return superMarketBizPackages;
     }
-    public void setSuperSkyLightPackages(ArrayList<SkyLightPackage> skyLightPackages) {
-        this.superSkyLightPackages = skyLightPackages;
+    public void setSuperSkyLightPackages(ArrayList<MarketBizPackage> marketBizPackages) {
+        this.superMarketBizPackages = marketBizPackages;
     }
 
     public void setSCustomDailyReports(ArrayList<CustomerDailyReport> report) {

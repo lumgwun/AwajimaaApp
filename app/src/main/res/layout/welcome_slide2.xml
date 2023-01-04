@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:theme="@style/Theme.SkylightApp3"
-    android:background="@drawable/shape_layer_2a"
+    android:background="@drawable/event_circle"
+    style="@style/AwajimaThemeNoBar2"
     android:layout_height="match_parent">
     <View
         android:layout_width="match_parent"
@@ -15,14 +15,13 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:scrollbarStyle="outsideOverlay"
         android:scrollIndicators="left"
         android:layout_height="wrap_content">
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="15dp"
-            android:paddingEnd="10dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
@@ -30,18 +29,19 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="100dp"
                 android:layout_height="40dp"
-                android:background="@drawable/rect_their_message"
-                android:src="@drawable/lsgroup_logo" />
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rect6g_b"
+                android:src="@mipmap/l_awajima" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="We have daily savings for Groups and Individuals"
+                android:text="Save and Achieve your dreams!"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/gilroy_black"
                 android:background="@null"
                 android:gravity="center_horizontal"
-                android:textColor="@android:color/holo_red_dark"
+                android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:padding="20dp"
                 android:textStyle="bold" />
@@ -50,13 +50,15 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:padding="5dp"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="40dp"
                 android:background="@drawable/sky11"
                 android:layout_height="wrap_content">
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     app:cardCornerRadius="20dp"
-                    app:cardElevation="500dp"
+                    app:cardElevation="1000dp"
                     app:strokeColor="@color/red_brown_dark"
                     app:rippleColor="@color/red_brown_dark"
                     android:id="@+id/card_l1"
@@ -65,27 +67,28 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/switcher244"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
+                        android:layout_height="wrap_content"
                         android:padding="25dp"
                         android:textStyle="bold"
-                        android:textSize="17sp"
-                        android:layout_marginTop="2dp"
+                        android:textSize="19sp"
+                        android:layout_marginTop="20dp"
                         android:layout_marginBottom="2dp"
                         android:fontFamily="@font/gilroy_bold"
-                        android:textColor="@android:color/holo_orange_dark"
-                        android:gravity="center_horizontal"
-                        android:text="You can manage Your Customers, Partners, Regulators, daily icome, expenditures, deposits, and transactions,and Businesses can send messages, and hold Live Streaming sessions"
-                        android:background="@drawable/rect_their_message"
-                        android:src="@drawable/ls_logo" />
+                        android:textColor="@android:color/holo_green_light"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="Save for your Rent,   Marriage,   Property buying,   Japa Plans,  Stocking,Vacation plan,  medical Trip,  School fee,  and Investments"
+                        android:background="@drawable/rect6g_a" />
 
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     app:cardCornerRadius="20dp"
-                    app:cardElevation="500dp"
+                    app:cardElevation="-1000dp"
+                    android:visibility="gone"
+                    android:layout_marginTop="5dp"
                     app:strokeColor="@color/red_brown_dark"
-                    app:rippleColor="@color/red_brown_dark"
+                    app:rippleColor="@color/white_good"
                     android:id="@+id/card_l009871"
                     app:cardBackgroundColor="@color/white"
                     android:layout_height="wrap_content">
@@ -95,15 +98,14 @@
                         android:layout_height="wrap_content"
                         android:layout_alignStart="@+id/textView2"
                         android:layout_below="@+id/textView2"
-                        android:fontFamily="monospace"
-                        android:textSize="17sp"
+                        android:fontFamily="@font/gilroy_bold"
+                        android:textSize="19sp"
                         android:layout_marginBottom="10dp"
                         android:layout_marginTop="5dp"
-                        android:background="@drawable/rect_their4c"
                         android:foregroundGravity="center_horizontal"
-                        android:text="All-in-one Information management System for Inventory and Stocks Management and distribution of Agric supports to Farmers across different regions. The Field Tellers can send in the day's and Emergency Report report to the Business Office, and ,Admin can see real time updates,and manage Inventory"
+                        android:text="All-in-one Information management System for Inventory and Stocks Management and distribution , Agric supports to Farmers across different regions. Awajima for Industrial Cleaning and Waste disposal Business Lifcycle, and Market Deals"
                         android:textAlignment="center"
-                        android:padding="50dp"
+                        android:padding="20dp"
                         android:gravity="center_horizontal"
                         android:textColor="@android:color/holo_red_dark"
                         android:textStyle="bold" />
@@ -115,15 +117,18 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/switcher2"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="wrap_content"
                     android:padding="25dp"
+                    android:elevation="1000dp"
                     android:textStyle="bold"
-                    android:textSize="17sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="21sp"
                     android:textColor="@android:color/holo_red_dark"
                     android:gravity="center_horizontal"
-                    android:text="Awajima,The Future is Here!"
-                    android:background="@drawable/rect_their_message"
-                    android:src="@drawable/lsgroup1" />
+                    android:text="Awajima App ,The King in the Apps Jungle!"
+                    android:background="@drawable/rect6g_a" />
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -133,12 +138,11 @@
                     android:textAlignment="center"
                     android:layout_marginTop="1dp"
                     android:layout_gravity="center_horizontal"
-                    android:background="@drawable/shape_rect14"
-                    android:textColor="@android:color/white"
-                    android:padding="20dp"
+                    android:background="@drawable/shape_layer_3b"
+                    android:textColor="@color/dark_green"
+                    android:padding="40dp"
                     android:textStyle="bold"
                     tools:ignore="RtlCompat" />
-
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

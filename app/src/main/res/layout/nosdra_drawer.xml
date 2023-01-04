@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/nosdra_drawerL"
+    style="@style/Theme.OurCApp"
     android:background="@drawable/rect_their_message"
     android:fitsSystemWindows="true"
     tools:openDrawer="start"

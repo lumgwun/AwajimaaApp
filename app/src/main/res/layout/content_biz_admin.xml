@@ -6,12 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.skylightapp.Markets.BizAdminOffice">
+    <include layout="@layout/app_bar_biz_a" />
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:id="@+id/coord_biz_admin"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="20dp"
         android:layout_height="wrap_content">
+
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/biz_Admin_AppBar"
             android:layout_width="match_parent"

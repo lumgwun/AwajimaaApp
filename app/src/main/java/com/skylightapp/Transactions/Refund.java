@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class Refund {
     public String dorefund(RefundPayload refundpayload) {
-        SkylightPaymentServices paymentservices = new SkylightPaymentServices();
+        AwajimaPaymentServices paymentservices = new AwajimaPaymentServices();
 
 
         String payload = null;

@@ -104,9 +104,10 @@ public class MyBizDealListAct extends AppCompatActivity implements BizDealAdapte
     private Calendar calendar;
     private LinearLayoutCompat layoutByStatus,LayoutByToUs,LayoutByFromUs;
     private AppCompatSpinner spnStatus;
-    private String SharedPrefUserName,SharedPrefUserPassword,selectedStatus,SharedPrefUserMachine,todayDate;
+    private String SharedPrefUserName,SharedPrefUserPassword,dateOfDeal,selectedStatus,SharedPrefUserMachine,todayDate;
 
     private RecyclerView recyclerViewDeals,recylerToUs,recyViewByDate,recyViewHostDeal, recyclerViewDealsStatus;
+    private int year;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,15 +194,6 @@ public class MyBizDealListAct extends AppCompatActivity implements BizDealAdapte
 
         cardDatesButton = findViewById(R.id.cardDatesBtn);
 
-        recyViewHostDeal = findViewById(R.id.recyclerDealHost);
-        spnHosts = findViewById(R.id.spnDealHoster);
-        cardBtnSubmitHost = findViewById(R.id.cardHostPayer);
-
-
-        btnSubmitHost = findViewById(R.id.btnHostPayer);
-
-        btnSubmitHost.setOnClickListener(this::getBizDealByPayerHost);
-
         btnDealsToUs.setOnClickListener(this::revealDealToUsLayout);
         btnCreatedDate.setOnClickListener(this::revealDateLayout);
         btnDealsFromUs.setOnClickListener(this::revealFromUsLayout);
@@ -220,17 +212,28 @@ public class MyBizDealListAct extends AppCompatActivity implements BizDealAdapte
         SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
         SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
         SharedPrefUserMachine=userPreferences.getString("machine", "");
+        datePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseDate();
+            }
+        });
+        dateOfDeal = datePicker.getYear() + "-" + (datePicker.getMonth() + 1) + "-" + datePicker.getDayOfMonth();
+
 
         if(marketBusiness !=null){
             bizID =marketBusiness.getBusinessID();
             businessDealsAllToUs= bizDealDAO.getBizDealToBizID(bizID);
             businessDealArrayList=marketBusiness.getmBusBizDeals();
         }
+        if(dateOfDeal ==null){
+            dateOfDeal =todayDate;
+        }
         if(bizDealDAO !=null){
             bizDealsToUsByToday = bizDealDAO.getBizDealToBizAtCreatedToday(bizID,todayDate);
             bizDealsFromUsToday=bizDealDAO.getBizDealFromUsToday(bizID,todayDate);
             bizDealsToUsAtDate= bizDealDAO.getBizDealToBizAtCreatedToday(bizID,todayDate);
-            bizDealsFromUsAtDate=bizDealDAO.getBizDealFromBizAtCreatedDate(bizID,todayDate);
+            bizDealsFromUsAtDate=bizDealDAO.getBizDealFromBizAtCreatedDate(bizID,dateOfDeal);
             businessDealsAllToUs= bizDealDAO.getBizDealToBizID(bizID);
             businessDealsAllFromUs=bizDealDAO.getBizDealFromBizID(bizID);
         }
@@ -240,7 +243,12 @@ public class MyBizDealListAct extends AppCompatActivity implements BizDealAdapte
 
         }
 
+
         initiateRecycler();
+    }
+    private void chooseDate() {
+        dateOfDeal = datePicker.getYear()+"-"+ (datePicker.getMonth() + 1)+"-"+datePicker.getDayOfMonth();
+
     }
 
     private void initiateRecycler() {
@@ -253,6 +261,29 @@ public class MyBizDealListAct extends AppCompatActivity implements BizDealAdapte
         snapHelper.attachToRecyclerView(recyclerViewDealsStatus);
         recyclerViewDealsStatus.setNestedScrollingEnabled(false);
         recyclerViewDealsStatus.invalidate ();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
 
     @Override

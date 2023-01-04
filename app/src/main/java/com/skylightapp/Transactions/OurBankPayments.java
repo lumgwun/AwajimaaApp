@@ -12,7 +12,7 @@ import java.util.List;
 
 public class OurBankPayments {
     public String doflwbankpayment(BankPayload bankpayload) throws UnknownHostException {
-        SkylightPaymentServices paymentservices = new SkylightPaymentServices();
+        AwajimaPaymentServices paymentservices = new AwajimaPaymentServices();
         InetAddress localhost = InetAddress.getLocalHost();
         bankpayload.setIP((localhost).toString());
 

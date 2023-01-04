@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/android.R.id.home"
+        android:title="Home"
+        app:cnb_backgroundColor="@color/dark_and_red"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#2196F3"
+        app:showAsAction="always"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_admin_panel"/>
+
+    <item
+        android:id="@+id/my_state_Pref"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#4CAF50"
+        app:showAsAction="always"
+        android:orderInCategory="100"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        android:icon="@drawable/settings_w_fg"
+        android:title="My State Preference" />
+
+    <item
+        android:id="@+id/my_select_emerg"
+        app:cnb_iconTintMode="src_in"
+        app:cnb_iconColor="#4CAF50"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        android:icon="@drawable/ic_taxi33"
+        android:title="Select Emergency" />
+
+
+</menu>

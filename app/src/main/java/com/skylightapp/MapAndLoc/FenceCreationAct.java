@@ -20,8 +20,8 @@ public class FenceCreationAct extends AppCompatActivity {
 
     private RecyclerView recycler,recyclerReal;
     private ArrayList<FenceEvent> fenceEventArrayList;
-    private FenceAdapterDummy adapter;
-    private FenceEventsAdapter fenceEventsAdapter;
+    private FenceEventAdapter adapter;
+    private FenceAd fenceAd;
     private FenceEventDAO fenceEventDAO;
     private DBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;

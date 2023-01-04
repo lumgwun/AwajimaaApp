@@ -42,6 +42,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
 import com.quickblox.core.helper.StringifyArrayList;
 import com.quickblox.users.model.QBUser;
+import com.skylightapp.CustomApplication;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.MapAndLoc.Fence;
 import com.skylightapp.MapAndLoc.FenceEvent;
@@ -52,6 +53,7 @@ import com.skylightapp.MarketClasses.MyPreferences;
 import com.skylightapp.MarketClasses.SampleConfigs;
 import com.skylightapp.MarketClasses.MarketStock;
 import com.skylightapp.R;
+import com.teliver.sdk.core.Teliver;
 
 import org.acra.ACRA;
 import org.acra.ReportField;
@@ -71,6 +73,7 @@ import static com.skylightapp.BuildConfig.QUICKBLOX_ACCT_KEY;
 import static com.skylightapp.BuildConfig.QUICKBLOX_APP_ID;
 import static com.skylightapp.BuildConfig.QUICKBLOX_AUTH_KEY;
 import static com.skylightapp.BuildConfig.QUICKBLOX_SECRET_KEY;
+import static com.skylightapp.BuildConfig.Teliver_API_Key;
 
 
 @ReportsCrashes(mailTo = "lumgwun1@gmail.com", customReportContent = {
@@ -78,7 +81,7 @@ import static com.skylightapp.BuildConfig.QUICKBLOX_SECRET_KEY;
         ReportField.ANDROID_VERSION, ReportField.PHONE_MODEL,
         ReportField.CUSTOM_DATA, ReportField.STACK_TRACE, ReportField.LOGCAT}, mode = ReportingInteractionMode.TOAST, resToastText = R.string.crash_toast_text)
 
-public class AppController extends MultiDexApplication {
+public class AppController extends CustomApplication {
 
     public static final String TAG = AppController.class.getSimpleName();
     private static final String CLASSTAG =
@@ -204,6 +207,8 @@ public class AppController extends MultiDexApplication {
         this.hasFineLocationPermission = hasFineLocationPermission;
     }
 
+
+
     public enum Status {DEFAULT, FENCES_ADDED, FENCES_FAILED, FENCES_REMOVED}
 
     private FusedLocationProviderClient fusedLocationClient;
@@ -238,6 +243,7 @@ public class AppController extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        //Teliver.init(this,Teliver_API_Key);
         mInstance = this;
         initDayNight();
         initializeFirebase();
@@ -499,7 +505,14 @@ public class AppController extends MultiDexApplication {
 
     public AppController() {
         mInstance = this;
-        sharedPreferences = AppController.getInstance().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        try {
+
+            sharedPreferences = AppController.getInstance().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        //sharedPreferences = mInstance.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+
     }
 
     public void delete(String key) {
@@ -605,7 +618,7 @@ public class AppController extends MultiDexApplication {
     }*/
 
     public void initializeFirebase() {
-        FirebaseApp.initializeApp(getApplicationContext());
+        //FirebaseApp.initializeApp(getApplicationContext());
        /* mFirebaseDatabase = FirebaseDatabase.getInstance();
         if (!isPersistenceEnabled) {
             FirebaseDatabase.getInstance().setPersistenceEnabled(true);

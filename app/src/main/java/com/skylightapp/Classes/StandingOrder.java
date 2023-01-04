@@ -20,6 +20,7 @@ import static com.skylightapp.Classes.StandingOrderAcct.SO_ACCT_TABLE;
 public class StandingOrder implements Serializable, Parcelable {
     public static final String STANDING_ORDER_TABLE = "standingOrderTable";
     public static final String SO_ID = "sO_id";
+    public static final String SO_DBID = "sO_DBid";
     public static final String SO_DAILY_AMOUNT = "So_Daily_Amount";
     public static final String SO_EXPECTED_AMOUNT = "so_AmountExp";
     public static final String SO_RECEIVED_AMOUNT = "so_AmountReceived";
@@ -33,13 +34,19 @@ public class StandingOrder implements Serializable, Parcelable {
     public static final String SO_CUS_ID = "SO_Cus_ID";
     public static final String SO_PROF_ID = "SO_Prof_ID";
     public static final String SO_APPROF_DATE = "SO_APProval_Date";
+    public static final String SO_REQUEST_DATE = "SO_Req_Date";
+    public static final String SO_PLAN = "SO_Plan";
+    public static final String SO_FREQUENCY = "SO_FReq";
+    public static final String SO_REQUEST_PLATFORM = "SO_Platform";
+    public static final String SO_NAME = "SO_Name";
+    public static final String SO_PURPOSE = "SO_Purpose";
 
-    public static final String CREATE_SO_TABLE = "CREATE TABLE IF NOT EXISTS " + STANDING_ORDER_TABLE + " (" + SO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + SO_DAILY_AMOUNT + " REAL, " +
+    public static final String CREATE_SO_TABLE = "CREATE TABLE IF NOT EXISTS " + STANDING_ORDER_TABLE + " (" + SO_DBID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + SO_ID + " INTEGER , "+ SO_DAILY_AMOUNT + " REAL, " +
             SO_CUS_ID + " INTEGER , " + SO_EXPECTED_AMOUNT + " REAL , " + SO_RECEIVED_AMOUNT + " REAL , " + SO_TOTAL_DAYS + " REAL , " + SO_AMOUNT_DIFF + " REAL , " +
-            SO_DAYS_REMAINING + " REAL , " + SO_STATUS + " TEXT , " + SO_ACCT_NO + " INTEGER , " + SO_START_DATE + " TEXT, " + SO_END_DATE + " TEXT, "+ SO_APPROF_DATE + " TEXT, " + SO_PROF_ID + " INTEGER, "+"FOREIGN KEY(" + SO_ACCT_NO + ") REFERENCES " + SO_ACCT_TABLE + "(" + SO_ACCOUNT_NO + ")," +"FOREIGN KEY(" + SO_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + SO_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+            SO_DAYS_REMAINING + " REAL , " + SO_STATUS + " TEXT , " + SO_ACCT_NO + " INTEGER , " + SO_START_DATE + " TEXT, " + SO_END_DATE + " TEXT, "+ SO_APPROF_DATE + " TEXT, " + SO_PROF_ID + " INTEGER, "+ SO_REQUEST_DATE + " TEXT, "+ SO_PLAN + " TEXT , " + SO_FREQUENCY + " TEXT , " + SO_REQUEST_PLATFORM + " TEXT , " + SO_NAME + " TEXT , "+ SO_PURPOSE + " TEXT , "+"FOREIGN KEY(" + SO_ACCT_NO + ") REFERENCES " + SO_ACCT_TABLE + "(" + SO_ACCOUNT_NO + ")," +"FOREIGN KEY(" + SO_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + SO_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
 
     @PrimaryKey(autoGenerate = true)
-    private int soID=10;
+    private int soID;
     double so_ExpectedAmount;
     double so_ReceivedAmount;
     double so_AmountDiff;
@@ -54,8 +61,16 @@ public class StandingOrder implements Serializable, Parcelable {
     double so_Balance;
     Customer so_Customer;
     Profile so_Profile;
-    Account so_Account;
+    Account account;
     private Transaction so_Tranx;
+    private int profileID;
+    private int customerID;
+    private String so_request_date;
+    private String so_plan;
+    private String so_frequency;
+    private String so_Req_Platform;
+    private StandingOrderAcct standingOrderAcct;
+    private String so_Purpose;
 
     public StandingOrder(long soNo, double so_ExpectedAmount) {
 
@@ -110,6 +125,38 @@ public class StandingOrder implements Serializable, Parcelable {
         this.so_DaysRemaining = so_DaysRemaining;
         this.so_start_date = currentDate;
     }
+    public StandingOrder(int soNo, int profileID, int customerID, String customerName, double sOAmount, String selectedPlan, String frequency, String soDate) {
+        this.soID = soNo;
+        this.profileID = profileID;
+        this.customerID = customerID;
+        this.so_Names = customerName;
+        this.soDailyAmount = sOAmount;
+        this.so_plan = selectedPlan;
+        this.so_frequency = frequency;
+        this.so_request_date = soDate;
+
+    }
+    public StandingOrder(int soID, int profID, int customerID, String name, String plan, String freq, String platform, int totalDays, int daysRem, String date, int so_acct_no, double soDailyAmount, String so_start_date, double expectedAmount, double receivedAmount, double amountDiff, String soStatus, String so_end_date,String so_Purpose) {
+        this.soID = soID;
+        this.profileID = profID;
+        this.customerID = customerID;
+        this.so_Names = name;
+        this.soDailyAmount = soDailyAmount;
+        this.so_plan = plan;
+        this.so_frequency = freq;
+        this.so_Req_Platform = platform;
+        this.so_TotalDays = totalDays;
+        this.so_request_date = date;
+        this.so_Acct_No = so_acct_no;
+        this.so_start_date = so_start_date;
+        this.so_ExpectedAmount = expectedAmount;
+        this.so_ReceivedAmount = receivedAmount;
+        this.so_AmountDiff = amountDiff;
+        this.soStatus = soStatus;
+        this.so_end_date = so_end_date;
+        this.so_Purpose = so_Purpose;
+
+    }
 
     public StandingOrder() {
         super();
@@ -131,7 +178,7 @@ public class StandingOrder implements Serializable, Parcelable {
         so_Balance = in.readDouble();
         so_Customer = in.readParcelable(Customer.class.getClassLoader());
         so_Profile = in.readParcelable(Profile.class.getClassLoader());
-        so_Account = in.readParcelable(Account.class.getClassLoader());
+        account = in.readParcelable(Account.class.getClassLoader());
     }
 
     public static final Creator<StandingOrder> CREATOR = new Creator<StandingOrder>() {
@@ -146,6 +193,9 @@ public class StandingOrder implements Serializable, Parcelable {
         }
     };
 
+
+
+
     public int getSo_Acct_No() {
         return so_Acct_No;
     }
@@ -157,6 +207,14 @@ public class StandingOrder implements Serializable, Parcelable {
     }
     public void setSoID(int soID) {
         this.soID = soID;
+    }
+
+
+    public String getSo_Names() {
+        return so_Names;
+    }
+    public void setSo_Names(String so_Names) {
+        this.so_Names = so_Names;
     }
     public String getSoEndDate() {
         return so_end_date;
@@ -189,11 +247,11 @@ public class StandingOrder implements Serializable, Parcelable {
     public void setSo_Customer(Customer so_Customer) {
         this.so_Customer = so_Customer;
     }
-    public Account getSo_Account() {
-        return so_Account;
+    public Account getAccount() {
+        return account;
     }
-    public void setSo_Account(Account so_Account) {
-        this.so_Account = so_Account;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     public int getSo_TotalDays() {
@@ -258,7 +316,7 @@ public class StandingOrder implements Serializable, Parcelable {
         parcel.writeDouble(so_Balance);
         parcel.writeParcelable(so_Customer, i);
         parcel.writeParcelable(so_Profile, i);
-        parcel.writeParcelable(so_Account, i);
+        parcel.writeParcelable(account, i);
     }
 
     public Transaction getSo_Tranx() {
@@ -267,5 +325,69 @@ public class StandingOrder implements Serializable, Parcelable {
 
     public void setSo_Tranx(Transaction so_Tranx) {
         this.so_Tranx = so_Tranx;
+    }
+
+    public int getProfileID() {
+        return profileID;
+    }
+
+    public void setProfileID(int profileID) {
+        this.profileID = profileID;
+    }
+
+    public int getCustomerID() {
+        return customerID;
+    }
+
+    public void setCustomerID(int customerID) {
+        this.customerID = customerID;
+    }
+
+    public String getSo_request_date() {
+        return so_request_date;
+    }
+
+    public void setSo_request_date(String so_request_date) {
+        this.so_request_date = so_request_date;
+    }
+
+    public String getSo_plan() {
+        return so_plan;
+    }
+
+    public void setSo_plan(String so_plan) {
+        this.so_plan = so_plan;
+    }
+
+    public String getSo_frequency() {
+        return so_frequency;
+    }
+
+    public void setSo_frequency(String so_frequency) {
+        this.so_frequency = so_frequency;
+    }
+
+    public String getSo_Req_Platform() {
+        return so_Req_Platform;
+    }
+
+    public void setSo_Req_Platform(String so_Req_Platform) {
+        this.so_Req_Platform = so_Req_Platform;
+    }
+
+    public StandingOrderAcct getStandingOrderAcct() {
+        return standingOrderAcct;
+    }
+
+    public void setStandingOrderAcct(StandingOrderAcct standingOrderAcct) {
+        this.standingOrderAcct = standingOrderAcct;
+    }
+
+    public String getSo_Purpose() {
+        return so_Purpose;
+    }
+
+    public void setSo_Purpose(String so_Purpose) {
+        this.so_Purpose = so_Purpose;
     }
 }

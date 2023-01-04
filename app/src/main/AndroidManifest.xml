@@ -6,9 +6,12 @@
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the "MyLocation" functionality.
+
+         @integer/google_play_services_version
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_SMS" />
@@ -16,7 +19,6 @@
         android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
@@ -43,14 +45,20 @@
 
     <uses-feature
         android:name="android.hardware.nfc"
-        android:required="false" />
+        android:required="true" />
     <uses-feature
         android:name="android.hardware.location"
         android:required="true" />
     <uses-feature
         android:name="android.hardware.location.gps"
-        android:required="false" />
+        android:required="true" />
 
+    <permission
+        android:name="com.google.maps.android.utils.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.google.maps.android.utils.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.WRITE_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
@@ -74,21 +82,185 @@
         android:required="false" />
 
     <application
+        android:name=".CustomApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
+        android:icon="@mipmap/ls_logo_round"
         android:installLocation="preferExternal"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:roundIcon="@drawable/awajima_logo"
+        android:roundIcon="@mipmap/ls_logo_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.OurCApp"
+        android:theme="@style/AwajimaThemeNoBar"
         android:value="androidx.core.app.CoreComponentFactory"
         tools:ignore="GoogleAppIndexingWarning"
         tools:node="merge"
-        tools:remove="android:icon"
-        tools:replace="android:allowBackup">
+        tools:replace="android:allowBackup,android:icon">
         <activity
-            android:name=".Bookings.TripDetailAct"
+            android:name=".MembershipSubAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.BookingHomeAct"
+            android:exported="false" />
+        <activity
+            android:name=".SuperAdmin.SOReceivedNewAct"
+            android:exported="false" />
+        <activity
+            android:name=".QuickTellerPlanAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.MenuDescAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.HistoryAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.ViewPaymentAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.BookingDrawerAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.ActionBarBaseAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.TourDetailsAct"
+            android:exported="false" />
+        <activity
+            android:name=".AddPayMCardAct"
+            android:exported="false" />
+        <activity
+            android:name=".ViewPayAct"
+            android:exported="false" />
+        <activity
+            android:name=".MyEditProfAct"
+            android:exported="false" />
+        <activity
+            android:name=".Markets.ProductTrackingAct"
+            android:exported="false" />
+        <activity
+            android:name=".SuperAdmin.AllLiveTrips"
+            android:exported="false" />
+        <activity
+            android:name=".Markets.BizDetailsAct"
+            android:exported="false" />
+
+        <service
+            android:name=".MapAndLoc.TrackerService"
+            android:enabled="true"
+            android:exported="true" />
+        <!--
+             TODO: Before you run your application, you need a Google Maps API key.
+
+             To get one, follow the directions here:
+
+                https://developers.google.com/maps/documentation/android-sdk/get-api-key
+
+             Once you have your API key (it starts with "AIza"), define a new property in your
+             project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
+             "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="YOUR_API_KEY" />
+
+        <activity
+            android:name=".FakeMapsAct"
+            android:exported="false"
+            android:label="@string/title_activity_fake_maps" />
+        <activity
+            android:name=".MapAndLoc.ReqPermAct"
+            android:exported="false" />
+        <activity
+            android:name=".MapAndLoc.EmergRFenceAct"
+            android:exported="false" />
+        <activity
+            android:name=".MapAndLoc.EmergRTab"
+            android:exported="false" />
+        <activity
+            android:name=".SubRecordAct"
+            android:exported="false" />
+        <activity
+            android:name=".MapAndLoc.ERMediaUAct"
+            android:exported="false" />
+        <activity
+            android:name=".MapAndLoc.NewOSReportAct"
+            android:exported="false" />
+        <activity
+            android:name=".MapAndLoc.OilSpillMonAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.TripListingTab"
+            android:exported="false"
+            android:theme="@style/Theme.OurCApp" />
+        <activity
+            android:name=".StateDir.WasteMgtMainAct"
+            android:exported="false" />
+        <activity
+            android:name=".StateDir.SegmentedUsersAct"
+            android:exported="false" />
+        <activity
+            android:name=".StateDir.RouteMapAct"
+            android:exported="false" />
+
+        <service
+            android:name=".StateDir.GeocodeService"
+            android:exported="false" />
+
+        <activity
+            android:name=".StateDir.ShareCreditAct"
+            android:exported="false" />
+        <activity
+            android:name=".StateDir.WastePDetailAct"
+            android:exported="false" />
+        <activity
+            android:name=".StateDir.WastePaymentAct"
+            android:exported="false" />
+        <activity
+            android:name=".BarCodeDir.BarcodeCaptureAct"
+            android:exported="false" />
+        <activity
+            android:name=".StateDir.WasteReqDetailAct"
+            android:exported="false" />
+        <activity
+            android:name=".StateDir.WasteRequestAct"
+            android:exported="false" />
+
+        <service
+            android:name=".MapAndLoc.MyLocUpdateService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
+            android:name=".MapAndLoc.MyLocUpdateAct"
+            android:exported="false" />
+        <activity
+            android:name=".StateDir.StateMinAct"
+            android:exported="false" />
+        <activity
+            android:name=".StateDir.WastCollecTranxAct"
+            android:exported="false" />
+        <activity
+            android:name=".StateDir.StateEnvResponseAct"
+            android:exported="false" />
+        <activity
+            android:name=".StateDir.StateEnvReportsAct"
+            android:exported="false" />
+        <activity
+            android:name=".StateDir.WasteCollectionAct"
+            android:exported="false" />
+        <activity
+            android:name=".StateDir.StateDashboard"
+            android:exported="false"
+            android:theme="@style/Theme.OurCApp" />
+        <activity
+            android:name=".SecureAppAct"
+            android:exported="false" />
+        <activity
+            android:name=".AppLockAct"
+            android:exported="false" />
+        <activity
+            android:name=".BasePatternAct"
             android:exported="false" />
         <activity
             android:name=".Live.BizDealChatAct"
@@ -98,7 +270,8 @@
             android:exported="false" />
         <activity
             android:name=".Markets.BizDealTab"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.OurCApp" />
         <activity
             android:name=".MapAndLoc.FenceCreationAct"
             android:exported="false" />
@@ -109,46 +282,24 @@
             android:name=".ClimateCRespAct"
             android:exported="false" />
         <activity
-            android:name=".ClimateRepAct"
+            android:name=".ClimateCRepAct"
             android:exported="false" />
         <activity
             android:name=".MapAndLoc.ClimateCOffice"
-            android:exported="false" />
-        <activity
-            android:name=".Bookings.JetCharterAct"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.OurCApp" />
         <activity
             android:name=".Markets.MarketCreatorAct"
             android:exported="false" />
         <activity
             android:name=".Markets.BizAdminOffice"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.OurCApp" />
         <activity
             android:name=".MapAndLoc.CompensationAct"
             android:exported="false" />
         <activity
             android:name=".MyInsTab"
-            android:exported="false" />
-        <activity
-            android:name=".Bookings.TaxiBookingTab"
-            android:exported="false" />
-        <activity
-            android:name=".Bookings.SessionTab"
-            android:exported="false" />
-        <activity
-            android:name=".Bookings.BoatBookingTab"
-            android:exported="false" />
-        <activity
-            android:name=".Bookings.TrainBookingTab"
-            android:exported="false" />
-        <activity
-            android:name=".Bookings.TourBookingAct"
-            android:exported="false" />
-        <activity
-            android:name=".Markets.BizOfficeAct"
-            android:exported="false" />
-        <activity
-            android:name=".Bookings.MyTaxiBAct"
             android:exported="false" />
         <activity
             android:name=".MapAndLoc.MyERRewardAct"
@@ -157,14 +308,15 @@
             android:name=".MapAndLoc.MyEmergReportAct"
             android:exported="false" />
         <activity
-            android:name=".MapAndLoc.TaxiPickUpAct"
+            android:name=".Bookings.TaxiPickUpAct"
             android:exported="false" />
         <activity
             android:name=".SubHistoryAct"
             android:exported="false" />
         <activity
             android:name=".SubScriptionTab"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.OurCApp" />
         <activity
             android:name=".MapAndLoc.OurCleanUpAct"
             android:exported="false" />
@@ -182,10 +334,12 @@
             android:exported="false" />
         <activity
             android:name=".MapAndLoc.OilCompanyOffice"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.OurCApp" />
         <activity
             android:name=".MapAndLoc.NOSDRAOffice"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.OurCApp" />
         <activity
             android:name=".NinIDAct"
             android:exported="false"
@@ -203,29 +357,69 @@
             android:name=".Bookings.RateUserAct"
             android:exported="false" />
         <activity
-            android:name=".Spillages.SpillageResponseAct"
-            android:exported="false" />
-        <activity
             android:name=".Bookings.TrainTripListAct"
-            android:exported="false" />
-        <activity
-            android:name=".Bookings.TaxiDriverRideAct"
             android:exported="false" />
         <activity
             android:name=".Bookings.BoatTripListAct"
             android:exported="false" />
         <activity
-            android:name=".Bookings.MyTrainAct"
+            android:name=".Bookings.MyTripBAct"
             android:exported="false" />
         <activity
             android:name=".Bookings.MyTaxiAct"
             android:exported="false" />
         <activity
-            android:name=".Bookings.MyBoatAct"
+            android:name=".Bookings.TaxiBookingTab"
+            android:exported="false"
+            android:theme="@style/Theme.OurCApp" />
+        <activity
+            android:name=".Bookings.JetCharterAct"
             android:exported="false" />
         <activity
-            android:name=".Bookings.BookingsMainAct"
+            android:name=".Bookings.TripDetailAct"
             android:exported="false" />
+        <activity
+            android:name=".Bookings.TaxiCusAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.TransportComAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.TripStopPointAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.TaxiDriverRideAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.SessionTab"
+            android:exported="false"
+            android:theme="@style/Theme.OurCApp" />
+        <activity
+            android:name=".Bookings.BoatBookingTab"
+            android:exported="false"
+            android:theme="@style/Theme.OurCApp" />
+        <activity
+            android:name=".Bookings.TrainBookingTab"
+            android:exported="false"
+            android:theme="@style/Theme.OurCApp" />
+        <activity
+            android:name=".Bookings.TourBookingAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.TaxiCusBookRideAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.MyBoatAct"
+            android:exported="false" />
+        <activity android:name=".Bookings.LocationSelecAct" />
+        <activity android:name=".Bookings.TrackUserAct" />
+        <activity android:name=".Bookings.LocActivity" />
+        <activity android:name=".Bookings.DriverStartTripAct" />
+        <activity android:name=".Bookings.MotorTripsBAct" />
+        <activity
+            android:name=".Bookings.BookingsMainTab"
+            android:exported="false"
+            android:theme="@style/Theme.OurCApp" />
         <activity
             android:name=".GooglePayAct"
             android:exported="false" />
@@ -243,20 +437,20 @@
             android:exported="false" />
         <activity
             android:name=".BizSubQTOptionAct"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.OurCApp" />
         <activity
             android:name=".Markets.BizTypeSelectAct"
             android:exported="false"
             android:label="@string/title_activity_biz_type_select" />
         <activity
             android:name=".Markets.SupplierOffice"
-            android:exported="false" />
-        <activity
-            android:name=".MapAndLoc.FaceDetAndAudioAct"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.OurCApp" />
         <activity
             android:name=".GrpSavingsOptionAct"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/Theme.OurCApp">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -285,21 +479,25 @@
             android:exported="false" />
         <activity
             android:name=".CoachOffice"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.OurCApp" />
         <activity
             android:name=".InsuranceOffice"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.OurCApp" />
         <activity
             android:name=".HQLogisticsOffice"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.OurCApp" />
         <activity
             android:name=".BizLogisticsOffice"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.OurCApp" />
         <activity
             android:name=".FollowingPrefAct"
             android:exported="false" />
         <activity
-            android:name=".ProfHistoryTab"
+            android:name=".Markets.BizTab"
             android:exported="false" />
         <activity
             android:name=".Markets.SendMultiSendeeMAct"
@@ -309,12 +507,22 @@
                 android:value="" />
         </activity>
         <activity android:name=".Markets.MarketBizListAct" />
-        <activity android:name=".Markets.MarketBizDonorOffice" />
-        <activity android:name=".Markets.MarketAdminOffice" />
-        <activity android:name=".Markets.MarketBizPOffice" />
-        <activity android:name=".Markets.BizRegulOffice" />
-        <activity android:name=".Markets.MarketBizOffice" />
-        <activity android:name=".Markets.MyBizArrayDealListAct" />
+        <activity
+            android:name=".Markets.MarketBizDonorOffice"
+            android:theme="@style/Theme.OurCApp" />
+        <activity
+            android:name=".Markets.MarketAdminOffice"
+            android:theme="@style/Theme.OurCApp" />
+        <activity
+            android:name=".Markets.MarketBizPOffice"
+            android:theme="@style/Theme.OurCApp" />
+        <activity
+            android:name=".Markets.BizRegulOffice"
+            android:theme="@style/Theme.OurCApp" />
+        <activity
+            android:name=".Markets.MarketBizOffice"
+            android:theme="@style/Theme.OurCApp" />
+        <activity android:name=".Markets.BizDSelectPartnerAct" />
 
         <receiver
             android:name=".MarketClasses.AppInstallRefReceiver"
@@ -329,11 +537,17 @@
         <activity android:name=".Markets.BizBizDepositAct" />
         <activity android:name=".Customers.CusMessageAct" />
         <activity android:name=".Markets.SingleCusMessagingAct" />
-        <activity android:name=".Markets.MarketMessagingTab" />
-        <activity android:name=".Markets.BizDealPartnersListAct" />
+        <activity
+            android:name=".Markets.MarketMessagingTab"
+            android:theme="@style/Theme.OurCApp" />
+        <activity android:name=".Markets.MyBizDealListAct" />
         <activity android:name=".Markets.BizCusDepositAct" />
-        <activity android:name=".Markets.BizDepositTab" />
-        <activity android:name=".Markets.MarketChatTab" />
+        <activity
+            android:name=".Markets.BizDepositTab"
+            android:theme="@style/Theme.OurCApp" />
+        <activity
+            android:name=".Markets.MarketChatTab"
+            android:theme="@style/Theme.OurCApp" />
         <activity android:name=".Markets.ManageGroupActCon" />
         <activity android:name=".Markets.MessageInfoActCon" />
         <activity android:name=".Markets.ChatInfoActCon" />
@@ -369,20 +583,16 @@
         <activity android:name=".Markets.BizOnbordingAct" />
         <activity android:name=".Markets.BizDealTranXAct" />
         <activity android:name=".SplashAct" />
-        <activity android:name=".Markets.AddDailyBizRecordAct" />
+        <activity android:name=".Markets.BizDealNewAcctAct" />
         <activity android:name=".Markets.AttachmentImageActivity" />
         <activity android:name=".Markets.ChatActEthernal" />
         <activity android:name=".Markets.ProfileActivity" />
-        <activity android:name=".Bookings.DriverStartTripAct" />
 
         <receiver
             android:name=".MarketClasses.NotificationReceiver"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".Bookings.LocationSelecAct" />
-        <activity android:name=".Bookings.FindDriverAct" />
-        <activity android:name=".Bookings.LocActivity" />
         <activity android:name=".Markets.BaseActivity" />
         <activity android:name=".Markets.CoreBaseActivity" />
 
@@ -399,12 +609,22 @@
         <activity android:name=".Markets.BusinessDealSubAct" />
         <activity android:name=".BasicPushAct" />
         <activity android:name=".Markets.AppointmentAct" />
-        <activity android:name=".Markets.MarketInvTab" />
-        <activity android:name=".Markets.LogisticsTab" />
+        <activity
+            android:name=".Markets.MarketInvTab"
+            android:theme="@style/Theme.OurCApp" />
+        <activity
+            android:name=".Markets.LogisticsTab"
+            android:theme="@style/Theme.OurCApp" />
         <activity android:name=".Markets.MarketLearningAct" />
         <activity android:name=".Markets.MarketLevyAct" />
         <activity android:name=".Markets.InsuranceAct" />
-        <activity android:name=".Markets.MyFundingTab" />
+        <activity
+            android:name=".Markets.BizOfficeAct"
+            android:exported="false"
+            android:theme="@style/Theme.OurCApp" />
+        <activity
+            android:name=".Markets.MyFundingTab"
+            android:theme="@style/Theme.OurCApp" />
         <activity android:name=".Markets.MyMarketTranxAct" />
         <activity android:name=".Markets.MyCashAct" />
         <activity android:name=".Markets.MyBizDealAct" />
@@ -417,9 +637,8 @@
         <activity android:name=".Markets.CommodityAct" />
         <activity android:name=".Markets.MyBizLocAct" />
         <activity android:name=".Markets.TranxAmtHoldAct" />
-        <activity android:name=".LogisticsMatchAct" />
         <activity android:name=".Markets.PreHarvestOrdersAct" />
-        <activity android:name=".LogisticParkAct" />
+        <activity android:name=".LogisticDetailsAct" />
         <activity android:name=".Markets.MarketHub" />
         <activity android:name=".Markets.MarketTab" />
         <activity android:name=".Customers.OrderDetailsAct" />
@@ -442,39 +661,33 @@
         <activity android:name=".Customers.MySavingsListAct" />
         <activity android:name=".Customers.CusPackageList" />
         <activity android:name=".BlockedUserAct" />
-        <activity android:name=".MapAndLoc.GeoDrivingAct" />
         <activity android:name=".NewLocAct" />
         <activity android:name=".SuperAdmin.PayOutRequestList" />
         <activity android:name=".SuperAdmin.TranxApprovalAct" />
+        <activity android:name=".SignUpAct" />
         <activity
-            android:name=".SignUpAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:name=".Spillages.SpillageResponseAct"
+            android:exported="false" />
         <activity
-            android:name=".MapAndLoc.UserReportEmergAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
-        <receiver
-            android:name=".MapAndLoc.UserLocBReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="my.action" />
-            </intent-filter>
-        </receiver>
-
-        <activity android:name=".SuperAdmin.StocksTab" />
+            android:name=".SuperAdmin.StocksTab"
+            android:theme="@style/Theme.OurCApp" />
         <activity android:name=".Admins.DepDocAct" />
         <activity android:name=".SuperAdmin.TellerDetailsAct" />
         <activity android:name=".SuperAdmin.TellerCashList" />
         <activity android:name=".MyInvAct" />
         <activity android:name=".SuperAdmin.UpdateSTCode" />
         <activity android:name=".SuperAdmin.SuperAllSTList" />
-        <activity android:name=".MapAndLoc.ResponseTeamOffice" />
         <activity android:name=".SuperAdmin.SuperStockTrAct" />
-        <activity android:name=".SuperAdmin.CreationTab" />
+        <activity
+            android:name=".SuperAdmin.CreationTab"
+            android:theme="@style/Theme.OurCApp" />
         <activity android:name=".SuperAdmin.OfficeCreatorAct" />
-        <activity android:name=".Inventory.BranchInvTab" />
-        <activity android:name=".Inventory.MyInvTab" />
+        <activity
+            android:name=".Inventory.BranchInvTab"
+            android:theme="@style/Theme.OurCApp" />
+        <activity
+            android:name=".Inventory.MyInvTab"
+            android:theme="@style/Theme.OurCApp" />
         <activity android:name=".Inventory.StocksTransferAct" />
         <activity android:name=".Inventory.UpDateStocksCode" />
         <activity android:name=".Inventory.MyStocksList" />
@@ -483,38 +696,6 @@
         <activity android:name=".SuperAdmin.AppCashList" />
         <activity android:name=".SuperAdmin.UpDateDeposit" />
         <activity android:name=".SuperAdmin.ADepositList" />
-        <activity android:name=".MapAndLoc.LocationUpdateAct" />
-        <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
-             sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/.
-        -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-
-        <uses-library android:name="com.google.android.maps" />
-
-        <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="@string/google_maps_key" />
-        <meta-data
-            android:name="com.google.android.gms.vision.DEPENDENCIES"
-            android:value="face" />
-
-        <service
-            android:name=".MapAndLoc.GetAddressIntentService"
-            android:exported="false" />
-        <service
-            android:name=".MapAndLoc.GPSTracker"
-            android:exported="false" />
-
         <activity android:name=".SuperAdmin.SuperAnyDayCount" />
         <activity android:name=".SMSAct" />
         <activity android:name=".VoiceRecogAct" />
@@ -530,7 +711,7 @@
             android:name=".Inventory.BranchStockOv"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".Inventory.BranchItemCollection"
+            android:name=".Inventory.BranchDisposeItemAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Inventory.StocksOverview"
@@ -539,7 +720,7 @@
         <activity android:name=".Tellers.CustomerDetailAct" />
         <activity android:name=".Accountant.BranchMPayments" />
         <activity android:name=".SuperAdmin.UpdateSavingsAct" />
-        <activity android:name=".Accountant.WimpeySavings" />
+        <activity android:name=".Accountant.OfficeBranchSavings" />
         <activity android:name=".Accountant.ElelenwoSavings" />
         <activity android:name=".Accountant.TransAmadiSavings" />
         <activity android:name=".Accountant.WimpeyTranx" />
@@ -547,10 +728,10 @@
         <activity android:name=".SuperAdmin.UpdateTranxAct" />
         <activity android:name=".Accountant.TransAmadiTranx" />
         <activity android:name=".SuperAdmin.UpDateSO" />
-        <activity android:name=".Accountant.AcctantBackOffice" />
+        <activity
+            android:name=".Accountant.AcctantBackOffice"
+            android:theme="@style/Theme.OurCApp" />
         <activity android:name=".SuperAdmin.UpdatePackageAct" />
-        <activity android:name=".MapAndLoc.StateEmergList" />
-        <activity android:name=".MapAndLoc.ESiteGeoFenAct" />
         <activity android:name=".VoiceActionAct" />
         <activity android:name=".Admins.TellerReportUpdateConf" />
         <activity android:name=".SuperAdmin.SuperUnconfirmedSavings" />
@@ -603,7 +784,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".SuperAdmin.SuperUserCreator" />
-        <activity android:name=".Admins.BranchReportTab" />
+        <activity
+            android:name=".Admins.BranchReportTab"
+            android:theme="@style/Theme.OurCApp" />
         <activity android:name=".Admins.TellerReportBranchAll" />
         <activity
             android:name=".SuperAdmin.TellerReportActSuper"
@@ -611,14 +794,16 @@
         <activity android:name=".Admins.TellerReportUpdateAct" />
         <activity
             android:name=".Admins.TellerReportBranchToday"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".Tellers.DailyReportAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".Markets.SendCusMessAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".SuperAdmin.SuperAdminOffice" />
+            android:theme="@style/AwajimaThemeNoBar" />
+        <activity
+            android:name=".SuperAdmin.SuperAdminOffice"
+            android:theme="@style/Theme.OurCApp" />
         <activity
             android:name=".UserSearchAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -648,10 +833,14 @@
         <activity
             android:name=".Admins.SOListAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".SuperAdmin.AdminSOTabAct" />
+        <activity
+            android:name=".SuperAdmin.AdminSOTabAct"
+            android:theme="@style/Theme.OurCApp" />
         <activity android:name=".AwajimaSliderAct" />
         <activity android:name=".Tellers.UniversalAct" />
-        <activity android:name=".Tellers.TellerDrawerTab" />
+        <activity
+            android:name=".Tellers.TellerDrawerTab"
+            android:theme="@style/Theme.OurCApp" />
         <activity
             android:name=".Tellers.TellerDrawerAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -669,10 +858,10 @@
         <activity android:name=".MyTimelineAct" />
         <activity
             android:name=".GrpProfileTraxs"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".MyGrpSavingsUsers"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity android:name=".UpdateGrpAcct" />
         <activity
             android:name=".JoinThisGrpSavAct"
@@ -694,134 +883,138 @@
         </activity>
         <activity
             android:name=".MyNewGrpSavings"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".MyGrpSavings"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".MyGrpSavingsList"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity android:name=".MyGrpSavingsTab" />
         <activity android:name=".Tellers.LoanRepaymentTab" />
         <activity
             android:name=".Tellers.AllCusLoanRepayment"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".Tellers.MyCusLoanRepayment"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".Customers.CusLoanRepaymentAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".Customers.CusPackOverviewAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".Customers.PackListTab" />
+            android:theme="@style/AwajimaThemeNoBar" />
+        <activity
+            android:name=".Customers.PackListTab"
+            android:theme="@style/Theme.OurCApp" />
         <activity android:name=".Customers.ProfilePackDetails" />
         <activity
             android:name=".SuperAdmin.DuePackagesAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".Admins.TwilloConsole"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".Admins.WebHostingAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
+        <activity android:name=".Admins.TwilloConsole" />
+        <activity android:name=".Admins.WebHostingAct" />
         <activity android:name=".Admins.SkylightAllWeb" />
         <activity
             android:name=".Admins.SkylightHistoryAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".MapAndLoc.UserLocatorAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity android:name=".FingerprintAct" />
         <activity
             android:name=".Customers.TellerForCusLoanAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".OfficialEmailAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".Tellers.WPAdminActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
+        <activity android:name=".Tellers.WPAdminActivity" />
         <activity android:name=".Tellers.MarketersActivityWeb" />
-        <activity android:name=".Tellers.TellerWebTab" />
-        <activity android:name=".Tellers.MyCustPackTab" />
+        <activity
+            android:name=".Tellers.TellerWebTab"
+            android:theme="@style/Theme.OurCApp" />
+        <activity
+            android:name=".Tellers.MyCustPackTab"
+            android:theme="@style/Theme.OurCApp" />
         <activity
             android:name=".Tellers.MyCustOldPackAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".AllNewPackOptionAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".AllCustNewPackAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity android:name=".CameraActivity" />
-        <activity android:name=".Customers.PackageTab" />
+        <activity
+            android:name=".Customers.PackageTab"
+            android:theme="@style/Theme.OurCApp" />
         <activity android:name=".FlutterWavePayments.VerificationActivity" />
         <activity
             android:name=".GroupSavingsUnpaid"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".GroupSavingsAcctList"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity android:name=".GroupSavingsTab" />
         <activity
             android:name=".Admins.ProfilePackHistoryAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".Admins.CusPackHistoryAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".MapAndLoc.ReportSceneMAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".Tellers.MyCusNewPackAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".Tellers.MyNewPackOptionAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".Admins.BranchSuppAct" />
+            android:theme="@style/AwajimaThemeNoBar" />
+        <activity
+            android:name=".Admins.BranchSuppAct"
+            android:theme="@style/Theme.OurCApp" />
         <activity
             android:name=".Customers.CustomerPayAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".FlutterWavePayments.FluPayWithCard"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".FlutterWavePayments.FluPayWithTransfer"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".FlutterWavePayments.FluPaywithBank"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".AllCustOldPackAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity android:name=".AllCusPackTab" />
         <activity
             android:name=".Customers.CusPackForPayment"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".Customers.CusOrderTab" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
-            android:name=".Customers.CusPacksAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".Customers.CusLoanTab" />
-        <activity android:name=".Customers.CustUtilTab" />
+            android:name=".Customers.CusOrderTab"
+            android:theme="@style/Theme.OurCApp" />
+        <activity
+            android:name=".Customers.CusDocCodeSavingsAct"
+            android:theme="@style/AwajimaThemeNoBar" />
+        <activity
+            android:name=".Customers.CusLoanTab"
+            android:theme="@style/Theme.OurCApp" />
+        <activity
+            android:name=".Customers.CustUtilTab"
+            android:theme="@style/Theme.OurCApp" />
         <activity
             android:name=".Customers.NewPackCusAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".Customers.StandingOrderList"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity android:name=".Customers.SOTab" />
         <activity
-            android:name=".Customers.NewSOPaymentPlan"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:name=".Customers.PayStackSOPlan"
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".Customers.OldPackCusAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
-            android:name=".Customers.SavingsStandingOrder"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:name=".Customers.SavingsSOAct"
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".Admins.AdminCusActionView"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -829,18 +1022,14 @@
             android:name=".Customers.RequestPaymentAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".CustomerPackageListAct"
+            android:name=".CusPackListAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".Customers.SavingsStandingOrderWeb" />
-        <activity
-            android:name=".CheckMailActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".CheckMailActivity" />
         <activity
             android:name=".PrivacyPolicy_Web"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".Tellers.StoreManagerWeb"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
+        <activity android:name=".Tellers.StoreManagerWeb" />
         <activity
             android:name=".Admins.SendSingleUserMAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -853,46 +1042,92 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".Tellers.TellerSuccessActivity" />
         <activity android:name=".PermissionActivity" />
-        <activity android:name=".CustomerSmsActivity" />
-        <activity
-            android:name=".Tellers.TellerDashboardAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".Admins.AdminTransActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".Admins.SkylightUsersActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".CusSmsAct" />
+        <activity android:name=".Tellers.TellerDashboardAct" />
+        <activity android:name=".Admins.AdminTransActivity" />
+        <activity android:name=".Admins.SkylightUsersActivity" />
         <activity
             android:name=".Admins.AdminTabActivity"
-            android:theme="@style/Theme.SkylightApp3" />
-        <activity
-            android:name=".Tellers.TellerHomeChoices"
             android:theme="@style/Theme.OurCApp" />
+        <activity android:name=".Tellers.TellerHomeChoices" />
         <activity android:name=".Customers.CustomerHelpActTab" />
         <activity
             android:name=".PasswordRecovAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".UpdateProfileAct" />
         <activity android:name=".BaseActivity" />
-        <activity android:name=".Customers.NewCustomerDrawer" />
+        <activity
+            android:name=".Customers.NewCustomerDrawer"
+            android:theme="@style/Theme.OurCApp"
+            tools:ignore="Instantiatable" />
         <activity android:name=".ConfirmationActivity" />
         <activity
             android:name=".WelcomeActivity"
             android:configChanges="orientation|screenSize"
             android:exported="true"
+            android:theme="@style/AwajimaThemeNoBar"
             tools:ignore="IntentFilterExportedReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action
+                    android:name="android.intent.action.MAIN"
+                    android:theme="@style/Theme.OurCApp" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
+            android:name=".MapAndLoc.UserLocatorAct"
+            android:theme="@style/AwajimaThemeNoBar" />
+        <activity android:name=".MapAndLoc.StateEmergList" />
+        <activity android:name=".MapAndLoc.ESiteGeoFenAct" />
+        <activity android:name=".MapAndLoc.LocationUpdateAct" />
+        <activity
+            android:name=".MapAndLoc.ReportSceneMAct"
+            android:theme="@style/AwajimaThemeNoBar" />
+        <activity
+            android:name=".MapAndLoc.FaceDetAndAudioAct"
+            android:exported="false" />
+        <activity android:name=".MapAndLoc.GeoDrivingAct" />
+        <activity android:name=".MapAndLoc.UserReportEmergAct" />
+        <activity
+            android:name=".MapAndLoc.ResponseTeamOffice"
+            android:theme="@style/Theme.OurCApp" />
+
+        <receiver
+            android:name=".MapAndLoc.UserLocBReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="my.action" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".MapAndLoc.GetAddressIntentService"
+            android:exported="false" />
+        <service
+            android:name=".MapAndLoc.GPSTracker"
+            android:exported="false" />
+
+        <activity
             android:name=".MapAndLoc.HotEmergAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/Theme.OurCApp" />
         <activity android:name=".MapAndLoc.MapSettingsActivity" />
-        <activity android:name=".MapAndLoc.GoogleMapActivity" />
+        <activity android:name=".MapAndLoc.GoogleMapAct" />
+        <activity android:name=".MapAndLoc.MapPanoramaStVAct" />
+
+        <receiver
+            android:name=".MapAndLoc.LocationUpdatesBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true" />
+        <receiver
+            android:name=".MapAndLoc.GeofenceBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
+            android:name=".MapAndLoc.GeofenceAct"
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".Transactions.MobileMoneyTransfer"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -900,7 +1135,7 @@
             android:name=".Transactions.MoneyTransferActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".Transactions.SkylightBTransferAct"
+            android:name=".Transactions.AwajimaBTransferAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Transactions.OurDepositMoneyAct"
@@ -908,7 +1143,7 @@
         <activity android:name=".UserPrefActivity" />
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".MoneyTxDetailAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -935,14 +1170,11 @@
             android:name=".SavingDetailsActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".MapAndLoc.GeofenceActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
             android:name=".Tellers.PackageAllCusAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <receiver
-            android:name=".Classes.NotificationBuilderReceiver"
+            android:name=".Classes.NotifiBReceiver"
             android:enabled="true"
             android:exported="true"
             android:taskAffinity="com.klinker.android.messaging.MMS_SENT" />
@@ -964,30 +1196,73 @@
             android:exported="false"
             android:grantUriPermissions="true" />
 
-        <receiver
-            android:name=".MapAndLoc.GeofenceBroadcastReceiver"
-            android:enabled="true"
-            android:exported="true" />
-
         <service
             android:name=".Classes.SetAlarmsService"
             android:exported="false" />
+        <service
+            android:name=".Classes.FirebaseMessS"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ls_logo_round" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/ORANGE_CHAT" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+        <meta-data
+            android:name="firebase_messaging_auto_init_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false" />
         <meta-data
             android:name="firebase_performance_logcat_enabled"
             android:value="true" />
         <meta-data
-            android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="default_channel_id" />
-        <meta-data
             android:name="co.paystack.android.PublicKey"
             android:value="pk_live_e71feb3d8f41ceccd2cb26c670e62ceb54113412" />
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+        <!--
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="default_channel_id" />
+
+
+
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/
+                     <uses-library android:name="com.google.android.maps" />
+
+                     11400000  for 11.4.2
+                     8487000
+                     12451000
+
+.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+            android:value="@integer/google_play_services_version"
+            tools:replace="android:value" />
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
             android:value="true" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="face" />
 
         <activity
             android:name=".Markets.CardDepositActivity"
@@ -995,44 +1270,52 @@
         <activity
             android:name=".Transactions.OurAppBankTransfer"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".SignTabMainActivity" />
+        <activity
+            android:name=".SignTabMainActivity"
+            android:theme="@style/Theme.OurCApp" />
         <activity
             android:name=".Admins.GrpSavingsAct"
+            android:theme="@style/AwajimaThemeNoBar" />
+        <activity
+            android:name=".Admins.AdminPackageAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".Admins.AdminPackageActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".Admins.AdminHomeChoices" />
-        <activity android:name=".Admins.AdminDashboardTab" />
-        <activity android:name=".Admins.AdminDrawerActivity" />
+            android:name=".Admins.AdminHomeChoices"
+            android:theme="@style/Theme.OurCApp" />
+        <activity
+            android:name=".Admins.AdminDrawerActivity"
+            android:theme="@style/Theme.OurCApp" />
         <activity
             android:name=".Admins.PackageUpdateAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".PayClientActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
-            android:name=".SkyLightPackageActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".LoginDirAct" />
+            android:name=".AwajimaPackAct"
+            android:theme="@style/AwajimaThemeNoBar" />
+        <activity
+            android:name=".LoginDirAct"
+            android:theme="@style/Theme.OurCApp" />
         <activity
             android:name=".PayNowActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".MapAndLoc.MapPanoramaStVAct" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".Admins.SevenDayBD"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".Admins.MoroBirthdays"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".Admins.TodayBirthDays"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".Admins.BirthdayTab" />
-        <activity android:name=".Admins.ImportDateTab" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
-            android:name=".Admins.SODueDateListAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:name=".Admins.BirthdayTab"
+            android:theme="@style/Theme.OurCApp" />
+        <activity
+            android:name=".Admins.ImportDateTab"
+            android:theme="@style/Theme.OurCApp" />
+        <activity android:name=".Admins.SODueDateListAct" />
 
         <receiver
             android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
@@ -1048,17 +1331,14 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name=".MapAndLoc.LocationUpdatesBroadcastReceiver"
-            android:enabled="true"
-            android:exported="true" />
 
         <activity
             android:name=".Admins.TrackWorkersAct"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".MainActChat"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>

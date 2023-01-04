@@ -21,8 +21,8 @@ import com.github.clans.fab.FloatingActionButton;
 import com.google.gson.Gson;
 import com.skylightapp.Adapters.SkyLightPackageAdapter;
 import com.skylightapp.Classes.Customer;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.R;
 
@@ -45,7 +45,7 @@ public class MyProfilePackList extends AppCompatActivity {
     private DBHelper dbHelper;
     private RecyclerView recyclerView;
 
-    private ArrayList<SkyLightPackage> skyLightPackages;
+    private ArrayList<MarketBizPackage> marketBizPackages;
     private SkyLightPackageAdapter mAdapter;
     private TextView messageTxt;
     private  int cusCount;
@@ -64,7 +64,7 @@ public class MyProfilePackList extends AppCompatActivity {
         checkInternetConnection();
         dbHelper = new DBHelper(this);
         messageTxt = findViewById(R.id.myCusPacks);
-        skyLightPackages = new ArrayList<SkyLightPackage>();
+        marketBizPackages = new ArrayList<MarketBizPackage>();
         fab2 = findViewById(R.id.packs_fab2);
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,8 +97,8 @@ public class MyProfilePackList extends AppCompatActivity {
             messageTxt.setText("No known Profile,please login to see your Packs");
         }
         recyclerView = findViewById(R.id.recycler_view_MyPacks);
-        skyLightPackages = dbHelper.getPackagesFromCurrentProfile(profileUID);
-        mAdapter = new SkyLightPackageAdapter(MyProfilePackList.this, skyLightPackages);
+        marketBizPackages = dbHelper.getPackagesFromCurrentProfile(profileUID);
+        mAdapter = new SkyLightPackageAdapter(MyProfilePackList.this, marketBizPackages);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

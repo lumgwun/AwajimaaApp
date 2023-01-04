@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
     android:background="@drawable/rect_their_message"
     tools:context="com.skylightapp.Markets.BizRegAct">
@@ -13,134 +14,367 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:padding="6dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@id/imageView4"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_add_business"
-            app:civ_border_width="2dp"
-            app:civ_border_color="@color/colorAccent"/>
-
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textView5"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
             android:text="Business Registration"
             android:textColor="@color/colorAccent"
             android:textSize="30sp" />
-
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_marginBottom="20dp"
             android:text="Please provide only correct Details"
-            android:textSize="18sp" />
+            android:textSize="15sp" />
 
-        <EditText
-            android:id="@+id/name_biz"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Enter your Business Name"
-            android:gravity="center_horizontal"
-            android:inputType="phone"
-            android:maxLength="10" />
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/phone_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_marginTop="20dp"
-            android:hint="Your Business Phone No."
-            android:gravity="center_horizontal"
-            android:inputType="phone"
-            android:maxLength="10" />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/bizLogo"
+                    android:layout_width="100dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="20dp"
+                    android:src="@drawable/lsgroup"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="@color/colorAccent"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/text_Type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center_horizontal"
+                    android:paddingRight="10dp"
+                    android:text="Biz Type" />
 
-        <EditText
-            android:id="@+id/address_biz"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_marginTop="20dp"
-            android:hint="Your Business Address"
-            android:gravity="center_horizontal"
-            android:inputType="phone"
-            android:maxLength="10" />
+                <com.skylightapp.Classes.MultiSelectSpinner
+                    android:id="@+id/type_spinnerB"
+                    android:padding="20dp"
+                    android:layout_weight="2"
+                    android:spinnerMode="dropdown"
+                    android:background="@drawable/rect_their44"
+                    android:entries="@array/type_Of_Biz"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp" />
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/biz_regN"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:padding="20dp"
+                    android:background="@drawable/shape_layer_3b"
+                    android:inputType="textCapCharacters"
+                    android:hint="Enter your Registered Name"
+                    android:gravity="center_horizontal" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/biz_brandN"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:padding="20dp"
+                    android:background="@drawable/shape_layer_3b"
+                    android:hint="Enter your Brand Name"
+                    android:gravity="center_horizontal"
+                    android:inputType="textPersonName"
+                    android:maxLength="20" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/biz_descN"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:layout_marginTop="20dp"
+                    android:padding="20dp"
+                    android:background="@drawable/shape_layer_3b"
+                    android:hint="Enter Biz Desc."
+                    android:gravity="center_horizontal"
+                    android:inputType="textPersonName"
+                    android:maxLength="20" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rect6h"
+                    android:layout_marginLeft="1dp"
+                    android:weightSum="3"
+                    android:padding="15dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical">
+                    <com.hbb20.CountryCodePicker
+                        android:id="@+id/ccp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:ccp_contentColor="@android:color/holo_red_dark"
+                        app:ccp_rememberLastSelection="true"
+                        app:ccp_autoDetectCountry="true"
+                        app:ccpDialog_fastScroller_bubbleColor="@color/colorPrimaryDark"
+                        app:ccpDialog_fastScroller_handleColor="@color/colorPrimaryDark"
+                        app:ccp_countryAutoDetectionPref="SIM_ONLY"
+                        app:ccp_autoFormatNumber="false"
+                        app:ccp_defaultNameCode="ng"
+                        android:soundEffectsEnabled="true"
+                        app:ccpDialog_textColor="@color/colorPrimaryDark"
+                        app:ccpDialog_showCloseIcon="true"
+                        app:ccp_countryPreference="ng" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/biz_phone_number"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:padding="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="match_parent"
+                        android:textColorHighlight="@color/colorBlue"
+                        android:focusable="true"
+                        android:inputType="number"
+                        android:textSize="15sp"
+                        android:layout_marginEnd="5dp"
+                        android:textStyle="bold"
+                        android:cursorVisible="true"
+                        android:singleLine="true"
+                        android:textColorHint="@color/black"
+                        android:gravity="center"
+                        android:layout_gravity="center_horizontal" />
+
+
+                </LinearLayout>
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/email_biz"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:padding="20dp"
+                    android:background="@drawable/shape_layer_3b"
+                    android:layout_marginTop="20dp"
+                    android:hint="Business Email"
+                    android:gravity="center_horizontal"
+                    android:inputType="phone"
+                    android:maxLength="10" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/address_biz"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:padding="20dp"
+                    android:background="@drawable/shape_layer_3b"
+                    android:layout_marginTop="20dp"
+                    android:hint="Your Business Address"
+                    android:gravity="center_horizontal"
+                    android:inputType="phone"
+                    android:maxLength="10" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/biz_doR"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:textSize="15sp"
+                    android:layout_marginStart="3dp"
+                    android:onClick="dateRegPicker"
+                    android:layout_marginEnd="3dp"
+                    android:focusable="false"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center_vertical|left"
+                    android:gravity="center_vertical|left"
+                    android:background="@drawable/rect6h"
+                    android:text="Click to Select Date of Reg." />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/stateOfC"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:background="@null"
+                    android:text="Select Country of Reg." />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/biz_country"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:paddingLeft="10dp"
+                        android:entries="@array/Countries_of_the_world"
+                        android:padding="30dp"
+                        android:background="@drawable/rect6h"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:textSize="20sp"
+                        android:layout_gravity="center_vertical|start"
+                        android:gravity="center_vertical|start"
+                        android:clickable="false" />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/state_OfOp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:visibility="gone"
+                    android:focusable="false"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:background="@null"
+                    android:text="Select State" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:id="@+id/card_state"
+                    android:visibility="gone"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/biz_states"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:paddingLeft="10dp"
+                        android:entries="@array/nig_state"
+                        android:padding="30dp"
+                        android:background="@drawable/rect6h"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:textSize="20sp"
+                        android:layout_gravity="center_vertical|start"
+                        android:gravity="center_vertical|start"
+                        android:clickable="false" />
+
+                </androidx.cardview.widget.CardView>
 
 
 
-        <TextView
-            android:id="@+id/error_msg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/red">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/error_m33"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/red">
 
-        </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
 
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1"
-            android:text="@string/registrationparagraph2" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:text="Do Sign up"
+                    android:textSize="20sp"
+                    android:padding="20dp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:textStyle="bold"
+                    android:onClick="DoBizReg"
+                    android:id="@+id/biz_reg"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:background="@drawable/rect_their44"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:padding="16dp">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
 
-            <TextView
-                android:id="@+id/textView14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingRight="10dp"
-                android:text="@string/registrationparagraph3" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/textView14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingRight="10dp"
+                        android:text="@string/registrationparagraph3" />
 
-            <TextView
-                android:id="@+id/redirectlink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/registrationredirecttologin"
-                android:textColor="@color/colorAccent" />
-        </LinearLayout>
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/biz_Login"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:text="@string/registrationredirecttologin"
+                        android:textColor="@color/colorAccent" />
+                </LinearLayout>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/redirectotp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:srcCompat="@drawable/rightarrow" />
+
+                <androidx.core.widget.ContentLoadingProgressBar
+                    android:id="@+id/progressBar_Biz"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </ScrollView>
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/redirectotp"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/rightarrow" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

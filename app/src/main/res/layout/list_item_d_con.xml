@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     tools:ignore="RtlHardcoded">
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.payStackCard.MaterialCardView
         android:id="@+id/transaction_debit"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -138,7 +138,7 @@
         </RelativeLayout>
 
 
-    </com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.payStackCard.MaterialCardView>
 
 
 

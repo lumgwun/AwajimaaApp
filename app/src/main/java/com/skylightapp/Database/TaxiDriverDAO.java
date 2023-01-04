@@ -1,40 +1,29 @@
 package com.skylightapp.Database;
 
-import static com.skylightapp.Classes.Profile.PROFILE_ID;
-import static com.skylightapp.MapAndLoc.TaxiDriver.TAXI_DRIVER_AGE;
-import static com.skylightapp.MapAndLoc.TaxiDriver.TAXI_DRIVER_CAR_TYPE;
-import static com.skylightapp.MapAndLoc.TaxiDriver.TAXI_DRIVER_CURRENT_LATLNG;
-import static com.skylightapp.MapAndLoc.TaxiDriver.TAXI_DRIVER_CURRENT_TOWN;
-import static com.skylightapp.MapAndLoc.TaxiDriver.TAXI_DRIVER_GENDER;
-import static com.skylightapp.MapAndLoc.TaxiDriver.TAXI_DRIVER_ID;
-import static com.skylightapp.MapAndLoc.TaxiDriver.TAXI_DRIVER_JOINED_D;
-import static com.skylightapp.MapAndLoc.TaxiDriver.TAXI_DRIVER_LICENSE;
-import static com.skylightapp.MapAndLoc.TaxiDriver.TAXI_DRIVER_NIN;
-import static com.skylightapp.MapAndLoc.TaxiDriver.TAXI_DRIVER_PHONE_NO;
-import static com.skylightapp.MapAndLoc.TaxiDriver.TAXI_DRIVER_PIX;
-import static com.skylightapp.MapAndLoc.TaxiDriver.TAXI_DRIVER_PROF_ID;
-import static com.skylightapp.MapAndLoc.TaxiDriver.TAXI_DRIVER_RATE;
-import static com.skylightapp.MapAndLoc.TaxiDriver.TAXI_DRIVER_STATUS;
-import static com.skylightapp.MapAndLoc.TaxiDriver.TAXI_DRIVER_TABLE;
-import static com.skylightapp.MarketClasses.BusinessDeal.BIZ_DEAL_ACCT_NO;
-import static com.skylightapp.MarketClasses.BusinessDeal.BIZ_DEAL_FROM_B_ID;
-import static com.skylightapp.MarketClasses.BusinessDeal.BIZ_DEAL_FROM_PROF_ID;
-import static com.skylightapp.MarketClasses.BusinessDeal.BIZ_DEAL_ID;
-import static com.skylightapp.MarketClasses.BusinessDeal.BIZ_DEAL_START_DATE;
-import static com.skylightapp.MarketClasses.BusinessDeal.BIZ_DEAL_STATUS;
-import static com.skylightapp.MarketClasses.BusinessDeal.BIZ_DEAL_TABLE;
-import static com.skylightapp.MarketClasses.BusinessDeal.BIZ_DEAL_TITTLE;
-import static com.skylightapp.MarketClasses.BusinessDeal.BIZ_DEAL_TYPE;
-import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_ADDRESS;
-import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_BRANDNAME;
-import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_EMAIL;
-import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_ID;
-import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_NAME;
-import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_PHONE_NO;
-import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_REG_NO;
-import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_STATE;
-import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TABLE;
-import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TYPE;
+import static com.skylightapp.Bookings.Driver.DRIVER_ID;
+import static com.skylightapp.Bookings.Driver.DRIVER_NAME;
+import static com.skylightapp.Bookings.Driver.DRIVER_PICTURE;
+import static com.skylightapp.Bookings.Driver.DRIVER_POSITION;
+import static com.skylightapp.Bookings.Driver.DRIVER_PROF_ID;
+import static com.skylightapp.Bookings.Driver.DRIVER_STATUS;
+import static com.skylightapp.Bookings.Driver.DRIVER_TABLE;
+import static com.skylightapp.Bookings.Driver.DRIVER_VEHICLE;
+import static com.skylightapp.Bookings.TaxiDriver.TAXI_DRIVER_AGE;
+import static com.skylightapp.Bookings.TaxiDriver.TAXI_DRIVER_CAR_TYPE;
+import static com.skylightapp.Bookings.TaxiDriver.TAXI_DRIVER_CURRENT_LATLNG;
+import static com.skylightapp.Bookings.TaxiDriver.TAXI_DRIVER_CURRENT_TOWN;
+import static com.skylightapp.Bookings.TaxiDriver.TAXI_DRIVER_GENDER;
+import static com.skylightapp.Bookings.TaxiDriver.TAXI_DRIVER_ID;
+import static com.skylightapp.Bookings.TaxiDriver.TAXI_DRIVER_JOINED_D;
+import static com.skylightapp.Bookings.TaxiDriver.TAXI_DRIVER_LICENSE;
+import static com.skylightapp.Bookings.TaxiDriver.TAXI_DRIVER_NAME;
+import static com.skylightapp.Bookings.TaxiDriver.TAXI_DRIVER_NIN;
+import static com.skylightapp.Bookings.TaxiDriver.TAXI_DRIVER_PIX;
+import static com.skylightapp.Bookings.TaxiDriver.TAXI_DRIVER_PROF_ID;
+import static com.skylightapp.Bookings.TaxiDriver.TAXI_DRIVER_STATUS;
+import static com.skylightapp.Bookings.TaxiDriver.TAXI_DRIVER_TABLE;
+import static com.skylightapp.Bookings.Trip.A_TRIP_STATE;
+import static com.skylightapp.Bookings.Trip.A_TRIP_TYPE;
 
 import static java.lang.String.valueOf;
 
@@ -46,12 +35,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.skylightapp.Classes.Account;
-import com.skylightapp.Classes.ChartData;
-import com.skylightapp.Classes.Profile;
+import com.skylightapp.Bookings.Driver;
 import com.skylightapp.Classes.Utils;
-import com.skylightapp.MapAndLoc.TaxiDriver;
-import com.skylightapp.MarketClasses.MarketBusiness;
+import com.skylightapp.Bookings.TaxiDriver;
 
 import java.util.ArrayList;
 
@@ -99,6 +85,32 @@ public class TaxiDriverDAO extends DBHelperDAO{
         }
 
         return driverDBIDID;
+    }
+    public TaxiDriver getDriverByPosition(LatLng latLng) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        TaxiDriver driver= new TaxiDriver();
+        try (Cursor cursor = db.query(TAXI_DRIVER_TABLE, new String[]{
+                        TAXI_DRIVER_ID,
+                        TAXI_DRIVER_PROF_ID,
+                        TAXI_DRIVER_NAME,
+                        TAXI_DRIVER_CAR_TYPE,
+                        TAXI_DRIVER_PIX,
+                        TAXI_DRIVER_STATUS,
+                }, TAXI_DRIVER_CURRENT_LATLNG + "=?", new String[]{String.valueOf(latLng)}, null, null, null, null)) {
+
+            if (cursor != null)
+                cursor.moveToFirst();
+
+            driver = null;
+            if (cursor != null) {
+                driver = new TaxiDriver (Integer.parseInt(cursor.getString(1)),Integer.parseInt(cursor.getString(2)), cursor.getString(3),Uri.parse(cursor.getString(12)),
+                        cursor.getString(4), cursor.getString(7), cursor.getString(9));
+            }
+        }
+
+        return driver;
+
     }
     private void getDriversCursor(ArrayList<TaxiDriver> taxiDrivers, Cursor cursor) {
         try {
@@ -260,29 +272,32 @@ public class TaxiDriverDAO extends DBHelperDAO{
         return null;
     }
 
-    public ArrayList<LatLng> getTaxiDriverFromDistanceM(LatLng bookerLatLng) {
-        LatLng taxiLatLng = null;
+    public ArrayList<TaxiDriver> getTaxiDriverFromDistanceM(LatLng bookerLatLng,String online) {
+        TaxiDriver taxiDriver = null;
         double distanceNew=0;
         String unit="M";
+        ArrayList<LatLng> latLngs = new ArrayList<>();
+        LatLng taxiLatLng=null;
         try {
-            ArrayList<LatLng> latLngs = new ArrayList<>();
+            ArrayList<TaxiDriver> taxiDrivers = new ArrayList<>();
             ArrayList<Float> floatArrayList = new ArrayList<>();
             SQLiteDatabase db = this.getReadableDatabase();
-            for (int i = 0; i < latLngs.size(); i++) {
-                taxiLatLng= latLngs.get(i);
+            String selection = TAXI_DRIVER_CURRENT_LATLNG + "=?AND " + TAXI_DRIVER_STATUS + "=?";
+            String[] selectionArgs = new String[]{String.valueOf(bookerLatLng),online};
+            for (int i = 0; i < taxiDrivers.size(); i++) {
+                taxiDriver= taxiDrivers.get(i);
 
-
+            }
+            if(taxiDriver !=null){
+                taxiLatLng=taxiDriver.getDriverLatLng();
             }
             distanceNew= Utils.taxiDistance(bookerLatLng,taxiLatLng,unit);
-            if(distanceNew !=0){
-                if(distanceNew<1000){
-                    latLngs.add(taxiLatLng);
+            if(distanceNew<1000){
+                taxiDrivers.add(taxiDriver);
 
-                }
             }
 
-            Cursor cursor = db.query(TAXI_DRIVER_TABLE, null, TAXI_DRIVER_CURRENT_LATLNG + "=?",
-                    new String[]{String.valueOf(bookerLatLng)}, null, null,
+            Cursor cursor = db.query(TAXI_DRIVER_TABLE, null, selection, selectionArgs, null, null,
                     null, null);
             if (cursor.moveToFirst()) {
                 do {
@@ -291,8 +306,8 @@ public class TaxiDriverDAO extends DBHelperDAO{
             }
             cursor.close();
 
-            latLngs= (ArrayList<LatLng>) floatArrayList.clone();
-            return latLngs;
+            taxiDrivers= (ArrayList<TaxiDriver>) floatArrayList.clone();
+            return taxiDrivers;
 
 
         }catch (SQLException e)

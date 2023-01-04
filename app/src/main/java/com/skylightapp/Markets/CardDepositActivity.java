@@ -23,7 +23,7 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
-import com.skylightapp.Transactions.Card;
+import com.skylightapp.Transactions.PayStackCard;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 
@@ -160,13 +160,13 @@ public class CardDepositActivity extends AppCompatActivity {
         }
     }
 
-    private Card loadCardFromForm() {
-        Card card;
+    private PayStackCard loadCardFromForm() {
+        PayStackCard payStackCard;
 
         String cardNum = Objects.requireNonNull(cardNumber.getText()).toString().trim();
-        card = (Card) new Card.Builder(cardNum, 0, 0, "").build();
+        payStackCard = (PayStackCard) new PayStackCard.Builder(cardNum, 0, 0, "").build();
         String cvc = Objects.requireNonNull(cardCVV.getText()).toString().trim();
-        card.setCvc(cvc);
+        payStackCard.setCvc(cvc);
 
         String sMonth = Objects.requireNonNull(cardMonthDate.getText()).toString().trim();
         int month = 0;
@@ -175,7 +175,7 @@ public class CardDepositActivity extends AppCompatActivity {
         } catch (Exception ignored) {
         }
 
-        card.setExpiryMonth(month);
+        payStackCard.setExpiryMonth(month);
 
         String sYear = Objects.requireNonNull(cardYearDate.getText()).toString().trim();
         int year = 0;
@@ -183,9 +183,9 @@ public class CardDepositActivity extends AppCompatActivity {
             year = Integer.parseInt(sYear);
         } catch (Exception ignored) {
         }
-        card.setExpiryYear(year);
+        payStackCard.setExpiryYear(year);
 
-        return card;
+        return payStackCard;
     }
 
     @Override

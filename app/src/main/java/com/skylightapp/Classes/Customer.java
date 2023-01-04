@@ -11,6 +11,7 @@ import androidx.room.PrimaryKey;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.skylightapp.Inventory.Stocks;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.MarketClasses.MarketBusiness;
 
 import org.json.JSONObject;
@@ -116,8 +117,8 @@ public class Customer  implements Parcelable, Serializable {
     private String cusBizStatus;
     private ArrayList<String> cusRoleList;
 
-    ArrayList<SkyLightPackage> skyLightPackages;
-    ArrayList<SkylightPackageModel> skylightPackageModelArrayList;
+    ArrayList<MarketBizPackage> marketBizPackages;
+    ArrayList<AwajimaPackModel> awajimaPackModelArrayList;
     ArrayList<Customer> customersReferred;
     private ArrayList<Payee> payees;
     private String role;
@@ -129,7 +130,7 @@ public class Customer  implements Parcelable, Serializable {
     ArrayList<PaymentDoc> paymentDocs;
     private ArrayList<Stocks> stocks;
     private OfficeBranch officeBranch;
-    SkyLightPackage skyLightPackage;
+    MarketBizPackage marketBizPackage;
     Account account;
     private  String currency;
     StandingOrderAcct standingOrderAcct;
@@ -223,14 +224,14 @@ public class Customer  implements Parcelable, Serializable {
 
 
     public void addShoppableItems(String shopItem) {
-        String packageID = "P1:" + (skylightPackageModelArrayList.size() + 1);
-        SkylightPackageModel skylightPackageModel = new SkylightPackageModel() {
+        String packageID = "P1:" + (awajimaPackModelArrayList.size() + 1);
+        AwajimaPackModel awajimaPackModel = new AwajimaPackModel() {
             @Override
             public int getType() {
                 return 0;
             }
         };
-        skylightPackageModelArrayList.add(skylightPackageModel);
+        awajimaPackModelArrayList.add(awajimaPackModel);
     }
     public void addReferredCustomers(String phoneNumber) {
         String refID = "R" + (customersReferred.size() + 1);
@@ -378,11 +379,11 @@ public class Customer  implements Parcelable, Serializable {
     public StandingOrderAcct getCusStandingOrderAcct() { return standingOrderAcct; }
     public void setCusStandingOrderAcct(StandingOrderAcct standingOrderAcct) { this.standingOrderAcct = standingOrderAcct; }
 
-    public void setCusPackage(SkyLightPackage skyLightPackage) {
-        this.skyLightPackage=skyLightPackage;
+    public void setCusPackage(MarketBizPackage marketBizPackage) {
+        this.marketBizPackage = marketBizPackage;
     }
-    public SkyLightPackage getCusSkyLightPackage() {
-        return skyLightPackage;
+    public MarketBizPackage getCusSkyLightPackage() {
+        return marketBizPackage;
     }
     public void setCusStandingOrder(StandingOrder standingOrder) {
         this.standingOrder=standingOrder;
@@ -473,6 +474,11 @@ public class Customer  implements Parcelable, Serializable {
         transactions.add(transaction);
 
     }
+    public void addCusStandingOrder(StandingOrder standingOrder) {
+        standingOrders= new ArrayList<>();
+        standingOrders.add(standingOrder);
+
+    }
     public void addCusMessages(int keyExtraMessageId, String selectedPurpose, String message, String sender, String time) {
         keyExtraMessageId = messages.size() + 1;
         supportMessage = new Message(keyExtraMessageId,selectedPurpose, message,sender,time);
@@ -481,10 +487,10 @@ public class Customer  implements Parcelable, Serializable {
     }
 
     public void addCusNewSkylightPackage(int profileID, int customerID, int packageID, String packageType, double savingsAmount, int packageDuration, String startDate, double grandTotal, String endDate, String status) {
-        ArrayList<SkyLightPackage> skyLightPackages = null;
-        String packageNo = "Package:" + (skyLightPackages.size() + 1);
-        skyLightPackage = new SkyLightPackage(profileID,customerID, packageID, SkyLightPackage.SkylightPackage_Type.valueOf(packageType),savingsAmount,packageDuration,startDate,grandTotal,endDate,status);
-        skyLightPackages.add(skyLightPackage);
+        ArrayList<MarketBizPackage> marketBizPackages = null;
+        String packageNo = "Package:" + (marketBizPackages.size() + 1);
+        marketBizPackage = new MarketBizPackage(profileID,customerID, packageID, MarketBizPackage.SkylightPackage_Type.valueOf(packageType),savingsAmount,packageDuration,startDate,grandTotal,endDate,status);
+        marketBizPackages.add(marketBizPackage);
     }
 
     public LatLng getCusLocation() {
@@ -670,6 +676,8 @@ public class Customer  implements Parcelable, Serializable {
     }
 
 
+
+
     public static class CustomerItem {
         public final String id;
         public final String content;
@@ -807,12 +815,12 @@ public class Customer  implements Parcelable, Serializable {
     public ArrayList<Transaction> getCusTransactions() {
         return transactions;
     }
-    public void getCusSkyLightPackages(ArrayList<SkyLightPackage> skyLightPackages) {
-        this.skyLightPackages = skyLightPackages;
+    public void getCusSkyLightPackages(ArrayList<MarketBizPackage> marketBizPackages) {
+        this.marketBizPackages = marketBizPackages;
     }
 
-    public ArrayList<SkyLightPackage> getCusSkyLightPackages() {
-        return skyLightPackages;
+    public ArrayList<MarketBizPackage> getCusSkyLightPackages() {
+        return marketBizPackages;
     }
 
     public void setCusFirstName(String firstName) {

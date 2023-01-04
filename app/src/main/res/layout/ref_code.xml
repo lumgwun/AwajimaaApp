@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/progressLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_centerInParent="true"
+    android:background="@drawable/rect_their_message"
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:visibility="visible" >
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="5dp"
+        android:text="share referral link"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/red_brown_dark" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/red_brown_dark" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="10dp" >
+
+        <!-- <ImageView -->
+        <!-- android:id="@+id/pBar" -->
+        <!-- android:layout_width="wrap_content" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:background="@drawable/loading" -->
+        <!-- android:visibility="gone" > -->
+        <!-- </ImageView> -->
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:gravity="center"
+            android:text="waiting for confirmation"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/red_brown_dark" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical" >
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp"
+                android:text="your referral credit"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/red_brown_dark" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvReferralEarn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_horizontal"
+                android:text="NGN 200"
+                android:textColor="@color/red_brown_dark"
+                android:textSize="17sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnCancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="0.5dp"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/shape_layer_3b"
+            android:gravity="center"
+            android:text="cancel"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/red_brown_dark" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnShare"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0.5dp"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:background="@drawable/shape_layer_3b"
+            android:gravity="center"
+            android:text="share"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/red_brown_dark" />
+    </LinearLayout>
+
+</LinearLayout>

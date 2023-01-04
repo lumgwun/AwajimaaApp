@@ -1,8 +1,6 @@
 package com.skylightapp.MapAndLoc;
 
-import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
-import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
-import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_LOCID;
+import static com.skylightapp.MapAndLoc.EmergencyReport.EMERG_REPORT_ID;
 import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_TABLE;
 import static com.skylightapp.MapAndLoc.PlaceData.PLACE_ENTRY_ID;
 import static com.skylightapp.MapAndLoc.PlaceData.PLACE_ENTRY_TABLE;
@@ -11,8 +9,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
-
-import com.google.android.libraries.places.api.model.Place;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -31,7 +27,7 @@ public class FenceEvent implements Parcelable, Serializable {
 
     public static final String CREATE_FENCE_EVENT_TABLE = "CREATE TABLE IF NOT EXISTS " + FENCE_EVENT_TABLE + " (" + FENCE_EVENT_DBID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + FENCE_EVENT_ID + " INTEGER, "+
             FENCE_EVENT_EMERG_ID + " INTEGER , " + FENCE_EVENT_EMERG_TYPE + " TEXT , "+ FENCE_EVENT_TIME + " TEXT, " + FENCE_EVENT_DEVICE_ID + " TEXT, " + FENCE_EVENT_PLACE_ID + " TEXT, " + FENCE_EVENT_STATUS + " TEXT, " + FENCE_EVENT_PROF_NAME + " TEXT , " +"FOREIGN KEY(" + FENCE_EVENT_PLACE_ID  + ") REFERENCES " + PLACE_ENTRY_TABLE + "(" + PLACE_ENTRY_ID + ")," +
-            "FOREIGN KEY(" + FENCE_EVENT_EMERG_ID + ") REFERENCES " + EMERGENCY_REPORT_TABLE + "(" + EMERGENCY_LOCID + "))";
+            "FOREIGN KEY(" + FENCE_EVENT_EMERG_ID + ") REFERENCES " + EMERGENCY_REPORT_TABLE + "(" + EMERG_REPORT_ID + "))";
 
     private  Date timestamp;
     private  String fence;
@@ -43,6 +39,7 @@ public class FenceEvent implements Parcelable, Serializable {
     private  String fenceEventEmergStatus;
     private  String fenceEventProfName;
     private  int fenceEventDeviceID;
+    private EmergencyReport fenceEmergReport;
 
     protected FenceEvent(Parcel in) {
         fence = in.readString();
@@ -187,5 +184,13 @@ public class FenceEvent implements Parcelable, Serializable {
 
     public void setFenceEventProfName(String fenceEventProfName) {
         this.fenceEventProfName = fenceEventProfName;
+    }
+
+    public EmergencyReport getFenceEmergReport() {
+        return fenceEmergReport;
+    }
+
+    public void setFenceEmergReport(EmergencyReport fenceEmergReport) {
+        this.fenceEmergReport = fenceEmergReport;
     }
 }

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:weightSum="6"
-    android:background="@drawable/rect66"
+    android:background="@drawable/shape_layer_2a"
     android:layout_height="wrap_content">
     <com.github.florent37.shapeofview.shapes.ArcView
         android:layout_width="0dp"
@@ -32,10 +32,10 @@
                 android:layout_width="match_parent"
                 android:textStyle="bold"
                 android:fontFamily="@font/hipster_script_pro"
-                app:title="Awajima Directory"
+                app:title="Dashboards"
                 android:background="@drawable/rect6b"
                 android:layout_marginEnd="10dp"
-                app:titleMarginStart="30dp"
+                app:titleMarginStart="70dp"
                 android:foregroundGravity="center_horizontal"
                 android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal"

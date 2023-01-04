@@ -1,8 +1,5 @@
 package com.skylightapp.MapAndLoc;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
 import android.annotation.SuppressLint;
 import android.app.TabActivity;
 import android.content.Intent;
@@ -21,19 +18,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.skylightapp.Adapters.CurrAdapter;
-import com.skylightapp.Admins.AdminTransActivity;
-import com.skylightapp.Admins.SkylightUsersActivity;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Customers.CustomerHelpActTab;
-import com.skylightapp.Customers.NewCustomerDrawer;
-import com.skylightapp.Customers.PackListTab;
-import com.skylightapp.HQLogisticsOffice;
-import com.skylightapp.MarketClasses.MarketBizSubScription;
-import com.skylightapp.Markets.MarketTab;
-import com.skylightapp.MyTimelineAct;
+import com.skylightapp.MarketClasses.MarketBizSub;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
@@ -64,7 +53,7 @@ public class OurSpReportAct extends TabActivity {
     private Customer customer;
     private Account account;
     private ArrayList<Account> accountArrayList;
-    private ArrayList<MarketBizSubScription> marketBizSubScriptions;
+    private ArrayList<MarketBizSub> marketBizSubs;
 
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
     private FloatingActionButton fab;
@@ -103,9 +92,9 @@ public class OurSpReportAct extends TabActivity {
         TabHost tabhost = (TabHost) findViewById(android.R.id.tabhost);
         tabhost.setup(getLocalActivityManager());
 
-        Intent intentsupport = new Intent().setClass(this, ResponseTeamOffice.class);
+        Intent intentsupport = new Intent().setClass(this, NewOSReportAct.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabRespTeam = tabhost
-                .newTabSpec("Spillage Reports")
+                .newTabSpec("Report New Spillage")
                 .setIndicator("", resources.getDrawable(R.drawable.user3))
                 .setContent(intentsupport);
 

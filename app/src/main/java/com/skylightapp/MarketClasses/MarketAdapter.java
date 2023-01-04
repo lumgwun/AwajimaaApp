@@ -17,11 +17,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.skylightapp.Classes.Customer;
 import com.skylightapp.Markets.MarketDetailsAct;
 import com.skylightapp.Markets.MarketHub;
 import com.skylightapp.R;
+import com.skylightapp.SuperAdmin.Awajima;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +47,12 @@ public class MarketAdapter extends RecyclerView.Adapter<MarketAdapter.RecyclerVi
     private int MODE;
     private int preSelectedPosition = -1;
     private boolean selected=false;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
+    private static Awajima awajima;
+    private Gson gson;
+    private static Gson gson1;
+    private String json;
+    private static String json1;
 
 
     public MarketAdapter(ArrayList<Market> recyclerDataArrayList, Context mcontext) {
@@ -70,6 +80,11 @@ public class MarketAdapter extends RecyclerView.Adapter<MarketAdapter.RecyclerVi
         this.marketArrayList = marketArrayList;
         this.MODE = mode;
         this.mcontext = context;
+    }
+
+    public MarketAdapter(MarketHub marketHub, ArrayList<Market> marketArrayList) {
+        this.marketArrayList = marketArrayList;
+        this.mcontext = marketHub;
     }
 
     public void updateItems(List<Market> list) {
@@ -126,7 +141,7 @@ public class MarketAdapter extends RecyclerView.Adapter<MarketAdapter.RecyclerVi
         holder.txtType.setText(marketType+""+"/"+""+commodityCount);
         holder.txtLGA.setText(marketLGA);
         holder.txtState.setText(marketState);
-        holder.setData(marketName, marketState, marketLGA, commodityCount,marketImageUris,selected, position,marketArrayList);
+        holder.setData(marketName, marketState, marketLGA, commodityCount,marketImage,marketImageUris,selected, position,marketArrayList);
 
     }
     @Override
@@ -161,17 +176,36 @@ public class MarketAdapter extends RecyclerView.Adapter<MarketAdapter.RecyclerVi
             optionContainer = itemView.findViewById(R.id.option_market);
 
         }
-        private void setData(String marketName, String marketState, String marketLGA, int commodityCount, List<Uri> marketImageUris, final Boolean selected, final int position, ArrayList<Market> marketArrayList) {
+        private void setData(String marketName, String marketState, String marketLGA, int commodityCount, int marketImage, List<Uri> marketImageUris, final Boolean selected, final int position, ArrayList<Market> marketArrayList) {
             if (MODE == SELECT_MARKET) {
+                gson1= new Gson();
+                awajima= new Awajima();
                 userPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
                 sharedPrefRole = userPreferences.getString("PROFILE_ROLE", "");
+                json1 = userPreferences.getString("LastAwajimaUsed", "");
+                awajima = gson1.fromJson(json1, Awajima.class);
                 if(sharedPrefRole !=null) {
-                    if(sharedPrefRole.contains("SuperAdmin")){
-                        optionContainer.setVisibility(View.VISIBLE);
+                    if(awajima !=null){
+                        if(sharedPrefRole.contains("SuperAdmin")){
+                            optionContainer.setVisibility(View.VISIBLE);
+
+                        }
 
                     }
+
                 }
-                marketPicture.setImageResource(R.mipmap.check);
+
+                if(marketImage==0){
+                    Glide.with(context).load(R.mipmap.check)
+                            .into(marketPicture);
+                    marketPicture.setColorFilter(ContextCompat.getColor(context, R.color.cardview_shadow_end_color));
+
+                }else {
+                    Glide.with(context).load(marketImage)
+                            .into(marketPicture);
+                    marketPicture.setColorFilter(ContextCompat.getColor(context, R.color.cardview_shadow_end_color));
+                }
+
                 if (selected) {
                     marketPicture.setVisibility(View.VISIBLE);
                     preSelectedPosition = position;
@@ -191,7 +225,8 @@ public class MarketAdapter extends RecyclerView.Adapter<MarketAdapter.RecyclerVi
                 });
             } else if (MODE == MANAGE_MARKET) {
                 optionContainer.setVisibility(View.GONE);
-                marketPicture.setImageResource(R.mipmap.vertical_dots);
+                Glide.with(context).load(R.mipmap.vertical_dots)
+                        .into(marketPicture);
                 marketPicture.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

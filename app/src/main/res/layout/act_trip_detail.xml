@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,188 +7,284 @@
     android:orientation="vertical"
     android:weightSum="10"
     tools:context="com.skylightapp.Bookings.TripDetailAct" >
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="0dp"
         android:orientation="vertical"
-        android:layout_weight="7"
-        android:weightSum="10">
-
-        <androidx.cardview.widget.CardView
+        android:layout_height="wrap_content">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/white"
+            android:layout_height="0dp"
             android:orientation="vertical"
-            map:cardCornerRadius="10dp"
-            map:cardElevation="10dp">
+            android:layout_weight="8"
+            android:weightSum="13">
 
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="70dp"
-                    android:src="@drawable/awajima_logo"
-                    android:layout_height="70dp"/>
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="40dp"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/txtDate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="WEDNESDAY"
-                        android:textSize="20sp" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/txtFee"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="$30.0"
-                        android:textColor="#27aa0b"
-                        android:textSize="50sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                android:background="@android:color/white"
+                android:orientation="vertical"
+                android:id="@+id/trip_card"
+                map:cardCornerRadius="10dp"
+                map:cardElevation="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_height="match_parent"
                     android:orientation="vertical">
-
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="70dp"
+                        android:src="@drawable/awajima_logo"
+                        android:layout_height="70dp"/>
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtA"
                         android:layout_width="wrap_content"
+                        android:fontFamily="@font/proxima_nova_bold"
                         android:layout_height="wrap_content"
-                        android:text="TRIP EARNINGS"
+                        android:text="Awajima Trip Details"
                         android:textSize="20sp" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txt_Trip_type"
+                        android:layout_width="wrap_content"
+                        android:fontFamily="@font/proxima_nova_bold"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:orientation="horizontal">
+                        android:text="Trip Type"
+                        android:textSize="20sp" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="BASE FARE"
-                            android:textSize="24sp" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/txtBaseFare"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="$2.55"
-                            android:textSize="24sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txt_Conveyer"
+                        android:layout_width="wrap_content"
+                        android:fontFamily="@font/proxima_nova_bold"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:orientation="horizontal">
+                        android:text="Conveyer"
+                        android:textSize="20sp" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="TIME"
-                            android:textSize="24sp" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/txtTime"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="3 min"
-                            android:textSize="24sp" />
-                    </LinearLayout>
+
+
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:orientation="horizontal">
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="40dp"
+                        android:orientation="vertical">
+
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="0dp"
+                            android:id="@+id/txtDate"
+                            android:layout_width="wrap_content"
+                            android:fontFamily="@font/proxima_soft_regular"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="DISTANCE"
-                            android:textSize="24sp" />
+                            android:text="WEDNESDAY"
+                            android:textSize="20sp" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/txtDistance"
+                            android:id="@+id/txtFee"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="10 km"
-                            android:textSize="24sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="2"
-                        android:orientation="horizontal">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="ESTIMATE PAYOUT"
-                            android:textColor="@android:color/black"
-                            android:textSize="24sp"
-                            android:textStyle="bold" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/txtEstimatedPayout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="$10.55"
-                            android:textColor="@android:color/black"
-                            android:textSize="24sp"
+                            android:layout_gravity="center_horizontal"
+                            android:text="$30.0"
+                            android:textColor="#27aa0b"
+                            android:textSize="50sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
                         android:orientation="vertical">
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/txtFrom"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="From"
+                            android:text="TRIP EARNINGS"
                             android:textSize="20sp" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/txtTo"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="To"
-                            android:textSize="20sp" />
+                            android:layout_weight="2"
+                            android:orientation="horizontal">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="BASE FARE"
+                                android:textSize="20sp" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/txtBaseFare"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="$2.55"
+                                android:textSize="20sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:orientation="horizontal">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="TIME"
+                                android:textSize="20sp" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/txtTime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="3 min"
+                                android:textSize="20sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:orientation="horizontal">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="DISTANCE"
+                                android:textSize="20sp" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/txtDistance"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="10 km"
+                                android:textSize="20sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="2"
+                            android:orientation="horizontal">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Estimated Payout"
+                                android:textColor="@android:color/black"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/txtEstimatedPayout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="$10.55"
+                                android:textColor="@android:color/black"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/txtFrom"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="From"
+                                android:textSize="20sp" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/txtTo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="To"
+                                android:textSize="20sp" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/txt_SeatR"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Seats Remaining: 6"
+                                android:textSize="20sp" />
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        tools:context=".activity.TripDetailActivity">
+            </androidx.cardview.widget.CardView>
 
-    </fragment>
-</LinearLayout>
+        </LinearLayout>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:weightSum="3"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="0dp"
+                android:text="Start Trip"
+                android:onClick="startTrip"
+                android:id="@+id/start_Trip"
+                android:layout_weight="1"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/shape_layer_3b"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="0dp"
+                android:text="Send Message"
+                android:onClick="sendTripMessage"
+                android:id="@+id/message_trip"
+                android:layout_weight="1"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/shape_layer_3b"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="0dp"
+                android:text="Book Trip"
+                android:onClick="bookTrip"
+                android:id="@+id/book_trip"
+                android:layout_weight="1"
+                android:background="@drawable/shape_layer_3b"
+                android:layout_height="wrap_content"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabShareTripD"
+            android:layout_width="wrap_content"
+            android:layout_marginBottom="34dp"
+            android:layout_gravity="right"
+            android:layout_marginEnd="10dp"
+            map:fab_colorRipple="@color/white"
+            map:fab_colorNormal="@color/white"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/EOCOLOR"
+            map:fab_showAnimation="@anim/bounce"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_share" />
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            tools:context="com.skylightapp.Bookings.TripDetailAct">
+
+        </fragment>
+
+        <include layout="@layout/book_trip_sheet"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</ScrollView>

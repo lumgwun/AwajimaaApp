@@ -26,8 +26,8 @@ public class Fees {
 
         return this.apiConnection.connectAndQuery(api);
     }
-     /*used only when the user has entered first 6digits of their card number,
-     it also helps determine international fees on the transaction if the card being used is an international card
+     /*used only when the user has entered first 6digits of their payStackCard number,
+     it also helps determine international fees on the transaction if the payStackCard being used is an international payStackCard
      */
 
     public JSONObject getFeesForCard6(){

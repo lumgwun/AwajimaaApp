@@ -15,7 +15,7 @@
             android:id="@+id/topBar"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@drawable/rect11"
+            android:background="@drawable/shape_rect14c"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="20dp">
@@ -71,7 +71,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="57dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/bg_gradiant_10"
+                    android:background="@drawable/shape_layer_3b"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -105,12 +105,13 @@
                 </LinearLayout>
 
 
+
                 <LinearLayout
 
                     android:layout_width="match_parent"
                     android:layout_height="62dp"
                     android:layout_marginVertical="5dp"
-                    android:background="@drawable/material_drawer_circle_mask"
+                    android:background="@drawable/shape_rect14c"
                     android:backgroundTint="@color/gray_10"
                     android:gravity="center_vertical"
                     android:padding="20dp"
@@ -332,7 +333,7 @@
                         <View
                             android:layout_width="300dp"
                             android:layout_height="match_parent"
-                            android:background="@drawable/messenger_button_send_round_shadow" />
+                            android:background="@drawable/rect_new" />
 
                     </RelativeLayout>
 
@@ -371,8 +372,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:background="@drawable/bg_cornered_rect_10"
-                    android:backgroundTint="@color/E"
+                    android:background="@drawable/rect_new"
+                    android:backgroundTint="@color/gray_10"
                     android:padding="2dp">
 
                     <androidx.appcompat.widget.AppCompatTextView

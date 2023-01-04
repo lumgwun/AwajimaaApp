@@ -168,9 +168,7 @@ public class CallServiceConf extends Service {
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         int intentFlag = 0;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            intentFlag = PendingIntent.FLAG_IMMUTABLE;
-        }
+        intentFlag = PendingIntent.FLAG_IMMUTABLE;
 
         PendingIntent notifyPendingIntent = PendingIntent.getActivity(this, 0,
                 notifyIntent, intentFlag);
@@ -194,14 +192,10 @@ public class CallServiceConf extends Service {
         builder.setWhen(System.currentTimeMillis());
         builder.setSmallIcon(R.drawable.lsgroup);
 
-        Bitmap bitmapIcon = BitmapFactory.decodeResource(getResources(), R.drawable.ls_logo);
+        Bitmap bitmapIcon = BitmapFactory.decodeResource(getResources(), R.mipmap.ls_logo);
         builder.setLargeIcon(bitmapIcon);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            builder.setPriority(NotificationManager.IMPORTANCE_LOW);
-        } else {
-            builder.setPriority(Notification.PRIORITY_LOW);
-        }
+        builder.setPriority(NotificationManager.IMPORTANCE_LOW);
         builder.setContentIntent(notifyPendingIntent);
 
         return builder.build();

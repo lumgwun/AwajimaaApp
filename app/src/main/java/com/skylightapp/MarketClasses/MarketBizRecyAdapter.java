@@ -3,6 +3,7 @@ package com.skylightapp.MarketClasses;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,7 @@ public class MarketBizRecyAdapter extends RecyclerView.Adapter<MarketBizRecyAdap
     private String curCode, bizStatus;
     private MarketBusiness marketBusiness;
     private Currency currency;
+    private Uri bizPicture;
 
     public MarketBizRecyAdapter(ArrayList<MarketBusiness> recyclerDataArrayList, Context mcontext) {
         this.businessArrayList = recyclerDataArrayList;
@@ -63,6 +65,23 @@ public class MarketBizRecyAdapter extends RecyclerView.Adapter<MarketBizRecyAdap
     public MarketBizRecyAdapter(CusPackageList cusPackageList, ArrayList<MarketBusiness> businessArrayList) {
         this.businessList = businessArrayList;
         this.mcontext = cusPackageList;
+    }
+    public void updateItems(ArrayList<MarketBusiness> list) {
+        this.businessArrayList = list;
+        notifyDataSetChanged();
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    public void deleteItem(int position) {
+        this.businessArrayList.remove(position);
+        notifyDataSetChanged();
+    }
+
+    public void addItem(MarketBusiness sliderItem) {
+        this.businessArrayList.add(sliderItem);
+        notifyDataSetChanged();
+    }
+    public void setWhenClickListener(OnItemsClickListener listener){
+        this.listener = listener;
     }
 
     @NonNull
@@ -106,6 +125,7 @@ public class MarketBizRecyAdapter extends RecyclerView.Adapter<MarketBizRecyAdap
             profile = marketBusiness.getmBusOwner();
             currency=marketBusiness.getMarketBizCurrency();
             bizStatus =marketBusiness.getBizStatus();
+            bizPicture= marketBusiness.getBizPicture();
 
         }
         if(currency !=null){
@@ -122,7 +142,7 @@ public class MarketBizRecyAdapter extends RecyclerView.Adapter<MarketBizRecyAdap
             holder.bizMarketID.setText(MessageFormat.format("Market ID:{0}", String.valueOf(marketBusiness.getBizMarketID())));
             Glide.with(mcontext)
                     .asBitmap()
-                    .load(marketBusiness.bizPicture)
+                    .load(bizPicture)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .error(R.drawable.ic_alert)
                     //.listener(listener)

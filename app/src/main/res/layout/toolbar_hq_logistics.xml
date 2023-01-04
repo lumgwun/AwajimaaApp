@@ -15,7 +15,7 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:background="@drawable/material_drawer_circle_mask"
+            android:background="@color/white_good"
             android:layout_height="wrap_content">
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
@@ -45,7 +45,6 @@
                         android:layout_gravity="center"
                         android:padding="11dp"
                         android:background="@drawable/rect_their44"
-                        android:stateListAnimator="@animator/nav_default_pop_enter_anim"
                         app:civ_border_width="1dp"
                         app:civ_border_color="#ffffff"/>
 
@@ -56,7 +55,6 @@
                         android:src="@drawable/ic_admin_user"
                         android:layout_gravity="center_horizontal"
                         android:padding="5dp"
-                        android:stateListAnimator="@animator/nav_default_pop_enter_anim"
                         app:civ_border_width="1dp"
                         app:civ_border_color="#ffffff"/>
 

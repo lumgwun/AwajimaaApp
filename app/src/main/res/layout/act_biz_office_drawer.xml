@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/biz_office_draw"
     android:fitsSystemWindows="true"
+    style="@style/Theme.OurCApp"
     tools:openDrawer="start"
     tools:context="com.skylightapp.Markets.MarketBizOffice">
 
@@ -41,7 +42,7 @@
         android:layout_marginBottom="10dp"
         app:itemBackground="@drawable/shape_layer_3b"
         app:itemTextAppearance="?android:attr/textAppearanceSmallInverse"
-        app:headerLayout="@layout/customer_header"
+        app:headerLayout="@layout/biz_header"
         android:stateListAnimator="@anim/raise"
         app:menu="@menu/biz_drawer_menu" />
 </androidx.drawerlayout.widget.DrawerLayout>

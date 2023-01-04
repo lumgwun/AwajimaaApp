@@ -9,20 +9,16 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-
 import com.denzcoskun.imageslider.ImageSlider;
-import com.skylightapp.Classes.SkyLightPackModel;
-import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.MarketClasses.MarketBizPackModel;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.MarketClasses.AwajimaSlider;
-import com.skylightapp.MarketClasses.MarketAnnounceAdapt;
 import com.skylightapp.R;
 
 
@@ -36,18 +32,18 @@ public class SkylightPackageSliderAdapter extends RecyclerView.Adapter<SkylightP
 
     private Context context;
 
-    private ArrayList<SkyLightPackModel> mSliderItems = new ArrayList<>();
+    private ArrayList<MarketBizPackModel> mSliderItems = new ArrayList<>();
     private Context Mcontext;
-    private  SkyLightPackModel skyLightPackModel;
-    private  SkyLightPackage skyLightPackage;
+    private MarketBizPackModel skyLightPackModel;
+    private MarketBizPackage marketBizPackage;
     private String tittle;
     private String type;
     private double durationPrice;
     private double grandTotal;
     private int id,imageLink,duration,position;
     private GestureDetector gestureDetector;
-    private List<SkyLightPackModel> theSlideItemsModelClassList = new ArrayList<>();
-    private List<SkyLightPackModel> itemsListFilter = new ArrayList<>();
+    private List<MarketBizPackModel> theSlideItemsModelClassList = new ArrayList<>();
+    private List<MarketBizPackModel> itemsListFilter = new ArrayList<>();
     private OnItemsClickListener callback;
     TouchInterface touchInterface;
     SliderAdapterVH viewHolder;
@@ -59,7 +55,7 @@ public class SkylightPackageSliderAdapter extends RecyclerView.Adapter<SkylightP
     }
 
 
-    public SkylightPackageSliderAdapter(Context context, ArrayList<SkyLightPackModel> sliderDataArrayList,OnItemsClickListener callback) {
+    public SkylightPackageSliderAdapter(Context context, ArrayList<MarketBizPackModel> sliderDataArrayList, OnItemsClickListener callback) {
         this.context = context;
         this.mSliderItems = sliderDataArrayList;
         this.callback = callback;
@@ -67,15 +63,15 @@ public class SkylightPackageSliderAdapter extends RecyclerView.Adapter<SkylightP
 
     }
 
-    public SkylightPackageSliderAdapter(List<SkyLightPackModel> horizontalProductScrollModelList) {
+    public SkylightPackageSliderAdapter(List<MarketBizPackModel> horizontalProductScrollModelList) {
         this.itemsListFilter = horizontalProductScrollModelList;
     }
 
-    public void renewItems(ArrayList<SkyLightPackModel> sliderItems) {
+    public void renewItems(ArrayList<MarketBizPackModel> sliderItems) {
         this.mSliderItems = sliderItems;
         notifyDataSetChanged();
     }
-    public void updateItems(ArrayList<SkyLightPackModel> list) {
+    public void updateItems(ArrayList<MarketBizPackModel> list) {
         this.mSliderItems = list;
 
 
@@ -88,7 +84,7 @@ public class SkylightPackageSliderAdapter extends RecyclerView.Adapter<SkylightP
         notifyDataSetChanged();
     }
 
-    public void addItem(SkyLightPackModel sliderItem) {
+    public void addItem(MarketBizPackModel sliderItem) {
         this.mSliderItems.add(sliderItem);
         notifyDataSetChanged();
     }
@@ -102,7 +98,7 @@ public class SkylightPackageSliderAdapter extends RecyclerView.Adapter<SkylightP
         if (charText.length() == 0) {
             itemsListFilter.addAll(mSliderItems);
         } else {
-            for (SkyLightPackModel wp : mSliderItems) {
+            for (MarketBizPackModel wp : mSliderItems) {
                 if (wp.getpMItemName().toLowerCase(Locale.getDefault()).contains(charText)) {
                     itemsListFilter.add(wp);
                 }
@@ -120,8 +116,8 @@ public class SkylightPackageSliderAdapter extends RecyclerView.Adapter<SkylightP
                 if (charString.isEmpty()) {
                     itemsListFilter = mSliderItems;
                 } else {
-                    List<SkyLightPackModel> filteredList = new ArrayList<>();
-                    for (SkyLightPackModel skyLightPackModel : mSliderItems) {
+                    List<MarketBizPackModel> filteredList = new ArrayList<>();
+                    for (MarketBizPackModel skyLightPackModel : mSliderItems) {
                         if (skyLightPackModel.getpMItemName().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(skyLightPackModel);
                         }
@@ -136,7 +132,7 @@ public class SkylightPackageSliderAdapter extends RecyclerView.Adapter<SkylightP
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                itemsListFilter = (ArrayList<SkyLightPackModel>) filterResults.values;
+                itemsListFilter = (ArrayList<MarketBizPackModel>) filterResults.values;
 
                 notifyDataSetChanged();
             }
@@ -163,7 +159,7 @@ public class SkylightPackageSliderAdapter extends RecyclerView.Adapter<SkylightP
 
     @Override
     public void onBindViewHolder(@NonNull SliderAdapterVH viewHolder, int position) {
-        SkyLightPackModel sliderItem = mSliderItems.get(position);
+        MarketBizPackModel sliderItem = mSliderItems.get(position);
         if(sliderItem !=null){
             tittle=sliderItem.getpMItemName();
             type=sliderItem.getpMType();
@@ -183,8 +179,8 @@ public class SkylightPackageSliderAdapter extends RecyclerView.Adapter<SkylightP
         viewHolder.duration.setText(MessageFormat.format("Duration.:{0}", sliderItem.getpMDuration()));
         //Glide.with(context).load(imageLink).fitCenter().into(viewHolder.imageItem);
 
-        final SkyLightPackage skyLightPackage = new SkyLightPackage(id,0,tittle,durationPrice,grandTotal,type,duration);
-        sliderItem.setSkyLightPackage(skyLightPackage);
+        final MarketBizPackage marketBizPackage = new MarketBizPackage(id,0,tittle,durationPrice,grandTotal,type,duration);
+        sliderItem.setSkyLightPackage(marketBizPackage);
         viewHolder.motherLayoutView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -247,7 +243,7 @@ public class SkylightPackageSliderAdapter extends RecyclerView.Adapter<SkylightP
         TextView price;
         TextView duration;
         OnItemsClickListener listener;
-        SkyLightPackModel skyLightPackModel;
+        MarketBizPackModel skyLightPackModel;
         public LinearLayout motherLayoutView;
         ImageSlider sliderView;
         AwajimaSlider awajimaSlider;

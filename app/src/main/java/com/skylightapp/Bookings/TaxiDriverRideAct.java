@@ -42,6 +42,7 @@ import com.google.gson.Gson;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.MapAndLoc.GPSTracker;
 import com.skylightapp.R;
 
 import org.apache.http.HttpEntity;
@@ -88,6 +89,7 @@ public class TaxiDriverRideAct extends AppCompatActivity implements View.OnClick
     float rideDistance;
     ArrayList<Marker> markers = new ArrayList<Marker>();
     private Bundle driverBundle;
+    private GPSTracker mGpsTracker;
 
 
     @SuppressLint("PotentialBehaviorOverride")
@@ -113,7 +115,7 @@ public class TaxiDriverRideAct extends AppCompatActivity implements View.OnClick
         customer = gson1.fromJson(json1, Customer.class);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.mapRide);
+                .findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
@@ -134,11 +136,13 @@ public class TaxiDriverRideAct extends AppCompatActivity implements View.OnClick
         createLocationRequest();
         mGoogleApiClient.connect();
         driverBundle=getIntent().getExtras();
+
+
         if(driverBundle !=null){
-            name=driverBundle.getString("name","");
+            name=driverBundle.getString("DRIVER_NAME","");
 
         }
-        driverid = userPreferences.getString("driver_id", "");
+        driverid = userPreferences.getString("DRIVER_ID", "");
     }
 
     protected void createLocationRequest() {
@@ -153,6 +157,7 @@ public class TaxiDriverRideAct extends AppCompatActivity implements View.OnClick
     protected void onResume() {
         super.onResume();
         checkPlayServices();
+        Location thisLocation = mGpsTracker.getLocation();
     }
 
     private boolean checkPlayServices() {
@@ -208,17 +213,16 @@ public class TaxiDriverRideAct extends AppCompatActivity implements View.OnClick
             Polyline polyline = map.addPolyline(line);
         }
 
-        StringBuilder url = new StringBuilder();
-        url.append(getResources().getString(R.string.ip));
-        url.append("drivers/position/update?driverid=");
-        url.append(driverid);
-        url.append("&latitude=");
-        url.append(location.getLatitude());
-        url.append("&longitude=");
-        url.append(location.getLongitude());
 
         URLpetition petition = new URLpetition("update driver position");
-        petition.execute(url.toString());
+        String url = getResources().getString(R.string.ip) +
+                "drivers/position/update?DRIVER_ID=" +
+                "DRIVER_ID" +
+                "&latitude=" +
+                location.getLatitude() +
+                "&longitude=" +
+                location.getLongitude();
+        petition.execute(url);
 
 
     }
@@ -305,10 +309,12 @@ public class TaxiDriverRideAct extends AppCompatActivity implements View.OnClick
             case R.id.acceptbutton:
 
 
+
+
                 StringBuilder sb = new StringBuilder();
                 sb.append(getResources().getString(R.string.ip));
-                sb.append("awajima/request/accept?driverid=");
-                sb.append(driverid);
+                sb.append("awajima/request/accept?DRIVER_ID=");
+                sb.append("DRIVER_ID");
                 sb.append("&pendingrequestid=");
                 sb.append(rideid);
 
@@ -355,8 +361,9 @@ public class TaxiDriverRideAct extends AppCompatActivity implements View.OnClick
         }
     }
 
-    void beginRide()
-    {
+    void beginRide() {
+
+
         StringBuilder sb = new StringBuilder();
         sb.append(getResources().getString(R.string.ip));
         sb.append("awajima/ride/begin?rideid=");
@@ -617,11 +624,9 @@ public class TaxiDriverRideAct extends AppCompatActivity implements View.OnClick
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
-        LatLng sydney = new LatLng(-34, 151);
-        map.addMarker(new MarkerOptions().position(sydney).title("Marker in Unyeada"));
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 19));
-
-
+        LatLng unyeada = new LatLng(4.8403502, 7.0371499);
+        map.addMarker(new MarkerOptions().position(unyeada).title("Marker in Unyeada"));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(unyeada, 19));
 
     }
     private class URLpetition extends AsyncTask<String, Void, String>

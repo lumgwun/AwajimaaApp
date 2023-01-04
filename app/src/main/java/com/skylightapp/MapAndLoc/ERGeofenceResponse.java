@@ -2,9 +2,7 @@ package com.skylightapp.MapAndLoc;
 
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
-import static com.skylightapp.MapAndLoc.EmergReportNext.EMERGENCY_NEXT_LOCID;
-import static com.skylightapp.MapAndLoc.EmergReportNext.EMERGENCY_NEXT_REPORT_TABLE;
-import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_LOCID;
+import static com.skylightapp.MapAndLoc.EmergencyReport.EMERG_REPORT_ID;
 import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_TABLE;
 import static com.skylightapp.MapAndLoc.FenceEvent.FENCE_EVENT_ID;
 import static com.skylightapp.MapAndLoc.FenceEvent.FENCE_EVENT_TABLE;
@@ -15,7 +13,6 @@ import android.os.Parcelable;
 import com.google.android.gms.location.Geofence;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class ERGeofenceResponse implements Parcelable, Serializable {
 
@@ -35,7 +32,7 @@ public class ERGeofenceResponse implements Parcelable, Serializable {
     public static final String GEOF_PROF_NAME = "geof_Prof_Name";
 
     public static final String CREATE_GEOF_RESPONSE_TABLE = "CREATE TABLE " + GEOF_RESPONSE_TABLE + " (" + GEOF__DB_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + GEOF_ID + " INTEGER, " + GEOF__EMERG_ID + " INTEGER, " + GEOF_EVENT_ID + " TEXT, " + GEOF__PROF_ID + " TEXT, " + GEOF__DEVICE_ID + " TEXT, " + GEOF_PROF_NAME + " TEXT, " +
-            GEOF_STATE + " TEXT, " + GEOF__DATE + " TEXT, " + GEOF__START_TIME + " TEXT, "+ GEOF__END_TIME + " TEXT, "+ GEOF__STATUS_A + " TEXT, "+ GEOF__A_COUNT + " TEXT, "+ "FOREIGN KEY(" + GEOF_EVENT_ID + ") REFERENCES " + FENCE_EVENT_TABLE + "(" + FENCE_EVENT_ID + "),"+ "FOREIGN KEY(" + GEOF__EMERG_ID + ") REFERENCES " + EMERGENCY_REPORT_TABLE + "(" + EMERGENCY_LOCID + "),"+ "FOREIGN KEY(" + GEOF__PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+            GEOF_STATE + " TEXT, " + GEOF__DATE + " TEXT, " + GEOF__START_TIME + " TEXT, "+ GEOF__END_TIME + " TEXT, "+ GEOF__STATUS_A + " TEXT, "+ GEOF__A_COUNT + " TEXT, "+ "FOREIGN KEY(" + GEOF_EVENT_ID + ") REFERENCES " + FENCE_EVENT_TABLE + "(" + FENCE_EVENT_ID + "),"+ "FOREIGN KEY(" + GEOF__EMERG_ID + ") REFERENCES " + EMERGENCY_REPORT_TABLE + "(" + EMERG_REPORT_ID + "),"+ "FOREIGN KEY(" + GEOF__PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
 
 

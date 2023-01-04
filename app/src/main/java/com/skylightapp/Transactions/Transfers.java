@@ -12,7 +12,7 @@ public class Transfers {
 
         if (transferPayload.getReference() == null) {
             Date date = new Date();
-            transferPayload.setReference("SKYlight" + date);
+            transferPayload.setReference("Awajima" + date);
         }
 
 
@@ -34,7 +34,7 @@ public class Transfers {
     public String doBulkTransfer(BulkPayload bulkPayload) {
         TransferServices transferServices = new TransferServices();
 
-        bulkPayload.setSeckey(OurConfig.SKYLIGHT_SECRET_KEY);
+        bulkPayload.setSeckey(OurConfig.AWAJIMA_PAYSTACK_SECRET_KEY);
 
         String payload = null;
         try {

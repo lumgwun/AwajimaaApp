@@ -6,16 +6,17 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
+        android:background="@drawable/rect_their4a"
         android:layout_height="wrap_content"
         android:theme="@style/Theme.OurApp">
 
-        <Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             app:titleTextColor="@color/white"
             app:title="@string/app_name"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:background="?attr/colorPrimary"
+            android:background="@drawable/rect6g_a"
             app:popupTheme="@style/Theme.OurApp" />
 
     </com.google.android.material.appbar.AppBarLayout>

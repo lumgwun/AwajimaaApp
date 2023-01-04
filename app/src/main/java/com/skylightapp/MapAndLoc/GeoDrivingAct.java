@@ -20,16 +20,12 @@ import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.os.SystemClock;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -69,10 +65,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.InputStream;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Random;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -104,7 +98,7 @@ public class GeoDrivingAct extends AppCompatActivity implements LocationListener
     int emergencyNextReportID;
     String dateOfToday;
     String SharedPrefCusID;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     Marker now;
     String SharedPrefUserMachine;
     String SharedPrefUserName, selectedPurpose;
@@ -163,7 +157,7 @@ public class GeoDrivingAct extends AppCompatActivity implements LocationListener
                 .setFastestInterval(1000);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.mapDrive);
+                .findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
@@ -325,15 +319,7 @@ public class GeoDrivingAct extends AppCompatActivity implements LocationListener
 
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (googleApiClient.isConnected()) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
-            googleApiClient.disconnect();
-        }
-        fusedLocationClient.removeLocationUpdates(locationCallback);
-    }
+
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -389,6 +375,16 @@ public class GeoDrivingAct extends AppCompatActivity implements LocationListener
         mMap.animateCamera(CameraUpdateFactory.zoomTo(19));
 
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (googleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+            googleApiClient.disconnect();
+        }
+        fusedLocationClient.removeLocationUpdates(locationCallback);
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
@@ -423,7 +419,7 @@ public class GeoDrivingAct extends AppCompatActivity implements LocationListener
             }
             builder = new NotificationCompat.Builder(this, id);
 
-            intent = new Intent(this, GeofenceActivity.class);
+            intent = new Intent(this, GeofenceAct.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             int flags = PendingIntent.FLAG_UPDATE_CURRENT;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -463,6 +459,26 @@ public class GeoDrivingAct extends AppCompatActivity implements LocationListener
 
         Notification notification = builder.build();
         notifManager.notify(NOTIFY_ID, notification);
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
 
 }

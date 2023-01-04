@@ -45,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginStart="34dp"
             android:layout_marginBottom="8dp"
             android:text="Parth Maniar"
             android:textAlignment="center"
@@ -74,7 +75,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/linearLayout7"
-        app:srcCompat="@drawable/settings" />
+        app:srcCompat="@drawable/settings_fg" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,10 +5,6 @@ import com.skylightapp.Transactions.OurConfig;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-
 import static com.skylightapp.FlutterWavePayments.Encryption.encryptData;
 import static com.skylightapp.FlutterWavePayments.Encryption.getKey;
 
@@ -61,7 +57,7 @@ public class CardCharge {
 
         String message= json.toString();
 
-        String encrypt_secret_key=getKey(OurConfig.SKYLIGHT_SECRET_KEY);
+        String encrypt_secret_key=getKey(OurConfig.AWAJIMA_PAYSTACK_SECRET_KEY);
         String client= null;
         if (encrypt_secret_key != null) {
             client = encryptData(message,encrypt_secret_key);
@@ -90,7 +86,7 @@ public class CardCharge {
 
         String message= json.toString();
 
-        String encrypt_secret_key=getKey(OurConfig.SKYLIGHT_SECRET_KEY);
+        String encrypt_secret_key=getKey(OurConfig.AWAJIMA_PAYSTACK_SECRET_KEY);
         String client= null;
         if (encrypt_secret_key != null) {
             client = encryptData(message,encrypt_secret_key);

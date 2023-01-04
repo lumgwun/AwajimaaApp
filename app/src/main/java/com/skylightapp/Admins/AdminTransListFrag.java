@@ -49,12 +49,14 @@ public class AdminTransListFrag extends Fragment {
 
     DBHelper dbHelper;
     SharedPreferences userPreferences;
+    private static final String PREF_NAME = "awajima";
     Gson gson;
     String json;
     Profile userProfile;
     private int resource;
     Context context;
     private TranXDAO tranXDAO;
+    static Customer customer;
 
 
     public AdminTransListFrag() {
@@ -87,9 +89,20 @@ public class AdminTransListFrag extends Fragment {
 
         recyclerView = view.findViewById(R.id.recycler_view);
         transactionList = new ArrayList<>();
-        dbHelper = new DBHelper(getContext());
         tranXDAO = new TranXDAO(getContext());
-        transactionList = tranXDAO.getAllTransactionAdmin();
+        dbHelper = new DBHelper(getContext());
+
+
+        if(tranXDAO !=null){
+            try {
+                transactionList = tranXDAO.getAllTransactionAdmin();
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
         mAdapter = new TransactionAdapter(getContext(),transactionList);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -166,19 +179,30 @@ public class AdminTransListFrag extends Fragment {
         @Override
         public void onBindViewHolder(MyViewHolder holder, final int position) {
             final Transaction transaction = transactions.get(position);
-            final Customer customer = new Customer();
-            holder.transactionId.setText(transaction.getTransactionID());
-            holder.amount.setText(valueOf(transaction.getTranxAmount()));
-            holder.type.setText(valueOf(transaction.getTranXType()));
-            holder.destinationAccount.setText(transaction.getTranxDestAcct());
-            holder.name.setText(String.format("%s%s", customer.getCusSurname().substring(1, 0), customer.getCusFirstName()));
-            holder.clientId.setText(valueOf(customer.getCusUID()));
-            holder.payee.setText(transaction.getTranxPayee());
-            holder.savingsID.setText(Math.toIntExact(transaction.getTranxRecordID()));
-            holder.payingAccount.setText(transaction.getTranxSendingAcct());
-            holder.dateOfTransaction.setText(transaction.getTranxDate());
+            if(transaction !=null){
+                holder.transactionId.setText(transaction.getTransactionID());
+                holder.amount.setText(valueOf(transaction.getTranxAmount()));
+                holder.type.setText(valueOf(transaction.getTranXType()));
+                holder.destinationAccount.setText(transaction.getTranxDestAcct());
+                holder.payee.setText(transaction.getTranxPayee());
+                holder.savingsID.setText(Math.toIntExact(transaction.getTranxRecordID()));
+                holder.payingAccount.setText(transaction.getTranxSendingAcct());
+                holder.dateOfTransaction.setText(transaction.getTranxDate());
 
-            holder.purposeOfPayment.setText(transaction.getTranxPayee());
+                holder.purposeOfPayment.setText(transaction.getTranxPayee());
+                customer = transaction.getTranxCus();
+
+            }
+
+
+            if(customer !=null){
+                holder.name.setText(String.format("%s%s", customer.getCusSurname().substring(1, 0), customer.getCusFirstName()));
+                holder.clientId.setText(valueOf(customer.getCusUID()));
+
+            }
+
+
+
 
             //Glide.with(context)
             //.load(transaction.getImage())

@@ -5,8 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/trip_bottomSheet"
     android:orientation="vertical"
+    android:visibility="gone"
     android:layout_height="wrap_content"
     android:layoutMode="opticalBounds"
+    app:circularflow_viewCenter="@drawable/rect6g_b"
     app:layout_behavior="@string/bottom_sheet_behavior"
     tools:context=".Bookings.TripBookingAct">
     <LinearLayout
@@ -95,7 +97,7 @@
             android:padding="30dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:background="@drawable/rect_their2a" />
+            android:background="@drawable/rect6g_b" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/trip_selection"

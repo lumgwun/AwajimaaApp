@@ -21,8 +21,8 @@ import android.widget.TextView;
 import com.skylightapp.Admins.SODueDateListAct;
 import com.skylightapp.Classes.AlertReceiver;
 import com.skylightapp.Classes.CustomerDailyReport;
-import com.skylightapp.Classes.SkyLightPackage;
-import com.skylightapp.MapAndLoc.GeofenceActivity;
+import com.skylightapp.MarketClasses.MarketBizPackage;
+import com.skylightapp.MapAndLoc.GeofenceAct;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -59,7 +59,7 @@ public class NotificationAct extends AppCompatActivity {
     TextView txtNot;
     static int notificationCount = 0 ;
     private CustomerDailyReport customerDailyReport;
-    private SkyLightPackage skyLightPackage;
+    private MarketBizPackage marketBizPackage;
     String endDate;
     Bundle bundle;
     int delay;
@@ -69,7 +69,7 @@ public class NotificationAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_notification);
         txtNot = findViewById(R.id. notID ) ;
-        skyLightPackage= new SkyLightPackage();
+        marketBizPackage = new MarketBizPackage();
         bundle=new Bundle();
         Intent snoozeIntent = new Intent(NotificationAct. this, NotificationAct. class ) ;
         snoozeIntent.putExtra( "fromNotification" , true ) ;
@@ -83,8 +83,8 @@ public class NotificationAct extends AppCompatActivity {
 
         bundle=getIntent().getExtras();
         if(bundle !=null){
-            skyLightPackage=bundle.getParcelable("Package");
-            endDate=skyLightPackage.getPackageDateEnded();
+            marketBizPackage =bundle.getParcelable("Package");
+            endDate= marketBizPackage.getPackageDateEnded();
 
         }
         long futureInMillis = SystemClock. elapsedRealtime () + 30000 ;
@@ -141,7 +141,7 @@ public class NotificationAct extends AppCompatActivity {
             }
             builder = new NotificationCompat.Builder(this, id);
 
-            intent = new Intent(this, GeofenceActivity.class);
+            intent = new Intent(this, GeofenceAct.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             int flags = PendingIntent.FLAG_UPDATE_CURRENT;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -163,7 +163,7 @@ public class NotificationAct extends AppCompatActivity {
             builder = new NotificationCompat.Builder(this);
 
 
-            intent = new Intent(this, GeofenceActivity.class);
+            intent = new Intent(this, GeofenceAct.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 

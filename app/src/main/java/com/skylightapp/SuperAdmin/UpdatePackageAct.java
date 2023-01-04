@@ -12,7 +12,7 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.StocksDAO;
 import com.skylightapp.MarketClasses.MarketBusiness;
@@ -29,7 +29,7 @@ public class UpdatePackageAct extends AppCompatActivity {
     private Bundle bundle;
 
     private CustomerDailyReport customerDailyReport;
-    private SkyLightPackage skyLightPackage;
+    private MarketBizPackage marketBizPackage;
     private long reportID;
     private int customerID;
     private int reportProfileID;
@@ -77,7 +77,7 @@ public class UpdatePackageAct extends AppCompatActivity {
         String todayDate = sdf.format(newDate);
         bundle=getIntent().getExtras();
         if(bundle !=null){
-            skyLightPackage=bundle.getParcelable("SkyLightPackage");
+            marketBizPackage =bundle.getParcelable("MarketBizPackage");
             itemRemCount=bundle.getInt("ItemCount");
             officeBranch=bundle.getString("Office");
             itemName=bundle.getString("ItemName");
@@ -86,10 +86,10 @@ public class UpdatePackageAct extends AppCompatActivity {
         if(itemRemCount>0){
             newItemCount=itemRemCount-1;
         }
-        if(skyLightPackage !=null){
-            reportProfileID=skyLightPackage.getPackageProfileId();
-            customerID=skyLightPackage.getPackageCustomerId();
-            packageID=skyLightPackage.getPackID();
+        if(marketBizPackage !=null){
+            reportProfileID= marketBizPackage.getPackageProfileId();
+            customerID= marketBizPackage.getPackageCustomerId();
+            packageID= marketBizPackage.getPackID();
         }
         if(marketBusiness !=null){
             marketBizID=marketBusiness.getBizMarketID();
@@ -112,14 +112,14 @@ public class UpdatePackageAct extends AppCompatActivity {
         dbHelper= new DBHelper(this);
         bundle=getIntent().getExtras();
         if(bundle !=null){
-            skyLightPackage=bundle.getParcelable("SkyLightPackage");
+            marketBizPackage =bundle.getParcelable("MarketBizPackage");
 
         }
-        if(skyLightPackage !=null){
-            reportProfileID=skyLightPackage.getPackageProfileId();
-            customerID=skyLightPackage.getPackageCustomerId();
-            packageID=skyLightPackage.getPackID();
-            packageCode =skyLightPackage.getPackageCode();
+        if(marketBizPackage !=null){
+            reportProfileID= marketBizPackage.getPackageProfileId();
+            customerID= marketBizPackage.getPackageCustomerId();
+            packageID= marketBizPackage.getPackID();
+            packageCode = marketBizPackage.getPackageCode();
         }
 
         try {

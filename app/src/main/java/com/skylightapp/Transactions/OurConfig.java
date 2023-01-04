@@ -33,7 +33,7 @@ public class OurConfig {
     public static final String BUY_SERVICE = "fly_buy";
     public static final String SKYLIGHT_PAYSTACK_PLAN_UPDATE = "https://api.paystack.co/plan/:";
     public static final String SERVICE_METHOD_POST = "post";
-    public static final String SKYLIGHT_SECRET_KEY = "FLWSECK-6fbb0917bddb806a0acfefbaba59e8c7-X";
+    public static final String AWAJIMA_PAYSTACK_SECRET_KEY = "FLWSECK-6fbb0917bddb806a0acfefbaba59e8c7-X";
     public static final String SKYLIGHT_PUBLIC_KEY = "FLWPUBK-a566e27375959648ef33e9d4121b409a-X";
     public static final String OUR_PUBLIC_KEY = "FLWPUBK-a566e27375959648ef33e9d4121b409a-X";
     public static final String OUR_SECRET_KEY = "FLWSECK-6fbb0917bddb806a0acfefbaba59e8c7-X";
@@ -314,7 +314,7 @@ public class OurConfig {
     public static final int PAYMENT_TYPE_SA_BANK_ACCOUNT = 114;
 
     public static HashMap<Integer, String> paymentTypesNamesList = new HashMap<Integer, String>() {{
-        put(PAYMENT_TYPE_CARD, "Card");
+        put(PAYMENT_TYPE_CARD, "PayStackCard");
         put(PAYMENT_TYPE_ACCOUNT, "Account");
         put(PAYMENT_TYPE_GH_MOBILE_MONEY, "Ghana Mobile Money");
         put(PAYMENT_TYPE_RW_MOBILE_MONEY, "Rwanda Mobile Money");

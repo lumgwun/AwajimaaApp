@@ -20,8 +20,13 @@ import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Profile.PROFILE_FIRSTNAME;
 import static com.skylightapp.Classes.Profile.PROFILE_PHONE;
 import static com.skylightapp.Classes.Profile.PROFILE_SURNAME;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_CUSTOMER_ID_FOREIGN;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_TABLE;
+import static com.skylightapp.Classes.StandingOrder.SO_FREQUENCY;
+import static com.skylightapp.Classes.StandingOrder.SO_NAME;
+import static com.skylightapp.Classes.StandingOrder.SO_PLAN;
+import static com.skylightapp.Classes.StandingOrder.SO_REQUEST_DATE;
+import static com.skylightapp.Classes.StandingOrder.SO_REQUEST_PLATFORM;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_CUSTOMER_ID_FOREIGN;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_TABLE;
 import static com.skylightapp.Classes.StandingOrder.SO_ACCT_NO;
 import static com.skylightapp.Classes.StandingOrder.SO_AMOUNT_DIFF;
 import static com.skylightapp.Classes.StandingOrder.SO_CUS_ID;
@@ -347,6 +352,32 @@ public class SODAO extends DBHelperDAO{
         }
 
     }
+    private void getStandingOrdersFromCursor22(ArrayList<StandingOrder> standingOrders, Cursor cursor) {
+        while (cursor.moveToNext()) {
+            int soID = cursor.getInt(1);
+            double soDailyAmount = Double.parseDouble(cursor.getString(2));
+            int customerID = cursor.getInt(3);
+            double expectedAmount = Double.parseDouble(cursor.getString(4));
+            double receivedAmount = Double.parseDouble(cursor.getString(5));
+            int totalDays = cursor.getInt(6);
+            double amountDiff = Double.parseDouble(cursor.getString(7));
+            int daysRem = cursor.getInt(8);
+            String soStatus = cursor.getString(9);
+            int so_Acct_No = cursor.getInt(10);
+            String so_start_date = cursor.getString(11);
+            String so_end_date = cursor.getString(12);
+            int profID = cursor.getInt(14);
+            String date = cursor.getString(15);
+            String plan = cursor.getString(16);
+            String freq = cursor.getString(17);
+            String platform = cursor.getString(18);
+            String name = cursor.getString(19);
+            String purpose = cursor.getString(20);
+
+            standingOrders.add(new StandingOrder(soID,profID,customerID,name,plan,freq,platform,totalDays, daysRem,date,so_Acct_No, soDailyAmount,so_start_date,expectedAmount, receivedAmount,amountDiff,soStatus,so_end_date,purpose));
+        }
+
+    }
 
     public ArrayList<StandingOrder> getAllSOEndingToday(String soEndDate) {
         ArrayList<StandingOrder> orderArrayList = new ArrayList<>();
@@ -357,7 +388,7 @@ public class SODAO extends DBHelperDAO{
 
         Cursor cursor = db.query(STANDING_ORDER_TABLE, column, selection, selectionArgs, null, null, null);
 
-        getStandingOrdersFromCursor(orderArrayList, cursor);
+        getStandingOrdersFromCursor22(orderArrayList, cursor);
         cursor.close();
         db.close();
 
@@ -374,7 +405,7 @@ public class SODAO extends DBHelperDAO{
 
         Cursor cursor = db.query(STANDING_ORDER_TABLE, null, null, null, null,null , null);
 
-        getStandingOrdersFromCursor(orderArrayList, cursor);
+        getStandingOrdersFromCursor22(orderArrayList, cursor);
         cursor.close();
         db.close();
 
@@ -388,7 +419,7 @@ public class SODAO extends DBHelperDAO{
 
         Cursor cursor = db.query(STANDING_ORDER_TABLE, null, selection, selectionArgs, null,
                 null, null);
-        getStandingOrdersFromCursor(standingOrders, cursor);
+        getStandingOrdersFromCursor22(standingOrders, cursor);
 
         cursor.close();
         db.close();
@@ -413,29 +444,56 @@ public class SODAO extends DBHelperDAO{
 
     public long insertStandingOrder(StandingOrder standingOrder, int customerID) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        Customer customer = new Customer();
-        customerID=customer.getCusUID();
-        int uID=standingOrder.getUID();
-        long so_Acct_No=standingOrder.getSo_Acct_No();
-        String so_start_date =standingOrder.getSoStartDate();
-        String soStatus =standingOrder.getSoStatus();
-        double expectedAmount =standingOrder.getSo_ExpectedAmount();
-        double receivedAmount =standingOrder.getSo_ReceivedAmount();
-        double amountDiff =standingOrder.getSo_AmountDiff();
-        double soDailyAmount =standingOrder.getSoDailyAmount();
-        String so_end_date =standingOrder.getSoEndDate();
+        int uID=0;
+        long so_Acct_No=0;
+        String so_start_date=null;
+        String soStatus=null;
+        double expectedAmount=0.00;
+        double receivedAmount=0.00;
+        double amountDiff=0.00;
+        double soDailyAmount=0.00;
+        String so_end_date=null;
+        int profID=0;
+        String so_Name=null;
+        String so_Platform=null;
+        String so_plan=null;
+        String so_frequency=null;
+        String so_Date=null;
+        if(standingOrder !=null){
+            uID=standingOrder.getUID();
+            so_Acct_No=standingOrder.getSo_Acct_No();
+            so_start_date =standingOrder.getSoStartDate();
+            soStatus =standingOrder.getSoStatus();
+            expectedAmount =standingOrder.getSo_ExpectedAmount();
+            receivedAmount =standingOrder.getSo_ReceivedAmount();
+            amountDiff =standingOrder.getSo_AmountDiff();
+            soDailyAmount =standingOrder.getSoDailyAmount();
+            so_end_date =standingOrder.getSoEndDate();
+            profID=standingOrder.getProfileID();
+            so_Name=standingOrder.getSo_Names();
+            so_Platform=standingOrder.getSo_Req_Platform();
+            so_plan=standingOrder.getSo_plan();
+            so_frequency=standingOrder.getSo_frequency();
+            so_Date=standingOrder.getSo_request_date();
+
+        }
+
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(SO_ID, uID);
         contentValues.put(SO_CUS_ID, customerID);
+        contentValues.put(SO_PROF_ID, profID);
         contentValues.put(SO_DAILY_AMOUNT, soDailyAmount);
         contentValues.put(SO_EXPECTED_AMOUNT, expectedAmount);
         contentValues.put(SO_RECEIVED_AMOUNT, receivedAmount);
         contentValues.put(SO_AMOUNT_DIFF, amountDiff);
         contentValues.put(SO_ACCT_NO, so_Acct_No);
-        contentValues.put(SO_STATUS, soStatus);
-        contentValues.put(SO_START_DATE, so_start_date);
-        contentValues.put(SO_END_DATE, so_end_date);
+        contentValues.put(SO_STATUS, "pending");
+        contentValues.put(SO_NAME, so_Name);
+        contentValues.put(SO_REQUEST_PLATFORM, so_Platform);
+        contentValues.put(SO_FREQUENCY, so_frequency);
+        contentValues.put(SO_PLAN, so_plan);
+        contentValues.put(SO_REQUEST_DATE, so_Date);
         return sqLiteDatabase.insert(STANDING_ORDER_TABLE, null, contentValues);
 
     }

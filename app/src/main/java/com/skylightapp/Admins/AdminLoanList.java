@@ -91,11 +91,16 @@ public class AdminLoanList extends AppCompatActivity implements LoanAdapter.OnLo
         codeDAO= new CodeDAO(this);
         acctDAO= new AcctDAO(this);
         loanAdapter = new LoanAdapter(this, loanArrayList);
+        try {
+            if(dbHelper !=null){
+                loanArrayList = loanDAO.getAllLoansAdmin();
 
-        if (dbHelper !=null) {
-            //dbHelper.openDataBase();
-            loanArrayList = loanDAO.getAllLoansAdmin();
+            }
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
+
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);

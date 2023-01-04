@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.circularreveal.CircularRevealRelativeLayout;
-import com.skylightapp.Admins.AdminPackageActivity;
+import com.skylightapp.Admins.AdminPackageAct;
 import com.skylightapp.Classes.PaymentCode;
 import com.skylightapp.Classes.PaymentDoc;
 import com.skylightapp.Classes.Profile;
@@ -39,7 +39,7 @@ public class MySavingsCodeAdapter extends RecyclerView.Adapter<MySavingsCodeAdap
         this.mValues = paymentCodes;
     }
 
-    public MySavingsCodeAdapter(AdminPackageActivity adminPackageActivity) {
+    public MySavingsCodeAdapter(AdminPackageAct adminPackageAct) {
 
     }
     public void setWhenClickListener(OnItemsClickListener listener){

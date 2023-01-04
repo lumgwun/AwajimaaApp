@@ -18,10 +18,10 @@ import com.skylightapp.Adapters.TranxAdminA;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.Loan;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.Payment;
 import com.skylightapp.Classes.PaymentAdapterTeller;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.StandingOrder;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.AcctDAO;
@@ -46,7 +46,7 @@ public class CustomerDetailAct extends AppCompatActivity {
     private ArrayList<Transaction> transactionArrayList;
     private ArrayList<Payment> paymentArrayList;
     private ArrayList<StandingOrder> standingOrderArrayList;
-    private ArrayList<SkyLightPackage> skyLightPackageArrayList;
+    private ArrayList<MarketBizPackage> marketBizPackageArrayList;
     private ArrayList<CustomerDailyReport> customerDailyReports;
     private ArrayList<Loan> loanArrayList;
     private SavingsAdapter savingsAdapter;
@@ -95,7 +95,7 @@ public class CustomerDetailAct extends AppCompatActivity {
         transactionArrayList = new ArrayList<Transaction>();
         standingOrderArrayList = new ArrayList<StandingOrder>();
         customerDailyReports = new ArrayList<CustomerDailyReport>();
-        skyLightPackageArrayList = new ArrayList<SkyLightPackage>();
+        marketBizPackageArrayList = new ArrayList<MarketBizPackage>();
         txtCusName =findViewById(R.id.CustomerUserDetails);
         txtTransaction =findViewById(R.id.txTransactions);
         txtSO =findViewById(R.id.txSOCount);
@@ -121,7 +121,7 @@ public class CustomerDetailAct extends AppCompatActivity {
             transactionArrayList=tranXDAO.getAllTransactionCustomer(customerID);
             standingOrderArrayList=sodao.getAllStandingOrdersForCustomer(customerID);
             customerDailyReports=dbHelper.getAllCustomerDailyReports(customerID);
-            skyLightPackageArrayList=dbHelper.getAllPackagesCustomer(customerID);
+            marketBizPackageArrayList =dbHelper.getAllPackagesCustomer(customerID);
             loanCount=loanDAO.getCustomerLoanCount(customerID);
             soCount=sodao.getCustomerSOCount(customerID);
             savingsCount=dbHelper.getCustomerTotalSavingsCount(customerID);
@@ -217,7 +217,7 @@ public class CustomerDetailAct extends AppCompatActivity {
                 = new LinearLayoutManager(CustomerDetailAct.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerViewPackages.setLayoutManager(layoutManagerSaving);
         //recyclerViewPackages.setHasFixedSize(true);
-        skyLightPackageAdapter = new SkyLightPackageAdapter(CustomerDetailAct.this,skyLightPackageArrayList);
+        skyLightPackageAdapter = new SkyLightPackageAdapter(CustomerDetailAct.this, marketBizPackageArrayList);
         recyclerViewPackages.setAdapter(skyLightPackageAdapter);
         DividerItemDecoration dividerItemDecorationPack = new DividerItemDecoration(recyclerViewPackages.getContext(),
                 layoutManagerC.getOrientation());

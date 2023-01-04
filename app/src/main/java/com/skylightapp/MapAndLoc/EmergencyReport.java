@@ -18,32 +18,35 @@ import com.skylightapp.Classes.Profile;
 
 @Entity(tableName = EmergencyReport.EMERGENCY_REPORT_TABLE)
 public class EmergencyReport implements Parcelable, Serializable {
-    public static final String EMERGENCY_LOCID = "emerg_id";
-    public static final String EMERGENCY_LOCTIME = "Emeg_locTime";
-    public static final String EMERGENCY_REPORT = "emerg_report";
-    public static final String EMERGENCY_REPORT_ADDRESS = "emerg_address";
-    public static final String EMERGENCY_REPORT_LAT = "emerg_lat";
-    public static final String EMERGENCY_REPORT_LNG = "emerg_lng";
-    public static final String EMERGENCY_REPORT_LATLNG = "emerg_LatLng";
+    public static final String EMERG_REPORT_ID = "emerg_id";
+    public static final String EMERG_R_TIME = "Emeg_locTime";
+    public static final String EMERG_REPORT = "emerg_report";
+    public static final String EMERG_R_ADDRESS = "emerg_address";
+    public static final String EMERG_R_LAT = "emerg_lat";
+    public static final String EMERG_R_LNG = "emerg_lng";
+    public static final String EMERG_R_LATLNG = "emerg_LatLng";
     public static final String EMERGENCY_REPORT_TABLE = "emerg_loc_table";
-    public static final String EMERGENCY_REPORT_TYPE = "emerg_lOC_report_type";
-    public static final String EMERGENCY_REPORT_PROF_ID = "emerg_lOC_report_Prof_id";
-    public static final String EMERGENCY_REPORT_STATUS = "emerg_lOC_report_status";
-    public static final String EMERGENCY_REPORT_SUBLOCALE = "emerg_lOC_SunLoc";
-    public static final String EMERGENCY_REPORT_DB_ID = "emerg_lOC_DB_Id";
-    public static final String EMERGENCY_REPORT_BG_ADDRESS = "emerg_lOC_BG_Address";
-    public static final String EMERGENCY_REPORT_TOWN = "emerg_lOC_Town";
-    public static final String EMERGENCY_REPORT_STATE = "emerg_lOC_STATE";
-    public static final String EMERGENCY_REPORT_BIZ_ID = "emerg_lOC_Biz_ID";
-    public static final String EMERGENCY_REPORT_MARKET_ID = "emerg_lOC_Market_ID";
-    public static final String EMERGENCY_REPORT_COUNTRY = "emerg_lOC_Country";
-    public static final String EMERGENCY_REPORT_GROUP = "emerg_lOC_report_Group";
-    public static final String EMERGENCY_REPORT_QUESTION = "emerg_report_Question";
+    public static final String EMERG_R_TYPE = "emerg_lOC_report_type";
+    public static final String EMERG_R_PROF_ID = "emerg_lOC_report_Prof_id";
+    public static final String EMERG_R_STATUS = "emerg_lOC_report_status";
+    public static final String EMERG_R_SUBLOCALE = "emerg_lOC_SunLoc";
+    public static final String EMERG_R_DB_ID = "emerg_lOC_DB_Id";
+    public static final String EMERG_R_BG_ADDRESS = "emerg_lOC_BG_Address";
+    public static final String EMERG_R_TOWN = "emerg_lOC_Town";
+    public static final String EMERG_R_STATE = "emerg_lOC_STATE";
+    public static final String EMERG_R_BIZ_ID = "emerg_lOC_Biz_ID";
+    public static final String EMERG_R_MARKET_ID = "emerg_lOC_Market_ID";
+    public static final String EMERG_R_COUNTRY = "emerg_lOC_Country";
+    public static final String EMERG_R_GROUP = "emerg_lOC_report_Group";
+    public static final String EMERG_R_QUESTION = "emerg_report_Question";
+    public static final String EMERG_R_COMPANY = "emerg_report_Company";
+    public static final String EMERG_R_LGA = "emerg_report_LGA";
+    public static final String EMERG_R_MORE_INFO = "emerg_report_More";
+    public static final String EMERG_R_PLACE_LATLNG = "emerg_Place_LatLng";
 
-
-    public static final String CREATE_EMERGENCY_REPORT_TABLE = "CREATE TABLE IF NOT EXISTS " + EMERGENCY_REPORT_TABLE + " (" + EMERGENCY_LOCID + " INTEGER , " + EMERGENCY_REPORT_PROF_ID + " INTEGER , " +
-            EMERGENCY_LOCTIME + " TEXT , " + EMERGENCY_REPORT_TYPE + " TEXT , " + EMERGENCY_REPORT_LAT + " REAL , "+ EMERGENCY_REPORT_LNG + " REAL , " + EMERGENCY_REPORT_STATUS + " TEXT , " + EMERGENCY_REPORT + " TEXT , " + EMERGENCY_REPORT_ADDRESS + " TEXT , " + EMERGENCY_REPORT_LATLNG + " REAL , "+ EMERGENCY_REPORT_SUBLOCALE + " TEXT , " + EMERGENCY_REPORT_DB_ID + " INTEGER , "+ EMERGENCY_REPORT_BG_ADDRESS + " TEXT , "+ EMERGENCY_REPORT_TOWN + " TEXT , "+ EMERGENCY_REPORT_STATE + " TEXT , "+ EMERGENCY_REPORT_BIZ_ID + " INTEGER , "+ EMERGENCY_REPORT_MARKET_ID + " INTEGER , "+ EMERGENCY_REPORT_COUNTRY + " TEXT , "+ EMERGENCY_REPORT_GROUP + " TEXT , "+ EMERGENCY_REPORT_QUESTION + " TEXT , "+ "PRIMARY KEY(" + EMERGENCY_REPORT_DB_ID + "), " +
-            "FOREIGN KEY(" + EMERGENCY_REPORT_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+    public static final String CREATE_EMERGENCY_REPORT_TABLE = "CREATE TABLE IF NOT EXISTS " + EMERGENCY_REPORT_TABLE + " (" + EMERG_REPORT_ID + " INTEGER , " + EMERG_R_PROF_ID + " INTEGER , " +
+            EMERG_R_TIME + " TEXT , " + EMERG_R_TYPE + " TEXT , " + EMERG_R_LAT + " REAL , "+ EMERG_R_LNG + " REAL , " + EMERG_R_STATUS + " TEXT , " + EMERG_REPORT + " TEXT , " + EMERG_R_ADDRESS + " TEXT , " + EMERG_R_LATLNG + " REAL , "+ EMERG_R_SUBLOCALE + " TEXT , " + EMERG_R_DB_ID + " INTEGER , "+ EMERG_R_BG_ADDRESS + " TEXT , "+ EMERG_R_TOWN + " TEXT , "+ EMERG_R_STATE + " TEXT , "+ EMERG_R_BIZ_ID + " INTEGER , "+ EMERG_R_MARKET_ID + " INTEGER , "+ EMERG_R_COUNTRY + " TEXT , "+ EMERG_R_GROUP + " TEXT , "+ EMERG_R_QUESTION + " TEXT , "+ EMERG_R_LGA + " TEXT , "+ EMERG_R_COMPANY + " TEXT , "+ EMERG_R_MORE_INFO + " TEXT , "+ EMERG_R_PLACE_LATLNG + " TEXT , "+ "PRIMARY KEY(" + EMERG_R_DB_ID + "), " +
+            "FOREIGN KEY(" + EMERG_R_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
     private Place emerGPlace;
     private boolean selected;
 
@@ -76,12 +79,18 @@ public class EmergencyReport implements Parcelable, Serializable {
     private String emergRState;
     private String emergRCountry;
     private String emergRTown;
+    private String emergRLGA;
+    private String emergRCompany;
+    private String emergRMoreInfo;
     private String emergRGroup;
     private PlaceData emerGPlaceDate;
     private ArrayList<EmergencyReport> emergReportMoreReports;
     private ArrayList<ERGeofenceResponse> ERGeofenceResponses;
     private String emergRQuestion;
     private ArrayList<FenceEvent> emergReportFenceEs;
+    private ArrayList<Fence> emergReportFences;
+    private ArrayList<CircularFence> emrCircularFences;
+    private String emrPlaceLatLng;
 
 
     public EmergencyReport(int reportID, int profileID, long bizID, String dateOfToday, String selectedType, String stringLatLng, String locality, String bgAddress, String address, String country) {
@@ -115,12 +124,22 @@ public class EmergencyReport implements Parcelable, Serializable {
 
 
     }
-    public void addEmergLocFence(ERGeofenceResponse ERGeofenceResponse) {
+
+    public EmergencyReport(int sReportID, int profileID1, long bizID, String reportDate, String oil_spillage_report, String localityString, String subUrb, String selectedLGA, String selectedOilCompany, String address, String strngLatLng, String moreInfo, String iamAvailable) {
+
+    }
+
+    public void addERGeofenceResponse(ERGeofenceResponse ERGeofenceResponse) {
         ERGeofenceResponses = new ArrayList<>();
         ERGeofenceResponses.add(ERGeofenceResponse);
 
     }
-    public void addEmergFence(FenceEvent fenceEvent) {
+    public void addCircularFence(CircularFence circularFence) {
+        emrCircularFences = new ArrayList<>();
+        emrCircularFences.add(circularFence);
+
+    }
+    public void addEmergFenceEvents(FenceEvent fenceEvent) {
         emergReportFenceEs= new ArrayList<>();
         emergReportFenceEs.add(fenceEvent);
 
@@ -148,6 +167,13 @@ public class EmergencyReport implements Parcelable, Serializable {
     public void addReportPicture(SlideModel picture) {
         emergRPictures= new ArrayList<>();
         emergRPictures.add(picture);
+
+
+
+    }
+    public void addFence(Fence fence) {
+        emergReportFences= new ArrayList<>();
+        emergReportFences.add(fence);
 
 
 
@@ -449,5 +475,45 @@ public class EmergencyReport implements Parcelable, Serializable {
 
     public void setEmergReportFenceEs(ArrayList<FenceEvent> emergReportFenceEs) {
         this.emergReportFenceEs = emergReportFenceEs;
+    }
+
+    public String getEmergRLGA() {
+        return emergRLGA;
+    }
+
+    public void setEmergRLGA(String emergRLGA) {
+        this.emergRLGA = emergRLGA;
+    }
+
+    public String getEmergRCompany() {
+        return emergRCompany;
+    }
+
+    public void setEmergRCompany(String emergRCompany) {
+        this.emergRCompany = emergRCompany;
+    }
+
+    public String getEmergRMoreInfo() {
+        return emergRMoreInfo;
+    }
+
+    public void setEmergRMoreInfo(String emergRMoreInfo) {
+        this.emergRMoreInfo = emergRMoreInfo;
+    }
+
+    public ArrayList<Fence> getEmergReportFences() {
+        return emergReportFences;
+    }
+
+    public void setEmergReportFences(ArrayList<Fence> emergReportFences) {
+        this.emergReportFences = emergReportFences;
+    }
+
+    public String getEmrPlaceLatLng() {
+        return emrPlaceLatLng;
+    }
+
+    public void setEmrPlaceLatLng(String emrPlaceLatLng) {
+        this.emrPlaceLatLng = emrPlaceLatLng;
     }
 }

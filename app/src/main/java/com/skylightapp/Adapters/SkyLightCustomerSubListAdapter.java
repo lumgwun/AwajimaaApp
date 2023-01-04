@@ -14,9 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.R;
-import com.skylightapp.SkyLightPackageActivity;
+import com.skylightapp.AwajimaPackAct;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class SkyLightCustomerSubListAdapter extends RecyclerView.Adapter<SkyLigh
     LayoutInflater inflter;
     public static ArrayList<String> selectedAction;
     private List<String> data;
-    private List<SkyLightPackage> packageList;
+    private List<MarketBizPackage> packageList;
     private OnItemsClickListener listener;
 
     public SkyLightCustomerSubListAdapter(Context applicationContext, int[] packages) {
@@ -43,7 +43,7 @@ public class SkyLightCustomerSubListAdapter extends RecyclerView.Adapter<SkyLigh
         inflter = (LayoutInflater.from(applicationContext));
     }
 
-    public SkyLightCustomerSubListAdapter(ArrayList<SkyLightPackage> recyclerDataArrayList, SkyLightPackageActivity skyLightPackageActivity) {
+    public SkyLightCustomerSubListAdapter(ArrayList<MarketBizPackage> recyclerDataArrayList, AwajimaPackAct awajimaPackAct) {
 
         this.packageList = recyclerDataArrayList;
 
@@ -120,7 +120,7 @@ public class SkyLightCustomerSubListAdapter extends RecyclerView.Adapter<SkyLigh
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final SkyLightPackage modelItems = packageList.get(position);
+        final MarketBizPackage modelItems = packageList.get(position);
         holder.setData(packageList.get(position).getPackageName());
         holder.singleItemCardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,6 +157,6 @@ public class SkyLightCustomerSubListAdapter extends RecyclerView.Adapter<SkyLigh
         }
     }
     public interface OnItemsClickListener{
-        void onItemClick(SkyLightPackage lightPackage);
+        void onItemClick(MarketBizPackage lightPackage);
     }
 }

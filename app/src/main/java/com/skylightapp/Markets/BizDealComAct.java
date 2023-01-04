@@ -51,6 +51,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
+import static com.skylightapp.BuildConfig.APPLICATION_ID;
 import static com.skylightapp.BuildConfig.QUICKBLOX_ACCT_KEY;
 import static com.skylightapp.BuildConfig.QUICKBLOX_APP_ID;
 import static com.skylightapp.BuildConfig.QUICKBLOX_AUTH_KEY;
@@ -167,8 +168,8 @@ public class BizDealComAct extends AppCompatActivity  {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.act_biz_deal_com);
         FirebaseApp.initializeApp(this);
-        QBSettings.getInstance().init(this, APPLICATION_ID, AUTH_KEY, AUTH_SECRET);
-        QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         bundle= new Bundle();
         gson= new Gson();
         gson1= new Gson();
@@ -228,19 +229,49 @@ public class BizDealComAct extends AppCompatActivity  {
     @Override
     protected void onResume() {
         super.onResume();
-        ChatHelper.getInstance().addConnectionListener(chatConnectionListener);
+        try {
+            ChatHelper.getInstance().addConnectionListener(chatConnectionListener);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        ChatHelper.getInstance().removeConnectionListener(chatConnectionListener);
+        try {
+            ChatHelper.getInstance().removeConnectionListener(chatConnectionListener);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void onBackPressed() {
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
 
-        super.onBackPressed();
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
 
 }

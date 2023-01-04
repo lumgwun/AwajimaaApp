@@ -12,10 +12,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.multidex.MultiDexApplication;
 
+import com.skylightapp.CustomApplication;
 import com.skylightapp.R;
 import com.teliver.sdk.core.Teliver;
 
-public class DriverApp extends MultiDexApplication {
+public class DriverApp extends CustomApplication {
 
     private SharedPreferences sharedPreferences;
     public static final String TRACKING_ID = "tracking_id",IN_CURRENT_TRIP = "in_current_trip",TAG = "TELIVER::";

@@ -10,7 +10,7 @@ import com.skylightapp.SuperAdmin.AppCommission;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.skylightapp.Classes.Bookings.BOOKING_ID;
+import static com.skylightapp.Bookings.Bookings.BOOKING_ID;
 import static com.skylightapp.SuperAdmin.AppCommission.ADMIN_BALANCE_ACCT_ID;
 import static com.skylightapp.SuperAdmin.AppCommission.ADMIN_BALANCE_CUS_ID;
 import static com.skylightapp.SuperAdmin.AppCommission.ADMIN_BALANCE_DATE;

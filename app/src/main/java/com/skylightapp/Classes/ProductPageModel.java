@@ -3,6 +3,8 @@ package com.skylightapp.Classes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.skylightapp.MarketClasses.MarketBizPackModel;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -70,9 +72,9 @@ public class ProductPageModel implements List<ProductPageModel> {
 
     /////////////////////////////HORIZONTAL PRODUCT VIEW &&  GRID PRODUCT LAYOUT
     private String title;
-    private List<SkyLightPackModel> horizontalProductScrollModelList;
+    private List<MarketBizPackModel> horizontalProductScrollModelList;
     private List<WishlistModel> viewAllProductList;
-    public ProductPageModel(int type, String title,String backgroundColor ,List<SkyLightPackModel> horizontalProductScrollModelList,List<WishlistModel> viewAllProductList) {
+    public ProductPageModel(int type, String title, String backgroundColor , List<MarketBizPackModel> horizontalProductScrollModelList, List<WishlistModel> viewAllProductList) {
         this.type = type;
         this.title = title;
         this.backgroundColor = backgroundColor;
@@ -88,7 +90,7 @@ public class ProductPageModel implements List<ProductPageModel> {
         this.viewAllProductList = viewAllProductList;
     }
 
-    public ProductPageModel(int type, String title, String backgroundColor , List<SkyLightPackModel> horizontalProductScrollModelList) {
+    public ProductPageModel(int type, String title, String backgroundColor , List<MarketBizPackModel> horizontalProductScrollModelList) {
         this.type = type;
         this.title = title;
         this.backgroundColor = backgroundColor;
@@ -103,11 +105,11 @@ public class ProductPageModel implements List<ProductPageModel> {
         this.title = title;
     }
 
-    public List<SkyLightPackModel> getHorizontalProductScrollModelList() {
+    public List<MarketBizPackModel> getHorizontalProductScrollModelList() {
         return horizontalProductScrollModelList;
     }
 
-    public void setHorizontalProductScrollModelList(List<SkyLightPackModel> horizontalProductScrollModelList) {
+    public void setHorizontalProductScrollModelList(List<MarketBizPackModel> horizontalProductScrollModelList) {
         this.horizontalProductScrollModelList = horizontalProductScrollModelList;
     }
 

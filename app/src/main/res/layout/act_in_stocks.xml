@@ -601,7 +601,6 @@
                     android:src="@drawable/laptop"
                     android:layout_gravity="center"
                     android:padding="5dp"
-                    android:stateListAnimator="@animator/nav_default_pop_enter_anim"
                     app:civ_border_width="1dp"
                     app:civ_border_color="#ffffff"/>
 

@@ -30,27 +30,19 @@ import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.rom4ek.arcnavigationview.ArcNavigationView;
 import com.skylightapp.Adapters.CurrAdapter;
 import com.skylightapp.Bookings.BoatBookingTab;
-import com.skylightapp.Bookings.CusFirebaseMessaging;
 import com.skylightapp.Bookings.SessionTab;
 import com.skylightapp.Bookings.TaxiBookingTab;
 import com.skylightapp.Bookings.TrainBookingTab;
 import com.skylightapp.Bookings.TripBookingAct;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
-import com.skylightapp.Classes.HomeFragment;
-import com.skylightapp.Classes.MyAccountFragment;
-import com.skylightapp.Classes.MyCartFragment;
-import com.skylightapp.Classes.MyOrdersFragment;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Customers.CustomerHelpActTab;
 import com.skylightapp.Customers.MyAcctOverViewAct;
-import com.skylightapp.Customers.NewCustomerDrawer;
-import com.skylightapp.Customers.PackListTab;
 import com.skylightapp.MarketClasses.MarketBizRegulator;
-import com.skylightapp.MarketClasses.MarketBizSubScription;
+import com.skylightapp.MarketClasses.MarketBizSub;
 import com.skylightapp.Markets.BizOfficeAct;
-import com.skylightapp.Markets.MarketChatTab;
 import com.skylightapp.Markets.MarketTab;
 import com.skylightapp.MyGrpSavingsTab;
 import com.skylightapp.MyInsTab;
@@ -60,7 +52,6 @@ import com.skylightapp.R;
 import com.skylightapp.SignTabMainActivity;
 import com.skylightapp.SuperAdmin.StocksTab;
 import com.skylightapp.Tellers.UserTxAct;
-import com.skylightapp.UserPrefActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +82,7 @@ public class NOSDRAOffice extends AppCompatActivity implements NavigationView.On
     private Customer customer;
     private Account account;
     private ArrayList<Account> accountArrayList;
-    private ArrayList<MarketBizSubScription> marketBizSubScriptions;
+    private ArrayList<MarketBizSub> marketBizSubs;
 
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
     CardView cardViewPackges,cardViewGrpSavings,cardViewHistory, cardViewStandingOrders, cardViewOrders, cardViewSupport;
@@ -121,7 +112,7 @@ public class NOSDRAOffice extends AppCompatActivity implements NavigationView.On
         toggle.setHomeAsUpIndicator(R.drawable.home2);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        getSupportActionBar().setElevation(90);
+        //getSupportActionBar().setElevation(90);
         fab = findViewById(R.id.fab_nos);
         gson = new Gson();
         gson1 = new Gson();
@@ -154,6 +145,7 @@ public class NOSDRAOffice extends AppCompatActivity implements NavigationView.On
                                 myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(myIntent);
+                                break;
 
                             case R.id.nos_jiv:
 
@@ -163,6 +155,7 @@ public class NOSDRAOffice extends AppCompatActivity implements NavigationView.On
                                 chat.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 chat.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(chat);
+                                break;
 
 
                             case R.id.nos_cu:
@@ -173,6 +166,7 @@ public class NOSDRAOffice extends AppCompatActivity implements NavigationView.On
                                 shop.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 shop.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(shop);
+                                break;
 
                             case R.id.nos_pcu:
 
@@ -182,15 +176,17 @@ public class NOSDRAOffice extends AppCompatActivity implements NavigationView.On
                                 pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 pIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(pIntent);
+                                break;
 
 
-                            case R.id.nos_support:
-                                Intent helpIntent = new Intent(NOSDRAOffice.this, CusFirebaseMessaging.class);
+                            case R.id.nos_Oil_spillM:
+                                Intent helpIntent = new Intent(NOSDRAOffice.this, OilSpillMonAct.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
                                 helpIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 helpIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(helpIntent);
+                                break;
                         }
                         /*getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.fragment_container,
@@ -472,6 +468,15 @@ public class NOSDRAOffice extends AppCompatActivity implements NavigationView.On
                         Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(compIntent);
                 break;
+            case R.id.nos_OilS_monitor:
+                Intent spillIntent = new Intent(NOSDRAOffice.this, OilSpillMonAct.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                spillIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                spillIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(spillIntent);
+
+                break;
 
             case R.id.nosdra_logout:
                 Toast.makeText(this, "Logging out", Toast.LENGTH_SHORT).show();
@@ -493,6 +498,27 @@ public class NOSDRAOffice extends AppCompatActivity implements NavigationView.On
         return true;
 
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
 
 
 }

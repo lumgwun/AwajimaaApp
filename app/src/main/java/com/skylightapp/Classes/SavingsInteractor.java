@@ -97,9 +97,9 @@ public class SavingsInteractor {
         /*DatabaseReference databaseReference = databaseHelper.getDatabaseReference().child(DatabaseHelper.POSTS_DB_KEY);
         Query postsQuery;
         if (date == 0) {
-            postsQuery = databaseReference.limitToLast(Utils.SkyLightPackage.POST_AMOUNT_ON_PAGE).orderByChild("createdDate");
+            postsQuery = databaseReference.limitToLast(Utils.MarketBizPackage.POST_AMOUNT_ON_PAGE).orderByChild("createdDate");
         } else {
-            postsQuery = databaseReference.limitToLast(Utils.SkyLightPackage.POST_AMOUNT_ON_PAGE).endAt(date).orderByChild("createdDate");
+            postsQuery = databaseReference.limitToLast(Utils.MarketBizPackage.POST_AMOUNT_ON_PAGE).endAt(date).orderByChild("createdDate");
         }
 
         postsQuery.keepSynced(true);
@@ -472,7 +472,7 @@ public class SavingsInteractor {
         });
     }
 
-    public void updatePackageCountAfterRemovingSavings(SkyLightPackage lightPackage) {
+    public void updatePackageCountAfterRemovingSavings(MarketBizPackage lightPackage) {
         DatabaseReference profileRef = databaseHelper
                 .getDatabaseReference()
                 .child(DatabaseHelper.PACKAGE_DB_KEY + "/" + lightPackage.getPackageId() + "/likesCount");

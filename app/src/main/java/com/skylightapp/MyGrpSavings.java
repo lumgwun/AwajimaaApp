@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -21,6 +22,7 @@ import com.skylightapp.Adapters.GroupAcctAdapter;
 import com.skylightapp.Classes.GroupAccount;
 import com.skylightapp.Classes.MyTouchListener;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.GroupAccountDAO;
 
@@ -56,11 +58,35 @@ public class MyGrpSavings extends AppCompatActivity implements GroupAcctAdapter.
         gson = new Gson();
         userProfile=new Profile();
         random= new SecureRandom();
-        GroupAccountDAO groupAccountDAO= new GroupAccountDAO(this);
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
+        GroupAccountDAO groupAccountDAO= new GroupAccountDAO(this);
+
+        if(userProfile!=null){
+            profileID=userProfile.getPID();
+        }
         final CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true);
-        groupAccountArrayList = groupAccountDAO.getGrpAcctsForCurrentProfile(profileID);
+
+        try {
+
+            if(dbHelper !=null){
+                try {
+
+                    if (groupAccountDAO != null) {
+                        groupAccountArrayList = groupAccountDAO.getGrpAcctsForCurrentProfile(profileID);
+                    }
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+
+
+
+
         groupAcctAdapter = new GroupAcctAdapter(groupAccountArrayList, R.layout.grp_acct_row, this);
         recyclerView.setAdapter(groupAcctAdapter);
         recyclerView.setLayoutManager(layoutManager);
@@ -116,7 +142,7 @@ public class MyGrpSavings extends AppCompatActivity implements GroupAcctAdapter.
         bundle.putString(machine, machine);
         bundle.putParcelable("Profile", userProfile);
         //bundle.putString("FirstName", profileFirstName);
-        Intent intent = new Intent(this, LoginDirAct.class);
+        Intent intent = new Intent(this, NewCustomerDrawer.class);
         intent.putExtras(bundle);
         startActivity(intent);
 

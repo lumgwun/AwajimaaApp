@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".SubRecordAct">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_aSub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/gilroy_semi_bold"
+            android:text="Awajima Subscription"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/officeOfC"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:focusable="false"
+            android:layout_marginBottom="10dp"
+            android:textColor="@android:color/holo_red_dark"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:background="@null"
+            android:text="Select the Sub. Type" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/sub_type"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:background="@drawable/shape_layer_3b"
+                android:drawableStart="@drawable/ic_icon_foreground"
+                android:entries="@array/awajima_sub_type"
+                android:padding="30dp"
+                android:textSize="20sp"
+                android:layout_gravity="center_vertical|start"
+                android:gravity="center_vertical|start"
+                android:clickable="false" />
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/sub_bizID"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:hint="Business ID"
+                android:drawableEnd="@drawable/ic_icon_foreground"
+                android:contextClickable="true"
+                android:background="@drawable/rect6h"
+                android:focusable="true"
+                android:inputType="number"
+                android:drawableStart="@drawable/ic_icon_foreground"
+                android:textStyle="bold"
+                android:textColorHint="@color/black"
+                android:textSize="15sp"
+                android:layout_gravity="center_horizontal|center"
+                android:gravity="center_horizontal|center"
+                android:clickable="false" />
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/sub_biz_prof_ID"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusable="true"
+                android:drawableEnd="@drawable/ic_icon_foreground"
+                android:drawableStart="@drawable/ic_icon_foreground"
+                android:hint="Business Profile ID"
+                android:background="@drawable/rect6h"
+                android:textStyle="bold"
+                android:inputType="number"
+                android:textColorHint="@color/black"
+                android:textSize="15sp"
+                android:clickable="false"
+                android:layout_gravity="center_horizontal|center"
+                android:gravity="center_horizontal|center" />
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/sub_months"
+                android:layout_width="match_parent"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:focusable="true"
+                android:inputType="number"
+                android:drawableStart="@drawable/ic_icon_foreground"
+                android:layout_height="match_parent"
+                android:drawableEnd="@drawable/ic_icon_foreground"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:clickable="false"
+                android:layout_gravity="center_horizontal|center"
+                android:gravity="center_horizontal|center"
+                android:background="@drawable/rect_their4"
+                android:textColorHint="@android:color/holo_red_dark"
+                android:hint="Number of Months" />
+
+        </androidx.cardview.widget.CardView>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/sub_totalD"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:focusable="false"
+            android:layout_marginBottom="10dp"
+            android:textColor="@android:color/holo_red_dark"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:background="@null"
+            android:text="Total Amount:" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/sub_codeP"
+                android:layout_width="match_parent"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:focusable="true"
+                android:inputType="number"
+                android:drawableStart="@drawable/ic_icon_foreground"
+                android:layout_height="match_parent"
+                android:drawableEnd="@drawable/ic_icon_foreground"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:clickable="false"
+                android:layout_gravity="center_horizontal|center"
+                android:gravity="center_horizontal|center"
+                android:background="@drawable/rect_their4a"
+                android:textColorHint="@android:color/holo_red_dark"
+                android:hint="Payment Code" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/gOfC"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:focusable="false"
+            android:textColor="@android:color/holo_red_dark"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:background="@null"
+            android:text="Select the Start Date" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <DatePicker
+                android:id="@+id/sub_start_Date"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:background="@drawable/event_rect"
+                style="@style/DialogDatePicker.Theme"
+                android:padding="30dp"
+                android:textSize="20sp"
+                android:layout_gravity="center_vertical|start"
+                android:gravity="center_vertical|start"
+                android:clickable="false" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/card_EndD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:focusable="false"
+            android:textColor="@android:color/holo_red_dark"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:background="@null"
+            android:text="Select the End Date" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <DatePicker
+                android:id="@+id/sub_end_Date"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:background="@drawable/event_rect"
+                style="@style/DatePickerDialogStyle"
+                android:padding="30dp"
+                android:textSize="20sp"
+                android:layout_gravity="center_vertical|start"
+                android:gravity="center_vertical|start"
+                android:clickable="false" />
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:text="Enter Biz Sub."
+            android:textSize="20sp"
+            android:padding="20dp"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:textStyle="bold"
+            android:onClick="sendBizSub"
+            android:id="@+id/submit_sub"
+            android:textColor="@android:color/holo_red_dark"
+            android:background="@drawable/rect6g"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"/>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</ScrollView>

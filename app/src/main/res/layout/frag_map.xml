@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress ALL -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:id="@+id/mapFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="visible" >
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/map_Frag"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="700dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_layer_3b"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone" >
+
+                <AutoCompleteTextView
+                    android:id="@+id/etEnterSouce"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:drawableLeft="@drawable/search_round"
+                    android:drawablePadding="5dp"
+                    android:hint="PICK UP ADDRESS"
+                    android:imeOptions="actionDone"
+                    android:inputType="textNoSuggestions"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" >
+
+                    <requestFocus />
+                </AutoCompleteTextView>
+
+                <ImageButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@null"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_close"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/cell_line_divider"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <include
+            android:id="@+id/layoutBubble"
+            android:layout_gravity="center"
+            layout="@layout/my_marker"
+            tools:ignore="IncludeLayoutParam" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="5dp"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/btnMyLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_layer_3b" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageButton
+                    android:id="@+id/btnFareInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_admin_panel" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutFareQuote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray_10" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal" >
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rect_new" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvFareQuote"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawablePadding="5dp"
+                        android:drawableTop="@drawable/credit_fg"
+                        android:gravity="center"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:text="fare quote"
+                        android:textColor="@color/red_brown_dark"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rect_new" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvPromoCode"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawablePadding="5dp"
+                        android:gravity="center"
+                        android:paddingBottom="20dp"
+                        android:paddingTop="10dp"
+                        android:text="Promo code"
+                        android:textColor="@color/red_brown_dark"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rect_new" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/cardview_dark_background" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutCardDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:visibility="gone" >
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivCard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/master_card_logo_svg" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvNo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10.0dip"
+                    android:layout_weight="1"
+                    android:text="TextView"
+                    android:textColor="@color/gray"
+                    android:textSize="17sp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/credit_fg" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="@android:color/transparent" />
+    </FrameLayout>
+
+    <!--
+         <com.automated.taxinow.component.MyFontButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/btn_pickup"
+        android:text="@string/text_select_service"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/white" />
+    -->
+
+    <SlidingDrawer
+        android:id="@+id/drawer_Map"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:content="@+id/gvTypes"
+        android:descendantFocusability="beforeDescendants"
+        android:focusable="false"
+        android:handle="@+id/layout_Service"
+        android:visibility="visible" >
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:weightSum="2"
+            android:id="@+id/layout_Service"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSelectService"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_layer_3b"
+                android:text="select service"
+                android:textSize="17sp"
+                android:layout_marginEnd="3dp"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/red_brown_dark" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnAddDestination"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_layer_3b"
+                android:text="Request Destination"
+                android:textColor="@color/red_brown_dark"
+                android:visibility="visible" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+        <GridView
+            android:id="@+id/gvTypes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/rect_their_message"
+            android:columnWidth="100dp"
+            android:gravity="center"
+            android:horizontalSpacing="10dip"
+            android:numColumns="2"
+            android:stretchMode="spacingWidthUniform"
+            android:verticalSpacing="10dip" />
+    </SlidingDrawer>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSendRequestDesti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shape_layer_3b"
+        android:text="Request"
+        android:textColor="@color/red_brown_dark"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:id="@+id/llServiceText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:orientation="horizontal" >
+
+            <!-- <TextView -->
+            <!-- android:layout_width="wrap_content" -->
+            <!-- android:layout_height="wrap_content" -->
+            <!-- android:gravity="right" -->
+            <!-- android:text="Standerd" /> -->
+
+
+            <!-- <TextView -->
+            <!-- android:layout_width="0dp" -->
+            <!-- android:layout_height="wrap_content" -->
+            <!-- android:layout_weight="1" -->
+            <!-- android:gravity="right" -->
+            <!-- android:text="Laxury" /> -->
+
+
+            <!-- <TextView -->
+            <!-- android:layout_width="0dp" -->
+            <!-- android:layout_height="wrap_content" -->
+            <!-- android:layout_weight="1" -->
+            <!-- android:gravity="right" -->
+            <!-- android:text="1231 212cxc fd" /> -->
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutRgService"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:id="@+id/linearPointer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal" >
+
+            <!-- <TextView -->
+            <!-- android:layout_width="0dp" -->
+            <!-- android:layout_height="wrap_content" -->
+            <!-- android:layout_weight="1" -->
+            <!-- android:drawableStart="@drawable/pickup_round" /> -->
+
+
+            <!-- <TextView -->
+            <!-- android:layout_width="0dp" -->
+            <!-- android:layout_height="wrap_content" -->
+            <!-- android:layout_weight="1" -->
+            <!-- android:drawableStart="@drawable/pickup_round" /> -->
+
+
+            <!-- <TextView -->
+            <!-- android:layout_width="wrap_content" -->
+            <!-- android:layout_height="wrap_content" -->
+            <!-- android:drawableStart="@drawable/pickup_round" /> -->
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/seekBar"
+            style="@style/Genius.Widget.SeekBar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:max="100" />
+
+        <LinearLayout
+            android:id="@+id/linearPointer2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:visibility="gone" >
+
+            <!-- <TextView -->
+            <!-- android:layout_width="0dp" -->
+            <!-- android:layout_height="wrap_content" -->
+            <!-- android:layout_weight="1" -->
+            <!-- android:drawableStart="@drawable/pickup_round" /> -->
+
+
+            <!-- <TextView -->
+            <!-- android:layout_width="0dp" -->
+            <!-- android:layout_height="wrap_content" -->
+            <!-- android:layout_weight="1" -->
+            <!-- android:drawableStart="@drawable/pickup_round" /> -->
+
+
+            <!-- <TextView -->
+            <!-- android:layout_width="wrap_content" -->
+            <!-- android:layout_height="wrap_content" -->
+            <!-- android:drawableStart="@drawable/pickup_round" /> -->
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

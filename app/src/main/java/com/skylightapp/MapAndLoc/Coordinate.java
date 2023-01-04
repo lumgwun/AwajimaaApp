@@ -12,4 +12,8 @@ public class Coordinate {
         this.lat = lat;
         this.lng = lng;
     }
+
+    public Coordinate() {
+        super();
+    }
 }

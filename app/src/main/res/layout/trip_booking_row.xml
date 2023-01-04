@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/activatedBackgroundIndicator">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="50dp"
+        android:id="@+id/card_l1"
+        app:cardBackgroundColor="#f3f5f7"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/id_l1"
+            android:padding="5dp"
+            android:orientation="vertical"
+            android:background="@drawable/rect_their_black"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <com.mikepenz.materialdrawer.view.BezelImageView
+                    android:id="@+id/img_triB_Icon"
+                    android:layout_width="58dp"
+                    android:layout_height="55dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/train"
+                    android:contentDescription="Account Image" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text=" Booking ID"
+                    android:id="@+id/tb_Id"
+                    android:layout_marginEnd="20dp"
+                    android:padding="15dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="20dp"
+                    android:textColor="@color/red_brown_dark"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text=" Status"
+                    android:textStyle="bold"
+                    android:id="@+id/tb_Status"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginStart="5dp"
+                    android:textSize="20sp"
+                    android:textColor="@color/red_brown_dark"
+                    android:layout_height="wrap_content"/>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:text=" From"
+                android:id="@+id/tb_from"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/red_brown_dark"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:text=" To"
+                android:id="@+id/tb_To"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/red_brown_dark"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:text=" Booking Amount"
+                android:id="@+id/tb_Amt"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/red_brown_dark"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tb_Type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/red_brown_dark"
+                tools:text="Booking Type:" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:text=" Date"
+                android:textStyle="bold"
+                android:id="@+id/tb_date"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/red_brown_dark"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:text=" Booking Office"
+                android:textStyle="bold"
+                android:id="@+id/tb_Office"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/red_brown_dark"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="0dp"
+                    android:text=" Booking Slots"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:id="@+id/tb_slots"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="@color/red_brown_dark"
+                    android:layout_height="wrap_content"/>
+                <com.google.android.material.payStackCard.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/b_card_Nin"
+                    app:cardBackgroundColor="@color/cardview_shadow_end_color"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:text=" Slots NINs"
+                        android:textStyle="bold"
+                        android:background="@drawable/shape_layer_3b"
+                        android:drawableRight="@drawable/moreinfo_arrow"
+                        android:id="@+id/tb_slots_NIN"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:textSize="20sp"
+                        android:textColor="@color/red_brown_dark"
+                        android:layout_height="wrap_content"/>
+                </com.google.android.material.payStackCard.MaterialCardView>
+
+
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

@@ -20,8 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.gson.Gson;
 import com.skylightapp.Adapters.PackageRecyclerAdapter;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.R;
 
@@ -38,7 +38,7 @@ public class TPackListFragment extends Fragment {
 
     private RecyclerView recyclerView;
 
-    private ArrayList<SkyLightPackage> skyLightPackages;
+    private ArrayList<MarketBizPackage> marketBizPackages;
     private PackageRecyclerAdapter mAdapter;
 
 
@@ -127,14 +127,14 @@ public class TPackListFragment extends Fragment {
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
 
-        skyLightPackages = new ArrayList<SkyLightPackage>();
-        mAdapter = new PackageRecyclerAdapter(skyLightPackages,getContext());
+        marketBizPackages = new ArrayList<MarketBizPackage>();
+        mAdapter = new PackageRecyclerAdapter(marketBizPackages,getContext());
 
         dbHelper = new DBHelper(getContext());
         if(userProfile !=null){
             int profileID =userProfile.getPID();
 
-            skyLightPackages = dbHelper.getPackagesFromCurrentProfile(profileID);
+            marketBizPackages = dbHelper.getPackagesFromCurrentProfile(profileID);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());

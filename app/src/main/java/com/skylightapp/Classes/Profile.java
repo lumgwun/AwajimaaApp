@@ -1,6 +1,7 @@
 package com.skylightapp.Classes;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.location.Address;
 import android.net.Uri;
@@ -17,7 +18,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.quickblox.core.model.QBEntity;
 import com.quickblox.users.model.QBUser;
 import com.skylightapp.Admins.AdminBankDeposit;
-import com.skylightapp.Bookings.BoatTrip;
+import com.skylightapp.Bookings.Trip;
 import com.skylightapp.Bookings.Driver;
 import com.skylightapp.Bookings.TripBooking;
 import com.skylightapp.Database.DBHelper;
@@ -27,11 +28,14 @@ import com.skylightapp.Inventory.Stocks;
 import com.skylightapp.MapAndLoc.EmergReportNext;
 import com.skylightapp.MapAndLoc.EmergResponse;
 import com.skylightapp.MapAndLoc.EmergencyReport;
-import com.skylightapp.MapAndLoc.TaxiDriver;
+import com.skylightapp.Bookings.TaxiDriver;
+import com.skylightapp.MapAndLoc.Fence;
+import com.skylightapp.MapAndLoc.FenceEvent;
 import com.skylightapp.MarketClasses.BusinessOthers;
 import com.skylightapp.MarketClasses.InsuranceCompany;
 import com.skylightapp.MarketClasses.Market;
 import com.skylightapp.MarketClasses.MarketAdmin;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.SuperAdmin.Awajima;
 import com.skylightapp.Tellers.TellerCash;
@@ -46,6 +50,8 @@ import java.util.Objects;
 
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
+import static com.skylightapp.Database.UserContentProvider.AUTHORITY;
+import static com.skylightapp.Database.UserContentProvider.BASE_CONTENT_URI;
 import static com.skylightapp.MarketClasses.Market.MARKET_ID;
 import static com.skylightapp.MarketClasses.Market.MARKET_TABLE;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_ID;
@@ -53,6 +59,7 @@ import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TABLE;
 
 //@Entity(tableName = "RoomProfileTable")
 //@Entity
+@SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
 public class Profile implements Parcelable, Serializable, BaseColumns {
     public static final String PROFILE_SURNAME = "P_surname";
     public static final String PROFILE_FIRSTNAME = "P_first_name";
@@ -116,6 +123,37 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public static final String USER_TYPE_BIZ_ID = "user_type_Biz_ID";
     public static final String USER_TYPE_MARKET_ID = "user_type_MID";
     public static final String USER_TYPE_STATUS = "user_type_Status";
+
+    public static final String NIN_TABLE = "nIN_Table";
+    public static final String NIN_ID = "nIN_id";
+    public static final String NIN_PIX = "nIN_Pix";
+    public static final String NIN_NUMBER = "nIN_Number";
+    public static final String NIN_TYPE = "nIN_TYPE";
+    public static final String NIN_EXPIRYD = "nIN_Expiry_Date";
+    public static final String NIN_PROF_ID = "nIN_ProfID";
+    public static final String NIN_CUS_ID = "nIN_Cus_ID";
+    public static final String NIN_STATUS = "nIN_STATUS";
+    public static final String NIN_APPROVER = "nIN_Approver";
+    public static final String NIN_APPROVING_OFFICE = "nIN_Approving_O";
+    public static final String NIN_QBID = "nIN_QB_ID";
+
+
+    public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PROFILES_TABLE);
+
+    public static final String CONTENT_LIST_TYPE =
+            ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + AUTHORITY + "/" + PROFILES_TABLE;
+
+    public static final String CONTENT_ITEM_TYPE =
+            ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + AUTHORITY + "/" + PROFILES_TABLE;
+
+    public static final String CREATE_NIN_TABLE = "CREATE TABLE IF NOT EXISTS " + NIN_TABLE + " (" + NIN_ID + " INTEGER, " + NIN_PROF_ID + " INTEGER , " +
+            NIN_NUMBER + " TEXT , " + NIN_PIX + " BLOB , " + NIN_TYPE + " TEXT, " + NIN_CUS_ID + " INTEGER, " +
+            NIN_EXPIRYD + " TEXT, " + NIN_APPROVER + " INTEGER, " + NIN_APPROVING_OFFICE + " REAL, " + NIN_APPROVING_OFFICE + " TEXT, " +
+            NIN_QBID  + " INTEGER, "+ NIN_STATUS + " TEXT, "  +"PRIMARY KEY(" +NIN_ID + "), " +"FOREIGN KEY(" + NIN_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + NIN_CUS_ID + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
+
+
+
+
 
     public static final String CREATE_PIXTURE_TABLE = "CREATE TABLE " + PICTURE_TABLE + " (" + PROFILE_PIC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PROFID_FOREIGN_KEY_PIX + " INTEGER, " + CUS_ID_PIX_KEY + " INTEGER , " +
             PICTURE_URI + " BLOB ,"+ PICTURE_MARKET_ID + " TEXT, "+"FOREIGN KEY(" + PICTURE_MARKET_ID  + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + "),"+"FOREIGN KEY(" + PROFID_FOREIGN_KEY_PIX  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + CUS_ID_PIX_KEY + ") REFERENCES " + CUSTOMER_TABLE + "(" + CUSTOMER_ID + "))";
@@ -213,7 +251,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
     private CustomerDailyReport profile_CusDailyReport;
 
-    private SkyLightPackage profile_SkyLightPackage;
+    private MarketBizPackage profile_MarketBizPackage;
 
     private Payee profile_Payee;
 
@@ -247,10 +285,10 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     private String profileRoleType;
     private TaxiDriver profileTaxiDriver;
     private Driver profDriver;
-    private ArrayList<Integer> profile_bizIDs;
     private ArrayList<Integer> profile_acctIDs;
     private ArrayList<Integer> profMarketIDs;
-    private ArrayList<Integer> profBusinessIDs;
+    private ArrayList<Long> profBusinessIDs;
+
     private ArrayList<BusinessOthers> profBizOthers;
     private ArrayList<MarketBusiness> profMarketBizs;
     private ArrayList<MarketBusiness> marketBusinessArrayList;
@@ -261,7 +299,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     private ArrayList<EmergReportNext> profileEmergRNextS;
     private ArrayList<EmergResponse> profileEmergResponses;
     private ArrayList<String> profUserTypes;
-    private ArrayList<BoatTrip> profileBoatTrips;
+    private ArrayList<Trip> profileTrips;
     private ArrayList<TripBooking> profileTripBookings;
     private ArrayList<Account> profile_Accounts;
 
@@ -277,7 +315,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
     private ArrayList<CustomerDailyReport> profile_DailyReports;
 
-    private ArrayList<SkyLightPackage> profile_SkyLightPackages;
+    private ArrayList<MarketBizPackage> profile_MarketBizPackages;
 
     private ArrayList<Loan> profile_Loans;
 
@@ -312,9 +350,20 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     //@Ignore
     ArrayList<TransactionGranting> profile_TranxGrantings;
     //@Ignore
-    private ArrayList<SmsMessage.MessageClass> messageClasses;
+    private ArrayList<Message> messageArrayList;
     //@Ignore
     private ArrayList<GroupSavings> prof_GrpSavings;
+    private ArrayList<TripBooking> profTripBookings;
+    private int profNIN_ID;
+    private String profNin_Number;
+    private String profNinType;
+    private String profNinEXPD;
+    private Uri profNinPix;
+    private String profNinApprover;
+    private String profNin_A_Office;
+    private String profNin_Status;
+    private ArrayList<Fence> profFenceArrayList;
+    private ArrayList<FenceEvent> profFenceEvents;
 
 
     public void setProfilePassword(String profilePassword)   {
@@ -473,7 +522,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         profile_Customers = in.createTypedArrayList(Customer.CREATOR);
         //businesses = in.createTypedArrayList(Business.CREATOR);
         profile_DailyReports = in.createTypedArrayList(CustomerDailyReport.CREATOR);
-        profile_SkyLightPackages = in.createTypedArrayList(SkyLightPackage.CREATOR);
+        profile_MarketBizPackages = in.createTypedArrayList(MarketBizPackage.CREATOR);
         //loans = in.createTypedArrayList(Loan.CREATOR);
 
         profile_PaymentCodeArrayList = in.createTypedArrayList(PaymentCode.CREATOR);
@@ -494,7 +543,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         //standingOrders = in.createTypedArrayList(StandingOrder.CREATOR);
         profile_StandingOrder = in.readParcelable(StandingOrder.class.getClassLoader());
         profile_CusDailyReport = in.readParcelable(CustomerDailyReport.class.getClassLoader());
-        profile_SkyLightPackage = in.readParcelable(SkyLightPackage.class.getClassLoader());
+        profile_MarketBizPackage = in.readParcelable(MarketBizPackage.class.getClassLoader());
         profile_Payee = in.readParcelable(Payee.class.getClassLoader());
         profile_AdminUser = in.readParcelable(AdminUser.class.getClassLoader());
         profile_CustomerManager = in.readParcelable(CustomerManager.class.getClassLoader());
@@ -552,7 +601,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         parcel.writeTypedList(profile_Customers);
         parcel.writeTypedList(marketBusinessArrayList);
         parcel.writeTypedList(profile_DailyReports);
-        parcel.writeTypedList(profile_SkyLightPackages);
+        parcel.writeTypedList(profile_MarketBizPackages);
         parcel.writeTypedList(profile_Loans);
         parcel.writeTypedList(profile_PaymentArrayList);
         parcel.writeTypedList(profile_PaymentCodeArrayList);
@@ -574,7 +623,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         parcel.writeTypedList(profile_StandingOrders);
         parcel.writeParcelable(profile_StandingOrder, i);
         parcel.writeParcelable(profile_CusDailyReport, i);
-        parcel.writeParcelable(profile_SkyLightPackage, i);
+        parcel.writeParcelable(profile_MarketBizPackage, i);
         parcel.writeParcelable(profile_Payee, i);
         parcel.writeParcelable(profile_AdminUser, i);
         parcel.writeParcelable(profile_CustomerManager, i);
@@ -948,7 +997,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     @Ignore
     public String getProfileBusinessName() {
         if(profile_Biz !=null){
-            businessName= profile_Biz.getProfileBusinessName();
+            businessName= profile_Biz.getBusinessName();
         }
         return businessName;
     }
@@ -1132,7 +1181,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public void setProfile_Businesses(ArrayList<MarketBusiness> profile_Businesses) { this.marketBusinessArrayList = profile_Businesses; }
     @Ignore
 
-    public ArrayList<SkyLightPackage> getProfileSkylightPackages() { return profile_SkyLightPackages; }
+    public ArrayList<MarketBizPackage> getProfileSkylightPackages() { return profile_MarketBizPackages; }
     @Ignore
     public ArrayList<CustomerDailyReport> getProfileDailyReports() { return profile_DailyReports; }
 
@@ -1167,9 +1216,9 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     @Ignore
     public void setMessageClass(SmsMessage.MessageClass messageClass) { this.messageClass = messageClass; }
     @Ignore
-    public SkyLightPackage getProfileSkyLightPackage() { return profile_SkyLightPackage; }
+    public MarketBizPackage getProfileSkyLightPackage() { return profile_MarketBizPackage; }
     @Ignore
-    public void setProfileSkyLightPackage(SkyLightPackage skyLightPackage) { this.profile_SkyLightPackage = skyLightPackage; }
+    public void setProfileSkyLightPackage(MarketBizPackage marketBizPackage) { this.profile_MarketBizPackage = marketBizPackage; }
     @Ignore
     public Account getProfileAccount() { return profile_Account;
     }
@@ -1245,8 +1294,8 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public void setProfileCus(Customer timelineCustomer) { this.profile_Customer = timelineCustomer; }
 
     @Ignore
-    public void setSkyLightPackagesFromDB(ArrayList<SkyLightPackage> skyLightPackages) {
-        this.profile_SkyLightPackages = skyLightPackages;
+    public void setSkyLightPackagesFromDB(ArrayList<MarketBizPackage> marketBizPackages) {
+        this.profile_MarketBizPackages = marketBizPackages;
     }
     @Ignore
     public ArrayList<Payee> getProfile_Payees() { return profile_Payees; }
@@ -1283,13 +1332,6 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         this.profPixID = profPixID;
     }
 
-    public int getProfileBusinessID() {
-        return profileBusinessID;
-    }
-
-    public void setProfileBusinessID(int profileBusinessID) {
-        this.profileBusinessID = profileBusinessID;
-    }
 
     public int getProfileMarketID() {
         return profileMarketID;
@@ -1313,14 +1355,6 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
 
     public void setProfQbEntity(QBEntity profQbEntity) {
         this.profQbEntity = profQbEntity;
-    }
-
-    public ArrayList<Integer> getProfile_bizIDs() {
-        return profile_bizIDs;
-    }
-
-    public void setProfile_bizIDs(ArrayList<Integer> profile_bizIDs) {
-        this.profile_bizIDs = profile_bizIDs;
     }
 
     public ArrayList<Integer> getProfile_acctIDs() {
@@ -1421,10 +1455,17 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         profMarketAdmins = new ArrayList<>();
         profMarketAdmins.add(marketAdmin);
     }
+
     public void addInsuranceCompany(InsuranceCompany insuranceCompany) {
         insuranceCompanies = new ArrayList<>();
         insuranceCompanies.add(insuranceCompany);
     }
+    public void addMessage(Message message) {
+        messageArrayList = new ArrayList<>();
+        messageArrayList.add(message);
+    }
+
+
 
     public void addMarketID(int marketID) {
         profMarketIDs = new ArrayList<>();
@@ -1447,18 +1488,23 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         profMarketArrayList = new ArrayList<>();
         profMarketArrayList.add(market);
     }
-    public void addBusinessID(int businessID) {
+    public void addBusinessID(long businessID) {
         profBusinessIDs = new ArrayList<>();
         profBusinessIDs.add(businessID);
     }
 
-    public void addProfBizID(int prodileBizID) {
-        profile_bizIDs = new ArrayList<>();
-        profile_bizIDs.add(prodileBizID);
+
+    public void addProfFence(Fence fence) {
+        profFenceArrayList = new ArrayList<>();
+        profFenceArrayList.add(fence);
     }
     public void addProfileAcctID(int profileAcctID) {
         profile_acctIDs = new ArrayList<>();
         profile_acctIDs.add(profileAcctID);
+    }
+    public void addProfFenceEvents(FenceEvent fenceEvent) {
+        profFenceEvents = new ArrayList<>();
+        profFenceEvents.add(fenceEvent);
     }
     public void addProfileMarketID(int profileMarketID) {
         ArrayList<Integer> profileMarketIDs = new ArrayList<>();
@@ -1705,11 +1751,11 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     //@Ignore
 
 
-    public void addPNewSkylightPackage(int profileID, int customerID, int packageID, String packageType, double savingsAmount, int packageDuration, String startDate, double grandTotal, String endDate, String just_stated) {
-        profile_SkyLightPackages = new ArrayList<>();
-        String packageNo = "Package:" + (profile_SkyLightPackages.size() + 1);
-        profile_SkyLightPackage = new SkyLightPackage(profileID,customerID, packageID, SkyLightPackage.SkylightPackage_Type.valueOf(packageType),savingsAmount,packageDuration,startDate,grandTotal,endDate, profileStatus);
-        profile_SkyLightPackages.add(profile_SkyLightPackage);
+    public void addPNewBizPackage(int profileID, int customerID, int packageID, String packageType, double savingsAmount, int packageDuration, String startDate, double grandTotal, String endDate, String just_stated) {
+        profile_MarketBizPackages = new ArrayList<>();
+        String packageNo = "Package:" + (profile_MarketBizPackages.size() + 1);
+        profile_MarketBizPackage = new MarketBizPackage(profileID,customerID, packageID, MarketBizPackage.SkylightPackage_Type.valueOf(packageType),savingsAmount,packageDuration,startDate,grandTotal,endDate, profileStatus);
+        profile_MarketBizPackages.add(profile_MarketBizPackage);
     }
     //@Ignore
 
@@ -1748,17 +1794,17 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         profileEmergResponses = new ArrayList<>();
         profileEmergResponses.add(emergResponse);
     }
-    public void addMarketID(EmergReportNext emergReportNext) {
+    public void addEmergReportNext(EmergReportNext emergReportNext) {
         profileEmergRNextS = new ArrayList<>();
         profileEmergRNextS.add(emergReportNext);
     }
-    public void addMarketID(EmergencyReport emergencyReport) {
+    public void addNewEmergReport(EmergencyReport emergencyReport) {
         profileEmergReports = new ArrayList<>();
         profileEmergReports.add(emergencyReport);
     }
-    public void addBoatTrip(BoatTrip boatTrip) {
-        profileBoatTrips = new ArrayList<>();
-        profileBoatTrips.add(boatTrip);
+    public void addBoatTrip(Trip trip) {
+        profileTrips = new ArrayList<>();
+        profileTrips.add(trip);
 
     }
     public void addTripBooking(TripBooking tripBooking) {
@@ -1766,6 +1812,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
         profileTripBookings.add(tripBooking);
 
     }
+
 
 
     //@Ignore
@@ -1784,12 +1831,12 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     }
 
 
-    public ArrayList<BoatTrip> getProfileBoatTrips() {
-        return profileBoatTrips;
+    public ArrayList<Trip> getProfileTrips() {
+        return profileTrips;
     }
 
-    public void setProfileBoatTrips(ArrayList<BoatTrip> profileBoatTrips) {
-        this.profileBoatTrips = profileBoatTrips;
+    public void setProfileBoatTrips(ArrayList<Trip> profileTrips) {
+        this.profileTrips = profileTrips;
     }
 
 
@@ -1808,4 +1855,108 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public void setProfDriver(Driver profDriver) {
         this.profDriver = profDriver;
     }
+
+    public ArrayList<TripBooking> getProfTripBookings() {
+        return profTripBookings;
+    }
+
+    public void setProfTripBookings(ArrayList<TripBooking> profTripBookings) {
+        this.profTripBookings = profTripBookings;
+    }
+
+    public int getProfNIN_ID() {
+        return profNIN_ID;
+    }
+
+    public void setProfNIN_ID(int profNIN_ID) {
+        this.profNIN_ID = profNIN_ID;
+    }
+
+    public String getProfNin_Number() {
+        return profNin_Number;
+    }
+
+    public void setProfNin_Number(String profNin_Number) {
+        this.profNin_Number = profNin_Number;
+    }
+
+    public String getProfNinType() {
+        return profNinType;
+    }
+
+    public void setProfNinType(String profNinType) {
+        this.profNinType = profNinType;
+    }
+
+    public String getProfNinEXPD() {
+        return profNinEXPD;
+    }
+
+    public void setProfNinEXPD(String profNinEXPD) {
+        this.profNinEXPD = profNinEXPD;
+    }
+
+    public Uri getProfNinPix() {
+        return profNinPix;
+    }
+
+    public void setProfNinPix(Uri profNinPix) {
+        this.profNinPix = profNinPix;
+    }
+
+    public String getProfNinApprover() {
+        return profNinApprover;
+    }
+
+    public void setProfNinApprover(String profNinApprover) {
+        this.profNinApprover = profNinApprover;
+    }
+
+    public String getProfNin_A_Office() {
+        return profNin_A_Office;
+    }
+
+    public void setProfNin_A_Office(String profNin_A_Office) {
+        this.profNin_A_Office = profNin_A_Office;
+    }
+
+    public String getProfNin_Status() {
+        return profNin_Status;
+    }
+
+    public void setProfNin_Status(String profNin_Status) {
+        this.profNin_Status = profNin_Status;
+    }
+
+    public ArrayList<Message> getMessageArrayList() {
+        return messageArrayList;
+    }
+
+    public void setMessageArrayList(ArrayList<Message> messageArrayList) {
+        this.messageArrayList = messageArrayList;
+    }
+
+    public ArrayList<Fence> getProfFenceArrayList() {
+        return profFenceArrayList;
+    }
+
+    public void setProfFenceArrayList(ArrayList<Fence> profFenceArrayList) {
+        this.profFenceArrayList = profFenceArrayList;
+    }
+
+    public ArrayList<FenceEvent> getProfFenceEvents() {
+        return profFenceEvents;
+    }
+
+    public void setProfFenceEvents(ArrayList<FenceEvent> profFenceEvents) {
+        this.profFenceEvents = profFenceEvents;
+    }
+    public int getProfileBusinessID() {
+        return profileBusinessID;
+    }
+
+    public void setProfileBusinessID(int profileBusinessID) {
+        this.profileBusinessID = profileBusinessID;
+    }
+
 }

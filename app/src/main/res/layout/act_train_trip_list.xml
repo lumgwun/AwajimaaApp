@@ -4,16 +4,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/event_circle"
+    android:background="@drawable/shape_layer_3"
     android:layout_height="match_parent"
-    tools:context=".Bookings.TrainTripListAct">
+    tools:context=".Bookings.MyBoatAct">
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
-        android:text="Coming Soon"
+        android:text="Awajima Boat Trips"
         android:gravity="center"
-        android:textColor="@color/white_good"
-        android:layout_marginTop="60dp"
-        android:textSize="50sp"
-        android:layout_height="match_parent"/>
+        android:textColor="@color/green_dark"
+        android:textSize="30sp"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="6dp"
+            android:paddingTop="10dp"
+            android:text="ALL Boat Trips"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:id="@+id/tripText3"
+            android:layout_marginBottom="12dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_train_t"
+            android:layout_width="match_parent"
+            tools:itemCount="@android:integer/status_bar_notification_info_maxnum"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/train_trip_item"
+            android:clipToPadding="false"
+            android:scrollbars="vertical" />
+    </LinearLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -52,6 +52,7 @@ import com.google.android.material.appbar.AppBarLayout;
 
 
 import com.google.gson.Gson;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.CodeDAO;
 import com.skylightapp.Database.CusDAO;
@@ -65,7 +66,6 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.PaymentCode;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Tellers.TellerCash;
 import com.skylightapp.Tellers.TellerHomeChoices;
@@ -121,17 +121,17 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
     private ArrayAdapter<Account> accountAdapter;
     private ArrayAdapter<Customer> customerArrayAdapter;
     private ArrayAdapter<Customer> customerArrayAdapterN;
-    private ArrayAdapter<SkyLightPackage> skyLightPackageArrayAdapter;
-    private ArrayAdapter<SkyLightPackage> skyLightPackageAllAdapter;
+    private ArrayAdapter<MarketBizPackage> skyLightPackageArrayAdapter;
+    private ArrayAdapter<MarketBizPackage> skyLightPackageAllAdapter;
     private ArrayList<Customer> customerArrayList;
     private ArrayList<Account> accountArrayList;
     private ArrayList<CustomerDailyReport> customerDailyReports;
     private List<Customer> customerList;
-    private ArrayList<SkyLightPackage> skyLightPackageArrayList;
-    private ArrayList<SkyLightPackage> skyLightPackageAll;
+    private ArrayList<MarketBizPackage> marketBizPackageArrayList;
+    private ArrayList<MarketBizPackage> marketBizPackageAll;
     private ArrayList<Customer> customers;
     private ArrayList<Customer> customersN;
-    private List<SkyLightPackage> skyLightPackageList;
+    private List<MarketBizPackage> marketBizPackageList;
 
     private SharedPreferences userPreferences;
     private String phoneNo;
@@ -167,10 +167,10 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
     DatePicker date_picker_dob;
 
     String packageType,dateOfSavings;
-    //SkyLightPackage.SkylightPackage_Type packageType;
+    //MarketBizPackage.SkylightPackage_Type packageType;
     AppCompatSpinner spn_select_packageOngoing;
-    SkyLightPackage selectedPackage;
-    SkyLightPackage skyLightPackage;
+    MarketBizPackage selectedPackage;
+    MarketBizPackage marketBizPackage;
     String customerBank;
     double accountBalance1;
     double newAmount;
@@ -296,7 +296,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
         gson = new Gson();
         random= new SecureRandom();
         PaymentCode paymentCode=new PaymentCode();
-        selectedPackage= new SkyLightPackage(profileID, customerID, packageID, finalItemType, packageType, savingsAmount, packageDuration, reportDate, grandTotal, officeBranch, packageEndDate, "fresh");
+        selectedPackage= new MarketBizPackage(profileID, customerID, packageID, finalItemType, packageType, savingsAmount, packageDuration, reportDate, grandTotal, officeBranch, packageEndDate, "fresh");
         this.appCommission = new AppCommission();
         json = sharedpreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
@@ -305,7 +305,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
 
         customerDailyReport= new CustomerDailyReport();
         tellerCash= new TellerCash();
-        skyLightPackage = new SkyLightPackage(profileID, customerID, packageID, finalItemType, packageType, savingsAmount, packageDuration, reportDate, grandTotal, officeBranch, packageEndDate, "fresh");
+        marketBizPackage = new MarketBizPackage(profileID, customerID, packageID, finalItemType, packageType, savingsAmount, packageDuration, reportDate, grandTotal, officeBranch, packageEndDate, "fresh");
         sqLiteDatabase = dbHelper.getWritableDatabase();
         skylightCode = random.nextInt((int) (Math.random() * 100089) + 10341);
         btnAddNewCus = findViewById(R.id.add_new_cus);
@@ -808,7 +808,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
 
                     String tittle = "New Package Alert" + "from" + managerName;
                     String details = managerName + "added a new package of NGN" + newTotal + "for" + customerName + "on" + reportDate;
-                    SkyLightPackage skyLightPackage1 = new SkyLightPackage(profileID, customerID, packageID, finalItemType, packageType, savingsAmount, packageDuration, reportDate, grandTotal,officeBranch, packageEndDate, "fresh");
+                    MarketBizPackage marketBizPackage1 = new MarketBizPackage(profileID, customerID, packageID, finalItemType, packageType, savingsAmount, packageDuration, reportDate, grandTotal,officeBranch, packageEndDate, "fresh");
                     customerDailyReport = new CustomerDailyReport(packageID,reportID, savingsAmount, numberOfDays, initialDeposit, daysRemaining, amountRemaining, reportDate, "first");
                     paymentCode=new PaymentCode(customerID,reportID,skylightCode,reportDate);
 
@@ -858,7 +858,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
                         timeLineClassDAO.insertTimeLine(timelineTittle3, details, reportDate, mCurrentLocation);
                         //dbHelper.saveNewTransaction(profileID, customerID,Skylightransaction, acctID, "Awajima", customerNames,transaction_type, initialDeposit, reportID, officeBranch, reportDate);
                         dbHelper.insertNewPackage(this.profileID, customerID,packageID, skylightCode, finalItemType,this.packageType, this.packageDuration,savingsAmount,  reportDate, grandTotal, this.packageEndDate, "fresh");
-                        //dbHelper.insertNewPackage(userProfile, customer, skyLightPackage1);
+                        //dbHelper.insertNewPackage(userProfile, customer, marketBizPackage1);
                         codeDAO.insertSavingsCode(paymentCode);
                         appCommission.setAdminReceivedBalance(adminNewBalance);
                         dbHelper.insertNewDailyReport(profileID,customerID,packageID,reportID,reportCode,numberOfDays,initialDeposit,reportDate,newDaysRemaining,newAmountRemaining,"First");
@@ -870,7 +870,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
                     }
 
                     if(userProfile !=null){
-                        userProfile.addPNewSkylightPackage(profileID, customerID,packageID,  packageType, savingsAmount, packageDuration, reportDate, grandTotal, packageEndDate,"fresh");
+                        userProfile.addPNewBizPackage(profileID, customerID,packageID,  packageType, savingsAmount, packageDuration, reportDate, grandTotal, packageEndDate,"fresh");
 
 
                     }
@@ -882,14 +882,14 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
                         customer.addCusNewSkylightPackage(profileID, customerID,packageID,  packageType, savingsAmount, packageDuration, reportDate, grandTotal, packageEndDate,"fresh");
 
                     }
-                    if(skyLightPackage1 !=null){
-                        skyLightPackage1.addPProfileManager(userProfile);
-                        skyLightPackage1.setPackageAmount_collected(newAmountContributedSoFar);
-                        skyLightPackage1.addPReportCount(packageID, numberOfDays);
-                        skyLightPackage1.setPackageCustomer(customer);
-                        skyLightPackage1.setPackageOfficeBranch(officeBranch);
-                        skyLightPackage1.setPackageCode(skylightCode);
-                        skyLightPackage1.addPSavings(profileID, customerID, reportID, savingsAmount, numberOfDays, initialDeposit, daysRemaining, amountRemaining, reportDate, "first");
+                    if(marketBizPackage1 !=null){
+                        marketBizPackage1.addPProfileManager(userProfile);
+                        marketBizPackage1.setPackageAmount_collected(newAmountContributedSoFar);
+                        marketBizPackage1.addPReportCount(packageID, numberOfDays);
+                        marketBizPackage1.setPackageCustomer(customer);
+                        marketBizPackage1.setPackageOfficeBranch(officeBranch);
+                        marketBizPackage1.setPackageCode(skylightCode);
+                        marketBizPackage1.addPSavings(profileID, customerID, reportID, savingsAmount, numberOfDays, initialDeposit, daysRemaining, amountRemaining, reportDate, "first");
 
 
                     }
@@ -937,13 +937,13 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Choose Payment Method");
         builder.setItems(new CharSequence[]
-                        {"Card", "Bank"},
+                        {"PayStackCard", "Bank"},
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
                         switch (which) {
                             case 0:
-                                Toast.makeText(AllCustNewPackAct.this, "Card Payment option, selected ", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AllCustNewPackAct.this, "PayStackCard Payment option, selected ", Toast.LENGTH_SHORT).show();
                                 payWithCard();
                                 break;
                             case 1:
@@ -1081,7 +1081,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
                 daysRemaining=packageDuration-numberOfDays;
                 amountRemaining=grandTotal- totalAmountCalc;
 
-                skyLightPackage = new SkyLightPackage(profileID, customerID, packageID, packageType, savingsAmount, packageDuration, packageStartDate, grandTotal, packageEndDate, "fresh");
+                marketBizPackage = new MarketBizPackage(profileID, customerID, packageID, packageType, savingsAmount, packageDuration, packageStartDate, grandTotal, packageEndDate, "fresh");
                 customerDailyReport = new CustomerDailyReport(packageID,reportID, savingsAmount, numberOfDays, totalAmountCalc, daysRemaining, amountRemaining, packageStartDate, "first");
                 paymentBundle = new Bundle();
                 paymentBundle.putString("Total", String.valueOf(totalAmountCalc));
@@ -1092,7 +1092,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
                 paymentBundle.putString("CustomerName", "");
                 paymentBundle.putString("CustomerPhone", "");
                 paymentBundle.putParcelable("Customer", customer);
-                paymentBundle.putParcelable("Package", skyLightPackage);
+                paymentBundle.putParcelable("Package", marketBizPackage);
                 paymentBundle.putParcelable("Savings", customerDailyReport);
                 Intent amountIntent = new Intent(AllCustNewPackAct.this, PayNowActivity.class);
                 amountIntent.putExtras(paymentBundle);
@@ -1230,7 +1230,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
                 daysRemaining=packageDuration-numberOfDays;
                 amountRemaining=grandTotal- totalAmountCalc;
 
-                skyLightPackage = new SkyLightPackage(profileID, customerID, packageID, packageType, savingsAmount, packageDuration, packageStartDate, grandTotal, packageEndDate, "fresh");
+                marketBizPackage = new MarketBizPackage(profileID, customerID, packageID, packageType, savingsAmount, packageDuration, packageStartDate, grandTotal, packageEndDate, "fresh");
                 customerDailyReport = new CustomerDailyReport(packageID,reportID, savingsAmount, numberOfDays, totalAmountCalc, daysRemaining, amountRemaining, packageStartDate, "first");
                 paymentCode=new PaymentCode(customerID,reportID,skylightCode,reportDate);
                 paymentBundle = new Bundle();
@@ -1242,7 +1242,7 @@ public class AllCustNewPackAct extends AppCompatActivity implements View.OnClick
                 paymentBundle.putString("CustomerName", "");
                 paymentBundle.putString("CustomerPhone", "");
                 paymentBundle.putParcelable("Customer", customer);
-                paymentBundle.putParcelable("Package", skyLightPackage);
+                paymentBundle.putParcelable("Package", marketBizPackage);
                 paymentBundle.putParcelable("Savings", customerDailyReport);
                 Intent amountIntent = new Intent(AllCustNewPackAct.this, FluPaywithBank.class);
                 amountIntent.putExtras(paymentBundle);

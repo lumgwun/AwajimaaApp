@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MapAndLoc.GeoDrivingAct">
-    <androidx.fragment.app.FragmentContainerView
-        xmlns:map="http://schemas.android.com/apk/res-auto"
+    <fragment
         android:layout_width="match_parent"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
         android:layout_height="match_parent"
-        android:id="@+id/mapDrive"
+        android:id="@+id/map"
         tools:context="com.skylightapp.MapAndLoc.GeoDrivingAct"
         android:name="com.google.android.gms.maps.SupportMapFragment"/>
 

@@ -24,7 +24,7 @@ public class SavingsStandingOrderWeb extends AppCompatActivity {
         webViewSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         webViewSettings.setJavaScriptEnabled(true);
         webViewSettings.setPluginState(WebSettings.PluginState.ON);
-        mywebView.loadUrl("https://skylightciacs.com/savings/");
+        mywebView.loadUrl("https://awajima.com/savings/");
 // Line of Code for opening links in app
         mywebView.setWebViewClient(new WebViewClient());
     }

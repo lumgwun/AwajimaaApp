@@ -43,6 +43,92 @@
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="50dp"
+        android:id="@+id/card_l1"
+        app:cardBackgroundColor="#f3f5f7"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/id_l1"
+            android:padding="20dp"
+            android:orientation="vertical"
+            android:background="@drawable/rect_their_black"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <com.mikepenz.materialdrawer.view.BezelImageView
+                    android:id="@+id/img_eventF"
+                    android:layout_width="58dp"
+                    android:layout_height="55dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/settings_fg"
+                    android:contentDescription="Account Image" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:text=" ID"
+                    android:id="@+id/event_emerg_ID"
+                    android:layout_marginEnd="20dp"
+                    android:padding="15dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="20dp"
+                    android:textColor="@color/red_brown_dark"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:text=" Report"
+                android:id="@+id/f_event_report"
+                android:layout_marginEnd="20dp"
+                android:textStyle="bold"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/red_brown_dark"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:text=" Town"
+                android:id="@+id/f_event_Town"
+                android:layout_marginEnd="20dp"
+                android:textStyle="bold"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/red_brown_dark"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:text=" State"
+                android:id="@+id/f_stateEmerg"
+                android:textStyle="bold"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginEnd="20dp"
+                android:textColor="@color/red_brown_dark"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/f_Emerg_Status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/red_brown_dark"
+                tools:text="Status" />
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
 
 
 </LinearLayout>

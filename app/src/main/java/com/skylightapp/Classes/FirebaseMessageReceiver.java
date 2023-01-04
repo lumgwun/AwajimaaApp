@@ -8,7 +8,7 @@ import android.content.Intent;
 import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.RemoteMessage;
-import com.skylightapp.Admins.AdminDashboardTab;
+import com.skylightapp.LoginDirAct;
 import com.skylightapp.R;
 
 
@@ -25,7 +25,6 @@ public class FirebaseMessageReceiver extends FirebaseMessS {
     public void onNewToken(String token){
     }
     private void addNotification(String msg){
-//String channel_i = “AmarSchool Notification”;
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
@@ -34,7 +33,7 @@ public class FirebaseMessageReceiver extends FirebaseMessS {
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setChannelId(ProfileManager.CHANNEL_ID);
-        Intent notificationIntent = new Intent(this, AdminDashboardTab.class);
+        Intent notificationIntent = new Intent(this, LoginDirAct.class);
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         notificationIntent.putExtra("message",msg);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);

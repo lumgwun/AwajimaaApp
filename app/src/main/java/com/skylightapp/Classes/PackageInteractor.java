@@ -8,10 +8,10 @@ import com.google.android.gms.tasks.Task;
 import com.skylightapp.Interfaces.OnDataChangedListener;
 import com.skylightapp.Interfaces.OnPackageChangedListener;
 import com.skylightapp.Interfaces.OnPackageExistListener;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +39,7 @@ public class PackageInteractor {
         databaseHelper = AppController.getDatabaseHelper();
     }
 
-    public void createOrUpdateProfile(final SkyLightPackage lightPackage, final com.skylightapp.Interfaces.OnCreatedListener onPackageCreatedListener) {
+    public void createOrUpdateProfile(final MarketBizPackage lightPackage, final com.skylightapp.Interfaces.OnCreatedListener onPackageCreatedListener) {
         /*Task<Void> task = databaseHelper
                 .getDatabaseReference()
                 .child(DatabaseHelper.PACKAGE_DB_KEY)
@@ -52,11 +52,11 @@ public class PackageInteractor {
         });*/
     }
 
-    public void createOrUpdatePackages(SkyLightPackage skyLightPackage) {
+    public void createOrUpdatePackages(MarketBizPackage marketBizPackage) {
         try {
-           // Map<String, Object> savingsValues = (Map<String, Object>) skyLightPackage.getPackageDailyAmount();
+           // Map<String, Object> savingsValues = (Map<String, Object>) marketBizPackage.getPackageDailyAmount();
             //Map<String, Object> childUpdates = new HashMap<>();
-            //childUpdates.put("/" + DatabaseHelper.PACKAGE_DB_KEY + "/" + skyLightPackage.getPackID(), savingsValues);
+            //childUpdates.put("/" + DatabaseHelper.PACKAGE_DB_KEY + "/" + marketBizPackage.getPackID(), savingsValues);
 
             //databaseHelper.getDatabaseReference().updateChildren(childUpdates);
         } catch (Exception e) {
@@ -64,18 +64,18 @@ public class PackageInteractor {
         }
     }
 
-    public Task<Void> removePackage(SkyLightPackage dailyReport) {
+    public Task<Void> removePackage(MarketBizPackage dailyReport) {
         //DatabaseReference postRef = databaseHelper.getDatabaseReference().child(DatabaseHelper.PACKAGE_DB_KEY).child(String.valueOf(dailyReport.getRecordNo()));
         /* return postRef.removeValue(); */
         return null;
     }
-    public void getPackageList(final OnPackageChangedListener<SkyLightPackage> onDataChangedListener, long date) {
+    public void getPackageList(final OnPackageChangedListener<MarketBizPackage> onDataChangedListener, long date) {
        /* DatabaseReference databaseReference = databaseHelper.getDatabaseReference().child(DatabaseHelper.PACKAGE_DB_KEY);
         Query postsQuery;
         if (date == 0) {
-            postsQuery = databaseReference.limitToLast(Utils.SkyLightPackage.POST_AMOUNT_ON_PAGE).orderByChild("createdDate");
+            postsQuery = databaseReference.limitToLast(Utils.MarketBizPackage.POST_AMOUNT_ON_PAGE).orderByChild("createdDate");
         } else {
-            postsQuery = databaseReference.limitToLast(Utils.SkyLightPackage.POST_AMOUNT_ON_PAGE).endAt(date).orderByChild("createdDate");
+            postsQuery = databaseReference.limitToLast(Utils.MarketBizPackage.POST_AMOUNT_ON_PAGE).endAt(date).orderByChild("createdDate");
         }
 
         postsQuery.keepSynced(true);
@@ -102,7 +102,7 @@ public class PackageInteractor {
     }
     private PackageListResult parsePackageList(Map<String, Object> objectMap) {
         PackageListResult result = new PackageListResult();
-        List<SkyLightPackage> list = new ArrayList<SkyLightPackage>();
+        List<MarketBizPackage> list = new ArrayList<MarketBizPackage>();
         boolean isMoreDataAvailable = true;
         long lastItemCreatedDate = 0;
 
@@ -127,7 +127,7 @@ public class PackageInteractor {
                     }
 
                     if (!hasComplain) {
-                        SkyLightPackage lightPackage = new SkyLightPackage();
+                        MarketBizPackage lightPackage = new MarketBizPackage();
                         lightPackage.setRecordPackageId(Integer.parseInt(key));
                         //lightPackage.getPackageDailyAmount(Double.parseDouble((String) mapObj.get("Amount")));
                         lightPackage.setPackageDuration(Integer.parseInt((String) mapObj.get("Duration")));
@@ -164,7 +164,7 @@ public class PackageInteractor {
     }
 
 
-    public void getPackageListByUser(final OnDataChangedListener<SkyLightPackage> onDataChangedListener, String userId) {
+    public void getPackageListByUser(final OnDataChangedListener<MarketBizPackage> onDataChangedListener, String userId) {
         /*DatabaseReference databaseReference = databaseHelper.getDatabaseReference().child(DatabaseHelper.PACKAGE_DB_KEY);
         Query savingsQuery;
         savingsQuery = databaseReference.orderByChild("authorId").equalTo(userId);
@@ -207,16 +207,16 @@ public class PackageInteractor {
         });*/
     }
 
-    public void addComplainToPackage(SkyLightPackage skyLightPackage) {
+    public void addComplainToPackage(MarketBizPackage marketBizPackage) {
 
     }
 
 
-    public void isPackageExistSingleValue(String postId, OnPackageExistListener<SkyLightPackage> onObjectExistListener) {
+    public void isPackageExistSingleValue(String postId, OnPackageExistListener<MarketBizPackage> onObjectExistListener) {
 
     }
 
-   /* public ValueEventListener searchPackagesByTitle(String searchText, OnDataChangedListener<SkyLightPackage> onDataChangedListener) {
+   /* public ValueEventListener searchPackagesByTitle(String searchText, OnDataChangedListener<MarketBizPackage> onDataChangedListener) {
         return null;
     }
 

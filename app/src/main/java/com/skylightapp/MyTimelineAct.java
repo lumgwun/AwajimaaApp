@@ -19,6 +19,7 @@ import com.skylightapp.Adapters.TimeLineAdapterOthers;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.TimeLine;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.SuperAdmin.Awajima;
 
 import java.util.ArrayList;
 
@@ -38,26 +39,36 @@ public class MyTimelineAct extends AppCompatActivity {
 
     DBHelper dbHelper;
     String json;
-    long profileID;
+    int profileID;
     TextView txtTIMELINE;
     int timelineCount;
+    private static final String PREF_NAME = "awajima";
+    Gson  gson1,gson3,gson6;
+    String  json1, json3,json6nIN,name;
+    Profile customerProfile, lastProfileUsed;
+    private Awajima awajima;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_my_timeline);
+        gson = new Gson();
+        userProfile= new Profile();
         recyclerView = findViewById(R.id.user_timelines44);
         txtTIMELINE = findViewById(R.id.fragmentTimeline354);
         timeLines = new ArrayList<TimeLine>();
-        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        gson = new Gson();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         dbHelper = new DBHelper(this);
         if(userProfile !=null){
-            long profileID =userProfile.getPID();
+            profileID =userProfile.getPID();
             timeLines = userProfile.getProfile_TimeLines();
-            timelineCount=timeLines.size();
+            if(timeLines !=null){
+                timelineCount=timeLines.size();
+
+            }
+
             if(timelineCount>0){
                 txtTIMELINE.setText("Timelines:"+timelineCount);
 

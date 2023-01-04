@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/rect_their_message"
-    tools:context=".Accountant.WimpeySavings">
+    tools:context=".Accountant.OfficeBranchSavings">
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:orientation="vertical"

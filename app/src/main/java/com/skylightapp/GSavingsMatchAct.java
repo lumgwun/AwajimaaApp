@@ -14,8 +14,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.channguyen.rsv.RangeSliderView;
+import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.RangeSlider;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Profile;
@@ -23,8 +25,6 @@ import com.skylightapp.Classes.Profile;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.MessageFormat;
-import java.text.NumberFormat;
-import java.util.Currency;
 
 public class GSavingsMatchAct extends AppCompatActivity {
     private SeekBar SliderQ1;
@@ -37,10 +37,12 @@ public class GSavingsMatchAct extends AppCompatActivity {
     private String json, json1, SharedPrefSuperUser;
     private static final String PREF_NAME = "awajima";
     private AppCompatSeekBar maxDurationSeeker, minDurSeek;
-    private RangeSlider amtRangeSeekbar;
+    private RangeSlider amtRangeSlider;
     private  long minDurationValue,maxMatchValue,minAmount,maxAmount, maxDuration;
     private TextView txtCountProgress,txtAmtProgress,txtMatchProgress;
     private CardView btnSavePref;
+
+    private LabelFormatter labelformatter;
 
 
     private SeekBar.OnSeekBarChangeListener seekBarChangeListener
@@ -69,6 +71,7 @@ public class GSavingsMatchAct extends AppCompatActivity {
         }
     };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +79,7 @@ public class GSavingsMatchAct extends AppCompatActivity {
         range = 1000000;
         btnSavePref = findViewById(R.id.save_pref_cardview);
         txtAmtProgress = findViewById(R.id.amt_progress);
-        amtRangeSeekbar = findViewById(R.id.settings_amt_range_seekbar);
+        amtRangeSlider = findViewById(R.id.settings_amt_range_seekbar);
         txtCountProgress = findViewById(R.id.months_count_);
         maxDurationSeeker = findViewById(R.id.max_duration_seekbar);
         txtMatchProgress = findViewById(R.id.match_progressT);
@@ -84,26 +87,29 @@ public class GSavingsMatchAct extends AppCompatActivity {
         gson = new Gson();
         gson1 = new Gson();
         userProfile= new Profile();
+        labelformatter = new LabelFormatter() {
+            @NonNull
+            @Override
+            public String getFormattedValue(float value) {
+                //do what you want with the value in here...
+                return "" + value;
+            }
+        };
 
+        amtRangeSlider.animate();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
 
         minDurSeek.setOnSeekBarChangeListener(seekBarChangeListener);
-        final RangeSliderView.OnSlideListener listener = new RangeSliderView.OnSlideListener() {
-            @Override
-            public void onSlide(int index) {
 
-            }
-        };
-        //amtRangeSeekbar.setStepSize(100);
         /*amtRangeSeekbar.setLabelFormatter(double amount);
         val format = NumberFormat.getCurrencyInstance();
         format.maximumFractionDigits = 0''
         format.currency = Currency.getInstance("USD");
         format.format(value.toDouble());*/
 
-        amtRangeSeekbar.addOnSliderTouchListener(new RangeSlider.OnSliderTouchListener() {
+        amtRangeSlider.addOnSliderTouchListener(new RangeSlider.OnSliderTouchListener() {
             @Override
             public void onStartTrackingTouch(@NonNull @NotNull RangeSlider slider) {
                 minAmount = slider.getLeft();

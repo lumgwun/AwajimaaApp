@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.SnapHelper;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
@@ -63,6 +65,7 @@ public class TransAmadiTranx extends AppCompatActivity implements TranxAdminA.On
     private  SimpleDateFormat dateFormat;
     Calendar calendar;
     private TranXDAO tranXDAO;
+    private SQLiteDatabase sqLiteDatabase;
 
     @SuppressLint("SimpleDateFormat")
     @Override
@@ -141,14 +144,41 @@ public class TransAmadiTranx extends AppCompatActivity implements TranxAdminA.On
             public void onClick(View view) {
                 recyclerViewTXToday.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
-                try {
-                    transactionArrayList = tranXDAO.getTransactionsForBranchAtDate(officeBranch,dateOfTransaction);
-                    transactionTotal=tranXDAO.getTotalTransactionForBranchAtDate(officeBranch,dateOfTransaction);
-                    branchTranxCount =tranXDAO.getTransactionCountForBranchAtDate(officeBranch,dateOfTransaction);
+                if(dbHelper !=null){
+                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    try {
+                        transactionArrayList = tranXDAO.getTransactionsForBranchAtDate(officeBranch,dateOfTransaction);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
 
-                }catch (NullPointerException e)
-                {
-                    e.printStackTrace();
+
+
+                }
+
+                if(dbHelper !=null){
+                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    try {
+                        transactionTotal=tranXDAO.getTotalTransactionForBranchAtDate(officeBranch,dateOfTransaction);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+
+
+                }
+
+
+                if(dbHelper !=null){
+                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    try {
+                        branchTranxCount =tranXDAO.getTransactionCountForBranchAtDate(officeBranch,dateOfTransaction);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+
+
                 }
 
                 LinearLayoutManager layoutManagerC
@@ -190,6 +220,30 @@ public class TransAmadiTranx extends AppCompatActivity implements TranxAdminA.On
 
 
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
     private void chooseDate() {
         dateOfTransaction = picker.getDayOfMonth()+"-"+ (picker.getMonth() + 1)+"-"+picker.getYear();
 

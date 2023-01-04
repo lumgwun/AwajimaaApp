@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.preference.PreferenceManager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -19,7 +18,7 @@ import com.skylightapp.Classes.AdminUser;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Database.AcctDAO;
 import com.skylightapp.Database.AdminBalanceDAO;
@@ -62,9 +61,9 @@ public class RequestItemAct extends AppCompatActivity {
     Bundle packBundle,bundle;
     private Customer customer;
     private int selectedPackageIndex;
-    SkyLightPackage selectedPackage;
-    private ArrayList<SkyLightPackage> skyLightPackageAll;
-    private ArrayAdapter<SkyLightPackage> skyLightPackageAllAdapter;
+    MarketBizPackage selectedPackage;
+    private ArrayList<MarketBizPackage> marketBizPackageAll;
+    private ArrayAdapter<MarketBizPackage> skyLightPackageAllAdapter;
     AppCompatSpinner spn_select_package;
     SecureRandom random;
     Random ran ;
@@ -190,15 +189,15 @@ public class RequestItemAct extends AppCompatActivity {
         dateOfRequest = mdformat.format(calendar.getTime());
         txtCusName.setText(MessageFormat.format("Customer:{0}", customerName));
         collectionStatus="unCollected";
-        skyLightPackageAll=dbHelper.getCustomerCompleteUnCollectedPack(customerID,"completed",collectionStatus);
+        marketBizPackageAll =dbHelper.getCustomerCompleteUnCollectedPack(customerID,"completed",collectionStatus);
 
-        skyLightPackageAllAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, skyLightPackageAll);
+        skyLightPackageAllAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, marketBizPackageAll);
         skyLightPackageAllAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spn_select_package.setAdapter(skyLightPackageAllAdapter);
         spn_select_package.setSelection(0);
         selectedPackageIndex = spn_select_package.getSelectedItemPosition();
         try {
-            selectedPackage = skyLightPackageAll.get(selectedPackageIndex);
+            selectedPackage = marketBizPackageAll.get(selectedPackageIndex);
             packageName=selectedPackage.getPackageName();
 
         } catch (IndexOutOfBoundsException e) {

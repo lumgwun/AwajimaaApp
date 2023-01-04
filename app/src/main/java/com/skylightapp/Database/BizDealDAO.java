@@ -5,24 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 
 import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.chat.model.QBDialogType;
-import com.skylightapp.Classes.Account;
 import com.skylightapp.MarketClasses.BDealChatExtra;
 import com.skylightapp.MarketClasses.BusinessDeal;
-import com.skylightapp.MarketClasses.MarketBusiness;
-import com.skylightapp.Classes.Profile;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import static com.skylightapp.Classes.CustomerDailyReport.DAILY_REPORT_TABLE;
-import static com.skylightapp.Classes.CustomerDailyReport.REPORT_DATE;
-import static com.skylightapp.Classes.CustomerDailyReport.REPORT_OFFICE_BRANCH;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_PROFILE_ID_FOREIGN;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_TABLE;
 import static com.skylightapp.MarketClasses.BusinessDeal.BIZ_DEAL_CHAT_AMOUNT;
 import static com.skylightapp.MarketClasses.BusinessDeal.BIZ_DEAL_CHAT_AMT_CU;
 import static com.skylightapp.MarketClasses.BusinessDeal.BIZ_DEAL_CHAT_CREATED_DATE;
@@ -47,9 +37,7 @@ import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_NAME;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_PHONE_NO;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_REG_NO;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_STATE;
-import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TABLE;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TYPE;
-import static com.skylightapp.Classes.Profile.PROFILE_ID;
 import static com.skylightapp.MarketClasses.BusinessDeal.BIZ_DEAL_ACCT_NO;
 import static com.skylightapp.MarketClasses.BusinessDeal.BIZ_DEAL_FROM_B_ID;
 import static com.skylightapp.MarketClasses.BusinessDeal.BIZ_DEAL_FROM_PROF_ID;

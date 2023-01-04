@@ -45,7 +45,7 @@ public class BranchReportTab extends TabActivity {
     Gson gson1,gson2;
     String json1,json2,officeBranch;
     private AdminUser adminUser;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

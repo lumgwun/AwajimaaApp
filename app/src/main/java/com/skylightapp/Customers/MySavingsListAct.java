@@ -12,6 +12,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,7 +42,7 @@ public class MySavingsListAct extends AppCompatActivity {
     private Bundle cusBundle;
     private SearchView searchView;
 
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     SharedPreferences userPreferences;
     Gson gson;
     String json;
@@ -83,6 +84,7 @@ public class MySavingsListAct extends AppCompatActivity {
 
         gson = new Gson();
         customer=new Customer();
+        userProfile= new Profile();
         customerDailyReports = new ArrayList<>();
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPrefUserName = sharedPreferences.getString("PROFILE_USERNAME", "");
@@ -107,7 +109,7 @@ public class MySavingsListAct extends AppCompatActivity {
                 bundle.putString("USER_PASSWORD",SharedPrefUserPassword);
                 bundle.putString("PROFILE_USERNAME",SharedPrefUserName);
                 bundle.putString("PROFILE_PASSWORD",SharedPrefUserPassword);
-                Intent loginRIntent = new Intent(MySavingsListAct.this, LoginDirAct.class);
+                Intent loginRIntent = new Intent(MySavingsListAct.this, NewCustomerDrawer.class);
                 loginRIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(loginRIntent);
 
@@ -124,7 +126,19 @@ public class MySavingsListAct extends AppCompatActivity {
                 customerID=customer.getCusUID();
             }
         }
-        customerDailyReports = dbHelper.getCustomerDailyReportForCustomer(customerID);
+        if(dbHelper !=null){
+            try {
+                try {
+                    customerDailyReports = dbHelper.getCustomerDailyReportForCustomer(customerID);
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+
+        }
 
         if(customerDailyReports.size()==0){
             txtSavingsMessage.setText(MessageFormat.format("Savings:", "0"));

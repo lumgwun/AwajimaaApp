@@ -34,9 +34,9 @@ import com.google.gson.Gson;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerDailyReport;
+import com.skylightapp.MarketClasses.MarketBizPackModel;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
-import com.skylightapp.Classes.SkyLightPackModel;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.LoginDirAct;
 import com.skylightapp.PayNowActivity;
@@ -73,8 +73,8 @@ public class PayForMyCusAct extends AppCompatActivity {
     private ArrayAdapter<Customer> allCustomerAdapter;
     private ArrayAdapter<Customer> customerAdapter;
     private ArrayList<Customer> customerArrayList;
-    private ArrayList<SkyLightPackage> packageArrayList;
-    private ArrayAdapter<SkyLightPackage> packagerAdapter;
+    private ArrayList<MarketBizPackage> packageArrayList;
+    private ArrayAdapter<MarketBizPackage> packagerAdapter;
 
     private SharedPreferences userPreferences;
     private Gson gson;
@@ -151,7 +151,7 @@ public class PayForMyCusAct extends AppCompatActivity {
     String accessCode,title,packageType;
     Toolbar toolbar;
     Customer allCustomer;
-    SkyLightPackage skyLightPackage;
+    MarketBizPackage marketBizPackage;
     int myCustomerIndex;
     int allCustomerIndex;
     int packageIndex;
@@ -160,7 +160,7 @@ public class PayForMyCusAct extends AppCompatActivity {
     String inProgress;
     private TextView mTextReference,txtPackSavingsID;
     private co.paystack.android.Transaction transaction;
-    SkyLightPackModel package_list_model;
+    MarketBizPackModel package_list_model;
     Bundle paymentBundle;
 
     private ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -238,14 +238,14 @@ public class PayForMyCusAct extends AppCompatActivity {
         home_from_ =  findViewById(R.id.home_from_3);
         homeBack = findViewById(R.id.home_from_payment3);
         customerArrayList = new ArrayList<Customer>();
-        packageArrayList = new ArrayList<SkyLightPackage>();
+        packageArrayList = new ArrayList<MarketBizPackage>();
         userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         gson = new Gson();
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         TransactionApiResponse apiResponse = new TransactionApiResponse();
         boolean asd = apiResponse.hasValidReferenceAndTrans();
-        String pSeckey = OurConfig.SKYLIGHT_SECRET_KEY;
+        String pSeckey = OurConfig.AWAJIMA_PAYSTACK_SECRET_KEY;
         PaystackSdk.initialize(getApplicationContext());
         PaystackSdk.setPublicKey(pSeckey);
         total_info = findViewById(R.id.total_info);
@@ -304,10 +304,10 @@ public class PayForMyCusAct extends AppCompatActivity {
             public void onClick(View view) {
                 paymentBundle.putParcelable("Customer", customer);
                 paymentBundle.putParcelable("Profile", userProfile);
-                paymentBundle.putParcelable("Package", skyLightPackage);
-                paymentBundle.putParcelable("SkyLightPackage", skyLightPackage);
+                paymentBundle.putParcelable("Package", marketBizPackage);
+                paymentBundle.putParcelable("MarketBizPackage", marketBizPackage);
 
-                choosePaymentMethod(userProfile,customer,paymentBundle,skyLightPackage);
+                choosePaymentMethod(userProfile,customer,paymentBundle, marketBizPackage);
             }
         });
 
@@ -321,14 +321,14 @@ public class PayForMyCusAct extends AppCompatActivity {
             if(customer !=null){
                 customerId8=customer.getCusUID();
                 packageArrayList = dbHelper.getCustomerIncompletePack(customerId8,inProgress);
-                packagerAdapter = new ArrayAdapter<SkyLightPackage>(this, android.R.layout.simple_spinner_item, packageArrayList);
+                packagerAdapter = new ArrayAdapter<MarketBizPackage>(this, android.R.layout.simple_spinner_item, packageArrayList);
                 packagerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spn_customer_packages.setAdapter(packagerAdapter);
                 spn_customer_packages.setSelection(0);
                 packageIndex = spn_customer_packages.getSelectedItemPosition();
                 try {
 
-                    skyLightPackage = (SkyLightPackage) spn_customer_packages.getItemAtPosition(packageIndex);
+                    marketBizPackage = (MarketBizPackage) spn_customer_packages.getItemAtPosition(packageIndex);
                 } catch (IndexOutOfBoundsException e) {
                     System.out.println("Oops!");
                 }
@@ -340,7 +340,7 @@ public class PayForMyCusAct extends AppCompatActivity {
         }
     }
 
-    private void choosePaymentMethod(Profile userProfile,Customer customer,Bundle paymentBundle,SkyLightPackage skyLightPackage) {
+    private void choosePaymentMethod(Profile userProfile, Customer customer, Bundle paymentBundle, MarketBizPackage marketBizPackage) {
         Toast.makeText(PayForMyCusAct.this, "packageType Package, selected", Toast.LENGTH_SHORT).show();
         Intent savingsIntent = new Intent(PayForMyCusAct.this, PayNowActivity.class);
         savingsIntent.putExtras(paymentBundle);

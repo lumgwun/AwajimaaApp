@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/market_drawer"
+    style="@style/Theme.OurCApp"
     android:fitsSystemWindows="true"
     tools:openDrawer="start"
     tools:context="com.skylightapp.Markets.MarketTab">
@@ -38,8 +39,8 @@
         app:itemHorizontalPadding="40dp"
         app:itemIconTint="@color/red_brown"
         app:itemTextColor="@color/black"
-        android:layout_marginBottom="10dp"
-        app:itemBackground="@drawable/shape_toolbar_dropshadow"
+        android:layout_marginBottom="20dp"
+        app:itemBackground="@drawable/rect6da"
         app:itemTextAppearance="?android:attr/textAppearanceSmallInverse"
         app:headerLayout="@layout/market_header"
         android:stateListAnimator="@anim/raise"

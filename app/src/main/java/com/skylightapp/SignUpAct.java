@@ -1,5 +1,7 @@
 package com.skylightapp;
 
+import static androidx.core.app.NotificationCompat.EXTRA_NOTIFICATION_ID;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -18,11 +20,16 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
 import androidx.core.widget.ContentLoadingProgressBar;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -52,6 +59,9 @@ import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.AudioAttributes;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -81,6 +91,8 @@ import android.widget.Toast;
 import com.android.installreferrer.api.InstallReferrerClient;
 import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.android.installreferrer.api.ReferrerDetails;
+import com.blongho.country_data.Country;
+import com.blongho.country_data.Currency;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.common.ConnectionResult;
@@ -115,16 +127,17 @@ import com.skylightapp.Classes.AccountPromo;
 import com.skylightapp.Classes.AccountSavings;
 import com.skylightapp.Classes.AccountTypes;
 import com.skylightapp.Classes.AdminUser;
-import com.skylightapp.Classes.AppController;
 import com.skylightapp.Classes.Birthday;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.Message;
+import com.skylightapp.Classes.NotifiBReceiver;
 import com.skylightapp.Classes.PinEntryView;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.StandingOrderAcct;
 import com.skylightapp.Classes.UserSuperAdmin;
+import com.skylightapp.Customers.MyAcctOverViewAct;
 import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Database.AcctDAO;
 import com.skylightapp.Database.BirthdayDAO;
@@ -136,7 +149,10 @@ import com.skylightapp.Database.SODAO;
 import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.MarketClasses.AppInstallRefReceiver;
+import com.skylightapp.MarketClasses.RandomAcctNo;
 import com.skylightapp.MarketClasses.ResourceUtils;
+import com.skylightapp.SuperAdmin.Awajima;
+import com.teliver.sdk.models.PushData;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -192,11 +208,10 @@ import static com.skylightapp.Classes.Profile.PROFILE_SPONSOR_ID;
 import static com.skylightapp.Classes.Profile.PROFILE_STATE;
 import static com.skylightapp.Classes.Profile.PROFILE_STATUS;
 import static com.skylightapp.Classes.Profile.PROFILE_SURNAME;
+import static com.skylightapp.Classes.Profile.PROF_ROLE_TYPE;
 import static com.skylightapp.Database.DBHelper.DATABASE_NAME;
-import static com.skylightapp.Database.DBHelper.DATABASE_NEW_VERSION;
-import static com.skylightapp.Database.DBHelper.DATABASE_VERSION;
 
-public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,LocationListener {
+public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, LocationListener, LoaderManager.LoaderCallbacks<Cursor> {
     public static final int PICTURE_REQUEST_CODE = 505;
     SharedPreferences userPreferences;
     AppCompatEditText edtPhone_number;
@@ -223,6 +238,9 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
     String managerPhoneNumber1;
     String managerEmail, managerGender;
     String managerAddress;
+    int numMessages;
+    public static final String NOTIFICATION_CHANNEL_ID = "10001" ;
+    private final static String default_notification_channel_id = "default" ;
     private boolean locationPermissionGranted;
     String managerUserName;
     String  selectedGender, selectedOffice, selectedState;
@@ -238,34 +256,35 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
     Location mCurrentLocation = null;
     SQLiteDatabase sqLiteDatabase;
     Date date;
-
     AccountTypes accountTypeStr;
 
-    Gson gson, gson1,gson3;
-    String json, json1, json3,nIN;
+    Gson gson, gson1,gson3,gson6,gson7,gson5,gson8;
+    String json, json1, json3,json6,json7,json8,json9,nIN,name;
     Profile userProfile, customerProfile, lastProfileUsed;
-    String  officePref;
+    String  officePref,usdSymbol,gbpSymbol;
 
     private String picturePath;
     private static final int RESULT_LOAD_IMAGE = 1;
     private static final String REQUIRED = "Required";
+    private static final String SIGNUP_STATE_KEY = "signup_Key";
     private static final int RESULT_CAMERA_CODE = 22;
+    private java.util.Currency currency22;
     int investmentAcctID, savingsAcctID, itemPurchaseAcctID, promoAcctID, packageAcctID;
-
-
     ByteArrayOutputStream bytes;
     Customer customer;
+    int usdSymbolNo,gbpSymbolNo;
     int  day, month, year, newMonth;
     String userType;
     String userRole, sponsorIDString;
     int sponsorID;
-    String address;
+    String address,signUpK;
     LatLng userLocation;
     File destination;
     LatLng cusLatLng;
     double latitude = 0;
     double longitude = 0;
     Geocoder geocoder;
+    Uri sound;
     ArrayList<Profile> profiles;
     ArrayList<Customer> customers;
     CircleImageView profilePix;
@@ -274,12 +293,10 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
     ArrayList<CustomerManager> tellers;
     ArrayList<AdminUser> adminUserArrayList;
     ArrayList<UserSuperAdmin> superAdminArrayList;
-
     private Uri mImageUri;
     ContentLoadingProgressBar progressBar;
     List<Address> addresses;
     private PrefManager prefManager;
-
     private Calendar cal;
     private static boolean isPersistenceEnabled = false;
     private Account account;
@@ -295,7 +312,8 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
     private AppInstallRefReceiver appInstallRefReceiver;
     String dob;
-    String  otpMessage, smsMessage;
+    String otpMessage;
+    String smsMessage;
     private AppCompatButton btnVerifyOTPAndSignUp,btnSendOTP;
     private int otpDigit;
     String otpPhoneNumber;
@@ -325,18 +343,16 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
     private ProfDAO profileDao;
     private QBUser qbUser,lastQBUserUsed;
     private Profile profile, tellerProfile;
-    private Account lastAccountUsed;
-
-
+    private Account lastAccountUsed,usdAccount,gbpAccount;
+    private Awajima awajima;
+    private Currency currency;
+    String usd,gbp;
     private BirthdayDAO birthdayDAO;
     private TimeLineClassDAO timeLineClassDAO;
     private Customer lastCustomerUsed;
     private static final String APPLICATION_ID = QUICKBLOX_APP_ID;   //QUICKBLOX_APP_ID
-    private static final String AUTH_KEY = QUICKBLOX_AUTH_KEY;
-    private static final String AUTH_SECRET = QUICKBLOX_SECRET_KEY;
-    private static final String ACCOUNT_KEY = QUICKBLOX_ACCT_KEY;
-    private static final String SERVER_URL = "";
     public static final String USER_DEFAULT_PASSWORD = "quickblox";
+    private static final int EXISTING_PROFILE_LOADER = 0;
     String regEx =
             "^(([w-]+.)+[w-]+|([a-zA-Z]{1}|[w-]{2,}))@"
                     + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9]).([0-1]?"
@@ -355,7 +371,9 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
     //private PlaceAutocompleteAdapter mAdapter;
     private AutoCompleteTextView mAutocompleteView;
     protected GoogleApiClient mGoogleApiClient;
-    private AppController appController;
+    private Intent data;
+    private Country countryUS,countryUK;
+    //private AppController appController;
 
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {
@@ -370,7 +388,6 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
     };
 
     // private static final String BASE_URL="https://firebasestorage.googleapis.com/";
-
     ActivityResultLauncher<Intent> mGetPixContent = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -379,10 +396,17 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
                 public void onActivityResult(ActivityResult result) {
                     switch (result.getResultCode()) {
                         case Activity.RESULT_OK:
+                            data= new Intent();
                             if (result.getData() != null) {
-                                //logo = findViewById(R.id.imageLogo);
-                                Intent data = result.getData();
-                                mImageUri = data.getData();
+                                if(result !=null){
+                                    data = result.getData();
+
+                                }
+                                if(data !=null){
+                                    mImageUri = data.getData();
+
+                                }
+
                                 if (mImageUri != null) {
                                     profilePix.setImageBitmap(getScaledBitmap(mImageUri));
                                 } else {
@@ -482,15 +506,28 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         }
 
     };
+    private String deviceMobileNo;
+    private Uri currentProfileUri;
+    private StandingOrderAcct lastStandingOrderAcctUsed;
 
 
+    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            signUpK = savedInstanceState.getString(SIGNUP_STATE_KEY);
+        }
         setContentView(R.layout.act_sign_up);
         dbHelper = new DBHelper(this);
-        appController= new AppController();
+        awajima= new Awajima();
+
+        //appController= new AppController();
         gson3 = new Gson();
+        gson6 = new Gson();
+        gson5 = new Gson();
+        gson7 = new Gson();
+
         prefManager= new PrefManager();
         lastQBUserUsed= qbUser;
         bizNameBundle= new Bundle();
@@ -499,28 +536,19 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         lastAccountUsed = new Account();
         tellerProfile = new Profile();
         lastCustomerUsed=new Customer();
-        appController.onCreate();
+        usdAccount= new Account();
+        gbpAccount= new Account();
+        lastStandingOrderAcctUsed= new StandingOrderAcct();
+        //appController.onCreate();
         sqLiteDatabase = dbHelper.getWritableDatabase();
-        /*if (dbHelper != null) {
-            dbHelper.onUpgrade(sqLiteDatabase, DATABASE_VERSION, DATABASE_NEW_VERSION);
 
-        } else {
-            sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
-
-
-        }*/
         appInstallRefReceiver= new AppInstallRefReceiver();
-        QBSettings.getInstance().init(this, APPLICATION_ID, AUTH_KEY, AUTH_SECRET);
-        QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
+        //QBSettings.getInstance().init(this, APPLICATION_ID, AUTH_KEY, AUTH_SECRET);
+        //QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
         setTitle("OnBoarding Arena");
         bizNameBundle=getIntent().getExtras();
         createLocationRequest();
         cusDAO= new CusDAO(this);
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, 0 /* clientId */, this)
-                .addApi(Places.GEO_DATA_API)
-                .build();
 
         profileDao= new ProfDAO(this);
         birthdayDAO= new BirthdayDAO(this);
@@ -535,15 +563,8 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         messageDAO= new MessageDAO(this);
 
         acctDAO= new AcctDAO(this);
+        doLocationStuff();
 
-        referrerClient = InstallReferrerClient.newBuilder(this).build();
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        criteria.setAltitudeRequired(false);
-        criteria.setBearingRequired(false);
-        criteria.setCostAllowed(true);
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
         setInitialLocation();
         txtLoc = findViewById(R.id.hereYou333);
         locTxt = findViewById(R.id.whereYou222);
@@ -551,77 +572,16 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         layoutPrivacyAndTerms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent myIntent = new Intent(SignUpAct.this, AppBottomSheet.class);
+                Intent myIntent = new Intent(SignUpAct.this, AppBottomSheet.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(myIntent);*/
+                startActivity(myIntent);
                 //AppBottomSheet appBottomSheet= new AppBottomSheet(getClassLoader().loadClass("AppBottomSheet")).onViewCreated(view,savedInstanceState);
             }
         });
         layoutPrivacyAndTerms.setOnClickListener(this::showPrivacyPolicy);
-
-
-        String provider = locationManager.getBestProvider(criteria, true);
-        if (provider != null) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            }
-            locationManager.requestLocationUpdates(provider, 2 * 60 * 1000, 10, locationListenerNetwork);
-        }
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    locTxt.setVisibility(View.GONE);
-                    return;
-                }
-                for (Location location : locationResult.getLocations()) {
-                    longitude = location.getLongitude();
-                    latitude = location.getLatitude();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(SignUpAct.this, "Network Provider update", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    userLocation = new LatLng(latitude, longitude);
-                    cusLatLng = userLocation;
-
-
-                    try {
-                        Geocoder newGeocoder = new Geocoder(SignUpAct.this, Locale.ENGLISH);
-                        List<Address> newAddresses = newGeocoder.getFromLocation(latitude, longitude, 1);
-                        StringBuilder street = new StringBuilder();
-                        if (Geocoder.isPresent()) {
-
-                            locTxt.setVisibility(View.VISIBLE);
-
-                            Address newAddress = newAddresses.get(0);
-
-                            String localityString = newAddress.getLocality();
-
-                            street.append(localityString).append("");
-
-                            locTxt.setText(MessageFormat.format("Where you are:  {0},{1}/{2}", latitude, "" + longitude, street));
-                            Toast.makeText(SignUpAct.this, street,
-                                    Toast.LENGTH_SHORT).show();
-
-                        } else {
-                            locTxt.setVisibility(View.GONE);
-                            //go
-                        }
-
-
-                    } catch (IndexOutOfBoundsException | IOException e) {
-
-                        Log.e("tag", e.getMessage());
-                    }
-
-                }
-            }
-        };
 
 
         getSkylightRefferer(referrerClient);
@@ -640,15 +600,9 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         ran = new Random();
         random = new SecureRandom();
         //SQLiteDataBaseBuild();
-        //sqLiteDatabase = dbHelper.getWritableDatabase();
 
         getDeviceLocation();
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        layoutPreOTP = findViewById(R.id.layoutSign);
-
-        cancellationTokenSource = new CancellationTokenSource();
 
         /*new Thread(new Runnable() {
             @Override
@@ -672,6 +626,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
             }
         }).start();*/
+        layoutPreOTP = findViewById(R.id.layoutSign);
 
         userProfile = new Profile();
         account = new Account();
@@ -701,15 +656,29 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
         managerProfile = gson.fromJson(json, Profile.class);
-        json1 = userPreferences.getString("LastTellerProfileUsed", "");
+        json1 = userPreferences.getString("LastCustomerManagerUsed", "");
         customerManager = gson1.fromJson(json1, CustomerManager.class);
-        loadProfiles(dbHelper);
+        try {
+
+            loadProfiles(dbHelper);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         otpDigit = ThreadLocalRandom.current().nextInt(122, 1631);
         messageID = ThreadLocalRandom.current().nextInt(1125, 10400);
-        otpMessage = "&message=" + "Hello Awajima, Your OTP Code is " + otpDigit;
+        usdSymbolNo = ThreadLocalRandom.current().nextInt(18225, 1040012);
+        gbpSymbolNo = ThreadLocalRandom.current().nextInt(10235, 10721400);
+        otpMessage = "&message=" + "Hello Awajima New User, Your OTP Code is " + otpDigit;
 
         profileID1 = random.nextInt((int) (Math.random() * 1400) + 1115);
-        virtualAccountNumber = random.nextInt((int) (Math.random() * 123045) + 100123);
+        try {
+            virtualAccountNumber = Integer.parseInt(RandomAcctNo.getAcctNumeric(10));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        //virtualAccountNumber = random.nextInt((int) (Math.random() * 123045) + 100123);
         soAccountNumber = random.nextInt((int) (Math.random() * 133044) + 100125);
         customerID = random.nextInt((int) (Math.random() * 1203) + 1101);
         //profileID2 = random.nextInt((int) (Math.random() * 1001) + 101);
@@ -745,7 +714,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
                 //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //make transparent background.
                 dialog.show();
                 dob = year + "-" + newMonth + "-" + day;
-                dateOfBirth = day + "-" + newMonth + "-" + year;
+                dateOfBirth = dob;
                 dobText.setText("Your date of Birth:" + dob);
 
             }
@@ -756,7 +725,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
             public void onDateSet(DatePicker datePicker, int day, int month, int year) {
                 Log.d(TAG, "onDateSet: date of Birth: " + day + "-" + month + "-" + year);
                 dob = year + "-" + newMonth + "-" + day;
-                dateOfBirth = day + "-" + newMonth + "-" + year;
+                dateOfBirth = dob;
                 dobText.setText("Your date of Birth:" + dob);
 
 
@@ -764,7 +733,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
 
         };
-        dateOfBirth = day + "-" + newMonth + "-" + year;
+        dateOfBirth = dob;
 
         //token= getIntent().getStringExtra("TOKEN");
         birthdayID = random.nextInt((int) (Math.random() * 1001) + 1010);
@@ -1075,9 +1044,24 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
         }
         if(dbHelper !=null){
-            //SQLiteDataBaseBuild();
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            customers = cusDAO.getAllCustomers11();
+            try {
+
+                if(sqLiteDatabase !=null){
+                    sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                }
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+            if(cusDAO !=null){
+                try {
+                    customers = cusDAO.getAllCustomers11();
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
 
         }
 
@@ -1089,34 +1073,12 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         Animation translER = AnimationUtils.loadAnimation(this, R.anim.pro_animation);
 
         btnSendOTP.setOnClickListener(this::sendOTPToCus);
-        btnSendOTP.startAnimation(translater);
-       /*btnSendOTP.setOnTouchListener(new View.OnTouchListener() {
 
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
-                        Button view = (Button) v;
-                        view.getBackground().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
-                        v.invalidate();
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL: {
-                        Button view = (Button) v;
-                        view.getBackground().clearColorFilter();
-                        view.invalidate();
-                        break;
-                    }
-                }
-                return true;
-            }
-        });*/
+        Animation translater44 = AnimationUtils.loadAnimation(this, R.anim.bounce);
         btnSendOTP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.startAnimation(translER);
+                view.startAnimation(translater44);
                 uFirstName = edtFirstName.getText().toString().trim();
                 uSurname = edtSurname.getText().toString().trim();
                 uEmail = email_address.getText().toString();
@@ -1152,13 +1114,6 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
                     } else if (TextUtils.isEmpty(uAddress)) {
                         edtAddress_2.setError("Please enter Address");
                     } else {
-
-                        layoutOTP.setVisibility(View.VISIBLE);
-                        layoutPreOTP.setVisibility(View.GONE);
-                        otpTxt.setText("Your OTP is:" + otpDigit);
-                        otpPhoneNumber = "+234" + uPhoneNumber;
-                        //doOtpNotification();
-                        //sendOTPMessage(otpPhoneNumber,otpMessage);
                         //sendOTPVerCode(otpPhoneNumber,mAuth,sponsorID,account,standingOrderAcct,customer,joinedDate,uFirstName,uSurname,uPhoneNumber,uAddress,uUserName,uPassword,customer,customerProfile,nIN,managerProfile,dateOfBirth,selectedGender,selectedOffice,selectedState,birthday,customerManager,dateOfBirth,profileID1,virtualAccountNumber,soAccountNumber, customerID,profileID2,birthdayID, investmentAcctID,itemPurchaseAcctID,promoAcctID,packageAcctID,profiles,customers,tellers,adminUserArrayList,superAdminArrayList);
 
                         for (int i = 0; i < customers.size(); i++) {
@@ -1168,15 +1123,36 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
                                     return;
 
                                 } else {
+                                    doOtpNotification(otpMessage);
+
                                     layoutOTP.setVisibility(View.VISIBLE);
                                     layoutPreOTP.setVisibility(View.GONE);
-                                    otpPhoneNumber = "+234" + uPhoneNumber;
-                                    doOtpNotification();
+                                    otpTxt.setText("Check your Message for your OTP:");
+                                    otpPhoneNumber = uPhoneNumber;
+                                    doOtpNotification(otpMessage);
                                     sendOTPMessage(otpPhoneNumber, otpMessage);
+                                    doTeliverNoti(otpMessage);
 
                                     if(dbHelper !=null){
                                         sqLiteDatabase = dbHelper.getReadableDatabase();
-                                        messageDAO.insertMessage(profileID, customerID, messageID, bizID, otpMessage, "Awajima App", customerName, selectedOffice, joinedDate);
+                                        if(messageDAO !=null){
+                                            try {
+
+                                                if(sqLiteDatabase !=null){
+                                                    sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                                                }
+                                            } catch (SQLiteException e) {
+                                                e.printStackTrace();
+                                            }
+                                            try {
+                                                messageDAO.insertMessage(profileID, customerID, messageID, bizID, otpMessage, "Awajima App", customerName, selectedOffice, joinedDate);
+
+                                            } catch (NullPointerException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        }
+
 
 
                                     }
@@ -1199,6 +1175,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
             }
         });
+
         btnVerifyOTPAndSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1238,13 +1215,192 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
 
     }
+    private void doLocationStuff() {
+        getSupportLoaderManager().initLoader(EXISTING_PROFILE_LOADER, null, this);
+
+        try {
+
+            sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, 0 /* clientId */, this)
+                .addApi(Places.GEO_DATA_API)
+                .build();
+
+
+        referrerClient = InstallReferrerClient.newBuilder(this).build();
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        criteria.setAltitudeRequired(false);
+        criteria.setBearingRequired(false);
+        criteria.setCostAllowed(true);
+        criteria.setPowerRequirement(Criteria.POWER_LOW);
+
+
+        String provider = locationManager.getBestProvider(criteria, true);
+        if (provider != null) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            }
+            locationManager.requestLocationUpdates(provider, 2 * 60 * 1000, 10, locationListenerNetwork);
+        }
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    locTxt.setVisibility(View.GONE);
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    longitude = location.getLongitude();
+                    latitude = location.getLatitude();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(SignUpAct.this, "Network Provider update", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    userLocation = new LatLng(latitude, longitude);
+                    cusLatLng = userLocation;
+
+
+                    try {
+                        Geocoder newGeocoder = new Geocoder(SignUpAct.this, Locale.ENGLISH);
+                        List<Address> newAddresses = newGeocoder.getFromLocation(latitude, longitude, 1);
+                        StringBuilder street = new StringBuilder();
+                        if (Geocoder.isPresent()) {
+
+                            locTxt.setVisibility(View.VISIBLE);
+
+                            Address newAddress = newAddresses.get(0);
+
+                            String localityString = newAddress.getLocality();
+
+                            street.append(localityString).append("");
+
+                            locTxt.setText(MessageFormat.format("Where you are:  {0},{1}/{2}", latitude, "" + longitude, street));
+                            Toast.makeText(SignUpAct.this, street,
+                                    Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            locTxt.setVisibility(View.GONE);
+                            //go
+                        }
+
+
+                    } catch (IndexOutOfBoundsException | IOException e) {
+
+                        Log.e("tag", e.getMessage());
+                    }
+
+                }
+            }
+        };
+
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+
+
+        cancellationTokenSource = new CancellationTokenSource();
+
+    }
+
+
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+    }
+
+
+
+    private void doTeliverNoti(String otpMessage) {
+        PushData pushData = new PushData("Unne");
+        //pushData.setMessage(otpMessage+ ", " + trackingId);
+        //Teliver.sendEventPush(trackingId, pushData, "taxi");
+
+
+    }
+
+    private void doOtpNotification(String otpMessage) {
+
+        try {
+            Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            Ringtone ringtone = RingtoneManager.getRingtone(SignUpAct.this, sound);
+            ringtone.play();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        Intent notificationIntent = new Intent(this, SignUpAct.class);
+        notificationIntent.putExtra(EXTRA_NOTIFICATION_ID, 0);
+        notificationIntent.putExtra("pdus", 0);
+        //notificationIntent.setAction(ACTION_SNOOZE);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(SignUpAct.class);
+        stackBuilder.addNextIntent(notificationIntent);
+
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT);
+
+        //Uri sound = Uri. parse (ContentResolver. SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/raw/quite_impressed.mp3" ) ;
+
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.mipmap.logo_awa_round)
+                        .setContentTitle("Your Awajima OTP Message")
+                        .setSound(sound)
+                        .setChannelId( NOTIFICATION_CHANNEL_ID )
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setDefaults(Notification.DEFAULT_SOUND)
+                        .setAutoCancel(true)
+                        .setNumber(++numMessages)
+                         .setContentIntent(resultPendingIntent)
+                        .setContentText(otpMessage);
+
+
+
+
+
+
+        layoutOTP.setVisibility(View.VISIBLE);
+
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context. NOTIFICATION_SERVICE ) ;
+        if (android.os.Build.VERSION. SDK_INT >= android.os.Build.VERSION_CODES. O ) {
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setContentType(AudioAttributes. CONTENT_TYPE_SONIFICATION )
+                    .setUsage(AudioAttributes. USAGE_ALARM )
+                    .build() ;
+            int importance = NotificationManager. IMPORTANCE_HIGH ;
+            NotificationChannel notificationChannel = new
+                    NotificationChannel( NOTIFICATION_CHANNEL_ID , "NOTIFICATION_CHANNEL_NAME" , importance) ;
+            notificationChannel.enableLights( true ) ;
+            notificationChannel.setLightColor(Color. RED ) ;
+            notificationChannel.enableVibration( true ) ;
+            notificationChannel.setVibrationPattern( new long []{ 100 , 200 , 300 , 400 , 500 , 400 , 300 , 200 , 400 }) ;
+            notificationChannel.setSound(sound , audioAttributes) ;
+
+            assert mNotificationManager != null;
+            mNotificationManager.createNotificationChannel(notificationChannel) ;
+        }
+        assert mNotificationManager != null;
+        mNotificationManager.notify(( int ) System. currentTimeMillis (), builder.build()) ;
+        mNotificationManager.notify(20, builder.build());
+    }
 
     private boolean checkInputs() {
         @SuppressLint("UseCompatLoadingForDrawables") Drawable customErrorIcon = getResources().getDrawable(R.drawable.ic_error_black_24dp);
         customErrorIcon.setBounds(0, 0, customErrorIcon.getIntrinsicWidth(), customErrorIcon.getIntrinsicHeight());
 
         if (TextUtils.isEmpty(edtFirstName.getText().toString())) {
-            edtFirstName.setError("Enter First Name", customErrorIcon);
+            //edtFirstName.setError("Enter First Name", customErrorIcon);
             btnVerifyOTPAndSignUp.setEnabled(false);
             btnVerifyOTPAndSignUp.setTextColor(Color.argb(50, 0, 0, 0));
             edtFirstName.requestFocus();
@@ -1270,58 +1426,21 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
             btnVerifyOTPAndSignUp.setTextColor(Color.argb(50, 0, 0, 0));
             edtPassword.requestFocus();
         }
-        else if (TextUtils.isEmpty(edtPassword.getText().toString())) {
-            edtPassword.setError("Enter Password", customErrorIcon);
-            btnVerifyOTPAndSignUp.setEnabled(false);
-            btnVerifyOTPAndSignUp.setTextColor(Color.argb(50, 0, 0, 0));
-            edtPassword.requestFocus();
-        }
-        else if (TextUtils.isEmpty(edtPassword.getText().toString())) {
-            edtPassword.setError("Enter Password", customErrorIcon);
-            btnVerifyOTPAndSignUp.setEnabled(false);
-            btnVerifyOTPAndSignUp.setTextColor(Color.argb(50, 0, 0, 0));
-            edtPassword.requestFocus();
-        }
-        else if (TextUtils.isEmpty(edtPassword.getText().toString())) {
-            edtPassword.setError("Enter Password", customErrorIcon);
-            btnVerifyOTPAndSignUp.setEnabled(false);
-            btnVerifyOTPAndSignUp.setTextColor(Color.argb(50, 0, 0, 0));
-            edtPassword.requestFocus();
-        }
         else if (TextUtils.isEmpty(edtNIN.getText().toString())) {
             edtPassword.setError("Enter NIN", customErrorIcon);
             btnVerifyOTPAndSignUp.setEnabled(false);
             btnVerifyOTPAndSignUp.setTextColor(Color.argb(50, 0, 0, 0));
             edtNIN.requestFocus();
+        }else if (TextUtils.isEmpty(edtPhone_number.getText().toString())) {
+            edtPhone_number.setError("Enter Phone Number", customErrorIcon);
+            btnVerifyOTPAndSignUp.setEnabled(false);
+            btnVerifyOTPAndSignUp.setTextColor(Color.argb(50, 0, 0, 0));
+            edtPhone_number.requestFocus();
         }else {
             btnVerifyOTPAndSignUp.setEnabled(true);
             btnVerifyOTPAndSignUp.setTextColor(Color.rgb(0, 0, 0));
         }
 
-
-        /*if (!TextUtils.isEmpty(edtFirstName.getText())) {
-            if (!TextUtils.isEmpty(edtSurname.getText())) {
-                if (!TextUtils.isEmpty(edtPassword.getText()) && edtPassword.length() >= 4) {
-                    if (!TextUtils.isEmpty(edtPassword.getText())) {
-                        btnVerifyOTPAndSignUp.setEnabled(true);
-                        btnVerifyOTPAndSignUp.setTextColor(Color.rgb(0, 0, 0));
-                    } else {
-                        btnVerifyOTPAndSignUp.setEnabled(false);
-                        btnVerifyOTPAndSignUp.setTextColor(Color.argb(50, 0, 0, 0));
-                    }
-                } else {
-                    edtPassword.setError("Password must be 4 characters", customErrorIcon);
-                    btnVerifyOTPAndSignUp.setEnabled(false);
-                    btnVerifyOTPAndSignUp.setTextColor(Color.argb(50, 0, 0, 0));
-                }
-            } else {
-                btnVerifyOTPAndSignUp.setEnabled(false);
-                btnVerifyOTPAndSignUp.setTextColor(Color.argb(50, 0, 0, 0));
-            }
-        } else {
-            btnVerifyOTPAndSignUp.setEnabled(false);
-            btnVerifyOTPAndSignUp.setTextColor(Color.argb(50, 0, 0, 0));
-        }*/
 
         return false;
     }
@@ -1330,10 +1449,29 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         profile= new Profile();
         profile=customerProfile;
         tellerProfile = new Profile();
+        name =uSurname+","+uFirstName;
+        //countryUS= new Country("USA",);
+        //countryUK= new Country();
+
         Bundle userBundle = new Bundle();
         prefManager= new PrefManager();
+        awajima= new Awajima();
+        gson6 = new Gson();
+        gson5 = new Gson();
+        gson7 = new Gson();
+        //currency= new Currency();
+        try {
+            usdSymbolNo = Integer.parseInt(RandomAcctNo.getAcctNumeric(10));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+
+        gbpSymbolNo = ThreadLocalRandom.current().nextInt(10235, 10721400);
+        usdAccount= new Account(name,usdSymbolNo,currency,"US",null,usdSymbolNo,0.00);
+        gbpAccount= new Account(name,gbpSymbolNo,currency,"GB",null,gbpSymbolNo,0.00);
         profile = new Profile(profileID1, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, "", selectedState, selectedOffice, joinedDate, "Customer", uUserName, uPassword, "pending", "");
-        String name =uSurname+","+uFirstName;
+
         qbUser= new QBUser();
         qbUser.setCustomData(selectedOffice);
         qbUser.setEmail(uEmail);
@@ -1343,7 +1481,9 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         qbUser.setExternalId(String.valueOf(profileID));
         qbUser.setPhone(uPhoneNumber);
         qbUser.setId(profileID1);
-        qbUser.setExternalId(String.valueOf(customerID));
+        //qbUser.setExternalId(String.valueOf(customerID));
+        //usd=currency.toString();
+
 
 
         if (userPreferences !=null){
@@ -1402,7 +1542,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         editor.putString(PROFILE_NIN, nIN);
         editor.putString(PROFILE_STATE, selectedState);
         editor.putString(PROFILE_ROLE, "Customer");
-        editor.putString(PROFILE_STATUS, "Pending Approval");
+        editor.putString(PROFILE_STATUS, "New");
         editor.putInt(PROFILE_ID, profileID1);
         editor.putString(PROFILE_DATE_JOINED, joinedDate);
         editor.putString(PROFILE_USERNAME, uUserName);
@@ -1419,7 +1559,8 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         editor.putString("machine", "Customer");
         editor.putString("Machine", "Customer");
         editor.putLong("EWalletID", virtualAccountNumber);
-        editor.putLong("StandingOrderAcct", soAccountNumber);
+
+        editor.putLong("LastStandingOrderAcctUsed", soAccountNumber);
         //editor.putLong("TransactionAcctID", transactionAcctID);
         editor.putInt("InvestmentAcctID", investmentAcctID);
         editor.putInt("PromoAcctID", promoAcctID);
@@ -1434,6 +1575,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         editor.putString("Machine", "Customer");
         editor.putString("LastQBUserUsed", json3).apply();
         prefManager.saveLoginDetails(uEmail,uPassword);
+
 
 
         tellerProfile=managerProfile;
@@ -1473,6 +1615,8 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
             customer.setCusStandingOrderAcct(standingOrderAcct);
             customer.setCusProfilePicture(String.valueOf(mImageUri));
             customer.setCusAccount(account);
+            customer.setCusAccount(usdAccount);
+            customer.setCusAccount(gbpAccount);
             customer.setCusStandingOrderAcct(standingOrderAcct);
             customer.setCusProfile(profile);
             customer.addCusAccountManager(managerProfileID, ManagerSurname, managerFirstName, managerGender, officePref);
@@ -1498,7 +1642,13 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
             profile.setProfilePicture(mImageUri);
             int countC=0;
             profile.setProfQbUser(qbUser);
-
+            try {
+                awajima.addNewCustomer(customer);
+                awajima.addProfile(profile);
+                awajima.addQBUsers(qbUser);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
 
             SignUpUser(qbUser,profile);
             userBundle.putString(PROFILE_DOB, dateOfBirth);
@@ -1558,6 +1708,8 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
     }
     private void SignUpUser(final QBUser newUser, final Profile lastProfileUsed) {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         newUser.setCustomDataClass(lastProfileUsed.getClass());
         QBUsers.signUp(newUser).performAsync(new QBEntityCallback<QBUser>() {
             @Override
@@ -1573,6 +1725,8 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         });
     }
     private void signinUser(final QBUser newUser,Profile lastProfileUsed) {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         QBUsers.signIn(newUser).performAsync(new QBEntityCallback<QBUser>() {
             @Override
             public void onSuccess(QBUser qbUser, Bundle bundle) {
@@ -1616,8 +1770,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         SQLiteDataBaseBuild();
         calendar = Calendar.getInstance();
         sqLiteDatabase = dbHelper.getWritableDatabase();
-        //startBankAcctCreationForResult.launch(new Intent(SignUpAct.this, MyAcctOverViewAct.class));
-
+        startBankAcctCreationForResult.launch(new Intent(SignUpAct.this, MyAcctOverViewAct.class));
 
         @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         timeLineTime = mdformat.format(calendar.getTime());
@@ -1672,63 +1825,173 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         customerProfile = new Profile(profileID1, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, "", selectedState, selectedOffice, joinedDate, "Customer", uUserName, uPassword, "pending", "");
 
         lastProfileUsed = customerProfile;
+        SODAO sodao= new SODAO(this);
 
         saveMyPreferences(sponsorID,cusLatLng,account,standingOrderAcct,joinedDate,uFirstName,uSurname,uPhoneNumber,uAddress,uUserName,uPassword,customer,customerProfile,nIN,managerProfile, dateOfBirth, selectedGender, selectedOffice, selectedState, birthday,  customerManager, ofBirth, profileID1,  virtualAccountNumber, soAccountNumber,  customerID, birthdayID, investmentAcctID,itemPurchaseAcctID,  promoAcctID, packageAcctID,  customers);
 
         if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            acctDAO.insertAccount(profileID1, customerID, skylightMFb, accountName, virtualAccountNumber, accountBalance, accountTypeStr);
+            try {
+
+                if(sqLiteDatabase !=null){
+                    sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                }
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+            if(acctDAO !=null){
+                try {
+                    acctDAO.insertAccount(profileID1, customerID, skylightMFb, accountName, virtualAccountNumber, accountBalance, accountTypeStr);
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+            }
 
 
         }
 
         if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.insertRole(profileID1, "Customer",  uPhoneNumber);
+            try {
+
+                if(sqLiteDatabase !=null){
+                    sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                }
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                dbHelper.insertRole(profileID1, "Customer",  uPhoneNumber);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
 
         }
 
         if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.insertCustomer11(profileID1, customerID, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedState, "", joinedDate, uUserName, uPassword, mImageUri, "Customer");
+            try {
+
+                if(sqLiteDatabase !=null){
+                    sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                }
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+            try {
+                dbHelper.insertCustomer11(profileID1, customerID, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedState, "", joinedDate, uUserName, uPassword, mImageUri, "Customer");
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
 
 
         }
 
         if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            birthdayDAO.insertBirthDay3(birthday, dateOfBirth);
+            try {
 
-        }
+                if(sqLiteDatabase !=null){
+                    sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                }
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+            if(birthdayDAO !=null){
+                try {
+                    birthdayDAO.insertBirthDay3(birthday, dateOfBirth);
 
-        if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            timeLineClassDAO.insertTimeLine(tittleT1, timelineDetailsTD, timeLineTime, mCurrentLocation);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
 
-        }
-        if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            dbHelper.saveNewProfile(customerProfile);
-
-        }
-
-
-        SODAO sodao= new SODAO(this);
-
-        if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            sodao.insertStandingOrderAcct(profileID1, customerID, virtualAccountNumber, accountName, 0.00);
+            }
 
 
         }
 
+        if(dbHelper !=null){
+            try {
+
+                if(sqLiteDatabase !=null){
+                    sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                }
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+            if(timeLineClassDAO !=null){
+                try {
+                    timeLineClassDAO.insertTimeLine(tittleT1, timelineDetailsTD, timeLineTime, mCurrentLocation);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+
+
+        }
+        if(dbHelper !=null){
+            try {
+
+                if(sqLiteDatabase !=null){
+                    sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                }
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+            try {
+                dbHelper.saveNewProfile(customerProfile);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
 
         if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+
+                if(sqLiteDatabase !=null){
+                    sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                }
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+            if(sodao !=null){
+                try {
+                    sodao.insertStandingOrderAcct(profileID1, customerID, virtualAccountNumber, accountName, 0.00);
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+
+
+        }
+
+
+        if(dbHelper !=null){
+            try {
+
+                if(sqLiteDatabase !=null){
+                    sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                }
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
             if (cusLatLng != null) {
                 try {
                     dbHelper.openDataBase();
-                    dbHelper.insertCustomerLocation(customerID, this.cusLatLng);
+                    try {
+                        dbHelper.insertCustomerLocation(customerID, this.cusLatLng);
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+
 
 
                 } catch (Exception e) {
@@ -1757,14 +2020,18 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         lastAccountUsed =account;
         gson = new Gson();
         Gson gson4 = new Gson();
+        Gson gson5 = new Gson();
         lastProfileUsed = customerProfile;
         lastCustomerUsed= customer;
+        lastStandingOrderAcctUsed= standingOrderAcct;
 
         if (userPreferences !=null){
             userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
             json = gson.toJson(lastProfileUsed);
             json1 = gson1.toJson(lastCustomerUsed);
             json4 = gson4.toJson(lastAccountUsed);
+            json7 = gson7.toJson(lastStandingOrderAcctUsed);
+            //json6 = gson6.toJson(lastAccountUsed);
 
         }
 
@@ -1869,6 +2136,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         editor.putString(PROFILE_ROLE, "Customer");
         editor.putString("LastCustomerUsed", json1);
         editor.putString("lastAccountUsed", json4);
+        editor.putString("lastStandingOrderAcctUsed", json7);
         editor.putString("LastProfileUsed", json).apply();
 
         userBundle.putString(PROFILE_DOB, dateOfBirth);
@@ -1957,7 +2225,12 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
                     .fitCenter()
                     .centerCrop()
                     .into(this.profilePix);
-            profilePix.setImageBitmap(addGradient(logoBitmap));
+            try {
+                profilePix.setImageBitmap(addGradient(logoBitmap));
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
 
         }
         if ((data != null) && requestCode == RESULT_LOAD_IMAGE) {
@@ -1973,7 +2246,12 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
                     .fitCenter()
                     .centerCrop()
                     .into(this.profilePix);
-            this.profilePix.setImageBitmap(addGradient(logoBitmap));
+            try {
+                profilePix.setImageBitmap(addGradient(logoBitmap));
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
 
 
         }
@@ -2025,7 +2303,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         return dateFormat.format(date);
     }
     public static String getDeviceId(Context context) {
-        @SuppressLint("HardwareIds") final String deviceId = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+        @SuppressLint({"HardwareIds", "MissingPermission"}) final String deviceId = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
         if (deviceId != null) {
             return deviceId;
         } else {
@@ -2034,7 +2312,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
     }
 
 
-    @SuppressLint("HardwareIds")
+    @SuppressLint({"HardwareIds", "MissingPermission"})
     public String getDeviceUUID(Context context) {
         final TelephonyManager tm = (TelephonyManager) context
                 .getSystemService(Context.TELEPHONY_SERVICE);
@@ -2048,7 +2326,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
 
         }
-        String deviceMobileNo = tm.getLine1Number();
+        deviceMobileNo = tm.getLine1Number();
 
         UUID deviceUuid = new UUID(androidId.hashCode(),
                 ((long) tmDevice.hashCode() << 32) | tmSerial.hashCode());
@@ -2069,7 +2347,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         return isValid;
     }
     public static boolean isOnline(ConnectivityManager cm) {
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        @SuppressLint("MissingPermission") NetworkInfo netInfo = cm.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnectedOrConnecting()) {
             return true;
         }
@@ -2079,15 +2357,26 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
     public void loadProfiles(DBHelper dbHelper) {
 
-        userProfile1 = new Profile(10000, "Emmanuel", "Uju", "08069524599", "urskylight@gmail.com", "1980-04-19", "female", "Awajima", "", "Rivers", "Elelenwo", "2022-04-19", "SuperAdmin", "Skylight4ever", "@Awajima2", "Confirmed", "");
-        userProfile2= new Profile(1000,"Bartha", "Ene", "08059250176", "bener@gmail.com", "25/04/1989", "male", "PH", "","Rivers", "Elelenwo", "19/04/2022","Customer", "Lumgwun", "@Awajima3","Confirmed","");
+        userProfile1 = new Profile(10000, "Emmanuel", "Uju", "08069524599", "lumgwuntesting1@gmail.com", "1980-04-19", "female", "Awajima", "", "Rivers", "Elelenwo", "2022-04-19", "SuperAdmin", "Skylight4ever", "@Awajima2", "Confirmed", "");
+        userProfile2= new Profile(1000,"Bartha", "Ene", "08059250176", "lumgwuntesting2@gmail.com", "25/04/1989", "male", "PH", "","Rivers", "Elelenwo", "19/04/2022","Customer", "Lumgwun", "@Awajima3","Confirmed","");
 
         Message supportMessage = new Message(uPhoneNumber,otpDigit);
         if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getWritableDatabase();
             try {
-                dbHelper.openDataBase();
-                dbHelper.saveNewProfile(userProfile2);
+
+                if(sqLiteDatabase !=null){
+                    sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                }
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+            try {
+                try {
+                    dbHelper.saveNewProfile(userProfile2);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
 
 
             } catch (SQLiteException e) {
@@ -2101,10 +2390,22 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
 
         if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+
+                if(sqLiteDatabase !=null){
+                    sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                }
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
             try {
                 dbHelper.openDataBase();
-                messageDAO.saveNewMessage(supportMessage);
+                try {
+                    messageDAO.saveNewMessage(supportMessage);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
 
 
             } catch (SQLiteException e) {
@@ -2115,10 +2416,22 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         }
 
         if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+
+                if(sqLiteDatabase !=null){
+                    sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                }
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
             try {
                 dbHelper.openDataBase();
-                timeLineClassDAO.insertTimeLine("Sign up", "", "2022-04-19", mCurrentLocation);
+                try {
+                    timeLineClassDAO.insertTimeLine("Sign up", "", "2022-04-19", mCurrentLocation);
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
 
 
 
@@ -2130,10 +2443,22 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         }
 
         if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+
+                if(sqLiteDatabase !=null){
+                    sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                }
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
             try {
                 dbHelper.openDataBase();
-                dbHelper.insertCustomer11(1000002, 10, "Ezekiel", "Gwun-orene", "07038843102", "lumgwun1@gmail.com", "1983-04-25", "male", "Ilabuchi", "Rivers", "", "2022-04-19", "Lumgwun", "@Awajima1", Uri.parse(""), "Customer");
+                try {
+                    dbHelper.insertCustomer11(1000002, 10, "Ezekiel", "Gwun-orene", "07038843102", "lumgwun1@gmail.com", "1983-04-25", "male", "Ilabuchi", "Rivers", "", "2022-04-19", "Lumgwun", "@Awajima1", Uri.parse(""), "Customer");
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
 
 
 
@@ -2148,10 +2473,22 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
 
         if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+
+                if(sqLiteDatabase !=null){
+                    sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                }
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
             try {
                 dbHelper.openDataBase();
-                dbHelper.saveNewProfile(userProfile1);
+                try {
+                    dbHelper.saveNewProfile(userProfile1);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
 
 
             } catch (SQLiteException e) {
@@ -2164,6 +2501,11 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
 
 
+    }
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString(SIGNUP_STATE_KEY, signUpK);
+        super.onSaveInstanceState(outState);
     }
     private void createRoomTableIfNeeded() {
         SQLiteDatabase db = SQLiteDatabase.openDatabase(this.getDatabasePath(DATABASE_NAME).getPath(),null,SQLiteDatabase.OPEN_READWRITE);
@@ -2259,11 +2601,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         //startActivity(itemPurchaseIntent);
 
     }
-    @Override
-    protected void onDestroy() {
-        dbHelper.close();
-        super.onDestroy();
-    }
+
 
 
     private void PrePopulateDB() {
@@ -2272,11 +2610,18 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         userProfile2= new Profile(432,"Benedict", "Benedict", "08059250176", "bener@gmail.com", "25/04/1989", "male", "PH", "","Rivers", "Elelenwo", "19/04/2022","Customer", "Lumgwun", "@Awajima3","Confirmed","");
 
         sqLiteDatabase = dbHelper.getWritableDatabase();
+        try {
+
+            if(sqLiteDatabase !=null){
+                sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
 
         try {
 
             if (dbHelper != null) {
-                //dbHelper.openDataBase();
                 profileDao.insertProfile(userProfile2);
             }
 
@@ -2304,32 +2649,6 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         }*/
     }
 
-
-    private void PostRoomCode() {
-        dbHelper=new DBHelper(this);
-        userProfile1 = new Profile(0, "Emmanuel", "Becky", "08069524599", "urskylight@gmail.com", "1980-04-19", "female", "Awajima", "", "Rivers", "Elelenwo", "2022-04-19", "SuperAdmin", "Skylight4ever", "@Awajima2", "Confirmed", "");
-        userProfile2= new Profile(0,"Benedict", "Benedict", "08059250176", "bener@gmail.com", "25/04/1989", "male", "PH", "","Rivers", "Elelenwo", "19/04/2022","Customer", "Lumgwun", "@Awajima3","Confirmed","");
-
-
-
-        if (dbHelper != null) {
-            //dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            profileDao.insertProfile(userProfile1);
-
-        }
-        if (dbHelper != null) {
-            //dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            profileDao.insertProfile(userProfile2);
-
-
-
-        }
-
-
-
-    }
 
     public void EmptyEditTextAfterDataInsert() {
 
@@ -2420,6 +2739,26 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
     }
 
+    public void goPP(View view) {
+    }
+
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        String[] projection = {PROFILE_ID,PROFILE_SURNAME,PROFILE_FIRSTNAME, PROFILE_EMAIL, PROFILE_DOB
+                , PROFILE_ADDRESS, PROFILE_GENDER, PROFILE_PHONE,PROFILE_ROLE,PROFILE_DATE_JOINED,PROFILE_PASSWORD,PROFILE_COUNTRY,PICTURE_URI,PROFILE_USERNAME,PROFILE_NIN,PROFILE_STATE,PROF_ROLE_TYPE};
+        return new CursorLoader(this, currentProfileUri, null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+
+    }
 
 
 
@@ -2427,22 +2766,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         void onPinEntered(String pin);
     }
 
-    private void doOtpNotification() {
-        NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.mipmap.ic_launcher_round)
-                        .setContentTitle("Your OTP Message")
-                        .setContentText(otpMessage);
 
-        Intent notificationIntent = new Intent(this, LoginDirAct.class);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(LoginDirAct.class);
-        stackBuilder.addNextIntent(notificationIntent);
-        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(resultPendingIntent);
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(0, builder.build());
-    }
 
     private void setupLocationManager() {
 
@@ -2501,7 +2825,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
             return;
         }
         if (locationPermissionGranted) {
-            Task<Location> locationResult = fusedLocationClient.getLastLocation();
+            @SuppressLint("MissingPermission") Task<Location> locationResult = fusedLocationClient.getLastLocation();
             locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
                 @Override
                 public void onComplete(@NonNull Task<Location> task) {
@@ -2553,24 +2877,6 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
             Log.e("tag", e.getMessage());
         }
-
-    }
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        geocoder = new Geocoder(this, Locale.getDefault());
-        getDeviceLocation();
-        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-
-    }
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-
 
     }
 
@@ -2935,7 +3241,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
     public boolean hasInternetConnection() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        @SuppressLint("MissingPermission") NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
@@ -2988,4 +3294,37 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
     public void onLocationChanged(@NonNull @NotNull Location location) {
 
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        geocoder = new Geocoder(this, Locale.getDefault());
+        getDeviceLocation();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        overridePendingTransition(R.anim.base_slide_left_out, R.anim.bounce);
+
+    }
+
 }

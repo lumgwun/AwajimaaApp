@@ -1,26 +1,30 @@
 package com.skylightapp.Classes;
 
+import android.annotation.SuppressLint;
+import android.app.Application;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.skylightapp.Admins.AdminDashboardTab;
+import com.google.gson.GsonBuilder;
+import com.skylightapp.Bookings.BookingsMainTab;
+import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.LoanDetailsActivity;
 import com.skylightapp.LoginDirAct;
 import com.skylightapp.MoneyTxDetailAct;
@@ -28,14 +32,23 @@ import com.skylightapp.NotificationAct;
 import com.skylightapp.PackageDetailsActivity;
 import com.skylightapp.PlanPaymentActivity;
 import com.skylightapp.R;
-import com.skylightapp.SavingDetailsActivity;
 import com.skylightapp.Markets.CashOutDetailsActivity;
 import com.skylightapp.Transactions.GOTVDetailsActivity;
 import com.skylightapp.Transactions.StarTimeDetailsActivity;
+import com.teliver.sdk.core.Teliver;
+import com.teliver.sdk.models.MarkerOption;
+import com.teliver.sdk.models.NotificationData;
+import com.teliver.sdk.models.TConstants;
+import com.teliver.sdk.models.TrackingBuilder;
 
 import static com.skylightapp.Classes.CustomerDailyReport.REPORT_ID;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ID;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_ID;
 import static com.skylightapp.Transactions.BillModel.BILL_ID;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Map;
 
 
 public class FirebaseMessS extends FirebaseMessagingService {
@@ -43,6 +56,7 @@ public class FirebaseMessS extends FirebaseMessagingService {
     private static final String TAG = FirebaseMessS.class.getSimpleName();
 
     private static int notificationId = 0;
+    private PrefManager prefManager;
 
     private static final String POST_ID_KEY = "postId";
     private static final String MARKETER_ID_KEY = "marketerId";
@@ -74,6 +88,12 @@ public class FirebaseMessS extends FirebaseMessagingService {
     private static final String CRIME_ID_KEY = "crimeId";
     private static final String EMERG_ID_KEY = "EmergId";
     private static final String SPILLAGE_ID_KEY = "spillageId";
+    private static final String NEW_USER_SIGNUP_KEY = "New User";
+    private static final String NEW_USER_SIGNUP_CODE = "New User Code";
+    private static final String NEW_BIZ_KEY = "New Biz Sign Up";
+    private static final String NEW_CRIME_RES = "New Crime Resp";
+    private static final String NEW_EMERG_RES = "New Emerg Resp";
+    private static final String NEW_CLIMATE_CHANGE = "New Climate Change Report";
     Context context;
 
     //@Override
@@ -84,11 +104,127 @@ public class FirebaseMessS extends FirebaseMessagingService {
         } else {
             LogUtil.logError(TAG, "onMessageReceived()", new RuntimeException("FCM remoteMessage doesn't contains Action Type"));
         }
+        if (remoteMessage.getNotification() != null) {
+            showNotification(remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody());
+            handleRemoteMessage(remoteMessage);
+        }
+
+    }
+
+    private void showNotification(String title, String body) {
+
+        Intent notificationIntent = new Intent(this, NewCustomerDrawer.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        //notificationIntent.putExtra(TConstants.DOTS_OBJ, builder.build());
+        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+                notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationManager notificationManager = (NotificationManager)
+                this.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(this);
+        notBuilder.setSmallIcon(R.mipmap.ls_logo_round);
+        notBuilder.setContentTitle(title);
+        notBuilder.setContentText(body);
+        notBuilder.setAutoCancel(true);
+        notBuilder.setOnlyAlertOnce(true);
+        notBuilder.addAction(R.drawable.awajima_logo, this.getString(R.string.txt_start_tracking), pendingIntent);
+        Notification notification = notBuilder.build();
+        notification.defaults |= Notification.DEFAULT_SOUND;
+        notification.flags = Notification.FLAG_AUTO_CANCEL;
+        notificationManager.notify(12, notification);
+
     }
 
     private void handleRemoteMessage(RemoteMessage remoteMessage) {
         String receivedActionType = remoteMessage.getData().get(ACTION_TYPE_KEY);
         LogUtil.logDebug(TAG, "Message Notification Action Type: " + receivedActionType);
+        if(receivedActionType !=null){
+            if(receivedActionType.equalsIgnoreCase("")){
+
+                Map<String, String> pushData = remoteMessage.getData();
+                final NotificationData data = new GsonBuilder().create().fromJson(pushData.get("description"), NotificationData.class);
+                //prefManager = new PrefManager(this);
+                //prefManager.saveTrackingId("welcome Message", data.getMessage());
+                Intent intent = new Intent(this, NewCustomerDrawer.class);
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(data.getPayload());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String status = null;
+                try {
+                    if (jsonObject != null) {
+                        status = jsonObject.getString("status");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                intent.putExtra("msg", status);
+                intent.setAction("message");
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
+            }
+
+        }
+        try {
+            if (Teliver.isTeliverPush(remoteMessage)) {
+                Map<String, String> pushData = remoteMessage.getData();
+                final NotificationData data = new GsonBuilder().create().fromJson(pushData.get("description"), NotificationData.class);
+                prefManager = new PrefManager(this);
+                prefManager.saveTrackingId("TRACKING_ID", data.getTrackingID());
+                Intent intent = new Intent(this, BookingsMainTab.class);
+                JSONObject jsonObject = new JSONObject(data.getPayload());
+                String status = jsonObject.getString("status");
+                intent.putExtra("msg", status);
+                intent.setAction("message");
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                if (data.getMessage().equalsIgnoreCase("2"))
+                    sendPushNotification(data, getString(R.string.txtDriverIsHere));
+                else if (data.getMessage().equalsIgnoreCase("1"))
+                    sendPushNotification(data, getString(R.string.youHaveACus));
+                else if (data.getMessage().equalsIgnoreCase("3"))
+                    sendPushNotification(data, getString(R.string.arrived));
+                else sendPushNotification(data,data.getMessage());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            if (Teliver.isTeliverPush(remoteMessage)) {
+                Map<String, String> pushData = remoteMessage.getData();
+                NotificationData data = new GsonBuilder().create().fromJson(pushData.get("description"), NotificationData.class);
+                if (data.getCommand().equals(TConstants.CMD_TRIP_START)) {
+
+                    TrackingBuilder builder = new TrackingBuilder(new MarkerOption(data.getTrackingID()));
+                    Intent notificationIntent = new Intent(this, Teliver.getMap());
+                    notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    notificationIntent.putExtra(TConstants.DOTS_OBJ, builder.build());
+                    @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+                            notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    NotificationManager notificationManager = (NotificationManager)
+                            this.getSystemService(Context.NOTIFICATION_SERVICE);
+                    NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(this);
+                    notBuilder.setSmallIcon(R.mipmap.ls_logo_round);
+                    notBuilder.setContentTitle(this.getString(R.string.app_name));
+                    notBuilder.setContentText(data.getMessage());
+                    notBuilder.setAutoCancel(true);
+                    notBuilder.setOnlyAlertOnce(true);
+                    notBuilder.addAction(R.drawable.awajima_logo, this.getString(R.string.txt_start_tracking), pendingIntent);
+                    Notification notification = notBuilder.build();
+                    notification.defaults |= Notification.DEFAULT_SOUND;
+                    notification.flags = Notification.FLAG_AUTO_CANCEL;
+                    notificationManager.notify(12, notification);
+                } else if (data.getCommand().equals(TConstants.CMD_EVENT_PUSH)) {
+                    //The Event Push Area
+                }
+            } else {
+                //The push is not for us, You can handle it.
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (receivedActionType != null) {
             switch (receivedActionType) {
@@ -134,9 +270,61 @@ public class FirebaseMessS extends FirebaseMessagingService {
                 case SO_KEY:
                     //parseSO(Channel.NEW_STANDINGORDER, remoteMessage);
                     break;
+                case CRIME_ID_KEY:
+                    //parseDSTV(Channel.NEW_DSTV_SUB, remoteMessage);
+                    break;
+                case EMERG_ID_KEY:
+                    //parseDSTV(Channel.NEW_DSTV_SUB, remoteMessage);
+                    break;
+                case SPILLAGE_ID_KEY:
+                    //parseDSTV(Channel.NEW_DSTV_SUB, remoteMessage);
+                    break;
+                case NEW_USER_SIGNUP_KEY:
+                    //parseDSTV(Channel.NEW_DSTV_SUB, remoteMessage);
+                    break;
+                case NEW_USER_SIGNUP_CODE:
+                    //parseDSTV(Channel.NEW_DSTV_SUB, remoteMessage);
+                    break;
+                case NEW_BIZ_KEY:
+                    //parseDSTV(Channel.NEW_DSTV_SUB, remoteMessage);
+                    break;
+
+                case NEW_CRIME_RES:
+                    //parseDSTV(Channel.NEW_DSTV_SUB, remoteMessage);
+                    break;
+
+                case NEW_EMERG_RES:
+                    //parseDSTV(Channel.NEW_DSTV_SUB, remoteMessage);
+                    break;
+
+                case NEW_CLIMATE_CHANGE:
+                    //parseDSTV(Channel.NEW_DSTV_SUB, remoteMessage);
+                    break;
 
             }
         }
+    }
+    private void sendPushNotification(NotificationData data, String pushMessage) {
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(this);
+        notification.setContentTitle("Awajima App");
+        notification.setContentText(pushMessage);
+        notification.setSmallIcon(R.mipmap.ls_logo_round);
+
+        notification.setStyle(new NotificationCompat.BigTextStyle().bigText(pushMessage).setBigContentTitle("Awajima Booking"));
+        Intent intent = new Intent(this, BookingsMainTab.class);
+        intent.putExtra("msg", data.getMessage());
+        intent.putExtra("tracking_id", data.getTrackingID());
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        notification.setContentIntent(pendingIntent);
+        notification.setAutoCancel(true);
+        notification.setPriority(Notification.PRIORITY_MAX);
+        notification.setDefaults(Notification.DEFAULT_ALL);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(1, notification.build());
     }
 
     enum Channel {
@@ -164,6 +352,18 @@ public class FirebaseMessS extends FirebaseMessagingService {
         NEW_NEPABILL_SUB("new_nepaBill_id", R.string.Nepa_channel_name),
         NEW_AFRICA_MONEY_TRANSFER("new_moneyTransfer_id", R.string.money_tx_channel_name),
         NEW_COMMENT("new_comment_id", R.string.new_comment_channel_name);
+
+
+        /*NEW_UER("new User", "New Awajima User Sign up");
+        NEW_BIZ("new Biz. on Awajima", "New Biz Sign Up");
+        NEW_OIL_SPILLAGE("new Oil spillage", "new Oil spillage");
+        NEW_CRIME("new Crime Report", "New Crime");
+        NEW_EMERG("new Emergency", "New Emergency Report");
+        NEW_CRIME_RESP("new Crime Response", "New Crime Report Response");
+        NEW_CLIMATE_CHANGE_STUFF("new Climate Change Report", "new Climate Change Report");
+        NEW_BOAT_BOOKING("new Boat Booking", "new Boat Booking");
+        NEW_TAXI_BOOKING("new Taxi Booking", "new Taxi Booking");
+        NEW_JET_BOOKING("new Jet Booking", "new Jet Booking");*/
 
         String id;
 
@@ -333,7 +533,7 @@ public class FirebaseMessS extends FirebaseMessagingService {
         String notificationImageUrl = remoteMessage.getData().get(ICON_KEY);
         String postId = remoteMessage.getData().get(LOAN_ID_KEY);
 
-        Intent backIntent = new Intent(this, AdminDashboardTab.class);
+        Intent backIntent = new Intent(this, LoginDirAct.class);
         Intent intent = new Intent(this, LoanDetailsActivity.class);
         //intent.putExtra(LOAN_ID_KEY, postId);
 
@@ -349,7 +549,7 @@ public class FirebaseMessS extends FirebaseMessagingService {
         String notificationImageUrl = remoteMessage.getData().get(ICON_KEY);
         String postId = remoteMessage.getData().get(MONEY_TRANSFER_ID_KEY);
 
-        Intent backIntent = new Intent(this, AdminDashboardTab.class);
+        Intent backIntent = new Intent(this, LoginDirAct.class);
         Intent intent = new Intent(this, MoneyTxDetailAct.class);
         //intent.putExtra(PostDetailsActivity.POST_ID_EXTRA_KEY, postId);
 

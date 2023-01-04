@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class PaymentPlan {
     public String doCreateFlutterwavePayment(Pamentplancreatepayload pamentplancreatepayload) {
-        SkylightPaymentServices paymentservices = new SkylightPaymentServices();
+        AwajimaPaymentServices paymentservices = new AwajimaPaymentServices();
 
         String payload = null;
         try {
@@ -26,7 +26,7 @@ public class PaymentPlan {
     }
 
     public String doCreatePayStackPayment(PaystackPlan paystackPlan) {
-        SkylightPaymentServices paymentservices = new SkylightPaymentServices();
+        AwajimaPaymentServices paymentservices = new AwajimaPaymentServices();
 
         String payload = null;
         try {
@@ -45,7 +45,7 @@ public class PaymentPlan {
 
 
     public String dolistpayment(Paymentplanfetch paymentplanfetch) {
-        SkylightPaymentServices paymentservices = new SkylightPaymentServices();
+        AwajimaPaymentServices paymentservices = new AwajimaPaymentServices();
 
         String payload = null;
         try {
@@ -96,7 +96,7 @@ public class PaymentPlan {
 
 
     public String docancelpayment(Paymentplanfetch paymentplanfetch) {
-        SkylightPaymentServices paymentservices = new SkylightPaymentServices();
+        AwajimaPaymentServices paymentservices = new AwajimaPaymentServices();
 
         String response = null;
         try {
@@ -109,7 +109,7 @@ public class PaymentPlan {
 
 
     public String doeditpayment(Paymentplanfetch paymentplanfetch) {
-        SkylightPaymentServices paymentservices = new SkylightPaymentServices();
+        AwajimaPaymentServices paymentservices = new AwajimaPaymentServices();
 
         String response = paymentservices.dopaymentplanedit(paymentplanfetch);
         return response;

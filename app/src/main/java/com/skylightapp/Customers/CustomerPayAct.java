@@ -38,9 +38,9 @@ import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.AppController;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerDailyReport;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
-import com.skylightapp.Classes.SkyLightPackModel;
+import com.skylightapp.MarketClasses.MarketBizPackModel;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.TimeLineClassDAO;
@@ -73,9 +73,9 @@ import co.paystack.android.model.Card;
 import co.paystack.android.model.Charge;
 
 import static com.skylightapp.Classes.Profile.PROFILE_PHONE;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_TYPE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_TYPE;
 import static com.skylightapp.Transactions.OurConfig.SKYLIGHT_PUBLIC_KEY;
-import static com.skylightapp.Transactions.OurConfig.SKYLIGHT_SECRET_KEY;
+import static com.skylightapp.Transactions.OurConfig.AWAJIMA_PAYSTACK_SECRET_KEY;
 import static com.skylightapp.Transactions.OurConfig.TWILIO_ACCOUNT_SID;
 import static com.skylightapp.Transactions.OurConfig.TWILIO_AUTH_TOKEN;
 import static java.lang.String.valueOf;
@@ -89,7 +89,7 @@ public class CustomerPayAct extends AppCompatActivity {
     private Account account;
 
     private Profile userProfile;
-    SkyLightPackage skyLightPackage,skyLightPackage1;
+    MarketBizPackage marketBizPackage, marketBizPackage1;
     DBHelper dbHelper;
     SecureRandom random;
     int transactionID;
@@ -120,8 +120,8 @@ public class CustomerPayAct extends AppCompatActivity {
     private CustomerDailyReport customerDailyReport;
     private EditText edtBankNameHolder,edtBankNumber;
     AppCompatButton payBank,btnCancel;
-    private ArrayList<SkyLightPackage> packageArrayList;
-    private ArrayAdapter<SkyLightPackage> packagerAdapter;
+    private ArrayList<MarketBizPackage> packageArrayList;
+    private ArrayAdapter<MarketBizPackage> packagerAdapter;
     private AppCompatSpinner spn_customer_packages,number_of_days_packages;
     int packageIndex;
     private Button btnPayWithAllFlutterWave,btnPayWithCardP;
@@ -156,7 +156,7 @@ public class CustomerPayAct extends AppCompatActivity {
     ContentLoadingProgressBar progressBar;
     boolean isStaging=false;
     private static final String PREF_NAME = "skylight";
-    SkyLightPackModel skylightPackageModel,skylightPackageModel1;
+    MarketBizPackModel skylightPackageModel,skylightPackageModel1;
     private String noOfDaysString;
     RavePayInitializer ravePayInitializer;
     int PERMISSION_ALL = 1;
@@ -180,9 +180,9 @@ public class CustomerPayAct extends AppCompatActivity {
         random =new SecureRandom();
         isVisible= false;
         charge=new Charge();
-        skylightPackageModel= new SkyLightPackModel();
+        skylightPackageModel= new MarketBizPackModel();
         paymentBundle= new Bundle();
-        skyLightPackage= new SkyLightPackage();
+        marketBizPackage = new MarketBizPackage();
         final Date[] readDate = {null};
         transaction_type=null;
         progressBar = findViewById(R.id.progressBar);
@@ -216,14 +216,14 @@ public class CustomerPayAct extends AppCompatActivity {
         if(paymentBundle !=null){
             package_Layout_l3.setVisibility(View.GONE);
             skylightPackageModel=paymentBundle.getParcelable("SkyLightPackage_List_Model");
-            skyLightPackage=paymentBundle.getParcelable("SkyLightPackage");
+            marketBizPackage =paymentBundle.getParcelable("MarketBizPackage");
             dateOfReport = paymentBundle.getString("Date");
             packageType = paymentBundle.getString(PACKAGE_TYPE);
             packageID = paymentBundle.getInt("Package Id");
             AccountID = paymentBundle.getInt("Account ID");
             account = paymentBundle.getParcelable("Account");
             customer = paymentBundle.getParcelable("Customer");
-            skyLightPackage1 = paymentBundle.getParcelable("Package");
+            marketBizPackage1 = paymentBundle.getParcelable("Package");
             skylightPackageModel1 = paymentBundle.getParcelable("Package1");
             transaction = paymentBundle.getParcelable("Transaction");
             customerDailyReport = paymentBundle.getParcelable("Savings");
@@ -234,8 +234,8 @@ public class CustomerPayAct extends AppCompatActivity {
             selectedNumberOfDays = paymentBundle.getInt("Number of Days");
             totalToday = paymentBundle.getDouble("Total");
 
-            if(skyLightPackage ==null){
-                skyLightPackage=skyLightPackage1;
+            if(marketBizPackage ==null){
+                marketBizPackage = marketBizPackage1;
 
             }
             if(skylightPackageModel ==null){
@@ -261,17 +261,17 @@ public class CustomerPayAct extends AppCompatActivity {
                     profilePhone = userProfile.getProfilePhoneNumber();
                     profileEmail=userProfile.getProfileEmail();
                     packageArrayList = dbHelper.getProfileIncompletePack(customerID, inProgress);
-                    packagerAdapter = new ArrayAdapter<SkyLightPackage>(this, android.R.layout.simple_spinner_item, packageArrayList);
+                    packagerAdapter = new ArrayAdapter<MarketBizPackage>(this, android.R.layout.simple_spinner_item, packageArrayList);
                     packagerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spn_customer_packages.setAdapter(packagerAdapter);
                     //spn_customer_packages.setSelection(0);
-                    spn_customer_packages.setSelection(packagerAdapter.getPosition(skyLightPackage));
+                    spn_customer_packages.setSelection(packagerAdapter.getPosition(marketBizPackage));
                     packageIndex = spn_customer_packages.getSelectedItemPosition();
                     try {
 
-                        skyLightPackage = (SkyLightPackage) spn_customer_packages.getItemAtPosition(packageIndex);
-                        packageID=skyLightPackage.getPackID();
-                        account=skyLightPackage.getPackageAccount();
+                        marketBizPackage = (MarketBizPackage) spn_customer_packages.getItemAtPosition(packageIndex);
+                        packageID= marketBizPackage.getPackID();
+                        account= marketBizPackage.getPackageAccount();
                         if(account !=null){
                             accountBalance=account.getAccountBalance();
                             accountID=account.getAwajimaAcctNo();
@@ -292,16 +292,16 @@ public class CustomerPayAct extends AppCompatActivity {
         }
 
         try {
-            if(skyLightPackage !=null){
-                packageID=skyLightPackage.getPackID();
-                account=skyLightPackage.getPackageAccount();
-                //packageID=skyLightPackage.getPackageId();
-                savingsCount=skyLightPackage.getPSavingsCount(packageID);
-                numberOfDaysRemaining=skyLightPackage.getPackageDaysRem();
-                amountSoFar =skyLightPackage.getPackageAmount_collected();
-                packageTotal=skyLightPackage.getPackageTotalAmount();
-                packageAmount=skyLightPackage.getPackageDailyAmount();
-                amountRemaining=skyLightPackage.getPackageAmtRem();
+            if(marketBizPackage !=null){
+                packageID= marketBizPackage.getPackID();
+                account= marketBizPackage.getPackageAccount();
+                //packageID=marketBizPackage.getPackageId();
+                savingsCount= marketBizPackage.getPSavingsCount(packageID);
+                numberOfDaysRemaining= marketBizPackage.getPackageDaysRem();
+                amountSoFar = marketBizPackage.getPackageAmount_collected();
+                packageTotal= marketBizPackage.getPackageTotalAmount();
+                packageAmount= marketBizPackage.getPackageDailyAmount();
+                amountRemaining= marketBizPackage.getPackageAmtRem();
                 if(account !=null){
                     accountBalanceNow=account.getAccountBalance();
                     accountBalance=account.getAccountBalance();
@@ -354,7 +354,7 @@ public class CustomerPayAct extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 layoutCardP.setVisibility(View.GONE);
-                processFlutterPayment(profileEmail,amountSoFar,packageTotal,numberOfDaysRemaining,amountRemaining,accountBalance,profileID,profileSurname,profileFirstName,profilePhone,skyLightPackage,totalToday,selectedNumberOfDays,packageAmount,reportID,customerDailyReport,transaction,customer,account,AccountID,packageID,packageType);
+                processFlutterPayment(profileEmail,amountSoFar,packageTotal,numberOfDaysRemaining,amountRemaining,accountBalance,profileID,profileSurname,profileFirstName,profilePhone, marketBizPackage,totalToday,selectedNumberOfDays,packageAmount,reportID,customerDailyReport,transaction,customer,account,AccountID,packageID,packageType);
 
             }
         });
@@ -362,7 +362,7 @@ public class CustomerPayAct extends AppCompatActivity {
 
     }
 
-    private void processFlutterPayment(String profileEmail, double amountSoFar, double packageTotal, int numberOfDaysRemaining, double amountRemaining, double accountBalance, long profileID, String profileSurname, String profileFirstName, String profilePhone, SkyLightPackage skyLightPackage, double totalToday, int selectedNumberOfDays, double packageAmount, long reportID, CustomerDailyReport customerDailyReport, Transaction transaction, Customer customer, Account account, long accountID, long packageID, String packageType) {
+    private void processFlutterPayment(String profileEmail, double amountSoFar, double packageTotal, int numberOfDaysRemaining, double amountRemaining, double accountBalance, long profileID, String profileSurname, String profileFirstName, String profilePhone, MarketBizPackage marketBizPackage, double totalToday, int selectedNumberOfDays, double packageAmount, long reportID, CustomerDailyReport customerDailyReport, Transaction transaction, Customer customer, Account account, long accountID, long packageID, String packageType) {
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date newDate = calendar.getTime();
@@ -383,7 +383,7 @@ public class CustomerPayAct extends AppCompatActivity {
                     .setlName(this.profileSurname)
                     .setNarration("Payment for package"+ this.packageID)
                     .setPublicKey(SKYLIGHT_PUBLIC_KEY)
-                    .setEncryptionKey(SKYLIGHT_SECRET_KEY)
+                    .setEncryptionKey(AWAJIMA_PAYSTACK_SECRET_KEY)
                     .setTxRef(refID+"/"+System.currentTimeMillis())
                     .acceptAccountPayments(true)
                     .acceptCardPayments(true)
@@ -478,7 +478,7 @@ public class CustomerPayAct extends AppCompatActivity {
     }
 
     public void SubmitPayWithCardP(View view) {
-        String pSeckey = SKYLIGHT_SECRET_KEY;
+        String pSeckey = AWAJIMA_PAYSTACK_SECRET_KEY;
         customer=new Customer();
 
         //Objects.requireNonNull(getSupportActionBar()).setTitle("Pay Now Activity");
@@ -509,17 +509,17 @@ public class CustomerPayAct extends AppCompatActivity {
                 customerEmail=userProfile.getProfileEmail();
                 customerPhoneNo=userProfile.getProfilePhoneNumber();
                 packageArrayList = dbHelper.getProfileIncompletePack(customerID, inProgress);
-                packagerAdapter = new ArrayAdapter<SkyLightPackage>(this, android.R.layout.simple_spinner_item, packageArrayList);
+                packagerAdapter = new ArrayAdapter<MarketBizPackage>(this, android.R.layout.simple_spinner_item, packageArrayList);
                 packagerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spn_customer_packages.setAdapter(packagerAdapter);
                 spn_customer_packages.setSelection(0);
                 packageIndex = spn_customer_packages.getSelectedItemPosition();
                 try {
 
-                    skyLightPackage = (SkyLightPackage) spn_customer_packages.getItemAtPosition(packageIndex);
-                    packageID=skyLightPackage.getPackID();
-                    account=skyLightPackage.getPackageAccount();
-                    packageAmount=skyLightPackage.getPackageDailyAmount();
+                    marketBizPackage = (MarketBizPackage) spn_customer_packages.getItemAtPosition(packageIndex);
+                    packageID= marketBizPackage.getPackID();
+                    account= marketBizPackage.getPackageAccount();
+                    packageAmount= marketBizPackage.getPackageDailyAmount();
                     accountBalance=account.getAccountBalance();
                     accountID=account.getAwajimaAcctNo();
                 } catch (IndexOutOfBoundsException e) {

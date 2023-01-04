@@ -10,7 +10,7 @@
     android:theme="@style/Theme.SkylightAppTab"
     android:background="@drawable/rect_their_message"
     tools:context="com.skylightapp.SignTabMainActivity">
-    <include layout="@layout/tool_bar11f"/>
+
 
     <LinearLayout
         android:orientation="vertical"

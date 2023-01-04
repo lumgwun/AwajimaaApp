@@ -27,7 +27,7 @@ public class MoneyTransferActivity extends AppCompatActivity {
                         switch (which) {
                             case 0:
                                 Toast.makeText(MoneyTransferActivity.this, "Bank transfer option selected", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(MoneyTransferActivity.this, SkylightBTransferAct.class);
+                                Intent intent = new Intent(MoneyTransferActivity.this, AwajimaBTransferAct.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

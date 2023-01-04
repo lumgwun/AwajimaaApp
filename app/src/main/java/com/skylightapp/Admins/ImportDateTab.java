@@ -22,9 +22,9 @@ import com.skylightapp.Adapters.MySavingsCodeAdapter;
 import com.skylightapp.Adapters.SkyLightPackageAdapter;
 import com.skylightapp.Adapters.SuperSavingsAdapter;
 import com.skylightapp.Classes.CustomerDailyReport;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.R;
 
@@ -55,10 +55,10 @@ public class ImportDateTab extends AppCompatActivity implements SkyLightPackageA
     SkyLightPackageAdapter packageAdapterCustom;
     DBHelper dbHelper;
     private ArrayList<CustomerDailyReport> customerDailyReports3;
-    private ArrayList<SkyLightPackage> skyLightPackages;
-    private ArrayList<SkyLightPackage> skyLightPackages3;
-    private ArrayList<SkyLightPackage> skyLightPackages7;
-    private ArrayList<SkyLightPackage> skyLightPackagesC;
+    private ArrayList<MarketBizPackage> marketBizPackages;
+    private ArrayList<MarketBizPackage> marketBizPackages3;
+    private ArrayList<MarketBizPackage> marketBizPackages7;
+    private ArrayList<MarketBizPackage> marketBizPackagesC;
     private TextView txtPackages, txtPackages3, txtPackages7,txtSO, txtPackagesC;
     String currentDate;
     Date tomorrowDate;
@@ -91,10 +91,10 @@ public class ImportDateTab extends AppCompatActivity implements SkyLightPackageA
         txtPackages7 = findViewById(R.id.txtViewP7);
         txtPackagesC = findViewById(R.id.txtViewPC);
         btnSearch = findViewById(R.id.buttonSearchPDB);
-        skyLightPackages=new ArrayList<SkyLightPackage>();
-        skyLightPackages3=new ArrayList<SkyLightPackage>();
-        skyLightPackages7=new ArrayList<SkyLightPackage>();
-        skyLightPackagesC=new ArrayList<SkyLightPackage>();
+        marketBizPackages =new ArrayList<MarketBizPackage>();
+        marketBizPackages3 =new ArrayList<MarketBizPackage>();
+        marketBizPackages7 =new ArrayList<MarketBizPackage>();
+        marketBizPackagesC =new ArrayList<MarketBizPackage>();
         customerDailyReports3=new ArrayList<CustomerDailyReport>();
         calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -133,19 +133,19 @@ public class ImportDateTab extends AppCompatActivity implements SkyLightPackageA
         currentDate = dateFormat.format(customDayDate);
 
         try {
-            skyLightPackages=dbHelper.getPackageEndingToday1(currentDate);
-            skyLightPackages3=dbHelper.getPackageEndingIn3Days(dateOf3Days);
-            skyLightPackages7=dbHelper.getPackageEnding7Days(dateOf7Days);
-            skyLightPackagesC=dbHelper.getPackEndingCustomDay(dateOfPackageDue);
+            marketBizPackages =dbHelper.getPackageEndingToday1(currentDate);
+            marketBizPackages3 =dbHelper.getPackageEndingIn3Days(dateOf3Days);
+            marketBizPackages7 =dbHelper.getPackageEnding7Days(dateOf7Days);
+            marketBizPackagesC =dbHelper.getPackEndingCustomDay(dateOfPackageDue);
 
         }catch (NullPointerException e)
         {
             e.printStackTrace();
         }
-        packageAdapter = new SkyLightPackageAdapter(ImportDateTab.this,skyLightPackages);
-        packageAdapter3 = new SkyLightPackageAdapter(ImportDateTab.this,skyLightPackages3);
-        packageAdapter7 = new SkyLightPackageAdapter(ImportDateTab.this,skyLightPackages7);
-        packageAdapterCustom = new SkyLightPackageAdapter(ImportDateTab.this,skyLightPackagesC);
+        packageAdapter = new SkyLightPackageAdapter(ImportDateTab.this, marketBizPackages);
+        packageAdapter3 = new SkyLightPackageAdapter(ImportDateTab.this, marketBizPackages3);
+        packageAdapter7 = new SkyLightPackageAdapter(ImportDateTab.this, marketBizPackages7);
+        packageAdapterCustom = new SkyLightPackageAdapter(ImportDateTab.this, marketBizPackagesC);
 
 
 
@@ -162,10 +162,10 @@ public class ImportDateTab extends AppCompatActivity implements SkyLightPackageA
         snapHelper1.attachToRecyclerView(recyclerToday);
 
         try {
-            packageTodayCount=skyLightPackages.size();
-            packageDay3Count=skyLightPackages3.size();
-            packageDay7Count=skyLightPackages7.size();
-            packageDayCCount=skyLightPackagesC.size();
+            packageTodayCount= marketBizPackages.size();
+            packageDay3Count= marketBizPackages3.size();
+            packageDay7Count= marketBizPackages7.size();
+            packageDayCCount= marketBizPackagesC.size();
 
 
         } catch (NullPointerException e) {
@@ -264,7 +264,7 @@ public class ImportDateTab extends AppCompatActivity implements SkyLightPackageA
     }
 
     @Override
-    public void onItemClick(SkyLightPackage lightPackage) {
+    public void onItemClick(MarketBizPackage lightPackage) {
 
     }
 

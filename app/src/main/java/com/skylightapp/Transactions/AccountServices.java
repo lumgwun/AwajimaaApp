@@ -20,7 +20,7 @@ public class AccountServices {
         StringBuilder result = new StringBuilder();
         try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
 
-            String seckey = OurConfig.SKYLIGHT_SECRET_KEY;
+            String seckey = OurConfig.AWAJIMA_PAYSTACK_SECRET_KEY;
 
             HttpPost post = new HttpPost((OurConfig.SUSCRIPTION_LIST_URL+seckey));
             post.setHeader("ContentType", "application/json");
@@ -52,7 +52,7 @@ public class AccountServices {
         try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
 
             String transaction_id = suscriptionfetch.getTransaction_id();
-            String seckey = OurConfig.SKYLIGHT_SECRET_KEY;
+            String seckey = OurConfig.AWAJIMA_PAYSTACK_SECRET_KEY;
 
             HttpPost post = new HttpPost((OurConfig.SUSCRIPTION_LIST_URL+seckey+transaction_id));
             post.setHeader("ContentType", "application/json");
@@ -93,7 +93,7 @@ public class AccountServices {
             JSONObject queryRequest = null;
             try {
                 queryRequest = new JSONObject()
-                        .put("seckey", OurConfig.SKYLIGHT_SECRET_KEY);
+                        .put("seckey", OurConfig.AWAJIMA_PAYSTACK_SECRET_KEY);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -144,7 +144,7 @@ public class AccountServices {
             JSONObject queryRequest = null;
             try {
                 queryRequest = new JSONObject()
-                        .put("seckey", OurConfig.SKYLIGHT_SECRET_KEY);
+                        .put("seckey", OurConfig.AWAJIMA_PAYSTACK_SECRET_KEY);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

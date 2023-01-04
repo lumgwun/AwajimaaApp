@@ -66,7 +66,7 @@
 
     <dimen name="profile_screen_margin_top_progress_bar">120dp</dimen>
 
-    <!--post card content_padding left = card_elevation + card_padding-->
+    <!--post payStackCard content_padding left = card_elevation + card_padding-->
     <dimen name="post_card_content_padding_left">11dp</dimen>
 
     <dimen name="post_counter_radius">16dp</dimen>
@@ -246,5 +246,8 @@
     <!--Pager fragment-->
     <dimen name="pager_image_width">400dp</dimen>
     <dimen name="pager_image_height">500dp</dimen>
+    <dimen name="polygon_stroke_width">50dp</dimen>
+    <dimen name="circle_stroke_width">50</dimen>
+    <dimen name="polyline_width">50</dimen>
 
 </resources>

@@ -12,7 +12,7 @@ import android.widget.GridView;
 
 import com.skylightapp.Adapters.GridProductLayoutAdapter;
 import com.skylightapp.Adapters.WishlistAdapter;
-import com.skylightapp.Classes.SkyLightPackModel;
+import com.skylightapp.MarketClasses.MarketBizPackModel;
 import com.skylightapp.Classes.WishlistModel;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class ViewAllActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private GridView gridView;
     public static List<WishlistModel>wishlistModelList;
-    public static List<SkyLightPackModel> horizontalProductScrollModelList;
+    public static List<MarketBizPackModel> horizontalProductScrollModelList;
     private static final String PREF_NAME = "awajima";
 
     @Override

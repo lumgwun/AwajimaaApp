@@ -14,7 +14,7 @@
         android:background="@drawable/shape_layer_3b"
         android:gravity="center">
 
-        <com.google.android.material.card.MaterialCardView
+        <com.google.android.material.payStackCard.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
@@ -68,10 +68,10 @@
 
             </LinearLayout>
 
-        </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.payStackCard.MaterialCardView>
 
 
-        <com.google.android.material.card.MaterialCardView
+        <com.google.android.material.payStackCard.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="20dp"
@@ -131,7 +131,7 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-        </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.payStackCard.MaterialCardView>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

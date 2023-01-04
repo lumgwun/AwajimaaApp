@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@android:id/tabhost"
+    style="@style/Theme.OurCApp"
     android:background="#fff"
     tools:context="com.skylightapp.AllCusPackTab">
     <com.melnykov.fab.FloatingActionButton

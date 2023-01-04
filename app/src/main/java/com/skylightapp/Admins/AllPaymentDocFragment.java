@@ -48,9 +48,10 @@ public class AllPaymentDocFragment extends Fragment {
     private String mParam2;
 
     private static final String TAG = AllPaymentDocFragment.class.getSimpleName();
-    private static final String URL = "https://skylightciacs.com/DocumentListAdmin";
+    private static final String URL = "https://awajima.com/DocumentListAdmin";
 
     private RecyclerView recyclerView;
+    private static final String PREF_NAME = "awajima";
 
     private ArrayList<PaymentDoc> documentList;
     private AllPaymentDocAdapter mAdapter;

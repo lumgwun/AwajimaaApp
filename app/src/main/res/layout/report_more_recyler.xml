@@ -32,14 +32,14 @@
                 android:textSize="17sp"
                 android:layout_height="wrap_content"/>
             <ImageButton
-                android:layout_width="wrap_content"
-                android:src="@drawable/com_facebook_close"
+                android:layout_width="50dp"
+                android:src="@drawable/ic_close"
                 android:id="@+id/reportClose"
                 android:layout_gravity="end"
-                android:background="@drawable/rect6b"
+                android:background="@drawable/shape_layer_3b"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_height="70dp"/>
+                android:layout_height="30dp"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recy_moreEmerg"
                 android:layout_width="match_parent"

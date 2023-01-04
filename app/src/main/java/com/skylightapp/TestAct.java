@@ -12,8 +12,8 @@ import android.view.View;
 
 import com.google.gson.Gson;
 import com.skylightapp.Accountant.AcctantBackOffice;
-import com.skylightapp.Admins.AdminDrawerActivity;
-import com.skylightapp.Bookings.BookingsMainAct;
+import com.skylightapp.Admins.AdminHomeChoices;
+import com.skylightapp.Bookings.BookingsMainTab;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.StandingOrderAcct;
@@ -33,6 +33,7 @@ import com.skylightapp.Markets.MarketTab;
 import com.skylightapp.Markets.SupplierOffice;
 import com.skylightapp.SuperAdmin.SuperAdminOffice;
 import com.skylightapp.Tellers.TellerHomeChoices;
+import com.skylightapp.StateDir.StateDashboard;
 
 public class TestAct extends AppCompatActivity {
     private SharedPreferences userPreferences;
@@ -82,7 +83,7 @@ public class TestAct extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putLong("ProfileID", profileID);
         bundle.putString(machine, machine);
-        Intent intent = new Intent(this, AdminDrawerActivity.class);
+        Intent intent = new Intent(this, AdminHomeChoices.class);
         intent.putExtras(bundle);
         overridePendingTransition(R.anim.slide_in_right,
                 R.anim.slide_out_left);
@@ -509,7 +510,15 @@ public class TestAct extends AppCompatActivity {
     }
 
     public void goTripTab(View view) {
-        Intent intent=new Intent(TestAct.this, BookingsMainAct.class);
+        Intent intent=new Intent(TestAct.this, BookingsMainTab.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+        startActivity(intent);
+    }
+    public void goStateOffice(View view) {
+        Intent intent=new Intent(TestAct.this, StateDashboard.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         overridePendingTransition(R.anim.slide_in_right,

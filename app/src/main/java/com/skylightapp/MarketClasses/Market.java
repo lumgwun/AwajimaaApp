@@ -83,7 +83,7 @@ public class Market implements Serializable, Parcelable {
     private ArrayList<Farm> marketFarms;
     private ArrayList<InsuranceCompany> marketInsurances;
     private ArrayList<MarketBizRegulator> marketBizRegulators;
-    private ArrayList<MarketBizSubScription> marketBizSubScriptions;
+    private ArrayList<MarketBizSub> marketBizSubs;
 
     private ArrayList<Long> marketBizIDList;
     private Profile marketProf;
@@ -436,12 +436,12 @@ public class Market implements Serializable, Parcelable {
         this.marketBizRegulators = marketBizRegulators;
     }
 
-    public ArrayList<MarketBizSubScription> getMarketBizSubScriptions() {
-        return marketBizSubScriptions;
+    public ArrayList<MarketBizSub> getMarketBizSubScriptions() {
+        return marketBizSubs;
     }
 
-    public void setMarketBizSubScriptions(ArrayList<MarketBizSubScription> marketBizSubScriptions) {
-        this.marketBizSubScriptions = marketBizSubScriptions;
+    public void setMarketBizSubScriptions(ArrayList<MarketBizSub> marketBizSubs) {
+        this.marketBizSubs = marketBizSubs;
     }
 
     public ArrayList<LogisticEntity> getMarketLogisticE() {
@@ -451,9 +451,9 @@ public class Market implements Serializable, Parcelable {
     public void setMarketLogisticE(ArrayList<LogisticEntity> marketLogisticE) {
         this.marketLogisticE = marketLogisticE;
     }
-    public void addMSubscription(MarketBizSubScription marketBizSubScription) {
-        marketBizSubScriptions = new ArrayList<>();
-        marketBizSubScriptions.add(marketBizSubScription);
+    public void addMSubscription(MarketBizSub marketBizSub) {
+        marketBizSubs = new ArrayList<>();
+        marketBizSubs.add(marketBizSub);
     }
     public void addMRegulator(MarketBizRegulator marketBizRegulator) {
         marketBizRegulators = new ArrayList<>();

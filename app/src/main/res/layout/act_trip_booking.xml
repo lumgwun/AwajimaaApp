@@ -10,213 +10,221 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="wrap_content">
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_marginTop="10dp"
             android:layout_height="wrap_content">
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:padding="20dp"
-                android:background="@drawable/shape_layer_3b"
-                android:id="@+id/btn_JoinTrip"
-                android:text="Join A General Trip"
-                android:onClick="JoinATripBooking"
-                android:layout_marginEnd="5dp"
-                android:textColor="@color/red_brown_dark"
-                android:layout_height="wrap_content"/>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:padding="20dp"
-                android:background="@drawable/shape_layer_3b"
-                android:onClick="CharterTrip"
-                android:id="@+id/btn_CharterTrip"
-                android:text="A Chartered Trip"
-                android:textColor="@color/red_brown_dark"
-                android:layout_height="wrap_content"/>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:visibility="gone"
-            android:id="@+id/layout_JoinT"
-            android:layout_height="wrap_content">
-            <androidx.recyclerview.widget.RecyclerView
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:id="@+id/recyler_Trip"
-                android:layout_marginStart="10dp"
+                android:orientation="horizontal"
+                android:weightSum="2"
                 android:layout_marginTop="10dp"
-                android:foregroundGravity="center_horizontal"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="20dp"
+                    android:background="@drawable/shape_layer_3b"
+                    android:id="@+id/btn_JoinTrip"
+                    android:text="Join A General Trip"
+                    android:onClick="JoinATripBooking"
+                    android:layout_marginEnd="5dp"
+                    android:textColor="@color/red_brown_dark"
+                    android:layout_height="wrap_content"/>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="20dp"
+                    android:background="@drawable/shape_layer_3b"
+                    android:onClick="CharterTrip"
+                    android:id="@+id/btn_CharterTrip"
+                    android:text="A Chartered Trip"
+                    android:textColor="@color/red_brown_dark"
+                    android:layout_height="wrap_content"/>
 
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:visibility="gone"
-            android:id="@+id/layout_CustomTrip"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="vertical" >
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Trip State"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/red_brown_dark" />
-
-                <Spinner
-                    android:id="@+id/spnTripState"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="30dp"
-                    android:entries="@array/river_state"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_horizontal"
-                    android:background="@drawable/rect66" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Trip Route"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/red_brown_dark" />
-
-                <Spinner
-                    android:id="@+id/spnTripRoute"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="30dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_horizontal"
-                    android:background="@drawable/rect66" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Booking Type"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/red_brown_dark" />
-
-                <Spinner
-                    android:id="@+id/spnTripReturnType"
-                    android:layout_width="match_parent"
-                    android:entries="@array/boat_booking_type"
-                    android:layout_height="wrap_content"
-                    android:padding="30dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_horizontal"
-                    android:background="@drawable/rect66" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:visibility="gone"
-                    android:text="Number of Adults"
-                    android:textColor="@color/red_brown_dark" />
-
-                <Spinner
-                    android:id="@+id/spnAdults"
-                    android:layout_width="match_parent"
-                    android:entries="@array/boat_booking_Adults"
-                    android:layout_height="wrap_content"
-                    android:padding="30dp"
-                    android:visibility="gone"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_horizontal"
-                    android:background="@drawable/rect66" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:visibility="gone"
-                    android:text="Number of Children"
-                    android:textColor="@color/red_brown_dark" />
-
-                <Spinner
-                    android:id="@+id/spnChildren"
-                    android:layout_width="match_parent"
-                    android:entries="@array/boat_booking_Children"
-                    android:layout_height="wrap_content"
-                    android:padding="30dp"
-                    android:visibility="gone"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_horizontal"
-                    android:background="@drawable/rect66" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Boat Type"
-                    android:layout_marginBottom="10dp"
-                    android:textColor="@color/red_brown_dark" />
-
-                <Spinner
-                    android:id="@+id/spnBoatType"
-                    android:layout_width="match_parent"
-                    android:entries="@array/boat_type"
-                    android:layout_height="wrap_content"
-                    android:padding="30dp"
-                    android:background="@drawable/shape_layer_3b" />
-
-
-                <Spinner
-                    android:id="@+id/spnNoOfBoats"
-                    android:layout_width="wrap_content"
-                    android:entries="@array/No_Of_Boats"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/rect_their2a" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/txtTourDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/rect_their2a"
-                    android:gravity="center_vertical"
-                    android:text="booking date"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/red_brown_dark" />
-            </LinearLayout>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnBooking"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rect66"
-                android:gravity="center"
-                android:onClick="bookCustomTrip"
-                android:padding="20dp"
-                android:text="BOOK Trip"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/red_brown_dark" />
-
-            <ProgressBar
-                android:id="@+id/progressTrip"
+                android:orientation="vertical"
                 android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"/>
+                android:id="@+id/layout_JoinT"
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:id="@+id/recyler_Trip"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:foregroundGravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:id="@+id/layout_CustomTrip"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical" >
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Trip State"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/red_brown_dark" />
+
+                    <Spinner
+                        android:id="@+id/spnTripState"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="30dp"
+                        android:entries="@array/river_state"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_horizontal"
+                        android:background="@drawable/rect66" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Trip Route"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/red_brown_dark" />
+
+                    <Spinner
+                        android:id="@+id/spnTripRoute"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="30dp"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_horizontal"
+                        android:background="@drawable/rect66" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Booking Type"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/red_brown_dark" />
+
+                    <Spinner
+                        android:id="@+id/spnTripReturnType"
+                        android:layout_width="match_parent"
+                        android:entries="@array/boat_booking_type"
+                        android:layout_height="wrap_content"
+                        android:padding="30dp"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_horizontal"
+                        android:background="@drawable/rect66" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:visibility="gone"
+                        android:text="Number of Adults"
+                        android:textColor="@color/red_brown_dark" />
+
+                    <Spinner
+                        android:id="@+id/spnAdults"
+                        android:layout_width="match_parent"
+                        android:entries="@array/boat_booking_Adults"
+                        android:layout_height="wrap_content"
+                        android:padding="30dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_horizontal"
+                        android:background="@drawable/rect66" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:visibility="gone"
+                        android:text="Number of Children"
+                        android:textColor="@color/red_brown_dark" />
+
+                    <Spinner
+                        android:id="@+id/spnChildren"
+                        android:layout_width="match_parent"
+                        android:entries="@array/boat_booking_Children"
+                        android:layout_height="wrap_content"
+                        android:padding="30dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_horizontal"
+                        android:background="@drawable/rect66" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Boat Type"
+                        android:layout_marginBottom="10dp"
+                        android:textColor="@color/red_brown_dark" />
+
+                    <Spinner
+                        android:id="@+id/spnBoatType"
+                        android:layout_width="match_parent"
+                        android:entries="@array/boat_type"
+                        android:layout_height="wrap_content"
+                        android:padding="30dp"
+                        android:background="@drawable/shape_layer_3b" />
+
+
+                    <Spinner
+                        android:id="@+id/spnNoOfBoats"
+                        android:layout_width="wrap_content"
+                        android:entries="@array/No_Of_Boats"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rect_their2a" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtTourDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rect_their2a"
+                        android:gravity="center_vertical"
+                        android:text="booking date"
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/red_brown_dark" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnBooking"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rect66"
+                    android:gravity="center"
+                    android:onClick="bookCustomTrip"
+                    android:padding="20dp"
+                    android:text="Book a Trip"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/red_brown_dark" />
+
+                <ProgressBar
+                    android:id="@+id/progressTrip"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <include layout="@layout/trip_booking_bottom"/>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

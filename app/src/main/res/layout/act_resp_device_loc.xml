@@ -18,7 +18,7 @@
             android:layout_height="wrap_content">
 
             <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/mapGeo"
+                android:id="@+id/map"
                 android:background="@drawable/shape_rect14"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"

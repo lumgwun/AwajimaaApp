@@ -1,13 +1,13 @@
 package com.skylightapp.Database;
 
-import static com.skylightapp.Bookings.BoatTripRoute.BOAT_TRIP_ROUTE_COUNTRY;
-import static com.skylightapp.Bookings.BoatTripRoute.BOAT_TRIP_ROUTE_FROM;
-import static com.skylightapp.Bookings.BoatTripRoute.BOAT_TRIP_ROUTE_ID;
-import static com.skylightapp.Bookings.BoatTripRoute.BOAT_TRIP_ROUTE_STATE;
-import static com.skylightapp.Bookings.BoatTripRoute.BOAT_TRIP_ROUTE_STATUS;
-import static com.skylightapp.Bookings.BoatTripRoute.BOAT_TRIP_ROUTE_TABLE;
-import static com.skylightapp.Bookings.BoatTripRoute.BOAT_TRIP_ROUTE_THROUGH;
-import static com.skylightapp.Bookings.BoatTripRoute.BOAT_TRIP_ROUTE_TO;
+import static com.skylightapp.Bookings.TripRoute.BOAT_TRIP_ROUTE_COUNTRY;
+import static com.skylightapp.Bookings.TripRoute.BOAT_TRIP_ROUTE_FROM;
+import static com.skylightapp.Bookings.TripRoute.BOAT_TRIP_ROUTE_ID;
+import static com.skylightapp.Bookings.TripRoute.BOAT_TRIP_ROUTE_STATE;
+import static com.skylightapp.Bookings.TripRoute.BOAT_TRIP_ROUTE_STATUS;
+import static com.skylightapp.Bookings.TripRoute.BOAT_TRIP_ROUTE_TABLE;
+import static com.skylightapp.Bookings.TripRoute.BOAT_TRIP_ROUTE_THROUGH;
+import static com.skylightapp.Bookings.TripRoute.BOAT_TRIP_ROUTE_TO;
 
 import static java.lang.String.valueOf;
 
@@ -16,7 +16,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.skylightapp.Bookings.BoatTripRoute;
+import com.skylightapp.Bookings.TripRoute;
 
 import java.util.ArrayList;
 
@@ -51,18 +51,18 @@ public class BoatTripRouteDAO extends DBHelperDAO{
         db.delete(BOAT_TRIP_ROUTE_TABLE, selection, selectionArgs);
 
     }
-    private void getBoatTripRouteFromCursor(ArrayList<BoatTripRoute> boatTripRoutes, Cursor cursor) {
+    private void getBoatTripRouteFromCursor(ArrayList<TripRoute> tripRoutes, Cursor cursor) {
         while (cursor.moveToNext()) {
             int routeId = cursor.getInt(1);
             String to = cursor.getString(3);
             String from = cursor.getString(2);
             String through = cursor.getString(4);
             String status = cursor.getString(5);
-            boatTripRoutes.add(new BoatTripRoute(routeId, to,from,through, status));
+            tripRoutes.add(new TripRoute(routeId, to,from,through, status));
         }
 
     }
-    private void getBoatTripRouteFromCursorState(ArrayList<BoatTripRoute> boatTripRoutes, Cursor cursor) {
+    private void getBoatTripRouteFromCursorState(ArrayList<TripRoute> tripRoutes, Cursor cursor) {
         while (cursor.moveToNext()) {
             int routeId = cursor.getInt(1);
             String to = cursor.getString(3);
@@ -70,11 +70,11 @@ public class BoatTripRouteDAO extends DBHelperDAO{
             String through = cursor.getString(4);
             String status = cursor.getString(5);
             String state = cursor.getString(8);
-            boatTripRoutes.add(new BoatTripRoute(routeId, to,from,through, state,status));
+            tripRoutes.add(new TripRoute(routeId, to,from,through, state,status));
         }
 
     }
-    private void getBoatTripRouteFromCursorCountry(ArrayList<BoatTripRoute> boatTripRoutes, Cursor cursor) {
+    private void getBoatTripRouteFromCursorCountry(ArrayList<TripRoute> tripRoutes, Cursor cursor) {
         while (cursor.moveToNext()) {
             int routeId = cursor.getInt(1);
             String to = cursor.getString(3);
@@ -83,12 +83,12 @@ public class BoatTripRouteDAO extends DBHelperDAO{
             String status = cursor.getString(5);
             String state = cursor.getString(8);
             String country = cursor.getString(8);
-            boatTripRoutes.add(new BoatTripRoute(routeId, to,from,through,state,country, status));
+            tripRoutes.add(new TripRoute(routeId, to,from,through,state,country, status));
         }
 
     }
-    public ArrayList<BoatTripRoute> getBoatTripRouteForCountry(String country) {
-        ArrayList<BoatTripRoute> boatTripRoutes = new ArrayList<>();
+    public ArrayList<TripRoute> getBoatTripRouteForCountry(String country) {
+        ArrayList<TripRoute> tripRoutes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String selection = BOAT_TRIP_ROUTE_COUNTRY + "=?";
         String[] selectionArgs = new String[]{country};
@@ -98,7 +98,7 @@ public class BoatTripRouteDAO extends DBHelperDAO{
         if(cursor!=null && cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
                 do {
-                    getBoatTripRouteFromCursorCountry(boatTripRoutes, cursor);
+                    getBoatTripRouteFromCursorCountry(tripRoutes, cursor);
                 } while (cursor.moveToNext());
                 cursor.close();
             }
@@ -107,10 +107,10 @@ public class BoatTripRouteDAO extends DBHelperDAO{
 
         db.close();
 
-        return boatTripRoutes;
+        return tripRoutes;
     }
-    public ArrayList<BoatTripRoute> getAllCurrentBoatTripRoute(String status) {
-        ArrayList<BoatTripRoute> boatTripRoutes = new ArrayList<>();
+    public ArrayList<TripRoute> getAllCurrentBoatTripRoute(String status) {
+        ArrayList<TripRoute> tripRoutes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String selection = BOAT_TRIP_ROUTE_STATUS + "=?";
         String[] selectionArgs = new String[]{status};
@@ -120,7 +120,7 @@ public class BoatTripRouteDAO extends DBHelperDAO{
         if(cursor!=null && cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
                 do {
-                    getBoatTripRouteFromCursorCountry(boatTripRoutes, cursor);
+                    getBoatTripRouteFromCursorCountry(tripRoutes, cursor);
                 } while (cursor.moveToNext());
                 cursor.close();
             }
@@ -129,10 +129,10 @@ public class BoatTripRouteDAO extends DBHelperDAO{
 
         db.close();
 
-        return boatTripRoutes;
+        return tripRoutes;
     }
-    public ArrayList<BoatTripRoute> getBoatTripRouteForState(String state) {
-        ArrayList<BoatTripRoute> boatTripRoutes = new ArrayList<>();
+    public ArrayList<TripRoute> getBoatTripRouteForState(String state) {
+        ArrayList<TripRoute> tripRoutes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String selection = BOAT_TRIP_ROUTE_STATE + "=?";
         String[] selectionArgs = new String[]{state};
@@ -141,7 +141,7 @@ public class BoatTripRouteDAO extends DBHelperDAO{
         if(cursor!=null && cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
                 do {
-                    getBoatTripRouteFromCursorState(boatTripRoutes, cursor);
+                    getBoatTripRouteFromCursorState(tripRoutes, cursor);
                 } while (cursor.moveToNext());
                 cursor.close();
             }
@@ -150,11 +150,11 @@ public class BoatTripRouteDAO extends DBHelperDAO{
 
         db.close();
 
-        return boatTripRoutes;
+        return tripRoutes;
     }
 
-    public ArrayList<BoatTripRoute> getAllBoatTripRoutes() {
-        ArrayList<BoatTripRoute> reportArrayList = new ArrayList<>();
+    public ArrayList<TripRoute> getAllBoatTripRoutes() {
+        ArrayList<TripRoute> reportArrayList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(BOAT_TRIP_ROUTE_TABLE, null, null, null, null,
                 null, null);

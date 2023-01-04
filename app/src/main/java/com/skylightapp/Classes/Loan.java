@@ -20,8 +20,8 @@ import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ID;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_TABLE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_ID;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_TABLE;
 
 @Entity(tableName = Loan.LOAN_TABLE)
 public class Loan implements Serializable, Parcelable {

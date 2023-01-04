@@ -8,7 +8,7 @@ public class AccountPromo extends Account {
 
     public AccountPromo (String bank,String name, int dbID, long accountNo, BigDecimal accountBalance, String type, Context context) {
         this.enumMap = new AccountTypesEnumMap(context);
-        this.setSkyLightAcctNo(dbID);
+        this.setAwajimaAcctNo(dbID);
         this.setType_BigDecimal(this.enumMap.getAccountId("PROMO"));;
         this.setPromoAcctName(name);
         //this.setBalance(accountBalance);

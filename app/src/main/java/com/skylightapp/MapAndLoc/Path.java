@@ -2,6 +2,7 @@ package com.skylightapp.MapAndLoc;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.skylightapp.Bookings.TaxiStep;
 
 import java.util.List;
 

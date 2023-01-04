@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.SnapHelper;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
@@ -59,6 +61,7 @@ public class TransAmadiSavings extends AppCompatActivity implements SavingsAdapt
     DatePicker picker;
     double savingsTotal;
     protected DatePickerDialog datePickerDialog;
+    private SQLiteDatabase sqLiteDatabase;
 
 
     @Override
@@ -99,9 +102,45 @@ public class TransAmadiSavings extends AppCompatActivity implements SavingsAdapt
 
         } catch (ParseException ignored) {
         }
-        customerDailyReports = dbHelper.getSavingsForBranchAtDate(officeBranch,dateOfToday);
-        branchSavingsCount =dbHelper.getSavingsCountForBranchAtDate(officeBranch,dateOfToday);
-        savingsTotal =dbHelper.getTotalSavingsForBranchAtDate(officeBranch,dateOfToday);
+        if(dbHelper !=null){
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+                customerDailyReports = dbHelper.getSavingsForBranchAtDate(officeBranch,dateOfToday);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+
+
+        }
+
+
+        if(dbHelper !=null){
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+                customerDailyReports = dbHelper.getSavingsForBranchAtDate(officeBranch, dateOfSavings);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+
+
+        }
+
+
+        if(dbHelper !=null){
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+                savingsTotal =dbHelper.getTotalSavingsForBranchAtDate(officeBranch,dateOfToday);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+
+
+        }
+
+
         LinearLayoutManager layoutManagerC
                 = new LinearLayoutManager(TransAmadiSavings.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerViewTXToday.setLayoutManager(layoutManagerC);
@@ -133,9 +172,43 @@ public class TransAmadiSavings extends AppCompatActivity implements SavingsAdapt
             public void onClick(View view) {
                 recyclerViewTXToday.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
-                customerDailyReports = dbHelper.getSavingsForBranchAtDate(officeBranch, dateOfSavings);
-                branchSavingsCount =dbHelper.getSavingsCountForBranchAtDate(officeBranch, dateOfSavings);
-                savingsTotal =dbHelper.getTotalSavingsForBranchAtDate(officeBranch, dateOfSavings);
+                if(dbHelper !=null){
+                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    try {
+                        customerDailyReports = dbHelper.getSavingsForBranchAtDate(officeBranch, dateOfSavings);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+
+
+                }
+
+                if(dbHelper !=null){
+                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    try {
+                        branchSavingsCount =dbHelper.getSavingsCountForBranchAtDate(officeBranch, dateOfSavings);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+
+
+                }
+
+                if(dbHelper !=null){
+                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    try {
+                        savingsTotal =dbHelper.getTotalSavingsForBranchAtDate(officeBranch, dateOfSavings);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+
+
+                }
+
+
                 LinearLayoutManager layoutManagerC
                         = new LinearLayoutManager(TransAmadiSavings.this, LinearLayoutManager.HORIZONTAL, false);
                 recyclerView.setLayoutManager(layoutManagerC);
@@ -189,5 +262,22 @@ public class TransAmadiSavings extends AppCompatActivity implements SavingsAdapt
         startActivity(intent);
 
 
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
 }

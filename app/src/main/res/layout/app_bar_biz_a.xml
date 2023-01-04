@@ -1,33 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<!--suppress ALL -->
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
-    style="@style/TextAppearance.AppCompat">
-
-    <androidx.appcompat.widget.LinearLayoutCompat
+    android:id="@android:id/tabhost"
+    android:background="@drawable/rect_their_message"
+    tools:context="com.skylightapp.Markets.BizAdminOffice">
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
+        android:background="@drawable/shape_rect14c"
         android:layout_height="wrap_content">
-
-        <com.google.android.material.appbar.AppBarLayout
+        <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <androidx.appcompat.widget.Toolbar
-                android:layout_width="match_parent"
-                android:id="@+id/toolbar_biz_admin"
-                android:layout_height="wrap_content"/>
+            android:id="@+id/toolbar_biz_admin"
+            android:layout_height="wrap_content"/>
 
-        </com.google.android.material.appbar.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:background="@color/black"/>
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:padding="1dp" />
+    </LinearLayout>
 
-        <include layout="@layout/content_biz_admin" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-</ScrollView>
+</TabHost>

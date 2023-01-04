@@ -8,6 +8,7 @@
     android:padding="1dp"
     app:circularflow_defaultAngle="10"
     android:background="@drawable/rect_their4b"
+    android:fitsSystemWindows="true"
     tools:context="com.skylightapp.LoginActivity">
     <ScrollView
         android:layout_width="match_parent"

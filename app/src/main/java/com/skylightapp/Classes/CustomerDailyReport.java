@@ -13,10 +13,10 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.R;
 
 import org.json.JSONException;
@@ -35,18 +35,18 @@ import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ID;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_ID;
 
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_TABLE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_TABLE;
 import static java.lang.String.valueOf;
 
 @SuppressWarnings("deprecation")
-@Entity(tableName = CustomerDailyReport.DAILY_REPORT_TABLE)
+//@Entity(tableName = CustomerDailyReport.DAILY_REPORT_TABLE)
 public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
     public static final String REPORT_NUMBER_OF_DAYS_SO_FAR = "report_no_of_days_so_far";
     public static final String REPORT_AMOUNT_COLLECTED_SO_FAR = "report_amount_so_far";
 
-    public static final String DAILY_REPORT_TABLE = "report_Cdaily_reports";
+    public static final String DAILY_REPORT_TABLE = "report_Cdaily_s";
     public static final String REPORT_PACKAGE = "report_Ppackage";
     public static final String REPORT_ID = "report_serial_number";
     public static final String REPORT_AMOUNT = "report_Aamount";
@@ -94,7 +94,7 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
     private int recordID =142;
     double recordAmountRemaining;
     private boolean recordRemind;
-    private SkyLightPackage recordPackage;
+    private MarketBizPackage recordPackage;
     private Customer recordCustomer;
     private AdminUser recordAdminUser;
     private Account recordAccount;
@@ -193,7 +193,7 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
         //String[] whereArgs = new String[]{String.valueOf(packageID)};
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        try (Cursor cursor = db.rawQuery("SELECT SUM(" + REPORT_AMOUNT + ") as Total FROM " + DAILY_REPORT_TABLE, new String[]{" WHERE PACKAGE_ID=?", valueOf(packageID)})) {
+        try (Cursor cursor = db.rawQuery("SELECT SUM(" + REPORT_AMOUNT + ") as Total FROM " + DAILY_REPORT_TABLE, new String[]{" WHERE REPORT_PACK_ID_FK=?", valueOf(packageID)})) {
 
             if (cursor.moveToFirst()) {
                 return Double.parseDouble(valueOf(cursor.getCount()));
@@ -208,7 +208,7 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
     public int getPackageCount(long packageID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        try (Cursor cursor = db.rawQuery("SELECT COUNT(*) as Count FROM DAILY_REPORT_TABLE WHERE PACKAGE_ID = ?",
+        try (Cursor cursor = db.rawQuery("SELECT COUNT(*) as Count FROM DAILY_REPORT_TABLE WHERE REPORT_PACK_ID_FK = ?",
                 new String[]{valueOf(packageID)})) {
 
             if (cursor.moveToFirst()) {
@@ -229,7 +229,7 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
     public int getTotalPSavingsCount(long packageID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        try (Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM DAILY_REPORT_TABLE WHERE PACKAGE_ID = ?",
+        try (Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM DAILY_REPORT_TABLE WHERE REPORT_PACK_ID_FK = ?",
                 new String[]{valueOf(packageID)})) {
 
             if (cursor.moveToFirst()) {
@@ -250,37 +250,12 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
 
         return -1;
     }
-    public int getSkyNoOfPacksForCus(long customerID) {
-        Customer customer1 = new Customer();
-        customerID=customer1.getCusUID();
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        try (Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM PACKAGE_TABLE WHERE customerID = ?",
-                new String[]{valueOf(customerID)})) {
-
-            if (cursor.moveToFirst()) {
-                return Integer.parseInt(valueOf(cursor.getCount()));
-
-
-            }
-        }
-
-        /*try (Cursor cursor = db.rawQuery("SELECT SUM(" + REPORT_AMOUNT + ") as Total FROM " + DAILY_REPORT_TABLE, new String[]{" WHERE PACKAGE_ID=?",String.valueOf(packageID)})) {
-
-            if (cursor.moveToFirst()) {
-                return Integer.parseInt(String.valueOf(cursor.getCount()));
-
-
-            }
-        }*/
-
-        return -1;
-    }
     public double getTotalSavingsForCustomer(long customerID) {
         Customer customer = new Customer();
         customerID=customer.getCusUID();
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        try (Cursor cursor = db.rawQuery("SELECT SUM(" + REPORT_AMOUNT + ") as Total FROM DAILY_REPORT_TABLE WHERE CUSTOMER_ID = ?",
+        try (Cursor cursor = db.rawQuery("SELECT SUM(" + REPORT_AMOUNT + ") as Total FROM DAILY_REPORT_TABLE WHERE REPORT_CUS_ID_FK = ?",
                 new String[]{valueOf(customerID)})) {
 
             if (cursor.moveToFirst()) {
@@ -302,8 +277,8 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
 
     }
 
-    public void setSkylightPackage(SkyLightPackage skyLightPackage) {
-        this.recordPackage =skyLightPackage;
+    public void setSkylightPackage(MarketBizPackage marketBizPackage) {
+        this.recordPackage = marketBizPackage;
 
     }
 
@@ -316,12 +291,12 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
 
     }
 
-    public SkyLightPackage getRecordPackage()
+    public MarketBizPackage getRecordPackage()
     {
         return recordPackage;
     }
 
-    public CustomerDailyReport(Profile recordProfile, Customer recordCustomer, Account account, SkyLightPackage recordPackage) {
+    public CustomerDailyReport(Profile recordProfile, Customer recordCustomer, Account account, MarketBizPackage recordPackage) {
         this.recordProfile = recordProfile;
         this.recordCustomer = recordCustomer;
         this.recordAccount = account;
@@ -437,7 +412,7 @@ public class CustomerDailyReport  implements Cursor, Parcelable, Serializable {
         Profile profile1=new Profile();
         CustomerDailyReport customerDailyReport = new CustomerDailyReport();
         int reportNumber = customerDailyReport.getColumnCount();
-        SkyLightPackage skyLightPackage1;
+        MarketBizPackage marketBizPackage1;
         int packageId = recordPackage.getPackID();
         int profileId = recordProfile.getPID();
         int j = customerDailyReport.getCount();

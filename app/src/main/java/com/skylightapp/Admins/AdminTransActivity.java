@@ -17,6 +17,7 @@ import com.skylightapp.Classes.Loan;
 import com.skylightapp.R;
 
 public class AdminTransActivity extends AppCompatActivity implements LoanApplFragment.OnFragmentInteractionListener{
+    private static final String PREF_NAME = "awajima";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -85,6 +85,7 @@ public class BizAdminOffice extends TabActivity implements NavigationView.OnNavi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_biz_admin_office);
         setTitle("Biz Admin Office");
+        TabHost tabhost = (TabHost) findViewById(android.R.id.tabhost);
         chipNavigationBar = findViewById(R.id.nav_bar_biz_admin);
         fab = findViewById(R.id.fab_mao);
         userBundle= new Bundle();
@@ -107,9 +108,7 @@ public class BizAdminOffice extends TabActivity implements NavigationView.OnNavi
         marketBusiness= new MarketBusiness();
         gson = new Gson();
         gson1 = new Gson();
-        json = sharedpreferences.getString("LastProfileUsed", "");
-        userProfile = gson.fromJson(json, Profile.class);
-
+        gson2 = new Gson();
         json = sharedpreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
 
@@ -159,7 +158,7 @@ public class BizAdminOffice extends TabActivity implements NavigationView.OnNavi
             }
         });
         Resources resources = getResources();
-        TabHost tabhost = (TabHost) findViewById(android.R.id.tabhost);
+
         tabhost.setup(getLocalActivityManager());
 
         Intent intentsupport = new Intent().setClass(this, AdminStocksTab.class);

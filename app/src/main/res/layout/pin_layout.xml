@@ -12,10 +12,9 @@
         android:layout_width="match_parent"
         android:layout_marginBottom="20dp"
         android:layout_height="2dp"
-        style="@style/StepView"
         />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -25,7 +24,7 @@
         android:textSize="16sp"
         android:layout_marginRight="30dp"
         android:layout_marginBottom="20dp"
-        android:text="Please enter your card pin &amp; continue your transaction"/>
+        android:text="Please enter your  pin &amp; continue your transaction"/>
 
     <com.google.android.material.textfield.TextInputLayout
         app:boxBackgroundColor="@null"
@@ -42,7 +41,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="pin"
-            style="@style/Paystack.Dialog.PinEntry"
             android:inputType="numberPassword"
             android:drawableLeft="@drawable/ic_so"
             android:drawableStart="@drawable/ic_so"

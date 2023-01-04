@@ -1,5 +1,6 @@
 package com.skylightapp.Markets;
 
+import static com.skylightapp.Database.DBHelper.DATABASE_NAME;
 import static com.skylightapp.Markets.MarketHub.MANAGE_MARKET;
 import static com.skylightapp.Markets.MarketHub.SELECT_MARKET;
 
@@ -15,9 +16,11 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -44,7 +47,7 @@ import com.skylightapp.MarketClasses.Market;
 import com.skylightapp.MarketClasses.MarketAdapter;
 import com.skylightapp.MarketClasses.MarketAnnounceAdapt;
 import com.skylightapp.MarketClasses.MarketBizRecyAdapter;
-import com.skylightapp.MarketClasses.MarketBizSubScription;
+import com.skylightapp.MarketClasses.MarketBizSub;
 import com.skylightapp.MarketClasses.MarketCommodity;
 import com.skylightapp.MarketClasses.MarketAnnouncement;
 import com.skylightapp.MarketClasses.MarketBizDonor;
@@ -62,10 +65,10 @@ public class MarketDetailsAct extends AppCompatActivity implements MarketAdapter
     SharedPreferences userPreferences;
     DBHelper dbHelper;
     Gson gson;
-    String json,dateOfTranx;
+    String json,dateOfTranx,marketName;
     int profileUID;
     Bundle bundle;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private Profile userProfile;
     private ArrayList<MarketBizDonor> marketBizDonors;
     private ArrayList<MarketAnnouncement> marketAnnouncements;
@@ -73,7 +76,7 @@ public class MarketDetailsAct extends AppCompatActivity implements MarketAdapter
     private ArrayList<MarketBusiness> marketBusinesseAll;
     private ArrayList<MarketCommodity> marketCommodities;
     private ArrayList<EmergencyReport> emergencyReports;
-    private ArrayList<MarketBizSubScription> marketBizSubScriptions;
+    private ArrayList<MarketBizSub> marketBizSubs;
     private ArrayList<InsuranceCompany> insuranceCompanies;
     private ArrayList<LogisticEntity> logisticEntities;
     private ArrayList<Farm> farmArrayList;
@@ -122,7 +125,6 @@ public class MarketDetailsAct extends AppCompatActivity implements MarketAdapter
         marketDAO= new MarketDAO(this);
         dbHelper= new DBHelper(this);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle("Market Details");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPrefProfileID=userPreferences.getInt("PROFILE_ID", 0);
@@ -157,7 +159,14 @@ public class MarketDetailsAct extends AppCompatActivity implements MarketAdapter
         txtMarketFollowing = findViewById(R.id.market_following);
         txtMarketDays = findViewById(R.id.days_of_the_market);
         followBtn = findViewById(R.id.btn_follow);
-        getBarEntries();
+
+        try {
+            getBarEntries();
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
 
         if(userProfile !=null){
             profileUID=userProfile.getPID();
@@ -182,20 +191,47 @@ public class MarketDetailsAct extends AppCompatActivity implements MarketAdapter
             farmArrayList= market.getMarketFarms();
             insuranceCompanies=market.getMarketInsurances();
             logisticEntities=market.getMarketLogisticE();
+            marketName=market.getMarketName();
         }
+        if(marketName !=null){
+            getSupportActionBar().setTitle(marketName);
+        }else {
+            getSupportActionBar().setTitle("Market Details");
+        }
+
+
         followBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                userProfile.addMarket(market);
+                if(userProfile !=null){
+                    userProfile.addMarket(market);
+                    userProfile.addMarketID(marketID);
+
+                }
+
 
             }
         });
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            marketArrayList=marketDAO.getMarkets();
+        if(dbHelper !=null){
+            try {
+                dbHelper.openDataBase();
+                try {
+                    if(marketDAO !=null){
+                        marketArrayList=marketDAO.getMarkets();
+
+                    }
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+
 
         }
+
 
         followBtn.setOnClickListener(this::folowMarket);
 
@@ -281,8 +317,6 @@ public class MarketDetailsAct extends AppCompatActivity implements MarketAdapter
         rvEmerg.addItemDecoration(dividerItemDEmerg);
         emergencyReportAdapter = new EmergencyReportAdapter(MarketDetailsAct.this, emergencyReports);
         rvEmerg.setAdapter(emergencyReportAdapter);
-
-
 
 
         LinearLayoutManager layoutMFarm

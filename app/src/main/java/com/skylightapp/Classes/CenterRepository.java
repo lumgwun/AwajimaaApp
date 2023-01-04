@@ -1,6 +1,8 @@
 package com.skylightapp.Classes;
 
 
+import com.skylightapp.MarketClasses.MarketBizPackModel;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -13,9 +15,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CenterRepository {
     private static CenterRepository centerRepository;
 
-    private ArrayList<SkylightPackageModel> listOfCategory = new ArrayList<SkylightPackageModel>();
-    private ConcurrentHashMap<String, ArrayList<SkyLightPackModel>> mapOfProductsInCategory = new ConcurrentHashMap<String, ArrayList<SkyLightPackModel>>();
-    private List<SkyLightPackModel> listOfProductsInShoppingList = Collections.synchronizedList(new ArrayList<SkyLightPackModel>());
+    private ArrayList<AwajimaPackModel> listOfCategory = new ArrayList<AwajimaPackModel>();
+    private ConcurrentHashMap<String, ArrayList<MarketBizPackModel>> mapOfProductsInCategory = new ConcurrentHashMap<String, ArrayList<MarketBizPackModel>>();
+    private List<MarketBizPackModel> listOfProductsInShoppingList = Collections.synchronizedList(new ArrayList<MarketBizPackModel>());
     private List<Set<String>> listOfItemSetsForDataMining = new ArrayList<>();
 
     public static CenterRepository getCenterRepository() {
@@ -27,29 +29,29 @@ public class CenterRepository {
     }
 
 
-    public List<SkyLightPackModel> getListOfProductsInShoppingList() {
+    public List<MarketBizPackModel> getListOfProductsInShoppingList() {
         return listOfProductsInShoppingList;
     }
 
-    public void setListOfProductsInShoppingList(ArrayList<SkyLightPackModel> getShoppingList) {
+    public void setListOfProductsInShoppingList(ArrayList<MarketBizPackModel> getShoppingList) {
         this.listOfProductsInShoppingList = getShoppingList;
     }
 
-    public Map<String, ArrayList<SkyLightPackModel>> getMapOfProductsInCategory() {
+    public Map<String, ArrayList<MarketBizPackModel>> getMapOfProductsInCategory() {
 
         return mapOfProductsInCategory;
     }
 
-    public void setMapOfProductsInCategory(ConcurrentHashMap<String, ArrayList<SkyLightPackModel>> mapOfProductsInCategory) {
+    public void setMapOfProductsInCategory(ConcurrentHashMap<String, ArrayList<MarketBizPackModel>> mapOfProductsInCategory) {
         this.mapOfProductsInCategory = mapOfProductsInCategory;
     }
 
-    public ArrayList<SkylightPackageModel> getListOfCategory() {
+    public ArrayList<AwajimaPackModel> getListOfCategory() {
 
         return listOfCategory;
     }
 
-    public void setListOfCategory(ArrayList<SkylightPackageModel> listOfCategory) {
+    public void setListOfCategory(ArrayList<AwajimaPackModel> listOfCategory) {
         this.listOfCategory = listOfCategory;
     }
 

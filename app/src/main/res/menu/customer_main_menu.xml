@@ -21,16 +21,30 @@
                 <group android:checkableBehavior="single">
                     <item
                         android:id="@+id/nav_cus_Env"
-                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:icon="@drawable/ic_loc_searching"
                         android:title="Environment Reports" />
                     <item
+                        android:id="@+id/nav_OilS"
+                        android:icon="@drawable/ic_loc_searching"
+                        android:title="Oil Spillage Reports" />
+                    <item
                         android:id="@+id/nav_Crime_Cus"
-                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:icon="@drawable/ic_loc_searching"
                         android:title="Crime Reports" />
                     <item
                         android:id="@+id/nav_Cus_Emerg"
-                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:icon="@drawable/ic_loc_searching"
                         android:title="Emergency Reports" />
+                </group>
+            </menu>
+        </item>
+        <item android:title="Waste Disposal">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_new_wasteReq"
+                        android:icon="@drawable/ic__category"
+                        android:title="Waste disposal Request" />
                 </group>
             </menu>
         </item>
@@ -56,7 +70,12 @@
                     <item
                         android:id="@+id/nav_New_market"
                         android:icon="@drawable/ic_dashboard_black_24dp"
-                        android:title="Register a New Market" />
+                        android:title="New Market" />
+                    <item
+                        android:id="@+id/nav_New_BizC"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Register a New Biz." />
+
 
                 </group>
             </menu>
@@ -80,17 +99,21 @@
                 <group android:checkableBehavior="single">
                     <item
                         android:id="@+id/booking_nav_taxi"
-                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:icon="@drawable/ic_taxi33"
                         android:title="Taxi Booking Tab" />
+                    <item
+                        android:id="@+id/nav_cus_motor"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Logistics Bookings" />
 
                     <item
                         android:id="@+id/nav_train_bookings"
-                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:icon="@drawable/train"
                         android:title="Train Bookings" />
 
                     <item
                         android:id="@+id/boat_cus_bookings"
-                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:icon="@drawable/boat33"
                         android:title="Boat Bookings" />
                     <item
                         android:id="@+id/session_booking_cus"
@@ -230,6 +253,11 @@
                         android:id="@+id/nav_tx5"
                         android:icon="@drawable/ic_icon2"
                         android:title="My Transactions" />
+
+                    <item
+                        android:id="@+id/nav_order"
+                        android:icon="@drawable/ic_icon2"
+                        android:title="My Orders" />
 
 
 

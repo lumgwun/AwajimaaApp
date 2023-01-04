@@ -42,7 +42,6 @@
             android:layout_height="wrap_content"
             tools:listitem="@layout/package_list_row"
             android:listSelector="@drawable/rect12"
-            android:stateListAnimator="@anim/nav_default_pop_enter_anim"
             android:dividerHeight="1dp" />
 
     </LinearLayout>

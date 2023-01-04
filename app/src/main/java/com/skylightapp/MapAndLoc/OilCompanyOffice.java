@@ -1,7 +1,6 @@
 package com.skylightapp.MapAndLoc;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,18 +15,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.skylightapp.Adapters.CurrAdapter;
-import com.skylightapp.BizSubQTOptionAct;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Customers.CustomerHelpActTab;
-import com.skylightapp.Customers.NewCustomerDrawer;
-import com.skylightapp.Customers.PackListTab;
-import com.skylightapp.HQLogisticsOffice;
-import com.skylightapp.MarketClasses.MarketBizSubScription;
-import com.skylightapp.Markets.MarketTab;
-import com.skylightapp.MyTimelineAct;
+import com.skylightapp.MarketClasses.MarketBizSub;
 import com.skylightapp.R;
 import com.skylightapp.SubScriptionTab;
 
@@ -59,7 +52,7 @@ public class OilCompanyOffice extends AppCompatActivity {
     private Customer customer;
     private Account account;
     private ArrayList<Account> accountArrayList;
-    private ArrayList<MarketBizSubScription> marketBizSubScriptions;
+    private ArrayList<MarketBizSub> marketBizSubs;
 
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
     private FloatingActionButton fab;

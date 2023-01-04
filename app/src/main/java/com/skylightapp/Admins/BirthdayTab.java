@@ -34,7 +34,7 @@ public class BirthdayTab extends TabActivity {
     PrefManager prefManager;
     private Gson gson,gson1;
     private String json,json1;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

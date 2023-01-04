@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,8 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.skylightapp.Adapters.SuperSkylightPackageAdapter;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.R;
 
@@ -39,15 +40,15 @@ import java.util.TimeZone;
 import static java.lang.String.valueOf;
 
 public class DuePackagesAct extends AppCompatActivity implements SuperSkylightPackageAdapter.OnItemsClickListener {
-    private List<SkyLightPackage> birthdays;
+    private List<MarketBizPackage> birthdays;
     private SuperSkylightPackageAdapter nowDueAdapter;
     private SuperSkylightPackageAdapter upcoming2Adapter;
     private SuperSkylightPackageAdapter upcoming7Adapter;
     SuperSkylightPackageAdapter itemRecyclerViewAdapter;
-    private ArrayList<SkyLightPackage> nowPackageArrayList;
-    private ArrayList<SkyLightPackage> package2ArrayList;
-    private ArrayList<SkyLightPackage> package7ArrayList;
-    private ArrayList<SkyLightPackage> packageCustomArrayList;
+    private ArrayList<MarketBizPackage> nowPackageArrayList;
+    private ArrayList<MarketBizPackage> package2ArrayList;
+    private ArrayList<MarketBizPackage> package7ArrayList;
+    private ArrayList<MarketBizPackage> packageCustomArrayList;
     int todayPackageCount, todaysPackageCount,sevenDaysPackageCount,customDayPackageCount;
     private DBHelper dbHelper;
     private Date today;
@@ -62,16 +63,17 @@ public class DuePackagesAct extends AppCompatActivity implements SuperSkylightPa
     ;
     TextView txtPackageToday, txtPackageInTwoDays,txtPackageSevenDays,txtPackageCustomDay;
     String dateOfToday,dateOfTomorrow,dateOfTwoDays,dateOfSevenDays,stringSpnDay,dateOfCustomDays;
+    private SQLiteDatabase sqLiteDatabase;
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_up_coming_packs);
-        nowPackageArrayList = new ArrayList<SkyLightPackage>();
-        package2ArrayList = new ArrayList<SkyLightPackage>();
-        package7ArrayList = new ArrayList<SkyLightPackage>();
-        packageCustomArrayList = new ArrayList<SkyLightPackage>();
+        nowPackageArrayList = new ArrayList<MarketBizPackage>();
+        package2ArrayList = new ArrayList<MarketBizPackage>();
+        package7ArrayList = new ArrayList<MarketBizPackage>();
+        packageCustomArrayList = new ArrayList<MarketBizPackage>();
         RecyclerView packagesToday = findViewById(R.id.recyclerViewNow);
         RecyclerView packagesInTwoDays = findViewById(R.id.recyclerViewTomoro);
         RecyclerView packages7Days = findViewById(R.id.recyclerView7Days);
@@ -133,14 +135,78 @@ public class DuePackagesAct extends AppCompatActivity implements SuperSkylightPa
 
         } catch (ParseException ignored) {
         }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            //dbHelper = new DBHelper(this);
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+                sevenDaysPackageCount =dbHelper.getPackEnding7DaysCount(dateOfSevenDays);
 
-        nowPackageArrayList = dbHelper.getPackageEndingToday1(dateOfToday);
-        package2ArrayList = dbHelper.getPackageEndingIn3Days(dateOfTomorrow);
-        package7ArrayList = dbHelper.getPackageEnding7Days(dateOfSevenDays);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
 
-        todayPackageCount =dbHelper.getPackEndingToDayCount(dateOfToday);
-        todaysPackageCount =dbHelper.getPackEndingTomoroCount(dateOfTomorrow);
-        sevenDaysPackageCount =dbHelper.getPackEnding7DaysCount(dateOfSevenDays);
+
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            //dbHelper = new DBHelper(this);
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+                todaysPackageCount =dbHelper.getPackEndingTomoroCount(dateOfTomorrow);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            //dbHelper = new DBHelper(this);
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+                todayPackageCount =dbHelper.getPackEndingToDayCount(dateOfToday);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            //dbHelper = new DBHelper(this);
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+                package7ArrayList = dbHelper.getPackageEnding7Days(dateOfSevenDays);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            //dbHelper = new DBHelper(this);
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+                package2ArrayList = dbHelper.getPackageEndingIn3Days(dateOfTomorrow);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            //dbHelper = new DBHelper(this);
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+                nowPackageArrayList = dbHelper.getPackageEndingToday1(dateOfToday);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+
+        }
 
 
 
@@ -153,12 +219,35 @@ public class DuePackagesAct extends AppCompatActivity implements SuperSkylightPa
                 txtPackageSevenDays.setVisibility(View.GONE);
                 txtPackageInTwoDays.setVisibility(View.GONE);
                 txtPackageToday.setVisibility(View.GONE);
-                packageCustomArrayList = dbHelper.getPackEndingCustomDay(dateOfCustomDays);
-                customDayPackageCount =dbHelper.getPackageCountCustomDay(dateOfCustomDays);
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    //dbHelper = new DBHelper(this);
+                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    try {
+                        customDayPackageCount =dbHelper.getPackageCountCustomDay(dateOfCustomDays);
+
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    //dbHelper = new DBHelper(this);
+                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                    try {
+                        packageCustomArrayList = dbHelper.getPackEndingCustomDay(dateOfCustomDays);
+
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+
+
                 LinearLayoutManager layoutManagerC
                         = new LinearLayoutManager(DuePackagesAct.this, LinearLayoutManager.HORIZONTAL, false);
                 customPackages.setLayoutManager(layoutManagerC);
-                //customPackages.setHasFixedSize(true);
                 itemRecyclerViewAdapter = new SuperSkylightPackageAdapter(DuePackagesAct.this,packageCustomArrayList);
                 customPackages.setAdapter(itemRecyclerViewAdapter);
                 DividerItemDecoration dividerItemDecoration7 = new DividerItemDecoration(customPackages.getContext(),
@@ -248,11 +337,37 @@ public class DuePackagesAct extends AppCompatActivity implements SuperSkylightPa
         //snapHelper3.attachToRecyclerView(customPackages);
 
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+        if (!searchView.isIconified()) {
+            searchView.setIconified(true);
+        }
+    }
 
     @Override
-    public void onItemClick(SkyLightPackage lightPackage) {
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onItemClick(MarketBizPackage lightPackage) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable("SkyLightPackage", lightPackage);
+        bundle.putParcelable("MarketBizPackage", lightPackage);
         bundle.putParcelable("Package", lightPackage);
         Intent intent = new Intent(this, UpdatePackageAct.class);
         intent.putExtras(bundle);
@@ -296,12 +411,5 @@ public class DuePackagesAct extends AppCompatActivity implements SuperSkylightPa
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        if (!searchView.isIconified()) {
-            searchView.setIconified(true);
-            return;
-        }
-        super.onBackPressed();
-    }
+
 }

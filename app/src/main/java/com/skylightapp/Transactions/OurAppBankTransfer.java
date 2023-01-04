@@ -56,7 +56,7 @@ import co.paystack.android.model.Charge;
 import static com.skylightapp.Transactions.OurConfig.INTERSWITCH_LS_SECRET_KEY;
 import static com.skylightapp.Transactions.OurConfig.PAYSTACK_CREATE_TRANSFER_RECEPIENT;
 import static com.skylightapp.Transactions.OurConfig.PAYSTACK_EXECUTE_TRANSFER;
-import static com.skylightapp.Transactions.OurConfig.SKYLIGHT_SECRET_KEY;
+import static com.skylightapp.Transactions.OurConfig.AWAJIMA_PAYSTACK_SECRET_KEY;
 
 public class OurAppBankTransfer extends AppCompatActivity {
     String response;
@@ -567,7 +567,7 @@ public class OurAppBankTransfer extends AppCompatActivity {
                     json1 = jsonObject.toString();
                     StringEntity stringEntity1 = new StringEntity(json1);
                     httpPost.setEntity(stringEntity1);
-                    httpPost.setHeader("Authorization", SKYLIGHT_SECRET_KEY);
+                    httpPost.setHeader("Authorization", AWAJIMA_PAYSTACK_SECRET_KEY);
                     httpPost.setHeader("Content-type", "application/json");
                     //httpPost.setHeader("Accept", "application/json");
                     HttpResponse httpResponse1 = httpclient.execute(httpPost);

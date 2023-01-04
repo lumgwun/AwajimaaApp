@@ -40,6 +40,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
@@ -63,12 +64,11 @@ import com.quickblox.messages.services.QBPushManager;
 import com.quickblox.messages.services.SubscribeService;
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
-import com.skylightapp.Adapters.AccountAdapter;
-import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.AdminUser;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.ErrorUtils;
 import com.skylightapp.Classes.KeyboardUtils;
+import com.skylightapp.Classes.Message;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Utils;
@@ -85,13 +85,14 @@ import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.Database.TransactionGrantingDAO;
 import com.skylightapp.Interfaces.Consts;
 import com.skylightapp.LoginActivity;
-import com.skylightapp.LoginDirAct;
 import com.skylightapp.MarketClasses.DialogsManager;
 import com.skylightapp.MarketClasses.MarketBizArrayAdapter;
 import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.MarketInterfaces.ConstsInterface;
 import com.skylightapp.Markets.ToastUtils;
+import com.skylightapp.MembershipSubAct;
 import com.skylightapp.R;
+import com.skylightapp.SubHistoryAct;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -104,13 +105,13 @@ import static com.skylightapp.BuildConfig.QUICKBLOX_APP_ID;
 import static com.skylightapp.BuildConfig.QUICKBLOX_AUTH_KEY;
 import static com.skylightapp.BuildConfig.QUICKBLOX_SECRET_KEY;
 
-public class CusMessageAct extends AppCompatActivity implements TextWatcher {
+public class CusMessageAct extends AppCompatActivity implements TextWatcher, View.OnClickListener{
     private static final String TAG = CusMessageAct.class.getSimpleName();
     public final static int KEY_EXTRA_MESSAGE_ID = 121;
 
     private DBHelper selector;
     private Profile marketBizProfile,senderProfile;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private static final String APPLICATION_ID = QUICKBLOX_APP_ID;   //QUICKBLOX_APP_ID
     private static final String AUTH_KEY = QUICKBLOX_AUTH_KEY;
     private static final String AUTH_SECRET = QUICKBLOX_SECRET_KEY;
@@ -124,7 +125,7 @@ public class CusMessageAct extends AppCompatActivity implements TextWatcher {
     private String json,json1,json2;
     private  Bundle messageBundle;
     private int marketBizProfileID;
-    private int customerID;
+    private int customerID,sendeeProfileID;
     private int SharedPrefAdminID;
     private  String purpose,skylightType;
     private Spinner spnPurpose;
@@ -156,7 +157,7 @@ public class CusMessageAct extends AppCompatActivity implements TextWatcher {
     private QBSystemMessagesManager systemMessagesManager;
     private QBIncomingMessagesManager incomingMessagesManager;
 
-    private String time,bizName, officeBranch;
+    private String time,bizName, officeBranch,outMessage;
     private int recipientId,cusID;
     private QBUser cusQBUser;
     private  Profile cusProf;
@@ -170,14 +171,15 @@ public class CusMessageAct extends AppCompatActivity implements TextWatcher {
     private ArrayList<MarketBusiness> marketBusinessArrayList;
     private Bundle bundle;
     private MarketBizArrayAdapter bizArrayAdapter;
-    private int marketBizID,qbID;
-    private Profile bizProfile;
+    private int marketBizID, qbUserID;
+    private Profile bizProfile,sendeeProfile;
     private QBUser qbUserOfBiz;
 
     protected ActionBar actionBar;
 
     private ArrayAdapter<String> adapter;
     private List<String> receivedPushes;
+    private AppCompatTextView txtNoMessage;
     String SharedPrefUserPassword,SharedPrefUserMachine,senderFullNames,phoneNo,SharedPrefUserName,adminName,sender;
     private BroadcastReceiver pushBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -201,12 +203,12 @@ public class CusMessageAct extends AppCompatActivity implements TextWatcher {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_cus_message);
         FirebaseApp.initializeApp(this);
-        setTitle("Sender");
+        setTitle("Awajima Messenger");
         actionBar = getSupportActionBar();
         try {
 
             ViewConfiguration config = ViewConfiguration.get(this);
-            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+            @SuppressLint("SoonBlockedPrivateApi") Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
             if (menuKeyField != null) {
                 menuKeyField.setAccessible(true);
                 menuKeyField.setBoolean(config, false);
@@ -220,9 +222,11 @@ public class CusMessageAct extends AppCompatActivity implements TextWatcher {
         bizProfile= new Profile();
         qbUserOfBiz= new QBUser();
         customer= new Customer();
+        sendeeProfile= new Profile();
         marketBusiness= new MarketBusiness();
+        marketBusinessArrayList= new ArrayList<>();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        json1 = userPreferences.getString("LastProfileUsed", "");
+        json = userPreferences.getString("LastProfileUsed", "");
         senderProfile = gson.fromJson(json, Profile.class);
         json1 = userPreferences.getString("LastCustomerUsed", "");
         customer = gson1.fromJson(json1, Customer.class);
@@ -246,7 +250,7 @@ public class CusMessageAct extends AppCompatActivity implements TextWatcher {
         registerReceiver();
 
         inputMessage = findViewById(R.id.edt_Cus_message);
-        progressBar = findViewById(R.id.pb_cus);
+        progressBar = findViewById(R.id.pb_cusTY);
         txtName = findViewById(R.id.txt_name_cu);
         btnSend =  findViewById(R.id.btn_send_cus_message);
         btnHome = findViewById(R.id.btn_go_bk);
@@ -263,16 +267,24 @@ public class CusMessageAct extends AppCompatActivity implements TextWatcher {
 
         }
         if(senderProfile !=null){
-            //marketBusinessArrayList=senderProfile.getProfile_Businesses();
+            marketBusinessArrayList=senderProfile.getProfile_Businesses();
             senderProfID =senderProfile.getPID();
-            //senderFullNames=senderProfile.getProfileLastName()+","+senderProfile.getProfileFirstName();
+            senderFullNames=senderProfile.getProfileLastName()+","+senderProfile.getProfileFirstName();
 
         }
         if(customer !=null){
-            marketBusinessArrayList=customer.getCusMarketBusinesses();
+            if(marketBusinessArrayList ==null){
+                marketBusinessArrayList=customer.getCusMarketBusinesses();
+
+            }
+
             cusID =customer.getCusUID();
             senderFullNames=customer.getCusSurname()+","+customer.getCusFirstName();
+            sendeeProfile=customer.getCusProfile();
 
+        }
+        if(sendeeProfile !=null){
+            sendeeProfileID= sendeeProfile.getPID();
         }
 
         bizArrayAdapter = new MarketBizArrayAdapter(CusMessageAct.this, android.R.layout.simple_spinner_item, marketBusinessArrayList);
@@ -299,20 +311,19 @@ public class CusMessageAct extends AppCompatActivity implements TextWatcher {
             qbUserOfBiz=bizProfile.getProfQbUser();
         }
         if(qbUserOfBiz !=null){
-            qbID=qbUserOfBiz.getId();
+            try {
+                qbUserID =qbUserOfBiz.getId();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
         }
 
         txtName.setText("Sender"+senderFullNames);
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
-        btnHome.setOnClickListener(this::goToMyDO);
+        btnHome.setOnClickListener(this);
 
-        QBSettings.getInstance().init(this, APPLICATION_ID, AUTH_KEY, AUTH_SECRET);
-        QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         gson1 = new Gson();
@@ -326,7 +337,9 @@ public class CusMessageAct extends AppCompatActivity implements TextWatcher {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedPurpose = (String) parent.getSelectedItem();
+                //selectedPurpose = (String) parent.getSelectedItem();
+                selectedPurpose = spnP.getSelectedItem().toString();
+
             }
 
             @Override
@@ -334,12 +347,37 @@ public class CusMessageAct extends AppCompatActivity implements TextWatcher {
             }
         });
 
+        btnSend.setOnClickListener(this);
+        timeLineClassDAO= new TimeLineClassDAO(CusMessageAct.this);
+        messageDAO= new MessageDAO(CusMessageAct.this);
 
-        btnSend.setOnClickListener(this::senderSendMessage);
 
-        btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    }
+    @Override
+    public void onClick(View view) {
+        gson= new Gson();
+        gson1= new Gson();
+        bizProfile= new Profile();
+        qbUserOfBiz= new QBUser();
+        customer= new Customer();
+        sendeeProfile= new Profile();
+        timeLineClassDAO= new TimeLineClassDAO(CusMessageAct.this);
+        messageDAO= new MessageDAO(CusMessageAct.this);
+        marketBusiness= new MarketBusiness();
+        marketBusinessArrayList= new ArrayList<>();
+        Bundle loanBundle = new Bundle();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        json = userPreferences.getString("LastProfileUsed", "");
+        senderProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastCustomerUsed", "");
+        customer = gson1.fromJson(json1, Customer.class);
+        SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
+        SharedPrefUserMachine=userPreferences.getString("machine", "");
+        btnSend =  findViewById(R.id.btn_send_cus_message);
+        btnHome = findViewById(R.id.btn_go_bk);
+        switch (view.getId()) {
+            case R.id.btn_send_cus_message:
                 String confirmationMessage = "";
                 Calendar calendar = Calendar.getInstance();
                 Date currentDate = calendar.getTime();
@@ -353,53 +391,72 @@ public class CusMessageAct extends AppCompatActivity implements TextWatcher {
                 Location mCurrentLocation=null;
                 String timelineDetails = "You sent a message" +""+ "on" + ""+ time;
                 String timelineCus = bizName+""+senderFullNames + "sent you a message" + "on" + time;
-                sendPushMessage(qbID,message);
+                sendPushMessage(qbUserID,message);
 
-                //Message message2= new Message(KEY_EXTRA_MESSAGE_ID,adminName,sendeeProfileID,customerID,selectedPurpose,message,time);
-                /*int id = sendeeProfile.leaveMessage(message, customerID);
+                Message message2= new Message(KEY_EXTRA_MESSAGE_ID,adminName,sendeeProfileID,customerID,selectedPurpose,message,time);
+                int id = sendeeProfile.leaveMessage(message, customerID);
                 if(customer !=null){
                     customer.addCusMessages(KEY_EXTRA_MESSAGE_ID,selectedPurpose,message,bizName+""+senderFullNames,time);
 
 
                 }
                 bizIDInt = Math.toIntExact(bizID);
-                messageDAO= new MessageDAO(CusMessageAct.this);
                 String senderFrom=senderFullNames+""+"From"+bizName;
-                try {
+                if(messageDAO !=null){
+                    try {
+                        messageDAO.insertNewMessage(senderProfID,customerID, bizIDInt,marKetID,selectedPurpose,message,senderFrom,senderFullNames, officeBranch, time);
 
-                    selector.openDataBase();
-                    messageDAO.insertNewMessage(senderProfID,customerID, bizIDInt,marKetID,selectedPurpose,message,senderFrom,senderFullNames, officeBranch, time);
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+
+
+                if(timeLineClassDAO !=null){
+                    try {
+                        timeLineClassDAO.insertTimeLine(tittleT1, timelineDetailsTD, time, mCurrentLocation);
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+                try {
+                    if(senderProfile !=null){
+                        senderProfile.addPTimeLine(tittleT1, timelineDetails);
+                    }
+                    if(customer !=null){
+                        customer.addCusTimeLine(tittleT1,timelineCus);
+                    }
+
 
                 }
                 catch (Exception e) {
                     e.printStackTrace();
                 }
-                try {
 
-                    selector.openDataBase();
-                    timeLineClassDAO= new TimeLineClassDAO(CusMessageAct.this);
-                    timeLineClassDAO.insertTimeLine(tittleT1, timelineDetailsTD, time, mCurrentLocation);
-
-
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if(senderProfile !=null){
-                    senderProfile.addPTimeLine(tittleT1, timelineDetails);
-                }
-                if(customer !=null){
-                    customer.addCusTimeLine(tittleT1,timelineCus);
-                }
 
 
                 Toast.makeText(CusMessageAct.this, "Message sent sucessfully" , Toast.LENGTH_LONG).show();
-                //notification.setText(confirmationMessage);*/
+                //notification.setText(confirmationMessage);
+                break;
 
-            }
-        });
+            case R.id.btn_go_bk:
+                loanBundle.putParcelable("Profile",senderProfile);
+                Intent hIntent = new Intent(CusMessageAct.this, NewCustomerDrawer.class);
+                Toast.makeText(CusMessageAct.this, "Old Membership Sub", Toast.LENGTH_SHORT).show();
+                hIntent.putExtras(loanBundle);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                hIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                hIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(hIntent);
+        }
 
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -457,15 +514,21 @@ public class CusMessageAct extends AppCompatActivity implements TextWatcher {
     }
 
     private void initUI() {
-        progressBar = findViewById(R.id.progress_bar);
+        progressBar = findViewById(R.id.pb_cusTY);
+        inputMessage = findViewById(R.id.edt_Cus_message);
+        txtName = findViewById(R.id.txt_name_cu);
+        txtNoMessage = findViewById(R.id.empty_mes);
+
+        btnSend =  findViewById(R.id.btn_send_cus_message);
+        receivedPushes = new ArrayList<>();
 
         inputMessage = findViewById(R.id.edt_Cus_message);
         inputMessage.addTextChangedListener(this);
 
-        ListView incomingMessagesListView = findViewById(R.id.list_messages);
+        ListView incomingMessagesListView = findViewById(R.id.list_mes_push);
         adapter = new ArrayAdapter<>(this, R.layout.list_item_message, R.id.item_message, receivedPushes);
         incomingMessagesListView.setAdapter(adapter);
-        incomingMessagesListView.setEmptyView(findViewById(R.id.text_empty_messages));
+        incomingMessagesListView.setEmptyView(findViewById(R.id.empty_mes));
     }
 
     private void registerReceiver() {
@@ -479,11 +542,17 @@ public class CusMessageAct extends AppCompatActivity implements TextWatcher {
         progressBar.setVisibility(View.INVISIBLE);
     }
     private void sendPushMessage(int qbID,String message) {
-        inputMessage = findViewById(R.id.edt_Cus_message);
-        String outMessage = inputMessage.getText().toString().trim();
-        //message==outMessage;
+        QBSettings.getInstance().init(this, APPLICATION_ID, AUTH_KEY, AUTH_SECRET);
+        QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
+        outMessage = message;
         if (!isValidData(outMessage)) {
-            ToastUtils.longToast(R.string.error_field_is_empty);
+            try {
+
+                ToastUtils.longToast(R.string.error_field_is_empty);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
             invalidateOptionsMenu();
             return;
         }
@@ -539,7 +608,13 @@ public class CusMessageAct extends AppCompatActivity implements TextWatcher {
     @Override
     public void afterTextChanged(Editable s) {
         if (s.length() >= getResources().getInteger(R.integer.push_max_length)) {
-            ToastUtils.shortToast(R.string.error_too_long_push);
+            try {
+
+                ToastUtils.shortToast(R.string.error_too_long_push);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
         }
     }
     private void unsubscribeFromPushes() {
@@ -602,6 +677,8 @@ public class CusMessageAct extends AppCompatActivity implements TextWatcher {
 
 
     private void userLogout() {
+        QBSettings.getInstance().init(this, APPLICATION_ID, AUTH_KEY, AUTH_SECRET);
+        QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
         Log.d(TAG, "SignOut");
         showProgressDialog(R.string.dlg_logout);
         PrefManager prefManager= new PrefManager(this);
@@ -664,15 +741,13 @@ public class CusMessageAct extends AppCompatActivity implements TextWatcher {
     }
 
     private void showProgressDialog() {
-        progressBar = findViewById(R.id.pb_cus);
+        progressBar = findViewById(R.id.pb_cusTY);
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(true);//you can cancel it by pressing back button
         progressDialog.setMessage("please wait ...");
         progressBar.show();//displays the progress bar
     }
 
-    public void doPushMessage(View view) {
-    }
 
     /*public void addDialog(QBChatDialog chatDialog) {
         String dialogString = gson.toJson(chatDialog);
@@ -694,6 +769,8 @@ public class CusMessageAct extends AppCompatActivity implements TextWatcher {
         editor.apply();
     }*/
     public void createNewDialog(int recipientId, int matchValue) {
+        QBSettings.getInstance().init(this, APPLICATION_ID, AUTH_KEY, AUTH_SECRET);
+        QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
         if(cusQBUser !=null){
             recipientId=cusQBUser.getId();
         }
@@ -720,9 +797,34 @@ public class CusMessageAct extends AppCompatActivity implements TextWatcher {
         });
     }
 
-    public void senderSendMessage(View view) {
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
 
-    public void goToMyDO(View view) {
+    @Override
+    public void onPause() {
+        super.onPause();
+        //overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        overridePendingTransition(R.anim.base_slide_left_out, R.anim.bounce);
+
+    }
+    public void onResume(){
+        super.onResume();
+        overridePendingTransition(R.anim.base_slide_left_out, R.anim.bounce);
+    }
+
+
 }

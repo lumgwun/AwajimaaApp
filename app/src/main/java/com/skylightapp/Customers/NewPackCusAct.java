@@ -49,9 +49,9 @@ import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.AccountTypes;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerDailyReport;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.PaymentCode;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.AdminBalanceDAO;
 import com.skylightapp.Database.DBHelper;
@@ -70,6 +70,7 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -105,10 +106,10 @@ public class NewPackCusAct extends AppCompatActivity {
     //int profileID;
 
     private ArrayAdapter<Account> accountAdapter;
-    private ArrayAdapter<SkyLightPackage> skyLightPackageArrayAdapter;
+    private ArrayAdapter<MarketBizPackage> skyLightPackageArrayAdapter;
     private ArrayList<Account> accountArrayList;
-    private ArrayList<SkyLightPackage> skyLightPackageArrayList;
-    private List<SkyLightPackage> skyLightPackageList;
+    private ArrayList<MarketBizPackage> marketBizPackageArrayList;
+    private List<MarketBizPackage> marketBizPackageList;
 
     private SharedPreferences userPreferences;
     private Gson gson;
@@ -145,10 +146,10 @@ public class NewPackCusAct extends AppCompatActivity {
     DatePicker date_picker_dob;
 
     String packageType;
-    //SkyLightPackage.SkylightPackage_Type packageType;
+    //MarketBizPackage.SkylightPackage_Type packageType;
     AppCompatSpinner state_spn, spn_select_packageOngoing, spn_my_cus;
-    SkyLightPackage selectedPackage;
-    SkyLightPackage skyLightPackage;
+    MarketBizPackage selectedPackage;
+    MarketBizPackage marketBizPackage;
     String customerBank;
     double accountBalance1;
     double newAmount;
@@ -213,10 +214,11 @@ public class NewPackCusAct extends AppCompatActivity {
     AppCommission appCommission;
     String transactionID,tellerSurName,selectedItem,tellerOffice,tellerFirstName,tellerName;
     TellerCash tellerCash;
-    AppCompatSpinner spnSavingsPlan, spnFoodAndItem, spnInvestment,spnTypeOfPackage,spnPromo;
+    AppCompatSpinner spnSavingsPlan, spnFoodAndItem, spnInvestment,spnTypeOfPackage,spnPromo,spnCurrency;
     LinearLayoutCompat layoutSavings,layoutDuration;
+    private ArrayList<Currency> currencies;
 
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     com.skylightapp.Classes.Transaction.TRANSACTION_TYPE transaction_type;
     String investStringEndDate,selectedPromoPack,packageEndDate,invMaturityDate,newPackageType,selectedFoodStuff,selectedItemType,finalItemType,selectedInvestmentType;
     LinearLayoutCompat layoutInvestment, layoutFoodItemPurchase,layoutPackageType,layoutPromo;
@@ -229,7 +231,7 @@ public class NewPackCusAct extends AppCompatActivity {
                     switch (result.getResultCode()) {
                         case Activity.RESULT_OK:
                             Toast.makeText(NewPackCusAct.this, "Payment returned successful", Toast.LENGTH_SHORT).show();
-                            doProcessing(profileID, customerID, packageID, finalItemType, packageType, savingsAmount, packageDuration, reportDate, grandTotal, officeBranch, packageEndDate, skyLightPackage, dbHelper, Skylightransaction, customerDailyReport, totalAmountSum, transaction_type);
+                            doProcessing(profileID, customerID, packageID, finalItemType, packageType, savingsAmount, packageDuration, reportDate, grandTotal, officeBranch, packageEndDate, marketBizPackage, dbHelper, Skylightransaction, customerDailyReport, totalAmountSum, transaction_type);
                             break;
                         case Activity.RESULT_CANCELED:
                             Toast.makeText(NewPackCusAct.this, "Activity canceled", Toast.LENGTH_SHORT).show();
@@ -282,29 +284,26 @@ public class NewPackCusAct extends AppCompatActivity {
         layoutPackageType=  findViewById(R.id.type_Layout);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
-        skyLightPackage= new SkyLightPackage();
+        marketBizPackage = new MarketBizPackage();
         tellerCash= new TellerCash();
+        currencies= new ArrayList<>();
         edt_Amount =  findViewById(R.id.NewAmt);
         totalDurationDays=  findViewById(R.id.totalDuration);
         spnNoOfMonths =  findViewById(R.id.numberOfMonths);
         spnNoOfDays =  findViewById(R.id.numberOfDDays);
+        spnCurrency =  findViewById(R.id.spn_Currency);
         txtTotalForToday =  findViewById(R.id.totalForToday);
         btn_add_New_Savings = findViewById(R.id.add_savingsNew);
         btn_payNow = findViewById(R.id.pay_now_New);
         edt_Amount.addTextChangedListener(textWatcher);
         spnTypeOfPackage=  findViewById(R.id.cus_pack_Type);
         layoutDuration=  findViewById(R.id.month_durationX);
-
-
         layoutSavings =  findViewById(R.id._savings_Layout);
         spnSavingsPlan =  findViewById(R.id._savings_plans);
-
         layoutFoodItemPurchase =  findViewById(R.id._food_Stuff_Layout);
         spnFoodAndItem =  findViewById(R.id._foodStuff_Item);
-
         layoutInvestment=  findViewById(R.id.cus_inv_Layout);
         spnInvestment=  findViewById(R.id.cus_inv_Type);
-
         layoutPromo=  findViewById(R.id._promo_Stuff_Layout);
         spnPromo=  findViewById(R.id._promoStuff);
         customer= new Customer();
@@ -332,7 +331,7 @@ public class NewPackCusAct extends AppCompatActivity {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     packageType = spnTypeOfPackage.getSelectedItem().toString();
-                    packageType = (String) parent.getSelectedItem();
+                    //packageType = (String) parent.getSelectedItem();
                     Toast.makeText(NewPackCusAct.this, "Selected Type: "+ packageType,Toast.LENGTH_SHORT).show();
                 }
 
@@ -465,7 +464,7 @@ public class NewPackCusAct extends AppCompatActivity {
         };
 
 
-        skyLightPackageArrayList = new ArrayList<SkyLightPackage>();
+        marketBizPackageArrayList = new ArrayList<MarketBizPackage>();
 
 
         if(packageType.equalsIgnoreCase("Item Purchase")){
@@ -645,10 +644,10 @@ public class NewPackCusAct extends AppCompatActivity {
 
 
                     }else {
-                        skyLightPackage = new SkyLightPackage(profileID, customerID, packageID, finalItemType, packageType, savingsAmount, packageDuration, reportDate, grandTotal, officeBranch, packageEndDate, "fresh");
+                        marketBizPackage = new MarketBizPackage(profileID, customerID, packageID, finalItemType, packageType, savingsAmount, packageDuration, reportDate, grandTotal, officeBranch, packageEndDate, "fresh");
                         customerDailyReport = new CustomerDailyReport(packageID,reportID, savingsAmount, numberOfDays, totalAmountSum, daysRemaining, amountRemaining, reportDate, "new");
 
-                        doProcessing(profileID, customerID, packageID, finalItemType, packageType, savingsAmount, packageDuration, reportDate, grandTotal, officeBranch, packageEndDate,skyLightPackage,dbHelper,Skylightransaction,customerDailyReport,totalAmountSum,transaction_type);
+                        doProcessing(profileID, customerID, packageID, finalItemType, packageType, savingsAmount, packageDuration, reportDate, grandTotal, officeBranch, packageEndDate, marketBizPackage,dbHelper,Skylightransaction,customerDailyReport,totalAmountSum,transaction_type);
 
 
                     }
@@ -736,7 +735,7 @@ public class NewPackCusAct extends AppCompatActivity {
                     }else {
                         customerDailyReport = new CustomerDailyReport(packageID,reportID, savingsAmount, numberOfDays, totalAmountSum, daysRemaining, amountRemaining, reportDate, "new");
 
-                        skyLightPackage = new SkyLightPackage(profileID, customerID, packageID, finalItemType, packageType, savingsAmount, packageDuration, reportDate, grandTotal, officeBranch, packageEndDate, "fresh");
+                        marketBizPackage = new MarketBizPackage(profileID, customerID, packageID, finalItemType, packageType, savingsAmount, packageDuration, reportDate, grandTotal, officeBranch, packageEndDate, "fresh");
                         try {
                             paymentBundle = new Bundle();
                             paymentBundle.putString("Total", String.valueOf(totalAmountSum));
@@ -795,11 +794,11 @@ public class NewPackCusAct extends AppCompatActivity {
                         switch (which) {
                             case 0:
                                 Toast.makeText(NewPackCusAct.this, "Manual Payment option, selected ", Toast.LENGTH_SHORT).show();
-                                //doProcessing(profileID, customerID, packageID, finalItemType, packageType, savingsAmount, packageDuration, reportDate, grandTotal, officeBranch, packageEndDate, skyLightPackage, dbHelper, Skylightransaction, customerDailyReport, totalAmountSum);
+                                //doProcessing(profileID, customerID, packageID, finalItemType, packageType, savingsAmount, packageDuration, reportDate, grandTotal, officeBranch, packageEndDate, marketBizPackage, dbHelper, Skylightransaction, customerDailyReport, totalAmountSum);
                                 payNowNew();
                                 break;
                             case 1:
-                                /*Intent amountIntent = new Intent(NewPackCustomerAct.this, SavingsStandingOrder.class);
+                                /*Intent amountIntent = new Intent(NewPackCustomerAct.this, SavingsSOAct.class);
                                 //amountIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 Toast.makeText(NewPackCustomerAct.this, "Standing Order Choice, made", Toast.LENGTH_SHORT).show();
                                 //paymentBundle = new Bundle();
@@ -847,7 +846,7 @@ public class NewPackCusAct extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
-    protected  void doProcessing(int profileID, int customerID, int packageID, String finalItemType, String packageType, double savingsAmount, int packageDuration, String reportDate, double grandTotal, String officeBranch, String packageEndDate, SkyLightPackage skyLightPackage, DBHelper dbHelper, Transaction skylightransaction, CustomerDailyReport customerDailyReport, double totalAmountSum, Transaction.TRANSACTION_TYPE transaction_type){
+    protected  void doProcessing(int profileID, int customerID, int packageID, String finalItemType, String packageType, double savingsAmount, int packageDuration, String reportDate, double grandTotal, String officeBranch, String packageEndDate, MarketBizPackage marketBizPackage, DBHelper dbHelper, Transaction skylightransaction, CustomerDailyReport customerDailyReport, double totalAmountSum, Transaction.TRANSACTION_TYPE transaction_type){
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         json = userPreferences.getString("LastProfileUsed", "");
@@ -888,8 +887,8 @@ public class NewPackCusAct extends AppCompatActivity {
         String tittle = "New Package Alert" + "from" + managerName;
         String details = managerName + "added a new package of NGN" + newTotal + "for" + customerName + "on" + reportDate;
 
-        SkyLightPackage skyLightPackage1 = new SkyLightPackage(profileID, customerID, packageID, packageType, finalItemType, savingsAmount, packageDuration, reportDate, grandTotal, "", "Just started");
-        skyLightPackage1.addPSavings(profileID, customerID, reportID, savingsAmount, numberOfDays, totalAmountSum, daysRemaining, amountRemaining, reportDate, status1);
+        MarketBizPackage marketBizPackage1 = new MarketBizPackage(profileID, customerID, packageID, packageType, finalItemType, savingsAmount, packageDuration, reportDate, grandTotal, "", "Just started");
+        marketBizPackage1.addPSavings(profileID, customerID, reportID, savingsAmount, numberOfDays, totalAmountSum, daysRemaining, amountRemaining, reportDate, status1);
         customerDailyReport = new CustomerDailyReport(packageID,reportID, savingsAmount, numberOfDays, totalAmountSum, daysRemaining, amountRemaining, reportDate, status1);
         if(customer !=null){
             customer.addCusNewSavings(packageID,reportID, savingsAmount, numberOfDays, totalAmountSum, daysRemaining, amountRemaining, reportDate, status1);
@@ -899,11 +898,11 @@ public class NewPackCusAct extends AppCompatActivity {
             phoneNumber1 = customer.getCusPhoneNumber();
         }
 
-        //skyLightPackage1.addProfileManager(userProfile);
-        skyLightPackage1.setPackageAmount_collected(newAmountContributedSoFar);
-        skyLightPackage1.addPReportCount(packageID, 1);
+        //marketBizPackage1.addProfileManager(userProfile);
+        marketBizPackage1.setPackageAmount_collected(newAmountContributedSoFar);
+        marketBizPackage1.addPReportCount(packageID, 1);
         if(userProfile !=null){
-            userProfile.addPNewSkylightPackage(profileID, customerID, packageID, packageType, savingsAmount, this.packageDuration, reportDate, grandTotal, "","just stated");
+            userProfile.addPNewBizPackage(profileID, customerID, packageID, packageType, savingsAmount, this.packageDuration, reportDate, grandTotal, "","just stated");
         }
         //Skylightransaction= new com.skylightapp.Classes.Transaction(transactionID, accountNo, this.reportDate, "Awajima", String.valueOf(account1), "Awajima", customerNames, this.totalAmountSum, transaction_type, "",officeBranch, "", "", "");
 
@@ -920,7 +919,7 @@ public class NewPackCusAct extends AppCompatActivity {
             timeLineClassDAO.insertTimeLine(tittle, details, reportDate, mCurrentLocation);
             timeLineClassDAO.insertTimeLine(timelineTittle3, details, reportDate, mCurrentLocation);
             tranXDAO.saveNewTransaction(profileID, customerID,Skylightransaction, acctID, "Awajima", customerNames,transaction_type, totalAmountSum, reportID, officeBranch, reportDate);
-            dbHelper.insertNewPackage(userProfile, customer,  skyLightPackage1);
+            dbHelper.insertNewPackage(userProfile, customer, marketBizPackage1);
             balanceDAO.saveNewAdminBalance(acctID, profileID, customerID, packageID, savingsAmount, reportDate,"Unconfirmed");
             dbHelper.insertDailyReport(packageID,reportID, profileID, customerID, reportDate, savingsAmount,numberOfDays,newTotal,newAmountContributedSoFar,newAmountRemaining,newDaysRemaining,"First Report");
 

@@ -15,12 +15,6 @@
         android:layout_marginBottom="10dp"
         android:layout_height="match_parent" />
 
-    <include
-        layout="@layout/bottom_product"
-        android:layout_width="match_parent"
-        android:layout_marginBottom="10dp"
-        android:layout_height="wrap_content" />
-
 
     <com.rom4ek.arcnavigationview.ArcNavigationView
         android:layout_width="match_parent"
@@ -43,7 +37,7 @@
         app:itemTextAppearance="@style/TextAppearance.AppCompat.Headline"
         android:stateListAnimator="@anim/raise"
         android:id="@+id/nav_viewShop"
-        app:headerLayout="@layout/tool_bar10a"
+        app:headerLayout="@layout/tool_bar_product"
         android:fitsSystemWindows="true"
         app:menu="@menu/shope_nav_menu" />
 

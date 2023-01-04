@@ -21,8 +21,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ID;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_TABLE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_ID;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_TABLE;
 
 
 @SuppressWarnings("deprecation")
@@ -35,19 +35,12 @@ public class ImportantDates implements Serializable, Parcelable {
     public static final String KEY_REPEAT_NO = "repeat_no";
     public static final String KEY_REPEAT_TYPE = "repeat_type";
     public static final String KEY_ACTIVE = "active";
-
-    public static final String IMPORTANT_DATE_TABLE = "dates_table";
-    public static final String IMPORTANT_DATE_ID = "id";
-    public static final String IMPORTANT_DATE_TITLE = "title";
-    public static final String IMPORTANT_DATE = "date";
-
-
-    private static final String JSON_NAME = "name";
-    private static final String JSON_DATE = "date";
-    private static final String JSON_YEAR = "year";
-    private static final String JSON_REMIND = "remind";
-    private static final String JSON_UID = "uid";
-    private static final String JSON_SHOW_YEAR = "show_year";
+    private static final String NAME_33 = "name33";
+    private static final String DATE_33 = "date33";
+    private static final String YEAR_33 = "year33";
+    private static final String REMIND_33 = "remind33";
+    private static final String UID_44 = "uid44";
+    private static final String SHOW_YEAR_44 = "show_year44";
     public static final String TABLE_REMINDERS = "ReminderTable";
 
     public static final String CREATE_REMINDER_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_REMINDERS + " (" + KEY_ID77777 + " INTEGER PRIMARY KEY AUTOINCREMENT," + PACKAGE_ID + " INTEGER,"+ KEY_TITLE_R + " TEXT," + KEY_DATE_R + " TEXT," + KEY_TIME_R + " INTEGER,"
@@ -117,30 +110,30 @@ public class ImportantDates implements Serializable, Parcelable {
     public ImportantDates(JSONObject json) throws JSONException {
 
         // Find String name of person attached to this birthday.
-        if (json.has(JSON_NAME)) {
-            name = json.getString(JSON_NAME);
+        if (json.has(NAME_33)) {
+            name = json.getString(NAME_33);
         }
 
-        remind = !json.has(JSON_REMIND) || json.getBoolean(JSON_REMIND );
+        remind = !json.has(REMIND_33) || json.getBoolean(REMIND_33);
 
-        if (json.has(JSON_DATE)) {
+        if (json.has(DATE_33)) {
             date = new Date();
-            date.setTime(json.getLong(JSON_DATE));
+            date.setTime(json.getLong(DATE_33));
         }
         // year
-        if (json.has(JSON_YEAR)) {
-            yearOfBirth = json.getInt(JSON_YEAR);
+        if (json.has(YEAR_33)) {
+            yearOfBirth = json.getInt(YEAR_33);
         } else {
             yearOfBirth = AppConstants.DEFAULT_YEAR_OF_BIRTH;
         }
 
         // UID
-        if (json.has(JSON_UID)) {
-            uID = json.getString(JSON_UID);
+        if (json.has(UID_44)) {
+            uID = json.getString(UID_44);
         }
 
         // Should use age?
-        showYear = json.has(JSON_SHOW_YEAR) && json.getBoolean(JSON_SHOW_YEAR);
+        showYear = json.has(SHOW_YEAR_44) && json.getBoolean(SHOW_YEAR_44);
     }
 
     public ImportantDates(String names, String dateOfBirth, String s, String s1, String s2, String s3) {
@@ -186,12 +179,12 @@ public class ImportantDates implements Serializable, Parcelable {
      */
     public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
-        json.put(JSON_NAME, this.getName());
-        json.put(JSON_DATE, this.getDate().getTime());
-        json.put(JSON_YEAR, this.getYear());
-        json.put(JSON_REMIND, this.getRemind());
-        json.put(JSON_UID, this.getUID());
-        json.put(JSON_SHOW_YEAR, this.shouldIncludeYear());
+        json.put(NAME_33, this.getName());
+        json.put(DATE_33, this.getDate().getTime());
+        json.put(YEAR_33, this.getYear());
+        json.put(REMIND_33, this.getRemind());
+        json.put(UID_44, this.getUID());
+        json.put(SHOW_YEAR_44, this.shouldIncludeYear());
         return json;
     }
     public int getID() {

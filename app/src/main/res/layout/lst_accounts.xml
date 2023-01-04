@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/rect_their_black">
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.payStackCard.MaterialCardView
         android:layout_width="match_parent"
         app:cardCornerRadius="20dp"
         app:cardElevation="50dp"
@@ -89,7 +89,7 @@
 
         </LinearLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.payStackCard.MaterialCardView>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/txt_account_name"

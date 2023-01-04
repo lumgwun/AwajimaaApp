@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mikepenz.materialdrawer.view.BezelImageView;
 import com.skylightapp.Classes.Customer;
-import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.Utils;
 import com.skylightapp.R;
 
@@ -25,18 +25,18 @@ import java.util.ArrayList;
 public class PackageDetailAdapter extends RecyclerView.Adapter<PackageDetailAdapter.RecyclerViewHolder> {
 
 
-    private ArrayList<SkyLightPackage> skyLightPackages;
+    private ArrayList<MarketBizPackage> marketBizPackages;
     private Context mcontext;
     int resources;
     private OnItemsClickListener listener;
 
-    public PackageDetailAdapter(ArrayList<SkyLightPackage> recyclerDataArrayList, Context mcontext) {
-        this.skyLightPackages = recyclerDataArrayList;
+    public PackageDetailAdapter(ArrayList<MarketBizPackage> recyclerDataArrayList, Context mcontext) {
+        this.marketBizPackages = recyclerDataArrayList;
         this.mcontext = mcontext;
     }
 
-    public PackageDetailAdapter(Context context, int resources, ArrayList<SkyLightPackage> skyLightPackages) {
-        this.skyLightPackages = skyLightPackages;
+    public PackageDetailAdapter(Context context, int resources, ArrayList<MarketBizPackage> marketBizPackages) {
+        this.marketBizPackages = marketBizPackages;
         this.mcontext = context;
         this.resources = resources;
 
@@ -81,7 +81,7 @@ public class PackageDetailAdapter extends RecyclerView.Adapter<PackageDetailAdap
         }
 
         @Override
-        public void onItemClick(SkyLightPackage skyLightPackage) {
+        public void onItemClick(MarketBizPackage marketBizPackage) {
 
         }
     }
@@ -89,37 +89,37 @@ public class PackageDetailAdapter extends RecyclerView.Adapter<PackageDetailAdap
     @SuppressLint({"ResourceAsColor", "DefaultLocale"})
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
-        SkyLightPackage skyLightPackage = skyLightPackages.get(position);
+        MarketBizPackage marketBizPackage = marketBizPackages.get(position);
         Customer customer = new Customer();
-        holder.packageType.setText(MessageFormat.format("Type:{0}", skyLightPackage.getPackageType() +"-"+skyLightPackage.getPackageType()));
-        holder.amountRemaining.setText(MessageFormat.format("Rem Amount: NGN{0}", String.format("%.2f", skyLightPackage.getPackageAmtRem())));
-        holder.grandTotalAmount.setText(MessageFormat.format("Exp Amount: NGN{0}", String.format("%.2f", skyLightPackage.getPackageTotalAmount())));
-        holder.packageAmount.setText(MessageFormat.format("Package Amount: NGN{0}", String.format("%.2f", skyLightPackage.getPackageDailyAmount())));
-        //holder.packageID.setText(MessageFormat.format("ID:{0}", String.valueOf(skyLightPackage.getPackageId())));
-        holder.status.setText(MessageFormat.format("Status:{0}", skyLightPackage.getPackageStatus()));
+        holder.packageType.setText(MessageFormat.format("Type:{0}", marketBizPackage.getPackageType() +"-"+ marketBizPackage.getPackageType()));
+        holder.amountRemaining.setText(MessageFormat.format("Rem Amount: NGN{0}", String.format("%.2f", marketBizPackage.getPackageAmtRem())));
+        holder.grandTotalAmount.setText(MessageFormat.format("Exp Amount: NGN{0}", String.format("%.2f", marketBizPackage.getPackageTotalAmount())));
+        holder.packageAmount.setText(MessageFormat.format("Package Amount: NGN{0}", String.format("%.2f", marketBizPackage.getPackageDailyAmount())));
+        //holder.packageID.setText(MessageFormat.format("ID:{0}", String.valueOf(marketBizPackage.getPackageId())));
+        holder.status.setText(MessageFormat.format("Status:{0}", marketBizPackage.getPackageStatus()));
         holder.customerName.setText(MessageFormat.format("Customer''s Name:{0},{1}", customer.getCusSurname(), customer.getCusFirstName()));
         holder.customerID.setText(MessageFormat.format("Customer''s ID:{0}", String.valueOf(customer.getCusUID())));
-        holder.startDate.setText(MessageFormat.format("Start Date:{0}", skyLightPackage.getPackageDateStarted()));
-        holder.savedAmount.setText(MessageFormat.format("Saved Amount: NGN{0}", String.format("%.2f", skyLightPackage.getPackageAmount_collected())));
-        holder.endDate.setText(MessageFormat.format("End date:{0}", skyLightPackage.getPackageDateEnded()));
-        holder.daysRemaining.setText(MessageFormat.format("Days Rem:{0}", String.valueOf(skyLightPackage.getPackageDaysRem())));
-        holder.duration.setText(MessageFormat.format("Duration:{0}", String.valueOf(skyLightPackage.getPackageDuration())));
-        holder.profileManager.setText(MessageFormat.format("Manager:{0}", String.valueOf(skyLightPackage.getPackageTellerName())));
+        holder.startDate.setText(MessageFormat.format("Start Date:{0}", marketBizPackage.getPackageDateStarted()));
+        holder.savedAmount.setText(MessageFormat.format("Saved Amount: NGN{0}", String.format("%.2f", marketBizPackage.getPackageAmount_collected())));
+        holder.endDate.setText(MessageFormat.format("End date:{0}", marketBizPackage.getPackageDateEnded()));
+        holder.daysRemaining.setText(MessageFormat.format("Days Rem:{0}", String.valueOf(marketBizPackage.getPackageDaysRem())));
+        holder.duration.setText(MessageFormat.format("Duration:{0}", String.valueOf(marketBizPackage.getPackageDuration())));
+        holder.profileManager.setText(MessageFormat.format("Manager:{0}", String.valueOf(marketBizPackage.getPackageTellerName())));
 
 
-        if (skyLightPackage.getPackageType().equalsIgnoreCase("Savings")) {
+        if (marketBizPackage.getPackageType().equalsIgnoreCase("Savings")) {
             holder.ImageIcon.setImageResource(R.drawable.shape_rect_1);
-            holder.packageType.setText(MessageFormat.format("Savings: {0}", skyLightPackage.getPackageSavings()));
+            holder.packageType.setText(MessageFormat.format("Savings: {0}", marketBizPackage.getPackageSavings()));
             holder.packageAmount.setTextColor(Color.RED);
-        } else if (skyLightPackage.getPackageType().equalsIgnoreCase("Item Purchase")) {
+        } else if (marketBizPackage.getPackageType().equalsIgnoreCase("Item Purchase")) {
             holder.ImageIcon.setImageResource(R.drawable.shape_rect_4);
-            holder.packageType.setText(MessageFormat.format("Item Purchase: {0}", skyLightPackage.getPackageName()));
+            holder.packageType.setText(MessageFormat.format("Item Purchase: {0}", marketBizPackage.getPackageName()));
             holder.packageAmount.setTextColor(Color.BLUE);
-        } else if (skyLightPackage.getPackageType().equalsIgnoreCase("Investment")) {
+        } else if (marketBizPackage.getPackageType().equalsIgnoreCase("Investment")) {
             holder.ImageIcon.setImageResource(R.drawable.shape_rect_7);
             holder.packageType.setVisibility(View.GONE);
             holder.packageAmount.setTextColor(android.R.color.holo_green_dark);
-        }else if (skyLightPackage.getPackageType().equalsIgnoreCase("Promo")) {
+        }else if (marketBizPackage.getPackageType().equalsIgnoreCase("Promo")) {
             holder.ImageIcon.setImageResource(R.drawable.shape_layer_3);
             holder.packageType.setVisibility(View.GONE);
             holder.packageAmount.setTextColor(android.R.color.holo_red_dark);
@@ -129,7 +129,7 @@ public class PackageDetailAdapter extends RecyclerView.Adapter<PackageDetailAdap
     }
     @Override
     public int getItemCount() {
-        return (null != skyLightPackages ? skyLightPackages.size() : 0);
+        return (null != marketBizPackages ? marketBizPackages.size() : 0);
     }
     private String removeNewLinesDividers(String text) {
         int decoratedTextLength = Math.min(text.length(), Utils.SkyLightPackage33.MAX_TEXT_LENGTH_IN_LIST);
@@ -137,7 +137,7 @@ public class PackageDetailAdapter extends RecyclerView.Adapter<PackageDetailAdap
     }
 
     public interface OnItemsClickListener{
-        void onItemClick(SkyLightPackage skyLightPackage);
+        void onItemClick(MarketBizPackage marketBizPackage);
     }
 
 }

@@ -3,7 +3,7 @@ package com.skylightapp.Classes;
 import android.content.Context;
 import android.content.Intent;
 
-import com.skylightapp.MapAndLoc.GoogleMapActivity;
+import com.skylightapp.MapAndLoc.GoogleMapAct;
 import com.skylightapp.MapAndLoc.HotEmergAct;
 import com.skylightapp.MapAndLoc.MapSettingsActivity;
 import com.skylightapp.R;
@@ -90,7 +90,7 @@ public class ContextMenu {
 
             case "GoogleMap" :
 
-                return GoogleMapActivity.class;
+                return GoogleMapAct.class;
 
             case "MapSettings" :
 

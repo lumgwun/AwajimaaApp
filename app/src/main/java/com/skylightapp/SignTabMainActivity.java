@@ -55,13 +55,13 @@ public class SignTabMainActivity extends TabActivity {
         Intent intentSignUp = new Intent().setClass(this, SignUpAct.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecSignUp = tabhost
                 .newTabSpec("Sign up")
-                .setIndicator("", resources.getDrawable(R.drawable.ic_create_new))
+                .setIndicator("", resources.getDrawable(R.drawable.signup2))
                 .setContent(intentSignUp);
 
         Intent intentSignIn = new Intent().setClass(this, LoginActivity.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecLogin = tabhost
                 .newTabSpec("Sign in")
-                .setIndicator("", resources.getDrawable(R.drawable.ic_icon2))
+                .setIndicator("", resources.getDrawable(R.drawable.login4))
                 .setContent(intentSignIn);
 
         tabhost.addTab(tabSpecSignUp);

@@ -1,11 +1,7 @@
 package com.skylightapp.Bookings;
 
-import static com.skylightapp.Bookings.BoatTrip.BOAT_TRIP_ID;
-import static com.skylightapp.Bookings.BoatTrip.BOAT_TRIP_TABLE;
-import static com.skylightapp.Classes.Account.ACCOUNTS_TABLE;
-import static com.skylightapp.Classes.Account.ACCOUNT_NO;
-import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
-import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
+import static com.skylightapp.Bookings.Trip.A_TRIP_ID;
+import static com.skylightapp.Bookings.Trip.A_TRIP_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 import static com.skylightapp.Classes.Transaction.TRANSACTIONS_TABLE;
@@ -14,7 +10,7 @@ import static com.skylightapp.Classes.Transaction.TRANSACTION_ID;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.skylightapp.MarketClasses.MarketBusiness;
+import com.blongho.country_data.Currency;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,22 +29,38 @@ public class TripBooking implements Parcelable, Serializable {
     public static final String TRIP_BOOKING_ADULT = "trip_Booking_Adult";
     public static final String TRIP_BOOKING_LUGGAGE = "trip_Booking_LUG";
     public static final String TRIP_BOOKING_NAME = "trip_Booking_Name";
-    public static final String TRIP_BOOKING_NIN = "trip_Booking_NIN";
+    public static final String TRIP_BOOKING_NIN_ID = "trip_Booking_NIN_ID";
     public static final String TRIP_BOOKING_SLOTS = "trip_Booking_Slots";
     public static final String TRIP_BOOKING_LAMT = "trip_Booking_LAmt";
     public static final String TRIP_BOOKING_TYPEOS = "trip_Booking_Service";
     public static final String TRIP_BOOKING_STATUS = "trip_Booking_Status";
     public static final String TRIP_BOOKING_TX_ID = "trip_Booking_TX_id";
+    public static final String TRIP_BOOKING_CURRENCY = "trip_Booking_Currency";
+    public static final String TRIP_BOOKING_STATE = "trip_Booking_State";
+    public static final String TRIP_BOOKING_COUNTRY = "trip_Booking_Country";
+    public static final String TRIP_BOOKING_FROM = "trip_Booking_From";
+    public static final String TRIP_BOOKING_OFFICE = "trip_Booking_Office";
 
+
+    public static final String TRIP_B_NIN_TABLE = "trip_B_NIN_Table";
+    public static final String TRIP_B_NIN_ID = "trip_B_Nin_id";
+    public static final String TRIP_B_NIN = "trip_B_NIN";
+    public static final String TRIP_B_TB_ID = "trip_B_TB_ID";
+    public static final String TRIP_B_TRIP_ID = "trip_B_Trip_ID";
+    public static final String TRIP_B_NIN_TYPE = "trip_B_ID_TYPE";
+    public static final String TRIP_B_NIN_EXPIRYD = "trip_B_Expiry_Date";
+    public static final String TRIP_B_NIN_STATUS = "trip_B_NIN_STATUS";
 
 
     public static final String CREATE_TRIP_BOOKING_TABLE = "CREATE TABLE IF NOT EXISTS " + TRIP_BOOKING_TABLE + " (" + TRIP_BOOKING_DBID + " INTEGER, " + TRIP_BOOKING_ID + " INTEGER , " +
             TRIP_BOOKING_PROF_ID + " INTEGER , " + TRIP_BOOKING_TRIP_ID + " INTEGER , " + TRIP_BOOKING_DATE + " TEXT, " + TRIP_BOOKING_DEST + " TEXT, " +
             TRIP_BOOKING_NAME + " TEXT, " + TRIP_BOOKING_SLOTS + " INTEGER, " + TRIP_BOOKING_AMT + " REAL, " + TRIP_BOOKING_MOP + " TEXT, " +
-            TRIP_BOOKING_TYPEOS + " TEXT, " + TRIP_BOOKING_ADULT + " INTEGER, " + TRIP_BOOKING_CHILDREN + " INTEGER, "+ TRIP_BOOKING_NIN + " TEXT, " +TRIP_BOOKING_LUGGAGE + " TEXT, "+  TRIP_BOOKING_LAMT + " TEXT, " + TRIP_BOOKING_STATUS + " INTEGER, " + "PRIMARY KEY(" +TRIP_BOOKING_DBID + "), " +"FOREIGN KEY(" + TRIP_BOOKING_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + TRIP_BOOKING_TRIP_ID  + ") REFERENCES " + BOAT_TRIP_TABLE + "(" + BOAT_TRIP_ID + ")," +"FOREIGN KEY(" + TRIP_BOOKING_TX_ID + ") REFERENCES " + TRANSACTIONS_TABLE + "(" + TRANSACTION_ID + "))";
+            TRIP_BOOKING_TYPEOS + " TEXT, " + TRIP_BOOKING_ADULT + " INTEGER, " + TRIP_BOOKING_CHILDREN + " INTEGER, "+ TRIP_BOOKING_NIN_ID + " TEXT, " +TRIP_BOOKING_LUGGAGE + " TEXT, "+  TRIP_BOOKING_LAMT + " TEXT, " + TRIP_BOOKING_STATUS + " INTEGER, "+ TRIP_BOOKING_CURRENCY + " TEXT , "+ TRIP_BOOKING_STATE + " TEXT , "+ TRIP_BOOKING_COUNTRY + " TEXT , " + TRIP_BOOKING_FROM + " TEXT , "+ TRIP_BOOKING_OFFICE + " TEXT , " + "PRIMARY KEY(" +TRIP_BOOKING_DBID + "), " +"FOREIGN KEY(" + TRIP_BOOKING_PROF_ID  + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + ")," +"FOREIGN KEY(" + TRIP_BOOKING_TRIP_ID  + ") REFERENCES " + A_TRIP_TABLE + "(" + A_TRIP_ID + ")," +"FOREIGN KEY(" + TRIP_BOOKING_TX_ID + ") REFERENCES " + TRANSACTIONS_TABLE + "(" + TRANSACTION_ID + "))";
 
 
-
+    public static final String CREATE_TRIP_B_NIN_TABLE = "CREATE TABLE IF NOT EXISTS " + TRIP_B_NIN_TABLE + " (" + TRIP_B_NIN_ID + " INTEGER, " + TRIP_B_TB_ID + " INTEGER , " +
+            TRIP_B_TRIP_ID + " INTEGER , " + TRIP_B_NIN + " TEXT , " + TRIP_B_NIN_TYPE + " TEXT, " + TRIP_B_NIN_EXPIRYD + " TEXT, " +
+            TRIP_B_NIN_STATUS + " TEXT, " +"PRIMARY KEY(" + TRIP_B_NIN_ID + "), "  +"FOREIGN KEY(" + TRIP_B_TRIP_ID  + ") REFERENCES " + A_TRIP_TABLE + "(" + A_TRIP_ID + "))";
 
     private int tripBID;
     private int tripBTripID;
@@ -66,7 +78,14 @@ public class TripBooking implements Parcelable, Serializable {
     private long tripBLuggageAmt;
     private int tripBSlots;
     private String tripBTypeOfService;
+    private String tripBCurStrng;
     private ArrayList<String> ninList;
+    private Currency tripBCurrency;
+    private String tripBState;
+    private String tripBCountry;
+    private String tripBFrom;
+    private String tripBOffice;
+
     public TripBooking() {
         super();
     }
@@ -99,6 +118,29 @@ public class TripBooking implements Parcelable, Serializable {
         this.tripBTime = subDate;
         this.tripBStatus = paid;
     }
+
+    public TripBooking(int bookingID, int profID, int tripID, String ninID, String bookingName, long amount, long logAmount, String currency, String takeOffPoint, String destination, int slots, String date, String modeOfPayment, String bookingType, int minors, String office, String state, String country, String status) {
+        this.tripBID = bookingID;
+        this.tripBTripID = tripID;
+        this.tripBProfID = profID;
+        this.tripBTypeOfService = bookingType;
+        this.tripBSlots = slots;
+        this.tripBDest = destination;
+        this.tripBAmount = amount;
+        this.tripBLuggageAmt = logAmount;
+        this.tripBNIN = ninID;
+        this.tripBName = bookingName;
+        this.tripBCurStrng = currency;
+        this.tripBFrom = takeOffPoint;
+        this.tripBNoOfChildren = minors;
+        this.tripBOffice = office;
+        this.tripBState = state;
+        this.tripBCountry = country;
+        this.tripBModeOfPayment = modeOfPayment;
+        this.tripBTime = date;
+        this.tripBStatus = status;
+    }
+
     public void addBookerNIN(String bookerNin) {
         ninList = new ArrayList<>();
         ninList.add(bookerNin);
@@ -272,5 +314,53 @@ public class TripBooking implements Parcelable, Serializable {
 
     public void setNinList(ArrayList<String> ninList) {
         this.ninList = ninList;
+    }
+
+    public Currency getTripBCurrency() {
+        return tripBCurrency;
+    }
+
+    public void setTripBCurrency(Currency tripBCurrency) {
+        this.tripBCurrency = tripBCurrency;
+    }
+
+    public String getTripBCurStrng() {
+        return tripBCurStrng;
+    }
+
+    public void setTripBCurStrng(String tripBCurStrng) {
+        this.tripBCurStrng = tripBCurStrng;
+    }
+
+    public String getTripBState() {
+        return tripBState;
+    }
+
+    public void setTripBState(String tripBState) {
+        this.tripBState = tripBState;
+    }
+
+    public String getTripBCountry() {
+        return tripBCountry;
+    }
+
+    public void setTripBCountry(String tripBCountry) {
+        this.tripBCountry = tripBCountry;
+    }
+
+    public String getTripBFrom() {
+        return tripBFrom;
+    }
+
+    public void setTripBFrom(String tripBFrom) {
+        this.tripBFrom = tripBFrom;
+    }
+
+    public String getTripBOffice() {
+        return tripBOffice;
+    }
+
+    public void setTripBOffice(String tripBOffice) {
+        this.tripBOffice = tripBOffice;
     }
 }

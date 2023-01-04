@@ -52,7 +52,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Rivers Branch"
+                        android:text="Uk Branch"
                         android:drawableTint="@color/light_blue1"
                         android:drawableTop="@drawable/ic_menu_gallery"
                         android:textAlignment="center"
@@ -85,7 +85,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Lagos Branch"
+                        android:text="Canada Branch"
                         android:drawableTint="#ff0000"
                         android:drawableTop="@drawable/ic_menu_gallery"
                         android:textAlignment="center"
@@ -250,7 +250,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Abuja Market Savings"
+                        android:text="Benue Market Savings"
                         android:drawableTint="#ffae19"
                         android:drawableTop="@drawable/ic_menu_gallery"
                         android:textAlignment="center"
@@ -283,7 +283,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Lagos Savings"
+                        android:text="Kenya Savings"
                         android:drawableTint="@color/B"
                         android:drawableTop="@drawable/ic_menu_gallery"
                         android:textAlignment="center"

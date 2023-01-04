@@ -92,12 +92,12 @@ public class SO_Customer_Adapter extends BaseAdapter {
         double amountReceived = standingOrder.getSo_ReceivedAmount();
         double amountExpected = standingOrder.getSo_ExpectedAmount();
         String soStatus = standingOrder.getSoStatus();
-        double balance =standingOrder.getSo_Account().getAccountBalance();
+        double balance =standingOrder.getAccount().getAccountBalance();
         double newBalance =balance-amountReceived;
-        long accountNo = (long) standingOrder.getSo_Account().getAwajimaAcctNo();
+        long accountNo = (long) standingOrder.getAccount().getAwajimaAcctNo();
         long soID = standingOrder.getUID();
         Bundle payBundle = new Bundle();
-        double newBalanceForCustomer =standingOrder.getSo_Account().setBalance(newBalance);
+        double newBalanceForCustomer =standingOrder.getAccount().setBalance(newBalance);
         if(profile !=null){
             payBundle.putString("USER_ROLE", String.valueOf(profile.getProfileType()));
             payBundle.putString("USER_OFFICE", profile.getProfOfficeName());

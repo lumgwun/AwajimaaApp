@@ -21,6 +21,7 @@ import com.skylightapp.Interfaces.TimeLineDao;
 import com.skylightapp.Interfaces.TransactionDao;
 import com.skylightapp.MapAndLoc.EmergReportNext;
 import com.skylightapp.MapAndLoc.EmergencyReport;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.SuperAdmin.AppCommission;
 import com.skylightapp.Tellers.TellerCash;
 
@@ -52,7 +53,7 @@ public class RoomRepo {
     private LiveData<List<Transaction>> allTransactions;
     private LiveData<List<EmergencyReport>> allEmergencyReports;
     private LiveData<List<EmergReportNext>> allEmergRepNexts;
-    private LiveData<List<SkyLightPackage>> allSkylightPacks;
+    private LiveData<List<MarketBizPackage>> allSkylightPacks;
     private LiveData<List<AppCash>> allSkylightCashes;
     private LiveData<List<StandingOrder>> allSOs;
     private LiveData<List<Account>> allAccounts;

@@ -1,16 +1,24 @@
 package com.skylightapp.MapAndLoc;
 
 import android.app.IntentService;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationRequest;
+import android.os.Binder;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
 import android.os.ResultReceiver;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 
 import java.util.List;
 import java.util.Locale;
@@ -29,6 +37,48 @@ public class GetAddressIntentService extends IntentService {
 
     private static final String EXTRA_PARAM1 = "com.skylightapp.MapAndLoc.extra.PARAM1";
     private static final String EXTRA_PARAM2 = "com.skylightapp.MapAndLoc.extra.PARAM2";
+
+    private static final String TAG = GetAddressIntentService.class.getSimpleName();
+
+
+    private static final String CHANNEL_ID = "channel_01";
+
+    //static final String ACTION_BROADCAST = PACKAGE_NAME + ".broadcast";
+
+    //static final String EXTRA_LOCATION = PACKAGE_NAME + ".location";
+    /*private static final String EXTRA_STARTED_FROM_NOTIFICATION = PACKAGE_NAME +
+            ".started_from_notification";*/
+
+    private final IBinder mBinder = new Binder();
+
+
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
+
+
+    private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
+            UPDATE_INTERVAL_IN_MILLISECONDS / 2;
+
+
+    private static final int NOTIFICATION_ID = 12345678;
+
+
+    private boolean mChangingConfiguration = false;
+
+    private NotificationManager mNotificationManager;
+
+
+    private LocationRequest mLocationRequest;
+
+
+    private FusedLocationProviderClient mFusedLocationClient;
+
+
+    private LocationCallback mLocationCallback;
+
+    private Handler mServiceHandler;
+
+
+    private Location mLocation;
 
 
     public static void startActionFoo(Context context, String param1, String param2) {

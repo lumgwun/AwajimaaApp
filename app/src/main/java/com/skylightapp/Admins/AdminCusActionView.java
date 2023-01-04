@@ -37,7 +37,7 @@ import com.skylightapp.Classes.PaymentCode;
 import com.skylightapp.Classes.PaymentDoc;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.StandingOrder;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.AcctDAO;
@@ -100,7 +100,7 @@ public class AdminCusActionView extends AppCompatActivity {
     private  SuperSavingsAdapter savingsAdapter;
     DBHelper dbHelper;
     private ArrayList<CustomerDailyReport> savingsArrayList;
-    private ArrayList<SkyLightPackage> skyLightPackages;
+    private ArrayList<MarketBizPackage> marketBizPackages;
     private ArrayList<Account> accounts4;
     private ArrayList<Transaction> transactions2;
     private ArrayList<Loan> cusLoans;
@@ -142,6 +142,7 @@ public class AdminCusActionView extends AppCompatActivity {
     private TransactionGrantingDAO grantingDAO;
     private AwardDAO awardDAO;
     SQLiteDatabase sqLiteDatabase;
+    private static final String PREF_NAME = "awajima";
 
 
     @Override
@@ -268,7 +269,7 @@ public class AdminCusActionView extends AppCompatActivity {
                         sqLiteDatabase = dbHelper.getReadableDatabase();
                         try {
 
-                            skyLightPackages = dbHelper.getPackagesFromCustomer(customerID);
+                            marketBizPackages = dbHelper.getPackagesFromCustomer(customerID);
                         } catch (Exception e) {
                             System.out.println("Oops!");
                         }
@@ -276,7 +277,7 @@ public class AdminCusActionView extends AppCompatActivity {
 
                     }
 
-                    packageAdapter = new SkyLightPackageAdapter(AdminCusActionView.this, skyLightPackages);
+                    packageAdapter = new SkyLightPackageAdapter(AdminCusActionView.this, marketBizPackages);
                     //recyclerPackages.setHasFixedSize(true);
                     recyclerPackages.setAdapter(packageAdapter);
                     DividerItemDecoration dividerItemDecoration1 = new DividerItemDecoration(recyclerPackages.getContext(),

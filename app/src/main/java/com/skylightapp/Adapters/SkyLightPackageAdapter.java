@@ -19,18 +19,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.skylightapp.Admins.AdminCusActionView;
-import com.skylightapp.Admins.AdminPackageActivity;
+import com.skylightapp.Admins.AdminPackageAct;
 import com.skylightapp.Admins.CusPackHistoryAct;
 import com.skylightapp.Admins.ImportDateTab;
 import com.skylightapp.Admins.SODueDateListAct;
 import com.skylightapp.Admins.ProfilePackHistoryAct;
 import com.skylightapp.Classes.Customer;
-import com.skylightapp.Classes.SkyLightPackage;
-import com.skylightapp.Classes.SkyLightPackModel;
+import com.skylightapp.MarketClasses.MarketBizPackModel;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Interfaces.SkylightPackageListener;
 import com.skylightapp.R;
-import com.skylightapp.SkyLightPackageActivity;
+import com.skylightapp.AwajimaPackAct;
 import com.skylightapp.SuperAdmin.BizSuperAdminAllView;
 import com.skylightapp.Tellers.CustomerDetailAct;
 import com.skylightapp.Tellers.MyProfilePackList;
@@ -43,8 +43,8 @@ import static java.lang.String.valueOf;
 
 public class SkyLightPackageAdapter extends RecyclerView.Adapter<SkyLightPackageAdapter.ViewHolder> implements ListAdapter {
     Context context;
-    private ArrayList<SkyLightPackage> packageList;
-    private ArrayList<SkyLightPackModel> skyLightPackage_2s;
+    private ArrayList<MarketBizPackage> packageList;
+    private ArrayList<MarketBizPackModel> skyLightPackage_2s;
     private OnItemsClickListener listener;
     SkylightPackageListener mListener;
     private Customer customer;
@@ -55,68 +55,68 @@ public class SkyLightPackageAdapter extends RecyclerView.Adapter<SkyLightPackage
         this.context = applicationContext;
     }
 
-    public SkyLightPackageAdapter(ArrayList<SkyLightPackage> recyclerDataArrayList, SkyLightPackageActivity skyLightPackageActivity) {
+    public SkyLightPackageAdapter(ArrayList<MarketBizPackage> recyclerDataArrayList, AwajimaPackAct awajimaPackAct) {
         this.packageList = recyclerDataArrayList;
 
     }
 
-    public SkyLightPackageAdapter(Context context, ArrayList<SkyLightPackModel> skyLightPackage_2s) {
+    public SkyLightPackageAdapter(Context context, ArrayList<MarketBizPackModel> skyLightPackage_2s) {
         this.skyLightPackage_2s = skyLightPackage_2s;
         this.context=context;
 
     }
 
-    public SkyLightPackageAdapter(SODueDateListAct SODueDateListAct, ArrayList<SkyLightPackage> skyLightPackageArrayList) {
+    public SkyLightPackageAdapter(SODueDateListAct SODueDateListAct, ArrayList<MarketBizPackage> marketBizPackageArrayList) {
         this.context= SODueDateListAct;
-        this.packageList=skyLightPackageArrayList;
+        this.packageList= marketBizPackageArrayList;
 
     }
 
-    public SkyLightPackageAdapter(AdminCusActionView adminCusActionView, ArrayList<SkyLightPackage> skyLightPackages) {
+    public SkyLightPackageAdapter(AdminCusActionView adminCusActionView, ArrayList<MarketBizPackage> marketBizPackages) {
         this.context=adminCusActionView;
-        this.packageList=skyLightPackages;
+        this.packageList= marketBizPackages;
 
     }
 
-    public SkyLightPackageAdapter(AdminPackageActivity adminPackageActivity, ArrayList<SkyLightPackage> skyLightPackages) {
-        this.context=adminPackageActivity;
-        this.packageList=skyLightPackages;
+    public SkyLightPackageAdapter(AdminPackageAct adminPackageAct, ArrayList<MarketBizPackage> marketBizPackages) {
+        this.context= adminPackageAct;
+        this.packageList= marketBizPackages;
 
     }
 
-    public SkyLightPackageAdapter(CusPackHistoryAct cusPackHistoryAct, ArrayList<SkyLightPackage> skyLightPackages) {
+    public SkyLightPackageAdapter(CusPackHistoryAct cusPackHistoryAct, ArrayList<MarketBizPackage> marketBizPackages) {
         this.context=cusPackHistoryAct;
-        this.packageList=skyLightPackages;
+        this.packageList= marketBizPackages;
 
     }
 
-    public SkyLightPackageAdapter(ProfilePackHistoryAct profilePackHistoryAct, ArrayList<SkyLightPackage> skyLightPackages) {
+    public SkyLightPackageAdapter(ProfilePackHistoryAct profilePackHistoryAct, ArrayList<MarketBizPackage> marketBizPackages) {
         this.context=profilePackHistoryAct;
-        this.packageList=skyLightPackages;
+        this.packageList= marketBizPackages;
 
     }
 
-    public SkyLightPackageAdapter(MyProfilePackList myProfilePackList, ArrayList<SkyLightPackage> skyLightPackages) {
+    public SkyLightPackageAdapter(MyProfilePackList myProfilePackList, ArrayList<MarketBizPackage> marketBizPackages) {
         this.context=myProfilePackList;
-        this.packageList=skyLightPackages;
+        this.packageList= marketBizPackages;
 
     }
 
-    public SkyLightPackageAdapter(CustomerDetailAct customerDetailAct, ArrayList<SkyLightPackage> skyLightPackageArrayList) {
+    public SkyLightPackageAdapter(CustomerDetailAct customerDetailAct, ArrayList<MarketBizPackage> marketBizPackageArrayList) {
         this.context=customerDetailAct;
-        this.packageList=skyLightPackageArrayList;
+        this.packageList= marketBizPackageArrayList;
 
     }
 
-    public SkyLightPackageAdapter(ImportDateTab importDateTab, ArrayList<SkyLightPackage> skyLightPackages) {
+    public SkyLightPackageAdapter(ImportDateTab importDateTab, ArrayList<MarketBizPackage> marketBizPackages) {
         this.context=importDateTab;
-        this.packageList=skyLightPackages;
+        this.packageList= marketBizPackages;
 
     }
 
-    public SkyLightPackageAdapter(BizSuperAdminAllView bizSuperAdminAllView, ArrayList<SkyLightPackage> skyLightPackages) {
+    public SkyLightPackageAdapter(BizSuperAdminAllView bizSuperAdminAllView, ArrayList<MarketBizPackage> marketBizPackages) {
         this.context= bizSuperAdminAllView;
-        this.packageList=skyLightPackages;
+        this.packageList= marketBizPackages;
 
     }
 
@@ -175,7 +175,7 @@ public class SkyLightPackageAdapter extends RecyclerView.Adapter<SkyLightPackage
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        final SkyLightPackModel skyLightPackModel = skyLightPackage_2s.get(position);
+        final MarketBizPackModel skyLightPackModel = skyLightPackage_2s.get(position);
         String tittle=skyLightPackModel.getpMItemName();
         String type=skyLightPackModel.getpMType();
         int duration=skyLightPackModel.getpMDuration();
@@ -189,14 +189,14 @@ public class SkyLightPackageAdapter extends RecyclerView.Adapter<SkyLightPackage
         Glide.with(holder.itemImage).load(skyLightPackModel.getpMItemImage()).fitCenter().into(holder.itemImage);
 
         //holder.itemImage.setImageResource(R.drawable.savings);
-        final SkyLightPackage skyLightPackage = new SkyLightPackage(id,0,tittle,amount,grandTotal,type,duration);
+        final MarketBizPackage marketBizPackage = new MarketBizPackage(id,0,tittle,amount,grandTotal,type,duration);
 
 
         holder.singleItemCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(listener != null){
-                    listener.onItemClick(skyLightPackage);
+                    listener.onItemClick(marketBizPackage);
                 }
             }
         });
@@ -204,11 +204,11 @@ public class SkyLightPackageAdapter extends RecyclerView.Adapter<SkyLightPackage
             @Override
             public void onClick(View view) {
                 Bundle paymentBundle = new Bundle();
-                if(skyLightPackage !=null){
-                    customer=skyLightPackage.getPackageCustomer();
+                if(marketBizPackage !=null){
+                    customer= marketBizPackage.getPackageCustomer();
                 }
                 if(listener != null){
-                    listener.onItemClick(skyLightPackage);
+                    listener.onItemClick(marketBizPackage);
                 }
 
             }
@@ -244,7 +244,7 @@ public class SkyLightPackageAdapter extends RecyclerView.Adapter<SkyLightPackage
         public AppCompatEditText noOfDays;
         public ImageView itemImage;
         public AppCompatButton btnSubmit;
-        SkyLightPackage skyLightPackage;
+        MarketBizPackage marketBizPackage;
         DBHelper dbHelper;
 
 
@@ -275,13 +275,13 @@ public class SkyLightPackageAdapter extends RecyclerView.Adapter<SkyLightPackage
         public void onClick(View view) {
 
             if (mListener != null) {
-                mListener.onItemClick(skyLightPackage);
+                mListener.onItemClick(marketBizPackage);
             }
 
         }
     }
 
     public interface OnItemsClickListener{
-        void onItemClick(SkyLightPackage lightPackage);
+        void onItemClick(MarketBizPackage lightPackage);
     }
 }

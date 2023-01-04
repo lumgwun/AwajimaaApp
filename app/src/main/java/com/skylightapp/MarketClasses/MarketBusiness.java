@@ -20,7 +20,6 @@ import com.skylightapp.Classes.PaymentCode;
 import com.skylightapp.Classes.PaymentDoc;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.ProjectSavingsGroup;
-import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.StandingOrder;
 import com.skylightapp.Classes.TimeLine;
 import com.skylightapp.Classes.Transaction;
@@ -29,6 +28,7 @@ import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Inventory.Stocks;
 import com.skylightapp.MapAndLoc.EmergencyReport;
 import com.skylightapp.SuperAdmin.Awajima;
+import com.skylightapp.Tellers.TellerCash;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -60,10 +60,13 @@ public class MarketBusiness implements Parcelable, Serializable {
     public static final String MARKET_BIZ_CONTINENT = "Biz_Continent";
     public static final String MARKET_BIZ_MARKET_ID = "Biz_MarketBiz_ID";
     public static final String MARKET_BIZ_CUSTOMER_ID = "Biz_Customer_ID";
+    public static final String MARKET_BIZ_CAC_DATE = "Biz_CAC_Date";
+    public static final String MARKET_BIZ_DESC = "Biz_Desc";
+    public static final String MARKET_BIZ_JOINED_D = "Biz_Joining_D";
 
 
     public static final String CREATE_BIZ_TABLE = "CREATE TABLE IF NOT EXISTS " + MARKET_BIZ_TABLE + " (" + MARKET_BIZ_PROF_ID + " INTEGER , " +
-            MARKET_BIZ_ID + " INTEGER , " + MARKET_BIZ_NAME + " TEXT , " + MARKET_BIZ_BRANDNAME + " TEXT , " + MARKET_BIZ_TYPE + " TEXT , " + MARKET_BIZ_REG_NO + " TEXT , " + MARKET_BIZ_EMAIL + " TEXT , " + MARKET_BIZ_PHONE_NO + " TEXT , " + MARKET_BIZ_ADDRESS + " TEXT , " + MARKET_BIZ_STATE + " TEXT , " + MARKET_BIZ_PIX + " BLOB , " + MARKET_BIZ_STATUS + " TEXT , "+ MARKET_BIZ_COUNTRY + " TEXT , "+ MARKET_BIZ_CONTINENT + " TEXT , "+ MARKET_BIZ_CUSTOMER_ID + " TEXT , " +  "PRIMARY KEY(" + MARKET_BIZ_ID + "), " +"FOREIGN KEY(" + MARKET_BIZ_MARKET_ID  + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + ")," +
+            MARKET_BIZ_ID + " INTEGER , " + MARKET_BIZ_NAME + " TEXT , " + MARKET_BIZ_BRANDNAME + " TEXT , " + MARKET_BIZ_TYPE + " TEXT , " + MARKET_BIZ_REG_NO + " TEXT , " + MARKET_BIZ_EMAIL + " TEXT , " + MARKET_BIZ_PHONE_NO + " TEXT , " + MARKET_BIZ_ADDRESS + " TEXT , " + MARKET_BIZ_STATE + " TEXT , " + MARKET_BIZ_PIX + " BLOB , " + MARKET_BIZ_STATUS + " TEXT , "+ MARKET_BIZ_COUNTRY + " TEXT , "+ MARKET_BIZ_CONTINENT + " TEXT , "+ MARKET_BIZ_CUSTOMER_ID + " TEXT , " + MARKET_BIZ_CAC_DATE + " TEXT , " + MARKET_BIZ_DESC + " TEXT , "+ MARKET_BIZ_JOINED_D + " TEXT , "+  "PRIMARY KEY(" + MARKET_BIZ_ID + "), " +"FOREIGN KEY(" + MARKET_BIZ_MARKET_ID  + ") REFERENCES " + MARKET_TABLE + "(" + MARKET_ID + ")," +
             "FOREIGN KEY(" + MARKET_BIZ_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
     public boolean isAwardOrganization;
@@ -72,7 +75,7 @@ public class MarketBusiness implements Parcelable, Serializable {
     public boolean isLogisticesAgent;
     public long businessID;
     public long ID;
-    public long profileID;
+    public long mBProfileID;
     //public int customerID;
     public String businessName;
 
@@ -98,7 +101,8 @@ public class MarketBusiness implements Parcelable, Serializable {
     private ArrayList<MarketBusiness> marketBusinesses;
     private ArrayList<TimeLine> marketBizTimeLines;
     private ArrayList<CustomerDailyReport> dailyReports;
-    private ArrayList<SkyLightPackage> skyLightPackages;
+    private ArrayList<MarketBizPackage> marketBizPackages;
+
     private ArrayList<Loan> loans;
     private Transaction transaction;
     private int bizMarketID;
@@ -131,7 +135,7 @@ public class MarketBusiness implements Parcelable, Serializable {
     private ArrayList<MarketTranx> mBusMarketTranxS;
     private ArrayList<MarketCommodity> bizMarketCommodities;
     private ArrayList<MarketAnnouncement> bizMarketAnnouncements;
-    private ArrayList<MarketBizSubScription> bizMarketBizSubs;
+    private ArrayList<MarketBizSub> bizMarketBizSubs;
     private ArrayList<MarketInventory> bizMarketInvTs;
     private ArrayList<MarketStock> bizMarketStocks;
     private ArrayList<BizDealAccount> bizDealAccountArrayList;
@@ -154,6 +158,11 @@ public class MarketBusiness implements Parcelable, Serializable {
     private Market bizMarket;
     private Set<String> mBTypes;
     private ArrayList<BizDealPartner> bizDealPartners;
+    private List<TellerCash> bizTellerCashList;
+    private String bizDrivePix;
+    private String bizCountry;
+    private String bizContinent;
+    private String mBDateOfCACReg;
 
 
     public MarketBusiness(long businessID) {
@@ -161,12 +170,17 @@ public class MarketBusiness implements Parcelable, Serializable {
         this.businessID=businessID;
 
     }
+    public MarketBusiness(String s, String s1) {
+        this.bizDrivePix = s;
+        this.businessBrandName = s1;
+
+    }
 
 
-    public MarketBusiness(long biZID, long profileID, String name, String brandName, String typeBiz, String bizEmail, String bizAddress, String ph_no, String state, String regNo) {
+    public MarketBusiness(long biZID, long mBProfileID, String name, String brandName, String typeBiz, String bizEmail, String bizAddress, String ph_no, String state, String regNo) {
         super();
         this.businessID = biZID;
-        this.profileID = profileID;
+        this.mBProfileID = mBProfileID;
         this.businessName = name;
         this.businessBrandName = brandName;
         this.bizEmail = bizEmail;
@@ -202,7 +216,7 @@ public class MarketBusiness implements Parcelable, Serializable {
         isLogisticesAgent = in.readByte() != 0;
         businessID = in.readLong();
         ID = in.readLong();
-        profileID = in.readLong();
+        mBProfileID = in.readLong();
         businessName = in.readString();
         businessBrandName = in.readString();
         bizEmail = in.readString();
@@ -225,7 +239,7 @@ public class MarketBusiness implements Parcelable, Serializable {
         marketBusinesses = in.createTypedArrayList(MarketBusiness.CREATOR);
         marketBizTimeLines = in.createTypedArrayList(TimeLine.CREATOR);
         dailyReports = in.createTypedArrayList(CustomerDailyReport.CREATOR);
-        skyLightPackages = in.createTypedArrayList(SkyLightPackage.CREATOR);
+        marketBizPackages = in.createTypedArrayList(MarketBizPackage.CREATOR);
         loans = in.createTypedArrayList(Loan.CREATOR);
         transaction = in.readParcelable(Transaction.class.getClassLoader());
         loan = in.readParcelable(Loan.class.getClassLoader());
@@ -269,11 +283,12 @@ public class MarketBusiness implements Parcelable, Serializable {
 
 
 
+
     public void addBizDealAcct(BizDealAccount account) {
         bizDealAccountArrayList = new ArrayList<>();
         bizDealAccountArrayList.add(account);
     }
-    public void addSubscription(MarketBizSubScription subScription) {
+    public void addSubscription(MarketBizSub subScription) {
         bizMarketBizSubs= new ArrayList<>();
         bizMarketBizSubs.add(subScription);
 
@@ -300,6 +315,22 @@ public class MarketBusiness implements Parcelable, Serializable {
         ArrayList<Integer> profileMarketIDs = new ArrayList<>();
         profileMarketIDs.add(profileMarketID);
     }
+    public void addMarketPackage(MarketBizPackage marketBizPackage) {
+        marketBiz_acctIDs = new ArrayList<>();
+        marketBizPackages.add(marketBizPackage);
+    }
+    public void addTellerCash(TellerCash tellerCash) {
+        bizTellerCashList = new ArrayList<>();
+        bizTellerCashList.add(tellerCash);
+    }
+    public List<TellerCash> getBizTellerCashList() {
+        return bizTellerCashList;
+    }
+
+    public void setBizTellerCashList(List<TellerCash> bizTellerCashList) {
+        this.bizTellerCashList = bizTellerCashList;
+    }
+
 
 
     public ArrayList<MarketCommodity> getBizMarketCommodities() {
@@ -308,6 +339,13 @@ public class MarketBusiness implements Parcelable, Serializable {
 
     public void setBizMarketCommodities(ArrayList<MarketCommodity> bizMarketCommodities) {
         this.bizMarketCommodities = bizMarketCommodities;
+    }
+    public ArrayList<MarketBizPackage> getMarketBizPackages() {
+        return marketBizPackages;
+    }
+
+    public void setMarketBizPackages(ArrayList<MarketBizPackage> marketBizPackages1) {
+        this.marketBizPackages = marketBizPackages1;
     }
 
 
@@ -319,11 +357,11 @@ public class MarketBusiness implements Parcelable, Serializable {
         this.bizMarketAnnouncements = bizMarketAnnouncements;
     }
 
-    public ArrayList<MarketBizSubScription> getBizMarketBizSubs() {
+    public ArrayList<MarketBizSub> getBizMarketBizSubs() {
         return bizMarketBizSubs;
     }
 
-    public void setBizMarketBizSubs(ArrayList<MarketBizSubScription> bizMarketBizSubs) {
+    public void setBizMarketBizSubs(ArrayList<MarketBizSub> bizMarketBizSubs) {
         this.bizMarketBizSubs = bizMarketBizSubs;
     }
 
@@ -380,10 +418,10 @@ public class MarketBusiness implements Parcelable, Serializable {
         this.numberOfNominations = numberOfNominations;
     }
 
-    public MarketBusiness(long businessID, long profileID, String businessName, String brandName, String bizEmail, String bizAddress, String bizPhoneNo, String bizType, String bizRegNo, String dateOfJoin, String status) {
+    public MarketBusiness(long businessID, long mBProfileID, String businessName, String brandName, String bizEmail, String bizAddress, String bizPhoneNo, String bizType, String bizRegNo, String dateOfJoin, String status) {
         super();
         this.businessID = businessID;
-        this.profileID = profileID;
+        this.mBProfileID = mBProfileID;
         this.businessName = businessName;
         this.bizEmail = bizEmail;
         this.bizAddress = bizAddress;
@@ -410,8 +448,8 @@ public class MarketBusiness implements Parcelable, Serializable {
     public long getBusinessID() { return businessID; }
     public void setBizID(long businessID) { this.businessID = businessID; }
 
-    public long getProfileID() { return profileID; }
-    public void setProfileID(long profileID) { this.profileID = profileID; }
+    public long getmBProfileID() { return mBProfileID; }
+    public void setmBProfileID(long mBProfileID) { this.mBProfileID = mBProfileID; }
 
 
     public String getBizStatus() { return bizStatus; }
@@ -421,12 +459,6 @@ public class MarketBusiness implements Parcelable, Serializable {
     public void setDateOfJoin(String dateOfJoin) { this.dateOfJoin = dateOfJoin; }
 
     public String getBizDescription() { return bizDescription; }
-
-    public String getBizName() { return businessName; }
-
-
-
-
 
     public Uri getBizPicture() { return bizPicture; }
     public void setBizPicture(Uri bizPicture) { this.bizPicture = bizPicture; }
@@ -455,10 +487,9 @@ public class MarketBusiness implements Parcelable, Serializable {
         return bizType;
     }
     public void setBizType(String bizType) { this.bizType = bizType; }
-    public void setProfilePhoneNumber(String bizPhoneNo) { this.bizPhoneNo = bizPhoneNo; }
 
-    public void setProfileBusinessName(String businessName) { this.businessName = businessName; }
-    public String getProfileBusinessName() {
+    public void setBusinessName(String businessName) { this.businessName = businessName; }
+    public String getBusinessName() {
         return businessName;
     }
 
@@ -587,7 +618,7 @@ public class MarketBusiness implements Parcelable, Serializable {
         parcel.writeByte((byte) (isLogisticesAgent ? 1 : 0));
         parcel.writeLong(businessID);
         parcel.writeLong(ID);
-        parcel.writeLong(profileID);
+        parcel.writeLong(mBProfileID);
         parcel.writeString(businessName);
         parcel.writeString(businessBrandName);
         parcel.writeString(bizEmail);
@@ -610,7 +641,7 @@ public class MarketBusiness implements Parcelable, Serializable {
         parcel.writeTypedList(marketBusinesses);
         parcel.writeTypedList(marketBizTimeLines);
         parcel.writeTypedList(dailyReports);
-        parcel.writeTypedList(skyLightPackages);
+        parcel.writeTypedList(marketBizPackages);
         parcel.writeTypedList(loans);
         parcel.writeParcelable(transaction, i);
         parcel.writeParcelable(loan, i);
@@ -783,5 +814,39 @@ public class MarketBusiness implements Parcelable, Serializable {
 
     public void setBizDealPartners(ArrayList<BizDealPartner> bizDealPartners) {
         this.bizDealPartners = bizDealPartners;
+    }
+
+
+    public String getBizDrivePix() {
+        return bizDrivePix;
+    }
+
+    public void setBizDrivePix(String bizDrivePix) {
+        this.bizDrivePix = bizDrivePix;
+    }
+
+    public void setBizCountry(String bizCountry) {
+        this.bizCountry = bizCountry;
+    }
+
+    public String getBizCountry() {
+        return bizCountry;
+    }
+
+    public void setBizContinent(String bizContinent) {
+        this.bizContinent = bizContinent;
+    }
+
+    public String getBizContinent() {
+        return bizContinent;
+    }
+
+
+    public void setmBDateOfCACReg(String mBDateOfCACReg) {
+        this.mBDateOfCACReg = mBDateOfCACReg;
+    }
+
+    public String getmBDateOfCACReg() {
+        return mBDateOfCACReg;
     }
 }

@@ -7,7 +7,6 @@ import static com.skylightapp.BuildConfig.QUICKBLOX_SECRET_KEY;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
 import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
@@ -32,8 +31,6 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.GridLayout;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.Toast;
@@ -51,7 +48,6 @@ import com.skylightapp.Admins.SendSingleUserMAct;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Customers.CusPacksAct;
 import com.skylightapp.Database.AcctDAO;
 import com.skylightapp.Database.CodeDAO;
 import com.skylightapp.Database.CusDAO;
@@ -74,13 +70,7 @@ import com.skylightapp.MarketClasses.ErrorUtilsCon;
 import com.skylightapp.MarketClasses.PermissionsCheckerCon;
 import com.skylightapp.MarketClasses.WebRtcSessionManagerCon;
 import com.skylightapp.R;
-import com.skylightapp.Tellers.MyCashList;
-import com.skylightapp.Tellers.MyCustPackTab;
-import com.skylightapp.Tellers.TellerDrawerAct;
-import com.skylightapp.Tellers.TellerHomeChoices;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
-
-import org.jivesoftware.smack.chat.ChatMessageListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

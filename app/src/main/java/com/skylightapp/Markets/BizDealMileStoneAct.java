@@ -1,8 +1,5 @@
 package com.skylightapp.Markets;
 
-import static com.skylightapp.Classes.PinEntryView.ACCENT_ALL;
-import static com.skylightapp.Classes.PinEntryView.ACCENT_CHARACTER;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
@@ -22,18 +19,15 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.quickblox.users.model.QBUser;
-import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.MarketClasses.BizDealMileStone;
 import com.skylightapp.MarketClasses.BusinessDeal;
-import com.skylightapp.MarketClasses.MarketBizSubScription;
+import com.skylightapp.MarketClasses.MarketBizSub;
 import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
 
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Random;
@@ -51,7 +45,7 @@ public class BizDealMileStoneAct extends AppCompatActivity {
     private String json,json1,json2,SharedPrefUserName,SharedPrefUserPassword,SharedPrefUserMachine;
     private Profile bizProfile;
     private QBUser qbUserOfBiz;
-    private MarketBizSubScription subScription;
+    private MarketBizSub subScription;
     private MarketBusiness marketBusiness;
     private double productAmt,calAmount,amount;
     private AppCompatButton buttonAdd;
@@ -73,7 +67,7 @@ public class BizDealMileStoneAct extends AppCompatActivity {
         random = new SecureRandom();
         businessDeal=new BusinessDeal();
         bizDealMileStone= new BizDealMileStone();
-        subScription= new MarketBizSubScription();
+        subScription= new MarketBizSub();
 
         codeList = new ArrayList<Integer>();
         milestonesAmts = new ArrayList<Double>();
@@ -93,7 +87,7 @@ public class BizDealMileStoneAct extends AppCompatActivity {
         marketBusiness = gson1.fromJson(json1, MarketBusiness.class);
 
         json2 = userPreferences.getString("LastMarketBizSubScriptionUsed", "");
-        subScription = gson2.fromJson(json2, MarketBizSubScription.class);
+        subScription = gson2.fromJson(json2, MarketBizSub.class);
 
         SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
         SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");

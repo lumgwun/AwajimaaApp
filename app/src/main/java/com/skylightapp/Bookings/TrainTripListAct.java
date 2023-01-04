@@ -1,6 +1,11 @@
 package com.skylightapp.Bookings;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,9 +14,12 @@ import com.google.gson.Gson;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Database.TripDAO;
 import com.skylightapp.R;
 
-public class TrainTripListAct extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class TrainTripListAct extends AppCompatActivity implements  TripAdapter.BoatTripListener {
     private static final String PREF_NAME = "awajima";
     public static final String KEY = "TrainTripListAct.KEY";
     private SharedPreferences userPreferences;
@@ -24,8 +32,12 @@ public class TrainTripListAct extends AppCompatActivity {
     String SharedPrefUserPassword;
     String SharedPrefCusID;
     String SharedPrefUserMachine;
-    String SharedPrefUserName;
+    String SharedPrefUserName,tripType;
     int SharedPrefProfileID;
+    private TripAdapter tripAdapter;
+    private RecyclerView recyclerView;
+    private ArrayList<Trip> trips;
+    private TripDAO tripDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +47,10 @@ public class TrainTripListAct extends AppCompatActivity {
         gson1 = new Gson();
         gson = new Gson();
         customer=new Customer();
+        trips = new ArrayList<>();
+        tripDAO = new TripDAO(this);
+        tripType="Train";
+        recyclerView = findViewById(R.id.recycler_train_t);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
         SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
@@ -46,5 +62,71 @@ public class TrainTripListAct extends AppCompatActivity {
         userProfile = gson.fromJson(json, Profile.class);
         json1 = userPreferences.getString("LastCustomerUsed", "");
         customer = gson1.fromJson(json1, Customer.class);
+
+        try {
+            if(tripDAO !=null){
+                trips= tripDAO.getAllTripsByType();
+
+            }
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        tripAdapter = new TripAdapter(this, trips);
+
+
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(tripAdapter);
+        SnapHelper snapHelper = new PagerSnapHelper();
+        snapHelper.attachToRecyclerView(recyclerView);
+        recyclerView.setNestedScrollingEnabled(false);
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //mapView.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        overridePendingTransition(R.anim.base_slide_left_out, R.anim.bounce);
+
+    }
+    public void onResume(){
+        super.onResume();
+        //this will refresh the osmdroid configuration on resuming.
+        //if you make changes to the configuration, use
+        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this));
+        //mapView.onResume(); //needed for compass, my location overlays, v6.0.0 and up
+    }
+
+    @Override
+    public void onItemClick(Trip item) {
+
     }
 }

@@ -69,6 +69,9 @@
         <attr name="enableProgressAnimation" format="boolean" />
         <attr name="fillBackground" format="boolean" />
     </declare-styleable>
+    <declare-styleable name="CustomWidget">
+        <attr name="font_name" format="string" />
+    </declare-styleable>
 
 
 

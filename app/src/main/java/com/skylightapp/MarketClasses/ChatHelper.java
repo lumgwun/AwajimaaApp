@@ -1,6 +1,10 @@
 package com.skylightapp.MarketClasses;
 
+import static com.skylightapp.Database.DBHelper.DATABASE_NAME;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,7 +48,7 @@ import java.util.Set;
 public class ChatHelper {
 
     public static final int DIALOG_ITEMS_PER_PAGE = 15;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private static final String TAG = ChatHelper.class.getSimpleName();
 
     public static final int CHAT_HISTORY_ITEMS_PER_PAGE = 50;
@@ -53,25 +57,31 @@ public class ChatHelper {
     public static final String CURRENT_PAGE_BUNDLE_PARAM = "current_page";
     private static final String CHAT_HISTORY_ITEMS_SORT_FIELD = "date_sent";
 
+    @SuppressLint("StaticFieldLeak")
     private static ChatHelper instance;
-    private QBChatService qbChatService = QBChatService.getInstance();
-    private ArrayList<QBUser> usersLoadedFromDialog = new ArrayList<>();
-    private ArrayList<QBUser> usersLoadedFromDialogs = new ArrayList<>();
-    private ArrayList<QBUser> usersLoadedFromMessage = new ArrayList<>();
-    private ArrayList<QBUser> usersLoadedFromMessages = new ArrayList<>();
-
-
+    private final QBChatService qbChatService = QBChatService.getInstance();
+    private final ArrayList<QBUser> usersLoadedFromDialog = new ArrayList<>();
+    private final ArrayList<QBUser> usersLoadedFromDialogs = new ArrayList<>();
+    private final ArrayList<QBUser> usersLoadedFromMessage = new ArrayList<>();
+    private final ArrayList<QBUser> usersLoadedFromMessages = new ArrayList<>();
 
 
     private Context context;
 
     public ChatHelper(Context context) {
         this.context = context;
-        QBSettings.getInstance().setLogLevel(LogLevel.DEBUG);
-        QBChatService.setDebugEnabled(true);
-        QBChatService.setConfigurationBuilder(buildChatConfigs());
-        QBChatService.setDefaultPacketReplyTimeout(10000);
-        QBChatService.getInstance().setUseStreamManagement(true);
+        try {
+
+            QBSettings.getInstance().setLogLevel(LogLevel.DEBUG);
+            QBChatService.setDebugEnabled(true);
+            QBChatService.setConfigurationBuilder(buildChatConfigs());
+            QBChatService.setDefaultPacketReplyTimeout(10000);
+            QBChatService.getInstance().setUseStreamManagement(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public ChatHelper() {
@@ -81,12 +91,37 @@ public class ChatHelper {
 
     public static synchronized ChatHelper getInstance() {
         if (instance == null) {
-            QBSettings.getInstance().setLogLevel(LogLevel.DEBUG);
-            QBChatService.setDebugEnabled(true);
-            QBChatService.setConfigurationBuilder(buildChatConfigs());
-            QBChatService.setDefaultPacketReplyTimeout(10000);
-            QBChatService.getInstance().setUseStreamManagement(true);
+            try {
+
+                QBSettings.getInstance().setLogLevel(LogLevel.DEBUG);
+                QBChatService.setDebugEnabled(true);
+                QBChatService.setConfigurationBuilder(buildChatConfigs());
+                QBChatService.setDefaultPacketReplyTimeout(10000);
+                QBChatService.getInstance().setUseStreamManagement(true);
+                instance = new ChatHelper();
+            } catch (ExceptionInInitializerError e) {
+                e.printStackTrace();
+            }
+
+            try {
+
+                QBSettings.getInstance().setLogLevel(LogLevel.DEBUG);
+                QBChatService.getInstance().setUseStreamManagement(true);
+                instance = new ChatHelper();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+
+            try {
+
+                QBChatService.setConfigurationBuilder(buildChatConfigs());
+            } catch (NoClassDefFoundError e) {
+                e.printStackTrace();
+            }
             instance = new ChatHelper();
+
+
+
         }
         return instance;
     }
@@ -94,14 +129,27 @@ public class ChatHelper {
     private static QBChatService.ConfigurationBuilder buildChatConfigs() {
         QBChatService.ConfigurationBuilder configurationBuilder = new QBChatService.ConfigurationBuilder();
 
-        configurationBuilder.setSocketTimeout(AppController.SOCKET_TIMEOUT);
-        configurationBuilder.setUseTls(AppController.USE_TLS);
-        configurationBuilder.setKeepAlive(AppController.KEEP_ALIVE);
-        configurationBuilder.setAutojoinEnabled(AppController.AUTO_JOIN);
-        configurationBuilder.setAutoMarkDelivered(AppController.AUTO_MARK_DELIVERED);
-        configurationBuilder.setReconnectionAllowed(AppController.RECONNECTION_ALLOWED);
-        configurationBuilder.setAllowListenNetwork(AppController.ALLOW_LISTEN_NETWORK);
-        configurationBuilder.setPort(AppController.CHAT_PORT);
+        if(configurationBuilder !=null){
+
+            try {
+
+                configurationBuilder.setSocketTimeout(AppController.SOCKET_TIMEOUT);
+                configurationBuilder.setUseTls(AppController.USE_TLS);
+                configurationBuilder.setKeepAlive(AppController.KEEP_ALIVE);
+                configurationBuilder.setAutojoinEnabled(AppController.AUTO_JOIN);
+                configurationBuilder.setAutoMarkDelivered(AppController.AUTO_MARK_DELIVERED);
+                configurationBuilder.setReconnectionAllowed(AppController.RECONNECTION_ALLOWED);
+                configurationBuilder.setAllowListenNetwork(AppController.ALLOW_LISTEN_NETWORK);
+                configurationBuilder.setPort(AppController.CHAT_PORT);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+
+
 
         return configurationBuilder;
     }
@@ -525,6 +573,14 @@ public class ChatHelper {
                 callback.onError(e);
             }
         });
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 
 

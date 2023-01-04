@@ -14,10 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.skylightapp.Classes.SkyLightPackage;
-import com.skylightapp.Classes.SkyLightPackModel;
+import com.skylightapp.MarketClasses.MarketBizPackModel;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.R;
-import com.skylightapp.SkyLightPackageActivity;
+import com.skylightapp.AwajimaPackAct;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -27,20 +27,20 @@ import java.util.List;
 
 public class SkyLightPackageShowCaseAdapter extends RecyclerView.Adapter<SkyLightPackageShowCaseAdapter.ViewHolder> implements ListAdapter {
 
-    private List<SkyLightPackModel> skyLightPackage_2List;
+    private List<MarketBizPackModel> skyLightPackage_2List;
     private OnItemsClickListener listener;
     Context context;
-    private ArrayList<SkyLightPackModel> packageList;
-    private ArrayList<SkyLightPackage> skyLightPackages;
+    private ArrayList<MarketBizPackModel> packageList;
+    private ArrayList<MarketBizPackage> marketBizPackages;
     private GestureDetector gestureDetector;
     private int position;
 
-    public SkyLightPackageShowCaseAdapter(Context context, List<SkyLightPackModel> skyLightPackage_2List) {
+    public SkyLightPackageShowCaseAdapter(Context context, List<MarketBizPackModel> skyLightPackage_2List) {
         this.context = context;
         this.skyLightPackage_2List = skyLightPackage_2List;
 
     }
-    public SkyLightPackageShowCaseAdapter(Context context, ArrayList<SkyLightPackModel> sliderDataArrayList, OnItemsClickListener callback) {
+    public SkyLightPackageShowCaseAdapter(Context context, ArrayList<MarketBizPackModel> sliderDataArrayList, OnItemsClickListener callback) {
         this.context = context;
         this.packageList = sliderDataArrayList;
         this.listener = callback;
@@ -51,12 +51,12 @@ public class SkyLightPackageShowCaseAdapter extends RecyclerView.Adapter<SkyLigh
         this.listener = callback;
     }
 
-    public SkyLightPackageShowCaseAdapter(SkyLightPackageActivity skyLightPackageActivity, List<SkyLightPackModel> skyLightPackage_2List) {
-        this.context = skyLightPackageActivity;
+    public SkyLightPackageShowCaseAdapter(AwajimaPackAct awajimaPackAct, List<MarketBizPackModel> skyLightPackage_2List) {
+        this.context = awajimaPackAct;
         this.skyLightPackage_2List = skyLightPackage_2List;
 
     }
-    public void updateItems(ArrayList<SkyLightPackModel> list) {
+    public void updateItems(ArrayList<MarketBizPackModel> list) {
         this.packageList = list;
 
 
@@ -74,8 +74,8 @@ public class SkyLightPackageShowCaseAdapter extends RecyclerView.Adapter<SkyLigh
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final SkyLightPackage model = packageList.get(position);
-        final SkyLightPackModel model2= packageList.get(position);
+        final MarketBizPackage model = packageList.get(position);
+        final MarketBizPackModel model2= packageList.get(position);
         ViewHolder mainHolder = (ViewHolder) holder;
         context = mainHolder.itemView.getContext();
         mainHolder.description.setText(MessageFormat.format("Desc.{0}", model2.getpMdesc()));
@@ -135,7 +135,7 @@ public class SkyLightPackageShowCaseAdapter extends RecyclerView.Adapter<SkyLigh
 
     @Override
     public int getItemCount() {
-        return (null != skyLightPackages ? skyLightPackages.size() : 0);
+        return (null != marketBizPackages ? marketBizPackages.size() : 0);
     }
 
 

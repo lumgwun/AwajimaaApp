@@ -9,7 +9,7 @@
         app:initialExpandedChildrenCount="1">
 
         <DropDownPreference
-            app:key="Country"
+            app:key="PROFILE_COUNTRY"
             app:title="Country Name"
             app:defaultValue="Nigeria"
             android:icon="@drawable/home2"

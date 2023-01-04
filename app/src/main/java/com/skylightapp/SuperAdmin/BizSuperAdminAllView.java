@@ -40,6 +40,7 @@ import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.CusSimpleAdapter;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerDailyReport;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.OfficeBranch;
 import com.skylightapp.Classes.Payment;
 import com.skylightapp.Classes.PaymentCode;
@@ -47,7 +48,6 @@ import com.skylightapp.Classes.PaymentCodeAdapter;
 import com.skylightapp.Classes.PaymentDoc;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.ProfileAdapter;
-import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.StandingOrder;
 import com.skylightapp.Classes.TellerReport;
 import com.skylightapp.Classes.Transaction;
@@ -65,7 +65,7 @@ import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.Inventory.StockTransfer;
 import com.skylightapp.MapAndLoc.EmergencyReport;
 import com.skylightapp.MarketClasses.Market;
-import com.skylightapp.MarketClasses.MarketBizSubScription;
+import com.skylightapp.MarketClasses.MarketBizSub;
 import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.MarketClasses.MarketCommodity;
 import com.skylightapp.R;
@@ -124,9 +124,9 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
     private ArrayList<Profile> allUsers;
     private ArrayList<Profile> usersToday;
     private CustomerDailyReport customerDailyReport;
-    private ArrayList<SkyLightPackage> skyLightPackages;
-    private ArrayList<SkyLightPackage> skyLightPackagesToday;
-    private SkyLightPackage skyLightPackage;
+    private ArrayList<MarketBizPackage> marketBizPackages;
+    private ArrayList<MarketBizPackage> marketBizPackagesToday;
+    private MarketBizPackage marketBizPackage;
     private ArrayList<Account> accounts;
     private Account account;
     private ArrayList<Transaction> transactionAll;
@@ -148,8 +148,8 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
     private ArrayList<SuperCash> superCashTellerToday;
     private ArrayList<StockTransfer> stocksTellerTxAll;
     private ArrayList<StockTransfer> stocksTellerTxToday;
-    private ArrayList<SkyLightPackage> skyLightPackagesTellerToday;
-    private ArrayList<SkyLightPackage> skyLightPackagesTellerAll;
+    private ArrayList<MarketBizPackage> marketBizPackagesTellerToday;
+    private ArrayList<MarketBizPackage> marketBizPackagesTellerAll;
     private ArrayList<CustomerDailyReport> savingsAll;
     private ArrayList<CustomerDailyReport> savingsToday;
     private ArrayList<CustomerDailyReport> customerDailyReportsTellerAll;
@@ -202,7 +202,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
     private int day, month, year;
     private  int totalTellerNewCusForTheMonth;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     static final int DATE_DIALOG_ID = 1;
     private int mYear = 2021;
     private int mMonth = 5;
@@ -223,7 +223,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
     private long bizID;
     private String bizName;
     private ArrayList<MarketBusiness> marketBusinessArrayList;
-    private ArrayList<MarketBizSubScription> marketBizSubScriptions;
+    private ArrayList<MarketBizSub> marketBizSubs;
     private ArrayList<MarketCommodity> marketCommodities;
     private ArrayList<Market> marketArrayList;
     private ArrayList<EmergencyReport> emergencyReports;
@@ -233,6 +233,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
     private OfficeAdapter officeBranchAdapter;
     private ArrayList<OfficeBranch> bizOffices;
     private String selectedOffice;
+    private PaymentDAO paymentDAO;
 
 
     @Override
@@ -258,11 +259,14 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
         paymentCodeDAO= new PaymentCodeDAO(this);
         TCashDAO tCashDAO= new TCashDAO(this);
         sodao= new SODAO(this);
+        customer_tellerDAO= new Customer_TellerDAO(this);
+        sodao= new SODAO(this);
+        paymentDAO= new PaymentDAO(this);
         customer= new Customer();
         customer_tellerDAO= new Customer_TellerDAO(this);
         userProfile= new Profile();
         marketBusinessArrayList= new ArrayList<>();
-        marketBizSubScriptions= new ArrayList<>();
+        marketBizSubs = new ArrayList<>();
         marketCommodities= new ArrayList<>();
         marketArrayList= new ArrayList<>();
         emergencyReports= new ArrayList<>();
@@ -307,8 +311,8 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
 
         transactionsToday =new ArrayList<Transaction>();
 
-        skyLightPackages=new ArrayList<SkyLightPackage>();
-        skyLightPackagesToday=new ArrayList<>();
+        marketBizPackages =new ArrayList<MarketBizPackage>();
+        marketBizPackagesToday =new ArrayList<>();
 
         customerDailyReports3=new ArrayList<CustomerDailyReport>();
         accounts=new ArrayList<Account>();
@@ -327,8 +331,8 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
         customersTellerAll=new ArrayList<>();
         customersTellerToday=new ArrayList<>();
         customerDailyReportsTellerToday=new ArrayList<>();
-        skyLightPackagesTellerToday=new ArrayList<>();
-        skyLightPackagesTellerAll=new ArrayList<>();
+        marketBizPackagesTellerToday =new ArrayList<>();
+        marketBizPackagesTellerAll =new ArrayList<>();
         customerDailyReportsTellerAll=new ArrayList<>();
         tellerReportsTellerAll=new ArrayList<>();
         tellerReportsTellerToday=new ArrayList<>();
@@ -408,7 +412,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
         btnGetBranchDetails =  findViewById(R.id.buttonPaymentBranchT);
         dateText = findViewById(R.id.date_text_);
         dateText.setOnClickListener(this::datePicker);
-        customer_tellerDAO= new Customer_TellerDAO(this);
+
 
         dateText.setOnClickListener(new View.OnClickListener() {
 
@@ -456,11 +460,12 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
 
 
         btnGetBranchDetails.setOnClickListener(this::getBranchPaymentToday);
-        sqLiteDatabase = dbHelper.getWritableDatabase();
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
+
+        try {
             profileArrayList=profileDao.getTellersFromMachineAndBiz(tellerMachine,bizID);
 
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
 
 
@@ -556,249 +561,386 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
             customerID=customer.getCusUID();
         }
 
+        if(sodao !=null){
+            try {
+                standingOrders = sodao.getAllStandingOrders11();
 
-        sodao= new SODAO(this);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if(dbHelper !=null){
+            try {
+                marketBizPackages = dbHelper.getAllPackagesAdmin();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        if(sodao !=null){
+            try {
+                paymentCodeArrayList = codeDAO.getAllSavingsCodes();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+
+        if(dbHelper !=null){
+            try {
+                customerDailyReports3 = dbHelper.getAllReportsAdmin();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if(profileDao !=null){
+            try {
+                allUsers = profileDao.getAllProfileUsers();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        if(paymentDAO !=null){
+            try {
+                paymentArrayListAll=paymentDAO.getALLPaymentsSuper();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+
+        if(tReportDAO !=null){
+            try {
+                tellerReportsAll=tReportDAO.getTellerReportsAll();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if(paymentDAO !=null){
+            try {
+                paymentForTellerToday=paymentDAO.getTotalPaymentTodayForTeller1(tellerID,stringDate);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if(paymentDAO !=null){
+            try {
+                paymentTotalForTeller=paymentDAO.getTotalPaymentForTeller(tellerID);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if(cusDAO !=null){
+            try {
+                customersForTeller=cusDAO.getNewCustomersCountForTodayTeller(tellerID,todayDate);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if(sodao !=null){
+            try {
+                paymentForBranchTotal=paymentDAO.getTotalPaymentForBranch(branchName1);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if(paymentDAO !=null){
+            try {
+                paymentForBranchToday=paymentDAO.getTotalPaymentTodayForBranch1(branchName2,stringDate);
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if(sodao !=null){
+            try {
+                soCount=sodao.getStandingOrderCountToday(todayDate);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if(dbHelper !=null){
+            try {
+                totalSavingsToday=dbHelper.getSavingsCountToday(todayDate);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if(dbHelper !=null){
+            try {
+                totalSavings2Today33=dbHelper.getTotalSavingsToday(todayDate);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if(cusDAO !=null){
+            try {
+                customerCountToday=cusDAO.getAllNewCusCountForToday(todayDate);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        if(dbHelper !=null){
+            try {
+                countPackageToday=dbHelper.getNewPackageCountToday(todayDate);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if(tranXDAO !=null){
+            try {
+                countToday =tranXDAO.getAllTxCountForToday(todayDate);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if(cusDAO !=null){
+            try {
+                customersNewToday=cusDAO.getCustomersToday(todayDate);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        if(dbHelper !=null){
+            try {
+                savingsAll=dbHelper.getAllReportsAdmin();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+
+        if(codeDAO !=null){
+            try {
+                paymentCodeDate =codeDAO.getSavingsCodeForDate(stringDate);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        if(cusDAO !=null){
+            try {
+                customersTellerAll=cusDAO.getCustomersFromCurrentProfile(tellerID);
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if(cusDAO !=null){
+            try {
+                customersTellerToday=cusDAO.getCustomersFromProfileWithDate(tellerID,stringDate);
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if(sodao !=null){
+            try {
+                marketBizPackagesTellerAll =dbHelper.getAllPackagesProfile(tellerID);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        if(dbHelper !=null){
+            try {
+                marketBizPackagesTellerToday =dbHelper.getPackagesForTellerProfileWithDate(tellerID,stringDate);
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if(codeDAO !=null){
+            try {
+                paymentCodeForTeller=codeDAO.getCodesFromCurrentTeller(tellerNames);
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+
+        if(tCashDAO !=null){
+            try {
+                tellerCashArrayList=tCashDAO.getTellerCashForTeller(tellerID);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if(tReportDAO !=null){
+            try {
+                tellerReportsTeller=tReportDAO.getTellerReportForTeller(tellerID);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+
+
+        if(paymentDAO !=null){
+            try {
+                manualPaymentTeller=paymentDAO.getALLPaymentsTeller(tellerID);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        if(dbHelper !=null){
+            try {
+                marketBizPackagesToday = dbHelper.getPackagesSubscribedToday(todayDate);
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+
+
+        if(dbHelper !=null){
+            try {
+                savingsToday=dbHelper.getCustomerDailyReportToday(todayDate);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
         sqLiteDatabase = dbHelper.getWritableDatabase();
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            standingOrders = sodao.getAllStandingOrders11();
+        if(tranXDAO !=null){
+            try {
+                transactionsToday=tranXDAO.getTransactionsToday(todayDate);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if(paymentDAO !=null){
+            try {
+                manualPaymentToday=paymentDAO.getALLPaymentsSuperToday(todayDate);
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
 
         }
 
 
 
+        if(codeDAO !=null){
+            try {
+                paymentCodeForCus=codeDAO.getCodesFromCurrentCustomer(customerID);
 
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            skyLightPackages = dbHelper.getAllPackagesAdmin();
 
-        }
-        PaymentDAO paymentDAO= new PaymentDAO(this);
-
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            paymentCodeArrayList = codeDAO.getAllSavingsCodes();
-
-        }
-
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            customerDailyReports3 = dbHelper.getAllReportsAdmin();
-
-        }
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            allUsers = profileDao.getAllProfileUsers();
-
-        }
-
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            paymentArrayListAll=paymentDAO.getALLPaymentsSuper();
-
-        }
-
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            tellerReportsAll=tReportDAO.getTellerReportsAll();
-
-        }
-
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            paymentForTellerToday=paymentDAO.getTotalPaymentTodayForTeller1(tellerID,stringDate);
-
-        }
-
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            paymentTotalForTeller=paymentDAO.getTotalPaymentForTeller(tellerID);
-
-        }
-
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            customersForTeller=cusDAO.getNewCustomersCountForTodayTeller(tellerID,todayDate);
-
-        }
-
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            paymentForBranchTotal=paymentDAO.getTotalPaymentForBranch(branchName1);
-
-        }
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            paymentForBranchToday=paymentDAO.getTotalPaymentTodayForBranch1(branchName2,stringDate);
-
-        }
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            soCount=sodao.getStandingOrderCountToday(todayDate);
-
-        }
-
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            totalSavingsToday=dbHelper.getSavingsCountToday(todayDate);
-
-        }
-
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            totalSavings2Today33=dbHelper.getTotalSavingsToday(todayDate);
-
-        }
-
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            customerCountToday=cusDAO.getAllNewCusCountForToday(todayDate);
-
-        }
-
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            countPackageToday=dbHelper.getNewPackageCountToday(todayDate);
-
-        }
-
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            countToday =tranXDAO.getAllTxCountForToday(todayDate);
-
-        }
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            customersNewToday=cusDAO.getCustomersToday(todayDate);
-
-        }
-
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            savingsAll=dbHelper.getAllReportsAdmin();
-
-        }
-
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            paymentCodeDate =codeDAO.getSavingsCodeForDate(stringDate);
-
-        }
-
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            customersTellerAll=cusDAO.getCustomersFromCurrentProfile(tellerID);
-
-        }
-
-
-        sqLiteDatabase = dbHelper.getWritableDatabase();
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            customersTellerToday=cusDAO.getCustomersFromProfileWithDate(tellerID,stringDate);
-
-        }
-
-        sqLiteDatabase = dbHelper.getWritableDatabase();
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            skyLightPackagesTellerAll=dbHelper.getAllPackagesProfile(tellerID);
-
-        }
-
-        sqLiteDatabase = dbHelper.getWritableDatabase();
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            skyLightPackagesTellerToday=dbHelper.getPackagesForTellerProfileWithDate(tellerID,stringDate);
-
-        }
-
-
-        sqLiteDatabase = dbHelper.getWritableDatabase();
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            paymentCodeForTeller=codeDAO.getCodesFromCurrentTeller(tellerNames);
-
-        }
-
-
-        sqLiteDatabase = dbHelper.getWritableDatabase();
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            tellerCashArrayList=tCashDAO.getTellerCashForTeller(tellerID);
-
-        }
-        TReportDAO tReportDAO= new TReportDAO(this);
-
-        sqLiteDatabase = dbHelper.getWritableDatabase();
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            tellerReportsTeller=tReportDAO.getTellerReportForTeller(tellerID);
-
-        }
-
-        sqLiteDatabase = dbHelper.getWritableDatabase();
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            manualPaymentTeller=paymentDAO.getALLPaymentsTeller(tellerID);
-
-        }
-
-        sqLiteDatabase = dbHelper.getWritableDatabase();
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            skyLightPackagesToday= dbHelper.getPackagesSubscribedToday(todayDate);
-
-        }
-
-
-        sqLiteDatabase = dbHelper.getWritableDatabase();
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            savingsToday=dbHelper.getCustomerDailyReportToday(todayDate);
-
-        }
-        TranXDAO tranXDAO= new TranXDAO(this);
-        sqLiteDatabase = dbHelper.getWritableDatabase();
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            transactionsToday=tranXDAO.getTransactionsToday(todayDate);
-
-        }
-
-
-
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            manualPaymentToday=paymentDAO.getALLPaymentsSuperToday(todayDate);
-
-        }
-        CodeDAO codeDAO= new CodeDAO(this);
-
-        sqLiteDatabase = dbHelper.getWritableDatabase();
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            paymentCodeForCus=codeDAO.getCodesFromCurrentCustomer(customerID);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
 
         }
 
@@ -921,7 +1063,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
         LinearLayoutManager layoutManager1
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerPackages.setLayoutManager(layoutManager1);
-        packageAdapter = new SkyLightPackageAdapter(BizSuperAdminAllView.this,skyLightPackages);
+        packageAdapter = new SkyLightPackageAdapter(BizSuperAdminAllView.this, marketBizPackages);
         //recyclerPackages.setHasFixedSize(true);
         recyclerPackages.setAdapter(packageAdapter);
         DividerItemDecoration dividerItemDecoration1 = new DividerItemDecoration(recyclerPackages.getContext(),
@@ -1186,7 +1328,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
                 LinearLayoutManager layoutManager1
                         = new LinearLayoutManager(BizSuperAdminAllView.this, LinearLayoutManager.HORIZONTAL, false);
                 recyclerTellerPacksToday.setLayoutManager(layoutManager1);
-                packageAdapter = new SkyLightPackageAdapter(BizSuperAdminAllView.this, skyLightPackagesTellerToday);
+                packageAdapter = new SkyLightPackageAdapter(BizSuperAdminAllView.this, marketBizPackagesTellerToday);
                 //recyclerTellerPacksToday.setHasFixedSize(true);
                 recyclerTellerPacksToday.setAdapter(packageAdapter);
                 DividerItemDecoration dividerItemDecoration1 = new DividerItemDecoration(recyclerTellerPacksToday.getContext(),
@@ -1198,7 +1340,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
                 LinearLayoutManager layoutManagerAll
                         = new LinearLayoutManager(BizSuperAdminAllView.this, LinearLayoutManager.HORIZONTAL, false);
                 recyclerTellerPacksAll.setLayoutManager(layoutManagerAll);
-                packageAdapter = new SkyLightPackageAdapter(BizSuperAdminAllView.this, skyLightPackagesTellerAll);
+                packageAdapter = new SkyLightPackageAdapter(BizSuperAdminAllView.this, marketBizPackagesTellerAll);
                 //recyclerTellerPacksAll.setHasFixedSize(true);
                 recyclerTellerPacksAll.setAdapter(packageAdapter);
                 DividerItemDecoration dividerItemDecorationAll = new DividerItemDecoration(recyclerTellerPacksAll.getContext(),
@@ -1319,6 +1461,29 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
         }
         return dpd;
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
     public void datePicker(View view) {
         Calendar cal = Calendar.getInstance();
         year = cal.get(Calendar.YEAR);
@@ -1428,7 +1593,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
     }
 
     @Override
-    public void onItemClick(SkyLightPackage lightPackage) {
+    public void onItemClick(MarketBizPackage lightPackage) {
 
     }
 

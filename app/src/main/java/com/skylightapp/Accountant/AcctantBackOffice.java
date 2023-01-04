@@ -16,17 +16,19 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
@@ -37,33 +39,20 @@ import com.skylightapp.Admins.SOCompletedList;
 import com.skylightapp.Admins.SOListAct;
 import com.skylightapp.Admins.SendSingleUserMAct;
 import com.skylightapp.Classes.Customer;
-import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Customers.CusOrderTab;
 import com.skylightapp.Customers.CustUtilTab;
 import com.skylightapp.Customers.CustomerHelpActTab;
 import com.skylightapp.Customers.CusLoanTab;
 import com.skylightapp.Customers.CusPackForPayment;
-import com.skylightapp.Customers.CusPacksAct;
+import com.skylightapp.Customers.CusDocCodeSavingsAct;
 import com.skylightapp.Customers.NewPackCusAct;
-import com.skylightapp.Customers.PackListTab;
 import com.skylightapp.Customers.PackageTab;
 import com.skylightapp.Customers.SOTab;
-import com.skylightapp.Database.AcctDAO;
 import com.skylightapp.Database.AdminBalanceDAO;
-import com.skylightapp.Database.CodeDAO;
-import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.Database.LoanDAO;
-import com.skylightapp.Database.MessageDAO;
-import com.skylightapp.Database.PaymDocDAO;
-import com.skylightapp.Database.PaymentCodeDAO;
 import com.skylightapp.Database.PaymentDAO;
 import com.skylightapp.Database.ProfDAO;
-import com.skylightapp.Database.SODAO;
-import com.skylightapp.Database.TCashDAO;
-import com.skylightapp.Database.TReportDAO;
-import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.LoginActivity;
 import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.MyTimelineAct;
@@ -138,6 +127,7 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
     String SharedPrefUserMachine;
     String SharedPrefUserName;
     int SharedPrefProfileID;
+    private Uri userPicture;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -157,6 +147,10 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
         SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
         SharedPrefCusID=userPreferences.getString("CUSTOMER_ID", "");
         SharedPrefUserMachine=userPreferences.getString("machine", "");
+        userPicture= Uri.parse(userPreferences.getString("PICTURE_URI", ""));
+
+
+
         SharedPrefProfileID=userPreferences.getInt("PROFILE_ID", 0);
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
@@ -193,11 +187,20 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
         }
 
         imgProfilePic = findViewById(R.id.profile_image_Acctant);
+
+        Glide.with(AcctantBackOffice.this)
+                .asBitmap()
+                .load(userPicture)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .error(R.drawable.ic_alert)
+                //.listener(listener)
+                .skipMemoryCache(true)
+                .fitCenter()
+                .centerCrop()
+                .into(imgProfilePic);
         applicationDb = new DBHelper(this);
         if(userProfile !=null){
             profileID=userProfile.getPID();
-            Bitmap bitmap = profileDao.getProfilePicture(profileID);
-            imgProfilePic.setImageBitmap(bitmap);
         }
         imgProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -373,6 +376,29 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
         setupHeader();
 
 
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -614,7 +640,7 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
                     }
                     else if(finalI==7) {
                         tosend = "My Sub. Savings";
-                        Intent intent=new Intent(AcctantBackOffice.this, WimpeySavings.class);
+                        Intent intent=new Intent(AcctantBackOffice.this, OfficeBranchSavings.class);
                         intent.putExtra("Wimpey Savings",tosend);
                         startActivity(intent);
                     }
@@ -668,7 +694,7 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
                 startActivity(profile);
                 break;
             case R.id.nav_Acctant_Savings:
-                Intent active = new Intent(AcctantBackOffice.this, CusPacksAct.class);
+                Intent active = new Intent(AcctantBackOffice.this, CusDocCodeSavingsAct.class);
                 startActivity(active);
                 break;
             case R.id.nav_Acctant_p:

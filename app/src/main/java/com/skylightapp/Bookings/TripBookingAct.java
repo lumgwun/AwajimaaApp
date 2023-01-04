@@ -1,5 +1,7 @@
 package com.skylightapp.Bookings;
 
+import static com.skylightapp.Database.DBHelper.DATABASE_NAME;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -17,9 +19,11 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,7 +37,7 @@ import android.widget.Toast;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Database.BoatTripDAO;
+import com.skylightapp.Database.TripDAO;
 import com.skylightapp.Database.BoatTripRouteDAO;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.GooglePayAct;
@@ -44,7 +48,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class TripBookingAct extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener,BoatTripAdapter.BoatTripListener {
+public class TripBookingAct extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener, TripAdapter.BoatTripListener {
 
     private Spinner spnNoOfBoats, spnTripType, spnBoatTypes,spnTripRoutes,spnState,spnAdults,spnChildren,spnTripPoints;
     private ArrayAdapter<String> personAdapter;
@@ -61,12 +65,12 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
     private DatePickerDialog.OnDateSetListener dateset;
     private DatePickerDialog tourDatePiker;
     private Bundle bundle;
-    private ArrayList<BoatTrip> boatTripArrayList;
-    private ArrayList<BoatTripRoute> boatTripRoutes;
-    private BoatTrip boatTrip;
+    private ArrayList<Trip> tripArrayList;
+    private ArrayList<TripRoute> tripRoutes;
+    private Trip trip;
     private String selectedTripType,selectedState,selectedNoOfBoats,adults,children,selectedBoatType;
     private int selectedRouteIndex,boatTripID,profID,noOfBoatInt;
-    private  BoatTripRoute boatTripRoute;
+    private TripRoute tripRoute;
     private BoatTripRouteAdap boatTripRouteAdap;
     private BoatTripRouteDAO boatTripRouteDAO;
     private RecyclerView recyclerViewTrips;
@@ -77,7 +81,7 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
     String json, tripTakeOffPoints,tripDestination,userNIN,takeOffState,dateOfTripRequest, selectedSitStrng,stopPointName;
     Profile userProfile;
     SharedPreferences userPreferences;
-    private BoatTripDAO boatTripDAO;
+    private TripDAO tripDAO;
     private SQLiteDatabase sqLiteDatabase;
     private DBHelper dbHelper;
     private ImageButton imageButton;
@@ -87,10 +91,11 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
     private LinearLayoutCompat layoutCompatSheet;
     private BottomSheetBehavior behavior;
     private int selectedSitInt,selectedTripIndex;
-    private BoatTripAdapter boatTripAdapter;
+    private TripAdapter tripAdapter;
     private int unbookedSitsNo,selectedPointIndex;
     private double amount;
     private long totalAmount;
+    private String tripCurrency;
     private TripStopPoint tripStopPoint;
     private ArrayList<TripStopPoint> tripStopPoints;
     private TripStopPointAdap tripStopPointAdap;
@@ -127,19 +132,19 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
         setTitle("Trip Booking");
         bundle= new Bundle();
         tripStopPoint = new TripStopPoint();
-        boatTrip= new BoatTrip();
+        trip = new Trip();
         dbHelper= new DBHelper(this);
         bundle = getIntent().getExtras();
         day = cal.get(Calendar.DAY_OF_MONTH);
         month = cal.get(Calendar.MONTH);
         year = cal.get(Calendar.YEAR);
-        boatTripRoute= new BoatTripRoute();
-        boatTripRoutes= new ArrayList<>();
+        tripRoute = new TripRoute();
+        tripRoutes = new ArrayList<>();
         tripStopPoints = new ArrayList<>();
         boatTripRouteDAO= new BoatTripRouteDAO(this);
 
-        boatTripDAO= new BoatTripDAO(this);
-        boatTripArrayList= new ArrayList<>();
+        tripDAO = new TripDAO(this);
+        tripArrayList = new ArrayList<>();
         userProfile = new Profile();
         gson = new Gson();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
@@ -166,7 +171,12 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
         if(userProfile !=null){
             profID=userProfile.getPID();
         }
-        behavior = BottomSheetBehavior.from(layoutCompatSheet);
+        if(layoutCompatSheet !=null){
+            behavior = BottomSheetBehavior.from(layoutCompatSheet);
+
+        }
+
+
 
 
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -193,6 +203,38 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
         spnNoOfBoats = (Spinner) findViewById(R.id.spnNoOfBoats);
         tvTotalTarrif = (TextView) findViewById(R.id.tvTotalTarrif);
         txtTourDate = (TextView) findViewById(R.id.txtTourDate);
+        btnJoinTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                layoutJoinTrip.setVisibility(View.VISIBLE);
+                layoutCustomTrip.setVisibility(View.GONE);
+                layoutCompatSheet.setVisibility(View.VISIBLE);
+                //behavior = BottomSheetBehavior.from(layoutCompatSheet);
+
+
+            }
+        });
+        if(behavior !=null){
+            behavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+                @Override
+                public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                    if (newState == BottomSheetBehavior.STATE_DRAGGING) {
+                        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }
+                    if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }
+
+                }
+
+                @Override
+                public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+                }
+            });
+
+        }
+
 
         spnState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -214,41 +256,41 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        if(selectedSitStrng !=null){
-            selectedSitInt= Integer.parseInt(selectedSitStrng);
+        try {
+            if(selectedSitStrng !=null){
+                selectedSitInt= Integer.parseInt(selectedSitStrng);
 
-        }
-
-
-        if(selectedState !=null){
-            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                dbHelper.openDataBase();
-                sqLiteDatabase = dbHelper.getReadableDatabase();
-                boatTripRoutes=boatTripRouteDAO.getBoatTripRouteForState(selectedState);
             }
 
-
-        }
-        if(selectedState !=null){
-            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                dbHelper.openDataBase();
-                sqLiteDatabase = dbHelper.getReadableDatabase();
-                boatTripArrayList=boatTripDAO.getBoatTripForState(selectedState);
-            }
-
-
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
 
-
-        btnJoinTrip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                layoutJoinTrip.setVisibility(View.VISIBLE);
-                layoutCustomTrip.setVisibility(View.GONE);
+        try {
+            if(selectedState !=null){
+                tripArrayList = tripDAO.getBoatTripForState(selectedState);
 
 
             }
-        });
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+
+
+        try {
+            if(selectedState !=null){
+                tripRoutes =boatTripRouteDAO.getBoatTripRouteForState(selectedState);
+
+
+            }
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+
         btnCharterTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -260,13 +302,13 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
         btnJoinTrip.setOnClickListener(this::JoinATripBooking);
         btnCharterTrip.setOnClickListener(this::CharterTrip);
 
-        boatTripRouteAdap = new BoatTripRouteAdap(TripBookingAct.this,R.layout.boat_route_item, boatTripRoutes);
+        boatTripRouteAdap = new BoatTripRouteAdap(TripBookingAct.this,R.layout.boat_route_item, tripRoutes);
         spnTripRoutes.setAdapter(boatTripRouteAdap);
         spnTripRoutes.setSelection(0);
         selectedRouteIndex = spnTripRoutes.getSelectedItemPosition();
 
         try {
-            boatTripRoute = boatTripRoutes.get(selectedRouteIndex);
+            tripRoute = tripRoutes.get(selectedRouteIndex);
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Oops!");
         }
@@ -330,17 +372,17 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        boatTripAdapter = new BoatTripAdapter(TripBookingAct.this,R.layout.boat_trip_item, boatTripArrayList);
+        tripAdapter = new TripAdapter(TripBookingAct.this,R.layout.boat_trip_item, tripArrayList);
 
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerViewTrips.setLayoutManager(layoutManager);
         recyclerViewTrips.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewTrips.setAdapter(boatTripAdapter);
+        recyclerViewTrips.setAdapter(tripAdapter);
         recyclerViewTrips.setNestedScrollingEnabled(false);
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(recyclerViewTrips);
-        behavior = BottomSheetBehavior.from(layoutCompatSheet);
+        /*behavior = BottomSheetBehavior.from(layoutCompatSheet);
         behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -352,7 +394,7 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
             }
-        });
+        });*/
 
 
         spnNoOfBoats.setAdapter(personAdapter);
@@ -373,34 +415,58 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
                 dateOfTripRequest = year + "-" + (monthOfYear + 1)  + "-" + dayOfMonth;
             }
         };
-        if(boatTripRoute !=null){
-            tripTakeOffPoints=boatTripRoute.getBtRouteFrom();
-            tripDestination=boatTripRoute.getBtRouteTo();
-            takeOffState=boatTripRoute.getBtRouteState();
-            //takeOffThrough=boatTripRoute.getBtRouteThrough();
+        if(tripRoute !=null){
+            tripTakeOffPoints= tripRoute.getBtRouteFrom();
+            tripDestination= tripRoute.getBtRouteTo();
+            takeOffState= tripRoute.getBtRouteState();
+            //takeOffThrough=tripRoute.getBtRouteThrough();
 
         }
-        noOfBoatInt= Integer.parseInt(selectedNoOfBoats);
+        try {
+
+            noOfBoatInt= Integer.parseInt(selectedNoOfBoats);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+
         boatTripID = ThreadLocalRandom.current().nextInt(107, 1731);
         btnDoCustomBooking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                boatTrip= new BoatTrip(boatTripID, profID, noOfBoatInt,selectedBoatType, tripTakeOffPoints, tripDestination, takeOffState, dateOfTripRequest,selectedTripType, "");
+                trip = new Trip(boatTripID, profID, noOfBoatInt,selectedBoatType, tripTakeOffPoints, tripDestination, takeOffState, dateOfTripRequest,selectedTripType, "");
+                if(dbHelper !=null){
+                    try {
 
-                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                    dbHelper.openDataBase();
-                    sqLiteDatabase = dbHelper.getWritableDatabase();
-                    boatTripDAO.insertBoatTrip(boatTripID, profID, noOfBoatInt,selectedBoatType, tripTakeOffPoints, tripDestination, takeOffState, dateOfTripRequest,selectedTripType);
+                        if(sqLiteDatabase !=null){
+                            sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                        }
+                        if(tripDAO !=null){
+                            try {
+                                tripDAO.insertNewTrip(boatTripID, profID, noOfBoatInt,selectedBoatType, tripTakeOffPoints, tripDestination, takeOffState, dateOfTripRequest,selectedTripType);
+
+                            } catch (NullPointerException e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
 
                 }
+
 
             }
         });
         btnDoCustomBooking.setOnClickListener(this::bookCustomTrip);
     }
     @Override
-    public void onItemClick(BoatTrip item) {
+    public void onItemClick(Trip item) {
         userProfile = new Profile();
         gson = new Gson();
         tripStopPoints = new ArrayList<>();
@@ -453,6 +519,7 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
             tripDestination=item.getBtFinalDestination();
             unbookedSitsNo=item.getBtNoOfSitRem();
             amount=item.getBtAmountForAdult();
+            tripCurrency= item.getBtTripCurrency();
             tripStopPoints = item.getBtStopPoints();
 
 
@@ -475,16 +542,17 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
         txtTripTK.setText(tripTakeOffPoints);
         txtFinalDest.setText(tripDestination);
         txtUnBookedSits.setText(unbookedSitsNo);
-        txtTripAmount.setText("NGN"+amount);
+        txtTripAmount.setText(tripCurrency+amount);
         totalAmount= (long) (amount * selectedSitInt);
-        txtTotalAmt.setText("NGN"+totalAmount);
+        txtTotalAmt.setText(tripCurrency+totalAmount);
         Bundle paymentBundle= new Bundle();
-        paymentBundle.putParcelable("BoatTrip",item);
+        paymentBundle.putParcelable("Trip",item);
         paymentBundle.putInt("SitCount",selectedSitInt);
         paymentBundle.putLong("Total",totalAmount);
         paymentBundle.putString("PaymentFor","Boat Booking");
         paymentBundle.putString("stopPointName",stopPointName);
         paymentBundle.putString("PROFILE_NIN",userNIN);
+        paymentBundle.putString("Currency",tripCurrency);
         paymentBundle.putParcelable("Profile",userProfile);
         btnGoToPayment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -519,7 +587,7 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         if (view == spnBoatTypes) {
             //personList.clear();
-            boatTrip= new BoatTrip();
+            trip = new Trip();
             spnNoOfBoats.setSelection(0);
             if (spnBoatTypes.getSelectedItemPosition() == 0) {
 
@@ -539,8 +607,8 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
                 if (spnBoatTypes.getSelectedItemPosition() == 1) {
                     personList.clear();
                     for (int i = 0; i < fullDayPriceList.size(); i++) {
-                        boatTrip = fullDayPriceList.get(i);
-                        personList.add("Max. " + boatTrip.getpTourPerson()
+                        trip = fullDayPriceList.get(i);
+                        personList.add("Max. " + trip.getpTourPerson()
                                 + " Person");
                     }
                     spnNoOfBoats.setSelection(0);
@@ -611,6 +679,46 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
 
     public void DoPayment(View view) {
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //mapView.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        overridePendingTransition(R.anim.base_slide_left_out, R.anim.bounce);
+
+    }
+    public void onResume(){
+        super.onResume();
+        //this will refresh the osmdroid configuration on resuming.
+        //if you make changes to the configuration, use
+        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this));
+        //mapView.onResume(); //needed for compass, my location overlays, v6.0.0 and up
+    }
+
 
 
 }

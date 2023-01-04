@@ -42,6 +42,7 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.MarketClasses.AttachmentPreviewAdapter;
 import com.skylightapp.MarketClasses.AttachmentPreviewAdapterView;
+import com.skylightapp.MarketClasses.BusinessDeal;
 import com.skylightapp.MarketClasses.ChatAdapter;
 import com.skylightapp.MarketClasses.ChatHelper;
 import com.skylightapp.MarketClasses.ImagePickHelper;
@@ -73,6 +74,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
+import static com.skylightapp.BuildConfig.APPLICATION_ID;
 import static com.skylightapp.BuildConfig.QUICKBLOX_ACCT_KEY;
 import static com.skylightapp.BuildConfig.QUICKBLOX_APP_ID;
 import static com.skylightapp.BuildConfig.QUICKBLOX_AUTH_KEY;
@@ -111,7 +113,8 @@ public class ChatActEthernal extends BaseActivity implements OnImagePickedListen
     private ChatMessageListener chatMessageListener;
     private DBHelper dbHelper;
     private Bundle bizNameBundle;
-    private int bizID,marketID;
+    private long bizID;
+    private int marketID;
 
     private View.OnClickListener openProfileActivityOnClickListener;
     private int skipPagination = 0;
@@ -124,7 +127,7 @@ public class ChatActEthernal extends BaseActivity implements OnImagePickedListen
     private UserProfileInfo userProfileInfo;
     private Profile userProfile;
     private MarketBusiness marketBusiness;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private boolean locationPermissionGranted;
     int profileID, birthdayID, messageID;
     SharedPreferences userPreferences;
@@ -132,6 +135,10 @@ public class ChatActEthernal extends BaseActivity implements OnImagePickedListen
     String json, json1, json2,json3;
     private Profile lastProfileUsed;
     SQLiteDatabase sqLiteDatabase;
+    private Bundle bundle;
+    private BusinessDeal businessDeal;
+    private String bizDealTittle;
+    private Profile bizProfile;
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {
             Manifest.permission.CAMERA,
@@ -161,8 +168,8 @@ public class ChatActEthernal extends BaseActivity implements OnImagePickedListen
         gson3 = new Gson();
         marketBusiness= new MarketBusiness();
         userProfileInfo= new UserProfileInfo();
-        QBSettings.getInstance().init(this, APPLICATION_ID, AUTH_KEY, AUTH_SECRET);
-        QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         setTitle("Chat Arena");
         dbHelper = new DBHelper(this);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
@@ -186,6 +193,9 @@ public class ChatActEthernal extends BaseActivity implements OnImagePickedListen
         initChatConnectionListener();
         initViews();
         initChat();
+        if(marketBusiness !=null){
+            bizID =marketBusiness.getBusinessID();
+        }
     }
 
     private void sendDialogId() {
@@ -305,6 +315,8 @@ public class ChatActEthernal extends BaseActivity implements OnImagePickedListen
     }
 
     private void sendChatMessage(String text, QBAttachment attachment) {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         QBChatMessage chatMessage = new QBChatMessage();
         if (attachment != null) {
             chatMessage.addAttachment(attachment);
@@ -332,6 +344,8 @@ public class ChatActEthernal extends BaseActivity implements OnImagePickedListen
     }
 
     private void initChat() {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         switch (qbChatDialog.getType()) {
             case PRIVATE:
                 loadDialogUsers();
@@ -350,6 +364,8 @@ public class ChatActEthernal extends BaseActivity implements OnImagePickedListen
     }
 
     private void updateDialog(final ArrayList<QBUser> selectedUsers) {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         ChatHelper.getInstance().updateDialogUsers(qbChatDialog, selectedUsers,
                 new QBEntityCallback<QBChatDialog>() {
                     @Override
@@ -373,6 +389,8 @@ public class ChatActEthernal extends BaseActivity implements OnImagePickedListen
     }
 
     private void loadDialogUsers() {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         ChatHelper.getInstance().getUsersFromDialog(qbChatDialog, new QBEntityCallback<ArrayList<QBUser>>() {
             @Override
             public void onSuccess(ArrayList<QBUser> users, Bundle bundle) {
@@ -425,6 +443,8 @@ public class ChatActEthernal extends BaseActivity implements OnImagePickedListen
     }
 
     private void showEmptyChatView() {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         String photoLink = UserProfileInfoHolder.getInstance().getProfileInfo(qbChatDialog.getRecipientId()).getPhotoLinks().get(0);
         emptyChatMatchText.setText(String.format("%s %s", getString(R.string.chat_matched_with_message), QbDialogUtils.getDialogName(qbChatDialog)));
         emptyChatTimeText.setText(TimeUtilsEthernal.getTimeSpan(qbChatDialog.getCreatedAt()));
@@ -440,6 +460,8 @@ public class ChatActEthernal extends BaseActivity implements OnImagePickedListen
     }
 
     private void loadChatHistory() {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         ChatHelper.getInstance().loadChatHistory(qbChatDialog, skipPagination, new QBEntityCallback<ArrayList<QBChatMessage>>() {
             @Override
             public void onSuccess(ArrayList<QBChatMessage> messages, Bundle args) {
@@ -507,6 +529,8 @@ public class ChatActEthernal extends BaseActivity implements OnImagePickedListen
     }
 
     private void deleteChat() {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         ChatHelper.getInstance().deleteDialog(qbChatDialog, new QBEntityCallback<Void>() {
             @Override
             public void onSuccess(Void aVoid, Bundle bundle) {
@@ -531,6 +555,8 @@ public class ChatActEthernal extends BaseActivity implements OnImagePickedListen
     }
 
     private void initChatConnectionListener() {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         chatConnectionListener = new VerboseQbChatConnectionListener(getSnackbarAnchorView()) {
             @Override
             public void reconnectionSuccessful() {
@@ -607,6 +633,7 @@ public class ChatActEthernal extends BaseActivity implements OnImagePickedListen
     protected void onPause() {
         super.onPause();
         ChatHelper.getInstance().removeConnectionListener(chatConnectionListener);
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
 
     @Override
@@ -615,6 +642,7 @@ public class ChatActEthernal extends BaseActivity implements OnImagePickedListen
         sendDialogId();
 
         super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
 
     public class ChatMessageListener extends QbChatDialogMessageListenerImp {
@@ -624,4 +652,24 @@ public class ChatActEthernal extends BaseActivity implements OnImagePickedListen
         }
 
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
 }

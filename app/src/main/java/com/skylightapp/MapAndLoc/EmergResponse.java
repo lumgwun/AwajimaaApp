@@ -4,7 +4,7 @@ import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 import static com.skylightapp.MapAndLoc.EmergReportNext.EMERGENCY_NEXT_LOCID;
 import static com.skylightapp.MapAndLoc.EmergReportNext.EMERGENCY_NEXT_REPORT_TABLE;
-import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_LOCID;
+import static com.skylightapp.MapAndLoc.EmergencyReport.EMERG_REPORT_ID;
 import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_TABLE;
 
 import android.os.Parcel;
@@ -33,7 +33,7 @@ public class EmergResponse implements Parcelable, Serializable {
     public static final String RESPONSE_CATEGORY = "response_Category";
 
     public static final String CREATE_RESPONSE_TABLE = "CREATE TABLE " + RESPONSE_TABLE + " (" + RESPONSE_DB_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + RESPONDER_EMERG_ID + " INTEGER, " + RESPONDER_PROF_ID + " INTEGER, " + RESPONDER_DEVICE_ID + " INTEGER, " + RESPONSE_START_TIME + " TEXT, " + RESPONSE_END_TIME + " TEXT, " + RESPONDER_ORIGIN + " TEXT, " +
-            RESPONDER_A_COUNT + " INTEGER, " + RESPONSE_STATUS_A + " TEXT, " + RESPONSE_ID + " INTEGER, "+ RESPONSE_DATE + " TEXT, "+ RESPONSE_STATE + " TEXT, "+ RESPONSE_CATEGORY + " TEXT, "+ "FOREIGN KEY(" + RESPONDER_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + RESPONDER_EMERG_ID + ") REFERENCES " + EMERGENCY_REPORT_TABLE + "(" + EMERGENCY_LOCID + "),"+ "FOREIGN KEY(" + RESPONDER_ENEXT_ID + ") REFERENCES " + EMERGENCY_NEXT_REPORT_TABLE + "(" + EMERGENCY_NEXT_LOCID + "))";
+            RESPONDER_A_COUNT + " INTEGER, " + RESPONSE_STATUS_A + " TEXT, " + RESPONSE_ID + " INTEGER, "+ RESPONSE_DATE + " TEXT, "+ RESPONSE_STATE + " TEXT, "+ RESPONSE_CATEGORY + " TEXT, "+ "FOREIGN KEY(" + RESPONDER_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+ "FOREIGN KEY(" + RESPONDER_EMERG_ID + ") REFERENCES " + EMERGENCY_REPORT_TABLE + "(" + EMERG_REPORT_ID + "),"+ "FOREIGN KEY(" + RESPONDER_ENEXT_ID + ") REFERENCES " + EMERGENCY_NEXT_REPORT_TABLE + "(" + EMERGENCY_NEXT_LOCID + "))";
 
 
     private String responseStartTime;

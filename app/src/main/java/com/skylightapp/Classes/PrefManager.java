@@ -6,10 +6,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 
+import com.blongho.country_data.Currency;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.quickblox.core.helper.StringifyArrayList;
 import com.quickblox.users.model.QBUser;
 import com.skylightapp.LoginActivity;
+import com.skylightapp.MarketClasses.MarketBizPackModel;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.SignTabMainActivity;
 
 import java.util.ArrayList;
@@ -18,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+import static com.skylightapp.Bookings.BookingConstant.MANUAL;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 import static com.skylightapp.Classes.Profile.PROFILE_USERNAME;
 import static com.skylightapp.Classes.Profile.PROFILE_EMAIL;
@@ -34,7 +39,7 @@ public class PrefManager {
     int PRIVATE_MODE = 0;
 
     // Shared preferences file name
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private static final String PREF_PARAM_IS_PROFILE_CREATED = "isProfileCreated";
     private static final String PREF_PARAM_IS_POSTS_WAS_LOADED_AT_LEAST_ONCE = "isPostsWasLoadedAtLeastOnce";
     private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
@@ -61,6 +66,36 @@ public class PrefManager {
     public static final String KEY_EMAIL = "Email";
 
     public static final String KEY_PASSWORD = "txtPassword";
+    boolean isEmailEmpty,isPasswordEmpty;
+
+    AppController appController;
+    private SharedPreferences app_prefs;
+    private final String USER_ID = "user_id";
+    private final String EMAIL = "email";
+    private final String PASSWORD = "password";
+    private final String DEVICE_TOKEN = "device_token";
+    private final String SESSION_TOKEN = "session_token";
+    private final String REQUEST_ID = "request_id";
+    private final String REQUEST_TIME = "request_time";
+    private final String REQUEST_LATITUDE = "request_latitude";
+    private final String REQUEST_LONGITUDE = "request_longitude";
+    private final String LOGIN_BY = "login_by";
+    private final String SOCIAL_ID = "social_id";
+    private final String PAYMENT_MODE = "payment_mode";
+    private final String DEFAULT_CARD = "default_card";
+    private final String DEFAULT_CARD_NO = "default_card_no";
+    private final String DEFAULT_CARD_TYPE = "default_card_type";
+    private final String BASE_PRICE = "base_cost";
+    private final String DISTANCE_PRICE = "distance_cost";
+    private final String TIME_PRICE = "time_cost";
+    private final String IS_TRIP_STARTED = "is_trip_started";
+    private final String HOME_ADDRESS = "home_address";
+    private final String WORK_ADDRESS = "work_address";
+    private final String DEST_LAT = "dest_lat";
+    private final String DEST_LNG = "dest_lng";
+    private final String REFEREE = "is_referee";
+    private final String PROMO_CODE = "promo_code";
+    private String password;
 
     @SuppressLint("CommitPrefEdits")
     public PrefManager(Context context) {
@@ -69,12 +104,287 @@ public class PrefManager {
         //sharedPreferences = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
         editor = pref.edit();
     }
+    public void putBasePrice(float price) {
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putFloat(BASE_PRICE, price);
+        edit.apply();
+    }
+
+    public float getBasePrice() {
+        return app_prefs.getFloat(BASE_PRICE, 0f);
+    }
+
+    public void putDistancePrice(float price) {
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putFloat(DISTANCE_PRICE, price);
+        edit.apply();
+    }
+
+    public float getDistancePrice() {
+        return app_prefs.getFloat(DISTANCE_PRICE, 0f);
+    }
+
+    public void putTimePrice(float price) {
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putFloat(TIME_PRICE, price);
+        edit.apply();
+    }
+    public void putEmail(String emailAddress) {
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putString(PROFILE_EMAIL, emailAddress);
+        edit.apply();
+
+    }
+
+    public float getTimePrice() {
+        return app_prefs.getFloat(TIME_PRICE, 0f);
+    }
+    public void putDeviceToken(String deviceToken) {
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putString(DEVICE_TOKEN, deviceToken);
+        edit.apply();
+    }
+
+    public String getDeviceToken() {
+        return app_prefs.getString(DEVICE_TOKEN, null);
+
+    }
+
+    public void putSessionToken(String sessionToken) {
+
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putString(SESSION_TOKEN, sessionToken);
+        edit.apply();
+    }
+
+    public String getSessionToken() {
+        return app_prefs.getString(SESSION_TOKEN, null);
+
+    }
+
+    public void putRequestId(int requestId) {
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putInt(REQUEST_ID, requestId);
+        edit.apply();
+    }
+
+    public int getRequestId() {
+        return app_prefs.getInt(REQUEST_ID, AppConstants.NO_REQUEST);
+    }
+
+    public void putLoginBy(String loginBy) {
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putString(LOGIN_BY, loginBy);
+        edit.apply();
+    }
+
+    public String getLoginBy() {
+        return app_prefs.getString(LOGIN_BY, MANUAL);
+    }
+
+    public void putRequestTime(long time) {
+
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putLong(REQUEST_TIME, time);
+        edit.apply();
+    }
+
+    public long getRequestTime() {
+        return app_prefs.getLong(REQUEST_TIME, AppConstants.NO_TIME);
+    }
+
+    public void putPaymentMode(int mode) {
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putInt(PAYMENT_MODE, mode);
+        edit.apply();
+    }
+
+    public int getPaymentMode() {
+        return app_prefs.getInt(PAYMENT_MODE, AppConstants.CASH);
+    }
+
+    public void putDefaultCard(int cardId) {
+
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putInt(DEFAULT_CARD, cardId);
+        edit.apply();
+    }
+    public void putUserId(int userId) {
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putInt(USER_ID, userId);
+        edit.apply();
+    }
+    public int getUserId() {
+        return app_prefs.getInt(USER_ID, 0);
+
+    }
+
+    public int getDefaultCard() {
+        return app_prefs.getInt(DEFAULT_CARD, 0);
+    }
+
+    public void putDefaultCardNo(String cardNo) {
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putString(DEFAULT_CARD_NO, cardNo);
+        edit.apply();
+    }
+
+    public String getDefaultCardNo() {
+        return app_prefs.getString(DEFAULT_CARD_NO, "");
+    }
+
+    public void putDefaultCardType(String cardType) {
+
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putString(DEFAULT_CARD_TYPE, cardType);
+        edit.apply();
+    }
+
+    public String getDefaultCardType() {
+        return app_prefs.getString(DEFAULT_CARD_TYPE, "");
+    }
+
+    public boolean getIsTripStarted() {
+        return app_prefs.getBoolean(IS_TRIP_STARTED, false);
+    }
+
+    public void putIsTripStarted(boolean started) {
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putBoolean(IS_TRIP_STARTED, started);
+        edit.apply();
+    }
+
+    public String getHomeAddress() {
+        return app_prefs.getString(HOME_ADDRESS, null);
+    }
+
+    public void putHomeAddress(String homeAddress) {
+
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putString(HOME_ADDRESS, homeAddress);
+        edit.apply();
+    }
+
+    public String getWorkAddress() {
+        return app_prefs.getString(WORK_ADDRESS, null);
+    }
+
+    public void putWorkAddress(String homeAddress) {
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putString(WORK_ADDRESS, homeAddress);
+        edit.apply();
+    }
+
+    public void putRequestLocation(LatLng latLang) {
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putString(REQUEST_LATITUDE, String.valueOf(latLang.latitude));
+        edit.putString(REQUEST_LONGITUDE, String.valueOf(latLang.longitude));
+        edit.apply();
+    }
+
+    public LatLng getRequestLocation() {
+        LatLng latLng = new LatLng(0.0, 0.0);
+        try {
+            latLng = new LatLng(Double.parseDouble(app_prefs.getString(
+                    REQUEST_LATITUDE, "0.0")), Double.parseDouble(app_prefs
+                    .getString(REQUEST_LONGITUDE, "0.0")));
+        } catch (NumberFormatException nfe) {
+            latLng = new LatLng(0.0, 0.0);
+        }
+        return latLng;
+    }
+
+    public void putClientDestination(LatLng destination) {
+
+        SharedPreferences.Editor edit = app_prefs.edit();
+        if (destination == null) {
+            edit.putString(DEST_LAT, null);
+            edit.putString(DEST_LNG, null);
+        } else {
+            edit.putString(DEST_LAT, String.valueOf(destination.latitude));
+            edit.putString(DEST_LNG, String.valueOf(destination.longitude));
+        }
+        edit.apply();
+    }
+
+    public LatLng getClientDestination() {
+        try {
+            if (app_prefs.getString(DEST_LAT, null) != null) {
+                return new LatLng(Double.parseDouble(app_prefs.getString(
+                        DEST_LAT, "0.0")), Double.parseDouble(app_prefs
+                        .getString(DEST_LNG, "0.0")));
+            } else {
+                return null;
+            }
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    public void putReferee(int is_referee) {
+
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putInt(REFEREE, is_referee);
+        edit.apply();
+    }
+
+    public int getReferee() {
+        return app_prefs.getInt(REFEREE, 0);
+    }
+
+    public void putPromoCode(String promoCode) {
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putString(PROMO_CODE, promoCode);
+        edit.apply();
+    }
+
+    public String getPromoCode() {
+        return app_prefs.getString(PROMO_CODE, null);
+    }
+
+    public void clearRequestData() {
+        putRequestId(AppConstants.NO_REQUEST);
+        putRequestTime(AppConstants.NO_TIME);
+        putRequestLocation(new LatLng(0.0, 0.0));
+        putIsTripStarted(false);
+        putClientDestination(null);
+        putPromoCode(null);
+        // new DBHelper(context).deleteAllLocations();
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    public void Logout() {
+        clearRequestData();
+        putUserId(0);
+        putSessionToken(null);
+        putClientDestination(null);
+        putLoginBy(MANUAL);
+        app_prefs.edit().clear();
+    }
 
 
     public void setFirstTimeLaunch(boolean isFirstTime) {
         editor.putBoolean(IS_FIRST_TIME_LAUNCH, isFirstTime);
-        editor.commit();
+        editor.apply();
     }
+    public void storeBoolean(String key, boolean value) {
+        editor.putBoolean(key, value);
+        editor.apply();
+    }
+    public void saveTrackingId(String tracking_id, String trackingID) {
+        editor.putString("TRACKING_ID", trackingID);
+        editor.apply();
+    }
+
+    public boolean getBoolean(String key) {
+        return pref.getBoolean(key, false);
+    }
+
+    public void storeString(String key, String value) {
+        editor.putString(key, value);
+        editor.apply();
+    }
+
 
     public boolean isFirstTimeLaunch() {
         return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
@@ -82,7 +392,7 @@ public class PrefManager {
 
     public void setIsAdmin(boolean isAdmin) {
         editor.putBoolean(IS_ADMIN, isAdmin);
-        editor.commit();
+        editor.apply();
     }
 
     public boolean setIsAdmin() {
@@ -100,8 +410,8 @@ public class PrefManager {
     public void saveLoginDetails(String email, String password) {
         SharedPreferences sharedPreferences = _context.getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("Email", email);
-        editor.putString("Password", password);
+        editor.putString("PROFILE_EMAIL", email);
+        editor.putString("PROFILE_PASSWORD", password);
         editor.apply();
     }
     public void saveAppReferrer(String referrer,String strName,String refCode) {
@@ -118,12 +428,22 @@ public class PrefManager {
         editor.putString(PROF_REF_LINK, String.valueOf(refLink));
         editor.apply();
     }
-    public void createUserLoginSession(long profileID,String uName, String uPassword,String email,String machine){
+    public void createUserLoginSession(int profileID,String uName, String uPassword,String email,String machine){
         editor.putBoolean(IS_USER_LOGIN, true);
-        editor.putString(PROFILE_USERNAME, uName);
-        editor.putString(PROFILE_PASSWORD,  uPassword);
-        editor.putString(KEY_EMAIL,  email);
-        editor.putLong(PROFILE_ID,  profileID);
+        editor.putString("PROFILE_USERNAME", uName);
+        editor.putString("PROFILE_PASSWORD",  uPassword);
+        editor.putString("PROFILE_EMAIL",  email);
+        editor.putLong("PROFILE_ID",  profileID);
+        editor.putString("machine",  machine);
+        editor.commit();
+    }
+    public void createUserLoginSession(int profileID,int qbUserID,String uName, String uPassword,String email,String machine){
+        editor.putBoolean(IS_USER_LOGIN, true);
+        editor.putString("PROFILE_USERNAME", uName);
+        editor.putString("PROFILE_PASSWORD",  uPassword);
+        editor.putString("PROFILE_EMAIL",  email);
+        editor.putLong("PROFILE_ID",  profileID);
+        editor.putLong("qbUserID",  qbUserID);
         editor.putString("machine",  machine);
         editor.commit();
     }
@@ -152,10 +472,10 @@ public class PrefManager {
 
         HashMap<String, String> user = new HashMap<String, String>();
 
-        user.put(PROFILE_USERNAME, pref.getString(PROFILE_USERNAME, null));
-        user.put(PROFILE_PASSWORD, pref.getString(PROFILE_PASSWORD, null));
-        user.put(PROFILE_EMAIL, pref.getString(PROFILE_EMAIL, null));
-        user.put(PROFILE_ID, pref.getString(PROFILE_ID, null));
+        user.put("PROFILE_USERNAME", pref.getString("PROFILE_USERNAME", null));
+        user.put("PROFILE_PASSWORD", pref.getString("PROFILE_PASSWORD", null));
+        user.put("PROFILE_EMAIL", pref.getString("PROFILE_EMAIL", null));
+        user.put("PROFILE_ID", pref.getString("PROFILE_ID", null));
         return user;
     }
     public void remove(String key) {
@@ -183,10 +503,20 @@ public class PrefManager {
         return pref.getBoolean(IS_USER_LOGIN, false);
     }
 
+
     public String getEmail() {
-        SharedPreferences sharedPreferences = _context.getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
-        return sharedPreferences.getString("Email", "");
+        SharedPreferences sharedPreferences = _context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getString("PROFILE_EMAIL", "");
     }
+    public String getPassword() {
+        SharedPreferences sharedPreferences = _context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getString("PROFILE_PASSWORD", "");
+    }
+    public void setPassword(String password) {
+        editor.putString("PROFILE_PASSWORD", password);
+        editor.apply();
+    }
+
     private static SharedPreferences getSharedPreferences(Context context) {
         return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
     }
@@ -211,19 +541,37 @@ public class PrefManager {
         editor.clear();
         editor.apply();
     }
-    public void saveBankAccountDetails(Account account) {
-        String bankName = account.getBankName();
-        String userName=account.getAccountName();
-        int accountNumber =account.getAwajimaAcctNo();
-        AccountTypes accountType = (AccountTypes) account.getType();
-        String accountBalance = String.valueOf(account.getAccountBalance());
-        SharedPreferences sharedPreferences = _context.getSharedPreferences("BankAccountDetails", Context.MODE_PRIVATE);
+    public void saveAccountDetails(Account account) {
+        String bankName=null;
+        String userName=null;
+        int accountNumber=0;
+        AccountTypes accountType=null;
+        double accountBalance=0;
+        int awajimaAcctNo=0;
+        Currency currency=null;
+        String currencyCode=null;
+        if(account !=null){
+            currency=account.getCurrency();
+            bankName = account.getBankName();
+            userName=account.getAccountName();
+            accountNumber =account.getAwajimaAcctNo();
+            accountType = (AccountTypes) account.getType();
+            accountBalance = account.getAccountBalance();
+            awajimaAcctNo=account.getAwajimaAcctNo();
+        }
+        if(currency !=null){
+            currencyCode=currency.getCode();
+        }
+
+        SharedPreferences sharedPreferences = _context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("Bank Name", bankName);
-        editor.putString("Customer Name", userName);
-        editor.putString("Account Number", String.valueOf(accountNumber));
-        editor.putString("Account Balance", accountBalance);
-        editor.putString("Account Type", String.valueOf(accountType));
+        editor.putInt("ACCOUNT_NO", awajimaAcctNo);
+        editor.putString("ACCOUNT_BANK", bankName);
+        editor.putString("ACCOUNT_CURRENCY", currencyCode);
+        editor.putString("ACCOUNT_NAME", userName);
+        editor.putString("BANK_ACCT_NO", String.valueOf(accountNumber));
+        editor.putFloat("ACCOUNT_BALANCE", (float) accountBalance);
+        editor.putString("ACCOUNT_TYPE", String.valueOf(accountType));
         editor.apply();
     }
     public void saveProfileDetails(Profile profile) {
@@ -243,7 +591,7 @@ public class PrefManager {
         String nextOfKin = profile.getNextOfKin();
         Uri profilePicture = profile.getProfilePicture();
 
-        SharedPreferences sharedPreferences = _context.getSharedPreferences("MyProfileDetails", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = _context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("First Name", firstName);
         editor.putString("Surname", lastName);
@@ -275,7 +623,7 @@ public class PrefManager {
 
         editor.apply();
     }
-    public void savePackages(Context context, List<SkyLightPackage> skyLightPackages) {
+    public void savePackages(Context context, List<MarketBizPackage> marketBizPackages) {
         SharedPreferences settings;
         SharedPreferences.Editor editor;
 
@@ -284,9 +632,24 @@ public class PrefManager {
         editor = settings.edit();
 
         Gson gson = new Gson();
-        String jsonPackages = gson.toJson(skyLightPackages);
+        String jsonPackages = gson.toJson(marketBizPackages);
 
         editor.putString("My Packages", jsonPackages);
+
+        editor.apply();
+    }
+    public void saveAccounts(Context context, ArrayList<Account> accountList) {
+        SharedPreferences settings;
+        SharedPreferences.Editor editor;
+
+        settings = context.getSharedPreferences(PREF_NAME,
+                Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        Gson gson = new Gson();
+        String accountJson = gson.toJson(accountList);
+
+        editor.putString("My Accounts", accountJson);
 
         editor.apply();
     }
@@ -306,7 +669,7 @@ public class PrefManager {
         editor.apply();
     }
 
-    public void saveFavoritePackage(Context context, List<SkyLightPackModel> favorites) {
+    public void saveFavoritePackage(Context context, List<MarketBizPackModel> favorites) {
         SharedPreferences settings;
         SharedPreferences.Editor editor;
 
@@ -319,7 +682,7 @@ public class PrefManager {
 
         editor.putString(FAVORITES, jsonFavorites);
 
-        editor.commit();
+        editor.apply();
     }
     public void saveFavoriteCustomer(Context context, List<Customer> favorites) {
         SharedPreferences settings;
@@ -334,7 +697,7 @@ public class PrefManager {
 
         editor.putString(FAVORITES, favoritesCustomer);
 
-        editor.commit();
+        editor.apply();
     }
 
     public void addFavoriteCustomer(Context context, Customer customer) {
@@ -365,17 +728,17 @@ public class PrefManager {
         return (ArrayList<Customer>) favorites;
     }
 
-    public void removeFavorite(Context context, SkyLightPackModel packageListModel) {
-        ArrayList<SkyLightPackModel> favorites = getFavoritePackage(context);
+    public void removeFavorite(Context context, MarketBizPackModel packageListModel) {
+        ArrayList<MarketBizPackModel> favorites = getFavoritePackage(context);
         if (favorites != null) {
             favorites.remove(packageListModel);
             saveFavoritePackage(context, favorites);
         }
     }
 
-    public ArrayList<SkyLightPackModel> getFavoritePackage(Context context) {
+    public ArrayList<MarketBizPackModel> getFavoritePackage(Context context) {
         SharedPreferences settings;
-        List<SkyLightPackModel> favorites;
+        List<MarketBizPackModel> favorites;
 
         settings = context.getSharedPreferences(PREF_NAME,
                 Context.MODE_PRIVATE);
@@ -383,21 +746,29 @@ public class PrefManager {
         if (settings.contains(FAVORITES)) {
             String jsonFavorites = settings.getString(FAVORITES, null);
             Gson gson = new Gson();
-            SkyLightPackModel[] favoriteItems = gson.fromJson(jsonFavorites,
-                    SkyLightPackModel[].class);
+            MarketBizPackModel[] favoriteItems = gson.fromJson(jsonFavorites,
+                    MarketBizPackModel[].class);
 
             favorites = Arrays.asList(favoriteItems);
-            favorites = new ArrayList<SkyLightPackModel>(favorites);
+            favorites = new ArrayList<MarketBizPackModel>(favorites);
         } else
             return null;
 
-        return (ArrayList<SkyLightPackModel>) favorites;
+        return (ArrayList<MarketBizPackModel>) favorites;
     }
 
     public boolean isUserLoggedOut() {
         SharedPreferences sharedPreferences = _context.getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
-        boolean isEmailEmpty = Objects.requireNonNull(sharedPreferences.getString("Email", "")).isEmpty();
-        boolean isPasswordEmpty = Objects.requireNonNull(sharedPreferences.getString("Password", "")).isEmpty();
+        SharedPreferences sharedPreferences22 = _context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+
+        if(sharedPreferences !=null){
+            sharedPreferences=sharedPreferences22;
+            isEmailEmpty = Objects.requireNonNull(sharedPreferences.getString(PROFILE_EMAIL, "")).isEmpty();
+            isPasswordEmpty = Objects.requireNonNull(sharedPreferences.getString(PROFILE_PASSWORD, "")).isEmpty();
+
+
+        }
+
         return isEmailEmpty || isPasswordEmpty;
     }
 
@@ -425,6 +796,33 @@ public class PrefManager {
         SharedPreferences prefs = context.getSharedPreferences(SHARED_PREFERENCE_KEY, 0);
         return prefs.getBoolean(SHOULD_DISPLAY_WELCOME_SCREEN, true);
     }
+    public void storeBooleanInPref(String step_one_running, boolean b) {
+        SharedPreferences prefs = _context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("STEP_ONE_RUNNING", b);
+        editor.putBoolean("STEP_TWO_RUNNING", b);
+        editor.putBoolean("STEP_THREE_RUNNING", b);
+        editor.apply();
+    }
+    public boolean getBooleanInPef(String step_string) {
+        if(step_string !=null){
+            if (step_string.equalsIgnoreCase("STEP_ONE")) {
+                return pref.getBoolean("STEP_ONE", false);
+            } else if (step_string.equalsIgnoreCase("STEP_TWO")) {
+                return pref.getBoolean("STEP_ONE", false);
+            } else if (step_string.equalsIgnoreCase("STEP_THREE")) {
+                return pref.getBoolean("STEP_ONE", false);
+            } else if (step_string.equalsIgnoreCase("STEP_FOUR")) {
+                return pref.getBoolean("STEP_ONE", false);
+            }
+
+        }
+
+        editor.commit();
+
+        return false;
+    }
+
 
     public static synchronized void setHasMigratedjsonData(Context context, boolean hasMigrated) {
         SharedPreferences prefs = context.getSharedPreferences(SHARED_PREFERENCE_KEY, 0);
@@ -449,9 +847,17 @@ public class PrefManager {
         return instance;
     }
 
+
     public PrefManager() {
         instance = this;
-        sharedPreferences = AppController.getInstance().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        //appController= new AppController();
+        try {
+
+            sharedPreferences = AppController.getInstance().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void delete(String key) {
@@ -495,6 +901,7 @@ public class PrefManager {
     public boolean has(String key) {
         return sharedPreferences.contains(key);
     }
+
 
 
     public void saveQbUser(QBUser qbUser) {
@@ -550,4 +957,12 @@ public class PrefManager {
     private SharedPreferences.Editor getEditor() {
         return sharedPreferences.edit();
     }
+
+    public void deletePreference() {
+        SharedPreferences.Editor editor = getEditor();
+        editor.clear().commit();
+    }
+
+
+
 }

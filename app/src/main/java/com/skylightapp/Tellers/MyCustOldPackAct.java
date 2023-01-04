@@ -48,8 +48,8 @@ import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.AccountTypes;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerDailyReport;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.TimeLineClassDAO;
@@ -103,11 +103,11 @@ public class MyCustOldPackAct extends AppCompatActivity implements View.OnClickL
     private LinearLayout dotsLayout;
 
     private ArrayAdapter<Customer> customerArrayAdapterN;
-    private ArrayAdapter<SkyLightPackage> skyLightPackageArrayAdapter;
+    private ArrayAdapter<MarketBizPackage> skyLightPackageArrayAdapter;
     private ArrayList<CustomerDailyReport> customerDailyReports;
-    private ArrayList<SkyLightPackage> skyLightPackageArrayList;
+    private ArrayList<MarketBizPackage> marketBizPackageArrayList;
     private ArrayList<Customer> customersN;
-    private List<SkyLightPackage> skyLightPackageList;
+    private List<MarketBizPackage> marketBizPackageList;
 
     private SharedPreferences userPreferences;
     private String phoneNo;
@@ -142,10 +142,10 @@ public class MyCustOldPackAct extends AppCompatActivity implements View.OnClickL
     DatePicker date_picker_dob;
 
     String packageType;
-    //SkyLightPackage.SkylightPackage_Type packageType;
+    //MarketBizPackage.SkylightPackage_Type packageType;
     AppCompatSpinner spn_select_packageOngoing;
-    SkyLightPackage selectedPackage;
-    SkyLightPackage skyLightPackage;
+    MarketBizPackage selectedPackage;
+    MarketBizPackage marketBizPackage;
     String customerBank;
     double accountBalance1;
     double newAmount;
@@ -225,7 +225,7 @@ public class MyCustOldPackAct extends AppCompatActivity implements View.OnClickL
         account= new Account();
         random= new SecureRandom();
         userProfile=new Profile();
-        selectedPackage= new SkyLightPackage();
+        selectedPackage= new MarketBizPackage();
         sharedpreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         json = sharedpreferences.getString("LastProfileUsed", "");
@@ -291,15 +291,15 @@ public class MyCustOldPackAct extends AppCompatActivity implements View.OnClickL
 
 
     public void getSkylightPackages(Customer customer,Account account,long acctID,double accountBalance1){
-        skyLightPackageArrayList=selectedCustomer.getCusSkyLightPackages();
-        skyLightPackageArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, skyLightPackageArrayList);
+        marketBizPackageArrayList =selectedCustomer.getCusSkyLightPackages();
+        skyLightPackageArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, marketBizPackageArrayList);
         skyLightPackageArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spn_select_packageOngoing.setAdapter(skyLightPackageArrayAdapter);
         spn_select_packageOngoing.setSelection(0);
         spn_select_packageOngoing.setSelection(skyLightPackageArrayAdapter.getPosition(selectedPackage));
         selectedPackageIndex = spn_select_packageOngoing.getSelectedItemPosition();
         try {
-            selectedPackage = skyLightPackageArrayList.get(selectedPackageIndex);
+            selectedPackage = marketBizPackageArrayList.get(selectedPackageIndex);
 
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Oops!");

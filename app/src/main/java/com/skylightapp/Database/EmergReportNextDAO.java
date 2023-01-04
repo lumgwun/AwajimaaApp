@@ -5,17 +5,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.location.Location;
 import android.util.Log;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.skylightapp.MapAndLoc.EmergReportNext;
 
 import java.util.ArrayList;
 
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
-import static com.skylightapp.Inventory.Stocks.STOCK_ITEM_NAME;
-import static com.skylightapp.Inventory.Stocks.STOCK_OFFICE;
 import static com.skylightapp.MapAndLoc.EmergReportNext.EMERGENCY_NEXT_LAT;
 import static com.skylightapp.MapAndLoc.EmergReportNext.EMERGENCY_NEXT_LATLNG;
 import static com.skylightapp.MapAndLoc.EmergReportNext.EMERGENCY_NEXT_LNG;
@@ -23,8 +19,7 @@ import static com.skylightapp.MapAndLoc.EmergReportNext.EMERGENCY_NEXT_LOCID;
 import static com.skylightapp.MapAndLoc.EmergReportNext.EMERGENCY_NEXT_LOCTIME;
 import static com.skylightapp.MapAndLoc.EmergReportNext.EMERGENCY_NEXT_REPORT_ID;
 import static com.skylightapp.MapAndLoc.EmergReportNext.EMERGENCY_NEXT_REPORT_TABLE;
-import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_LOCID;
-import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_STATUS;
+import static com.skylightapp.MapAndLoc.EmergencyReport.EMERG_REPORT_ID;
 import static java.lang.String.valueOf;
 
 public class EmergReportNextDAO extends DBHelperDAO{
@@ -49,7 +44,7 @@ public class EmergReportNextDAO extends DBHelperDAO{
     public ArrayList<String> getLatLngStrngForEmergR(int emegReportID) {
         ArrayList<String> array_list = new ArrayList<String>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String selection = EMERGENCY_LOCID + "=?";
+        String selection = EMERG_REPORT_ID + "=?";
         String[] columns = {EMERGENCY_NEXT_LATLNG};
         String[] selectionArgs = new String[]{valueOf(emegReportID)};
         Cursor res = db.query(EMERGENCY_NEXT_REPORT_TABLE,columns,selection,selectionArgs,null,null,null);
@@ -77,7 +72,7 @@ public class EmergReportNextDAO extends DBHelperDAO{
         String selection = EMERGENCY_NEXT_REPORT_ID + "=? ";
         String[] selectionArgs = new String[]{valueOf(reportID)};
 
-        String[] columns = {EMERGENCY_NEXT_LOCID,EMERGENCY_LOCID,EMERGENCY_NEXT_LOCTIME,EMERGENCY_NEXT_LAT,EMERGENCY_NEXT_LNG};
+        String[] columns = {EMERGENCY_NEXT_LOCID, EMERG_REPORT_ID,EMERGENCY_NEXT_LOCTIME,EMERGENCY_NEXT_LAT,EMERGENCY_NEXT_LNG};
         Cursor cursor = db.query(EMERGENCY_NEXT_REPORT_TABLE, columns, selection, selectionArgs, null,
                 null, null);
         getEmergNextCursor(emergReportNexts, cursor);
@@ -88,7 +83,7 @@ public class EmergReportNextDAO extends DBHelperDAO{
     public ArrayList<EmergReportNext> getAllEmergNextReportEmergReport(int reportID,String current) {
         ArrayList<EmergReportNext> emergReportNexts = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String[] columns = {EMERGENCY_NEXT_LOCID,EMERGENCY_LOCID,EMERGENCY_NEXT_LOCTIME,EMERGENCY_NEXT_LAT,EMERGENCY_NEXT_LNG};
+        String[] columns = {EMERGENCY_NEXT_LOCID, EMERG_REPORT_ID,EMERGENCY_NEXT_LOCTIME,EMERGENCY_NEXT_LAT,EMERGENCY_NEXT_LNG};
 
         try {
             Cursor cursor = db.rawQuery("Select columns from EMERGENCY_NEXT_REPORT_TABLE INNER JOIN EMERGENCY_REPORT_TABLE ON EMERGENCY_NEXT_REPORT_ID=EMERGENCY_LOCID WHERE EMERGENCY_REPORT_STATUS='" + current + "'", null);

@@ -25,7 +25,7 @@ import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.PaymentDoc;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.R;
@@ -132,7 +132,7 @@ public class SavingsListFragment extends Fragment {
         private final Context context;
         private final List<CustomerDailyReport> dailyReports;
         private PaymentDoc paymentDoc;
-        private SkyLightPackage skyLightPackage;
+        private MarketBizPackage marketBizPackage;
         private int packageCount;
         int packageID;
 
@@ -207,12 +207,12 @@ public class SavingsListFragment extends Fragment {
             final CustomerDailyReport customerDailyReport = dailyReports.get(position);
             if(customerDailyReport !=null){
                 paymentDoc = customerDailyReport.getRecordPaymentDoc();
-                skyLightPackage=customerDailyReport.getRecordPackage();
+                marketBizPackage =customerDailyReport.getRecordPackage();
 
             }
-            if(skyLightPackage !=null){
-                packageCount=skyLightPackage.getCount();
-                packageID=skyLightPackage.getPackID();
+            if(marketBizPackage !=null){
+                packageCount= marketBizPackage.getCount();
+                packageID= marketBizPackage.getPackID();
 
             }
 

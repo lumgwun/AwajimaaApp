@@ -19,9 +19,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -32,10 +32,14 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.blongho.country_data.Currency;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
+import com.mikhaellopez.circularimageview.CircularImageView;
 import com.rom4ek.arcnavigationview.ArcNavigationView;
+import com.skylightapp.Admins.BranchReportTab;
 import com.skylightapp.AwajimaSliderAct;
 import com.skylightapp.BizSubQTOptionAct;
 import com.skylightapp.Classes.Account;
@@ -45,7 +49,7 @@ import com.skylightapp.Customers.CusLoanRepaymentAct;
 import com.skylightapp.Customers.CusLoanTab;
 import com.skylightapp.Customers.CusOrderTab;
 import com.skylightapp.Customers.CusPackForPayment;
-import com.skylightapp.Customers.CusPacksAct;
+import com.skylightapp.Customers.CusDocCodeSavingsAct;
 import com.skylightapp.Customers.CustUtilTab;
 import com.skylightapp.Customers.CustomerHelpActTab;
 import com.skylightapp.Customers.NewCustomerDrawer;
@@ -56,12 +60,15 @@ import com.skylightapp.Customers.SOTab;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.LoginActivity;
+import com.skylightapp.MapAndLoc.UserReportEmergAct;
 import com.skylightapp.MarketClasses.MarketBusiness;
+import com.skylightapp.MyGrpSavingsTab;
 import com.skylightapp.MyTimelineAct;
 import com.skylightapp.PasswordRecovAct;
 import com.skylightapp.PrivacyPolicy_Web;
 import com.skylightapp.R;
 import com.skylightapp.SignTabMainActivity;
+import com.skylightapp.SubRecordAct;
 import com.skylightapp.UserPrefActivity;
 import com.skylightapp.UserTimeLineAct;
 
@@ -89,16 +96,20 @@ public class MarketBizOffice extends AppCompatActivity implements NavigationView
     private MarketBusiness marketBusiness;
     private long bizID;
     private Toolbar toolbar;
+    private Toolbar bizToolBar;
     private DrawerLayout drawer;
     private Account account;
     private ActionBarDrawerToggle toggle;
     private AppCompatImageView greetingsImg;
     private CircleImageView bizLogo;
-    private AppCompatTextView txtName,txtBizID,txtBrandName,txtWalletID,txtBizBalance,txtMBCus,txtSpnBalance,txtTodayNewCus,txtTodayMessages,txtTodayOrder;
+    private AppCompatTextView txtName,txtBizID, txtUserName,txtWalletID,txtBizBalance,txtMBCus,txtSpnBalance,txtTodayNewCus,txtTodayMessages,txtTodayOrder;
     private Spinner spnAccts;
     private String bizName;
     private AppCompatButton btnRenewSub;
     private Set<String> bizTypes;
+    CircleImageView imgProfilePic,userPix;
+    Uri userPicture,bizImage;
+    private CircularImageView bizLogoHeader;
 
     private ActivityResultLauncher<Intent> mStartBizTypeForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
 
@@ -137,7 +148,11 @@ public class MarketBizOffice extends AppCompatActivity implements NavigationView
         txtTodayNewCus = findViewById(R.id.cus_mbNew_Today);
         txtTodayMessages = findViewById(R.id.mb_support_m_today);
         txtTodayOrder = findViewById(R.id.today_orders_biz);
-        txtBrandName = findViewById(R.id.brand_name);
+        bizToolBar = findViewById(R.id.biz_tBar);
+        bizLogoHeader = findViewById(R.id.biz_Logo_Header);
+        userPix = findViewById(R.id.biz_user_pix);
+
+        txtUserName = findViewById(R.id.biz_username);
         btnRenewSub = findViewById(R.id.renew_subB);
 
         ArcNavigationView navigationView = (ArcNavigationView) findViewById(R.id.biz_nav_view_r);
@@ -189,7 +204,7 @@ public class MarketBizOffice extends AppCompatActivity implements NavigationView
         if(marketBusiness !=null){
             bizName=marketBusiness.getBizBrandname();
         }
-        txtBrandName.setText("Brand Name :"+bizName);
+        txtUserName.setText("Brand Name :"+bizName);
 
         StringBuilder welcomeString = new StringBuilder();
 
@@ -321,10 +336,29 @@ public class MarketBizOffice extends AppCompatActivity implements NavigationView
 
     }
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.customer_bottom_menu, menu);
@@ -478,10 +512,42 @@ public class MarketBizOffice extends AppCompatActivity implements NavigationView
         });
     }
     private void setupHeader() {
+        gson1 = new Gson();
+        gson = new Gson();
+        gson2 = new Gson();
+        dbHelper = new DBHelper(this);
+        userProfile = new Profile();
+        customer = new Customer();
+        marketBusiness= new MarketBusiness();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        bizTypes = userPreferences.getStringSet("BIZ_TYPE", new HashSet<String>());
+        SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserMachine=userPreferences.getString("machine", "");
+        SharedPrefProfileID= String.valueOf(userPreferences.getLong("PROFILE_ID", 0));
+        json1 = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson1.fromJson(json1, Profile.class);
+        userName=userPreferences.getString("PROFILE_USERNAME", "");
+        userPassword=userPreferences.getString("PROFILE_PASSWORD", "");
+        userMachine=userPreferences.getString("PROFILE_ROLE", "");
+        profileID=userPreferences.getInt("PROFILE_ID", 0);
+
+        json2 = userPreferences.getString("LastMarketBusinessUsed", "");
+        marketBusiness = gson2.fromJson(json2, MarketBusiness.class);
+
+        gson = new Gson();
+        gson1 = new Gson();
+        json = userPreferences.getString("LastCustomerUsed", "");
+        customer = gson.fromJson(json, Customer.class);
+        userPicture= Uri.parse(userPreferences.getString("PICTURE_URI", ""));
+
 
         ArcNavigationView navigationView = (ArcNavigationView) findViewById(R.id.biz_nav_view_r);
         navigationView.setNavigationItemSelectedListener(this);
         drawer = findViewById(R.id.biz_office_draw);
+        bizToolBar = findViewById(R.id.biz_tBar);
+        bizLogoHeader = findViewById(R.id.biz_Logo_Header);
+        userPix = findViewById(R.id.biz_user_pix);
+        txtUserName = findViewById(R.id.biz_username);
 
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -489,11 +555,36 @@ public class MarketBizOffice extends AppCompatActivity implements NavigationView
         toggle.setHomeAsUpIndicator(R.drawable.home2);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        //getSupportActionBar().setElevation(0);
-        getSupportActionBar().setTitle("Biz BackOffice");
+        txtUserName.setText(userName);
+        if(marketBusiness !=null){
+            bizName=marketBusiness.getBizBrandname();
+            bizImage=marketBusiness.getBizPicture();
+            Objects.requireNonNull(getSupportActionBar()).setTitle(bizName+" Biz BackOffice");
+
+        }else {
+            Objects.requireNonNull(getSupportActionBar()).setTitle("Biz BackOffice");
+        }
+        getSupportActionBar().setElevation(-90);
+
+        bizToolBar.setTitle(bizName);
 
         View headerView = navigationView.getHeaderView(0);
         btnRenewSub = headerView.findViewById(R.id.renew_subB);
+
+        try {
+            Glide.with(MarketBizOffice.this)
+                    .asBitmap()
+                    .load(bizLogo)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .error(R.drawable.ic_alert)
+                    //.listener(listener)
+                    .skipMemoryCache(true)
+                    .fitCenter()
+                    .centerCrop()
+                    .into(bizLogoHeader);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
 
         btnRenewSub.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -507,21 +598,26 @@ public class MarketBizOffice extends AppCompatActivity implements NavigationView
 
             }
         });
-        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        gson = new Gson();
-        gson1 = new Gson();
-        json = userPreferences.getString("LastProfileUsed", "");
-        userProfile = gson.fromJson(json, Profile.class);
-        json1 = userPreferences.getString("LastCustomerUsed", "");
-        customer = gson1.fromJson(json1, Customer.class);
 
         ProfDAO applicationDb = new ProfDAO(this);
         if(userProfile !=null){
             profileID=userProfile.getPID();
-            Bitmap bitmap = applicationDb.getProfilePicture(profileID);
-            CircleImageView imgProfilePic = headerView.findViewById(R.id.profile_image_cus);
-            imgProfilePic.setImageBitmap(bitmap);
         }
+        try {
+            Glide.with(MarketBizOffice.this)
+                    .asBitmap()
+                    .load(userPicture)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .error(R.drawable.ic_alert)
+                    //.listener(listener)
+                    .skipMemoryCache(true)
+                    .fitCenter()
+                    .centerCrop()
+                    .into(userPix);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
         Currency currency=null;
         String acctCurrency=null;
         /*if(customer !=null){
@@ -628,7 +724,7 @@ public class MarketBizOffice extends AppCompatActivity implements NavigationView
                 startActivity(profile);
                 break;
             case R.id.nav_biz_cus:
-                Intent active = new Intent(MarketBizOffice.this, CusPacksAct.class);
+                Intent active = new Intent(MarketBizOffice.this, CusDocCodeSavingsAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 active.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -645,7 +741,7 @@ public class MarketBizOffice extends AppCompatActivity implements NavigationView
                 break;
 
             case R.id.nav_inv_biz:
-                Intent chat = new Intent(MarketBizOffice.this, MyTimelineAct.class);
+                Intent chat = new Intent(MarketBizOffice.this, MarketInvTab.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 chat.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -654,7 +750,7 @@ public class MarketBizOffice extends AppCompatActivity implements NavigationView
                 break;
 
             case R.id.nav_regulators_biz:
-                Intent supportInt = new Intent(MarketBizOffice.this, CustomerHelpActTab.class);
+                Intent supportInt = new Intent(MarketBizOffice.this, BizRegulOffice.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 supportInt.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -670,7 +766,7 @@ public class MarketBizOffice extends AppCompatActivity implements NavigationView
                 startActivity(intPref);
                 break;
             case R.id.nav_biz_Subscriptions:
-                Intent intSO = new Intent(MarketBizOffice.this, SOTab.class);
+                Intent intSO = new Intent(MarketBizOffice.this, SubRecordAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 intSO.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -678,7 +774,7 @@ public class MarketBizOffice extends AppCompatActivity implements NavigationView
                 startActivity(intSO);
                 break;
             case R.id.nav_Grp_Savings:
-                Intent pIntent = new Intent(MarketBizOffice.this, PackageTab.class);
+                Intent pIntent = new Intent(MarketBizOffice.this, MyGrpSavingsTab.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -712,7 +808,7 @@ public class MarketBizOffice extends AppCompatActivity implements NavigationView
                 break;
 
             case R.id.nav_deals_biz:
-                Intent dealIntent = new Intent(MarketBizOffice.this, CustUtilTab.class);
+                Intent dealIntent = new Intent(MarketBizOffice.this, BizDealTab.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 dealIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -722,7 +818,7 @@ public class MarketBizOffice extends AppCompatActivity implements NavigationView
 
 
             case R.id.nav_workers:
-                Intent workersIntent = new Intent(MarketBizOffice.this, CustUtilTab.class);
+                Intent workersIntent = new Intent(MarketBizOffice.this, MarketBizPOffice.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 workersIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -731,7 +827,7 @@ public class MarketBizOffice extends AppCompatActivity implements NavigationView
                 break;
 
             case R.id.nav_branches_B:
-                Intent officeIntent = new Intent(MarketBizOffice.this, CustUtilTab.class);
+                Intent officeIntent = new Intent(MarketBizOffice.this, BranchReportTab.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 officeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -741,7 +837,7 @@ public class MarketBizOffice extends AppCompatActivity implements NavigationView
 
 
             case R.id.nav_report_Emerg:
-                Intent emegIntent = new Intent(MarketBizOffice.this, CustUtilTab.class);
+                Intent emegIntent = new Intent(MarketBizOffice.this, UserReportEmergAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 emegIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -759,7 +855,7 @@ public class MarketBizOffice extends AppCompatActivity implements NavigationView
                 break;
 
             case R.id.nav_inventory_b:
-                Intent inventoryInt = new Intent(MarketBizOffice.this, CustUtilTab.class);
+                Intent inventoryInt = new Intent(MarketBizOffice.this, MarketInvTab.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 inventoryInt.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -767,7 +863,7 @@ public class MarketBizOffice extends AppCompatActivity implements NavigationView
                 startActivity(inventoryInt);
                 break;
             case R.id.nav_market_biz:
-                Intent marketIntent = new Intent(MarketBizOffice.this, CustUtilTab.class);
+                Intent marketIntent = new Intent(MarketBizOffice.this, MarketBizPOffice.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 marketIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

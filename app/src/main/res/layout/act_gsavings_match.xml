@@ -169,7 +169,7 @@
                 android:gravity="right"
                 android:fontFamily="@font/proxima_nova_semibold"
                 android:textSize="17sp"
-                tools:text="$10-$1000"/>
+                tools:text="Amount is within the range ($2-$1000)"/>
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
@@ -181,27 +181,26 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_16sdp"
-                android:background="@drawable/shape_layer_3"
-                android:backgroundTint="@color/ORANGE_CHAT"
-                android:layout_marginStart="@dimen/_16sdp"
-                android:layout_marginTop="@dimen/_16sdp"
-                android:layout_marginBottom="@dimen/_16sdp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/shape_layer_3b"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
                 android:orientation="vertical">
                 <com.google.android.material.slider.RangeSlider
                     android:id="@+id/settings_amt_range_seekbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:labelBehavior="withinBounds"
-                    style="@style/Widget.AppCompat.SeekBar.Discrete"
-                    android:paddingBottom="30dp"
-                    app:thumbColor="@color/colorPrimary"
-                    android:valueFrom="0.0"
-                    android:valueTo="100.0"
-                    android:stepSize="10.0"
-                    app:values="@array/range_slider_values"
-                    app:minSeparation="10dp"
-                    app:tickColor="@android:color/white"
+                    android:paddingBottom="10dp"
+                   app:filledColor="@color/ORANGE_CHAT"
+                    app:thumbColor="@android:color/holo_green_dark"
+                    android:stepSize="2"
+                    style="@style/SliderStyle"
+                    android:layout_gravity="center_horizontal"
+                    android:valueFrom="2.0"
+                    android:valueTo="1000.0"
+                    app:tickColor="@color/ORANGE_CHAT"
                     app:haloColor="@android:color/holo_green_dark"
                     app:trackColor="@color/black"
                     android:soundEffectsEnabled="true" />

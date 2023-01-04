@@ -2,22 +2,15 @@ package com.skylightapp.Database;
 
 
 
-import static com.skylightapp.Bookings.BoatTripRoute.BOAT_TRIP_ROUTE_COUNTRY;
-import static com.skylightapp.Bookings.BoatTripRoute.BOAT_TRIP_ROUTE_FROM;
-import static com.skylightapp.Bookings.BoatTripRoute.BOAT_TRIP_ROUTE_ID;
-import static com.skylightapp.Bookings.BoatTripRoute.BOAT_TRIP_ROUTE_STATUS;
-import static com.skylightapp.Bookings.BoatTripRoute.BOAT_TRIP_ROUTE_TABLE;
-import static com.skylightapp.Bookings.BoatTripRoute.BOAT_TRIP_ROUTE_THROUGH;
-import static com.skylightapp.Bookings.BoatTripRoute.BOAT_TRIP_ROUTE_TO;
 import static com.skylightapp.Bookings.Driver.DRIVER_ID;
 import static com.skylightapp.Bookings.Driver.DRIVER_JOINED_D;
 import static com.skylightapp.Bookings.Driver.DRIVER_NAME;
 import static com.skylightapp.Bookings.Driver.DRIVER_PICTURE;
+import static com.skylightapp.Bookings.Driver.DRIVER_POSITION;
 import static com.skylightapp.Bookings.Driver.DRIVER_PROF_ID;
 import static com.skylightapp.Bookings.Driver.DRIVER_STATUS;
 import static com.skylightapp.Bookings.Driver.DRIVER_TABLE;
 import static com.skylightapp.Bookings.Driver.DRIVER_VEHICLE;
-import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_TABLE;
 
 import static java.lang.String.valueOf;
 
@@ -27,9 +20,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
-import com.skylightapp.Bookings.BoatTripRoute;
+import com.google.android.gms.maps.model.LatLng;
 import com.skylightapp.Bookings.Driver;
-import com.skylightapp.MapAndLoc.EmergencyReport;
+import com.skylightapp.Bookings.TaxiDriver;
 
 import java.util.ArrayList;
 
@@ -46,17 +39,47 @@ public class DriverDAO extends DBHelperDAO{
         cursor.close();
         return cursor.getCount();
     }
-    public long insertDriver(String driverID, int profID,String from, String to,String through, Uri picture,String status) {
+    public long insertDriver(String driverID, int profID,String driverName, String driverVehicle,String dateJoined, Uri picture,String status,LatLng position) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(DRIVER_ID, driverID);
         contentValues.put(DRIVER_PROF_ID, profID);
-        contentValues.put(DRIVER_NAME, from);
-        contentValues.put(DRIVER_VEHICLE, to);
-        contentValues.put(DRIVER_JOINED_D, through);
+        contentValues.put(DRIVER_NAME, driverName);
+        contentValues.put(DRIVER_VEHICLE, driverVehicle);
+        contentValues.put(DRIVER_JOINED_D, dateJoined);
+        contentValues.put(DRIVER_POSITION, String.valueOf(position));
         contentValues.put(DRIVER_PICTURE, String.valueOf(picture));
         contentValues.put(DRIVER_STATUS, status);
         return sqLiteDatabase.insert(DRIVER_TABLE, null, contentValues);
+
+    }
+
+    public Driver getDriverByPosition(TaxiDriver latLng) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Driver driver= new Driver();
+        try (Cursor cursor = db.query(DRIVER_TABLE, new String[]{
+                        DRIVER_ID,
+                        DRIVER_PROF_ID,
+                        DRIVER_NAME,
+                        DRIVER_VEHICLE,
+                        DRIVER_PICTURE,
+                        DRIVER_STATUS,
+                }, DRIVER_POSITION + "=?",
+
+                new String[]{String.valueOf(latLng)}, null, null, null, null)) {
+
+            if (cursor != null)
+                cursor.moveToFirst();
+
+            driver = null;
+            if (cursor != null) {
+                driver = new Driver(Integer.parseInt(cursor.getString(1)),Integer.parseInt(cursor.getString(2)), cursor.getString(3),Uri.parse(cursor.getString(12)),
+                        cursor.getString(4), cursor.getString(7), cursor.getString(9));
+            }
+        }
+
+        return driver;
 
     }
     public void deleteDriver(String driverID) {
@@ -79,7 +102,7 @@ public class DriverDAO extends DBHelperDAO{
         }
 
     }
-    public ArrayList<Driver> getDriverByDateJoined(String date) {
+    public ArrayList<Driver> getDriversByDateJoined(String date) {
         ArrayList<Driver> driverArrayList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String selection = DRIVER_JOINED_D + "=?";

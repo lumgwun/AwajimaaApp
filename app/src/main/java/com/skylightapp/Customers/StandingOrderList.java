@@ -1,5 +1,7 @@
 package com.skylightapp.Customers;
 
+import static com.skylightapp.Database.DBHelper.DATABASE_NAME;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -13,6 +15,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -66,7 +69,7 @@ public class StandingOrderList extends AppCompatActivity implements StandingOrde
     private String json1;
     private  Profile userProfile;
     private  int profileID;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +81,8 @@ public class StandingOrderList extends AppCompatActivity implements StandingOrde
         gson1 = new Gson();
         userProfile=new Profile();
         customer= new Customer();
+        dbHelper= new DBHelper(this);
+        SODAO sodao= new SODAO(this);
         recyclerViewDate = findViewById(R.id.recyclerViewDateSO);
         recyclerView = findViewById(R.id.recycler_viewS);
         txtSOCount = findViewById(R.id.txtSOCount44);
@@ -104,12 +109,40 @@ public class StandingOrderList extends AppCompatActivity implements StandingOrde
                 chooseDate();
             }
         });
-        SODAO sodao= new SODAO(this);
+
 
         dateOfSO = picker.getDayOfMonth()+"-"+ (picker.getMonth() + 1)+"-"+picker.getYear();
-        soAllCount =sodao.getSOCountCustomer(customerID);
-        soCount = sodao.getCustomerSOCountForDate(customerID,dateOfSO);
-        standingOrders=sodao.getAllStandingOrdersForCustomerDate(customerID,dateOfSO);
+
+
+        if(sodao !=null){
+            try {
+                soAllCount =sodao.getSOCountCustomer(customerID);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if(sodao !=null){
+            try {
+                soCount = sodao.getCustomerSOCountForDate(customerID,dateOfSO);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        if(sodao !=null){
+            try {
+                standingOrders=sodao.getAllStandingOrdersForCustomerDate(customerID,dateOfSO);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
         btnSearchDB.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -119,7 +152,6 @@ public class StandingOrderList extends AppCompatActivity implements StandingOrde
                 LinearLayoutManager layoutManagerC
                         = new LinearLayoutManager(StandingOrderList.this, LinearLayoutManager.HORIZONTAL, false);
                 recyclerViewDate.setLayoutManager(layoutManagerC);
-                //recyclerViewDate.setHasFixedSize(true);
                 orderAdapterC = new StandingOrderAdapterC(StandingOrderList.this, standingOrders);
                 recyclerViewDate.setAdapter(orderAdapterC);
                 DividerItemDecoration dividerItemDecoration7 = new DividerItemDecoration(recyclerViewDate.getContext(),
@@ -149,8 +181,18 @@ public class StandingOrderList extends AppCompatActivity implements StandingOrde
 
         if (customer !=null){
             customerID=customer.getCusUID();
-            dbHelper= new DBHelper(this);
-            standingOrdersAll =sodao.getSOFromCurrentCustomer(customerID);
+
+
+            if(sodao !=null){
+                try {
+                    if(customerID>0)
+                    standingOrdersAll =sodao.getSOFromCurrentCustomer(customerID);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
             final CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.addOnScrollListener(new CenterScrollListener());

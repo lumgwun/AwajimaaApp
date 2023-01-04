@@ -20,25 +20,25 @@
         app:layout_constraintTop_toTopOf="parent">
         <androidx.appcompat.widget.AppCompatImageButton
             android:layout_width="60dp"
-            android:background="@drawable/com_facebook_close"
+            android:background="@drawable/shape_layer_3b"
             android:layout_gravity="end"
             android:id="@+id/btn_closeBD_Sheet"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:layout_marginEnd="20dp"
-            android:src="@drawable/com_facebook_close"
+            android:src="@drawable/ic_close"
             android:layout_height="60dp"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="My Awajima Business Deals Partners"
+            android:text="My Deals Partners"
             android:textAlignment="center"
             android:textSize="17sp"
             android:textStyle="bold" />
 
-        <com.google.android.material.card.MaterialCardView
+        <com.google.android.material.payStackCard.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="2dp"
@@ -65,7 +65,7 @@
                 android:foregroundGravity="center"
                 android:orientation="vertical" />
 
-        </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.payStackCard.MaterialCardView>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

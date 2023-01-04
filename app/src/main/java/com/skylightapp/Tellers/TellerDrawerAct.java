@@ -1,5 +1,7 @@
 package com.skylightapp.Tellers;
 
+import static com.skylightapp.Database.DBHelper.DATABASE_NAME;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -16,8 +18,11 @@ import androidx.fragment.app.FragmentManager;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,9 +45,10 @@ import com.skylightapp.CameraActivity;
 import com.skylightapp.CheckMailActivity;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Payment;
+import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Customers.TellerForCusLoanAct;
-import com.skylightapp.Customers.CusPacksAct;
+import com.skylightapp.Customers.CusDocCodeSavingsAct;
 import com.skylightapp.Database.AcctDAO;
 import com.skylightapp.Database.CodeDAO;
 import com.skylightapp.Database.CusDAO;
@@ -165,6 +171,9 @@ public class TellerDrawerAct extends AppCompatActivity {
     private PaymentDAO paymentDAO;
     private TCashDAO tCashDAO;
     private static final String PREF_NAME = "awajima";
+    private SQLiteDatabase sqLiteDatabase;
+    private PrefManager prefManager;
+    private double totalSavingsForTellerToday,totalPaymentForTellerToday;
     AppCompatTextView txtTellerTodaySavings,txtTellerSkylightCashToday,txtTellerPaymentToday,txtTellerProfileBalance;
 
     ActivityResultLauncher<Intent> startTellerPictureActivityForResult = registerForActivityResult(
@@ -338,11 +347,88 @@ public class TellerDrawerAct extends AppCompatActivity {
         txtTellerBalance = findViewById(R.id.teller_balance_Today);
         txtTellerProfileBalance = findViewById(R.id.teller_balancer);
 
-        double totalSavingsForTellerToday=dbHelper.getTotalSavingsTodayForTeller(profileId,dateToday);
-        double totalPaymentForTellerToday=paymentDAO.getTotalPaymentTodayForTeller1(profileId,todayDate);
-        tellerTotalCash=tCashDAO.getTellerCashForTellerToday(tellerName,todayDate);
+        try {
+
+            if(sqLiteDatabase !=null){
+                sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+            }
+            if(dbHelper !=null){
+                try {
+                    totalSavingsForTellerToday=dbHelper.getTotalSavingsTodayForTeller(profileId,dateToday);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+
+        try {
+
+            if(sqLiteDatabase !=null){
+                sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+            }
+            if(paymentDAO !=null){
+                try {
+                    totalPaymentForTellerToday=paymentDAO.getTotalPaymentTodayForTeller1(profileId,todayDate);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+        try {
+
+            if(sqLiteDatabase !=null){
+                sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+            }
+            if(tCashDAO !=null){
+                try {
+
+                    tellerTotalCash=tCashDAO.getTellerCashForTellerToday(tellerName,todayDate);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+
+
+
+        try {
+
+            if(sqLiteDatabase !=null){
+                sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+            }
+            if(dbHelper !=null){
+                try {
+                    skylightTotalCashForToday=dbHelper.getSkylightCashTotalForProfileAndDate(profileId,todayDate);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
+
         //tellerTotalCash=dbHelper.getTellerCashForTellerTheMonth(tellerName,todayDate);
-        skylightTotalCashForToday=dbHelper.getSkylightCashTotalForProfileAndDate(profileId,todayDate);
+
 
 
         tellerTodayBalance =skylightTotalCashForToday+totalSavingsForTellerToday-totalPaymentForTellerToday;
@@ -550,6 +636,31 @@ public class TellerDrawerAct extends AppCompatActivity {
 
 
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+
     private void mauthListener() {
 
     }
@@ -704,7 +815,7 @@ public class TellerDrawerAct extends AppCompatActivity {
                     }
                     else if(finalI==17) {
                         tosend = "Customer More";
-                        Intent intent=new Intent(TellerDrawerAct.this, CusPacksAct.class);
+                        Intent intent=new Intent(TellerDrawerAct.this, CusDocCodeSavingsAct.class);
                         intent.putExtra("Customer More",tosend);
                         startActivity(intent);
                     }
@@ -727,26 +838,10 @@ public class TellerDrawerAct extends AppCompatActivity {
     }
 
 
-    /*public void showDrawerButton() {
-
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
-        toggle = new ActionBarDrawerToggle(
-                this, drawer,  R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-    }
 
 
-    public void removeUpButton() {
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
-    }
 
 
-    public void openDrawer() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.teller5_drawer);
-        drawer.openDrawer(GravityCompat.START);
-    }*/
     private void showImagePickerOptions() {
         Intent intent = new Intent(TellerDrawerAct.this, CameraActivity.class);
         startTellerPictureActivityForResult.launch(intent);
@@ -756,9 +851,11 @@ public class TellerDrawerAct extends AppCompatActivity {
 
     private void signOut() {
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        prefManager= new PrefManager();
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
+        prefManager.logoutUser();
         Toast.makeText(this, "Logging out", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, SignTabMainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -873,139 +970,6 @@ public class TellerDrawerAct extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }*/
 
-
-    /*@SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Fragment fragment = null;
-        String title = item.getTitle().toString();
-        switch (item.getItemId()) {
-            case R.id.nav_app_teller2:
-                Intent mainIntent = new Intent(this, TellerDrawerAct.class);
-                mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                break;
-
-            case R.id.teller_pack2:
-                Intent pIntent = new Intent(this, AwajimaSliderAct.class);
-                pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                break;
-            case R.id.my_cusP:
-                Intent mCIntent = new Intent(this, MyCustPackTab.class);
-                mCIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                break;
-
-            case R.id.allCusP:
-                Intent aCIntent = new Intent(this, AllCusPackTab.class);
-                aCIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                break;
-            case R.id.payNow:
-                Intent payIntent = new Intent(this, PayNowActivity.class);
-                payIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                break;
-            case R.id.grpSavings:
-                Intent grpIntent = new Intent(this, GroupSavingsTab.class);
-                grpIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                break;
-            case R.id.pp:
-                Intent pPIntent = new Intent(this, PrivacyPolicy_Web.class);
-                pPIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                break;
-            case R.id.newCust:
-                Intent signUpIntent = new Intent(this, NewSignUpActivity.class);
-                signUpIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                break;
-            case R.id.standingOrders:
-                Intent soIntent = new Intent(this, StandingOrderTab.class);
-                soIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                break;
-            case R.id.teller_all_web3:
-                Intent webIntent = new Intent(this, TellerWebTab.class);
-                webIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                break;
-            case R.id.teller_pref:
-                Intent prefIntent = new Intent(this, UserPrefActivity.class);
-                prefIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                break;
-
-            case R.id.timeline_cus2:
-                title = "My Timeline";
-                Intent tIntent = new Intent(this, UserTimeLineAct.class);
-                tIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                break;
-
-            case R.id.cus_overview2:
-                title = "My Customers";
-                fragment = new CustomerListFragment();
-                break;
-            case R.id.pOverview:
-                title = "My Packs";
-                fragment = new TPackListFragment();
-
-                break;
-            case R.id.birthdays_teller2:
-                title = "Birthdays";
-                fragment = new BirthdayListFragment();
-                break;
-
-
-            case R.id.cm_savings4:
-                title = "My Savings";
-                fragment = new SavingsListFragment();
-                break;
-
-            case R.id.teller_doc3:
-                title = "My Documents";
-                fragment = new MyDocumentsFragment();
-                break;
-            case R.id.teller_transactions3:
-                title = "My Transactions";
-                fragment = new TransactionFragment();
-                break;
-            case R.id.cm_loan_teller3:
-                title = "My Cus. Loans";
-                fragment = new CustomerLoanOverview();
-                break;
-            case R.id.nav_send_message:
-                title = "Send a User Message";
-                Intent intent3 = new Intent(this, SendSingleUserMAct.class);
-                startActivity(intent3);
-
-                break;
-            case R.id.nav_logout:
-                SharedPreferences preferences = getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.clear();
-                editor.apply();
-                Toast.makeText(this, "Logging out", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, SignTabMainActivity.class);
-                startActivity(intent);
-                finish();
-                break;
-        }
-        if (fragment != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.frameCont_Teller, fragment)
-                    .commit();
-            return true;
-        }
-
-        try {
-
-            item.setChecked(true);
-            //setTitle(title);
-            drawerLayout.closeDrawer(GravityCompat.START);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        return true;
-
-    }*/
-
     public void showUpButton() {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         /*toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -1016,80 +980,6 @@ public class TellerDrawerAct extends AppCompatActivity {
         });*/
     }
 
-
-
-    /*@Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-
-    }
-
-    private void setupDrawerListener() {
-        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
-            @Override
-            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-
-            }
-
-            @Override
-            public void onDrawerOpened(@NonNull View drawerView) {
-
-            }
-
-            @Override
-            public void onDrawerClosed(@NonNull View drawerView) {
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-            }
-        });
-    }
-
-    private void setupHeader() {
-
-        int savingsCount = 0;
-        NavigationView navigationView = findViewById(R.id.tellerNav);
-        View headerView = navigationView.getHeaderView(0);
-        if (headerView !=null){
-            txtTellerID = headerView.findViewById(R.id.teller_id);
-            txtGrpSavings = headerView.findViewById(R.id.teller_grpSavings);
-            if(userProfile !=null){
-                int grpSavingsCount = userProfile.getGroupSavings().size();
-                txtTellerID.setText(MessageFormat.format("My ID:{0}", userProfile.getuID()));
-                txtGrpSavings.setText(MessageFormat.format("Group Savings:{0}", grpSavingsCount));
-            }
-
-
-        }
-
-    }
-    private boolean loadFragment(Fragment fragment) {
-        if (fragment != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.frameCont_Teller, fragment)
-                    .commit();
-            return true;
-        }
-        return false;
-    }
-
-
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new TransactionFragment(), "My Trans");
-        adapter.addFragment(new UserTimeLineOverview(), "Timeline");
-        adapter.addFragment(new MyDocumentsFragment(), "Docs");
-        adapter.addFragment(new MyMessageFragment(), "Mes");
-        viewPager.setAdapter(adapter);
-    }*/
     public void goToPrefs(View view) {
         Intent uIntent = new Intent(TellerDrawerAct.this, UserPrefActivity.class);
         startActivity(uIntent);
@@ -1118,34 +1008,4 @@ public class TellerDrawerAct extends AppCompatActivity {
         startActivity(profile);
     }
 
-    /*@SuppressWarnings("deprecation")
-    static class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
-
-    }*/
 }

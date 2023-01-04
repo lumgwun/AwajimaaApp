@@ -33,7 +33,7 @@
                 android:textStyle="bold"
                 android:background="@drawable/rect6h"
                 android:layout_marginEnd="10dp"
-                app:titleMarginStart="35dp"
+                app:titleMarginStart="65dp"
                 app:title="@string/app_name"
                 android:foregroundGravity="center_horizontal"
                 android:gravity="center_horizontal"

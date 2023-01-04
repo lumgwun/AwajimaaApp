@@ -6,11 +6,4 @@
         app:key="My First Preference"
         app:title="User Preference" />
 
-
-    <Preference
-        app:fragment="com.skylightapp.UserPrefActivity$CountryFragment"
-        app:icon="@drawable/ic__category"
-        app:key="customer_care"
-        app:title="Skylight Customer Country" />
-
 </PreferenceScreen>

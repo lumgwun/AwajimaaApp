@@ -1,17 +1,29 @@
 package com.skylightapp.Markets;
 
+import static com.skylightapp.BuildConfig.QUICKBLOX_ACCT_KEY;
+
+import static com.skylightapp.BuildConfig.QUICKBLOX_AUTH_KEY;
+import static com.skylightapp.BuildConfig.QUICKBLOX_SECRET_KEY;
+import static com.skylightapp.BuildConfig.APPLICATION_ID;
+
+
 import androidx.annotation.Nullable;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import com.google.firebase.FirebaseApp;
+import com.google.gson.Gson;
+import com.quickblox.auth.session.QBSettings;
 import com.quickblox.chat.QBChatService;
 import com.quickblox.chat.QBRestChatService;
 import com.quickblox.chat.QBSystemMessagesManager;
@@ -22,6 +34,12 @@ import com.quickblox.chat.model.QBChatMessage;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.users.model.QBUser;
+import com.skylightapp.Classes.PrefManager;
+import com.skylightapp.Classes.Profile;
+import com.skylightapp.MarketClasses.BusinessDeal;
+import com.skylightapp.MarketClasses.ChatHelper;
+import com.skylightapp.MarketClasses.MarketBusiness;
+import com.skylightapp.MarketClasses.QbDialogHolderE;
 import com.skylightapp.MarketClasses.ToastUtilsCon;
 import com.skylightapp.MarketClasses.UsersAdapterCon;
 import com.skylightapp.R;
@@ -32,6 +50,19 @@ import java.util.List;
 public class ChatInfoActCon extends BaseActCon {
     private static final String TAG = ChatInfoActCon.class.getSimpleName();
     private static final String EXTRA_DIALOG = "extra_dialog";
+    private long bizID;
+    private Bundle bundle;
+    private BusinessDeal businessDeal;
+    private String bizDealTittle;
+    private static final String PREF_NAME = "awajima";
+
+    private Profile bizProfile;
+    private MarketBusiness marketBusiness;
+    private SharedPreferences userPreferences;
+    private PrefManager prefManager;
+    private Gson gson,gson1;
+    private String json,json1;
+    private  Bundle messageBundle;
 
     private QBChatDialog qbDialog;
     private UsersAdapterCon userAdapter;
@@ -48,7 +79,25 @@ public class ChatInfoActCon extends BaseActCon {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_chat_info_act_con);
-
+        FirebaseApp.initializeApp(this);
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
+        bundle= new Bundle();
+        gson= new Gson();
+        gson1= new Gson();
+        marketBusiness= new MarketBusiness();
+        bizProfile= new Profile();
+        businessDeal= new BusinessDeal();
+        bundle=getIntent().getExtras();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        json1 = userPreferences.getString("LastProfileUsed", "");
+        bizProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastMarketBusinessUsed", "");
+        marketBusiness = gson1.fromJson(json1, MarketBusiness.class);
+        if(marketBusiness !=null){
+            bizID =marketBusiness.getBusinessID();
+        }
+        
         String dialogID = getIntent().getStringExtra(EXTRA_DIALOG);
         qbDialog = getQBDialogsHolder().getDialogById(dialogID);
         setTitleSubtitle();
@@ -63,6 +112,8 @@ public class ChatInfoActCon extends BaseActCon {
     }
 
     private void setTitleSubtitle() {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle(qbDialog.getName());
@@ -81,11 +132,16 @@ public class ChatInfoActCon extends BaseActCon {
     @Override
     protected void onStop() {
         super.onStop();
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         systemMessagesManager.removeSystemMessageListener(systemMessagesListener);
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
 
     @Override
     public void onResumeFinished() {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         systemMessagesManager.addSystemMessageListener(systemMessagesListener);
     }
 
@@ -106,6 +162,8 @@ public class ChatInfoActCon extends BaseActCon {
     }
 
     private void getDialog() {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         String dialogID = qbDialog.getDialogId();
         QBRestChatService.getChatDialogById(dialogID).performAsync(new QBEntityCallback<QBChatDialog>() {
             @Override
@@ -124,6 +182,8 @@ public class ChatInfoActCon extends BaseActCon {
     }
 
     private void buildUserList() {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         List<Integer> userIds = qbDialog.getOccupants();
         if (getQBUsersHolder().hasAllUsers(userIds)) {
             List<QBUser> users = getQBUsersHolder().getUsersByIds(userIds);
@@ -151,6 +211,8 @@ public class ChatInfoActCon extends BaseActCon {
 
     private void updateDialog() {
         showProgressDialog(R.string.dlg_loading);
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         Log.d(TAG, "Starting Dialog Update");
         QBRestChatService.getChatDialogById(qbDialog.getDialogId()).performAsync(new QBEntityCallback<QBChatDialog>() {
             @Override
@@ -174,6 +236,8 @@ public class ChatInfoActCon extends BaseActCon {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult with resultCode: $resultCode requestCode: $requestCode");
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == ChatActCon.REQUEST_CODE_SELECT_PEOPLE && data != null) {
                 showProgressDialog(R.string.chat_info_updating);
@@ -209,6 +273,8 @@ public class ChatInfoActCon extends BaseActCon {
     }
 
     private void updateDialog(final List<QBUser> selectedUsers) {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         QBUser currentUser = getChatHelper().getCurrentUser();
         getChatHelper().updateDialogUsers((QBUser) currentUser, qbDialog, selectedUsers, new QBEntityCallback<QBChatDialog>() {
             @Override
@@ -235,6 +301,8 @@ public class ChatInfoActCon extends BaseActCon {
         @Override
         public void processMessage(QBChatMessage qbChatMessage) {
             Log.d(TAG, "System Message Received: " + qbChatMessage.getId());
+            QBSettings.getInstance().init(ChatInfoActCon.this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+            QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
             if (qbChatMessage.getDialogId().equals(qbDialog.getDialogId())) {
                 getDialog();
             }
@@ -246,4 +314,53 @@ public class ChatInfoActCon extends BaseActCon {
         }
 
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        if (qbDialog != null) {
+            outState.putString(EXTRA_DIALOG, qbDialog.getDialogId());
+        }
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (qbDialog == null) {
+            qbDialog = QbDialogHolderE.getInstance().getChatDialogById(savedInstanceState.getString(EXTRA_DIALOG));
+        }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+
 }

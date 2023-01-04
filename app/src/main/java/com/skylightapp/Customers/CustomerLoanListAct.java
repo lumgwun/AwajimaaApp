@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -66,11 +67,11 @@ public class CustomerLoanListAct extends AppCompatActivity implements LoanAdapte
     private RecyclerView recyclerView;
     TextView txtLoanMessage;
     private Bundle cusBundle;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private LoanDAO loanDAO;
 
     private static final String TAG = CustomerLoanListAct.class.getSimpleName();
-    private static final String URL = "https://skylightciacs.com";
+    private static final String URL = "https://awajima.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +116,26 @@ public class CustomerLoanListAct extends AppCompatActivity implements LoanAdapte
         }
         if(customer !=null){
             customerID=customer.getCusUID();
-            loanArrayList = loanDAO.getLoansFromCurrentCustomer(customerID);
+
+        }
+        if(dbHelper !=null){
+
+            try {
+                if(loanDAO !=null){
+                    try {
+                        loanArrayList = loanDAO.getLoansFromCurrentCustomer(customerID);
+
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+
 
         }
 
@@ -127,9 +147,29 @@ public class CustomerLoanListAct extends AppCompatActivity implements LoanAdapte
         loanArrayList = new ArrayList<Loan>();
         txtLoanMessage.setText(MessageFormat.format("Loans:", "0"));
         loanAdapter = new LoanAdapter(this, loanArrayList);
-        dbHelper = new DBHelper(this);
 
-        loanArrayList = loanDAO.getLoansFromCurrentCustomer(customerID);
+        if(dbHelper !=null){
+
+            try {
+                if(loanDAO !=null){
+                    try {
+                        loanArrayList = loanDAO.getLoansFromCurrentCustomer(customerID);
+
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

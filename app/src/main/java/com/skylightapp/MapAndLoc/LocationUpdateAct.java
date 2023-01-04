@@ -166,7 +166,7 @@ public class LocationUpdateAct extends AppCompatActivity implements LocationList
     private LocationCallback locationCallback;
     AppLocService appLocationService;
     private GoogleApiClient googleApiClient;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     Marker now;
     private EmergencyReport emergencyReport;
     SupportMapFragment mapFragment;
@@ -859,4 +859,24 @@ public class LocationUpdateAct extends AppCompatActivity implements LocationList
         }
         fusedLocationClient.removeLocationUpdates(locationCallback);
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
 }

@@ -85,7 +85,7 @@
                         android:id="@+id/n_logSettings"
                         app:cnb_iconTintMode="src_in"
                         app:cnb_iconColor="#F44336"
-                        android:icon="@drawable/settings"
+                        android:icon="@drawable/settings_w_fg"
                         android:title="Logout" />
                 </group>
             </menu>

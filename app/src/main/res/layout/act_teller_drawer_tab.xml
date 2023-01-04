@@ -81,12 +81,12 @@
             <TextView
                 style="@style/MenuText"
                 android:onClick="goSO"
-                android:drawableLeft="@drawable/settings"
+                android:drawableLeft="@drawable/settings_fg"
                 android:text="Standing Order Tab" />
             <TextView
                 style="@style/MenuText"
                 android:onClick="goLoanTab"
-                android:drawableLeft="@drawable/settings"
+                android:drawableLeft="@drawable/ic_admin_panel"
                 android:text="Loan Tab" />
         </com.github.mzule.fantasyslide.SideBar>
 

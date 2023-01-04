@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical" >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_marginTop="20dp"
+            android:text="Exit"
+            android:textColor="@color/red_brown_dark"
+            android:textSize="20sp" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rect6g_b" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_marginTop="20dp"
+            android:text="Do you really want to exit?"
+            android:textColor="@color/red_brown_dark"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal" >
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvExitOk"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:background="@drawable/shape_layer_3b"
+                android:gravity="center"
+                android:text="@android:string/yes"
+                android:textColor="@color/red_brown_dark" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvExitCancel"
+                android:layout_width="0dp"
+                android:padding="10dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_layer_3b"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:textColor="@color/red_brown_dark" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

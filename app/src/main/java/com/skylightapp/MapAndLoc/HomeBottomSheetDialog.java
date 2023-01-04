@@ -31,6 +31,7 @@ public class HomeBottomSheetDialog extends Fragment {
     @NotNull
     ArrayList<CarTypes> cars;
     @NotNull
+    public
     CarTypes selectedCar;
     TaxiBoookingSheetListener onItemClickListener;
     private AppCompatButton btnCallTaxi;

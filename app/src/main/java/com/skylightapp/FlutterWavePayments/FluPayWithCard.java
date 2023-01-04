@@ -25,7 +25,7 @@ import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Interfaces.PaymentResultListener;
@@ -39,7 +39,7 @@ import java.security.SecureRandom;
 import java.text.MessageFormat;
 import java.util.Objects;
 
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_TYPE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_TYPE;
 import static com.skylightapp.FlutterWavePayments.OTPFragment.EXTRA_OTP;
 
 public class FluPayWithCard extends AppCompatActivity implements PaymentResultListener {
@@ -62,7 +62,7 @@ public class FluPayWithCard extends AppCompatActivity implements PaymentResultLi
     private Account account;
 
     private Profile userProfile;
-    SkyLightPackage skyLightPackage;
+    MarketBizPackage marketBizPackage;
     DBHelper dbHelper;
     SecureRandom random;
     long transactionID;
@@ -147,7 +147,7 @@ public class FluPayWithCard extends AppCompatActivity implements PaymentResultLi
             packageType = totalBundle.getString(PACKAGE_TYPE);
             account = totalBundle.getParcelable("Account");
             customer = totalBundle.getParcelable("Customer");
-            skyLightPackage = totalBundle.getParcelable("Package");
+            marketBizPackage = totalBundle.getParcelable("Package");
             transaction = totalBundle.getParcelable("Transaction");
             customerDailyReport = totalBundle.getParcelable("Savings");
             reportID = Long.parseLong(totalBundle.getString("Report ID"));
@@ -212,7 +212,7 @@ public class FluPayWithCard extends AppCompatActivity implements PaymentResultLi
         String cardCVV = edtCardCVV.getText().toString();
 
 
-        //Card card = new Card(cardNumber, cardExpiryMonth, cardExpiryYear, cardCVV);
+        //PayStackCard payStackCard = new PayStackCard(cardNumber, cardExpiryMonth, cardExpiryYear, cardCVV);
 
         CardCharge ch = new CardCharge();
 

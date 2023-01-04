@@ -7,8 +7,7 @@
     android:orientation="vertical"
     android:theme="@style/NoActionBarTheme"
     android:background="@drawable/sky4"
-    tools:context="com.skylightapp.Customers.CusPacksAct">
-    <include layout="@layout/tool_bar11f"/>
+    tools:context="com.skylightapp.Customers.CusDocCodeSavingsAct">
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabsP"
         android:layout_width="match_parent"

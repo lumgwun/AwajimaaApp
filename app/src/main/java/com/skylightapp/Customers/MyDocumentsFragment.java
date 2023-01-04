@@ -29,6 +29,7 @@ import com.skylightapp.Database.PaymDocDAO;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 import static android.content.Context.MODE_PRIVATE;
@@ -41,7 +42,7 @@ public class MyDocumentsFragment extends Fragment {
 
     private String mParam1;
     private String mParam2;
-    private static final String URL = "https://skylightciacs.com/MyDocumentList";
+    private static final String URL = "https://awajima.com/MyDocumentList";
 
     private RecyclerView recyclerView;
     private ArrayList<PaymentDoc> paymentDocs;
@@ -66,7 +67,7 @@ public class MyDocumentsFragment extends Fragment {
     private int selectedAccountIndex;
     FragmentActivity activity;
     PaymentDoc document;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
 
     public MyDocumentsFragment() {
     }
@@ -96,30 +97,44 @@ public class MyDocumentsFragment extends Fragment {
         View rootView= inflater.inflate(R.layout.frag_my_docs, container, false);
         txtTitleMessage = rootView.findViewById(R.id.document_tittle);
         recyclerView = rootView.findViewById(R.id.recycler_view_document);
-        userPreferences= getContext().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        userPreferences= requireContext().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
+        customer= new Customer();
+        userProfile= new Profile();
         json = userPreferences.getString("LastCustomerUsed", "");
         customer = gson.fromJson(json, Customer.class);
         gson = new Gson();
         json1 = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
+        dbHelper = new DBHelper(getContext());
+        PaymDocDAO paymDocDAO= new PaymDocDAO(getContext());
 
         paymentDocs = new ArrayList<PaymentDoc>();
         mAdapter = new DocumentAdapter(getContext(), paymentDocs);
 
-        dbHelper = new DBHelper(getContext());
-        PaymDocDAO paymDocDAO= new PaymDocDAO(getContext());
+
         try {
             if(customer !=null){
                 customerID = customer.getCusUID();
 
             }
+            if(paymDocDAO !=null){
+                try {
+                    paymentDocs = paymDocDAO.getDocumentsFromCurrentCustomer(customerID);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
 
-            paymentDocs = paymDocDAO.getDocumentsFromCurrentCustomer(customerID);
+
+            }
+
+
 
         } catch (SQLiteException e) {
             System.out.println("Oops!");
         }
+
+
 
 
 

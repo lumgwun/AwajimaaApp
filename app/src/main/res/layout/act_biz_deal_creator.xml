@@ -21,7 +21,7 @@
         android:text="Select the Type of Biz Deal" />
 
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.payStackCard.MaterialCardView
         android:id="@+id/lSpnSelect"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -62,9 +62,9 @@
                 android:clickable="false"
                 />
 
-        </androidx.cardview.widget.CardView>    </com.google.android.material.card.MaterialCardView>
+        </androidx.cardview.widget.CardView>    </com.google.android.material.payStackCard.MaterialCardView>
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.payStackCard.MaterialCardView
         android:id="@+id/bizDeal_Tittle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -93,9 +93,9 @@
             android:textColorHint="@android:color/holo_red_dark"
             android:hint="Tittle"
             />
-    </com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.payStackCard.MaterialCardView>
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.payStackCard.MaterialCardView
         android:id="@+id/card_sub_bd"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -123,7 +123,7 @@
             android:gravity="center_horizontal"
             android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content"/>
-    </com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.payStackCard.MaterialCardView>
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

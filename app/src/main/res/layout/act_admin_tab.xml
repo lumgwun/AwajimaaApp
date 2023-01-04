@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@android:id/tabhost"
-    android:background="@drawable/rect11"
+    style="@style/Theme.OurCApp"
+    android:background="@drawable/rect_their_message"
     tools:context="com.skylightapp.Admins.AdminTabActivity">
     <LinearLayout
         android:orientation="vertical"

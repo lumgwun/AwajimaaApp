@@ -12,21 +12,6 @@ import static com.skylightapp.MapAndLoc.EmergResponse.RESPONSE_START_TIME;
 import static com.skylightapp.MapAndLoc.EmergResponse.RESPONSE_STATE;
 import static com.skylightapp.MapAndLoc.EmergResponse.RESPONSE_STATUS_A;
 import static com.skylightapp.MapAndLoc.EmergResponse.RESPONSE_TABLE;
-import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_LOCID;
-import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_LOCTIME;
-import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT;
-import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_ADDRESS;
-import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_BG_ADDRESS;
-import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_BIZ_ID;
-import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_COUNTRY;
-import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_LATLNG;
-import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_MARKET_ID;
-import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_PROF_ID;
-import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_STATE;
-import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_SUBLOCALE;
-import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_TABLE;
-import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_TOWN;
-import static com.skylightapp.MapAndLoc.EmergencyReport.EMERGENCY_REPORT_TYPE;
 import static java.lang.String.valueOf;
 
 import android.content.ContentValues;
@@ -35,7 +20,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.skylightapp.MapAndLoc.EmergResponse;
-import com.skylightapp.MapAndLoc.EmergencyReport;
 
 import java.util.ArrayList;
 

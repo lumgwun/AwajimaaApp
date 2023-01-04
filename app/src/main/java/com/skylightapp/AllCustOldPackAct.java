@@ -1,5 +1,7 @@
 package com.skylightapp;
 
+import static com.skylightapp.Database.DBHelper.DATABASE_NAME;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -56,8 +58,8 @@ import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.AccountTypes;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerDailyReport;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.AcctDAO;
 import com.skylightapp.Database.AdminBalanceDAO;
@@ -129,14 +131,14 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
 
     private ArrayAdapter<Account> accountAdapter;
     private ArrayAdapter<Customer> customerArrayAdapterN;
-    private ArrayAdapter<SkyLightPackage> skyLightPackageAllAdapter;
+    private ArrayAdapter<MarketBizPackage> skyLightPackageAllAdapter;
     private ArrayList<Customer> customerArrayList;
     private ArrayList<Account> accountArrayList;
     private ArrayList<CustomerDailyReport> customerDailyReports;
     private List<Customer> customerList;
-    private ArrayList<SkyLightPackage> skyLightPackageAll;
+    private ArrayList<MarketBizPackage> marketBizPackageAll;
     private ArrayList<Customer> customers;
-    private List<SkyLightPackage> skyLightPackageList;
+    private List<MarketBizPackage> marketBizPackageList;
     private CusSpinnerAdapter cusSpinnerAdapter;
 
     private SharedPreferences userPreferences;
@@ -144,6 +146,7 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
 
     DatePickerDialog datePickerDialog;
     private static final String PREF_NAME = "awajima";
+
     Calendar dateCalendar;
     private Customer lastCustomerProfileUsed;
     private final int MY_LOCATION_REQUEST_CODE = 100;
@@ -194,10 +197,10 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
     DatePicker date_picker_dob;
 
     String packageType;
-    //SkyLightPackage.SkylightPackage_Type packageType;
+    //MarketBizPackage.SkylightPackage_Type packageType;
     AppCompatSpinner spn_select_packageOngoing;
-    SkyLightPackage selectedPackage;
-    SkyLightPackage skyLightPackage;
+    MarketBizPackage selectedPackage;
+    MarketBizPackage marketBizPackage;
     String customerBank;
     double accountBalance1;
     double newAmount;
@@ -306,7 +309,7 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
         sharedpreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         random= new SecureRandom();
-        selectedPackage= new SkyLightPackage();
+        selectedPackage= new MarketBizPackage();
         account= new Account();
         customers=new ArrayList<Customer>();
         json = sharedpreferences.getString("LastProfileUsed", "");
@@ -352,7 +355,24 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
         fabHome = findViewById(R.id.fabALLCus);
 
         try {
-            customers = cusDAO.getAllCustomerSpinner();
+
+            if(sqLiteDatabase !=null){
+                sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+            }
+            if(cusDAO !=null){
+                try {
+                    customers = cusDAO.getAllCustomerSpinner();
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+
+        try {
+
             cusSpinnerAdapter = new CusSpinnerAdapter(AllCustOldPackAct.this,  customers);
             //customerArrayAdapterN.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spn_old_customers.setAdapter(customerArrayAdapterN);
@@ -405,14 +425,30 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
     }
 
     public void getSkylightPackages(int customerID){
-        skyLightPackageAll=dbHelper.getCustomerIncompletePack(customerID,"inProgress");
-        skyLightPackageAllAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, skyLightPackageAll);
+        try {
+
+            if(sqLiteDatabase !=null){
+                sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+            }
+            if(dbHelper !=null){
+                try {
+                    marketBizPackageAll =dbHelper.getCustomerIncompletePack(customerID,"inProgress");
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+
+        skyLightPackageAllAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, marketBizPackageAll);
         skyLightPackageAllAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spn_select_packageOngoing.setAdapter(skyLightPackageAllAdapter);
         spn_select_packageOngoing.setSelection(0);
         selectedPackageIndex = spn_select_packageOngoing.getSelectedItemPosition();
         try {
-            selectedPackage = skyLightPackageAll.get(selectedPackageIndex);
+            selectedPackage = marketBizPackageAll.get(selectedPackageIndex);
             packageName=selectedPackage.getPackageName();
 
         } catch (IndexOutOfBoundsException e) {
@@ -428,11 +464,12 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
         try {
             selectedCustomerIndex = spn_old_customers.getSelectedItemPosition();
             customer = customers.get(selectedCustomerIndex);
-            Account account=customer.getCusAccount();
+
             try {
                 if (customer != null) {
                     customerID=customer.getCusUID();
                     getSkylightPackages(customerID);
+                    account=customer.getCusAccount();
                 }
             } catch (NullPointerException e) {
                 System.out.println("Oops!");
@@ -449,7 +486,7 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
     public void payDialoq4(View view) {
     }
     public void goHome() {
-        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String machine = userPreferences.getString("machine","");
         //String accountBank = userPreferences.getString("user","bankName");
         //String accountNumber = userPreferences.getString("Account Number","accountNumber");
@@ -494,7 +531,7 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
         paymentBundle.putParcelable("Customer", customer);
         paymentBundle.putParcelable("Account", account);
         paymentBundle.putParcelable("Package", selectedPackage);
-        paymentBundle.putParcelable("SkyLightPackage", selectedPackage);
+        paymentBundle.putParcelable("MarketBizPackage", selectedPackage);
         paymentBundle.putString("PackageName", packageName);
         Intent amountIntent = new Intent(AllCustOldPackAct.this, PayNowActivity.class);
         amountIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -537,7 +574,7 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
 
         String status = "Subscription in progress";
         Calendar calendar = Calendar.getInstance();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
         String reportDate = mdformat.format(calendar.getTime());
         String timelineTittle1 = "New Savings alert";
         String timelineDetails1 = "NGN" + newTotal + "was saved for" + lastNameOfCustomer + "," + firstNameOfCustomer;
@@ -581,7 +618,11 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
                     } else {
                         if (newAmountContributedSoFar < newGrandTotal) {
                             btn_backTo_dashboard.setVisibility(View.VISIBLE);
-                            selectedPackage.addPSavings(profileID, customerID, reportID, savingsAmount, numberOfDays, newTotal, newDaysRemaining, newAmountRemaining, reportDate, status);
+                            if(selectedPackage !=null){
+                                selectedPackage.addPSavings(profileID, customerID, reportID, savingsAmount, numberOfDays, newTotal, newDaysRemaining, newAmountRemaining, reportDate, status);
+
+
+                            }
                             if(customer !=null){
                                 customer.addCusNewSavings(packageID,reportID,  savingsAmount, numberOfDays, totalAmountSum, daysRemaining, amountRemaining, reportDate, "In progress");
                                 customer.addCusTimeLine(timelineTittle1, timelineDetails2);
@@ -598,38 +639,90 @@ public class AllCustOldPackAct extends AppCompatActivity implements View.OnClick
 
 
                             customerDailyReport = new CustomerDailyReport(reportID, savingsAmount, numberOfDays, newTotal, newDaysRemaining, newAmountRemaining, reportDate, "in progress");
-                            selectedPackage.setPackageBalance(newBalance);
-                            selectedPackage.addPProfileManager(userProfile);
-                            account1.setAccountBalance(newBalance);
-                            selectedPackage.setPackageAmount_collected(newAmountContributedSoFar);
+
+                            if(selectedPackage !=null){
+                                selectedPackage.setPackageBalance(newBalance);
+                                selectedPackage.addPProfileManager(userProfile);
+                                selectedPackage.setPackageAmount_collected(newAmountContributedSoFar);
+
+                            }
+                            if(account1 !=null){
+                                account1.setAccountBalance(newBalance);
+
+                            }
+
+
+
                             timeLineClassDAO= new TimeLineClassDAO(this);
 
                             try {
 
-                                timeLineClassDAO.insertTimeLine(timelineTittle1, timelineDetails1, reportDate, mCurrentLocation);
-                                dbHelper.insertDailyReport(packageID, reportID, profileID, customerID, reportDate, savingsAmount, numberOfDays, newTotal, newAmountContributedSoFar, newAmountRemaining, newDaysRemaining, status);
+                                if(sqLiteDatabase !=null){
+                                    sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                                }
+                                if(timeLineClassDAO !=null){
+                                    try {
+                                        timeLineClassDAO.insertTimeLine(timelineTittle1, timelineDetails1, reportDate, mCurrentLocation);
 
+                                    } catch (NullPointerException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+
+                                if(dbHelper !=null){
+                                    try {
+                                        dbHelper.insertDailyReport(packageID, reportID, profileID, customerID, reportDate, savingsAmount, numberOfDays, newTotal, newAmountContributedSoFar, newAmountRemaining, newDaysRemaining, status);
+
+                                    } catch (NullPointerException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
                             } catch (SQLiteException e) {
-                                System.out.println("Oops!");
+                                e.printStackTrace();
                             }
 
                         }
                         if (String.valueOf(newAmountContributedSoFar).equals(String.valueOf(grandTotal))) {
                             Toast.makeText(AllCustOldPackAct.this, "This package is complete,start new savings", Toast.LENGTH_SHORT).show();
-
-
                             try {
 
-                                dbHelper.overwriteCustomerPackage(selectedPackage, selectedCustomer, customerDailyReport, account1);
-                                dbHelper.updatePackage(customerID, oldPackageId,  0, "Completed");
-                                dbHelper.getPackageReminder(String.valueOf(oldPackageId));
-                                sendNotification();
+                                if(sqLiteDatabase !=null){
+                                    sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                                }
+                                if(dbHelper !=null){
+                                    try {
+                                        dbHelper.overwriteCustomerPackage(selectedPackage, selectedCustomer, customerDailyReport, account1);
 
+                                    } catch (NullPointerException e) {
+                                        e.printStackTrace();
+                                    }
 
+                                }
 
+                                if(dbHelper !=null){
+                                    try {
+                                        dbHelper.updatePackage(customerID, oldPackageId,  0, "Completed");
+
+                                    } catch (NullPointerException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+
+                                if(dbHelper !=null){
+                                    try {
+                                        dbHelper.getPackageReminder(String.valueOf(oldPackageId));
+                                    } catch (NullPointerException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
                             } catch (SQLiteException e) {
-                                System.out.println("Oops!");
+                                e.printStackTrace();
                             }
+                            sendNotification();
                             String paymentMessage = "Awajima! your package :" + oldPackageId + "" + "is Complete";
                             Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
                             Message message = Message.creator(

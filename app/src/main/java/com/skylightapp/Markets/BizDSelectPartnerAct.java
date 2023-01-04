@@ -1,16 +1,14 @@
 package com.skylightapp.Markets;
 
+import static com.skylightapp.Database.DBHelper.DATABASE_NAME;
 import static java.lang.String.valueOf;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,20 +16,15 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -44,12 +37,11 @@ import com.quickblox.chat.model.QBDialogType;
 import com.quickblox.chat.utils.DialogUtils;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
-import com.quickblox.core.request.QBPagedRequestBuilder;
-import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.BizDealDAO;
 import com.skylightapp.Database.BizDealPartnerDAO;
+import com.skylightapp.Database.DBHelper;
 import com.skylightapp.MarketClasses.BizDealPartner;
 import com.skylightapp.MarketClasses.BizDPartnerSelectAd;
 import com.skylightapp.MarketClasses.BizDealPartnerSpnA;
@@ -107,6 +99,7 @@ public class BizDSelectPartnerAct extends AppCompatActivity implements DealPartn
     private String dealCurrency,dateCreated;
     private MarketBusiness fromBiz,toBiz;
     private long fromBizID,toBizID;
+    private DBHelper dbHelper;
     private ConnectionListener chatConnectionListener;
 
     @Override
@@ -114,10 +107,12 @@ public class BizDSelectPartnerAct extends AppCompatActivity implements DealPartn
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.act_biz_deal_partners_list);
+        setContentView(R.layout.act_deal_p_list);
         bundle= new Bundle();
         gson= new Gson();
         gson1= new Gson();
+        gson2= new Gson();
+        dbHelper= new DBHelper(this);
         bizProfile= new Profile();
         fromBiz= new MarketBusiness();
         hostQBUser= new QBUser();
@@ -129,15 +124,11 @@ public class BizDSelectPartnerAct extends AppCompatActivity implements DealPartn
         businessDeal= new BusinessDeal();
         createdChatDialog = new QBChatDialog();
         qbChatDialog = new QBChatDialog();
-
         bizDealPartnerDAO= new BizDealPartnerDAO(this);
-
         shimmerFrameLayout = findViewById(R.id.shimmerLayoutUserList);
         shimmerBotomSheet = findViewById(R.id.shimmerPList);
-
         btnCloseBSheet = findViewById(R.id.btn_closeBD_Sheet);
         btnAddPartner = findViewById(R.id.buttonGetDealsP);
-
         scrollView = findViewById(R.id.bd_scrollV);
         mBottomSheetBehavior = BottomSheetBehavior.from(scrollView);
         recyclerView = findViewById(R.id.recyDealP);
@@ -147,7 +138,7 @@ public class BizDSelectPartnerAct extends AppCompatActivity implements DealPartn
 
         marketBusiness= new MarketBusiness();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        json1 = userPreferences.getString("LastProfileUsed", "");
+        json = userPreferences.getString("LastProfileUsed", "");
         bizProfile = gson.fromJson(json, Profile.class);
         json1 = userPreferences.getString("LastMarketBusinessUsed", "");
         marketBusiness = gson1.fromJson(json1, MarketBusiness.class);
@@ -157,10 +148,26 @@ public class BizDSelectPartnerAct extends AppCompatActivity implements DealPartn
             bizID =marketBusiness.getBusinessID();
             bizDealPartners= marketBusiness.getBizDealPartners();
         }
-        if(bizDealPartnerDAO !=null){
-            userSelectedList= bizDealPartnerDAO.getAllBizDealPartners();
+        if(dbHelper !=null){
+            try {
+
+                try {
+                    if(bizDealPartnerDAO !=null){
+                        userSelectedList= bizDealPartnerDAO.getAllBizDealPartners();
+
+                    }
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+
 
         }
+
+
+
         if(bizProfile !=null){
             hostQBUser =bizProfile.getProfQbUser();
         }

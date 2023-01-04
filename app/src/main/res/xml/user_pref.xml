@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <PreferenceCategory android:title="User Profile" >
+    <PreferenceCategory android:title="User Account Preference" >
         <EditTextPreference
             android:title="User Name"
             app:icon="@drawable/ic_icon2"
             android:summary=" App User Name"
-            android:key="USERNAME"/>
+            android:key="PROFILE_USERNAME"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Bank Payment" >

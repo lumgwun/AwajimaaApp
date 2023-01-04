@@ -19,6 +19,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -96,7 +97,7 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
     DBHelper dbHelper;
     SearchView searchView;
     MenuItem searchItem;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     long cusProfileID;
     SQLiteDatabase sqLiteDatabase;
     Profile cusProfile;
@@ -126,19 +127,33 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
     private PaymentDAO paymentDAO;
     private AdminBalanceDAO adminBalanceDAO;
     private BirthdayDAO birthdayDAO;
+    SharedPreferences userPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_customer_list);
         dbHelper= new DBHelper(this);
-        //userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         mCustomerList = findViewById(R.id.customerList);
         customers=new ArrayList<>();
         customersFireBase=new ArrayList<>();
         CusDAO cusDAO = new CusDAO(this);
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            try {
+                customers=cusDAO.getAllCustomers11();
+
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
         recyclerView = findViewById(R.id.recycler_viewA);
 
-        customers=cusDAO.getAllCustomers11();
+
         final CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addOnScrollListener(new CenterScrollListener());
@@ -179,15 +194,16 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
         if ((data != null) && requestCode == PICK_PHOTO_CODE) {
             Uri photoUri = data.getData();
             dbHelper= new DBHelper(this);
+
             if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                //dbHelper = new DBHelper(this);
-                sqLiteDatabase = dbHelper.getWritableDatabase();
+                dbHelper.openDataBase();
+                sqLiteDatabase = dbHelper.getReadableDatabase();
                 try {
                     profileDao.insertProfilePicture(profileID,customerID,photoUri);
-                } catch (Exception e) {
-                    System.out.println("Oops!");
-                }
 
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
 
             }
 
@@ -311,8 +327,12 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
                         //dbHelper = new DBHelper(this);
                         sqLiteDatabase = dbHelper.getWritableDatabase();
                         try {
-                            profileDao.updateUserPicture(photoUri,profileID);
-                        } catch (Exception e) {
+                            if(profileDao !=null){
+                                profileDao.updateUserPicture(photoUri,profileID);
+
+                            }
+
+                        } catch (NullPointerException e) {
                             System.out.println("Oops!");
                         }
 
@@ -331,8 +351,11 @@ public class CustomerListActivity extends AppCompatActivity implements AdminCusA
 
                         sqLiteDatabase = dbHelper.getWritableDatabase();
                         try {
-                            profileDao.updateProfilePix(profileID,customerID,photoUri);
-                        } catch (Exception e) {
+                            if(profileDao !=null){
+                                profileDao.updateProfilePix(profileID,customerID,photoUri);
+                            }
+
+                        } catch (NullPointerException e) {
                             System.out.println("Oops!");
                         }
 

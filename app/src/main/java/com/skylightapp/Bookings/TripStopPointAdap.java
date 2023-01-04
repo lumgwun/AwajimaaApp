@@ -25,20 +25,20 @@ public class TripStopPointAdap extends ArrayAdapter<TripStopPoint> {
     private Context context;
     private int resource;
     private String placeName,placeState,placeStatus;
-    private List<TripStopPoint> accountList;
+    private List<TripStopPoint> stopPoints;
 
     public TripStopPointAdap(Context context, int resource, ArrayList<TripStopPoint> stopPoints) {
         super(context, resource, stopPoints);
         this.context = context;
         this.resource = resource;
-        this.accountList = stopPoints;
+        this.stopPoints = stopPoints;
     }
 
     public TripStopPointAdap(FragmentActivity activity, int trip_stop_point_item, ArrayList<TripStopPoint> tripStopPoints) {
         super(activity, trip_stop_point_item, tripStopPoints);
         this.context = activity;
         this.resource = trip_stop_point_item;
-        this.accountList = tripStopPoints;
+        this.stopPoints = tripStopPoints;
     }
 
     @SuppressLint("DefaultLocale")
@@ -60,9 +60,9 @@ public class TripStopPointAdap extends ArrayAdapter<TripStopPoint> {
         }
         MaterialCardView cardView = convertView.findViewById(R.id.tsp_card);
         AppCompatTextView txtStatus = convertView.findViewById(R.id.tsp_statusQ);
-        AppCompatTextView txtAccountName = convertView.findViewById(R.id.tsp_name);
+        AppCompatTextView txtPlaceName = convertView.findViewById(R.id.tsp_name);
         AppCompatTextView txtState = convertView.findViewById(R.id.tsp_state);
-        txtAccountName.setText(MessageFormat.format("Place Name:{0}", placeName));
+        txtPlaceName.setText(MessageFormat.format("Place Name:{0}", placeName));
         txtState.setText(MessageFormat.format("Place State:{0}", placeState));
         txtStatus.setText(MessageFormat.format("Place Status:{0}", placeStatus));
         return convertView;

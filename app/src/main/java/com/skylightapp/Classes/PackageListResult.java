@@ -1,16 +1,13 @@
 package com.skylightapp.Classes;
 
-import android.content.ContentResolver;
-import android.net.Uri;
-
-import androidx.annotation.NonNull;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PackageListResult extends SkyLightPackage {
+public class PackageListResult extends MarketBizPackage {
     boolean isMoreDataAvailable;
-    List<SkyLightPackage> skyLightPackageList = new ArrayList<>();
+    List<MarketBizPackage> marketBizPackageList = new ArrayList<>();
     long lastItemCreatedDate;
 
     public PackageListResult() {
@@ -25,12 +22,12 @@ public class PackageListResult extends SkyLightPackage {
         isMoreDataAvailable = moreDataAvailable;
     }
 
-    public List<SkyLightPackage> getSkyLightPackageList() {
-        return skyLightPackageList;
+    public List<MarketBizPackage> getSkyLightPackageList() {
+        return marketBizPackageList;
     }
 
-    public void setSkyLightPackageList(List<SkyLightPackage> skyLightPackageList) {
-        this.skyLightPackageList = skyLightPackageList;
+    public void setSkyLightPackageList(List<MarketBizPackage> marketBizPackageList) {
+        this.marketBizPackageList = marketBizPackageList;
     }
 
     public long getLastItemCreatedDate() {

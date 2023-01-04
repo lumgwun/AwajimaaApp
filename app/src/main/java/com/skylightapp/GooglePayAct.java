@@ -34,22 +34,19 @@ import com.google.android.gms.wallet.PaymentsClient;
 import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
 import com.google.gson.Gson;
-import com.skylightapp.Bookings.BoatTrip;
+import com.skylightapp.Bookings.Trip;
 import com.skylightapp.Bookings.TripBooking;
 import com.skylightapp.Classes.AppConstants;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Transaction;
-import com.skylightapp.Customers.CusPacksAct;
-import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Database.BizSubscriptionDAO;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.TripBookingDAO;
 import com.skylightapp.MarketClasses.CheckoutViewModel;
 import com.skylightapp.MarketClasses.Market;
-import com.skylightapp.MarketClasses.MarketBizSubScription;
+import com.skylightapp.MarketClasses.MarketBizSub;
 import com.skylightapp.MarketClasses.MarketBusiness;
-import com.skylightapp.Markets.MarketBizOffice;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,7 +54,6 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -96,9 +92,9 @@ public class GooglePayAct extends AppCompatActivity {
     private PaymentsClient mPaymentsClient;
     private long bizID,subDBID;
     private int noOfMonths,sitCount;
-    private MarketBizSubScription subScription;
+    private MarketBizSub subScription;
     Calendar today;
-    private BoatTrip boatTrip;
+    private Trip trip;
     private long bookingAmt,tripBID;
     private SQLiteDatabase sqLiteDatabase;
     private long totalPriceCents;
@@ -149,7 +145,7 @@ public class GooglePayAct extends AppCompatActivity {
         paymentProf= new Profile();
         paymentMarket= new Market();
         createPaymentsClient(this);
-        boatTrip= new BoatTrip();
+        trip = new Trip();
         paymentProfile= new Profile();
         transaction= new Transaction();
         mPaymentsClient = AppConstants.createPaymentsClient(this);
@@ -191,7 +187,7 @@ public class GooglePayAct extends AppCompatActivity {
             paymentMarket=gPayBundle.getParcelable("Market");
             profileID=gPayBundle.getInt("PROFILE_ID");
             noOfMonths=gPayBundle.getInt("NoOfMonths");
-            boatTrip=gPayBundle.getParcelable("BoatTrip");
+            trip =gPayBundle.getParcelable("Trip");
             sitCount=gPayBundle.getInt("SitCount");
             bookingAmt=gPayBundle.getLong("Total");
             paymentProfile=gPayBundle.getParcelable("Profile");
@@ -238,7 +234,7 @@ public class GooglePayAct extends AppCompatActivity {
             paymentMarket=gPayBundle.getParcelable("Market");
             profileID=gPayBundle.getInt("PROFILE_ID");
             noOfMonths=gPayBundle.getInt("NoOfMonths");
-            boatTrip=gPayBundle.getParcelable("BoatTrip");
+            trip =gPayBundle.getParcelable("Trip");
             sitCount=gPayBundle.getInt("SitCount");
             bookingAmt=gPayBundle.getLong("Total");
             paymentFor=gPayBundle.getString("PaymentFor");
@@ -301,7 +297,7 @@ public class GooglePayAct extends AppCompatActivity {
     private void handlePaymentSuccess(PaymentData paymentData) {
         final String paymentInfo = paymentData.toJson();
         gPayBundle= new Bundle();
-        subScription= new MarketBizSubScription();
+        subScription= new MarketBizSub();
         today = Calendar.getInstance();
         transaction= new Transaction();
 
@@ -313,7 +309,7 @@ public class GooglePayAct extends AppCompatActivity {
             paymentMarket=gPayBundle.getParcelable("Market");
             profileID=gPayBundle.getInt("PROFILE_ID");
             noOfMonths=gPayBundle.getInt("NoOfMonths");
-            boatTrip=gPayBundle.getParcelable("BoatTrip");
+            trip =gPayBundle.getParcelable("Trip");
             sitCount=gPayBundle.getInt("SitCount");
             bookingAmt=gPayBundle.getLong("Total");
             paymentFor=gPayBundle.getString("PaymentFor");
@@ -328,8 +324,8 @@ public class GooglePayAct extends AppCompatActivity {
             profileID=paymentProfile.getPID();
 
         }
-        if(boatTrip !=null){
-            tripID=boatTrip.getBoatTripID();
+        if(trip !=null){
+            tripID= trip.getaTripID();
 
         }
         if(business !=null){
@@ -396,7 +392,7 @@ public class GooglePayAct extends AppCompatActivity {
                 bundle.putParcelable("Market",paymentMarket);
                 bundle.putParcelable("Profile",userProfile);
                 bundle.putInt("PROFILE_ID",profileID);
-                subScription= new MarketBizSubScription(bizID,amount,profileID,noOfMonths,subDate,subEndDate,modeOfPayment,status);
+                subScription= new MarketBizSub(bizID,amount,profileID,noOfMonths,subDate,subEndDate,modeOfPayment,status);
 
                 if(subDBID>0){
                     business.addSubscription(subScription);

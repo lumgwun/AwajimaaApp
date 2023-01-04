@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -75,6 +77,7 @@ import com.skylightapp.MarketClasses.CallServiceConf;
 import com.skylightapp.MarketClasses.ChatAdapterConf;
 import com.skylightapp.MarketClasses.ChatHelperCon;
 import com.skylightapp.MarketClasses.DialogsManager;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.MarketClasses.MediaPickHelper;
 import com.skylightapp.MarketClasses.NetworkConnectionChecker;
 import com.skylightapp.MarketClasses.OnMediaPickedListener;
@@ -107,6 +110,7 @@ import com.skylightapp.R;
 
 import net.qiujuer.genius.ui.widget.FloatActionButton;
 
+import static com.skylightapp.BuildConfig.APPLICATION_ID;
 import static com.skylightapp.BuildConfig.QUICKBLOX_ACCT_KEY;
 import static com.skylightapp.BuildConfig.QUICKBLOX_APP_ID;
 import static com.skylightapp.BuildConfig.QUICKBLOX_AUTH_KEY;
@@ -128,7 +132,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     public static final String IS_IN_BACKGROUND = "is_in_background";
 
     public static final String ORDER_RULE = "order";
-
+    private static final String CHAT_STATE_KEY = "chat_Key";
     public static final long TYPING_STATUS_DELAY = 2000;
     public static final long TYPING_STATUS_INACTIVITY_DELAY = 10000;
     private static final long SEND_TYPING_STATUS_DELAY = 3000;
@@ -136,6 +140,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     public static final int MAX_MESSAGE_SYMBOLS_LENGTH = 1000;
     public static final long CHANGE_CONFERENCE_ROOM_DELAY = 10000;
     public static final int MAX_CONFERENCE_OPPONENTS_ALLOWED = 12;
+
 
     private ProgressBar progressBar;
     private EditText messageEditText;
@@ -157,14 +162,14 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     private TypingStatusListener typingStatusListener;
     private QBSystemMessagesManager systemMessagesManager;
     private List<QBChatMessage> messagesList;
-    private QBChatDialog qbChatDialog;
+    private QBChatDialog qbChatDialog,lastChatDialog;
     private ArrayList<QBChatMessage> unShownMessages;
     private PermissionsCheckerCon checker;
     private WebRtcSessionManagerCon sessionManager;
     private int skipPagination = 0;
     private Boolean checkAdapterInit = false;
     private boolean isOpenFromCall = false;
-    private String streamID;
+    private String streamID,chatState;
     private ServiceConnection callServiceConnection;
     private LinearLayoutCompat fabLayout;
     private ProfDAO profDAO;
@@ -177,14 +182,20 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     private static final String ACCOUNT_KEY = QUICKBLOX_ACCT_KEY;
     private static final String SERVER_URL = "";
 
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private DBHelper dbHelper;
-    Gson gson, gson1;
-    String json, json1, nIN;
+    Gson gson, gson1,gson2;
+    String json, json1, json2,nIN;
     Profile userProfile,  lastProfileUsed;
     private QBUser qbUser;
     TextInputWatcher textInputWatcher;
     private FloatActionButton fabMilestones,fabAddMembers,fabTranx,fabTimelines,fabControl;
+    private long bizID;
+    private Bundle bundle;
+    private BusinessDeal businessDeal;
+    private String bizDealTittle;
+    private Profile bizProfile;
+    private MarketBusiness marketBusiness;
 
     public static void startForResultFromCall(Activity activity, int code, String dialogId, boolean isOpenFromCall) {
         Intent intent = new Intent(activity, ChatActCon.class);
@@ -205,16 +216,23 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            chatState = savedInstanceState.getString(CHAT_STATE_KEY);
+        }
+
         setContentView(R.layout.act_chat_act_con);
-        setTitle("Awajima Biz Comms");
+        hasInternetConnection();
+        setTitle("Awajima Chats");
         dbHelper= new DBHelper(this);
         profDAO = new ProfDAO(this);
-        QBSettings.getInstance().init(this, APPLICATION_ID, AUTH_KEY, AUTH_SECRET);
-        QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         gson= new Gson();
         gson1= new Gson();
+        gson2= new Gson();
         qbUser= new QBUser();
         userProfile= new Profile();
+        lastChatDialog= new QBChatDialog();
         textInputWatcher= new TextInputWatcher();
         cal = Calendar.getInstance();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
@@ -222,6 +240,9 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
         userProfile = gson.fromJson(json, Profile.class);
         json1 = userPreferences.getString("LastQBUserUsed", "");
         qbUser = gson1.fromJson(json1, QBUser.class);
+
+        json2 = userPreferences.getString("LastQBUserUsed", "");
+        lastChatDialog = gson2.fromJson(json2, QBChatDialog.class);
         //FirebaseAuthSettings firebaseAuthSettings = auth.getFirebaseAuthSettings();
         fabLayout = findViewById(R.id.Fab_layoutP);
         fabMilestones = findViewById(R.id.fab_create_mileston);
@@ -229,25 +250,17 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
         fabTranx = findViewById(R.id.fab_tranx);
         fabTimelines = findViewById(R.id.fab_timelines);
         fabControl = findViewById(R.id.fabControl);
-        getSharedPrefsHelper().delete(IS_IN_BACKGROUND);
+        //getSharedPrefsHelper().delete(IS_IN_BACKGROUND);
         Log.v(TAG, "onCreate ChatActivity on Thread ID = " + Thread.currentThread().getId());
         isOpenFromCall = getIntent().getBooleanExtra(EXTRA_IS_OPEN_FROM_CALL, false);
         String dialogID = getIntent().getStringExtra(EXTRA_DIALOG_ID);
         Log.d(TAG, "Getting Dialog ID from EXTRA => ID : " + dialogID);
-
-        NetworkConnectionChecker networkChecker = new NetworkConnectionChecker(getApplication());
-
-        if (!getChatHelper().isLogged() && networkChecker.isConnectedNow()) {
-            reloginToChat();
+        if(qbUser !=null){
+            currentUser = qbUser;
         }
-        if (getChatHelper().getCurrentUser() != null) {
-            currentUser = getChatHelper().getCurrentUser();
-        } else {
-            Log.e(TAG, "Finishing " + TAG + ". Current User is null.");
-            finish();
-        }
+        reloginToChat();
 
-        qbChatDialog = getQBDialogsHolder().getDialogById(dialogID);
+        qbChatDialog = lastChatDialog;
         Log.d(TAG, "Deserialized dialog = " + qbChatDialog);
         Log.d(TAG, "dialogID = " + dialogID);
 
@@ -295,6 +308,15 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(CHAT_STATE_KEY, chatState);
+
+        // call superclass to save any view hierarchy
+        super.onSaveInstanceState(outState);
+    }
+
+
+    @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         if (qbChatDialog == null) {
@@ -313,6 +335,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
         checker = new PermissionsCheckerCon(getApplicationContext());
         sessionManager = WebRtcSessionManagerCon.getInstance();
         super.onResume();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
 
     @Override
@@ -327,9 +350,12 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
         } else {
             reloginToChat();
         }
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
 
     private void updateDialogFromRest() {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         Log.d(TAG, "Starting Dialog Update");
         QBRestChatService.getChatDialogById(qbChatDialog.getDialogId()).performAsync(new QBEntityCallback<QBChatDialog>() {
             @Override
@@ -348,28 +374,49 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     }
 
     private void reloginToChat() {
-        getChatHelper().loginToChat(getSharedPrefsHelper().getQbUser(), new QBEntityCallback<Void>() {
-            @Override
-            public void onSuccess(Void aVoid, Bundle bundle) {
-                returnToChat();
-                hideProgressDialog();
-            }
+        gson= new Gson();
+        gson1= new Gson();
+        qbUser= new QBUser();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        json1 = userPreferences.getString("LastQBUserUsed", "");
+        qbUser = gson1.fromJson(json1, QBUser.class);
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
+        if(qbUser !=null){
+            QBChatService.getInstance().login(qbUser, new QBEntityCallback<Void>() {
 
-            @Override
-            public void onError(QBResponseException e) {
-                hideProgressDialog();
-                Log.e(TAG, getString(R.string.relogin_chat_failed) + e.getMessage());
-                showErrorSnackbar(R.string.relogin_chat_failed, e, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        reloginToChat();
-                    }
-                });
-            }
-        });
+
+                @Override
+                public void onSuccess(Void unused, Bundle bundle) {
+                    returnToChat();
+                    hideProgressDialog();
+
+                }
+
+                @Override
+                public void onError(QBResponseException exception) {
+                    hideProgressDialog();
+                    Log.e(TAG, getString(R.string.relogin_chat_failed) + exception.getMessage());
+                    showErrorSnackbar(R.string.relogin_chat_failed, exception, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            reloginToChat();
+                        }
+                    });
+
+                }
+            });
+
+
+        }
+
+
+
     }
 
     private void returnToChat() {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         Log.e(TAG, "Returning to Chat");
         if (qbChatDialog != null) {
             qbChatDialog.initForChat(QBChatService.getInstance());
@@ -400,6 +447,8 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     }
 
     private void returnListeners() {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         if (qbChatDialog.getMessageListeners().size() > 0) {
             Log.e(TAG, "Message Listeners count - " + qbChatDialog.getMessageListeners().size());
             qbChatDialog.removeMessageListrener(chatMessageListener);
@@ -442,6 +491,8 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     protected void onPause() {
         super.onPause();
         hideProgressDialog();
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         chatAdapter.removeClickListeners();
         qbChatDialog.removeMessageListrener(chatMessageListener);
         qbChatDialog.removeIsTypingListener(typingStatusListener);
@@ -451,26 +502,37 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
             qbMessageStatusesManager.removeMessageStatusListener(this);
         }
         getSharedPrefsHelper().save(IS_IN_BACKGROUND, true);
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (systemMessagesManager != null) {
-            systemMessagesManager.removeSystemMessageListener(systemMessagesListener);
+        //QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        //QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
+        try {
+            if (systemMessagesManager != null) {
+                systemMessagesManager.removeSystemMessageListener(systemMessagesListener);
+            }
+            if (qbChatDialog != null) {
+                qbChatDialog.removeMessageListrener(chatMessageListener);
+                qbChatDialog.removeIsTypingListener(typingStatusListener);
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-        if (qbChatDialog != null) {
-            qbChatDialog.removeMessageListrener(chatMessageListener);
-            qbChatDialog.removeIsTypingListener(typingStatusListener);
-        }
-        getSharedPrefsHelper().delete(IS_IN_BACKGROUND);
+
+        //getSharedPrefsHelper().delete(IS_IN_BACKGROUND);
     }
 
     @Override
     public void onBackPressed() {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         qbChatDialog.removeMessageListrener(chatMessageListener);
         sendDialogId();
         super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
 
     @Override
@@ -575,6 +637,8 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     private void startConference(final String dialogID, Integer userID, final List<Integer> occupants) {
         Log.d(TAG, "Start (Join) Conference : " + dialogID);
         showProgressDialog(R.string.join_conference);
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         ConferenceClient client = ConferenceClient.getInstance(getApplicationContext());
         QBRTCTypes.QBConferenceType conferenceType = QBRTCTypes.QBConferenceType.QB_CONFERENCE_TYPE_VIDEO;
 
@@ -624,7 +688,9 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     private void startStream(String newStreamID) {
         Log.d(TAG, "Starting Stream");
         showProgressDialog(R.string.starting_stream);
-        ConferenceClient client = ConferenceClient.getInstance(getApplicationContext());
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
+        ConferenceClient client = ConferenceClient.getInstance(this);
         QBRTCTypes.QBConferenceType conferenceType = QBRTCTypes.QBConferenceType.QB_CONFERENCE_TYPE_VIDEO;
 
         client.createSession(currentUser.getId(), conferenceType, new ConferenceEntityCallback<ConferenceSession>() {
@@ -652,8 +718,10 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
 
     private void joinStream(String roomId, String streamerName) {
         Log.d(TAG, "Join Stream : " + streamID);
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         showProgressDialog(R.string.join_stream);
-        ConferenceClient client = ConferenceClient.getInstance(getApplicationContext());
+        ConferenceClient client = ConferenceClient.getInstance(this);
         QBRTCTypes.QBConferenceType conferenceType = QBRTCTypes.QBConferenceType.QB_CONFERENCE_TYPE_VIDEO;
 
         client.createSession(currentUser.getId(), conferenceType, new ConferenceEntityCallback<ConferenceSession>() {
@@ -676,6 +744,7 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
                 });
             }
         });
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
 
     private void setCallButtonsDefault() {
@@ -742,7 +811,9 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     }
 
     private void saveFileToStorage(QBAttachment attachment) {
-        File file = new File(getApplication().getFilesDir(), attachment.getName());
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
+        File file = new File(this.getFilesDir(), attachment.getName());
         String url = QBFile.getPrivateUrlForUID(attachment.getId());
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, file.getName());
@@ -768,6 +839,8 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
 
     private void startChatInfoWithUpdatedDialog() {
         showProgressDialog(R.string.dlg_loading);
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         Log.d(TAG, "Starting Dialog Update");
         QBRestChatService.getChatDialogById(qbChatDialog.getDialogId()).performAsync(new QBEntityCallback<QBChatDialog>() {
             @Override
@@ -840,6 +913,8 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
 
         Log.d(TAG, "Leaving Dialog");
         getChatHelper().exitFromDialog(qbChatDialog, new QBEntityCallback<QBChatDialog>() {
@@ -869,6 +944,8 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         Log.d(TAG, "onActivityResult with resultCode: " + resultCode + " requestCode: " + requestCode);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_SELECT_PEOPLE && data != null) {
@@ -957,8 +1034,11 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     }
 
     public void onSendChatClick(View view) {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         try {
             qbChatDialog.sendStopTypingNotification();
+
         } catch (XMPPException | SmackException.NotConnectedException e) {
             e.printStackTrace();
         }
@@ -1004,6 +1084,8 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     }
 
     private void initViews() {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -1052,6 +1134,8 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     }
 
     private void openImagePicker() {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         SystemPermissionsHelper permissionHelper = new SystemPermissionsHelper(this);
         if (permissionHelper.isSaveImagePermissionGranted()) {
             MediaPickHelper.pickAnImage(this, REQUEST_CODE_ATTACHMENT);
@@ -1082,6 +1166,8 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     }
 
     private void sendChatMessage(final String text, final QBAttachment attachment) {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         if (getChatHelper().isLogged()) {
             QBChatMessage chatMessage = new QBChatMessage();
             if (attachment != null) {
@@ -1166,6 +1252,8 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
 
     private void joinGroupChat(boolean returnToChat) {
         progressBar.setVisibility(View.VISIBLE);
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         getChatHelper().join(qbChatDialog, new QBEntityCallback<Void>() {
             @Override
             public void onSuccess(Void result, Bundle b) {
@@ -1200,6 +1288,8 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     }
 
     private void updateDialogUsers(final ArrayList<QBUser> selectedUsers) {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         getChatHelper().updateDialogUsers(currentUser, qbChatDialog, selectedUsers,
                 new QBEntityCallback<QBChatDialog>() {
                     @Override
@@ -1224,6 +1314,8 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     }
 
     private void loadDialogUsers() {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         getChatHelper().getUsersFromDialog(qbChatDialog, new QBEntityCallback<ArrayList<QBUser>>() {
             @Override
             public void onSuccess(ArrayList<QBUser> users, Bundle bundle) {
@@ -1264,6 +1356,8 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     }
 
     private void loadChatHistory() {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         getChatHelper().loadChatHistory(qbChatDialog, skipPagination, new QBEntityCallback<ArrayList<QBChatMessage>>() {
             @Override
             public void onSuccess(ArrayList<QBChatMessage> messages, Bundle args) {
@@ -1299,6 +1393,8 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     }
 
     private void addDelayedMessagesToAdapter() {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         if (unShownMessages != null && !unShownMessages.isEmpty()) {
             List<QBChatMessage> chatList = chatAdapter.getMessages();
             for (QBChatMessage message : unShownMessages) {
@@ -1314,6 +1410,8 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     }
 
     private void deleteChat() {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         if (qbChatDialog.getType() == QBDialogType.PUBLIC_GROUP) {
             ToastUtilsCon.shortToast(ChatActCon.this, R.string.public_group_chat_cannot_be_deleted);
         } else {
@@ -1335,6 +1433,8 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     }
 
     private void initChatConnectionListener() {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         View rootView = findViewById(R.id.rv_chat_messages);
         chatConnectionListener = new VerboseQbChatConListenerCon(ChatActCon.this, rootView) {
             @Override
@@ -1377,6 +1477,8 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     }
 
     private void startSuitableConversation(QBChatMessage qbChatMessage) {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         String notificationType = (String) qbChatMessage.getProperty(DialogsManager.PROPERTY_NOTIFICATION_TYPE);
         boolean isConference = notificationType.equals(DialogsManager.START_CONFERENCE);
         boolean isStream = notificationType.equals(DialogsManager.START_STREAM);
@@ -1397,6 +1499,9 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
 
     @Override
     public void processMessageDelivered(String messageID, String dialogID, Integer userID) {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
+
         if (qbChatDialog.getDialogId().equals(dialogID) && userID != null) {
             chatAdapter.updateStatusDelivered(messageID, userID);
         }
@@ -1404,6 +1509,8 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
 
     @Override
     public void processMessageRead(String messageID, String dialogID, Integer userID) {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         if (qbChatDialog.getDialogId().equals(dialogID) && userID != null) {
             chatAdapter.updateStatusRead(messageID, userID);
         }
@@ -1491,6 +1598,8 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
     private class ConversationNotificationClickListenerImpl implements ChatAdapterConf.ConversationNotificationClickListener {
         @Override
         public void onConversationNotificationClicked(View view, QBChatMessage qbChatMessage) {
+            QBSettings.getInstance().init(ChatActCon.this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+            QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
             if (qbChatMessage != null && qbChatMessage.getProperty(DialogsManager.PROPERTY_NOTIFICATION_TYPE) != null) {
                 if (isOpenFromCall) {
                     showProgressDialog(R.string.dlg_connecting_another_conversation);
@@ -1507,6 +1616,28 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
             }
         }
     }
+    public boolean hasInternetConnection() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
+
+    public boolean checkInternetConnection() {
+        boolean hasInternetConnection = hasInternetConnection();
+        if (!hasInternetConnection) {
+            showWarningDialog("Internet connection failed");
+        }
+
+        return hasInternetConnection;
+    }
+    public void showWarningDialog(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.setPositiveButton(R.string.button_ok, null);
+        builder.show();
+    }
+
 
     private class PaginationListener implements ChatAdapterConf.PaginationHistoryListener {
         @Override
@@ -1523,6 +1654,8 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
         @Override
         public void processUserIsTyping(final String dialogID, final Integer userID) {
             Integer currentUserID = currentUser.getId();
+            QBSettings.getInstance().init(ChatActCon.this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+            QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
             if (dialogID != null && dialogID.equals(qbChatDialog.getDialogId()) && userID != null && !userID.equals(currentUserID)) {
                 updateTypingInactivityTimer(dialogID, userID);
                 QBUser user = getQBUsersHolder().getUserById(userID);
@@ -1684,6 +1817,8 @@ public class ChatActCon extends BaseActCon implements OnMediaPickedListener, QBM
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            QBSettings.getInstance().init(ChatActCon.this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+            QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
             CallServiceConf.CallServiceBinder binder = (CallServiceConf.CallServiceBinder) service;
             CallServiceConf callService = binder.getService();
             if (callService.currentSessionExist()) {

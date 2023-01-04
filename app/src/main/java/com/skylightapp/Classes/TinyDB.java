@@ -9,6 +9,8 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.skylightapp.MarketClasses.MarketBizPackModel;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -409,7 +411,7 @@ private String lastImagePath = "";
         }
     }
 
-    public ArrayList<SkyLightPackModel> getListObject(String myCartListLocal, Class<SkyLightPackModel> productClass) {
+    public ArrayList<MarketBizPackModel> getListObject(String myCartListLocal, Class<MarketBizPackModel> productClass) {
         return null;
     }
 }

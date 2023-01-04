@@ -19,11 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.ExpandableTextView;
-import com.skylightapp.Classes.PaymentCode;
 import com.skylightapp.Classes.PaymentDoc;
 import com.skylightapp.Classes.ProfileManager;
-import com.skylightapp.Classes.SkyLightPackage;
-import com.skylightapp.Database.DBHelper;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Database.PaymDocDAO;
 import com.skylightapp.Interfaces.OnTellerReportChangeListener;
 import com.skylightapp.R;
@@ -53,7 +51,7 @@ public class SavingsAdapter extends RecyclerView.Adapter<SavingsAdapter.Recycler
     private CustomerDailyReport customerDailyReport;
     private long savingsCode;
     private PaymentDoc document;
-    private SkyLightPackage skyLightPackage;
+    private MarketBizPackage marketBizPackage;
     private double total;
 
     public SavingsAdapter(ArrayList<CustomerDailyReport> reports, Context mcontext) {
@@ -163,11 +161,11 @@ public class SavingsAdapter extends RecyclerView.Adapter<SavingsAdapter.Recycler
         if(savings !=null){
             document = savings.getRecordPaymentDoc();
             savingsCode = savings.getRecordSavingsCode();
-            skyLightPackage=savings.getRecordPackage();
+            marketBizPackage =savings.getRecordPackage();
 
         }
-        if(skyLightPackage !=null){
-            total=skyLightPackage.getPackageTotalAmount();
+        if(marketBizPackage !=null){
+            total= marketBizPackage.getPackageTotalAmount();
 
         }
 

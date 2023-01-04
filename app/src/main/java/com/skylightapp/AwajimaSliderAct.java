@@ -29,9 +29,9 @@ import com.skylightapp.Adapters.SkyLightPackageShowCaseAdapter;
 import com.skylightapp.Adapters.SkylightPackageSliderAdapter;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerManager;
+import com.skylightapp.MarketClasses.MarketBizPackModel;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackModel;
-import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
 
 import java.util.ArrayList;
@@ -39,13 +39,13 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class AwajimaSliderAct extends AppCompatActivity implements SkylightPackageSliderAdapter.OnItemsClickListener,SkylightPackageSliderAdapter.TouchInterface, SearchView.OnQueryTextListener {
-    private ArrayList<SkyLightPackModel> skyLightPackage_2s;
-    private List<SkyLightPackModel> itemsListFilter = new ArrayList<>();
+    private ArrayList<MarketBizPackModel> skyLightPackage_2s;
+    private List<MarketBizPackModel> itemsListFilter = new ArrayList<>();
     SkylightPackageSliderAdapter adapter;
     SkylightPackageSliderAdapter searchAdapter;
-    private SkyLightPackage skyLightPackage;
+    private MarketBizPackage marketBizPackage;
     private SearchView iSearchView;
-    private ArrayList<SkyLightPackModel> searchPackageList;
+    private ArrayList<MarketBizPackModel> searchPackageList;
 
     private SearchManager manager;
     Context context = AwajimaSliderAct.this;
@@ -66,7 +66,7 @@ public class AwajimaSliderAct extends AppCompatActivity implements SkylightPacka
     private double amount,grandTotal;
     private  SkylightPackageSliderAdapter.OnItemsClickListener onItemsClickListener;
     EditText editsearch;
-    private SkyLightPackModel lightPackage;
+    private MarketBizPackModel lightPackage;
     private  View.OnTouchListener listener;
     String keyWord;
     private RecyclerView searchRecycler;
@@ -103,7 +103,7 @@ public class AwajimaSliderAct extends AppCompatActivity implements SkylightPacka
         customerManager = gson2.fromJson(json2, CustomerManager.class);
 
         skyLightPackage_2s = new ArrayList<>() ;
-        skyLightPackage= new SkyLightPackage();
+        marketBizPackage = new MarketBizPackage();
         searchPackageList = new ArrayList<>() ;
         sliderList= new ArrayList<>();
         sliderView = findViewById(R.id.sliderPAC);
@@ -203,7 +203,7 @@ public class AwajimaSliderAct extends AppCompatActivity implements SkylightPacka
         for (int i = 0; i < searchPackageList.size(); i++) {
 
             if (searchPackageList.get(i).getpMItemName().toLowerCase().contains(keyWord)) {
-                SkyLightPackModel model = new SkyLightPackModel();
+                MarketBizPackModel model = new MarketBizPackModel();
                 model.setpMItemName(searchPackageList.get(i).getpMItemName());
                 model.setpModeID(searchPackageList.get(i).getpModeID());
                 searchPackageList.add(model);
@@ -219,126 +219,126 @@ public class AwajimaSliderAct extends AppCompatActivity implements SkylightPacka
         skyLightPackage_2s = new ArrayList<>();
 
 
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "", "Savings", 500, "", 1));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 500, "", 2));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 500, "", 3));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 500, "", 4));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 500, "", 5));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 500, "", 6));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 500, "", 7));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 500, "", 8));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 500, "", 9));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 500, "", 10));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 500, "", 11));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 500, "", 12));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "", "Savings", 500, "", 1));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 500, "", 2));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 500, "", 3));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 500, "", 4));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 500, "", 5));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 500, "", 6));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 500, "", 7));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 500, "", 8));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 500, "", 9));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 500, "", 10));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 500, "", 11));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 500, "", 12));
 
 
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 1000, "", 1));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 1000, "", 2));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 1000, "", 3));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 1000, "", 4));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 1000, "", 5));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 1000, "", 6));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 1000, "", 7));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 1000, "", 8));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 1000, "", 9));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 1000, "", 10));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 1000, "", 11));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 1000, "", 12));
-
-
-
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 2000, "",1));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 2000, "", 2));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 2000, "", 3));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 2000, "", 4));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 2000, "", 5));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 2000, "", 6));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 2000, "", 7));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 2000, "", 8));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 2000, "", 9));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 2000, "", 10));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 2000, "", 11));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 2000, "", 12));
-
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 3000, "", 1));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 3000, "", 2));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 3000, "", 3));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 3000, "", 4));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 3000, "", 5));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 3000, "", 6));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 3000, "", 7));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 3000, "", 8));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 3000, "", 9));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 3000, "", 10));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 3000, "", 11));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 3000, "", 12));
-
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 4000, "", 1));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 4000, "", 2));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 4000, "", 3));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 4000, "", 4));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 4000, "", 5));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 4000, "",6));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 4000, "", 7));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 4000, "", 8));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 4000, "",9));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 4000, "",10));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 4000, "",11));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 4000, "", 12));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 1000, "", 1));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 1000, "", 2));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 1000, "", 3));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 1000, "", 4));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 1000, "", 5));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 1000, "", 6));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 1000, "", 7));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 1000, "", 8));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 1000, "", 9));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 1000, "", 10));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 1000, "", 11));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 1000, "", 12));
 
 
 
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 5000, "", 1));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 5000, "", 2));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 5000, "", 3));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 5000, "", 4));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 5000, "", 5));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 5000, "", 6));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 5000, "", 7));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 5000, "", 8));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 5000, "", 9));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 5000, "", 10));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 5000, "", 11));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 5000, "", 12));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 6000, "", 1));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 6000, "", 2));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 6000, "", 3));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 6000, "", 4));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 6000, "", 5));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 6000, "", 6));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 6000, "",7));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 6000, "", 8));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 6000, "", 9));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 6000, "", 10));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 6000, "", 11));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 6000, "", 12));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 2000, "",1));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 2000, "", 2));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 2000, "", 3));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 2000, "", 4));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 2000, "", 5));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 2000, "", 6));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 2000, "", 7));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 2000, "", 8));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 2000, "", 9));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 2000, "", 10));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 2000, "", 11));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 2000, "", 12));
 
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 50000, "", 1));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 50000, "", 2));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 50000, "", 3));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 50000, "", 4));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 50000, "", 5));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 50000, "", 6));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 50000, "", 7));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 50000, "", 8));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 50000, "", 9));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 50000, "", 10));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 50000, "",11));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 50000, "", 12));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 3000, "", 1));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 3000, "", 2));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 3000, "", 3));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 3000, "", 4));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 3000, "", 5));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 3000, "", 6));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 3000, "", 7));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 3000, "", 8));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 3000, "", 9));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 3000, "", 10));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 3000, "", 11));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 3000, "", 12));
 
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings, "","Savings", 100000, "", 1));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 100000, "",2));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 100000, "", 3));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 100000, "", 4));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 100000, "", 5));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 100000, "", 6));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 100000, "", 7));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 100000, "", 8));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 100000, "", 9));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 100000, "", 10));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 100000, "", 11 ));
-        skyLightPackage_2s.add(new SkyLightPackModel(R.drawable.savings,"", "Savings", 100000, "", 12 ));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 4000, "", 1));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 4000, "", 2));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 4000, "", 3));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 4000, "", 4));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 4000, "", 5));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 4000, "",6));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 4000, "", 7));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 4000, "", 8));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 4000, "",9));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 4000, "",10));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 4000, "",11));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 4000, "", 12));
+
+
+
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 5000, "", 1));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 5000, "", 2));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 5000, "", 3));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 5000, "", 4));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 5000, "", 5));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 5000, "", 6));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 5000, "", 7));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 5000, "", 8));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 5000, "", 9));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 5000, "", 10));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 5000, "", 11));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 5000, "", 12));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 6000, "", 1));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 6000, "", 2));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 6000, "", 3));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 6000, "", 4));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 6000, "", 5));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 6000, "", 6));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 6000, "",7));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 6000, "", 8));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 6000, "", 9));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 6000, "", 10));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 6000, "", 11));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 6000, "", 12));
+
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 50000, "", 1));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 50000, "", 2));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 50000, "", 3));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 50000, "", 4));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 50000, "", 5));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 50000, "", 6));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 50000, "", 7));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 50000, "", 8));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 50000, "", 9));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 50000, "", 10));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 50000, "",11));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 50000, "", 12));
+
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings, "","Savings", 100000, "", 1));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 100000, "",2));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 100000, "", 3));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 100000, "", 4));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 100000, "", 5));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 100000, "", 6));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 100000, "", 7));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 100000, "", 8));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 100000, "", 9));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 100000, "", 10));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 100000, "", 11 ));
+        skyLightPackage_2s.add(new MarketBizPackModel(R.drawable.savings,"", "Savings", 100000, "", 12 ));
 
 
 
@@ -468,8 +468,8 @@ public class AwajimaSliderAct extends AppCompatActivity implements SkylightPacka
         }
 
 
-        skyLightPackage = new SkyLightPackage(id,customerID,tittle,amount,grandTotal,type,duration);
-        bundle.putParcelable("SkyLightPackage", skyLightPackage);
+        marketBizPackage = new MarketBizPackage(id,customerID,tittle,amount,grandTotal,type,duration);
+        bundle.putParcelable("MarketBizPackage", marketBizPackage);
         Intent payIntent = new Intent(AwajimaSliderAct.this, PayNowActivity.class);
         payIntent.putExtras(bundle);
         payIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -504,8 +504,8 @@ public class AwajimaSliderAct extends AppCompatActivity implements SkylightPacka
         }
 
 
-        skyLightPackage = new SkyLightPackage(id,customerID,tittle,amount,grandTotal,type,duration);
-        bundle.putParcelable("SkyLightPackage", skyLightPackage);
+        marketBizPackage = new MarketBizPackage(id,customerID,tittle,amount,grandTotal,type,duration);
+        bundle.putParcelable("MarketBizPackage", marketBizPackage);
         Intent payIntent = new Intent(AwajimaSliderAct.this, PayNowActivity.class);
         payIntent.putExtras(bundle);
         payIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

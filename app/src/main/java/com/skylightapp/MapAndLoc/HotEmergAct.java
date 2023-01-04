@@ -52,7 +52,7 @@ public class HotEmergAct extends AppCompatActivity {
     String SharedPrefUserMachine;
     String SharedPrefUserName;
     String SharedPrefProfileID,dateOfToday;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private SharedPreferences userPreferences;
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest mLocationRequest;
@@ -211,5 +211,30 @@ public class HotEmergAct extends AppCompatActivity {
         emergencyReport = new EmergencyReport(reportID, profileID,bizID, dateOfToday, "Hot",stringLatLng,String.valueOf(name), "",String.valueOf(address),"");
         reportIDF =emergReportDAO.insertHotEmergReport(reportID, profileID,bizID, dateOfToday, "Hot",stringLatLng,String.valueOf(name), "",String.valueOf(address),"");
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
 
 }

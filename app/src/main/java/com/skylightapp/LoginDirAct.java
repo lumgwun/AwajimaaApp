@@ -84,7 +84,16 @@ public class LoginDirAct extends AppCompatActivity {
 
         email = sharedPref.getString("EMAIL_ADDRESS", "");
         pictureLink = Uri.parse(sharedPref.getString("PICTURE_URI", ""));
-        dbRole=profileDao.getProfileRoleByUserNameAndPassword(userName,password);
+        if(profileDao !=null){
+            try {
+                dbRole=profileDao.getProfileRoleByUserNameAndPassword(userName,password);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
 
         if(userExtras ==null) {
             if(dbRole !=null){

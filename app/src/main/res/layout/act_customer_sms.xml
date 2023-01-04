@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:background="@drawable/shape_rect12"
     android:layout_height="match_parent"
-    tools:context="com.skylightapp.CustomerSmsActivity">
+    tools:context="com.skylightapp.CusSmsAct">
     <include layout="@layout/tool_bar_11c"/>
     <com.melnykov.fab.FloatingActionButton
         android:layout_width="wrap_content"

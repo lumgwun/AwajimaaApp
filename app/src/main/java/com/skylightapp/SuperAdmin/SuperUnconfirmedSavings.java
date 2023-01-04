@@ -77,7 +77,7 @@ public class SuperUnconfirmedSavings extends AppCompatActivity implements Saving
     ArrayAdapter<Profile> profileArrayAdapter;
     ArrayList<Profile> profileArrayList;
     private ProfileSimpleAdapter profileSimpleAdapter;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private MarketBusiness marketBiz;
     private OfficeBranch office;
     private long bizID;
@@ -103,6 +103,9 @@ public class SuperUnconfirmedSavings extends AppCompatActivity implements Saving
         dbHelper= new DBHelper(this);
         officeBranchDAO= new OfficeBranchDAO(this);
         marketBiz= new MarketBusiness();
+        ProfDAO profDAO1 = new ProfDAO(this);
+        customerDailyReports = new ArrayList<CustomerDailyReport>();
+        dbHelper = new DBHelper(this);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
         json2 = userPreferences.getString("LastMarketBusinessUsed", "");
@@ -129,11 +132,26 @@ public class SuperUnconfirmedSavings extends AppCompatActivity implements Saving
         profileArrayList= new ArrayList<>();
         btnTellerSearch = findViewById(R.id.TellerIDButton);
         spnSelectTeller = findViewById(R.id.spnTeller);
-        ProfDAO profDAO1 = new ProfDAO(this);
 
 
-        profileArrayList=profDAO1.getTellersFromMachineAndBiz(tellerMachine,bizID);
+        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+            dbHelper.openDataBase();
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            try {
+                if(profDAO1 !=null){
+                    profileArrayList=profDAO1.getTellersFromMachineAndBiz(tellerMachine,bizID);
+
+                }
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
         btnTellerSearch.setOnClickListener(this::getIDReports);
+
         if(bundle !=null){
             userProfile=bundle.getParcelable("Profile");
         }
@@ -177,13 +195,19 @@ public class SuperUnconfirmedSavings extends AppCompatActivity implements Saving
             linearLayout.setVisibility(View.VISIBLE);
             recyclerView3.setVisibility(View.GONE);
             recyclerView = findViewById(R.id.recycler_AllUnConfirmed);
-            customerDailyReports = new ArrayList<CustomerDailyReport>();
+            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                dbHelper.openDataBase();
+                sqLiteDatabase = dbHelper.getReadableDatabase();
+                try {
+                    customerDailyReports = dbHelper.getAllIncompleteSavings("unconfirmed");
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+            }
 
             mAdapter = new SavingsAdapter(this, R.layout.savings_list_row, customerDailyReports);
-
-            dbHelper = new DBHelper(this);
-
-            customerDailyReports = dbHelper.getAllIncompleteSavings("unconfirmed");
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(linearLayoutManager);
@@ -212,7 +236,18 @@ public class SuperUnconfirmedSavings extends AppCompatActivity implements Saving
                     }
 
                 }
-                customerDailyReports = dbHelper.getIncompleteSavingsForTeller(tellerID,"unPaid");
+                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
+                    dbHelper.openDataBase();
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    try {
+                        customerDailyReports = dbHelper.getIncompleteSavingsForTeller(tellerID,"unPaid");
+
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
 
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SuperUnconfirmedSavings.this);
                 recyclerView3.setLayoutManager(linearLayoutManager);
@@ -226,6 +261,29 @@ public class SuperUnconfirmedSavings extends AppCompatActivity implements Saving
         });
 
 
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
 
     public void getIDReports(View view) {

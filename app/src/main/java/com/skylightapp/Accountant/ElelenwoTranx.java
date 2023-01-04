@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -157,49 +158,75 @@ public class ElelenwoTranx extends AppCompatActivity implements TranxAdminA.OnIt
         currentDate = dateFormat.format(calendar.getTime());
 
         if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            transactionArrayList = tranXDAO.getTransactionsForBranchAtDate(officeBranch,currentDate);
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+                transactionArrayList = tranXDAO.getTransactionsForBranchAtDate(officeBranch,currentDate);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
 
 
         }
 
         if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            branchTranxCount =tranXDAO.getTransactionCountForBranchAtDate(officeBranch,currentDate);
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+                branchTranxCount =tranXDAO.getTransactionCountForBranchAtDate(officeBranch,currentDate);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
 
 
         }
 
         if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            transactionArrayList = tranXDAO.getTransactionsForBranchAtDate(officeBranch,dateOfTransaction);
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+                transactionArrayList = tranXDAO.getTransactionsForBranchAtDate(officeBranch,dateOfTransaction);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
 
 
         }
 
         if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            transactionTotal=tranXDAO.getTotalTransactionForBranchAtDate(officeBranch,currentDate);
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+                transactionTotal=tranXDAO.getTotalTransactionForBranchAtDate(officeBranch,currentDate);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+
+
+        }
+
+
+        if(dbHelper !=null){
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+                branchTranxCount =tranXDAO.getTransactionCountForBranchAtDate(officeBranch,dateOfTransaction);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
 
 
         }
 
         if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            branchTranxCount =tranXDAO.getTransactionCountForBranchAtDate(officeBranch,dateOfTransaction);
-
-
-        }
-
-        if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            transactionTotal=tranXDAO.getTotalTransactionForBranchAtDate(officeBranch,dateOfTransaction);
-
+            sqLiteDatabase = dbHelper.getWritableDatabase();
+            try {
+                transactionTotal=tranXDAO.getTotalTransactionForBranchAtDate(officeBranch,dateOfTransaction);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 
         }
-
-
-
 
         LinearLayoutManager layoutManagerC
                 = new LinearLayoutManager(ElelenwoTranx.this, LinearLayoutManager.HORIZONTAL, false);
@@ -276,6 +303,30 @@ public class ElelenwoTranx extends AppCompatActivity implements TranxAdminA.OnIt
 
 
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
     private void chooseDate() {
         dateOfTransaction = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
 

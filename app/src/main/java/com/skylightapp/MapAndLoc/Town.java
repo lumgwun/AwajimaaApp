@@ -4,28 +4,32 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.blongho.country_data.Country;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Town implements Comparable<Town> , Serializable, Parcelable {
 
-    private int cityID;
+    private int townID;
     private Country country;
     private State state;
+    private LatLng townLatLng;
+    private ArrayList<LatLng> townLatLngs;
     private String cityName;
     public Town() {
         super();
     }
 
-    public Town(int cityID, Country country, State state, String cityName) {
-        this.cityID = cityID;
+    public Town(int townID, Country country, State state, String cityName) {
+        this.townID = townID;
         this.country = country;
         this.state = state;
         this.cityName = cityName;
     }
 
     protected Town(Parcel in) {
-        cityID = in.readInt();
+        townID = in.readInt();
         country = in.readParcelable(Country.class.getClassLoader());
         state = in.readParcelable(State.class.getClassLoader());
         cityName = in.readString();
@@ -43,8 +47,8 @@ public class Town implements Comparable<Town> , Serializable, Parcelable {
         }
     };
 
-    public int getCityID() {
-        return cityID;
+    public int getTownID() {
+        return townID;
     }
 
     public Country getCountry() {
@@ -66,7 +70,7 @@ public class Town implements Comparable<Town> , Serializable, Parcelable {
 
     @Override
     public int compareTo(Town another) {
-        return this.cityID - another.getCityID();//ascending order
+        return this.townID - another.getTownID();//ascending order
 //            return another.getCityID() - this.cityID;//descending order
     }
 
@@ -77,9 +81,25 @@ public class Town implements Comparable<Town> , Serializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(cityID);
+        parcel.writeInt(townID);
         parcel.writeParcelable(country, i);
         parcel.writeParcelable(state, i);
         parcel.writeString(cityName);
+    }
+
+    public LatLng getTownLatLng() {
+        return townLatLng;
+    }
+
+    public void setTownLatLng(LatLng townLatLng) {
+        this.townLatLng = townLatLng;
+    }
+
+    public ArrayList<LatLng> getTownLatLngs() {
+        return townLatLngs;
+    }
+
+    public void setTownLatLngs(ArrayList<LatLng> townLatLngs) {
+        this.townLatLngs = townLatLngs;
     }
 }

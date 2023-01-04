@@ -41,7 +41,7 @@ public class TellerWebTab extends TabActivity {
     SharedPreferences sharedPreferences;
     private Gson gson;
     private String json;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
 
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,
            SharedPrefProfileID
@@ -63,8 +63,6 @@ public class TellerWebTab extends TabActivity {
         gson = new Gson();
         json = sharedPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
-        SharedPrefUserName=sharedPreferences.getString("USER_NAME", "");
-        SharedPrefUserPassword=sharedPreferences.getString("USER_PASSWORD", "");
         SharedPrefCusID=sharedPreferences.getString("CUSTOMER_ID", "");
         SharedPrefUserMachine=sharedPreferences.getString("machine", "");
         SharedPrefProfileID=sharedPreferences.getString("PROFILE_ID", "");

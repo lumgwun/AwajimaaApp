@@ -82,6 +82,7 @@ public class Transaction implements Parcelable, Serializable {
     private int tranxProfID;
     private int tranxRecordID;
     private String tranxExtraInfo;
+    private Customer tranxCus;
 
     public Transaction(double totalBundleString) {
         this.tranxAmount = totalBundleString;
@@ -102,6 +103,14 @@ public class Transaction implements Parcelable, Serializable {
 
     public void setTranxMarketID(int tranxMarketID) {
         this.tranxMarketID = tranxMarketID;
+    }
+
+    public Customer getTranxCus() {
+        return tranxCus;
+    }
+
+    public void setTranxCus(Customer tranxCus) {
+        this.tranxCus = tranxCus;
     }
 
 

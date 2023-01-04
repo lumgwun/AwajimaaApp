@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
+    android:isScrollContainer="true"
+    android:background="@drawable/sky4"
+    tools:context="com.skylightapp.StateDir.WasteRequestAct">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:fitsSystemWindows="true"
+        android:isScrollContainer="true"
+        android:background="@drawable/rect_their_message">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Awajima Waste Collection"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@mipmap/ls_logo_new_fg"
+            android:layout_marginStart="10dp"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:textColor="@color/darkSlateGray" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/comm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:text="com"
+            android:textColor="@color/darkSlateGray"
+            android:textSize="13sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/link_credit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:textStyle="bold"
+            android:text="credit link"
+            android:textColor="@color/yellowgreen"
+            android:textSize="16sp" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvComSt"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:textColor="@color/darkSlateGray"
+            android:textSize="18sp"
+            android:layout_height="wrap_content"
+            android:text="State" />
+
+        <com.google.android.material.payStackCard.MaterialCardView
+            android:id="@+id/cvC_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginTop="5dp"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="@color/whitesmoke">
+
+            <Spinner
+                android:id="@+id/pickup_state"
+                android:entries="@array/state"
+                android:padding="20dp"
+                android:background="@drawable/rect6g_a"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.payStackCard.MaterialCardView>
+
+        <!-- Category -->
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCom1"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:textColor="@color/darkSlateGray"
+            android:textSize="18sp"
+            android:layout_height="wrap_content"
+            android:text="Category" />
+
+        <com.google.android.material.payStackCard.MaterialCardView
+            android:id="@+id/cvCom1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="5dp"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="@color/whitesmoke">
+
+            <Spinner
+                android:id="@+id/client"
+                android:layout_width="match_parent"
+                android:padding="30dp"
+                android:background="@drawable/rect6g_a"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.payStackCard.MaterialCardView>
+
+        <!-- Frequence -->
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCom2"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:textColor="@color/darkSlateGray"
+            android:textSize="18sp"
+            android:layout_height="wrap_content"
+            android:text="Frequency" />
+
+        <com.google.android.material.payStackCard.MaterialCardView
+            android:id="@+id/cvCom2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginTop="5dp"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="@color/whitesmoke">
+
+            <Spinner
+                android:id="@+id/frequency"
+                android:layout_width="match_parent"
+                android:padding="30dp"
+                android:layout_marginEnd="1dp"
+                android:background="@drawable/rect6g_a"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.payStackCard.MaterialCardView>
+
+        <!-- Creneau -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCom3"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:textColor="@color/darkSlateGray"
+            android:textSize="18sp"
+            android:layout_height="wrap_content"
+            android:text="schedule"
+            />
+
+        <com.google.android.material.payStackCard.MaterialCardView
+            android:id="@+id/cvCom3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginTop="5dp"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="@color/whitesmoke">
+
+            <Spinner
+                android:id="@+id/schedule"
+                android:layout_width="match_parent"
+                android:padding="30dp"
+                android:layout_marginEnd="1dp"
+                android:background="@drawable/rect6g_a"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.payStackCard.MaterialCardView>
+
+        <!-- Jour de ramassage -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCom7"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:textColor="@color/darkSlateGray"
+            android:textSize="18sp"
+            android:layout_height="wrap_content"
+            android:text="Pick up day" />
+
+        <!-- Days of collects chooser -->
+        <com.google.android.material.payStackCard.MaterialCardView
+            android:id="@+id/cvDays"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginTop="5dp"
+            app:cardCornerRadius="8dp"
+            android:padding="20dp"
+            app:cardBackgroundColor="@color/white_good">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDays2"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="1dp"
+                android:layout_marginEnd="1dp"
+                android:layout_width="match_parent"
+                android:textColor="@color/darkSlateGray"
+                android:textSize="16sp"
+                android:background="@drawable/shape_layer_3b"
+                android:padding="20dp"
+                android:layout_height="wrap_content"
+                android:text="Days"
+                />
+
+        </com.google.android.material.payStackCard.MaterialCardView>
+
+        <!-- Amount -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_amount"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="0dp"
+            android:visibility="invisible"
+            android:layout_marginStart="20dp"
+            />
+
+        <!-- Number of Collects -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_collects"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="0dp"
+            android:visibility="invisible"
+            android:layout_marginStart="10dp"
+            />
+
+        <!-- Days of collects  -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_days"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="0dp"
+            android:visibility="invisible"
+            android:layout_marginStart="10dp" />
+
+        <!-- Residence -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputResidence"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="10dp">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:hint="Residence"
+                android:id="@+id/et_residence2"
+                android:background="@drawable/shape_layer_2a"
+                android:padding="20dp"
+                android:drawableLeft="@drawable/ic__category"
+                android:inputType="textPersonName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <requestFocus />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Place -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputPlace"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="10dp">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:hint="Place"
+                android:background="@drawable/shape_layer_2a"
+                android:padding="20dp"
+                android:id="@+id/et_place2"
+                android:drawableLeft="@drawable/ic_loc"
+                android:inputType="textPersonName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <requestFocus />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Phone -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="10dp">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:hint="@string/phone"
+                android:id="@+id/et_phone2"
+                android:maxLength="11"
+                android:background="@drawable/shape_layer_2a"
+                android:padding="20dp"
+                android:drawableLeft="@drawable/ic_add_business"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone" />
+            <requestFocus />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content">
+
+            <!-- Confirmer -->
+            <com.google.android.material.payStackCard.MaterialCardView
+                android:id="@+id/cvConfirm"
+                android:layout_width="180dp"
+                android:layout_height="50dp"
+                android:padding="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/yellowgreen">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvCom6"
+                    android:textAlignment="inherit"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/whitesmoke"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    android:layout_height="wrap_content"
+                    android:text="@string/confirm"
+                    />
+
+            </com.google.android.material.payStackCard.MaterialCardView>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</ScrollView>

@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.skylightapp.Classes.Bookings;
+import com.skylightapp.Bookings.Bookings;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,18 +15,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.skylightapp.Classes.Bookings.BOOKING_CLIENT_NAME;
-import static com.skylightapp.Classes.Bookings.BOOKING_CUS_ID;
-import static com.skylightapp.Classes.Bookings.BOOKING_DATE;
-import static com.skylightapp.Classes.Bookings.BOOKING_ID;
-import static com.skylightapp.Classes.Bookings.BOOKING_LOCATION;
-import static com.skylightapp.Classes.Bookings.BOOKING_OCCURENCE_NO;
-import static com.skylightapp.Classes.Bookings.BOOKING_PROF_ID;
-import static com.skylightapp.Classes.Bookings.BOOKING_STATUS;
-import static com.skylightapp.Classes.Bookings.BOOKING_TABLE;
-import static com.skylightapp.Classes.Bookings.BOOKING_TITTLE;
-import static com.skylightapp.Classes.Bookings.ITISRECCURRING;
-import static com.skylightapp.Classes.Profile.PROFILE_PIC_ID;
+import static com.skylightapp.Bookings.Bookings.BOOKING_CLIENT_NAME;
+import static com.skylightapp.Bookings.Bookings.BOOKING_CUS_ID;
+import static com.skylightapp.Bookings.Bookings.BOOKING_DATE;
+import static com.skylightapp.Bookings.Bookings.BOOKING_ID;
+import static com.skylightapp.Bookings.Bookings.BOOKING_LOCATION;
+import static com.skylightapp.Bookings.Bookings.BOOKING_OCCURENCE_NO;
+import static com.skylightapp.Bookings.Bookings.BOOKING_PROF_ID;
+import static com.skylightapp.Bookings.Bookings.BOOKING_STATUS;
+import static com.skylightapp.Bookings.Bookings.BOOKING_TABLE;
+import static com.skylightapp.Bookings.Bookings.BOOKING_TITTLE;
+import static com.skylightapp.Bookings.Bookings.ITISRECCURRING;
 import static java.lang.String.valueOf;
 
 public class BookingDAO extends DBHelperDAO{

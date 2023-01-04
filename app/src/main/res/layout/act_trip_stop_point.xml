@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator1"
+    android:orientation="vertical"
+    android:background="@drawable/rect_their_message"
+    android:layout_height="match_parent"
+    tools:context="com.skylightapp.Bookings.TripStopPointAct">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/line12"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/you_loc22"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="20dp"
+            android:text="Trip Stop Points:"
+            android:focusable="true"
+            android:textStyle="bold"
+            android:textColorHint="@color/black"
+            android:textSize="15sp"
+            android:layout_gravity="center_vertical|start"
+            android:gravity="center_vertical|start"
+            android:clickable="false" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/gOfC"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:focusable="false"
+            android:textColor="@android:color/holo_red_dark"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:background="@null"
+            android:text="Select the State of Stop Point" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/tp_state"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:background="@drawable/rect6h"
+                style="@style/Widget.AppCompat.Spinner.DropDown"
+                android:drawableStart="@drawable/ic_icon_foreground"
+                android:entries="@array/state"
+                android:padding="30dp"
+                android:textSize="20sp"
+                android:layout_gravity="center_vertical|start"
+                android:gravity="center_vertical|start"
+                android:clickable="false" />
+
+        </androidx.cardview.widget.CardView>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/gOL"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:focusable="false"
+            android:textColor="@android:color/holo_red_dark"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:background="@null"
+            android:text="Select the Trip Points" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:cardPreventCornerOverlap="false"
+            app:contentPadding="0dp">
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/tp_for"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:background="@drawable/rect6h"
+                style="@style/Widget.AppCompat.Spinner.DropDown"
+                android:drawableStart="@drawable/ic_icon_foreground"
+                android:padding="30dp"
+                android:textSize="20sp"
+                android:layout_gravity="center_vertical|start"
+                android:gravity="center_vertical|start"
+                android:clickable="false" />
+
+        </androidx.cardview.widget.CardView>
+        <com.melnykov.fab.FloatingActionButton
+            android:layout_width="match_parent"
+            android:src="@drawable/fab_add"
+            android:id="@+id/ic_trip_p_fab"
+            app:fab_colorNormal="@color/green_dark"
+            android:layout_gravity="end"
+            android:foregroundGravity="center_horizontal"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"/>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:id="@+id/new_TP_Layout"
+            android:visibility="gone"
+            android:layout_height="wrap_content">
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="2dp"
+                android:id="@+id/card_tp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                app:cardPreventCornerOverlap="false"
+                app:contentPadding="0dp">
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/name_trip_point"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:inputType="textMultiLine"
+                    android:textSize="15sp"
+                    android:background="@drawable/rect6h"
+                    android:hint="Trip Point Name"
+                    android:textStyle="bold"
+                    android:padding="30dp"
+                    android:textColorHint="@color/black"
+                    android:clickable="false"
+                    android:layout_gravity="center_horizontal|center"
+                    android:gravity="center_horizontal|center" />
+
+            </androidx.cardview.widget.CardView>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/loc_use"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="15sp"
+                android:focusable="false"
+                android:layout_marginBottom="10dp"
+                android:textColor="@android:color/holo_red_dark"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:background="@null"
+                android:text="Use this Location?" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="2dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                app:cardPreventCornerOverlap="false"
+                app:contentPadding="0dp">
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spn_use_this"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="10dp"
+                    android:entries="@array/yesOrNo"
+                    android:padding="30dp"
+                    android:background="@drawable/rect6h"
+                    android:drawableStart="@drawable/ic_icon_foreground"
+                    android:textSize="20sp"
+                    android:layout_gravity="center_vertical|start"
+                    android:gravity="center_vertical|start"
+                    android:clickable="false" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:text="Register New Trip Point"
+                android:textSize="20sp"
+                android:padding="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:textStyle="bold"
+                android:onClick="newTripPoint"
+                android:id="@+id/reg_new_tp"
+                android:textColor="@android:color/holo_green_dark"
+                android:background="@drawable/shape_layer_3b"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:text="Powered By Lumgwun"
+            android:textSize="15sp"
+            android:padding="20dp"
+            android:background="@null"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:textStyle="italic"
+            android:id="@+id/poweredBy"
+            android:textColor="@android:color/holo_red_dark"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</ScrollView>

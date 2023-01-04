@@ -2,11 +2,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator1"
     android:orientation="vertical"
     android:theme="@style/NoActionBar"
     android:background="@drawable/rect_their_message"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="com.skylightapp.SignUpAct">
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:orientation="vertical"
@@ -51,18 +53,17 @@
                 android:clickable="false" />
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
-                android:background="@drawable/rect6g"
                 android:layout_marginBottom="10dp"
                 android:layout_height="wrap_content">
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/Greetings"
                     android:layout_width="250dp"
-                    android:layout_height="100dp"
+                    android:layout_height="50dp"
                     android:src="@drawable/good_afternoon1"
                     android:layout_marginTop="5dp"
                     android:layout_gravity="center"
                     android:padding="5dp"
-                    android:stateListAnimator="@animator/nav_default_pop_enter_anim"
+                    android:visibility="gone"
                     app:civ_border_width="1dp"
                     app:civ_border_color="#ffffff"/>
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -73,7 +74,6 @@
                     android:src="@drawable/ic_admin_user"
                     android:layout_gravity="center"
                     android:padding="5dp"
-                    android:stateListAnimator="@animator/nav_default_pop_enter_anim"
                     app:civ_border_width="1dp"
                     app:civ_border_color="#ffffff"/>
 
@@ -128,7 +128,6 @@
                         android:id="@+id/first_Name_00"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:focusable="true"
                         android:drawableEnd="@drawable/ic_icon_foreground"
                         android:drawableStart="@drawable/ic_icon_foreground"
                         android:hint="First Name"
@@ -136,10 +135,8 @@
                         android:textStyle="bold"
                         android:textColorHint="@color/black"
                         android:textSize="15sp"
-                        android:clickable="false"
                         android:layout_gravity="center_horizontal|center"
-                        android:gravity="center_horizontal|center"
-                        />
+                        android:gravity="center_horizontal|center" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -180,6 +177,7 @@
                     android:background="@drawable/rect6h"
                     android:layout_marginLeft="1dp"
                     android:weightSum="3"
+                    android:padding="15dp"
                     android:layout_marginRight="1dp"
                     android:layout_marginBottom="10dp"
                     android:gravity="center_vertical">
@@ -187,18 +185,18 @@
                         android:id="@+id/ccp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:padding="30dp"
                         android:layout_weight="1"
                         app:ccp_contentColor="@android:color/holo_red_dark"
                         app:ccp_rememberLastSelection="true"
                         app:ccp_autoDetectCountry="true"
+                        app:ccp_defaultNameCode="ng"
                         app:ccpDialog_fastScroller_bubbleColor="@color/colorPrimaryDark"
                         app:ccpDialog_fastScroller_handleColor="@color/colorPrimaryDark"
                         app:ccp_countryAutoDetectionPref="SIM_ONLY"
                         app:ccp_autoFormatNumber="false"
                         app:ccpDialog_textColor="@color/colorPrimaryDark"
                         app:ccpDialog_showCloseIcon="true"
-                        app:ccp_countryPreference="us,ng" />
+                        app:ccp_countryPreference="ng" />
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/phone_number"
@@ -432,7 +430,7 @@
                         android:paddingLeft="10dp"
                         android:background="@drawable/rect6h"
                         android:drawableStart="@drawable/ic_icon_foreground"
-                        android:entries="@array/state"
+                        android:entries="@array/Awajima_Offices"
                         android:padding="30dp"
                         android:textSize="20sp"
                         android:layout_gravity="center_vertical|start"
@@ -536,7 +534,7 @@
                     android:textStyle="bold"
                     android:onClick="sendOTPToCus"
                     android:id="@+id/sendOTPCode"
-                    android:textColor="@android:color/white"
+                    android:textColor="@android:color/holo_red_dark"
                     android:background="@drawable/rect6g"
                     android:gravity="center_horizontal"
                     android:layout_gravity="center_horizontal"

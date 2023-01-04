@@ -10,7 +10,7 @@
     android:theme="@style/Theme.SkylightAppTab"
     android:background="@drawable/rect_their_message"
     tools:context="com.skylightapp.Markets.MarketTab">
-    <include layout="@layout/tool_bar11f"/>
+    <include layout="@layout/tool_bar11fb"/>
 
     <LinearLayout
         android:orientation="vertical"
@@ -33,14 +33,16 @@
 
     <com.melnykov.fab.FloatingActionButton
         android:layout_width="match_parent"
-        android:src="@drawable/ic_home_black_24dp"
+        android:src="@drawable/ic_loc_searching"
         android:id="@+id/fab_market"
+        app:fab_label="Customer"
+        app:fab_colorNormal="@color/GREEN_LIGHT"
         android:layout_gravity="end|bottom"
         android:foregroundGravity="center_horizontal"
         android:theme="@style/ThemeOverlay.MaterialComponents"
-        android:layout_marginEnd="17dp"
+        android:layout_marginEnd="7dp"
         android:layout_marginTop="22dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="320dp"
         android:layout_height="wrap_content"/>
 
 

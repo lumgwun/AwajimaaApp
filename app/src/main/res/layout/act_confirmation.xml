@@ -10,25 +10,10 @@
     android:scrollbarSize="20dp"
     android:background="@drawable/sky4"
     tools:context="com.skylightapp.ConfirmationActivity">
+    <include layout="@layout/tool_bar11tab"/>
 
 
-    <TextView
-        android:id="@+id/h_color1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="2dp"
-        android:text="Pay small,small and achieve big things"
-        android:fontFamily="serif"
-        android:padding="20dp"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:textAlignment="center"
-        android:textColor="@color/YELLOW"
-        android:textSize="15sp"
-        android:textStyle="bold" />
-
-
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,17 +24,17 @@
         android:padding="20dp"
         android:textSize="17sp"
         android:background="@drawable/shape_rect14"
-        android:text="Please note that this is a Financial application for people that are 18 years of age and over."
+        android:text="Please note that this is an App for people that are 18 years and above."
         android:textAlignment="center"
         android:textColor="@color/white_good"
         android:textStyle="bold" />
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/textView2"
         android:layout_below="@+id/textView2"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="monospace"
         android:text="Please confirm below"
         android:textAlignment="center"
@@ -84,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:fontFamily="monospace"
+            android:fontFamily="@font/gilroy_medium"
             android:text="Click to Continue"
             android:padding="20dp"
             android:background="@drawable/rect6f"
@@ -95,16 +80,16 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textView35"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="1dp"
         android:padding="20dp"
-        android:background="@drawable/rect_their_message"
+        android:background="@drawable/rect6da"
         android:textColor="@color/colorPrimaryDark"
-        android:text="LS Cooperative® is a Financial Org. By using this App, you give the Org. The permission to use your personal data. Proceeding into this app underage will have no effect on the Org if anything goes wrong.   "
+        android:text="The Awajima App ® requires your info. to give you the best User Experience, By using this App, you give the Org. The permission to use your personal data. Proceeding into this app underage will have no effect on the Org if anything goes wrong.   "
         android:textAlignment="center"
         android:textSize="16sp"
         android:textStyle="italic" />

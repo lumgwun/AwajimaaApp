@@ -150,11 +150,11 @@ public class BookingConstant {
         public static final String ICON = "icon";
         public static final String DEVICE_TYPE = "device_type";
         public static final String LOCATION_DATA = "locationdata";
-        public static final String BIO = "bio";
+        public static final String GENDER = "bio";
         public static final String ADDRESS = "address";
         public static final String STATE = "state";
         public static final String COUNTRY = "country";
-        public static final String ZIPCODE = "zipcode";
+        public static final String DATE_JOINED = "zipcode";
         public static final String LOGIN_BY = "login_by";
         public static final String ID = "id";
         public static final String TOKEN = "token";
@@ -170,7 +170,7 @@ public class BookingConstant {
         public static final String TYPE = "type";
         public static final String OWNER = "2";
         public static final String NOTES = "notes";
-        public static final String STRIPE_TOKEN = "payment_token";
+        public static final String CARD_TOKEN = "payment_token";
         // public static final String PEACH_TOKEN = "payment_token";
         public static final String CARD_TYPE = "card_type";
         public static final String LAST_FOUR = "last_four";
@@ -268,7 +268,7 @@ public class BookingConstant {
     public static final String APPLICATIONIDENTIFIER = "peach.unicab.mcommerce";
     public static final String PROFILETOKEN = "c60f25c78aa04a4baa80b3d627e1f0a5";
 
-    // Card Type
+    // PayStackCard Type
     public static final String[] PREFIXES_AMERICAN_EXPRESS = { "34", "37" };
     public static final String[] PREFIXES_DISCOVER = { "60", "62", "64", "65" };
     public static final String[] PREFIXES_JCB = { "35" };

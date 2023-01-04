@@ -21,7 +21,7 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.Payment;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Classes.User;
 import com.skylightapp.Database.DBHelper;
@@ -182,7 +182,7 @@ public class TranxAdminA extends RecyclerView.Adapter<TranxAdminA.ViewHolder> im
         holder.mItem = transactions.get(position);
         final Transaction transaction = transactions.get(position);
         final CustomerDailyReport customerDailyReport = new CustomerDailyReport();
-        final SkyLightPackage skyLightPackage = new SkyLightPackage();
+        final MarketBizPackage marketBizPackage = new MarketBizPackage();
         final Customer customer = new Customer();
         long customerID = customer.getCusUID();
         final Payment payee = new Payment();
@@ -229,11 +229,11 @@ public class TranxAdminA extends RecyclerView.Adapter<TranxAdminA.ViewHolder> im
 
 
 
-        if(skyLightPackage !=null){
-            holder.package_startDate.setText(MessageFormat.format("Ref ID: {0}", skyLightPackage.getPackageDateStarted()));
+        if(marketBizPackage !=null){
+            holder.package_startDate.setText(MessageFormat.format("Ref ID: {0}", marketBizPackage.getPackageDateStarted()));
             //holder.pictureOfCelebrant.setImageURI(profile.getProfilePicture());
 
-            holder.packageID.setText(MessageFormat.format("Package ID: {0}-{1}-{2}", skyLightPackage.getPackID(), skyLightPackage.getPackageDuration(), skyLightPackage.getPackageDateStarted()));
+            holder.packageID.setText(MessageFormat.format("Package ID: {0}-{1}-{2}", marketBizPackage.getPackID(), marketBizPackage.getPackageDuration(), marketBizPackage.getPackageDateStarted()));
         }
 
         holder.switchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> {

@@ -11,8 +11,7 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.skylightapp.Classes.Customer;
-import com.skylightapp.Classes.SkyLightPackage;
-import com.skylightapp.Inventory.StocksTransferAct;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.R;
 
 import java.text.MessageFormat;
@@ -25,7 +24,7 @@ public class CusSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
     //String[] countryNames;
     LayoutInflater inflter;
     private List<Customer> customerList;
-    private ArrayList<SkyLightPackage> skyLightPackageAll;
+    private ArrayList<MarketBizPackage> marketBizPackageAll;
     private ArrayList<Customer> customers;
     int layout;
 

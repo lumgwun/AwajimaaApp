@@ -32,10 +32,10 @@ import com.skylightapp.BuildConfig;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerManager;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.Payment;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Classes.AppCash;
 import com.skylightapp.Classes.StandingOrderAcct;
 import com.skylightapp.Classes.TellerReport;
@@ -101,14 +101,14 @@ public class ManualPaymentAct extends AppCompatActivity {
     private StandingOrderAcct standingOrderAcct;
     private ArrayList<Customer> customersN;
     private ArrayAdapter<Customer> customerArrayAdapter;
-    private ArrayList<SkyLightPackage> skyLightPackageArrayList;
-    private ArrayAdapter<SkyLightPackage> skyLightPackageArrayAdapter;
+    private ArrayList<MarketBizPackage> marketBizPackageArrayList;
+    private ArrayAdapter<MarketBizPackage> skyLightPackageArrayAdapter;
 
     private ArrayList<Payment> paymentArrayList;
     private ArrayAdapter<Payment> paymentArrayAdapter;
     private Bundle bundle;
     LinearLayoutCompat spnLayout;
-    private SkyLightPackage skyLightPackage;
+    private MarketBizPackage marketBizPackage;
     private Payment payment;
     private  double packageBalance,packageAmount,tellerBalance,totalToWithdraw,noOfDaysDouble,newAmountContributedSoFar,newSOBalance,amountContributedSoFar,accountBalance,soAccountBalance;
     Date date;
@@ -151,7 +151,7 @@ public class ManualPaymentAct extends AppCompatActivity {
         account= new Account();
         appCash = new AppCash();
         payment= new Payment();
-        skyLightPackage= new SkyLightPackage();
+        marketBizPackage = new MarketBizPackage();
         customerManager=new CustomerManager();
         standingOrderAcct= new StandingOrderAcct();
         currentDate= new Date();
@@ -236,8 +236,8 @@ public class ManualPaymentAct extends AppCompatActivity {
         }
 
         if (customer != null) {
-            skyLightPackageArrayList = customer.getCusSkyLightPackages();
-            skyLightPackageArrayAdapter = new ArrayAdapter<>(ManualPaymentAct.this, android.R.layout.simple_spinner_item, skyLightPackageArrayList);
+            marketBizPackageArrayList = customer.getCusSkyLightPackages();
+            skyLightPackageArrayAdapter = new ArrayAdapter<>(ManualPaymentAct.this, android.R.layout.simple_spinner_item, marketBizPackageArrayList);
             skyLightPackageArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spnPackages.setAdapter(skyLightPackageArrayAdapter);
             spnPackages.setSelection(0);
@@ -246,14 +246,14 @@ public class ManualPaymentAct extends AppCompatActivity {
 
 
             }
-            if(skyLightPackageArrayList.size()>0){
-                skyLightPackage = skyLightPackageArrayList.get(selectedPackageIndex);
+            if(marketBizPackageArrayList.size()>0){
+                marketBizPackage = marketBizPackageArrayList.get(selectedPackageIndex);
 
 
             }
-            if (skyLightPackage != null) {
-                packageAmount=skyLightPackage.getPackageDailyAmount();
-                packageBalance=skyLightPackage.getPackageBalance();
+            if (marketBizPackage != null) {
+                packageAmount= marketBizPackage.getPackageDailyAmount();
+                packageBalance= marketBizPackage.getPackageBalance();
             }
 
 
@@ -276,13 +276,13 @@ public class ManualPaymentAct extends AppCompatActivity {
             public void onClick(View view) {
                 paymentID = random.nextInt((int) (Math.random() * 1059) + 30110);
                 paymentCode = random.nextInt((int) (Math.random() * 2045) + 10600);
-                doManual(noOfDaysInt,customer,account,standingOrderAcct,tellerProfile,packageAmount,packageBalance,totalToWithdraw,noOfDaysDouble,skyLightPackage,payment,paymentCode,paymentID);
+                doManual(noOfDaysInt,customer,account,standingOrderAcct,tellerProfile,packageAmount,packageBalance,totalToWithdraw,noOfDaysDouble, marketBizPackage,payment,paymentCode,paymentID);
 
             }
         });
     }
 
-    private void doManual(int noOfDays, Customer customer, Account account, StandingOrderAcct standingOrderAcct, Profile tellerProfile, double packageAmount, double packageBalance, double totalToWithdraw, double noOfDaysDouble, SkyLightPackage skyLightPackage, Payment payment, long paymentCode, int paymentID) {
+    private void doManual(int noOfDays, Customer customer, Account account, StandingOrderAcct standingOrderAcct, Profile tellerProfile, double packageAmount, double packageBalance, double totalToWithdraw, double noOfDaysDouble, MarketBizPackage marketBizPackage, Payment payment, long paymentCode, int paymentID) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         accountBalance=0.00;
 
@@ -332,8 +332,8 @@ public class ManualPaymentAct extends AppCompatActivity {
         }
         paymentArrayList=paymentDAO.getALLPaymentsTellerToday(tellerProfileID,todayDate);
         status="";
-        if(skyLightPackage !=null){
-            amountContributedSoFar=skyLightPackage.getPackageAmount_collected();
+        if(marketBizPackage !=null){
+            amountContributedSoFar= marketBizPackage.getPackageAmount_collected();
 
         }
 
@@ -389,9 +389,9 @@ public class ManualPaymentAct extends AppCompatActivity {
                                             TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(ManualPaymentAct.this);
 
                                             ManualPaymentAct.this.payment = new Payment(tellerProfileID,customerID,type, totalToWithdraw, date,"",paymentCode,acctType,office,"");
-                                            skyLightPackage.setPackageBalance(newBalance);
+                                            marketBizPackage.setPackageBalance(newBalance);
                                             finalAccount.setAccountBalance(newBalance);
-                                            skyLightPackage.setPackageAmount_collected(newAmountContributedSoFar);
+                                            marketBizPackage.setPackageAmount_collected(newAmountContributedSoFar);
 
                                             try {
 
@@ -454,8 +454,8 @@ public class ManualPaymentAct extends AppCompatActivity {
                                             TimeLineClassDAO timeLineClassDAO= new TimeLineClassDAO(ManualPaymentAct.this);
 
                                             ManualPaymentAct.this.payment = new Payment(tellerProfileID,customerID,type, totalToWithdraw, date,"",paymentCode,acctType,office,"");
-                                            skyLightPackage.setPackageBalance(newBalance);
-                                            skyLightPackage.setPackageAmount_collected(newAmountContributedSoFar);
+                                            marketBizPackage.setPackageBalance(newBalance);
+                                            marketBizPackage.setPackageAmount_collected(newAmountContributedSoFar);
 
                                             try {
 

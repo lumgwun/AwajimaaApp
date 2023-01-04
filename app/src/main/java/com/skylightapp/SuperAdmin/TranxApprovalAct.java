@@ -45,7 +45,7 @@ import java.util.Locale;
 
 import static com.skylightapp.Classes.ImageUtil.TAG;
 import static com.skylightapp.Classes.Profile.PROFILE_PHONE;
-import static com.skylightapp.Transactions.OurConfig.SKYLIGHT_SECRET_KEY;
+import static com.skylightapp.Transactions.OurConfig.AWAJIMA_PAYSTACK_SECRET_KEY;
 import static java.lang.String.valueOf;
 
 public class TranxApprovalAct extends AppCompatActivity {
@@ -448,7 +448,7 @@ public class TranxApprovalAct extends AppCompatActivity {
                             transferPayload.setAccount_bank(accountBank);
                             transferPayload.setAccount_number(valueOf(acctNo));
                             transferPayload.setAmount(valueOf(amountRequested));
-                            transferPayload.setSeckey(SKYLIGHT_SECRET_KEY);
+                            transferPayload.setSeckey(AWAJIMA_PAYSTACK_SECRET_KEY);
                             transferPayload.setNarration(narration);
                             transferPayload.setCurrency("NGN");
                             transferPayload.setReference(refID);

@@ -1,5 +1,7 @@
 package com.skylightapp.Classes;
 
+import com.skylightapp.MarketClasses.MarketBizPackage;
+
 import java.util.Date;
 
 public class Promo {
@@ -62,9 +64,9 @@ public class Promo {
     {
         return recordDate;
     }
-    public SkyLightPackage.SkylightPackage_Type getPackageType()
+    public MarketBizPackage.SkylightPackage_Type getPackageType()
     {
-        return SkyLightPackage.SkylightPackage_Type.valueOf(type);
+        return MarketBizPackage.SkylightPackage_Type.valueOf(type);
     }
     public void setPackageType(int type)
     {

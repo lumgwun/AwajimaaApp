@@ -16,7 +16,26 @@
                 </group>
             </menu>
         </item>
+    </group>
 
+    <group android:checkableBehavior="single"
+        android:menuCategory="system">
+        <item android:title="Oil Spillage Monitor">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nos_OilS_monitor"
+                        android:title="Oil Spill Monitor"
+                        app:cnb_iconTintMode="src_in"
+                        app:cnb_iconColor="#FF9800"
+                        android:icon="@drawable/ic_admin_panel"/>
+                </group>
+            </menu>
+        </item>
+    </group>
+
+    <group android:checkableBehavior="single"
+        android:menuCategory="system">
         <item android:title="Operations">
             <menu>
                 <group android:checkableBehavior="single">
@@ -40,7 +59,9 @@
                 </group>
             </menu>
         </item>
-
+    </group>
+    <group android:checkableBehavior="single"
+        android:menuCategory="system">
         <item android:title="Report Emergency">
             <menu>
                 <group android:checkableBehavior="single">
@@ -53,7 +74,9 @@
             </menu>
         </item>
 
-
+    </group>
+    <group android:checkableBehavior="single"
+        android:menuCategory="system">
         <item android:title="Business Office">
             <menu>
                 <group android:checkableBehavior="single">
@@ -65,18 +88,9 @@
                 </group>
             </menu>
         </item>
-        <item android:title="Markets Across Africa">
-            <menu>
-                <group android:checkableBehavior="single">
-                    <item
-                        android:id="@+id/nav_nosdra_Markets"
-                        android:icon="@drawable/ic_dashboard_black_24dp"
-                        android:title="Markets" />
-
-                </group>
-            </menu>
-        </item>
-
+    </group>
+    <group android:checkableBehavior="single"
+        android:menuCategory="system">
         <item android:title="Bookings">
             <menu>
                 <group android:checkableBehavior="single">
@@ -107,6 +121,23 @@
                 </group>
             </menu>
         </item>
+    </group>
+    <group android:checkableBehavior="single"
+        android:menuCategory="system">
+
+
+        <item android:title="Markets Across Africa">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_nosdra_Markets"
+                        android:icon="@drawable/ic_dashboard_black_24dp"
+                        android:title="Markets" />
+
+                </group>
+            </menu>
+        </item>
+
         <item android:title="NOSDRA Stocks">
             <menu>
                 <group android:checkableBehavior="single">

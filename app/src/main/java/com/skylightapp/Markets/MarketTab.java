@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
@@ -31,9 +34,13 @@ import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Customers.NewCustomerDrawer;
+import com.skylightapp.Customers.SavingsSOAct;
+import com.skylightapp.Customers.StandingOrderList;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.LoginDirAct;
-import com.skylightapp.LogisticParkAct;
+import com.skylightapp.LogisticDetailsAct;
+import com.skylightapp.MapAndLoc.HotEmergAct;
+import com.skylightapp.MapAndLoc.UserReportEmergAct;
 import com.skylightapp.R;
 import com.skylightapp.SignTabMainActivity;
 
@@ -59,7 +66,7 @@ public class MarketTab extends TabActivity implements NavigationView.OnNavigatio
     int profileUID;
     Bundle bundle;
     PrefManager prefManager;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private ChipNavigationBar chipNavigationBar;
     private Toolbar toolbar;
     private DrawerLayout drawer;
@@ -72,6 +79,7 @@ public class MarketTab extends TabActivity implements NavigationView.OnNavigatio
     private AppCompatTextView txtBankAcctOwner, txtUserBankName;
     AppCompatButton txtBankNo;
     CircleImageView imgProfilePic;
+    Bundle homeBundle;
     private  int SOCount,customerID,loanCount,txCount;
     String SharedPrefUserPassword,SharedPrefBankAcctNo,SharedPrefBankName,SharedPrefCusID,SharedPrefNirsal,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
 
@@ -91,6 +99,7 @@ public class MarketTab extends TabActivity implements NavigationView.OnNavigatio
         dbHelper= new DBHelper(this);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
+        homeBundle=new Bundle();
         userProfile=new Profile();
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
@@ -128,7 +137,7 @@ public class MarketTab extends TabActivity implements NavigationView.OnNavigatio
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle homeBundle=new Bundle();
+
                 if(homeBundle !=null){
                     homeBundle.putParcelable("Profile",userProfile);
                 }
@@ -144,33 +153,35 @@ public class MarketTab extends TabActivity implements NavigationView.OnNavigatio
         drawer = findViewById(R.id.market_drawer);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
+        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white_good));
         toggle.setHomeAsUpIndicator(R.drawable.home2);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        Intent intentMarketHub = new Intent().setClass(this, MarketHub.class);
+
+
+        Intent intentMarkets = new Intent().setClass(this, MarketHub.class);
+        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecMarketBiz = tabhost
+                .newTabSpec("Market Hub")
+                .setIndicator("", resources.getDrawable(R.drawable.ic_admin_panel))
+                .setContent(intentMarkets);
+
+        Intent intentProducts = new Intent().setClass(this, SavingsSOAct.class);
+        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecSignUp = tabhost
+                .newTabSpec("Savings")
+                .setIndicator("", resources.getDrawable(R.drawable.ic_icon2))
+                .setContent(intentProducts);
+
+        Intent intentMarketHub = new Intent().setClass(this, MarketCreatorAct.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecHub = tabhost
                 .newTabSpec("Market Hub")
                 .setIndicator("", resources.getDrawable(R.drawable.ic_icon2))
                 .setContent(intentMarketHub);
 
-        Intent intentMarkets = new Intent().setClass(this, MarketBizListAct.class);
-        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecMarketBiz = tabhost
-                .newTabSpec("Businesses")
-                .setIndicator("", resources.getDrawable(R.drawable.ic_admin_panel))
-                .setContent(intentMarkets);
-
-        Intent intentProducts = new Intent().setClass(this, ProductsAct.class);
-        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecSignUp = tabhost
-                .newTabSpec("General Shop")
-                .setIndicator("", resources.getDrawable(R.drawable.ic_create_new))
-                .setContent(intentProducts);
-
-        Intent intentLogistics = new Intent().setClass(this, LogisticParkAct.class);
+        Intent intentLogistics = new Intent().setClass(this, LogisticDetailsAct.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecLogistics = tabhost
                 .newTabSpec("Logistics Park")
-                .setIndicator("", resources.getDrawable(R.drawable.ic_icon2))
+                .setIndicator("", resources.getDrawable(R.drawable.ic_admin_panel))
                 .setContent(intentLogistics);
 
         tabhost.addTab(tabSpecSignUp);
@@ -205,7 +216,7 @@ public class MarketTab extends TabActivity implements NavigationView.OnNavigatio
                         //Fragment fragment = null;
                         switch (i){
                             case R.id.mHome:
-                                Intent myIntent = new Intent(MarketTab.this, MarketTab.class);
+                                Intent myIntent = new Intent(MarketTab.this, LoginDirAct.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
                                 myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -272,7 +283,7 @@ public class MarketTab extends TabActivity implements NavigationView.OnNavigatio
         bundle.putLong("ProfileID", profileUID);
         bundle.putString(machine, machine);
         bundle.putParcelable("Profile",userProfile);
-        Intent intent = new Intent(this, LoginDirAct.class);
+        Intent intent = new Intent(this, UserReportEmergAct.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         overridePendingTransition(R.anim.slide_in_right,
@@ -298,9 +309,25 @@ public class MarketTab extends TabActivity implements NavigationView.OnNavigatio
                         R.anim.slide_out_left);
                 startActivity(intent);
                 break;
-            case R.id.social_market:
+            case R.id.emerg_marketM:
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
+                Intent emergIntent = new Intent(MarketTab.this, UserReportEmergAct.class);
+                emergIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                startActivity(emergIntent);
+                break;
+            case R.id.market_Hot:
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                Intent hotIntent = new Intent(MarketTab.this, HotEmergAct.class);
+                hotIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                startActivity(hotIntent);
                 break;
             case R.id.market_insu:
                 Intent active = new Intent(MarketTab.this, InsuranceAct.class);
@@ -383,4 +410,62 @@ public class MarketTab extends TabActivity implements NavigationView.OnNavigatio
         return true;
 
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        overridePendingTransition(R.anim.base_slide_left_out, R.anim.bounce);
+
+    }
+    public void onResume(){
+        super.onResume();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        overridePendingTransition(R.anim.base_slide_left_out, R.anim.bounce);
+    }
+    public boolean hasInternetConnection() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        @SuppressLint("MissingPermission") NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
+
+    public boolean checkInternetConnection() {
+        boolean hasInternetConnection = hasInternetConnection();
+        if (!hasInternetConnection) {
+            showWarningDialog("Internet connection failed");
+        }
+
+        return hasInternetConnection;
+    }
+
+    public void showWarningDialog(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.setPositiveButton(R.string.button_ok, null);
+        builder.show();
+    }
+
 }

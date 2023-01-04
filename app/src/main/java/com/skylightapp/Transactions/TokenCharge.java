@@ -21,7 +21,7 @@ public class TokenCharge {
             e.printStackTrace();
         }
 
-        SkylightPaymentServices paymentservices = new SkylightPaymentServices();
+        AwajimaPaymentServices paymentservices = new AwajimaPaymentServices();
 
         String response = paymentservices.dotokencharge(payload, tokenchargepayload);
         return response;
@@ -30,7 +30,7 @@ public class TokenCharge {
 
     public String doupdatetoken(TokenChargePayload tokenchargepayload){
 
-        SkylightPaymentServices paymentservices = new SkylightPaymentServices();
+        AwajimaPaymentServices paymentservices = new AwajimaPaymentServices();
         String response = null;
         try {
             response = paymentservices.dotokenupdate(tokenchargepayload);

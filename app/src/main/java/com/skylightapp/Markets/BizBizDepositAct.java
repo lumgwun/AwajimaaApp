@@ -121,7 +121,7 @@ public class BizBizDepositAct extends AppCompatActivity {
     int selectedNoIndex,intAdID;
     SecureRandom random;
     AdminBankDeposit adminBankDeposit;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private Calendar calendar;
     SQLiteDatabase sqLiteDatabase;
     private SODAO sodao;
@@ -361,11 +361,9 @@ public class BizBizDepositAct extends AppCompatActivity {
         MarketBizArrayAdapter bizDealAdapter = new MarketBizArrayAdapter(this, biz_item, ourBusinesses);
         spnBusiness.setAdapter(bizDealAdapter);
 
-        spnBusiness.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        spnBusiness.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedBizIndex = spnBusiness.getSelectedItemPosition();
                 if(ourBusinesses !=null){
 
@@ -379,12 +377,14 @@ public class BizBizDepositAct extends AppCompatActivity {
                 }
 
 
+            }
 
-
-
-                //businessDeal = businessDealArrayList.get(i);
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+
         if(selectedBusiness !=null){
             account= selectedBusiness.getMarketBizAcct();
 

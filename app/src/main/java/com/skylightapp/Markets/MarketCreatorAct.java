@@ -43,6 +43,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -110,6 +111,7 @@ import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PasswordHelpers;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.MarketDAO;
 import com.skylightapp.Database.UserContentProvider;
@@ -120,6 +122,7 @@ import com.skylightapp.MapAndLoc.Town;
 import com.skylightapp.MarketClasses.Market;
 import com.skylightapp.R;
 import com.skylightapp.SignUpAct;
+import com.skylightapp.SuperAdmin.Awajima;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -135,6 +138,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -149,7 +153,6 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
     String json, json1, nIN;
     Profile userProfile, lastProfileUsed;
     Customer customer;
-    ArrayList<Market> marketArrayList;
     List<Address> addresses;
 
     Location location;
@@ -200,8 +203,11 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
     private  Bundle userBundle;
     String localityString,city,autoAddress,selectedAddress;
     int mapZoom=19;
+    LocationInsertTask insertTask;
     private AutoCompleteTextView  autoComPlaces;
     private static int AUTOCOMPLETE_REQUEST_CODE = 19998;
+    private ArrayList<Market>marketArrayList;
+    private Awajima awajima;
 
 
     String[] PERMISSIONS33 = {
@@ -351,6 +357,8 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
         gson = new Gson();
         state= new State();
         market= new Market();
+        awajima= new Awajima();
+        marketArrayList= new ArrayList<>();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
@@ -368,7 +376,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
         createLocationRequest();
         getDeviceLocation();
         setInitialLocation();
-        SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapMarket);
+        SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (fm != null) {
             fm.getMapAsync(this);
         }
@@ -513,14 +521,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
             }
         });
 
-        if (dbHelper != null) {
-            dbHelper.onUpgrade(sqLiteDatabase, DATABASE_VERSION, DATABASE_NEW_VERSION);
 
-        } else {
-            sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
-
-
-        }
         //setInitialLocation();
         txtLoc22 = findViewById(R.id.whereMarketIs);
         txtLocTxt = findViewById(R.id.here_market);
@@ -593,6 +594,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
         @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         dateOFReg = mdformat.format(calendar.getTime());
         btnSubmit.startAnimation(translater);
+        insertTask = new LocationInsertTask();
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -602,8 +604,8 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
                 lga = edtMarketLGA.getText().toString();
                 town = edtTown.getText().toString().trim();
                 //autoAddress=autoComPlaces.getText().toString();
-                if(address.isEmpty()){
-                    address=autoAddress;
+                if (address.isEmpty()) {
+                    address = autoAddress;
 
                 }
                 @SuppressLint("UseCompatLoadingForDrawables") Drawable customErrorIcon = getResources().getDrawable(R.drawable.ic_error_black_24dp);
@@ -614,8 +616,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
                     edtMarketName.requestFocus();
                 }
                 if (TextUtils.isEmpty(edtMarketAddress.getText().toString())) {
-                    edtMarketAddress.setError("Please Enter Market Address", customErrorIcon);
-                    edtMarketAddress.requestFocus();
+                    address = autoAddress;
                 }
                 if (TextUtils.isEmpty(edtMarketLGA.getText().toString())) {
                     edtMarketLGA.setError("Please Enter Market LGA", customErrorIcon);
@@ -624,35 +625,85 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
                 if (TextUtils.isEmpty(edtTown.getText().toString())) {
                     edtTown.setError("Please Enter Market Town", customErrorIcon);
                     edtTown.requestFocus();
-                }else {
+                } else {
                     checkInternetConnection();
-                    market= new Market(newMarketID,profileID,marketName,marketType,address,town,lga,marketState,country,latitude,longitude,dateOFReg);
+                    market = new Market(newMarketID, profileID, marketName, marketType, address, town, lga, marketState, country, latitude, longitude, dateOFReg);
+                    for (int i = 0; i < marketArrayList.size(); i++) {
+                        try {
+                            if (marketArrayList.get(i).getMarketName().contains(marketName) || marketArrayList.get(i).getMarketState().contains(marketState)) {
+                                Toast.makeText(MarketCreatorAct.this, "This Market is already in use, here", Toast.LENGTH_LONG).show();
+                                return;
 
-                    if(dbHelper !=null){
-                        sqLiteDatabase = dbHelper.getWritableDatabase();
-                        LocationInsertTask insertTask = new LocationInsertTask();
+                            } else {
+                                try {
 
-                        insertTask.execute(market);
-                        dbID=marketDAO.saveMarket(market);
+                                    if (sqLiteDatabase != null) {
+                                        sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                                    }
+                                } catch (SQLiteException e) {
+                                    e.printStackTrace();
+                                }
+
+                                if (insertTask != null) {
+                                    try {
+                                        insertTask.execute(market);
+                                    } catch (NullPointerException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                                try {
+                                    awajima.addMarket(market);
+                                } catch (NullPointerException e) {
+                                    e.printStackTrace();
+                                }
+
+                                if (dbHelper != null) {
+
+                                    if (marketDAO != null) {
+                                        try {
+                                            dbID = marketDAO.saveMarket(market);
+                                        } catch (NullPointerException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
 
 
-                    }
-                    userBundle.putParcelable("Profile",userProfile);
-                    if(dbID>0){
-                        Toast.makeText(MarketCreatorAct.this, "New Market has been successfully saved", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(MarketCreatorAct.this, LoginDirAct.class);
-                        overridePendingTransition(R.anim.slide_in_right,
-                                R.anim.slide_out_left);
-                        intent.putExtras(userBundle);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                }
 
-                        startActivity(intent);
+                                userBundle.putParcelable("Profile", userProfile);
 
+                                Toast.makeText(MarketCreatorAct.this, "New Market has been successfully saved", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(MarketCreatorAct.this, NewCustomerDrawer.class);
+                                overridePendingTransition(R.anim.slide_in_right,
+                                        R.anim.slide_out_left);
+                                intent.putExtras(userBundle);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                if (dbID > 0) {
+                                    Toast.makeText(MarketCreatorAct.this, "New Market has been successfully saved", Toast.LENGTH_LONG).show();
+                                    Intent intent44 = new Intent(MarketCreatorAct.this, NewCustomerDrawer.class);
+                                    overridePendingTransition(R.anim.slide_in_right,
+                                            R.anim.slide_out_left);
+                                    intent44.putExtras(userBundle);
+                                    intent44.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent44);
+
+
+                                }
+                                //sendOTPVerCode(otpPhoneNumber,mAuth,sponsorID,account,standingOrderAcct,customer,joinedDate,uFirstName,uSurname,uPhoneNumber,uAddress,uUserName,uPassword,customer,customerProfile,nIN,managerProfile,dateOfBirth,selectedGender,selectedOffice,selectedState,birthday,customerManager,dateOfBirth,profileID1,virtualAccountNumber,soAccountNumber, customerID,profileID2,birthdayID, investmentAcctID,itemPurchaseAcctID,promoAcctID,packageAcctID,profiles,customers,tellers,adminUserArrayList,superAdminArrayList);
+                            }
+                        } catch (NullPointerException e) {
+                            System.out.println("Oops!");
+                        }
 
                     }
                 }
 
+
             }
+
         });
 
         btnSubmit.setOnClickListener(this::registerANewMarket);
@@ -731,7 +782,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
     private boolean validateMarketTown() {
         @SuppressLint("UseCompatLoadingForDrawables") Drawable customErrorIcon = getResources().getDrawable(R.drawable.ic_error_black_24dp);
         customErrorIcon.setBounds(0, 0, customErrorIcon.getIntrinsicWidth(), customErrorIcon.getIntrinsicHeight());
-        town = edtTown.getText().toString().trim();
+        town = Objects.requireNonNull(edtTown.getText()).toString().trim();
         if(town.trim().isEmpty()) {
             edtTown.setError("Please Enter Market Town", customErrorIcon);
             edtTown.requestFocus();
@@ -934,7 +985,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-        Uri uri = UserContentProvider.CONTENT_URI;
+        Uri uri = UserContentProvider.BASE_CONTENT_URI;
         return new CursorLoader(this, uri, null, null, null, null);
     }
 
@@ -982,7 +1033,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
         protected Void doInBackground(ContentValues... contentValues) {
 
             /** Setting up values to insert the clicked location into SQLite database */
-            getContentResolver().insert(UserContentProvider.CONTENT_URI, contentValues[0]);
+            getContentResolver().insert(UserContentProvider.BASE_CONTENT_URI, contentValues[0]);
             return null;
         }
 
@@ -996,7 +1047,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
         protected Void doInBackground(Void... params) {
 
             /** Deleting all the locations stored in SQLite database */
-            getContentResolver().delete(UserContentProvider.CONTENT_URI, null, null);
+            getContentResolver().delete(UserContentProvider.BASE_CONTENT_URI, null, null);
             return null;
         }
     }
@@ -1028,13 +1079,6 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
         geocoder = new Geocoder(this, Locale.getDefault());
         getDeviceLocation();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-
-    }
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-
 
     }
 
@@ -1319,11 +1363,6 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
 
     }
 
-    @Override
-    protected void onDestroy() {
-        dbHelper.close();
-        super.onDestroy();
-    }
 
     public void registerANewMarket(View view) {
     }
@@ -1337,4 +1376,29 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
     public void onLocationChanged(@NonNull Location location) {
 
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+        finish();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
 }

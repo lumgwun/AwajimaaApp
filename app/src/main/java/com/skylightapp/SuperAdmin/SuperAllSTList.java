@@ -168,15 +168,16 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
     String json3;
 
     private SQLiteDatabase sqLiteDatabase;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private MarketBusiness marketBiz;
     private MarketBizArrayAdapter mBizAdapter;
     private  ArrayList<MarketBusiness> marketBusinessList;
     private  ArrayList<MarketBusiness> marketBizOld;
     private MarketBizDAO marketBizDAO;
+    String tellerName, cusName;
 
     LinearLayout layoutCustomDate, layoutFromTeller, layoutAllST, layoutSkylightTittle, layoutToCustomers, layoutFromBranch;
-    CardView dateCard, cardTellerBtn, allTCCard, cardLayoutSkylight, cardLayoutToCus, cardBtnToCus, cardBtnSkyLayout, dateCardBtn, cardLayoutBtnBranch, cardLayoutFromBranch, cardTellerLayout;
+    CardView dateCard, cardTellerBtn, allTCCard, cardLayoutToCus, cardBtnToCus, cardBtnSkyLayout, dateCardBtn, cardLayoutBtnBranch, cardLayoutFromBranch, cardTellerLayout;
 
 
     @Override
@@ -249,27 +250,191 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
         toCustomerArrayList =new ArrayList<>();
 
         workersNames =new ArrayList<>();
-        customers=cusDAO.getAllCustomersNames();
+        officeAdapter = new OfficeAdapter(SuperAllSTList.this, officeBranchArrayList);
+        spnBranch.setAdapter(officeAdapter);
+        spnBranch.setSelection(0);
+
+        spnBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedBranch = (OfficeBranch) parent.getSelectedItem();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        if(selectedBranch !=null){
+            selectedOffice=selectedBranch.getOfficeBranchName();
+        }
+
 
         try {
 
-            if (dbHelper != null) {
-                workersNames =workersDAO.getAllWorkers();
-                sTArrayListToday =stockTransferDAO.getStocksTransferAtDate(todayDate);
-                tellerSTArrayList=stockTransferDAO.getStocksTransferFromTeller("Teller");
-                tellerArrayListWithDate=stockTransferDAO.getStocksTransferFromTellerWithDate("Teller",dateOfST);
-                arrayListAllST=stockTransferDAO.getAllStocksTransfers();
-                //arrayListAllSTWithDate=dbHelper.getStocksTransferWithDate(dateOfST);
-                branchSTArrayList=stockTransferDAO.getStocksTransferFromBranch("Branch");
-                skylightSTArrayList=stockTransferDAO.getStocksTransferFromSkylight("Awajima");
-                sTCustomDateArrayList=stockTransferDAO.getStocksTransferAtDate(dateOfST);
-                toCustomerArrayList=stockTransferDAO.getStocksToCustomer("Customer");
-                todaySTAmount =dbHelper.getAllSkylightCashCountForDate(todayDate);
-            }
-
-
+            profileSpinnerAdapter = new ProfileSpinnerAdapter(this, android.R.layout.simple_spinner_item, workersNames);
+            spnTellers.setAdapter(profileSpinnerAdapter);
         } catch (NullPointerException e) {
             System.out.println("Oops!");
+        }
+        spnTellers.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedTeller = parent.getItemAtPosition(position).toString();
+                Toast.makeText(SuperAllSTList.this, "Teller: "+ selectedTeller,Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        if(selectedTeller !=null){
+            tellerName=selectedTeller;
+        }
+
+        try {
+
+            customerAdapter = new CusSpinnerAdapter(SuperAllSTList.this,  customers);
+            spnSTToCus.setAdapter(customerAdapter);
+            spnSTToCus.setSelection(0);
+        } catch (NullPointerException e) {
+            System.out.println("Oops!");
+        }
+
+        spnSTToCus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //selectedStocks = spnStocks.getSelectedItem().toString();
+                selectedCustomer = (Customer) parent.getSelectedItem();
+                //Toast.makeText(StocksTransferAct.this, "Selected Stocks: "+ selectedStocks,Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        if(selectedCustomer !=null){
+            customerProfile=selectedCustomer.getCusProfile();
+            cusName=selectedCustomer.getCusSurname()+""+selectedCustomer.getCusFirstName();
+
+
+        }
+        if(customerProfile !=null){
+            customerProfileID =customerProfile.getPID();
+
+        }
+
+
+
+
+        if(cusDAO !=null){
+            try {
+                customers=cusDAO.getAllCustomersNames();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+
+
+
+        if(workersDAO !=null){
+            try {
+                workersNames =workersDAO.getAllWorkers();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+
+
+        if(stockTransferDAO !=null){
+            try {
+                sTArrayListToday =stockTransferDAO.getStocksTransferAtDate(todayDate);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+        if(stockTransferDAO !=null){
+            try {
+                tellerSTArrayList=stockTransferDAO.getStocksTransferFromTeller(tellerName);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+        if(stockTransferDAO !=null){
+            try {
+                tellerArrayListWithDate=stockTransferDAO.getStocksTransferFromTellerWithDate(tellerName,dateOfST);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+        if(stockTransferDAO !=null){
+            try {
+                arrayListAllST=stockTransferDAO.getAllStocksTransfers();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+        if(stockTransferDAO !=null){
+            try {
+                branchSTArrayList=stockTransferDAO.getStocksTransferFromBranch(selectedOffice);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+        if(stockTransferDAO !=null){
+            try {
+                skylightSTArrayList=stockTransferDAO.getStocksTransferFromAwajima("Awajima");
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+        if(stockTransferDAO !=null){
+            try {
+                sTCustomDateArrayList=stockTransferDAO.getStocksTransferAtDate(dateOfST);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+        if(stockTransferDAO !=null){
+            try {
+                toCustomerArrayList=stockTransferDAO.getStocksToCustomer(cusName);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+        if(dbHelper !=null){
+            try {
+                todaySTAmount =dbHelper.getAllSkylightCashCountForDate(todayDate);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
         }
 
 
@@ -314,10 +479,23 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
         cardBtnSkyLayout = findViewById(R.id.cardSkyLayout);
         dateCardBtn = findViewById(R.id.cardStDates);
         dateCard = findViewById(R.id.cardSTDatePicker);
-        //txtTodayTotal = findViewById(R.id.stTodayTotal);
-
-
         spnTellers.setOnItemSelectedListener(this);
+        try {
+
+
+            if(dbHelper !=null){
+                workersNames =workersDAO.getAllWorkers();
+            }
+
+            if (dbHelper != null) {
+                officeBranchArrayList=dbHelper.getAllBranchOffices();
+            }
+        } catch (NullPointerException e) {
+            System.out.println("Oops!");
+        }
+
+
+
         bundle= new Bundle();
 
         btnFromTellerLayout.setOnClickListener(this::revealFromTellerLayout);
@@ -539,95 +717,6 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
             }
         });
 
-        try {
-
-
-            if(dbHelper !=null){
-                workersNames =workersDAO.getAllWorkers();
-            }
-
-            if (dbHelper != null) {
-                dbHelper= new DBHelper(this);
-                officeBranchArrayList=dbHelper.getAllBranchOffices();
-            }
-        } catch (NullPointerException e) {
-            System.out.println("Oops!");
-        }
-
-        officeAdapter = new OfficeAdapter(SuperAllSTList.this, officeBranchArrayList);
-        spnBranch.setAdapter(officeAdapter);
-        spnBranch.setSelection(0);
-
-        spnBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedBranch = (OfficeBranch) parent.getSelectedItem();
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        if(selectedBranch !=null){
-            selectedOffice=selectedBranch.getOfficeBranchName();
-        }
-        if(selectedBranch !=null){
-            selectedOffice=selectedBranch.getOfficeBranchName();
-        }
-
-
-        try {
-
-            profileSpinnerAdapter = new ProfileSpinnerAdapter(this, android.R.layout.simple_spinner_item, workersNames);
-            spnTellers.setAdapter(profileSpinnerAdapter);
-        } catch (NullPointerException e) {
-            System.out.println("Oops!");
-        }
-        spnTellers.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedTeller = parent.getItemAtPosition(position).toString();
-                Toast.makeText(SuperAllSTList.this, "Teller: "+ selectedTeller,Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        try {
-
-            customerAdapter = new CusSpinnerAdapter(SuperAllSTList.this,  customers);
-            spnSTToCus.setAdapter(customerAdapter);
-            spnSTToCus.setSelection(0);
-        } catch (NullPointerException e) {
-            System.out.println("Oops!");
-        }
-
-        spnSTToCus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //selectedStocks = spnStocks.getSelectedItem().toString();
-                selectedCustomer = (Customer) parent.getSelectedItem();
-                //Toast.makeText(StocksTransferAct.this, "Selected Stocks: "+ selectedStocks,Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        if(selectedCustomer !=null){
-            customerProfile=selectedCustomer.getCusProfile();
-
-
-        }
-        if(customerProfile !=null){
-            customerProfileID =customerProfile.getPID();
-
-        }
-
 
         adapterToday = new StockTransferAdapter(this, sTArrayListToday);
         LinearLayoutManager linearLayoutManagerToday = new LinearLayoutManager(this);
@@ -814,6 +903,30 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
         startActivity(intent);
 
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
 
     @Override
     public void onItemClick(int adapterPosition) {

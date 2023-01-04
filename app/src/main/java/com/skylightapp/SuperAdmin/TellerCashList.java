@@ -62,7 +62,7 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
     LinearLayout layoutSpn,layoutBranch;
     private long bizID;
     private SQLiteDatabase sqLiteDatabase;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     private OfficeAdapter officeAdapter;
 
     String machine,selectedOffice;
@@ -73,6 +73,7 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
     String json,json2,json3,userRole;
     private MarketBusiness marketBiz;
     private MarketBizDAO marketBizDAO;
+    private TCashDAO tCashDAO;
     OfficeBranch selectedBranch;
     private SharedPreferences userPreferences;
 
@@ -98,6 +99,7 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
         marketBiz= new MarketBusiness();
         userProfile= new Profile();
         selectedBranch= new OfficeBranch();
+        tCashDAO= new TCashDAO(this);
         mRecyclerView = findViewById(R.id.mRecyclerView);
         mRecyclerViewBranch = findViewById(R.id.mRecyclerViewBranch);
         mRecyclerViewTeller = findViewById(R.id.mRecyclerViewTeller);
@@ -120,9 +122,10 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
         if(marketBiz !=null){
             bizID=marketBiz.getBusinessID();
             officeBranchArrayList=marketBiz.getOfficeBranches();
+            tellerCashList=marketBiz.getBizTellerCashList();
         }
 
-
+        mAdapter = new TellerCashAdapter(TellerCashList.this,tellerCashList);
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(TellerCashList.this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -130,21 +133,31 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
                 layoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new TellerCashAdapter(TellerCashList.this,tellerCashList);
-        //mRecyclerView.setHasFixedSize(true);
         SnapHelper snapHelper1 = new PagerSnapHelper();
         snapHelper1.attachToRecyclerView(mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
-        //mRecyclerView.setHasFixedSize(true);
         mAdapter.setOnItemClickListener(TellerCashList.this);
 
         mProgressBar = findViewById(R.id.myDataLoaderProgressBar);
         mProgressBar.setVisibility(View.VISIBLE);
-        TCashDAO tCashDAO= new TCashDAO(this);
+        if(tCashDAO !=null){
+            try {
+                tellerCashStringTeller=tCashDAO.getAllTellerCashTellerNames();
 
-        tellerCashStringTeller=tCashDAO.getAllTellerCashTellerNames();
-        tellerCashStringBranch=tCashDAO.getAllTellerCashBranchNames();
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
 
+        }
+        if(tCashDAO !=null){
+            try {
+                tellerCashStringBranch=tCashDAO.getAllTellerCashBranchNames();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
 
         try {
             spnTeller.setAdapter(new ProfileSpinnerAdapter(TellerCashList.this, android.R.layout.simple_spinner_dropdown_item,
@@ -168,7 +181,16 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        tellerCashArrayListTeller=tCashDAO.getTellerCashByTellerName(tellerByName);
+        if(tCashDAO !=null){
+            try {
+                tellerCashArrayListTeller=tCashDAO.getTellerCashByTellerName(tellerByName);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
 
 
         btnSelectTeller.setOnClickListener(new View.OnClickListener() {
@@ -222,7 +244,16 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
         }
 
         branchByName=selectedOffice;
-        tellerCashArrayListBranches=tCashDAO.getTellerCashForBranch(branchByName);
+        if(tCashDAO !=null){
+            try {
+                tellerCashArrayListBranches=tCashDAO.getTellerCashForBranch(branchByName);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
 
         btnSelectBranch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,9 +268,6 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
                 mRecyclerViewBranch.addItemDecoration(dividerItemDecoration);
                 mRecyclerViewBranch.setItemAnimator(new DefaultItemAnimator());
                 tellerCashArrayAdapterB = new TellerCashAdapter(TellerCashList.this,tellerCashArrayListBranches);
-                //mRecyclerViewBranch.setHasFixedSize(true);
-                //SnapHelper snapHelper1 = new PagerSnapHelper();
-                //snapHelper1.attachToRecyclerView(mRecyclerViewBranch);
                 mRecyclerViewBranch.setAdapter(tellerCashArrayAdapterB);
                 tellerCashArrayAdapterB.setOnItemClickListener(TellerCashList.this);
 
@@ -247,29 +275,76 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
         });
 
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
     public void onItemClick(int position) {
         TellerCash tellerCash= tellerCashList.get(position);
-        String[] teacherData={tellerCash.getTellerCashTellerName(),tellerCash.getTellerCashItemName(), String.valueOf(tellerCash.getTellerCashAmount())};
+        if(tellerCash !=null){
+            try {
+                String[] teacherData={tellerCash.getTellerCashTellerName(),tellerCash.getTellerCashItemName(), String.valueOf(tellerCash.getTellerCashAmount())};
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
         //openDetailActivity(teacherData);
     }
 
     @Override
     public void onShowItemClick(int position) {
         TellerCash tellerCash= tellerCashList.get(position);
-        String[] teacherData={tellerCash.getTellerCashTellerName(),tellerCash.getTellerCashItemName(), String.valueOf(tellerCash.getTellerCashAmount())};
-        //openDetailActivity(teacherData);
+        if(tellerCash !=null){
+            try {
+                String[] teacherData={tellerCash.getTellerCashTellerName(),tellerCash.getTellerCashItemName(), String.valueOf(tellerCash.getTellerCashAmount())};
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     @Override
     public void onDeleteItemClick(int position) {
         TellerCash selectedItem= tellerCashList.get(position);
-        final String selectedKey = String.valueOf(selectedItem.getTellerCashID());
+        TellerCash tellerCash= tellerCashList.get(position);
+        if(tellerCash !=null){
+            try {
+                final String selectedKey = String.valueOf(selectedItem.getTellerCashID());
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
 
     }
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
 
     public void getBranchTellerCash(View view) {
     }

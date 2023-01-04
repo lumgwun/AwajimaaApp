@@ -23,7 +23,7 @@ public class ExchangeRates {
         ApiQuery api= new ApiQuery();
 
         //API PARAMETERS
-        api.putParams("SECKEY", OurConfig.SKYLIGHT_SECRET_KEY);
+        api.putParams("SECKEY", OurConfig.AWAJIMA_PAYSTACK_SECRET_KEY);
         api.putParams("origin_currency", this.getOrigin_currency());
         api.putParams("destination_currency", this.getDestination_currency());
         api.putParams("amount", this.getAmount());

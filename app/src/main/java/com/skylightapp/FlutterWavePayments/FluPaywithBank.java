@@ -32,7 +32,7 @@ import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Interfaces.PaymentResultListener;
@@ -65,7 +65,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_TYPE;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_TYPE;
 import static com.skylightapp.FlutterWavePayments.OTPFragment.EXTRA_OTP;
 import static com.skylightapp.FlutterWavePayments.OTPFragment.IS_SAVED_CARD_CHARGE;
 import static com.skylightapp.FlutterWavePayments.VerificationActivity.ACTIVITY_MOTIVE;
@@ -80,7 +80,7 @@ public class FluPaywithBank extends AppCompatActivity implements PaymentResultLi
     private Account account;
 
     private Profile userProfile;
-    SkyLightPackage skyLightPackage;
+    MarketBizPackage marketBizPackage;
     DBHelper dbHelper;
     SecureRandom random;
     long transactionID;
@@ -210,7 +210,7 @@ public class FluPaywithBank extends AppCompatActivity implements PaymentResultLi
             account = totalBundle.getParcelable("Account");
             customer = totalBundle.getParcelable("Customer");
             uPhoneNumber=customer.getCusPhoneNumber();
-            skyLightPackage = totalBundle.getParcelable("Package");
+            marketBizPackage = totalBundle.getParcelable("Package");
             transaction = totalBundle.getParcelable("Transaction");
             customerDailyReport = totalBundle.getParcelable("Savings");
             reportID = Long.parseLong(totalBundle.getString("Report ID"));
@@ -605,7 +605,7 @@ public class FluPaywithBank extends AppCompatActivity implements PaymentResultLi
                     account = totalBundle.getParcelable("Account");
                     customer = totalBundle.getParcelable("Customer");
                     uPhoneNumber=customer.getCusPhoneNumber();
-                    skyLightPackage = totalBundle.getParcelable("Package");
+                    marketBizPackage = totalBundle.getParcelable("Package");
                     transaction = totalBundle.getParcelable("Transaction");
                     customerDailyReport = totalBundle.getParcelable("Savings");
                     reportID = Long.parseLong(totalBundle.getString("Report ID"));
@@ -691,7 +691,7 @@ public class FluPaywithBank extends AppCompatActivity implements PaymentResultLi
                         input.setContentType("application/json");
                         post.setEntity(input);
 
-                        post.setHeader("Authorization", OurConfig.SKYLIGHT_SECRET_KEY);
+                        post.setHeader("Authorization", OurConfig.AWAJIMA_PAYSTACK_SECRET_KEY);
                         //httpPost.setHeader("Accept", "application/json");
                         post.setHeader("Content-type", "application/json");
                         HttpResponse httpResponse = client.execute(post);

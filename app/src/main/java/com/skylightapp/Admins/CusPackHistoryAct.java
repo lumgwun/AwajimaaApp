@@ -26,7 +26,7 @@ import com.skylightapp.Classes.Message;
 import com.skylightapp.Classes.PaymentCode;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.StandingOrder;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.AcctDAO;
@@ -65,7 +65,7 @@ public class CusPackHistoryAct extends AppCompatActivity implements SkyLightPack
     SkyLightPackageAdapter packageAdapter;
     DBHelper dbHelper;
     private ArrayList<CustomerDailyReport> customerDailyReports3;
-    private ArrayList<SkyLightPackage> skyLightPackages;
+    private ArrayList<MarketBizPackage> marketBizPackages;
     private ArrayList<Account> accounts4;
     private ArrayList<Transaction> transactions2;
     private ArrayList<StandingOrder> standingOrders;
@@ -81,7 +81,7 @@ public class CusPackHistoryAct extends AppCompatActivity implements SkyLightPack
     private LoanDAO loanDAO;
     private AcctDAO acctDAO;
     private CodeDAO codeDAO;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     SharedPreferences sharedpreferences;
 
 
@@ -133,7 +133,7 @@ public class CusPackHistoryAct extends AppCompatActivity implements SkyLightPack
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             sqLiteDatabase = dbHelper.getWritableDatabase();
             standingOrders = sodao.getSOFromCurrentCustomer(customerID);
-            skyLightPackages = dbHelper.getPacksFromCurrentCustomer(customerID);
+            marketBizPackages = dbHelper.getPacksFromCurrentCustomer(customerID);
             paymentCodeArrayList = codeDAO.getSavingsCodesCustomer(customerID);
             messages = messageDAO.getMessagesForCurrentCustomer(customerID);
             transactions2 = tranXDAO.getAllTransactionCustomer(customerID);
@@ -162,7 +162,7 @@ public class CusPackHistoryAct extends AppCompatActivity implements SkyLightPack
                     = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
             recyclerPackages.setLayoutManager(layoutManager1);
-            packageAdapter = new SkyLightPackageAdapter(CusPackHistoryAct.this,skyLightPackages);
+            packageAdapter = new SkyLightPackageAdapter(CusPackHistoryAct.this, marketBizPackages);
             recyclerPackages.setAdapter(packageAdapter);
             DividerItemDecoration dividerItemDecoration1 = new DividerItemDecoration(recyclerPackages.getContext(),
                     layoutManager.getOrientation());
@@ -263,7 +263,7 @@ public class CusPackHistoryAct extends AppCompatActivity implements SkyLightPack
     }
 
     @Override
-    public void onItemClick(SkyLightPackage lightPackage) {
+    public void onItemClick(MarketBizPackage lightPackage) {
 
 
     }

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rect_their5"
+        android:gravity="center"
+        android:text="select payment"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/payment_Cash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:background="@null"
+            android:src="@drawable/shape_layer_3" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/payment_Credit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/rect_their44" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llPayment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible" >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/add_Payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:background="@null"
+            android:drawableLeft="@drawable/ic_add_business"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="multiple cards"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/red_brown_dark" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/payment_Tittle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:gravity="center_vertical"
+            android:text="your cards"
+            android:textColor="@color/red_brown_dark"
+            android:textStyle="bold"
+            android:visibility="visible" />
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@drawable/rect6e"
+            android:visibility="visible" >
+        </View>
+
+        <LinearLayout
+            android:id="@+id/paymentList"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:visibility="visible" >
+
+            <ListView
+                android:id="@+id/listPayment"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:layout_weight="1" >
+            </ListView>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvCardNote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="5dp"
+                android:gravity="center_vertical"
+                android:text="card selection note"
+                android:textColor="@color/red_brown_dark"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/ivEmptyV"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="No Items"
+            android:background="@null"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</LinearLayout>

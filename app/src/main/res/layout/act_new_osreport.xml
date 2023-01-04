@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator1"
+    android:orientation="vertical"
+    android:background="@drawable/rect_their_message"
+    android:layout_height="match_parent"
+    tools:context="com.skylightapp.MapAndLoc.NewOSReportAct">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/line12"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/layoutSign"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/where_spillage_you"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="20dp"
+                android:visibility="gone"
+                android:text="Here:"
+                android:focusable="true"
+                android:drawableStart="@drawable/add_loc_"
+                android:textStyle="bold"
+                android:textColorHint="@color/black"
+                android:textSize="15sp"
+                android:layout_gravity="center_vertical|start"
+                android:gravity="center_vertical|start"
+                android:clickable="false" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/you_loc22"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="20dp"
+                android:visibility="gone"
+                android:text="Where you are:"
+                android:focusable="true"
+                android:textStyle="bold"
+                android:textColorHint="@color/black"
+                android:textSize="15sp"
+                android:layout_gravity="center_vertical|start"
+                android:gravity="center_vertical|start"
+                android:clickable="false" />
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/gOfC"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:focusable="false"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:background="@null"
+                    android:text="Select the State of Spillage" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/os_state"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:paddingLeft="10dp"
+                        android:background="@drawable/rect6h"
+                        style="@style/Widget.AppCompat.Spinner.DropDown"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:entries="@array/spillage_states"
+                        android:padding="30dp"
+                        android:textSize="20sp"
+                        android:layout_gravity="center_vertical|start"
+                        android:gravity="center_vertical|start"
+                        android:clickable="false" />
+
+                </androidx.cardview.widget.CardView>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/gOLGA"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:focusable="false"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:background="@null"
+                    android:text="Select the LGA" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/os_LGA"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:paddingLeft="10dp"
+                        android:hint="LGA"
+                        android:background="@drawable/rect6h"
+                        style="@style/Widget.AppCompat.Spinner.DropDown"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:padding="30dp"
+                        android:textSize="20sp"
+                        android:layout_gravity="center_vertical|start"
+                        android:gravity="center_vertical|start"
+                        android:clickable="false" />
+
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:id="@+id/card_otherLGA"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/enter_report_lga"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:focusable="true"
+                        android:inputType="textMultiLine"
+                        android:textSize="15sp"
+                        android:drawableEnd="@drawable/ic_icon_foreground"
+                        android:background="@drawable/rect6h"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:hint="Enter other LGA"
+                        android:textStyle="bold"
+                        android:textColorHint="@color/black"
+                        android:clickable="false"
+                        android:layout_gravity="center_horizontal|center"
+                        android:gravity="center_horizontal|center" />
+
+                </androidx.cardview.widget.CardView>
+
+                <fragment android:id="@+id/autocomplete_fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:layout_width="match_parent"
+                        android:padding="20dp"
+                        android:onClick="getPlaceOnMap"
+                        android:id="@+id/place_onMap"
+                        android:text="Select Place on Map"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rect6g_a"
+                        android:layout_height="wrap_content"/>
+
+                </androidx.cardview.widget.CardView>
+
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/g_osc"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:focusable="false"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:background="@null"
+                    android:text="Select the Oil Company" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/os_oilCom"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:paddingLeft="10dp"
+                        android:hint="Facility Owner"
+                        android:background="@drawable/rect6h"
+                        style="@style/Widget.AppCompat.Spinner.DropDown"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:entries="@array/oil_companies"
+                        android:padding="30dp"
+                        android:textSize="20sp"
+                        android:layout_gravity="center_vertical|start"
+                        android:gravity="center_vertical|start"
+                        android:clickable="false" />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/report_os_dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textSize="15sp"
+                        android:layout_marginStart="3dp"
+                        android:onClick="reportDatePicker"
+                        android:layout_marginEnd="3dp"
+                        android:focusable="false"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center_vertical|left"
+                        android:gravity="center_vertical|left"
+                        android:background="@drawable/rect6h"
+                        android:text="Click to Select Date of Spillage" />
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/os_observation"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:focusable="true"
+                        android:inputType="textMultiLine"
+                        android:textSize="15sp"
+                        android:drawableEnd="@drawable/ic_icon_foreground"
+                        android:background="@drawable/rect6h"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:hint="Write Your Observation"
+                        android:textStyle="bold"
+                        android:textColorHint="@color/black"
+                        android:clickable="false"
+                        android:layout_gravity="center_horizontal|center"
+                        android:gravity="center_horizontal|center" />
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/stateOfC"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:background="@null"
+                    android:text="Will you be available to be reached?" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/reporter_avail"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:paddingLeft="10dp"
+                        android:entries="@array/yesOrNo"
+                        android:padding="30dp"
+                        android:background="@drawable/rect6h"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:textSize="20sp"
+                        android:layout_gravity="center_vertical|start"
+                        android:gravity="center_vertical|start"
+                        android:clickable="false" />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:text="Send Report"
+                    android:textSize="20sp"
+                    android:padding="20dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:textStyle="bold"
+                    android:onClick="sendReportToTeam"
+                    android:id="@+id/send_os_report"
+                    android:textColor="@android:color/holo_green_dark"
+                    android:background="@drawable/rect6g"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:text="Powered By Lumgwun"
+            android:textSize="15sp"
+            android:padding="20dp"
+            android:background="@null"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:textStyle="italic"
+            android:id="@+id/poweredBy"
+            android:textColor="@android:color/holo_red_dark"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:onClick="ourPrivacyPolicy"
+            android:id="@+id/pp_layout"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="3dp"
+                android:fontFamily="@font/gilroy_regular"
+                android:text="@string/i_agree_to"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gilroy_semi_bold"
+                android:text="@string/terms_of_use"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="3dp"
+                android:fontFamily="@font/gilroy_regular"
+                android:text="@string/and"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/os_pp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gilroy_semi_bold"
+                android:text="@string/privacy_policy"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</ScrollView>

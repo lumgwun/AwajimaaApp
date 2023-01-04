@@ -8,6 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
@@ -31,6 +32,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private LinearLayout dotsLayout;
     private TextView[] dots;
     private int[] layouts;
+    private AppCompatTextView tv2_We;
     private Button btnSkip, btnNext,buttonSwitchNext;
     private PrefManager prefManager;
     private AppCompatTextView txtWel2;
@@ -49,6 +51,7 @@ public class WelcomeActivity extends AppCompatActivity {
             launchHomeScreen();
             finish();
         }
+        getGoogleVersionNo();
 
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
@@ -56,6 +59,7 @@ public class WelcomeActivity extends AppCompatActivity {
         btnSkip = (Button) findViewById(R.id.btn_skip);
         btnNext = (Button) findViewById(R.id.btn_next);
         txtWel2 = findViewById(R.id.tv2_Welcome);
+        //tv2_We = findViewById(R.id.tv2_We);
 
 
         Animation in = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
@@ -122,6 +126,16 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void getGoogleVersionNo() {
+       /* tv2_We = findViewById(R.id.tv2_We);
+        Resources res = getResources();
+        int gpsVersion = res.getInteger(R.integer.google_play_services_version);
+        if(gpsVersion>0){
+            tv2_We.setText("Core Version No:"+gpsVersion);
+        }*/
+    }
+
     private void addBottomDots(int currentPage) {
         dots = new TextView[layouts.length];
 
@@ -225,4 +239,28 @@ public class WelcomeActivity extends AppCompatActivity {
         }
 
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
 }

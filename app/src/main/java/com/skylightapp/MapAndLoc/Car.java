@@ -13,6 +13,11 @@ public class Car {
         this.costForKm = costForKm;
     }
 
+    public Car() {
+        super();
+
+    }
+
 
     public int getIconId() {
         return iconId;
@@ -45,4 +50,6 @@ public class Car {
     public void setCostForKm(Double costForKm) {
         this.costForKm = costForKm;
     }
+
+
 }

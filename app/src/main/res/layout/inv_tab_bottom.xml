@@ -27,19 +27,20 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="false"
                 android:layout_gravity="center_horizontal"
-                android:background="#fff"
+                android:background="@drawable/event_rect"
                 android:layout_above="@id/inv_Coord"
                 android:fadingEdge="horizontal"
+                android:padding="20dp"
                 app:cnb_orientationMode="horizontal"
                 app:cnb_addBottomInset="false"
-                app:cnb_addLeftInset="true"
+                app:cnb_addLeftInset="false"
                 app:cnb_addRightInset="false"
                 app:cnb_addTopInset="false"
                 app:cnb_unselectedColor="@color/white_good"
-                app:cnb_badgeColor="@color/dark_and_red"
+                app:cnb_badgeColor="@color/white_good"
                 app:cnb_radius="8dp"
                 app:cnb_iconSize="24dp"
-                app:cnb_menuResource="@menu/m_admin_bottom" />
+                app:cnb_menuResource="@menu/inv_bottom" />
 
         </com.google.android.material.bottomappbar.BottomAppBar>
         <com.google.android.material.floatingactionbutton.FloatingActionButton

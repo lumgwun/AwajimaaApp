@@ -12,7 +12,7 @@
     android:layout_marginBottom="5dp"
     android:background="@drawable/event_circle"
     android:layout_height="wrap_content"
-    tools:context="com.skylightapp.Bookings.BookingsMainAct">
+    tools:context="com.skylightapp.Bookings.BookingsMainTab">
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:background="@drawable/shape_layer_3b"

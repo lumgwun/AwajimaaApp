@@ -9,7 +9,7 @@
     android:paddingBottom="20dp"
     android:paddingTop="20dp"
     android:layout_marginBottom="5dp"
-    android:background="@drawable/rect6g"
+    android:background="@drawable/rect6g_a"
     android:layout_height="wrap_content"
     tools:context="com.skylightapp.Markets.MarketTab">
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -28,7 +28,7 @@
                 android:layout_height="50dp"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
-                android:text="Nirsal Bank:"
+                android:text="Awajima Processing Bank:"
                 android:layout_marginTop="20dp"
                 android:textStyle="bold"
                 android:id="@+id/bank_Acct_"

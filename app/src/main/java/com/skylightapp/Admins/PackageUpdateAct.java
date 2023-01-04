@@ -29,7 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.MapAndLoc.UserLocatorAct;
 import com.skylightapp.PackageDetailsActivity;
@@ -56,7 +56,7 @@ public class PackageUpdateAct extends AppCompatActivity {
     AppCompatTextView txtName,txtType,txtPackID;
     String finalStatus,finalEndDate;
     DatePickerDialog picker;
-    SkyLightPackage skyLightPackage;
+    MarketBizPackage marketBizPackage;
     private SharedPreferences userPreferences;
     PrefManager prefManager;
     private Gson gson,gson1;
@@ -102,12 +102,12 @@ public class PackageUpdateAct extends AppCompatActivity {
         edtEndDate = findViewById(R.id.updateEndDate);
         edtBalance = findViewById(R.id.updateBalance);
         btnSubmit = findViewById(R.id.recyclerViewCustomSO);
-        skyLightPackage= new SkyLightPackage();
+        marketBizPackage = new MarketBizPackage();
         bundle=getIntent().getExtras();
         dbHelper=new DBHelper(this);
         if(bundle !=null){
             location= (LatLng) bundle.getParcelable(String.valueOf(location));
-            skyLightPackage=bundle.getParcelable("SkyLightPackage");
+            marketBizPackage =bundle.getParcelable("MarketBizPackage");
             duration=bundle.getInt(String.valueOf(duration));
             remAmount=bundle.getDouble(String.valueOf(remAmount));
             savedAmount=bundle.getDouble(String.valueOf(savedAmount));
@@ -216,9 +216,9 @@ public class PackageUpdateAct extends AppCompatActivity {
             builder.create().show();
 
         }
-        if(skyLightPackage !=null){
-            packageId=skyLightPackage.getPackID();
-            customerID=skyLightPackage.getPackageCustomer().getCusUID();
+        if(marketBizPackage !=null){
+            packageId= marketBizPackage.getPackID();
+            customerID= marketBizPackage.getPackageCustomer().getCusUID();
         }
     }
     public void deletePackage(){

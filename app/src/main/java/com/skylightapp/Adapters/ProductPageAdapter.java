@@ -1,5 +1,6 @@
 package com.skylightapp.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -24,7 +25,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.skylightapp.Classes.ProductPageModel;
-import com.skylightapp.Classes.SkyLightPackModel;
+import com.skylightapp.MarketClasses.MarketBizPackModel;
 import com.skylightapp.Classes.SliderModel;
 import com.skylightapp.Classes.WishlistModel;
 import com.skylightapp.Markets.ProductDetailsAct;
@@ -88,7 +89,7 @@ public class ProductPageAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, @SuppressLint("RecyclerView") int position) {
         switch (homePageModelList.get(position).getType()) {
             case ProductPageModel.BANNER_SLIDER:
                 List<SliderModel> sliderModelList = homePageModelList.get(position).getSliderModelList();
@@ -102,14 +103,14 @@ public class ProductPageAdapter extends RecyclerView.Adapter {
             case ProductPageModel.HORIZONTAL_PRODUCT_VIEW:
                 String layoutColor = homePageModelList.get(position).getBackgroundColor();
                 String horizontalLayouttitle = homePageModelList.get(position).getTitle();
-                List<SkyLightPackModel> horizontalProductScrollModelList = homePageModelList.get(position).getHorizontalProductScrollModelList();
+                List<MarketBizPackModel> horizontalProductScrollModelList = homePageModelList.get(position).getHorizontalProductScrollModelList();
                 List<WishlistModel> viewAllProductList = homePageModelList.get(position).getViewAllProductList();
                 ((HorizontalProductViewHolder) viewHolder).setHorizontalProductLayout(horizontalProductScrollModelList, horizontalLayouttitle,layoutColor,viewAllProductList);
                 break;
             case ProductPageModel.GRID_PRODUCT_VIEW:
                 String gridlayouttitle = homePageModelList.get(position).getTitle();
                 String gridLayoutcolor = homePageModelList.get(position).getBackgroundColor();
-                List<SkyLightPackModel> gridProductScrollModelList = homePageModelList.get(position).getHorizontalProductScrollModelList();
+                List<MarketBizPackModel> gridProductScrollModelList = homePageModelList.get(position).getHorizontalProductScrollModelList();
                 ((GridProductViewHolder) viewHolder).setGridProductLayout(gridProductScrollModelList,gridlayouttitle,gridLayoutcolor);
                 break;
 
@@ -188,6 +189,7 @@ public class ProductPageAdapter extends RecyclerView.Adapter {
             startBannerSlideShow(arrangedList);
 
             bannerSliderViewPager.setOnTouchListener(new View.OnTouchListener() {
+                @SuppressLint("ClickableViewAccessibility")
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     pageLooper(arrangedList);
@@ -274,7 +276,7 @@ public class ProductPageAdapter extends RecyclerView.Adapter {
 
         }
 
-        private void setHorizontalProductLayout(List<SkyLightPackModel> horizontalProductScrollModelList, final String title, String color, final List<WishlistModel> viewAllProductList) {
+        private void setHorizontalProductLayout(List<MarketBizPackModel> horizontalProductScrollModelList, final String title, String color, final List<WishlistModel> viewAllProductList) {
             container.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(color)));
             horizontalLayoutTitle.setText(title);
             if (horizontalProductScrollModelList.size() > 8) {
@@ -316,7 +318,7 @@ public class ProductPageAdapter extends RecyclerView.Adapter {
             gridProductLayout =itemView.findViewById(R.id.grid_layout);
 
         }
-        private void setGridProductLayout(final List<SkyLightPackModel> horizontalProductScrollModelList, final String title, String color){
+        private void setGridProductLayout(final List<MarketBizPackModel> horizontalProductScrollModelList, final String title, String color){
             container.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(color)));
             gridLayoutTitle.setText(title);
             for(int x = 0;x<4;x++) {
@@ -326,10 +328,10 @@ public class ProductPageAdapter extends RecyclerView.Adapter {
                 TextView productDescription = gridProductLayout.getChildAt(x).findViewById(R.id.h_s_product_description);
                 TextView productPrice = gridProductLayout.getChildAt(x).findViewById(R.id.h_s_product_price);
                 //productImage.setImageResource(horizontalProductScrollModelList.get(x).getProductImage());
-                Glide.with(itemView.getContext()).load(horizontalProductScrollModelList.get(x).getpMItemImage()).apply(new RequestOptions().placeholder(R.drawable.water_dispenser)).into(productImage);
+                Glide.with(itemView.getContext()).load(horizontalProductScrollModelList.get(x).getpMItemImage()).apply(new RequestOptions().placeholder(R.drawable.laptop)).into(productImage);
                 productTitle.setText(horizontalProductScrollModelList.get(x).getpMItemName());
                 productDescription.setText(horizontalProductScrollModelList.get(x).getpMdesc());
-                productPrice.setText("Rs." + horizontalProductScrollModelList.get(x).getpMPrice() + "/-");
+                productPrice.setText("NGN" + horizontalProductScrollModelList.get(x).getpMPrice() + "/-");
                 gridProductLayout.getChildAt(x).setBackgroundColor(Color.parseColor("#ffffff"));
                 if (!title.equals("")) {
                     gridProductLayout.getChildAt(x).setOnClickListener(new View.OnClickListener() {

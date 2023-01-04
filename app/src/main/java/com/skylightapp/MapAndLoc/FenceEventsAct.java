@@ -13,25 +13,22 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.skylightapp.Accountant.ElelenwoTranx;
-import com.skylightapp.Adapters.TranxSimpleAdapter;
 import com.skylightapp.Classes.AppController;
 import com.skylightapp.Classes.AwajimaLog;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.Database.EmergReportDAO;
 import com.skylightapp.Database.FenceEventDAO;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
 
-public class FenceEventsAct extends AppCompatActivity implements  FenceEventsAdapter.OnFenceEventClickListener {
+public class FenceEventsAct extends AppCompatActivity implements  FenceAd.OnFenceEventClickListener {
     private static final String CLASSTAG =
             " " + FenceEventsAct.class.getSimpleName () + " ";
 
     private RecyclerView recycler,recyclerReal;
     private ArrayList<FenceEvent> fenceEventArrayList;
-    private FenceAdapterDummy adapter;
-    private FenceEventsAdapter fenceEventsAdapter;
+    private FenceEventAdapter adapter;
+    private FenceAd fenceAd;
     private FenceEventDAO fenceEventDAO;
     private DBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
@@ -73,22 +70,30 @@ public class FenceEventsAct extends AppCompatActivity implements  FenceEventsAda
         if(emergencyReport !=null){
             emergReportID=emergencyReport.getEmergReportID();
         }
-        if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            fenceEventArrayList=fenceEventDAO.getFenceEventsForEmerg(emergReportID);
+        if (fenceEventDAO != null) {
+
+            try {
+                if(emergReportID>0){
+                    fenceEventArrayList=fenceEventDAO.getFenceEventsForEmerg(emergReportID);
+                }
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
 
 
         }
-         adapter = new FenceAdapterDummy (app);
+
+         adapter = new FenceEventAdapter(app);
         LinearLayoutManager layoutMgr = new LinearLayoutManager (this);
         recycler.setLayoutManager (layoutMgr);
         recycler.setAdapter (adapter);
         recycler.invalidate ();
 
-        fenceEventsAdapter = new FenceEventsAdapter(FenceEventsAct.this,fenceEventArrayList);
+        fenceAd = new FenceAd(FenceEventsAct.this,fenceEventArrayList);
         LinearLayoutManager layout = new LinearLayoutManager (this);
         recyclerReal.setLayoutManager (layout);
-        recyclerReal.setAdapter (fenceEventsAdapter);
+        recyclerReal.setAdapter (fenceAd);
         recyclerReal.setItemAnimator(new DefaultItemAnimator());
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(recyclerReal);
@@ -110,14 +115,14 @@ public class FenceEventsAct extends AppCompatActivity implements  FenceEventsAda
         super.onResume ();
         Log.v (AwajimaLog.LOGTAG, CLASSTAG + "onResume called");
         AppController app = (AppController) getApplication ();
-        FenceEventsAdapter adapter = new FenceEventsAdapter (app);
+        FenceAd adapter = new FenceAd(app);
         recycler.setAdapter (adapter);
         recycler.invalidate ();
 
-        fenceEventsAdapter = new FenceEventsAdapter(FenceEventsAct.this,fenceEventArrayList);
+        fenceAd = new FenceAd(FenceEventsAct.this,fenceEventArrayList);
         LinearLayoutManager layout = new LinearLayoutManager (this);
         recyclerReal.setLayoutManager (layout);
-        recyclerReal.setAdapter (fenceEventsAdapter);
+        recyclerReal.setAdapter (fenceAd);
         recyclerReal.invalidate ();
     }
 

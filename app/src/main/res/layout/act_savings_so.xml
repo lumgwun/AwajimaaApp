@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/rect_their_message"
+    android:theme="@style/NoActionBar"
+    android:layout_height="match_parent"
+    tools:context="com.skylightapp.Customers.SavingsSOAct">
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        app:cardCornerRadius="10dp"
+        android:id="@+id/cd_material"
+        app:strokeColor="@color/color_green_qb"
+        android:elevation="90dp"
+        android:layout_marginBottom="5dp"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            android:id="@+id/txtResult4"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@android:color/holo_red_dark"
+            android:text="Savings with Automatic Deductions"
+            android:layout_height="wrap_content"/>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:background="@color/white_good"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="90dp"
+                android:layout_margin="5dp"
+                app:cardForegroundColor="@color/cardview_shadow_end_color"
+                app:cardBackgroundColor="@color/cardview_light_background"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:textAlignment="center"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center_horizontal"
+                    android:padding="10dp"
+                    android:drawableTop="@drawable/timeline1"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@android:color/black"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:text="Note that the plans are for each week or Month "
+                    android:layout_height="wrap_content"/>
+
+
+            </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="90dp"
+                android:padding="20dp"
+                android:layout_margin="5dp"
+                app:cardForegroundColor="@color/cardview_shadow_end_color"
+                app:cardBackgroundColor="@color/cardview_light_background"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/ic_icon2"
+                    android:text="Also Note that the Awajima App would take 0.5% as commission"
+                    android:textColor="@color/gradient"
+                    android:textSize="20sp"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:layout_marginTop="10dp"
+                    android:clickable="true"
+                    android:padding="20dp"
+                    android:focusableInTouchMode="true"
+                    android:singleLine="true"
+                    android:fontFamily="@font/gilroy_semi_bold"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:scrollHorizontally="true">
+                    <requestFocus />
+                </androidx.appcompat.widget.AppCompatTextView>
+
+            </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="90dp"
+                android:layout_marginBottom="16dp"
+                android:layout_margin="5dp"
+                app:cardForegroundColor="@color/cardview_shadow_end_color"
+                app:cardBackgroundColor="@color/cardview_light_background"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:drawableTop="@drawable/calendar_foreground"
+                    android:textAlignment="center"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@android:color/black"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:text="Choose the Frequency of plan"
+                    android:layout_height="wrap_content"/>
+
+            </com.google.android.material.card.MaterialCardView>
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:layout_width="match_parent"
+                android:entries="@array/savings_scheme"
+                android:padding="20dp"
+                android:id="@+id/freq_Spinner"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/rect6h"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:textAlignment="center"
+                    android:padding="10dp"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:text="Choose the plan"
+                    android:layout_height="wrap_content"/>
+
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:padding="20dp"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/all_plans"
+                    android:background="@drawable/shape_layer_3b"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:entries="@array/all_savings_plans"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:padding="20dp"
+                android:id="@+id/proceed_Button"
+                android:background="@drawable/shape_layer_3b"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:text="Proceed to Payment"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </ScrollView>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

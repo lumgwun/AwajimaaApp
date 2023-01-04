@@ -23,10 +23,10 @@
                 android:layout_marginEnd="10dp"
                 android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal"
-                app:title="My Customer's Packages "
+                app:title="My Fundings "
                 android:id="@+id/My_toolbar"
                 android:textAlignment="center"
-                android:layout_marginStart="45dp"
+                android:layout_marginStart="85dp"
                 app:titleTextColor="@color/colorPrimaryDark"
                 android:layout_height="90dp"/>
         </com.google.android.material.appbar.AppBarLayout>

@@ -1,6 +1,7 @@
 package com.skylightapp;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatEditText;
@@ -22,6 +23,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -34,6 +36,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import com.google.gson.Gson;
 import com.melnykov.fab.FloatingActionButton;
+import com.quickblox.auth.session.QBSettings;
+import com.quickblox.chat.QBChatService;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.QBEntityCallbackImpl;
 import com.quickblox.core.exception.QBResponseException;
@@ -70,6 +74,10 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
+import static com.skylightapp.BuildConfig.APPLICATION_ID;
+import static com.skylightapp.BuildConfig.QUICKBLOX_ACCT_KEY;
+import static com.skylightapp.BuildConfig.QUICKBLOX_AUTH_KEY;
+import static com.skylightapp.BuildConfig.QUICKBLOX_SECRET_KEY;
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Profile.PASSWORD;
 import static com.skylightapp.Classes.Profile.PICTURE_URI;
@@ -92,7 +100,7 @@ import static com.skylightapp.Database.DBHelper.DATABASE_NAME;
 import static com.skylightapp.Database.DBHelper.DB_PATH;
 
 @SuppressWarnings("deprecation")
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends AppCompatActivity {
     public static final String LOGIN_ID_EXTRA_KEY = "LoginActivity.LOGIN_ID_EXTRA_KEY";
     private Bundle bundle;
     private String username;
@@ -113,15 +121,15 @@ public class LoginActivity extends BaseActivity {
     private String json,json1;
     DBHelper dbHelper;
     private SharedPreferences userPreferences;
-    Customer skyLightCustomer;
+    Customer customer;
 
     Account account;
     private String userID;
     private int customerID1,profileID2,accountNumber, profileID;
     public static SharedPreferences savedInfo;
     public static SharedPreferences.Editor savedInfoWriter;
-    public static final String ACCOUNT_SID = System.getenv("ACb6e4c829a5792a4b744a3e6bd1cf2b4e");
-    public static final String AUTH_TOKEN = System.getenv("0d5cbd54456dd0764786db0c37212578");
+    public static final String ACCOUNT_SID = System.getenv("ff");
+    public static final String AUTH_TOKEN = System.getenv("ff");
     ArrayList<Profile> profiles;
     ArrayList<Customer> customers;
     RadioGroup userTypes, radioGroup1;
@@ -137,6 +145,7 @@ public class LoginActivity extends BaseActivity {
     AppCompatRadioButton checkBoxteller,rbResponseTeam,checkBoxLogistice,checkBoxArtisian,checkBoxRealtor;
     RadioGroup radioGroup ,radioGroup2;
     FloatingActionButton FAb_Help;
+    CusDAO cusDAO;
     private Uri picture;
 
     String userName ,officeBranch,gender,state,address,dob,dateJoined;
@@ -158,6 +167,7 @@ public class LoginActivity extends BaseActivity {
     String SharedPrefState;
     private GoogleApiClient mGoogleApiClient;
     ProgressDialog progressDialog;
+    private boolean isLoggedIn;
 
     //private CallbackManager mCallbackManager;
     private String profilePhotoUrlLarge;
@@ -174,6 +184,7 @@ public class LoginActivity extends BaseActivity {
     private Uri mInvitationUrl;
     private ProfDAO profDAO;
     private PrefManager prefManager;
+    ProfDAO profileDao;
 
     private static final String TAG = "EmailPassword";
     private static final String PREF_NAME = "awajima";
@@ -196,14 +207,15 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        setTitle("Login Access");
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setTitle("Awajima Login Access");
         random= new Random();
         SQLiteDataBaseBuild();
         prefManager= new PrefManager(this);
         profDAO= new ProfDAO(this);
         standingOrderAcct = new StandingOrderAcct();
         customer1 = new Customer();
-        skyLightCustomer= new Customer();
+        customer = new Customer();
         gson = new Gson();
         gson1 = new Gson();
         qbUser= new QBUser();
@@ -214,6 +226,8 @@ public class LoginActivity extends BaseActivity {
         userProfile = gson.fromJson(json, Profile.class);
         json1 = userPreferences.getString("LastQBUserUsed", "");
         qbUser = gson1.fromJson(json1, QBUser.class);
+        dbHelper = new DBHelper(this);
+
         if(userProfile !=null){
             sharedPrefUserMachine=userPreferences.getString("Machine","");
             sharedPrefSurName=userPreferences.getString("PROFILE_SURNAME","");
@@ -223,8 +237,8 @@ public class LoginActivity extends BaseActivity {
         }
         refLink = "https://skylightbizapp.page.link/?invitedby=" + sharedPrefProfileID;
 
-        dbHelper = new DBHelper(this);
-        sqLiteDatabase = dbHelper.getWritableDatabase();
+
+        //sqLiteDatabase = dbHelper.getWritableDatabase();
 
         /*FirebaseDynamicLinks.getInstance().createDynamicLink()
                 .setLink(Uri.parse(refLink))
@@ -246,13 +260,28 @@ public class LoginActivity extends BaseActivity {
                         // ...
                     }
                 });*/
-        if(dbHelper !=null){
-            //dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            prefManager.saveAppReferrer(mInvitationUrl);
+        if (prefManager != null) {
+
+            try {
+                prefManager.saveAppReferrer(mInvitationUrl);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
 
         }
-        profDAO.addProfRefLink(sharedPrefProfileID, String.valueOf(mInvitationUrl));
+
+        if (profDAO != null) {
+
+            try {
+                profDAO.addProfRefLink(sharedPrefProfileID, String.valueOf(mInvitationUrl));
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
 
 
         profiles=new ArrayList<Profile>();
@@ -365,32 +394,60 @@ public class LoginActivity extends BaseActivity {
         SharedPrefsHelperV sharedPrefsHelper = SharedPrefsHelperV.getInstance();
         sharedPrefsHelper.saveQbUser(qbUser);
     }
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
+
 
     private void signInCreatedUser(final QBUser qbUser) {
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = userPreferences.edit();
+        final QBChatService chatService = QBChatService.getInstance();
+
+        if(chatService !=null){
+            isLoggedIn = chatService.isLoggedIn();
+
+        }
+
+        if (!isLoggedIn) {
+            return;
+
+        }else {
+            Log.d(TAG, "SignIn Successful");
+            String lastqbUserUsed = gson.toJson(qbUser);
+            editor.putString("lastQBUserUsed", lastqbUserUsed);
+            editor.apply();
+        }
+
+
+
         Log.d(TAG, "SignIn Started");
-        requestExecutor.signInUser(qbUser, new QBEntityCallbackImpl<QBUser>() {
+        /*QBChatService.getInstance().login(qbUser, new QBEntityCallback() {
             @Override
-            public void onSuccess(QBUser user, Bundle params) {
+            public void onSuccess(Void aVoid, Bundle bundle) {
                 Log.d(TAG, "SignIn Successful");
-                sharedPrefsHelper.saveQbUser(qbUser);
-                updateUserOnServer(qbUser);
+                String lastqbUserUsed = gson.toJson(qbUser);
+                editor.putString("lastQBUserUsed", lastqbUserUsed);
+                editor.commit();
+                editor.apply();
+
             }
 
             @Override
-            public void onError(QBResponseException responseException) {
-                Log.d(TAG, "Error SignIn" + responseException.getMessage());
+            public void onError(QBResponseException exception) {
+                Log.d(TAG, "Error SignIn" + exception.getMessage());
                 hideProgressDialog();
                 ToastUtils.longToast(R.string.sign_in_error);
+
             }
-        });
+        });*/
+
     }
 
     private void updateUserOnServer(QBUser user) {
+
         user.setPassword(null);
+        QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
+        QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
         QBUsers.updateUser(user).performAsync(new QBEntityCallback<QBUser>() {
             @Override
             public void onSuccess(QBUser qbUser, Bundle bundle) {
@@ -434,12 +491,6 @@ public class LoginActivity extends BaseActivity {
 
 
 
-
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
 
     private void hideProgressDialog() {
         if (progressDialog != null && progressDialog.isShowing()) {
@@ -523,16 +574,37 @@ public class LoginActivity extends BaseActivity {
         progressDialog.show();
         dbHelper= new DBHelper(LoginActivity.this);
         boolean isAdmin = true;
-        skyLightCustomer= new Customer();
+        customer = new Customer();
         gson = new Gson();
         userProfile= new Profile();
         customer1= new Customer();
         profiles=new ArrayList<Profile>();
-        ProfDAO profileDao= new ProfDAO(this);
-        CusDAO cusDAO= new CusDAO(this);
+        profileDao= new ProfDAO(this);
+        cusDAO= new CusDAO(this);
         customers=new ArrayList<Customer>();
-        profiles = profileDao.getAllProfiles();
-        customers = cusDAO.getAllCustomers11();
+        if (profileDao != null) {
+            try {
+                profiles = profileDao.getAllProfiles();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+
+
+        if (cusDAO != null) {
+            try {
+                customers = cusDAO.getAllCustomers11();
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = userPreferences.edit();
 
@@ -551,32 +623,54 @@ public class LoginActivity extends BaseActivity {
         }
 
         progressBar.setVisibility(View.GONE);
-        if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            sharedPrefRole=profileDao.getProfileRoleByUserNameAndPassword(userName,password);
+
+
+        if (profileDao != null) {
+
+            try {
+                sharedPrefRole=profileDao.getProfileRoleByUserNameAndPassword(userName,password);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if (profileDao != null) {
+
+            try {
+                profileID=profileDao.getProfileIDByUserNameAndPassword(userName,password);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+        if (profileDao != null) {
+
+            try {
+                sharedPrefUserMachine= profileDao.getProfileRoleByUserNameAndPassword(userName,password);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
 
 
         }
 
 
+        if (profileDao != null) {
 
-        if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            profileID=profileDao.getProfileIDByUserNameAndPassword(userName,password);
+            try {
+                userProfile=profileDao.getProfileFromUserNameAndPassword(userName,password);
 
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
 
-        }
-        if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            sharedPrefUserMachine= profileDao.getProfileRoleByUserNameAndPassword(userName,password);
-
-
-        }
-
-
-        if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            userProfile=profileDao.getProfileFromUserNameAndPassword(userName,password);
 
         }
 
@@ -637,7 +731,7 @@ public class LoginActivity extends BaseActivity {
         if(customer1 !=null){
             customerID1=customer1.getCusUID();
         }
-        signInCreatedUser(qbUser);
+        //signInCreatedUser(qbUser);
 
         PrefManager prefManager= new PrefManager(this);
         prefManager.saveLoginDetails(userName,password);
@@ -1657,7 +1751,7 @@ public class LoginActivity extends BaseActivity {
 
     }
     public void myanimation(EditText edtanimasi) {
-        Animation animation = AnimationUtils.loadAnimation(context, R.anim.nav_default_pop_enter_anim);
+        Animation animation = AnimationUtils.loadAnimation(context, R.anim.bounce);
         edtanimasi.setAnimation(animation);
     }
 
@@ -1708,6 +1802,30 @@ public class LoginActivity extends BaseActivity {
         }
         return "";
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
     protected void sendSMSMessage() {
         userProfile= new Profile();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);

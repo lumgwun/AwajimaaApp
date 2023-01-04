@@ -23,7 +23,7 @@ import com.skylightapp.Classes.CustomerDailyReport;
 import com.skylightapp.Classes.PaymentCode;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.StandingOrder;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.Database.AcctDAO;
@@ -58,7 +58,7 @@ public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLight
     SkyLightPackageAdapter packageAdapter;
     DBHelper dbHelper;
     private ArrayList<CustomerDailyReport> customerDailyReports3;
-    private ArrayList<SkyLightPackage> skyLightPackages;
+    private ArrayList<MarketBizPackage> marketBizPackages;
     private ArrayList<Account> accounts4;
     private ArrayList<Transaction> transactions2;
     private ArrayList<StandingOrder> standingOrders;
@@ -165,7 +165,7 @@ public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLight
                     = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
             recyclerPackages.setLayoutManager(layoutManager4);
-            skyLightPackages = dbHelper.getPackagesFromCurrentProfile(profileID);
+            marketBizPackages = dbHelper.getPackagesFromCurrentProfile(profileID);
             packageAdapter = new SkyLightPackageAdapter(ProfilePackHistoryAct.this);
             //recyclerPackages.setHasFixedSize(true);
             recyclerPackages.setAdapter(packageAdapter);
@@ -234,7 +234,7 @@ public class ProfilePackHistoryAct extends AppCompatActivity implements SkyLight
     }
 
     @Override
-    public void onItemClick(SkyLightPackage lightPackage) {
+    public void onItemClick(MarketBizPackage lightPackage) {
 
 
 

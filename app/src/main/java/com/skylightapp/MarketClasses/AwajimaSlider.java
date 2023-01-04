@@ -11,7 +11,6 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.skylightapp.Classes.SkyLightPackModel;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
@@ -19,17 +18,17 @@ import java.util.List;
 
 public class AwajimaSlider extends RecyclerView.Adapter<AwajimaSlider.SliderAdapterViewHolder> {
 
-    private List<SkyLightPackModel> mSliderItems;
+    private List<MarketBizPackModel> mSliderItems;
     private Context mContext;
     private  int layout;
 
     // Constructor
-    public AwajimaSlider(Context context, int slider_announce, ArrayList<SkyLightPackModel> sliderDataArrayList) {
+    public AwajimaSlider(Context context, int slider_announce, ArrayList<MarketBizPackModel> sliderDataArrayList) {
         this.mSliderItems = sliderDataArrayList;
         this.mContext = context;
         this.layout = slider_announce;
     }
-    public AwajimaSlider(Context context, ArrayList<SkyLightPackModel> sliderDataArrayList) {
+    public AwajimaSlider(Context context, ArrayList<MarketBizPackModel> sliderDataArrayList) {
         this.mSliderItems = sliderDataArrayList;
         this.mContext = context;
 
@@ -52,7 +51,7 @@ public class AwajimaSlider extends RecyclerView.Adapter<AwajimaSlider.SliderAdap
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void updateItems(List<SkyLightPackModel> mSliderItems) {
+    public void updateItems(List<MarketBizPackModel> mSliderItems) {
         this.mSliderItems = mSliderItems;
         notifyDataSetChanged();
     }
@@ -63,7 +62,7 @@ public class AwajimaSlider extends RecyclerView.Adapter<AwajimaSlider.SliderAdap
     @Override
     public void onBindViewHolder(SliderAdapterViewHolder viewHolder, final int position) {
 
-        final SkyLightPackModel sliderItem = mSliderItems.get(position);
+        final MarketBizPackModel sliderItem = mSliderItems.get(position);
 
         Glide.with(viewHolder.itemView)
                 .load(sliderItem.getpModeID())

@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,19 +20,22 @@ import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 import com.quickblox.users.model.QBUser;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.ConfirmationActivity;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.MarketBizDAO;
 import com.skylightapp.MarketClasses.MarketAdapter;
 import com.skylightapp.MarketClasses.MarketBizRecyAdapter;
 import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
+import com.skylightapp.SuperAdmin.Awajima;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
-public class MarketBizListAct extends AppCompatActivity {
+public class MarketBizListAct extends AppCompatActivity implements MarketBizRecyAdapter.OnItemsClickListener{
     List<MarketBusiness> marketBusinessList;
     List<MarketBusiness> myMarketarketBusinesses;
     private EditText etSearch;
@@ -43,7 +48,7 @@ public class MarketBizListAct extends AppCompatActivity {
     private int marketCount;
     private SwipyRefreshLayout allMarketRefreshLayout,myMarketRefreshLayout;
     private RecyclerView marketRecyclerView,myMarketRecyclerView;
-    private static final String PREF_NAME = "skylight";
+    private static final String PREF_NAME = "awajima";
     SharedPreferences userPreferences;
     Gson gson, gson1;
     String json, json1, nIN;
@@ -52,6 +57,7 @@ public class MarketBizListAct extends AppCompatActivity {
     private MarketBizRecyAdapter marketBizRecyAdapter;
     private MarketBizDAO marketBizDAO;
     private TextView text_No;
+    private Awajima awajima;
     private int marketBizCount,myMarketBizCount;
     String selectedCountry, selectedBank, bankName, bankNumber, officePref, userNamePref;
 
@@ -64,9 +70,7 @@ public class MarketBizListAct extends AppCompatActivity {
         marketRecyclerView = findViewById(R.id.markets_list);
         myMarketRecyclerView = findViewById(R.id.my_market_Biz);
         text_No = findViewById(R.id.text_No);
-        /*GridLayoutManager gridLayout = new GridLayoutManager(this, 2);
-        marketRecyclerView.setLayoutManager(gridLayout);
-        marketRecyclerView.setHasFixedSize(true);*/
+        awajima= new Awajima();
         marketBusinessList = new ArrayList<MarketBusiness>();
         myMarketarketBusinesses = new ArrayList<MarketBusiness>();
 
@@ -83,8 +87,15 @@ public class MarketBizListAct extends AppCompatActivity {
         if(userProfile !=null){
             profID=userProfile.getPID();
         }
+        if(marketBizDAO !=null){
+            try {
+                marketBusinessList=marketBizDAO.getBusinessesFromProfile(profID);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
 
-        marketBusinessList=marketBizDAO.getBusinessesFromProfile(profID);
+        }
+
 
         myMarketRecyclerView.setLayoutManager(new LinearLayoutManager(MarketBizListAct.this, LinearLayoutManager.HORIZONTAL, false));
         Collections.shuffle(marketBusinessList, new Random(System.currentTimeMillis()));
@@ -112,15 +123,26 @@ public class MarketBizListAct extends AppCompatActivity {
         userProfile = new Profile();
         gson1 = new Gson();
         gson = new Gson();
+        awajima= new Awajima();
         marketBizDAO= new MarketBizDAO(this);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastAwajimaUsed", "");
+        awajima = gson1.fromJson(json1, Awajima.class);
         if(userProfile !=null){
             profID=userProfile.getPID();
         }
+        if(marketBizDAO !=null){
+            try {
+                marketBusinessList=marketBizDAO.getBusinessesFromProfile(profID);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
 
-        marketBusinessList=marketBizDAO.getBusinessesFromProfile(profID);
+        }
+
+
         marketRecyclerView.setLayoutManager(new LinearLayoutManager(MarketBizListAct.this, LinearLayoutManager.VERTICAL, false));
         Collections.shuffle(marketBusinessList, new Random(System.currentTimeMillis()));
         marketBizRecyAdapter = new MarketBizRecyAdapter(MarketBizListAct.this, marketBusinessList);
@@ -128,5 +150,49 @@ public class MarketBizListAct extends AppCompatActivity {
         marketRecyclerView.setNestedScrollingEnabled(false);
         marketRecyclerView.setClickable(true);
         marketRecyclerView.setAdapter(marketBizRecyAdapter);
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        overridePendingTransition(R.anim.base_slide_left_out, R.anim.bounce);
+
+    }
+
+
+    @Override
+    public void onBizClick(MarketBusiness marketBusiness) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("MarketBusiness",marketBusiness);
+        Intent loginRIntent = new Intent(MarketBizListAct.this, BizDetailsAct.class);
+        loginRIntent.putExtras(bundle);
+        loginRIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(loginRIntent);
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
+
     }
 }

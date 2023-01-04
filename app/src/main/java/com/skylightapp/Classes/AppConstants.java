@@ -16,6 +16,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class AppConstants {
+    public static final String FLUTTERWAVE_PUBLIC_KEY = "FLWPUBK_TEST-ddff7f1daad11fb95203bec5a21b4d6e-X";
+    public static final String FLUTTERWAVE_SECRET_KEY = "FLWSECK_TEST-b5f18fe0c0f22172e340a1827668a0be-X";
+    public static final String FLUTTERWAVE_ENCRYPTION_KEY = "FLWSECK_TEST010c1328202c";
+    public static final String AWAJIMA_WEBHOOK = "https://eo5masw7fp9k6kz.m.pipedream.net";
+
+
     public static final String FIRST_TIME = "FirstTime";
     public static final String WHATS_NEW_LAST_SHOWN = "whats_new_last_shown";
     // Audio prefernces
@@ -23,6 +29,7 @@ public class AppConstants {
     // Help Preference
     public static final String SUBMIT_LOGS = "CrashLogs";
     public static final String DD_MM_YY = "DD/MONTH/YEAR";
+
     public static int CURRENT_CATEGORY = 0;
     public final static String SINGLE_MONTH_NR = "https://business.quickteller.com/link/pay/LumgwunqebGd";
     public final static String THREE_MONTHS_R = "https://business.quickteller.com/link/pay/LumgwunXwipB";
@@ -30,6 +37,37 @@ public class AppConstants {
     public final static String RECURRENT_SUB = "https://business.quickteller.com/link/pay/LumgwunMa0s9";
 
     public static final String FILENAME = "birthdays.json";
+    public static final int NO_REQUEST = -1;
+    public static final int NO_TIME = -1;
+    public static final int CASH = 1;
+    public static final int CREDIT = 0;
+    public static final String[] PREFIXES_AMERICAN_EXPRESS = { "34", "37" };
+    public static final String[] PREFIXES_DISCOVER = { "60", "62", "64", "65" };
+    public static final String[] PREFIXES_JCB = { "35" };
+    public static final String[] PREFIXES_DINERS_CLUB = { "300", "301", "302",
+            "303", "304", "305", "309", "36", "38", "37", "39" };
+    public static final String[] PREFIXES_VISA = { "4" };
+    public static final String[] PREFIXES_MASTERCARD = { "50", "51", "52",
+            "53", "54", "55" };
+    public static final String AMERICAN_EXPRESS = "American Express";
+    public static final String DISCOVER = "Discover";
+    public static final String JCB = "JCB";
+    public static final String DINERS_CLUB = "Diners Club";
+    public static final String VISA = "Visa";
+    public static final String VERVE = "Verve";
+    public static final String MASTERCARD = "MasterCard";
+    public static final String UNKNOWN = "Unknown";
+    public static final String DEVICE_TOKEN = "device_token";
+
+    // Tours type
+    public static final int FULL_DAY_TOUR = 1;
+    public static final int HALF_DAY_TOUR = 0;
+
+    // Placesurls
+    public static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
+    public static final String TYPE_AUTOCOMPLETE = "/autocomplete";
+    public static final String TYPE_NEAR_BY = "/nearbysearch";
+
     public static final String AWAJIMA_PRIVACY_POLICIES = "https://docs.google.com/document/d/1G8L2qti36yVtxGFJOQR0NV1RA0eQiK2DZFpZQj_Metw/edit?usp=sharing";
 
     //public static final String TWILLO_ACCOUNT_SID = "AC5e05dc0a793a29dc1da2eabdebd6c28d";
@@ -38,6 +76,7 @@ public class AppConstants {
     public final static String ACCOUNT_TYPE = "account_type";
     public final static byte NEW_DAILY_ACCOUNT = 0;
     public final static byte NEW_JOURNEY_ACCOUNT = 1;
+
 
     public final static String JOURNEY_ID = "journey_id";
     public final static byte NONE_JOURNEY = -99;

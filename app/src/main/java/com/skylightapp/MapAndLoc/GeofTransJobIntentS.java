@@ -100,12 +100,12 @@ public class GeofTransJobIntentS extends JobIntentService {
         }
 
         // Create an explicit content Intent that starts the main Activity.
-        Intent notificationIntent = new Intent(getApplicationContext(), GeofenceActivity.class);
+        Intent notificationIntent = new Intent(getApplicationContext(), GeofenceAct.class);
 
         // Construct a task stack.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 
-        stackBuilder.addParentStack(GeofenceActivity.class);
+        stackBuilder.addParentStack(GeofenceAct.class);
 
         // Push the content Intent onto the stack.
         stackBuilder.addNextIntent(notificationIntent);

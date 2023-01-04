@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.quickblox.users.model.QBUser;
 import com.skylightapp.Admins.AdminBankDeposit;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.AdminUser;
@@ -23,6 +24,9 @@ import com.skylightapp.Inventory.StockTransfer;
 import com.skylightapp.Inventory.Stocks;
 import com.skylightapp.MapAndLoc.EmergReportNext;
 import com.skylightapp.MapAndLoc.EmergencyReport;
+import com.skylightapp.MapAndLoc.Fence;
+import com.skylightapp.MapAndLoc.FenceEvent;
+import com.skylightapp.MapAndLoc.State;
 import com.skylightapp.MarketClasses.BizDealAccount;
 import com.skylightapp.MarketClasses.BusinessDeal;
 import com.skylightapp.MarketClasses.BusinessDealDoc;
@@ -34,7 +38,7 @@ import com.skylightapp.MarketClasses.MarketAdmin;
 import com.skylightapp.MarketClasses.MarketAnnouncement;
 import com.skylightapp.MarketClasses.MarketBizDonor;
 import com.skylightapp.MarketClasses.MarketBizPartner;
-import com.skylightapp.MarketClasses.MarketBizSubScription;
+import com.skylightapp.MarketClasses.MarketBizSub;
 import com.skylightapp.MarketClasses.MarketBusiness;
 
 import java.io.Serializable;
@@ -42,11 +46,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Awajima implements Parcelable, Serializable {
-    private Profile skyProfile;
-    private Account skyAccount;
-    private ArrayList<Payee> skyPayees;
-    private ArrayList<TimeLine> skyTimeLines;
-    private ArrayList<Customer> skyCustomers;
+    private Profile awajimaProf;
+    private Account awajimaAccounts;
+    private ArrayList<Payee> awajimaPayees;
+    private ArrayList<TimeLine> awajimaTimeLines;
+    private ArrayList<Customer> awajimaCustomers;
     private ArrayList<Stocks> skyStocks;
     private ArrayList<CustomerManager> skyTellers;
     private ArrayList<AdminUser> skyAdminUsers;
@@ -58,7 +62,7 @@ public class Awajima implements Parcelable, Serializable {
     private ArrayList<PaymentCode> skyPaymentCodes;
     private ArrayList<PaymentDoc> SKYPaymentDocs;
     private ArrayList<MarketBusiness> AwajimaMarketBusinesses;
-    private ArrayList<Market> AwajimaMarketArrayList;
+    private ArrayList<Market> awajimaMarkets;
     private ArrayList<EmergencyReport> awajimaEmergencies;
     private ArrayList<EmergReportNext> awajimaEmergNexts;
     private ArrayList<MarketAdmin> awajimaMarketAdmins;
@@ -66,7 +70,7 @@ public class Awajima implements Parcelable, Serializable {
     private ArrayList<MarketBizDonor> awajimaMarketDonors;
     private ArrayList<MarketBizPartner> awajimaMarketPartners;
     private ArrayList<BusinessDealSub> awajimaBizSubDeals;
-    private ArrayList<MarketBizSubScription> awajimaSubs;
+    private ArrayList<MarketBizSub> awajimaSubs;
     private ArrayList<BusinessDeal> awajimaBizDeals;
     private ArrayList<BusinessDealDoc> awajimaBizDealDocs;
     private ArrayList<BusinessDealLoan> awajimaBizDealLoans;
@@ -74,8 +78,15 @@ public class Awajima implements Parcelable, Serializable {
     private ArrayList<BizDealAccount> awajimaBizAccts;
     private ArrayList<GroupAccount> awajimaGrpAccts;
     private ArrayList<GroupSavings> awajimaGrpSavings;
+    private ArrayList<Profile> awajimaProfiles;
+    private ArrayList<State> awajimaStates;
+    private ArrayList<QBUser> awajimaQBUsers;
     private int awajimaID;
     private String awajimaOffice;
+    private ArrayList<Fence> awajimaFenceArrayList;
+    private ArrayList<FenceEvent> awajimaFenceEvents;
+    private ArrayList<MarketBusiness> awajimaBizS;
+    private ArrayList<Account> awajimaAccts;
 
     public Awajima() {
         super();
@@ -83,11 +94,11 @@ public class Awajima implements Parcelable, Serializable {
     }
 
     protected Awajima(Parcel in) {
-        skyProfile = in.readParcelable(Profile.class.getClassLoader());
-        skyAccount = in.readParcelable(Account.class.getClassLoader());
-        skyPayees = in.createTypedArrayList(Payee.CREATOR);
-        skyTimeLines = in.createTypedArrayList(TimeLine.CREATOR);
-        skyCustomers = in.createTypedArrayList(Customer.CREATOR);
+        awajimaProf = in.readParcelable(Profile.class.getClassLoader());
+        awajimaAccounts = in.readParcelable(Account.class.getClassLoader());
+        awajimaPayees = in.createTypedArrayList(Payee.CREATOR);
+        awajimaTimeLines = in.createTypedArrayList(TimeLine.CREATOR);
+        awajimaCustomers = in.createTypedArrayList(Customer.CREATOR);
         skyStocks = in.createTypedArrayList(Stocks.CREATOR);
         skyTellers = in.createTypedArrayList(CustomerManager.CREATOR);
         skyAdminUsers = in.createTypedArrayList(AdminUser.CREATOR);
@@ -99,7 +110,7 @@ public class Awajima implements Parcelable, Serializable {
         skyPaymentCodes = in.createTypedArrayList(PaymentCode.CREATOR);
         SKYPaymentDocs = in.createTypedArrayList(PaymentDoc.CREATOR);
         AwajimaMarketBusinesses = in.createTypedArrayList(MarketBusiness.CREATOR);
-        AwajimaMarketArrayList = in.createTypedArrayList(Market.CREATOR);
+        awajimaMarkets = in.createTypedArrayList(Market.CREATOR);
         awajimaEmergencies = in.createTypedArrayList(EmergencyReport.CREATOR);
         awajimaEmergNexts = in.createTypedArrayList(EmergReportNext.CREATOR);
         awajimaAnnouncements = in.createTypedArrayList(MarketAnnouncement.CREATOR);
@@ -159,13 +170,13 @@ public class Awajima implements Parcelable, Serializable {
     }
     public ArrayList<PaymentDoc> getSkyPaymentDocs() { return SKYPaymentDocs; }
 
-    public ArrayList<Customer> getSkyCustomers() { return skyCustomers;
+    public ArrayList<Customer> getAwajimaCustomers() { return awajimaCustomers;
     }
     public void setSkyTransactions(ArrayList<Transaction> skyTransactions) {
         this.skyTransactions = skyTransactions;
 
     }
-    public ArrayList<Payee> getSkyPayees() { return skyPayees; }
+    public ArrayList<Payee> getAwajimaPayees() { return awajimaPayees; }
 
 
 
@@ -174,25 +185,25 @@ public class Awajima implements Parcelable, Serializable {
     public ArrayList<LatLng> getProfileLocations() {
         return latLngs;
     }
-    public void setSkyTimeLines(ArrayList<TimeLine> timeLineArrayList) {
-        this.skyTimeLines = timeLineArrayList;
+    public void setAwajimaTimeLines(ArrayList<TimeLine> timeLineArrayList) {
+        this.awajimaTimeLines = timeLineArrayList;
     }
-    public ArrayList<TimeLine> getSkyTimeLines() { return skyTimeLines; }
+    public ArrayList<TimeLine> getAwajimaTimeLines() { return awajimaTimeLines; }
 
-    public Profile getSkyProfile() {
-        return skyProfile;
-    }
-
-    public void setSkyProfile(Profile skyProfile) {
-        this.skyProfile = skyProfile;
+    public Profile getAwajimaProf() {
+        return awajimaProf;
     }
 
-    public Account getSkyAccount() {
-        return skyAccount;
+    public void setAwajimaProf(Profile awajimaProf) {
+        this.awajimaProf = awajimaProf;
     }
 
-    public void setSkyAccount(Account skyAccount) {
-        this.skyAccount = skyAccount;
+    public Account getAwajimaAccounts() {
+        return awajimaAccounts;
+    }
+
+    public void setAwajimaAccounts(Account awajimaAccounts) {
+        this.awajimaAccounts = awajimaAccounts;
     }
 
     public void addPayment(String type, double totalToWithdraw, Date date, long paymentCode, String acctType, String office, String status) {
@@ -202,6 +213,38 @@ public class Awajima implements Parcelable, Serializable {
         }
         Payment payment = new Payment(type,totalToWithdraw, date,paymentCode,acctType,office,status);
         paymentArrayList.add(payment);
+
+    }
+    public void addNewCustomer(Customer customer) {
+        awajimaCustomers = new ArrayList<>();
+        awajimaCustomers.add(customer);
+
+    }
+    public void addNewAcct(Account account) {
+        awajimaAccts = new ArrayList<>();
+        awajimaAccts.add(account);
+
+    }
+    public void addProfile(Profile profile) {
+        awajimaProfiles = new ArrayList<>();
+        awajimaProfiles.add(profile);
+
+    }
+    public void addQBUsers(QBUser qbUser) {
+        awajimaQBUsers = new ArrayList<>();
+        awajimaQBUsers.add(qbUser);
+
+    }
+
+    public void addState(State state) {
+        awajimaStates = new ArrayList<>();
+        awajimaStates.add(state);
+
+    }
+    public void addEmergReport(int sReportID, int profileID1, long bizID, String reportDate, String oil_spillage_report, String localityString, String subUrb, String selectedLGA, String selectedOilCompany, String address, String strngLatLng, String moreInfo, String iamAvailable) {
+        awajimaEmergencies = new ArrayList<>();
+        EmergencyReport emergencyReport = new EmergencyReport(sReportID, profileID1, bizID, reportDate, oil_spillage_report, localityString, subUrb, selectedLGA, selectedOilCompany,  address, strngLatLng, moreInfo, iamAvailable);
+        awajimaEmergencies.add(emergencyReport);
 
     }
 
@@ -220,23 +263,23 @@ public class Awajima implements Parcelable, Serializable {
 
     }
     public void addCustomer(int uID, String surname, String firstName, String customerPhoneNumber, String customerEmailAddress, String customerAddress, String customerGender, String customerOffice, String customerState, Uri profilePicture, String dateJoined, String userName, String password) {
-        skyCustomers = new ArrayList<>();
-        String CusNo = "C" + (skyCustomers.size() + 1);
+        awajimaCustomers = new ArrayList<>();
+        String CusNo = "C" + (awajimaCustomers.size() + 1);
         Customer customer = new Customer(uID,surname, firstName, customerPhoneNumber,customerEmailAddress,customerAddress,customerGender,customerOffice,customerState,profilePicture,dateJoined,userName,password);
-        skyCustomers.add(customer);
+        awajimaCustomers.add(customer);
 
     }
     public void addTimeLine(int id,String tittle,String timelineDetails) {
-        skyTimeLines = new ArrayList<>();
-        String history = "History" + (skyTimeLines.size() + 1);
+        awajimaTimeLines = new ArrayList<>();
+        String history = "History" + (awajimaTimeLines.size() + 1);
         TimeLine timeLine = new TimeLine(id, tittle,timelineDetails);
-        skyTimeLines.add(timeLine);
+        awajimaTimeLines.add(timeLine);
     }
     public void addTimeLine(String tittle,String timelineDetails) {
-        skyTimeLines = new ArrayList<>();
-        String history = "History" + (skyTimeLines.size() + 1);
+        awajimaTimeLines = new ArrayList<>();
+        String history = "History" + (awajimaTimeLines.size() + 1);
         TimeLine timeLine = new TimeLine( tittle,timelineDetails);
-        skyTimeLines.add(timeLine);
+        awajimaTimeLines.add(timeLine);
     }
     public void addTransaction(long transactionId, String surname, String firstName, String customerPhoneNumber, double amount,String accountNumber,String description,String date,String type) {
         skyTransactions = new ArrayList<>();
@@ -245,11 +288,27 @@ public class Awajima implements Parcelable, Serializable {
         skyTransactions.add(transaction1);
     }
     public void addPayee(String payeeName) {
-        skyPayees = new ArrayList<>();
-        int payeeID = skyPayees.size() + 1;
+        awajimaPayees = new ArrayList<>();
+        int payeeID = awajimaPayees.size() + 1;
         Payee payee = new Payee(payeeID, payeeName);
-        skyPayees.add(payee);
+        awajimaPayees.add(payee);
     }
+    public void addMarket(Market market) {
+        awajimaMarkets = new ArrayList<>();
+        awajimaMarkets.add(market);
+
+    }
+    public void addFence(Fence fence) {
+        awajimaFenceArrayList = new ArrayList<>();
+        awajimaFenceArrayList.add(fence);
+
+    }
+    public void addFenceEvent(FenceEvent fenceEvent) {
+        awajimaFenceEvents = new ArrayList<>();
+        awajimaFenceEvents.add(fenceEvent);
+
+    }
+
 
 
     public ArrayList<MarketBusiness> getAwajimaMarketBusinesses() {
@@ -260,13 +319,14 @@ public class Awajima implements Parcelable, Serializable {
         AwajimaMarketBusinesses = awajimaMarketBusinesses;
     }
 
-    public ArrayList<Market> getAwajimaMarketArrayList() {
-        return AwajimaMarketArrayList;
+    public ArrayList<Market> getAwajimaMarkets() {
+        return awajimaMarkets;
     }
 
-    public void setAwajimaMarketArrayList(ArrayList<Market> awajimaMarketArrayList) {
-        AwajimaMarketArrayList = awajimaMarketArrayList;
+    public void setAwajimaMarkets(ArrayList<Market> awajimaMarkets) {
+        this.awajimaMarkets = awajimaMarkets;
     }
+
 
     public ArrayList<EmergencyReport> getAwajimaEmergencies() {
         return awajimaEmergencies;
@@ -387,11 +447,11 @@ public class Awajima implements Parcelable, Serializable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeParcelable(skyProfile, i);
-        parcel.writeParcelable(skyAccount, i);
-        parcel.writeTypedList(skyPayees);
-        parcel.writeTypedList(skyTimeLines);
-        parcel.writeTypedList(skyCustomers);
+        parcel.writeParcelable(awajimaProf, i);
+        parcel.writeParcelable(awajimaAccounts, i);
+        parcel.writeTypedList(awajimaPayees);
+        parcel.writeTypedList(awajimaTimeLines);
+        parcel.writeTypedList(awajimaCustomers);
         parcel.writeTypedList(skyStocks);
         parcel.writeTypedList(skyTellers);
         parcel.writeTypedList(skyAdminUsers);
@@ -403,7 +463,7 @@ public class Awajima implements Parcelable, Serializable {
         parcel.writeTypedList(skyPaymentCodes);
         parcel.writeTypedList(SKYPaymentDocs);
         parcel.writeTypedList(AwajimaMarketBusinesses);
-        parcel.writeTypedList(AwajimaMarketArrayList);
+        parcel.writeTypedList(awajimaMarkets);
         parcel.writeTypedList(awajimaEmergencies);
         parcel.writeTypedList(awajimaEmergNexts);
         parcel.writeTypedList(awajimaAnnouncements);
@@ -425,11 +485,11 @@ public class Awajima implements Parcelable, Serializable {
         this.awajimaID = awajimaID;
     }
 
-    public ArrayList<MarketBizSubScription> getAwajimaSubs() {
+    public ArrayList<MarketBizSub> getAwajimaSubs() {
         return awajimaSubs;
     }
 
-    public void setAwajimaSubs(ArrayList<MarketBizSubScription> awajimaSubs) {
+    public void setAwajimaSubs(ArrayList<MarketBizSub> awajimaSubs) {
         this.awajimaSubs = awajimaSubs;
     }
 
@@ -439,5 +499,65 @@ public class Awajima implements Parcelable, Serializable {
 
     public void setAwajimaOffice(String awajimaOffice) {
         this.awajimaOffice = awajimaOffice;
+    }
+
+    public ArrayList<Profile> getAwajimaProfiles() {
+        return awajimaProfiles;
+    }
+
+    public void setAwajimaProfiles(ArrayList<Profile> awajimaProfiles) {
+        this.awajimaProfiles = awajimaProfiles;
+    }
+
+    public ArrayList<State> getAwajimaStates() {
+        return awajimaStates;
+    }
+
+    public void setAwajimaStates(ArrayList<State> awajimaStates) {
+        this.awajimaStates = awajimaStates;
+    }
+
+    public ArrayList<QBUser> getAwajimaQBUsers() {
+        return awajimaQBUsers;
+    }
+
+    public void setAwajimaQBUsers(ArrayList<QBUser> awajimaQBUsers) {
+        this.awajimaQBUsers = awajimaQBUsers;
+    }
+
+    public void addEmergReport(EmergencyReport emergencyReport) {
+        awajimaEmergencies = new ArrayList<>();
+        awajimaEmergencies.add(emergencyReport);
+
+    }
+
+    public ArrayList<Fence> getAwajimaFenceArrayList() {
+        return awajimaFenceArrayList;
+    }
+
+    public void setAwajimaFenceArrayList(ArrayList<Fence> awajimaFenceArrayList) {
+        this.awajimaFenceArrayList = awajimaFenceArrayList;
+    }
+
+    public ArrayList<FenceEvent> getAwajimaFenceEvents() {
+        return awajimaFenceEvents;
+    }
+
+    public void setAwajimaFenceEvents(ArrayList<FenceEvent> awajimaFenceEvents) {
+        this.awajimaFenceEvents = awajimaFenceEvents;
+    }
+
+    public void addBusiness(MarketBusiness marketBusiness) {
+        awajimaBizS = new ArrayList<>();
+        awajimaBizS.add(marketBusiness);
+
+    }
+
+    public ArrayList<Account> getAwajimaAccts() {
+        return awajimaAccts;
+    }
+
+    public void setAwajimaAccts(ArrayList<Account> awajimaAccts) {
+        this.awajimaAccts = awajimaAccts;
     }
 }

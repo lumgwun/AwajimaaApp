@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/rect_waste"
+    tools:context="com.skylightapp.StateDir.WasteReqDetailAct">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="pay for Waste Collection"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:textColor="@color/darkSlateGray"
+        />
+
+    <TextView
+        android:id="@+id/comm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Request Details"
+        android:textColor="@color/darkSlateGray"
+        android:textSize="13sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/link_credit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="5dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="disposal"
+            android:textColor="@color/yellowgreen"
+            android:textSize="16sp" />
+
+        <!-- ============ Credit counter ========== -->
+        <com.google.android.material.payStackCard.MaterialCardView
+            android:id="@+id/cvCre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="12dp"
+            app:cardBackgroundColor="@color/red">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_credit"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="counter"
+                android:textSize="20sp"
+                android:textColor="@color/whitesmoke"
+                android:textStyle="bold"
+                />
+
+        </com.google.android.material.payStackCard.MaterialCardView>
+
+    </LinearLayout>
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/bill"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:textStyle="bold"
+        android:text="Your Bill"
+        android:textColor="@color/darkSlateGray"
+        android:textSize="16sp" />
+
+    <GridLayout
+        android:id="@+id/gridFacture"
+        android:layout_marginTop="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:rowCount="1"
+        android:alignmentMode="alignMargins"
+        android:columnOrderPreserved="false">
+
+        <com.google.android.material.payStackCard.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:cardBackgroundColor="#fcfcfc"
+            app:cardElevation="12dp"
+            app:cardCornerRadius="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent">
+
+                    <!-- Email -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/black"
+                        android:text="emecos@gmail.com"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:typeface="sans" />
+
+                    <!-- Client -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/black"
+                        android:text="Emeka Emeke Uche"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:typeface="sans" />
+
+                    <!-- Frequency -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/black"
+                        android:text="frequency: Monthly"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:typeface="sans" />
+
+                    <!-- To do -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/black"
+                        android:text="7am - 11am"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:typeface="sans" />
+
+                    <!-- Schedule -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/black"
+                        android:text="Schedule: routine"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:typeface="sans" />
+
+                    <!-- Credit -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/red"
+                        android:text="Amount: NGN7,000"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:typeface="sans" />
+
+                    <!-- Days -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/black"
+                        android:text="days: Monday, and Saturday"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:typeface="sans" />
+
+                    <!-- Residence -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/black"
+                        android:text="residence :34 Isiokpo Ofiokpo Street"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:typeface="sans" />
+
+                    <!-- Place -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/black"
+                        android:text="place: Garden City"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:typeface="sans" />
+
+                    <!-- Phone -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/black"
+                        android:text="phone: 0703884310223"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:typeface="sans" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent">
+
+                    <!-- Email -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/Email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="normal"
+                        android:typeface="sans" />
+
+                    <!-- Client -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/Client"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="normal"
+                        android:typeface="sans" />
+
+                    <!-- Frequency -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/Frequency"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="normal"
+                        android:typeface="sans" />
+
+                    <!-- To do -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/Todo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="normal"
+                        android:typeface="sans" />
+
+                    <!-- Creneau -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_creneau"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="normal"
+                        android:typeface="sans" />
+
+                    <!-- Credit -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_amount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/red"
+                        android:textSize="14sp"
+                        android:textStyle="normal"
+                        android:typeface="sans" />
+
+                    <!-- Days -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/Days"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="normal"
+                        android:typeface="sans" />
+
+                    <!-- Residence -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/Residence"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="normal"
+                        android:typeface="sans" />
+
+                    <!-- Place -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/Place"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="normal"
+                        android:typeface="sans" />
+
+                    <!-- Phone -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/Phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="normal"
+                        android:typeface="sans" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.payStackCard.MaterialCardView>
+
+    </GridLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true">
+
+            <com.google.android.material.payStackCard.MaterialCardView
+                android:id="@+id/cvCancel"
+                android:layout_width="120dp"
+                android:layout_height="65dp"
+                android:layout_marginEnd="10dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="@color/dimwhite">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textAllCaps="true"
+                    android:padding="20dp"
+                    android:background="@drawable/rect6da"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/cancel"
+                    android:textColor="@color/yellowgreen"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </com.google.android.material.payStackCard.MaterialCardView>
+
+            <com.google.android.material.payStackCard.MaterialCardView
+                android:id="@+id/cvPay"
+                android:layout_width="120dp"
+                android:layout_height="65dp"
+                android:layout_marginEnd="10dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="@color/yellowgreen">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textAllCaps="true"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/pay"
+                    android:textColor="@color/whitesmoke"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </com.google.android.material.payStackCard.MaterialCardView>
+
+        </LinearLayout>
+
+
+
+        <!--<TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:layout_marginEnd="150dp"
+            android:focusable="true"
+            android:text="@string/cancel"
+            android:textColor="@color/yellowgreen"
+            android:textSize="16sp"
+            android:textStyle="bold" />-->
+
+    </RelativeLayout>
+
+</LinearLayout>

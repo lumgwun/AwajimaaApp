@@ -7,7 +7,7 @@
     android:background="@drawable/sky11"
     android:theme="@style/NoActionBarTheme"
     android:layout_height="match_parent"
-    tools:context="com.skylightapp.Admins.AdminPackageActivity">
+    tools:context="com.skylightapp.Admins.AdminPackageAct">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

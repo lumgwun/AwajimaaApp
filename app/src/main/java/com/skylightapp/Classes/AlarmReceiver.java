@@ -33,6 +33,7 @@ import com.skylightapp.Database.TCashDAO;
 import com.skylightapp.Database.TReportDAO;
 import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.Database.TranXDAO;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.R;
 import com.skylightapp.Tellers.PackageAllCusAct;
 
@@ -42,7 +43,7 @@ import java.util.Calendar;
 import static com.skylightapp.Admins.SODueDateListAct.IMPORTANT_LIST_ID;
 import static com.skylightapp.Classes.Birthday.BIRTHDAY_ID;
 import static com.skylightapp.Classes.CustomerDailyReport.REPORT_ID;
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ID;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_ID;
 import static com.skylightapp.Classes.StandingOrder.SO_ID;
 
 @SuppressWarnings("ALL")
@@ -81,7 +82,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         DBHelper dbHelper = new DBHelper(context);
         birthdayDAO= new BirthdayDAO(context);
         Birthday birthday = birthdayDAO.getBirthdayReminder(birthdayReceivedID);
-        SkyLightPackage skyLightPackage = dbHelper.getPackageReminder(mReceivedID);
+        MarketBizPackage marketBizPackage = dbHelper.getPackageReminder(mReceivedID);
         ImportantDates reminder = dbHelper.getReminder(mReceivedID);
         String mTitle = reminder.getTitle();
 

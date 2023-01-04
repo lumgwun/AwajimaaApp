@@ -12,7 +12,7 @@ import android.os.Bundle;
 import com.google.android.gms.maps.model.LatLng;
 import com.skylightapp.Adapters.SavingsAdapter;
 import com.skylightapp.Classes.CustomerDailyReport;
-import com.skylightapp.Classes.SkyLightPackage;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Database.DBHelper;
 
 import java.text.MessageFormat;
@@ -27,7 +27,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements Savings
     int duration;
     LatLng location;
     double aDouble;
-    SkyLightPackage skylightPackage;
+    MarketBizPackage skylightPackage;
     AppCompatTextView txtName,txtType,txtPackID,txtTittle,txtPackageAmount,txtStartDate,txtDuration,txtGrandTotal;
     private RecyclerView recyclerView;
     private ArrayList<CustomerDailyReport> customerDailyReports;

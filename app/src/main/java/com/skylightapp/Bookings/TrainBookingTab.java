@@ -1,7 +1,5 @@
 package com.skylightapp.Bookings;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.app.TabActivity;
 import android.content.Intent;
@@ -16,9 +14,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.LoginActivity;
 import com.skylightapp.R;
-import com.skylightapp.SignUpAct;
 
 public class TrainBookingTab extends TabActivity {
     com.melnykov.fab.FloatingActionButton floatingActionButton;
@@ -59,7 +55,7 @@ public class TrainBookingTab extends TabActivity {
                 .setIndicator("", resources.getDrawable(R.drawable.train))
                 .setContent(intentSignUp);
 
-        Intent intentSignIn = new Intent().setClass(this, MyTrainAct.class);
+        Intent intentSignIn = new Intent().setClass(this, MyTripBAct.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecLogin = tabhost
                 .newTabSpec("My Train Bookings")
                 .setIndicator("", resources.getDrawable(R.drawable.ic__category))
@@ -83,4 +79,44 @@ public class TrainBookingTab extends TabActivity {
         });
 
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //mapView.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        overridePendingTransition(R.anim.base_slide_left_out, R.anim.bounce);
+
+    }
+    public void onResume(){
+        super.onResume();
+        //this will refresh the osmdroid configuration on resuming.
+        //if you make changes to the configuration, use
+        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this));
+        //mapView.onResume(); //needed for compass, my location overlays, v6.0.0 and up
+    }
+
 }

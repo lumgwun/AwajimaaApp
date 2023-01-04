@@ -26,8 +26,8 @@ public class AlarmsHelper {
             cancelAlarm(context, b.getLoanId().hashCode());
         }
     }
-    public static void cancelAllPackageAlarm(Context context, ArrayList<SkyLightPackage> skyLightPackages) {
-        for (SkyLightPackage b: skyLightPackages) {
+    public static void cancelAllPackageAlarm(Context context, ArrayList<MarketBizPackage> marketBizPackages) {
+        for (MarketBizPackage b: marketBizPackages) {
             //cancelAlarm(context, b.getPackageId().hashCode());
         }
     }*/
@@ -62,7 +62,7 @@ public class AlarmsHelper {
     public static void cancelAlarm(Context context, int id) {
 
         Intent mNotificationReceiverIntent = new Intent(context,
-                NotificationBuilderReceiver.class);
+                NotifiBReceiver.class);
 
         PendingIntent mNotificationReceiverPendingIntent = PendingIntent
                 .getBroadcast(context.getApplicationContext(),

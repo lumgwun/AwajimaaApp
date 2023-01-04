@@ -20,6 +20,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -30,20 +32,21 @@ import com.google.gson.Gson;
 import com.skylightapp.Adapters.PackageRecyclerAdapter;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Classes.SkyLightPackage;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.skylightapp.Classes.SkyLightPackage.PACKAGE_ID;
+import static com.skylightapp.Database.DBHelper.DATABASE_NAME;
+import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_ID;
 
 public class CusPackForPayment extends AppCompatActivity implements PackageRecyclerAdapter.OnItemsClickListener{
     DBHelper dbHelper;
     Customer customer;
-    private List<SkyLightPackage> packages;
+    private List<MarketBizPackage> packages;
     protected ListView lvItems;
     Bundle paymentBundle;
     String incomplete,inProgress;
@@ -58,8 +61,18 @@ public class CusPackForPayment extends AppCompatActivity implements PackageRecyc
     Account account;
     private PackageRecyclerAdapter packageRecyclerAdapter;
     private RecyclerView recyclerView;
-    private  SkyLightPackage skyLightPackage;
+    private MarketBizPackage marketBizPackage;
     private String collectionStatus;
+    private static final String PREF_NAME = "awajima";
+    String SharedPrefUserMachine;
+    String SharedPrefUserName;
+    int SharedPrefProfileID;
+    String stringLatLng;
+    private SQLiteDatabase sqLiteDatabase;
+
+    Gson  gson1, gson2;
+    String  json1, json2, userName, userPassword, userMachine, dateOfToday, selectedType;
+    Profile  customerProfile;
     private ActivityResultLauncher<Intent> payNowStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
 
             new ActivityResultCallback<ActivityResult>() {
@@ -73,10 +86,10 @@ public class CusPackForPayment extends AppCompatActivity implements PackageRecyc
                                 paymentBundle = intent.getBundleExtra("paymentBundle");
                             }
                             if(paymentBundle !=null){
-                                skyLightPackage=paymentBundle.getParcelable("SkyLightPackage");
+                                marketBizPackage =paymentBundle.getParcelable("MarketBizPackage");
                                 amountSoFar=paymentBundle.getDouble("REPORT_AMOUNT_COLLECTED_SO_FAR");
                                 amountRem=paymentBundle.getDouble("REPORT_AMOUNT_REMAINING");
-                                grandTotal=skyLightPackage.getPackageTotalAmount();
+                                grandTotal= marketBizPackage.getPackageTotalAmount();
                                 packageID=paymentBundle.getInt(PACKAGE_ID);
                             }
                             if(amountSoFar==grandTotal){
@@ -97,15 +110,23 @@ public class CusPackForPayment extends AppCompatActivity implements PackageRecyc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_cus_pack_for_payment);
-        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Gson gson = new Gson();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPrefUserName = userPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserMachine = userPreferences.getString("machine", "");
+        SharedPrefProfileID = userPreferences.getInt("PROFILE_ID", 0);
+        //userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        gson1 = new Gson();
         customer = new Customer();
         userProfile=new Profile();
         packBundle=new Bundle();
         bundle=new Bundle();
         dbHelper= new DBHelper(this);
         packages = new ArrayList<>();
-        userProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson1.fromJson(json1, Profile.class);
+        userName = userPreferences.getString("PROFILE_USERNAME", "");
+        userPassword = userPreferences.getString("PROFILE_PASSWORD", "");
+        userMachine = userPreferences.getString("PROFILE_ROLE", "");
         recyclerView = findViewById(R.id.recyclerViewPackList);
 
         packBundle = getIntent().getExtras();
@@ -125,7 +146,25 @@ public class CusPackForPayment extends AppCompatActivity implements PackageRecyc
 
         }
         collectionStatus="unCollected";
-        packages=dbHelper.getCustomerCompleteUnCollectedPack(customerID,"completed",collectionStatus);
+        if(dbHelper !=null){
+
+            try {
+                try {
+                    packages=dbHelper.getCustomerCompleteUnCollectedPack(customerID,"completed",collectionStatus);
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+
+
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+
+
+        }
 
         FloatingActionButton dashboard = findViewById(R.id.btnBackP);
 
@@ -245,7 +284,7 @@ public class CusPackForPayment extends AppCompatActivity implements PackageRecyc
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(CustomerPackForPayment.this,"You have selected " + lables.get(which), Toast.LENGTH_LONG).show();
                 if(lables.get(which).equalsIgnoreCase("Use Our Automatic System")){
-                    Intent intent = new Intent(getBaseContext(), SavingsStandingOrder.class);
+                    Intent intent = new Intent(getBaseContext(), SavingsSOAct.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
 
@@ -287,21 +326,21 @@ public class CusPackForPayment extends AppCompatActivity implements PackageRecyc
 
 
     @Override
-    public void onItemClick(SkyLightPackage skyLightPackage) {
-        if(skyLightPackage !=null){
-            packageID = skyLightPackage.getPackID();
-            double amountContributedSoFar = skyLightPackage.getPackageAmount_collected();
-            grandTotal = skyLightPackage.getPackageTotalAmount();
-            double packageAmount=skyLightPackage.getPackageDailyAmount();
-            account = skyLightPackage.getPackageAccount();
+    public void onItemClick(MarketBizPackage marketBizPackage) {
+        if(marketBizPackage !=null){
+            packageID = marketBizPackage.getPackID();
+            double amountContributedSoFar = marketBizPackage.getPackageAmount_collected();
+            grandTotal = marketBizPackage.getPackageTotalAmount();
+            double packageAmount= marketBizPackage.getPackageDailyAmount();
+            account = marketBizPackage.getPackageAccount();
             long acctID=account.getAwajimaAcctNo();
-            String status=skyLightPackage.getPackageStatus();
-            customer = skyLightPackage.getPackageCustomer();
+            String status= marketBizPackage.getPackageStatus();
+            customer = marketBizPackage.getPackageCustomer();
             long customerID=customer.getCusUID();
-            double amtRem = skyLightPackage.getPackageAmtRem();
-            int daysRem = skyLightPackage.getPackageDaysRem();
-            String type= String.valueOf(skyLightPackage.getPackageType());
-            bundle.putParcelable("SkyLightPackage",skyLightPackage);
+            double amtRem = marketBizPackage.getPackageAmtRem();
+            int daysRem = marketBizPackage.getPackageDaysRem();
+            String type= String.valueOf(marketBizPackage.getPackageType());
+            bundle.putParcelable("MarketBizPackage", marketBizPackage);
             bundle.putParcelable("Customer",customer);
 
             if(amountContributedSoFar==grandTotal && type.equalsIgnoreCase("Savings") && status.equalsIgnoreCase("Completed")){
@@ -342,8 +381,8 @@ public class CusPackForPayment extends AppCompatActivity implements PackageRecyc
                     paymentBundle.putDouble("PACKAGE_VALUE", grandTotal);
                     paymentBundle.putDouble("ACCOUNT_BALANCE", accountBalance);
                     paymentBundle.putDouble("Package Account Balance", accountBalance);
-                    paymentBundle.putParcelable("Package", skyLightPackage);
-                    paymentBundle.putParcelable("SkyLightPackage", skyLightPackage);
+                    paymentBundle.putParcelable("Package", marketBizPackage);
+                    paymentBundle.putParcelable("MarketBizPackage", marketBizPackage);
                     paymentBundle.putParcelable("Account", account);
                     paymentBundle.putParcelable("Customer", customer);
                     Intent intent = new Intent(CusPackForPayment.this, OldPackCusAct.class);

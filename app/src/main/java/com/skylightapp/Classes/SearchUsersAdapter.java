@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.skylightapp.Interfaces.OnObjectChangedListener;
+import com.skylightapp.MarketClasses.MarketBizPackage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +71,7 @@ public class SearchUsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
 
             @Override
-            public void onPackageChanged(SkyLightPackage obj) {
+            public void onPackageChanged(MarketBizPackage obj) {
 
             }
 

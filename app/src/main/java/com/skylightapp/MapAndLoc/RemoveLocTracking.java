@@ -169,7 +169,7 @@ public class RemoveLocTracking extends AppCompatActivity {
             }
             builder = new NotificationCompat.Builder(this, id);
 
-            intent = new Intent(this, GeofenceActivity.class);
+            intent = new Intent(this, GeofenceAct.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             int flags = PendingIntent.FLAG_UPDATE_CURRENT;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

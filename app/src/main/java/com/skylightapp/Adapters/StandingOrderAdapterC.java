@@ -77,8 +77,8 @@ public class StandingOrderAdapterC extends RecyclerView.Adapter<StandingOrderAda
         double expectedAmount =standingOrder.getSo_ExpectedAmount();
         double amountReceived =standingOrder.getSo_ReceivedAmount();
         double dailyAmount =standingOrder.getSoDailyAmount();
-        Account standingOrderAcct =standingOrder.getSo_Account();
-        double soAcctBalance =standingOrder.getSo_Account().getAccountBalance();
+        Account standingOrderAcct =standingOrder.getAccount();
+        double soAcctBalance =standingOrder.getAccount().getAccountBalance();
         double diff =0.00;
         String dateOfAction;
         Location location=null;

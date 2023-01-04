@@ -10,7 +10,7 @@
     android:background="?android:attr/activatedBackgroundIndicator">
 
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.payStackCard.MaterialCardView
         android:layout_width="match_parent"
         app:cardCornerRadius="20dp"
         app:cardElevation="50dp"
@@ -120,6 +120,6 @@
 
         </LinearLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.payStackCard.MaterialCardView>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -7,20 +7,20 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
-import com.skylightapp.Classes.Account;
 import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.Classes.Profile;
 
 import java.util.ArrayList;
 
-import static com.skylightapp.Classes.AppCash.APP_CASH_DATE;
-import static com.skylightapp.Classes.AppCash.APP_CASH_TO;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_ADDRESS;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_BRANDNAME;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_CAC_DATE;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_CONTINENT;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_COUNTRY;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_DESC;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_EMAIL;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_ID;
+import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_JOINED_D;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_NAME;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_PHONE_NO;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_PIX;
@@ -30,8 +30,6 @@ import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_STATE;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_STATUS;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TABLE;
 import static com.skylightapp.MarketClasses.MarketBusiness.MARKET_BIZ_TYPE;
-import static com.skylightapp.Classes.Profile.PROFILE_ID;
-import static com.skylightapp.Classes.StandingOrder.SO_ID;
 import static java.lang.String.valueOf;
 
 public class MarketBizDAO extends DBHelperDAO{
@@ -54,6 +52,27 @@ public class MarketBizDAO extends DBHelperDAO{
 
 
     }
+    public void saveBiz(long bizNo, int profileID, String cacRegName, String cacRegNo, String dateOfCACReg, String brandName, String bizDesc, String creationDate, String selectedBizType, Uri mImageUri, String uPhoneNumber, String address, String email, String countryOfBiz, String stateOfBiz) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues Values = new ContentValues();
+        Values.put(MARKET_BIZ_ID, bizNo);
+        Values.put(MARKET_BIZ_PROF_ID, profileID);
+        Values.put(MARKET_BIZ_COUNTRY, countryOfBiz);
+        Values.put(MARKET_BIZ_CAC_DATE, dateOfCACReg);
+        Values.put(MARKET_BIZ_NAME, cacRegName);
+        Values.put(MARKET_BIZ_DESC, bizDesc);
+        Values.put(MARKET_BIZ_BRANDNAME, brandName);
+        Values.put(MARKET_BIZ_TYPE, selectedBizType);
+        Values.put(MARKET_BIZ_REG_NO, cacRegNo);
+        Values.put(MARKET_BIZ_JOINED_D, creationDate);
+        Values.put(MARKET_BIZ_EMAIL, email);
+        Values.put(MARKET_BIZ_PHONE_NO, uPhoneNumber);
+        Values.put(MARKET_BIZ_ADDRESS, address);
+        Values.put(MARKET_BIZ_STATE, stateOfBiz);
+        Values.put(MARKET_BIZ_PIX, String.valueOf(mImageUri));
+        Values.put(MARKET_BIZ_STATUS, "New");
+
+    }
 
     public long saveBiz(MarketBusiness marketBusiness) {
         try {
@@ -62,6 +81,10 @@ public class MarketBizDAO extends DBHelperDAO{
             Profile profile= null;
             if(marketBusiness !=null){
                 Values.put(MARKET_BIZ_ID, marketBusiness.getBusinessID());
+                Values.put(MARKET_BIZ_PROF_ID, marketBusiness.getmBProfileID());
+                Values.put(MARKET_BIZ_COUNTRY, marketBusiness.getBizCountry());
+                Values.put(MARKET_BIZ_CAC_DATE, marketBusiness.getmBDateOfCACReg());
+                Values.put(MARKET_BIZ_DESC, marketBusiness.getBizDescription());
                 Values.put(MARKET_BIZ_NAME, valueOf(marketBusiness.getBizBrandname()));
                 Values.put(MARKET_BIZ_BRANDNAME, marketBusiness.getBizBrandname());
                 Values.put(MARKET_BIZ_TYPE, marketBusiness.getBizType());
@@ -301,6 +324,53 @@ public class MarketBizDAO extends DBHelperDAO{
 
         return null;
     }
+    public ArrayList<MarketBusiness> getAllBusFromSubAndType(String status,String type) {
+        try {
+            ArrayList<MarketBusiness> marketBusinesses = new ArrayList<>();
+            SQLiteDatabase db = this.getWritableDatabase();
+            String selection = MARKET_BIZ_STATUS + "=? AND " + MARKET_BIZ_TYPE + "=?";
+            String[] selectionArgs = new String[]{valueOf(status), valueOf(type)};
+            Cursor cursor = db.query(MARKET_BIZ_TABLE, null, selection, selectionArgs, MARKET_BIZ_TYPE,
+                    null, null);
+
+            getBiZsFromCursor(marketBusinesses, cursor);
+
+            cursor.close();
+            //db.close();
+
+            return marketBusinesses;
+
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    public ArrayList<MarketBusiness> getAllBusFromType(String type) {
+        try {
+            ArrayList<MarketBusiness> marketBusinesses = new ArrayList<>();
+            SQLiteDatabase db = this.getWritableDatabase();
+            String selection = MARKET_BIZ_TYPE + "=?";
+            String[] selectionArgs = new String[]{valueOf(type)};
+            Cursor cursor = db.query(MARKET_BIZ_TABLE, null, selection, selectionArgs, MARKET_BIZ_TYPE,
+                    null, null);
+
+            getBiZsFromCursor(marketBusinesses, cursor);
+
+            cursor.close();
+            //db.close();
+
+            return marketBusinesses;
+
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 
     private void getBiZsFromCursor(ArrayList<MarketBusiness> marketBusinesses, Cursor cursor) {
         try {
@@ -350,7 +420,4 @@ public class MarketBizDAO extends DBHelperDAO{
         }
 
     }
-
-
-
 }

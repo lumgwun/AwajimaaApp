@@ -36,6 +36,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings("unchecked")
 public class ChatHelperCon {
     private static final String TAG = ChatHelper.class.getSimpleName();
 
@@ -45,20 +46,29 @@ public class ChatHelperCon {
     static final String CURRENT_PAGE_BUNDLE_PARAM = "current_page";
     private static final String CHAT_HISTORY_ITEMS_SORT_FIELD = "date_sent";
 
-    private Context context;
-    private QBChatService qbChatService = QBChatService.getInstance();
-    private ArrayList<QBUser> usersLoadedFromDialog = new ArrayList<>();
-    private ArrayList<QBUser> usersLoadedFromDialogs = new ArrayList<>();
-    private ArrayList<QBUser> usersLoadedFromMessage = new ArrayList<>();
-    private ArrayList<QBUser> usersLoadedFromMessages = new ArrayList<>();
+    private final Context context;
+    private final QBChatService qbChatService = QBChatService.getInstance();
+    private final ArrayList<QBUser> usersLoadedFromDialog = new ArrayList<>();
+    private final ArrayList<QBUser> usersLoadedFromDialogs = new ArrayList<>();
+    private final ArrayList<QBUser> usersLoadedFromMessage = new ArrayList<>();
+    private final ArrayList<QBUser> usersLoadedFromMessages = new ArrayList<>();
 
     public ChatHelperCon(Context context) {
         this.context = context;
-        QBSettings.getInstance().setLogLevel(LogLevel.DEBUG);
-        QBChatService.setDebugEnabled(true);
-        QBChatService.setConfigurationBuilder(buildChatConfigs());
-        QBChatService.setDefaultPacketReplyTimeout(10000);
-        QBChatService.getInstance().setUseStreamManagement(true);
+        try {
+            QBSettings.getInstance().setLogLevel(LogLevel.DEBUG);
+            QBChatService.setDebugEnabled(true);
+            QBChatService.setConfigurationBuilder(buildChatConfigs());
+            QBChatService.setDefaultPacketReplyTimeout(10000);
+            QBChatService.getInstance().setUseStreamManagement(true);
+
+        } catch (ExceptionInInitializerError e) {
+            e.printStackTrace();
+        }
+
+
+
+
     }
 
     private static QBChatService.ConfigurationBuilder buildChatConfigs() {

@@ -1,7 +1,5 @@
 package com.skylightapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.app.TabActivity;
 import android.content.Intent;
@@ -24,10 +22,7 @@ import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.MapAndLoc.OurCleanUpAct;
-import com.skylightapp.MapAndLoc.OurJIVsAct;
-import com.skylightapp.MapAndLoc.ResponseTeamOffice;
-import com.skylightapp.MarketClasses.MarketBizSubScription;
+import com.skylightapp.MarketClasses.MarketBizSub;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +52,7 @@ public class SubScriptionTab extends TabActivity {
     private Customer customer;
     private Account account;
     private ArrayList<Account> accountArrayList;
-    private ArrayList<MarketBizSubScription> marketBizSubScriptions;
+    private ArrayList<MarketBizSub> marketBizSubs;
 
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
     private FloatingActionButton fab;

@@ -96,7 +96,7 @@ public class ProductDetailsAct extends AppCompatActivity {
         setContentView(R.layout.act_product_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         productImagesViewPager = findViewById(R.id.product_images_viewpager);
