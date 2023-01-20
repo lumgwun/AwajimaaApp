@@ -90,7 +90,7 @@ public class UserPrefActivity extends AppCompatActivity {
             if (savedInstanceState == null) {
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.settings, new HeaderFragment())
+                        .replace(R.id.settings, new SettingsFragment())
                         .commit();
             } else {
                 setTitle(savedInstanceState.getCharSequence(TITLE_TAG));
@@ -108,7 +108,7 @@ public class UserPrefActivity extends AppCompatActivity {
                     });
 
 
-            getSupportFragmentManager().addOnBackStackChangedListener(
+            /*getSupportFragmentManager().addOnBackStackChangedListener(
                     () -> {
                         if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
 
@@ -128,7 +128,7 @@ public class UserPrefActivity extends AppCompatActivity {
                                     .replace(R.id.settings, new OtherCountryFragment())
                                     .commit();
                         }
-                    });
+                    });*/
 
         } catch (ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();

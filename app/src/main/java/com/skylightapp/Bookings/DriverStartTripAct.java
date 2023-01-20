@@ -34,15 +34,16 @@ import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.skylightapp.R;
-import com.teliver.sdk.core.TLog;
-import com.teliver.sdk.core.Teliver;
-import com.teliver.sdk.core.TripListener;
-import com.teliver.sdk.models.PushData;
-import com.teliver.sdk.models.Trip;
-import com.teliver.sdk.models.TripBuilder;
-import com.teliver.sdk.models.UserBuilder;
+
 
 import java.util.Calendar;
+
+import io.teliver.sdk.core.TLog;
+import io.teliver.sdk.core.Teliver;
+import io.teliver.sdk.core.TripListener;
+import io.teliver.sdk.models.PushData;
+import io.teliver.sdk.models.TripBuilder;
+import io.teliver.sdk.models.UserBuilder;
 
 public class DriverStartTripAct extends AppCompatActivity implements OnSuccessListener<Location>{
     private static final int GPS_REQ = 124;
@@ -119,13 +120,15 @@ public class DriverStartTripAct extends AppCompatActivity implements OnSuccessLi
                             withUserPushObject(pushData);
                     Teliver.startTrip(tripBuilder.build());
                     Teliver.setTripListener(new TripListener() {
+
                         @Override
-                        public void onTripStarted(Trip tripDetails) {
+                        public void onTripStarted(io.teliver.sdk.models.Trip tripDetails) {
                             application.storeBooleanInPref("switch_state", true);
                             Log.d("Awajima Trip::", "onTripStarted: " + tripDetails.getTrackingId());
                             txtSendPush.setTextColor(ContextCompat.getColor(DriverStartTripAct.this, R.color.black));
                             edtPushMessage.setEnabled(true);
                             edtPushMessage.setHintTextColor(ContextCompat.getColor(DriverStartTripAct.this, R.color.white_good));
+
                         }
 
                         @Override
@@ -153,8 +156,9 @@ public class DriverStartTripAct extends AppCompatActivity implements OnSuccessLi
                     Teliver.sendEventPush(trackingId, pushData, "trip stopped");
                     Teliver.stopTrip(trackingId);
                     Teliver.setTripListener(new TripListener() {
+
                         @Override
-                        public void onTripStarted(Trip tripDetails) {
+                        public void onTripStarted(io.teliver.sdk.models.Trip tripDetails) {
 
                         }
 

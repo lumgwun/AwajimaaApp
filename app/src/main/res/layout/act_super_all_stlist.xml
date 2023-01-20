@@ -22,11 +22,11 @@
             android:layout_marginBottom="10dp"
             android:gravity="center">
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Skylight Stocks Transfers"
+                android:text=" Stocks Transfers"
                 android:textAlignment="center"
                 android:textSize="19sp"
                 android:textStyle="bold" />
@@ -40,7 +40,7 @@
             android:layout_marginStart="1dp"
             android:layout_marginBottom="3dp"
             android:layout_height="wrap_content">
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -52,7 +52,7 @@
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:textColorHint="@color/colorPrimary"
-                android:text="Search Database By:" />
+                android:text="Search Database with:" />
 
         </LinearLayout>
         <androidx.cardview.widget.CardView
@@ -111,7 +111,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="0dp"
-                    android:text="Using the Date"
+                    android:text="The ST. Date"
                     android:textSize="15sp"
                     android:padding="15dp"
                     android:onClick="revealSTDateLayout"
@@ -193,7 +193,7 @@
             android:layout_marginStart="1dp"
             android:layout_marginBottom="3dp"
             android:layout_height="wrap_content">
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -206,7 +206,7 @@
                 android:layout_gravity="start"
                 android:background="@drawable/shape_rect14c"
                 android:textColorHint="@color/colorPrimary"
-                android:text="From Skylight Today:" />
+                android:text="From Us Today:" />
 
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
@@ -227,7 +227,7 @@
             android:visibility="gone"
             android:layout_marginBottom="3dp"
             android:layout_height="wrap_content">
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -314,6 +314,7 @@
             app:cardCornerRadius="2dp"
             app:cardElevation="2dp"
             android:gravity="end"
+            android:visibility="gone"
             android:id="@+id/cardStDates"
             app:cardBackgroundColor="@color/white"
             android:layout_marginTop="10dp"
@@ -356,7 +357,7 @@
             android:id="@+id/layoutFromTeller"
             android:visibility="gone"
             android:layout_height="wrap_content">
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -488,7 +489,7 @@
             android:id="@+id/layoutFromBranch"
             android:visibility="gone"
             android:layout_height="wrap_content">
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -618,7 +619,7 @@
             android:id="@+id/layoutToCustomers"
             android:visibility="gone"
             android:layout_height="wrap_content">
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -747,7 +748,7 @@
             android:layout_marginBottom="3dp"
             android:id="@+id/layoutAllST"
             android:layout_height="wrap_content">
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -757,10 +758,11 @@
                 android:id="@+id/txtByAll"
                 android:padding="20dp"
                 android:gravity="center"
+                app:drawableTopCompat="@drawable/ic_icon2"
                 android:layout_gravity="center"
                 android:background="@drawable/rect6b"
                 android:textColorHint="@color/colorPrimary"
-                android:text="All Skylight ST :" />
+                android:text="All of Our STocks :" />
 
         </LinearLayout>
 
@@ -822,7 +824,7 @@
             android:layout_marginBottom="3dp"
             android:id="@+id/layoutSkylightST"
             android:layout_height="wrap_content">
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -832,6 +834,7 @@
                 android:id="@+id/txtByOffice"
                 android:padding="20dp"
                 android:gravity="center"
+                app:drawableTopCompat="@drawable/ic_icon2"
                 android:layout_gravity="center"
                 android:background="@drawable/rect6b"
                 android:textColorHint="@color/colorPrimary"
@@ -855,6 +858,7 @@
             app:cardCornerRadius="2dp"
             app:cardElevation="2dp"
             android:gravity="end"
+            android:visibility="gone"
             app:cardBackgroundColor="@color/white"
             android:layout_marginTop="10dp"
             android:layout_gravity="end"

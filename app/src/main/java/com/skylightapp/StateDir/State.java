@@ -11,10 +11,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.BaseColumns;
 
+import com.blongho.country_data.Country;
 import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.core.model.QBEntity;
 import com.quickblox.users.model.QBUser;
 import com.skylightapp.Bookings.TaxiDriver;
+import com.skylightapp.Bookings.Trip;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.GroupAccount;
 import com.skylightapp.Classes.GroupSavings;
@@ -32,7 +34,7 @@ import com.skylightapp.MarketClasses.MarketBusiness;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class State implements Parcelable, Serializable, BaseColumns {
+public class State implements Comparable<State>,Parcelable, Serializable, BaseColumns {
     public static final String STATE_SUB_ID = "state_Sub_ID";
     public static final String STATE_CUS_ID = "state_Cus_ID";
     public static final String STATE_PROF_ID = "state_Prof_ID";
@@ -83,6 +85,8 @@ public class State implements Parcelable, Serializable, BaseColumns {
     private ArrayList<GroupAccount> stateGrpAccounts;
     private ArrayList<StateMinistry> stateMinistries;
     private ArrayList<Housing> stateHousing;
+    private ArrayList<Trip> stateTrips;
+    private Country country;
     public State() {
         super();
     }
@@ -401,5 +405,18 @@ public class State implements Parcelable, Serializable, BaseColumns {
 
     public void setStateHousing(ArrayList<Housing> stateHousing) {
         this.stateHousing = stateHousing;
+    }
+
+    @Override
+    public int compareTo(State state) {
+        return 0;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
     }
 }

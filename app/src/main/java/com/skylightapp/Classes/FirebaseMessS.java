@@ -1,7 +1,6 @@
 package com.skylightapp.Classes;
 
 import android.annotation.SuppressLint;
-import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -30,16 +29,12 @@ import com.skylightapp.LoginDirAct;
 import com.skylightapp.MoneyTxDetailAct;
 import com.skylightapp.NotificationAct;
 import com.skylightapp.PackageDetailsActivity;
-import com.skylightapp.PlanPaymentActivity;
+import com.skylightapp.PlanPaymentAct;
 import com.skylightapp.R;
 import com.skylightapp.Markets.CashOutDetailsActivity;
 import com.skylightapp.Transactions.GOTVDetailsActivity;
 import com.skylightapp.Transactions.StarTimeDetailsActivity;
-import com.teliver.sdk.core.Teliver;
-import com.teliver.sdk.models.MarkerOption;
-import com.teliver.sdk.models.NotificationData;
-import com.teliver.sdk.models.TConstants;
-import com.teliver.sdk.models.TrackingBuilder;
+
 
 import static com.skylightapp.Classes.CustomerDailyReport.REPORT_ID;
 import static com.skylightapp.MarketClasses.MarketBizPackage.PACKAGE_ID;
@@ -49,6 +44,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Map;
+
+import io.teliver.sdk.core.Teliver;
+import io.teliver.sdk.models.MarkerOption;
+import io.teliver.sdk.models.NotificationData;
+import io.teliver.sdk.models.TConstants;
+import io.teliver.sdk.models.TrackingBuilder;
 
 
 public class FirebaseMessS extends FirebaseMessagingService {
@@ -415,7 +416,7 @@ public class FirebaseMessS extends FirebaseMessagingService {
         String notificationImageUrl = remoteMessage.getData().get(ICON_KEY);
         String starTimesId = remoteMessage.getData().get(SO_KEY);
 
-        Intent backIntent = new Intent(this, PlanPaymentActivity.class);
+        Intent backIntent = new Intent(this, PlanPaymentAct.class);
         Intent intent = new Intent(this, StarTimeDetailsActivity.class);
         intent.putExtra(BILL_ID, starTimesId);
         Bitmap bitmap = getBitmapFromUrl(notificationImageUrl);

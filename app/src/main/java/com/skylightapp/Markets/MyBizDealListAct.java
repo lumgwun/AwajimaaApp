@@ -48,7 +48,7 @@ import static com.skylightapp.BuildConfig.QUICKBLOX_APP_ID;
 import static com.skylightapp.BuildConfig.QUICKBLOX_AUTH_KEY;
 import static com.skylightapp.BuildConfig.QUICKBLOX_SECRET_KEY;
 
-public class MyBizDealListAct extends AppCompatActivity implements BizDealAdapter.OnBizDealClickListener,MarketBizRecyAdapter.OnItemsClickListener,MarketBizRecyAdapter.OnClickListener{
+public class MyBizDealListAct extends AppCompatActivity implements BizDealAdapter.OnBizDealClickListener, MarketBizRecyAdapter.OnBizClickListener{
 
     private LinearLayout layoutDate;
     private CardView cardDate,cardDatesButton,cardBtnSubmitHost;
@@ -77,7 +77,7 @@ public class MyBizDealListAct extends AppCompatActivity implements BizDealAdapte
     private ArrayList<BusinessDeal> businessDealArrayList;
     private ArrayList<BusinessDeal> bizDealsFromUsAtDate;
     private ArrayList<BusinessDeal> bizDealsToUsAtDate;
-    private MarketBizRecyAdapter.OnClickListener mbListener;
+    private MarketBizRecyAdapter.OnBizClickListener mbListener;
     List<BusinessDeal> businessDealList;
     private MarketAdapter marketAdapter;
     private AppCompatButton btnCreatedDate, btnDealsFromUs,btnSubmitHost, btnDealsToUs,btnSearchByDate,btnPartner, btnByStatusLayout;
@@ -108,6 +108,7 @@ public class MyBizDealListAct extends AppCompatActivity implements BizDealAdapte
 
     private RecyclerView recyclerViewDeals,recylerToUs,recyViewByDate,recyViewHostDeal, recyclerViewDealsStatus;
     private int year;
+    private int index =0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,8 +151,13 @@ public class MyBizDealListAct extends AppCompatActivity implements BizDealAdapte
         spnStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedStatus = spnStatus.getSelectedItem().toString();
-                //selectedGender = (String) parent.getSelectedItem();
+                if(index==position){
+                    return;
+                }else {
+                    selectedStatus = spnStatus.getSelectedItem().toString();
+
+                }
+
             }
 
             @Override
@@ -261,6 +267,7 @@ public class MyBizDealListAct extends AppCompatActivity implements BizDealAdapte
         snapHelper.attachToRecyclerView(recyclerViewDealsStatus);
         recyclerViewDealsStatus.setNestedScrollingEnabled(false);
         recyclerViewDealsStatus.invalidate ();
+        bizDealAdapterAll.setSelectedItemsCountsChangedListener(this);
     }
     @Override
     public void onDestroy() {

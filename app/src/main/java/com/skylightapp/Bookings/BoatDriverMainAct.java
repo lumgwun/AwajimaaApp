@@ -308,6 +308,11 @@ public class BoatDriverMainAct extends AppCompatActivity implements View.OnClick
         startActivity(rideIntent);
         this.finish();
     }
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
+    }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {

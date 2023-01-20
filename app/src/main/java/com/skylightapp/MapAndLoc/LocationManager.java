@@ -25,9 +25,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.skylightapp.Bookings.Driver;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.Database.DistancesDAO;
 import com.skylightapp.Database.MovingPositionsDAO;
 import com.skylightapp.Database.RegionDAO;
 import com.skylightapp.Database.VisitDAO;
@@ -153,13 +151,13 @@ public class LocationManager {
 
     private void createLocationPendingIntent() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            Intent intent = new Intent(this.context, LocationUpdatesBroadcastReceiver.class);
-            intent.setAction(LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES);
+            Intent intent = new Intent(this.context, LocUpdatesBReceiver.class);
+            intent.setAction(LocUpdatesBReceiver.ACTION_PROCESS_UPDATES);
             int flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE;
             mLocationIntent = PendingIntent.getBroadcast(this.context, 0, intent, flags);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Intent intent = new Intent(this.context, LocationUpdatesBroadcastReceiver.class);
-            intent.setAction(LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES);
+            Intent intent = new Intent(this.context, LocUpdatesBReceiver.class);
+            intent.setAction(LocUpdatesBReceiver.ACTION_PROCESS_UPDATES);
             mLocationIntent = PendingIntent.getBroadcast(this.context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         } else {
             Intent intent = new Intent(this.context, LocationUpdatesIntentService.class);

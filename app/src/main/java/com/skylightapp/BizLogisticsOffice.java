@@ -42,14 +42,11 @@ public class BizLogisticsOffice extends AppCompatActivity {
         setContentView(R.layout.act_biz_logics_office);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         chipNavigationBar = findViewById(R.id.nav_bar_logistics);
-        fab = findViewById(R.id.fab_Logistics);
+        //fab = findViewById(R.id.fab_Logis);
         gson = new Gson();
-        countries=new ArrayList<>();
         gson1 = new Gson();
-        currencies= new ArrayList<>();
         userProfile=new Profile();
         customer=new Customer();
-        account=new Account();
         SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
         SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
         SharedPrefCusID=userPreferences.getString("CUSTOMER_ID", "");
@@ -136,5 +133,10 @@ public class BizLogisticsOffice extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
     }
 }

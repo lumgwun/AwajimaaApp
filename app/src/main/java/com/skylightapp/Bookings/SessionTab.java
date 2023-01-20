@@ -1,7 +1,5 @@
 package com.skylightapp.Bookings;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.app.TabActivity;
 import android.content.Intent;
@@ -17,11 +15,8 @@ import com.google.gson.Gson;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.CoachOffice;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.LoginActivity;
 import com.skylightapp.MainActChat;
 import com.skylightapp.R;
-import com.skylightapp.SignTabMainActivity;
-import com.skylightapp.SignUpAct;
 
 public class SessionTab extends TabActivity {
     com.melnykov.fab.FloatingActionButton floatingActionButton;
@@ -87,4 +82,5 @@ public class SessionTab extends TabActivity {
 
 
     }
+
 }

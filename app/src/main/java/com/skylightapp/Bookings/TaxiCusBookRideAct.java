@@ -76,8 +76,6 @@ import com.skylightapp.MapAndLoc.GPSTracker;
 import com.skylightapp.MarketClasses.Market;
 import com.skylightapp.R;
 import com.skylightapp.SignUpAct;
-import com.teliver.sdk.core.Teliver;
-import com.teliver.sdk.models.UserBuilder;
 
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -91,6 +89,9 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+
+import io.teliver.sdk.core.Teliver;
+import io.teliver.sdk.models.UserBuilder;
 
 public class TaxiCusBookRideAct extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener,GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback, LocationListener {
     private TaxiDriver taxiDriver;

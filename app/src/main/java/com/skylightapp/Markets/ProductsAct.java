@@ -47,8 +47,7 @@ import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
 import com.skylightapp.UserPrefActivity;
 import com.skylightapp.UserTimeLineAct;
-import com.teliver.sdk.core.Teliver;
-import com.teliver.sdk.models.UserBuilder;
+
 
 import java.util.ArrayList;
 import java.util.List;

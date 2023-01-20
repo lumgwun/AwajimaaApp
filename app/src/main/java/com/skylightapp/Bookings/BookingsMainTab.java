@@ -171,6 +171,12 @@ public class BookingsMainTab extends TabActivity implements NavigationView.OnNav
                 .setIndicator("", resources.getDrawable(R.drawable.boat33))
                 .setContent(intentBoatB);
 
+        Intent intentT= new Intent().setClass(this, LogisticsComLAct.class);
+        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabT = tabhost
+                .newTabSpec("Logistics Company")
+                .setIndicator("", resources.getDrawable(R.drawable.train))
+                .setContent(intentT);
+
         Intent intentTransactions= new Intent().setClass(this, TaxiDriverRideAct.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec taxiTrips = tabhost
                 .newTabSpec("Taxi Trips")
@@ -191,6 +197,7 @@ public class BookingsMainTab extends TabActivity implements NavigationView.OnNav
                 .setContent(intentTrain);
 
         tabhost.addTab(tabTour);
+        tabhost.addTab(tabT);
         tabhost.addTab(boatTrips);
         tabhost.addTab(taxiTrips);
         tabhost.addTab(tabTrain);

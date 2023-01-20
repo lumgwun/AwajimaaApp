@@ -158,6 +158,8 @@ public class Customer  implements Parcelable, Serializable {
     }
 
     private ArrayList<MarketBusiness> cusMarketBusinesses;
+    private ArrayList<CustomerManager> customerManagers;
+
     private ArrayList<Account> cusAccounts;
 
     public Customer(String refID, String cusPhoneNumber) {
@@ -399,6 +401,11 @@ public class Customer  implements Parcelable, Serializable {
         stocks.add(stocks1);
 
     }
+    public void addCusAccountManager(CustomerManager customerManager) {
+        customerManagers = new ArrayList<>();
+        customerManagers.add(customerManager);
+
+    }
 
     public void addCusNewSavings(int packageID, int reportID, double savingsAmount, int numberOfDays, double totalAmountSum, int daysRemaining, double amountRemaining, String reportDate, String status1) {
         ArrayList<CustomerDailyReport> dailyReports = null;
@@ -479,6 +486,8 @@ public class Customer  implements Parcelable, Serializable {
         standingOrders.add(standingOrder);
 
     }
+
+
     public void addCusMessages(int keyExtraMessageId, String selectedPurpose, String message, String sender, String time) {
         keyExtraMessageId = messages.size() + 1;
         supportMessage = new Message(keyExtraMessageId,selectedPurpose, message,sender,time);
@@ -681,6 +690,10 @@ public class Customer  implements Parcelable, Serializable {
 
     public ArrayList<Account> getCusAccounts() {
         return cusAccounts;
+    }
+
+    public void setCustomerManagers(ArrayList<CustomerManager> customerManagers) {
+        this.customerManagers = customerManagers;
     }
 
 

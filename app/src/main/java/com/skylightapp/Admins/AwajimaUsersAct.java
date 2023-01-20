@@ -16,12 +16,12 @@ import com.skylightapp.R;
 import com.skylightapp.Tellers.CustomerListFragment;
 import com.skylightapp.UserTimeLineOverview;
 
-public class SkylightUsersActivity extends AppCompatActivity implements UserListFragment.OnFragmentInteractionListener {
+public class AwajimaUsersAct extends AppCompatActivity implements UserListFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_skylight_users);
+        setContentView(R.layout.act_awajima_users);
         FragmentManager fm = getSupportFragmentManager();
 
         ViewStateAdapter sa = new ViewStateAdapter(fm, getLifecycle());

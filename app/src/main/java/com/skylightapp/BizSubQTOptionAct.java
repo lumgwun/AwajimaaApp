@@ -22,7 +22,7 @@ public class BizSubQTOptionAct extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int which) {
                         switch (which) {
                             case 0:
-                                Intent autoIntent = new Intent(BizSubQTOptionAct.this, PlanPaymentActivity.class);
+                                Intent autoIntent = new Intent(BizSubQTOptionAct.this, PlanPaymentAct.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
                                 autoIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

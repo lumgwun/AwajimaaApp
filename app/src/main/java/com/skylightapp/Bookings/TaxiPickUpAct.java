@@ -76,7 +76,6 @@ import com.skylightapp.MapAndLoc.Route;
 import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.Markets.MyMarketTranxAct;
 import com.skylightapp.R;
-import com.teliver.sdk.core.TripListener;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -87,6 +86,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+
+import io.teliver.sdk.core.TripListener;
 
 public class TaxiPickUpAct extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener, OnMapReadyCallback {
     private Marker calledMarker = null;

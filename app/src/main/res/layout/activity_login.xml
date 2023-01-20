@@ -7,9 +7,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="1dp"
     app:circularflow_defaultAngle="10"
-    android:background="@drawable/rect_their4b"
+    android:background="@drawable/rect_new"
     android:fitsSystemWindows="true"
-    tools:context="com.skylightapp.LoginActivity">
+    tools:context="com.skylightapp.LoginAct">
     <ScrollView
         android:layout_width="match_parent"
         android:id="@+id/first_scroll3"

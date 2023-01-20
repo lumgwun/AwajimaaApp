@@ -1,7 +1,5 @@
 package com.skylightapp.Markets;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.TabActivity;
@@ -28,15 +26,12 @@ import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.chat.model.QBChatMessage;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.LoginActivity;
 import com.skylightapp.MarketClasses.AttachmentPreviewAdapter;
 import com.skylightapp.MarketClasses.ChatAdapter;
 import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.MarketClasses.StrokedTextView;
 import com.skylightapp.MarketClasses.UserProfileInfo;
 import com.skylightapp.R;
-import com.skylightapp.SignTabMainActivity;
-import com.skylightapp.SignUpAct;
 
 import org.jivesoftware.smack.ConnectionListener;
 

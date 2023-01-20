@@ -125,8 +125,8 @@ public class HotEmergAct extends AppCompatActivity {
         startActivityForResult(intent, PLACE_PICKER_REQUEST);
 
 
-        Intent intent = new Intent(this, LocationUpdatesBroadcastReceiver.class);
-        intent.setAction(LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES);
+        Intent intent = new Intent(this, LocUpdatesBReceiver.class);
+        intent.setAction(LocUpdatesBReceiver.ACTION_PROCESS_UPDATES);
         PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
          editor = userPreferences.edit();
         editor.putBoolean(getString(R.string.setting_enabled),true);

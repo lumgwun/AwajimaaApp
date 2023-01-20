@@ -89,7 +89,7 @@ public class SMSAct extends AppCompatActivity {
         if(smsBundle !=null){
             phoneNumber=smsBundle.getString(PROFILE_PHONE);
             smsMessage=smsBundle.getString("smsMessage");
-            //from=smsBundle.getString("from");
+            from=smsBundle.getString("from");
             to=smsBundle.getString("to");
             cusEmail=smsBundle.getString("emailAddress");
             subject=smsBundle.getString("subject");

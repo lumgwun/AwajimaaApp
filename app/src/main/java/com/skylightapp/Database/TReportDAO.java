@@ -21,6 +21,7 @@ import static com.skylightapp.Classes.TellerReport.TELLER_REPORT_AMOUNT_SUBMITTE
 import static com.skylightapp.Classes.TellerReport.TELLER_REPORT_AMT_PAID;
 import static com.skylightapp.Classes.TellerReport.TELLER_REPORT_APPROVAL_DATE;
 import static com.skylightapp.Classes.TellerReport.TELLER_REPORT_BALANCE;
+import static com.skylightapp.Classes.TellerReport.TELLER_REPORT_BIZ_NAME;
 import static com.skylightapp.Classes.TellerReport.TELLER_REPORT_BRANCH;
 import static com.skylightapp.Classes.TellerReport.TELLER_REPORT_DATE;
 import static com.skylightapp.Classes.TellerReport.TELLER_REPORT_EXPECTED_AMT;
@@ -143,7 +144,7 @@ public class TReportDAO extends DBHelperDAO{
 
 
     }
-    public long insertTellerReport2(int tellerID,int officeBranchID, String dateOfReport, String officeBranch, double amountEntered, int noOfCustomers,String cmName) {
+    public long insertTellerReport2(int tellerID,int officeBranchID, String dateOfReport, String officeBranch, double amountEntered, int noOfCustomers,String cmName,long bizID) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         long tellerReportID=0;
@@ -160,6 +161,7 @@ public class TReportDAO extends DBHelperDAO{
         values.put(TELLER_REPORT_BRANCH, officeBranch);
         values.put(TELLER_REPORT_ADMIN, cmName);
         values.put(TELLER_REPORT_MARKETER, cmName);
+        values.put(TELLER_REPORT_BIZ_NAME, bizID);
         values.put(TELLER_REPORT_STATUS, "");
         db.insert(TELLER_REPORT_TABLE,null,values);
 
@@ -323,6 +325,28 @@ public class TReportDAO extends DBHelperDAO{
         }
 
         return null;
+    }
+    public ArrayList<TellerReport> getTellerReportBiz(long bizID) {
+        ArrayList<TellerReport> tellerReportArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = TELLER_REPORT_BIZ_NAME + "=?";
+        String[] selectionArgs = new String[]{valueOf(bizID)};
+        Cursor cursor = db.query(TELLER_REPORT_TABLE, null, selection, selectionArgs, null,
+                null, null);
+
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getTellerReportFromCursor(tellerReportArrayList, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        db.close();
+
+        return tellerReportArrayList;
     }
 
     public ArrayList<TellerReport> getTellerReportsAll() {
@@ -505,4 +529,6 @@ public class TReportDAO extends DBHelperDAO{
         values.put(TELLER_REPORT_STATUS, tellerReport.getTrStatus());
         return db.insert(TELLER_REPORT_TABLE,null,values);
     }
+
+
 }

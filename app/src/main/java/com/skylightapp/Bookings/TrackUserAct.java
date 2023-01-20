@@ -42,13 +42,7 @@ import com.google.gson.Gson;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.MapAndLoc.GPSTracker;
 import com.skylightapp.R;
-import com.teliver.sdk.core.TLog;
-import com.teliver.sdk.core.Teliver;
-import com.teliver.sdk.core.TrackingListener;
-import com.teliver.sdk.models.MarkerOption;
-import com.teliver.sdk.models.TLocation;
-import com.teliver.sdk.models.TrackingBuilder;
-import com.teliver.sdk.models.UserBuilder;
+
 
 import org.jetbrains.annotations.NotNull;
 
@@ -57,6 +51,14 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
+import io.teliver.sdk.core.TLog;
+import io.teliver.sdk.core.Teliver;
+import io.teliver.sdk.core.TrackingListener;
+import io.teliver.sdk.models.MarkerOption;
+import io.teliver.sdk.models.TLocation;
+import io.teliver.sdk.models.TrackingBuilder;
+import io.teliver.sdk.models.UserBuilder;
 
 public class TrackUserAct extends AppCompatActivity implements OnMapReadyCallback, LoaderManager.LoaderCallbacks<Object>, GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener,
         LocationListener {

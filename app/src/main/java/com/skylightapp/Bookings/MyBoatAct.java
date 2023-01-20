@@ -49,4 +49,9 @@ public class MyBoatAct extends AppCompatActivity {
         json1 = userPreferences.getString("LastCustomerUsed", "");
         customer = gson1.fromJson(json1, Customer.class);
     }
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
+    }
 }

@@ -14,10 +14,12 @@ import com.google.gson.GsonBuilder;
 import com.skylightapp.MarketClasses.Notification;
 import com.skylightapp.Markets.MarketTab;
 import com.skylightapp.R;
-import com.teliver.sdk.core.Teliver;
-import com.teliver.sdk.models.NotificationData;
+
 
 import java.util.Map;
+
+import io.teliver.sdk.core.Teliver;
+import io.teliver.sdk.models.NotificationData;
 
 public class CusFirebaseMessaging extends FirebaseMessagingService {
     private MapApp application;

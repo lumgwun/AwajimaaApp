@@ -63,7 +63,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.maps.android.ui.IconGenerator;
 import com.melnykov.fab.FloatingActionButton;
 import com.skylightapp.BuildConfig;
-import com.skylightapp.MapAndLoc.LocationUpdatesBroadcastReceiver;
+import com.skylightapp.MapAndLoc.LocUpdatesBReceiver;
 import com.skylightapp.Classes.Utils;
 import com.skylightapp.R;
 
@@ -951,8 +951,8 @@ public class TrackWorkersAct extends FragmentActivity implements OnStreetViewPan
 
     private PendingIntent getPendingIntent() {
 
-        Intent intent = new Intent(this, LocationUpdatesBroadcastReceiver.class);
-        intent.setAction(LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES);
+        Intent intent = new Intent(this, LocUpdatesBReceiver.class);
+        intent.setAction(LocUpdatesBReceiver.ACTION_PROCESS_UPDATES);
         return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         //return null;
     }

@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.skylightapp.Bookings.MapApp;
-import com.teliver.sdk.core.Teliver;
-import com.teliver.sdk.core.TrackingListener;
-import com.teliver.sdk.models.MarkerOption;
-import com.teliver.sdk.models.TLocation;
-import com.teliver.sdk.models.TrackingBuilder;
+
+import io.teliver.sdk.core.Teliver;
+import io.teliver.sdk.core.TrackingListener;
+import io.teliver.sdk.models.MarkerOption;
+import io.teliver.sdk.models.TLocation;
+import io.teliver.sdk.models.TrackingBuilder;
+
 
 public class NotificationReceiver extends BroadcastReceiver {
     @Override

@@ -1,7 +1,5 @@
 package com.skylightapp.Bookings;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.app.TabActivity;
 import android.content.Intent;
@@ -15,10 +13,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Database.DBHelper;
-import com.skylightapp.LoginActivity;
 import com.skylightapp.R;
-import com.skylightapp.SignUpAct;
 
 public class BoatBookingTab extends TabActivity {
     com.melnykov.fab.FloatingActionButton floatingActionButton;

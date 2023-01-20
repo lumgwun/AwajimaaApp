@@ -23,7 +23,7 @@ import com.skylightapp.AwajimaSliderAct;
 import com.skylightapp.CheckMailActivity;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.Customers.SavingsStandingOrderWeb;
+import com.skylightapp.Customers.QuickTSOWebHookAct;
 import com.skylightapp.MyMessageFragment;
 import com.skylightapp.PasswordRecovAct;
 import com.skylightapp.PayNowActivity;
@@ -264,7 +264,7 @@ public class TellerDashboardAct extends AppCompatActivity {
 
 
     public void standingOrderT(View view) {
-        Intent intent = new Intent(this, SavingsStandingOrderWeb.class);
+        Intent intent = new Intent(this, QuickTSOWebHookAct.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("User", profileID);
         startActivity(intent);

@@ -9,13 +9,12 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.skylightapp.R;
-import com.teliver.sdk.models.Trip;
 
 import java.util.List;
 
 public class TripTAd extends RecyclerView.Adapter<TripTAd.MyViewHolder> {
 
-    private List<com.teliver.sdk.models.Trip> tripList;
+    private List<Trip> tripList;
 
     private View.OnClickListener listener;
 
@@ -37,7 +36,7 @@ public class TripTAd extends RecyclerView.Adapter<TripTAd.MyViewHolder> {
         inflater = LayoutInflater.from(context);
     }
 
-    public void setData(List<com.teliver.sdk.models.Trip> trips, View.OnClickListener listener) {
+    public void setData(List<Trip> trips, View.OnClickListener listener) {
         this.tripList = trips;
         this.listener = listener;
     }
@@ -50,15 +49,14 @@ public class TripTAd extends RecyclerView.Adapter<TripTAd.MyViewHolder> {
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Trip trip = tripList.get(position);
-        holder.trackingId.setText(trip.getTrackingId());
-        holder.stop.setTag(trip.getTrackingId());
+        holder.trackingId.setText(trip.getTripId());
+        holder.stop.setTag(trip.getTripId());
         holder.stop.setOnClickListener(listener);
         holder.tripId.setText(trip.getTripId());
     }
-
-
     @Override
     public int getItemCount() {
-        return tripList.size();
+        return (null != tripList ? tripList.size() : 0);
     }
+
 }

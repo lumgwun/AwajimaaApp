@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/shape_rect14a"
-    tools:context="com.skylightapp.Admins.SkylightUsersActivity">
+    tools:context="com.skylightapp.Admins.AwajimaUsersAct">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"

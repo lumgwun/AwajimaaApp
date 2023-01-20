@@ -84,6 +84,7 @@
                         android:textSize="19sp"
                         android:layout_marginTop="20dp"
                         android:layout_marginBottom="2dp"
+                        android:drawableTop="@drawable/ic_icon2"
                         android:fontFamily="@font/gilroy_bold"
                         android:textColor="@android:color/holo_green_light"
                         android:gravity="center_vertical|center_horizontal"
@@ -122,6 +123,51 @@
                         android:textStyle="bold" />
 
                 </com.google.android.material.card.MaterialCardView>
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="-1000dp"
+                    android:layout_marginTop="5dp"
+                    app:strokeColor="@color/red_brown_dark"
+                    app:rippleColor="@color/white_good"
+                    android:id="@+id/card_l009871"
+                    app:cardBackgroundColor="@color/white"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="130dp"
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/ifesinachi" />
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="170dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/chisco_transport" />
+
+
+                </com.google.android.material.card.MaterialCardView>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/train" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/boat33" />
+
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/ic_taxi" />
 
 
 

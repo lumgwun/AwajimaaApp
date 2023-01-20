@@ -11,9 +11,7 @@ import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.Toast;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.gson.Gson;
-import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
 
@@ -36,7 +34,7 @@ public class SignTabMainActivity extends TabActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_sign_tab_main);
         TabHost tabhost = findViewById(android.R.id.tabhost);
-        setTitle("Sign up / Login");
+        //setTitle("Sign up / Login");
         TabWidget tabs = findViewById(android.R.id.tabs);
         tabhost.setup(getLocalActivityManager());
         Resources resources = getResources();
@@ -55,13 +53,13 @@ public class SignTabMainActivity extends TabActivity {
         Intent intentSignUp = new Intent().setClass(this, SignUpAct.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecSignUp = tabhost
                 .newTabSpec("Sign up")
-                .setIndicator("", resources.getDrawable(R.drawable.signup2))
+                .setIndicator("", resources.getDrawable(R.drawable.ic_admin_panel))
                 .setContent(intentSignUp);
 
-        Intent intentSignIn = new Intent().setClass(this, LoginActivity.class);
+        Intent intentSignIn = new Intent().setClass(this, LoginAct.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecLogin = tabhost
                 .newTabSpec("Sign in")
-                .setIndicator("", resources.getDrawable(R.drawable.login4))
+                .setIndicator("", resources.getDrawable(R.drawable.ic_icon2))
                 .setContent(intentSignIn);
 
         tabhost.addTab(tabSpecSignUp);

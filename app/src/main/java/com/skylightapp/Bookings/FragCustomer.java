@@ -12,13 +12,15 @@ import androidx.fragment.app.Fragment;
 
 import com.skylightapp.Classes.Utils;
 import com.skylightapp.R;
-import com.teliver.sdk.core.Teliver;
-import com.teliver.sdk.models.MarkerOption;
-import com.teliver.sdk.models.TrackingBuilder;
+
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import io.teliver.sdk.core.Teliver;
+import io.teliver.sdk.models.MarkerOption;
+import io.teliver.sdk.models.TrackingBuilder;
 
 public class FragCustomer extends Fragment {
 

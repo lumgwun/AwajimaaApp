@@ -23,7 +23,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -39,7 +38,6 @@ import com.melnykov.fab.FloatingActionButton;
 import com.quickblox.auth.session.QBSettings;
 import com.quickblox.chat.QBChatService;
 import com.quickblox.core.QBEntityCallback;
-import com.quickblox.core.QBEntityCallbackImpl;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
@@ -65,7 +63,6 @@ import com.skylightapp.Markets.ToastUtils;
 import com.skylightapp.SuperAdmin.SuperAdminOffice;
 import com.skylightapp.Tellers.TellerDrawerAct;
 import com.skylightapp.Tellers.TellerHomeChoices;
-import com.skylightapp.VideoChat.BaseActivity;
 import com.skylightapp.VideoChat.SharedPrefsHelperV;
 
 import java.security.MessageDigest;
@@ -100,8 +97,8 @@ import static com.skylightapp.Database.DBHelper.DATABASE_NAME;
 import static com.skylightapp.Database.DBHelper.DB_PATH;
 
 @SuppressWarnings("deprecation")
-public class LoginActivity extends AppCompatActivity {
-    public static final String LOGIN_ID_EXTRA_KEY = "LoginActivity.LOGIN_ID_EXTRA_KEY";
+public class LoginAct extends AppCompatActivity {
+    public static final String LOGIN_ID_EXTRA_KEY = "LoginAct.LOGIN_ID_EXTRA_KEY";
     private Bundle bundle;
     private String username;
     private String password;
@@ -185,6 +182,16 @@ public class LoginActivity extends AppCompatActivity {
     private ProfDAO profDAO;
     private PrefManager prefManager;
     ProfDAO profileDao;
+    private boolean isSuperAdmin ;
+    private boolean isBizDonor ;
+    private boolean isMarketAdmin ;
+    private boolean isBizPartner ;
+    private boolean isBizRegulator ;
+    private boolean isBiz ;
+    private boolean isAdmin ;
+    private boolean isAwajimaCustomer ;
+    private boolean isAccountant ;
+    private boolean isTeller ;
 
     private static final String TAG = "EmailPassword";
     private static final String PREF_NAME = "awajima";
@@ -198,7 +205,7 @@ public class LoginActivity extends AppCompatActivity {
                     + "([a-zA-Z]+[w-]+.)+[a-zA-Z]{2,4})$";
     private Context context;
     public static void start(Context context) {
-        Intent intent = new Intent(context, LoginActivity.class);
+        Intent intent = new Intent(context, LoginAct.class);
         context.startActivity(intent);
     }
 
@@ -213,6 +220,16 @@ public class LoginActivity extends AppCompatActivity {
         SQLiteDataBaseBuild();
         prefManager= new PrefManager(this);
         profDAO= new ProfDAO(this);
+        isSuperAdmin =false;
+        isBizDonor =false;
+        isMarketAdmin =false;
+        isBizPartner =false;
+        isBizRegulator =false;
+        isBiz =false;
+        isAdmin =false;
+        isAwajimaCustomer =false;
+        isAccountant =false;
+        isTeller =false;
         standingOrderAcct = new StandingOrderAcct();
         customer1 = new Customer();
         customer = new Customer();
@@ -452,7 +469,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(QBUser qbUser, Bundle bundle) {
                 hideProgressDialog();
-                //OpponentsActivity.start(LoginActivity.this);
+                //OpponentsActivity.start(LoginAct.this);
                 finish();
             }
 
@@ -499,7 +516,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void showProgressDialog() {
-        progressDialog = new ProgressDialog(LoginActivity.this);
+        progressDialog = new ProgressDialog(LoginAct.this);
         progressDialog.setMessage("processing");
         progressDialog.setCancelable(true);
         progressDialog.show();
@@ -568,11 +585,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginWithUserNameDbase() {
         chk_remember_Me = findViewById(R.id.chk_remember_6);
-        progressDialog = new ProgressDialog(LoginActivity.this);
+        progressDialog = new ProgressDialog(LoginAct.this);
         progressDialog.setMessage("processing Login");
         progressDialog.setCancelable(true);
         progressDialog.show();
-        dbHelper= new DBHelper(LoginActivity.this);
+        dbHelper= new DBHelper(LoginAct.this);
         boolean isAdmin = true;
         customer = new Customer();
         gson = new Gson();
@@ -784,6 +801,15 @@ public class LoginActivity extends AppCompatActivity {
 
 
         if(sharedPrefUserMachine.equalsIgnoreCase("Teller")){
+            isTeller =true;
+            isSuperAdmin =false;
+            isBizDonor =false;
+             isMarketAdmin =false;
+             isBizPartner =false;
+             isBizRegulator =false;
+             isBiz =false;
+             isAwajimaCustomer =false;
+             isAccountant =false;
             Intent tellerIntent = new Intent(this, TellerHomeChoices.class);
             tellerIntent.putExtra("PROFILE_ID", profileID);
             tellerIntent.putExtra("PROFILE_USERNAME", userName);
@@ -816,26 +842,19 @@ public class LoginActivity extends AppCompatActivity {
             tellerIntent.putExtra(PROFILE_GENDER, gender);
             tellerIntent.putExtra(PROFILE_ADDRESS, address);
             tellerIntent.putExtra(PICTURE_URI, picture);
-            tellerIntent.putExtra("USER_NAME", userName);
-            tellerIntent.putExtra("USER_PASSWORD", password);
-            tellerIntent.putExtra("USER_OFFICE", officeBranch);
-            tellerIntent.putExtra("USER_STATE", state);
-            tellerIntent.putExtra("USER_ROLE", sharedPrefRole);
-            tellerIntent.putExtra("USER_DATE_JOINED", dateJoined);
-            tellerIntent.putExtra("EMAIL_ADDRESS", email);
-            tellerIntent.putExtra("USER_PHONE", sharedPrefPhone);
-            tellerIntent.putExtra("USER_FIRSTNAME", sharedPrefFirstName);
-            tellerIntent.putExtra("USER_SURNAME", sharedPrefSurName);
-            tellerIntent.putExtra("USER_DOB", dob);
-            tellerIntent.putExtra("USER_DATE_JOINED", dateJoined);
-            tellerIntent.putExtra("CUSTOMER_ID", customerID1);
-            tellerIntent.putExtra("USER_GENDER", gender);
-            tellerIntent.putExtra("USER_ADDRESS", address);
-            tellerIntent.putExtra("PICTURE_URI", picture);
             startActivity(tellerIntent);
 
         }
         if(sharedPrefUserMachine.equalsIgnoreCase("Accountant")){
+            isAccountant =true;
+            isSuperAdmin =false;
+            isBizDonor =false;
+            isMarketAdmin =false;
+            isBizPartner =false;
+            isBizRegulator =false;
+            isBiz =false;
+            isAwajimaCustomer =false;
+            isTeller =false;
             Intent accountantIntent = new Intent(this, AcctantBackOffice.class);
             accountantIntent.putExtra("PROFILE_ID", profileID);
             accountantIntent.putExtra("PROFILE_USERNAME", userName);
@@ -868,26 +887,19 @@ public class LoginActivity extends AppCompatActivity {
             accountantIntent.putExtra(PROFILE_GENDER, gender);
             accountantIntent.putExtra(PROFILE_ADDRESS, address);
             accountantIntent.putExtra(PICTURE_URI, picture);
-            accountantIntent.putExtra("USER_NAME", userName);
-            accountantIntent.putExtra("USER_PASSWORD", password);
-            accountantIntent.putExtra("USER_OFFICE", officeBranch);
-            accountantIntent.putExtra("USER_STATE", state);
-            accountantIntent.putExtra("USER_ROLE", sharedPrefRole);
-            accountantIntent.putExtra("USER_DATE_JOINED", dateJoined);
-            accountantIntent.putExtra("EMAIL_ADDRESS", email);
-            accountantIntent.putExtra("USER_PHONE", sharedPrefPhone);
-            accountantIntent.putExtra("USER_FIRSTNAME", sharedPrefFirstName);
-            accountantIntent.putExtra("USER_SURNAME", sharedPrefSurName);
-            accountantIntent.putExtra("USER_DOB", dob);
-            accountantIntent.putExtra("USER_DATE_JOINED", dateJoined);
-            accountantIntent.putExtra("CUSTOMER_ID", customerID1);
-            accountantIntent.putExtra("USER_GENDER", gender);
-            accountantIntent.putExtra("USER_ADDRESS", address);
-            accountantIntent.putExtra("PICTURE_URI", picture);
             startActivity(accountantIntent);
 
         }
         if(sharedPrefUserMachine.equalsIgnoreCase("SuperAdmin")){
+            isSuperAdmin =true;
+            isBizDonor =false;
+            isMarketAdmin =false;
+            isBizPartner =false;
+            isBizRegulator =false;
+            isBiz =false;
+            isAwajimaCustomer =false;
+            isAccountant =false;
+            isTeller =false;
             Intent superAdminIntent = new Intent(this, SuperAdminOffice.class);
             superAdminIntent.putExtra("PROFILE_ID", profileID);
             superAdminIntent.putExtra("PROFILE_USERNAME", userName);
@@ -920,26 +932,19 @@ public class LoginActivity extends AppCompatActivity {
             superAdminIntent.putExtra(PROFILE_GENDER, gender);
             superAdminIntent.putExtra(PROFILE_ADDRESS, address);
             superAdminIntent.putExtra(PICTURE_URI, picture);
-            superAdminIntent.putExtra("USER_NAME", userName);
-            superAdminIntent.putExtra("USER_PASSWORD", password);
-            superAdminIntent.putExtra("USER_OFFICE", officeBranch);
-            superAdminIntent.putExtra("USER_STATE", state);
-            superAdminIntent.putExtra("USER_ROLE", sharedPrefRole);
-            superAdminIntent.putExtra("USER_DATE_JOINED", dateJoined);
-            superAdminIntent.putExtra("EMAIL_ADDRESS", email);
-            superAdminIntent.putExtra("USER_PHONE", sharedPrefPhone);
-            superAdminIntent.putExtra("USER_FIRSTNAME", sharedPrefFirstName);
-            superAdminIntent.putExtra("USER_SURNAME", sharedPrefSurName);
-            superAdminIntent.putExtra("USER_DOB", dob);
-            superAdminIntent.putExtra("USER_DATE_JOINED", dateJoined);
-            superAdminIntent.putExtra("CUSTOMER_ID", customerID1);
-            superAdminIntent.putExtra("USER_GENDER", gender);
-            superAdminIntent.putExtra("USER_ADDRESS", address);
-            superAdminIntent.putExtra("PICTURE_URI", picture);
             startActivity(superAdminIntent);
 
         }
         if(sharedPrefUserMachine.equalsIgnoreCase("Customer")){
+            isAwajimaCustomer =true;
+            isSuperAdmin =false;
+            isBizDonor =false;
+            isMarketAdmin =false;
+            isBizPartner =false;
+            isBizRegulator =false;
+            isBiz =false;
+            isAccountant =false;
+            isTeller =false;
             Intent tellerIntent = new Intent(this, NewCustomerDrawer.class);
             tellerIntent.putExtra("PROFILE_ID", profileID);
             tellerIntent.putExtra("PROFILE_USERNAME", userName);
@@ -972,26 +977,20 @@ public class LoginActivity extends AppCompatActivity {
             tellerIntent.putExtra(PROFILE_GENDER, gender);
             tellerIntent.putExtra(PROFILE_ADDRESS, address);
             tellerIntent.putExtra(PICTURE_URI, picture);
-            tellerIntent.putExtra("USER_NAME", userName);
-            tellerIntent.putExtra("USER_PASSWORD", password);
-            tellerIntent.putExtra("USER_OFFICE", officeBranch);
-            tellerIntent.putExtra("USER_STATE", state);
-            tellerIntent.putExtra("USER_ROLE", sharedPrefRole);
-            tellerIntent.putExtra("USER_DATE_JOINED", dateJoined);
-            tellerIntent.putExtra("EMAIL_ADDRESS", email);
-            tellerIntent.putExtra("USER_PHONE", sharedPrefPhone);
-            tellerIntent.putExtra("USER_FIRSTNAME", sharedPrefFirstName);
-            tellerIntent.putExtra("USER_SURNAME", sharedPrefSurName);
-            tellerIntent.putExtra("USER_DOB", dob);
-            tellerIntent.putExtra("USER_DATE_JOINED", dateJoined);
-            tellerIntent.putExtra("CUSTOMER_ID", customerID1);
-            tellerIntent.putExtra("USER_GENDER", gender);
-            tellerIntent.putExtra("USER_ADDRESS", address);
-            tellerIntent.putExtra("PICTURE_URI", picture);
             startActivity(tellerIntent);
 
         }
         if(sharedPrefUserMachine.equalsIgnoreCase("AdminUser")){
+            isAdmin =true;
+            isSuperAdmin =false;
+            isBizDonor =false;
+            isMarketAdmin =false;
+            isBizPartner =false;
+            isBizRegulator =false;
+            isBiz =false;
+            isAwajimaCustomer =false;
+            isAccountant =false;
+            isTeller =false;
             Intent adminIntent = new Intent(this, AdminDrawerActivity.class);
             adminIntent.putExtra("PROFILE_ID", profileID);
             adminIntent.putExtra("PROFILE_USERNAME", userName);
@@ -1024,26 +1023,20 @@ public class LoginActivity extends AppCompatActivity {
             adminIntent.putExtra(PROFILE_GENDER, gender);
             adminIntent.putExtra(PROFILE_ADDRESS, address);
             adminIntent.putExtra(PICTURE_URI, picture);
-            adminIntent.putExtra("USER_NAME", userName);
-            adminIntent.putExtra("USER_PASSWORD", password);
-            adminIntent.putExtra("USER_OFFICE", officeBranch);
-            adminIntent.putExtra("USER_STATE", state);
-            adminIntent.putExtra("USER_ROLE", sharedPrefRole);
-            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
-            adminIntent.putExtra("EMAIL_ADDRESS", email);
-            adminIntent.putExtra("USER_PHONE", sharedPrefPhone);
-            adminIntent.putExtra("USER_FIRSTNAME", sharedPrefFirstName);
-            adminIntent.putExtra("USER_SURNAME", sharedPrefSurName);
-            adminIntent.putExtra("USER_DOB", dob);
-            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
-            adminIntent.putExtra("CUSTOMER_ID", customerID1);
-            adminIntent.putExtra("USER_GENDER", gender);
-            adminIntent.putExtra("USER_ADDRESS", address);
-            adminIntent.putExtra("PICTURE_URI", picture);
             startActivity(adminIntent);
 
         }
         if(sharedPrefUserMachine.equalsIgnoreCase("MarketBusiness")){
+            isBiz =true;
+            isAdmin =false;
+            isSuperAdmin =false;
+            isBizDonor =false;
+            isMarketAdmin =false;
+            isBizPartner =false;
+            isBizRegulator =false;
+            isAwajimaCustomer =false;
+            isAccountant =false;
+            isTeller =false;
             Intent adminIntent = new Intent(this, MarketBizOffice.class);
             adminIntent.putExtra("PROFILE_ID", profileID);
             adminIntent.putExtra("PROFILE_USERNAME", userName);
@@ -1076,26 +1069,20 @@ public class LoginActivity extends AppCompatActivity {
             adminIntent.putExtra(PROFILE_GENDER, gender);
             adminIntent.putExtra(PROFILE_ADDRESS, address);
             adminIntent.putExtra(PICTURE_URI, picture);
-            adminIntent.putExtra("USER_NAME", userName);
-            adminIntent.putExtra("USER_PASSWORD", password);
-            adminIntent.putExtra("USER_OFFICE", officeBranch);
-            adminIntent.putExtra("USER_STATE", state);
-            adminIntent.putExtra("USER_ROLE", sharedPrefRole);
-            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
-            adminIntent.putExtra("EMAIL_ADDRESS", email);
-            adminIntent.putExtra("USER_PHONE", sharedPrefPhone);
-            adminIntent.putExtra("USER_FIRSTNAME", sharedPrefFirstName);
-            adminIntent.putExtra("USER_SURNAME", sharedPrefSurName);
-            adminIntent.putExtra("USER_DOB", dob);
-            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
-            adminIntent.putExtra("CUSTOMER_ID", customerID1);
-            adminIntent.putExtra("USER_GENDER", gender);
-            adminIntent.putExtra("USER_ADDRESS", address);
-            adminIntent.putExtra("PICTURE_URI", picture);
             startActivity(adminIntent);
 
         }
         if(sharedPrefUserMachine.equalsIgnoreCase("MarketBizRegulator")){
+            isBizRegulator =true;
+            isAdmin =false;
+            isSuperAdmin =false;
+            isBizDonor =false;
+            isMarketAdmin =false;
+            isBizPartner =false;
+            isBiz =false;
+            isAwajimaCustomer =false;
+            isAccountant =false;
+            isTeller =false;
             Intent adminIntent = new Intent(this, BizRegulOffice.class);
             adminIntent.putExtra("PROFILE_ID", profileID);
             adminIntent.putExtra("PROFILE_USERNAME", userName);
@@ -1128,26 +1115,20 @@ public class LoginActivity extends AppCompatActivity {
             adminIntent.putExtra(PROFILE_GENDER, gender);
             adminIntent.putExtra(PROFILE_ADDRESS, address);
             adminIntent.putExtra(PICTURE_URI, picture);
-            adminIntent.putExtra("USER_NAME", userName);
-            adminIntent.putExtra("USER_PASSWORD", password);
-            adminIntent.putExtra("USER_OFFICE", officeBranch);
-            adminIntent.putExtra("USER_STATE", state);
-            adminIntent.putExtra("USER_ROLE", sharedPrefRole);
-            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
-            adminIntent.putExtra("EMAIL_ADDRESS", email);
-            adminIntent.putExtra("USER_PHONE", sharedPrefPhone);
-            adminIntent.putExtra("USER_FIRSTNAME", sharedPrefFirstName);
-            adminIntent.putExtra("USER_SURNAME", sharedPrefSurName);
-            adminIntent.putExtra("USER_DOB", dob);
-            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
-            adminIntent.putExtra("CUSTOMER_ID", customerID1);
-            adminIntent.putExtra("USER_GENDER", gender);
-            adminIntent.putExtra("USER_ADDRESS", address);
-            adminIntent.putExtra("PICTURE_URI", picture);
             startActivity(adminIntent);
 
         }
         if(sharedPrefUserMachine.equalsIgnoreCase("MarketBizPartner")){
+            isBizPartner =true;
+            isAdmin =false;
+            isSuperAdmin =false;
+            isBizDonor =false;
+            isMarketAdmin =false;
+            isBizRegulator =false;
+            isBiz =false;
+            isAwajimaCustomer =false;
+            isAccountant =false;
+            isTeller =false;
             Intent adminIntent = new Intent(this, MarketBizPOffice.class);
             adminIntent.putExtra("PROFILE_ID", profileID);
             adminIntent.putExtra("PROFILE_USERNAME", userName);
@@ -1180,26 +1161,20 @@ public class LoginActivity extends AppCompatActivity {
             adminIntent.putExtra(PROFILE_GENDER, gender);
             adminIntent.putExtra(PROFILE_ADDRESS, address);
             adminIntent.putExtra(PICTURE_URI, picture);
-            adminIntent.putExtra("USER_NAME", userName);
-            adminIntent.putExtra("USER_PASSWORD", password);
-            adminIntent.putExtra("USER_OFFICE", officeBranch);
-            adminIntent.putExtra("USER_STATE", state);
-            adminIntent.putExtra("USER_ROLE", sharedPrefRole);
-            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
-            adminIntent.putExtra("EMAIL_ADDRESS", email);
-            adminIntent.putExtra("USER_PHONE", sharedPrefPhone);
-            adminIntent.putExtra("USER_FIRSTNAME", sharedPrefFirstName);
-            adminIntent.putExtra("USER_SURNAME", sharedPrefSurName);
-            adminIntent.putExtra("USER_DOB", dob);
-            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
-            adminIntent.putExtra("CUSTOMER_ID", customerID1);
-            adminIntent.putExtra("USER_GENDER", gender);
-            adminIntent.putExtra("USER_ADDRESS", address);
-            adminIntent.putExtra("PICTURE_URI", picture);
             startActivity(adminIntent);
 
         }
         if(sharedPrefUserMachine.equalsIgnoreCase("MarketAdmin")){
+            isMarketAdmin =true;
+            isAdmin =false;
+            isSuperAdmin =false;
+            isBizDonor =false;
+            isBizPartner =false;
+            isBizRegulator =false;
+            isBiz =false;
+            isAwajimaCustomer =false;
+            isAccountant =false;
+            isTeller =false;
             Intent adminIntent = new Intent(this, MarketAdminOffice.class);
             adminIntent.putExtra("PROFILE_ID", profileID);
             adminIntent.putExtra("PROFILE_USERNAME", userName);
@@ -1232,26 +1207,20 @@ public class LoginActivity extends AppCompatActivity {
             adminIntent.putExtra(PROFILE_GENDER, gender);
             adminIntent.putExtra(PROFILE_ADDRESS, address);
             adminIntent.putExtra(PICTURE_URI, picture);
-            adminIntent.putExtra("USER_NAME", userName);
-            adminIntent.putExtra("USER_PASSWORD", password);
-            adminIntent.putExtra("USER_OFFICE", officeBranch);
-            adminIntent.putExtra("USER_STATE", state);
-            adminIntent.putExtra("USER_ROLE", sharedPrefRole);
-            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
-            adminIntent.putExtra("EMAIL_ADDRESS", email);
-            adminIntent.putExtra("USER_PHONE", sharedPrefPhone);
-            adminIntent.putExtra("USER_FIRSTNAME", sharedPrefFirstName);
-            adminIntent.putExtra("USER_SURNAME", sharedPrefSurName);
-            adminIntent.putExtra("USER_DOB", dob);
-            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
-            adminIntent.putExtra("CUSTOMER_ID", customerID1);
-            adminIntent.putExtra("USER_GENDER", gender);
-            adminIntent.putExtra("USER_ADDRESS", address);
-            adminIntent.putExtra("PICTURE_URI", picture);
             startActivity(adminIntent);
 
         }
         if(sharedPrefUserMachine.equalsIgnoreCase("MarketBizDonor")){
+            isBizDonor =true;
+            isAdmin =false;
+            isSuperAdmin =false;
+            isMarketAdmin =false;
+            isBizPartner =false;
+            isBizRegulator =false;
+            isBiz =false;
+            isAwajimaCustomer =false;
+            isAccountant =false;
+            isTeller =false;
             Intent adminIntent = new Intent(this, MarketBizDonorOffice.class);
             adminIntent.putExtra("PROFILE_ID", profileID);
             adminIntent.putExtra("PROFILE_USERNAME", userName);
@@ -1284,22 +1253,6 @@ public class LoginActivity extends AppCompatActivity {
             adminIntent.putExtra(PROFILE_GENDER, gender);
             adminIntent.putExtra(PROFILE_ADDRESS, address);
             adminIntent.putExtra(PICTURE_URI, picture);
-            adminIntent.putExtra("USER_NAME", userName);
-            adminIntent.putExtra("USER_PASSWORD", password);
-            adminIntent.putExtra("USER_OFFICE", officeBranch);
-            adminIntent.putExtra("USER_STATE", state);
-            adminIntent.putExtra("USER_ROLE", sharedPrefRole);
-            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
-            adminIntent.putExtra("EMAIL_ADDRESS", email);
-            adminIntent.putExtra("USER_PHONE", sharedPrefPhone);
-            adminIntent.putExtra("USER_FIRSTNAME", sharedPrefFirstName);
-            adminIntent.putExtra("USER_SURNAME", sharedPrefSurName);
-            adminIntent.putExtra("USER_DOB", dob);
-            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
-            adminIntent.putExtra("CUSTOMER_ID", customerID1);
-            adminIntent.putExtra("USER_GENDER", gender);
-            adminIntent.putExtra("USER_ADDRESS", address);
-            adminIntent.putExtra("PICTURE_URI", picture);
             startActivity(adminIntent);
 
         }
@@ -1307,6 +1260,16 @@ public class LoginActivity extends AppCompatActivity {
 
         if ((edtUsername.getText()).toString().equals("LS80069990") && edtPassword.getText().toString().equals("LS09996008")) {
             progressDialog.dismiss();
+            isSuperAdmin =true;
+            isAdmin =false;
+            isBizDonor =false;
+            isMarketAdmin =false;
+            isBizPartner =false;
+            isBizRegulator =false;
+            isBiz =false;
+            isAwajimaCustomer =false;
+            isAccountant =false;
+            isTeller =false;
             Intent adminIntent = new Intent(this, SuperAdminOffice.class);
             adminIntent.putExtra("PROFILE_ID", 12000);
             adminIntent.putExtra("PROFILE_USERNAME", "LS80069990");
@@ -1339,22 +1302,7 @@ public class LoginActivity extends AppCompatActivity {
             adminIntent.putExtra(PROFILE_GENDER, gender);
             adminIntent.putExtra(PROFILE_ADDRESS, address);
             adminIntent.putExtra(PICTURE_URI, picture);
-            adminIntent.putExtra("USER_NAME", "LS80069990");
-            adminIntent.putExtra("USER_PASSWORD", "LS09996008");
-            adminIntent.putExtra("USER_OFFICE", officeBranch);
-            adminIntent.putExtra("USER_STATE", state);
-            adminIntent.putExtra("USER_ROLE", "SuperAdmin");
-            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
-            adminIntent.putExtra("EMAIL_ADDRESS", email);
-            adminIntent.putExtra("USER_PHONE", sharedPrefPhone);
-            adminIntent.putExtra("USER_FIRSTNAME", "Alpha");
-            adminIntent.putExtra("USER_SURNAME", "Awajima");
-            adminIntent.putExtra("USER_DOB", dob);
-            adminIntent.putExtra("USER_DATE_JOINED", dateJoined);
-            adminIntent.putExtra("CUSTOMER_ID", 1111100001);
-            adminIntent.putExtra("USER_GENDER", gender);
-            adminIntent.putExtra("USER_ADDRESS", address);
-            adminIntent.putExtra("PICTURE_URI", picture);
+
             editor = userPreferences.edit();
             editor.putString("USERNAME", "LS80069990");
             editor.putString("USER_PASSWORD", "LS09996008");
@@ -1406,7 +1354,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
     private void loginWithPref() {
-        progressDialog = new ProgressDialog(LoginActivity.this);
+        progressDialog = new ProgressDialog(LoginAct.this);
         progressDialog.setMessage("processing Login");
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -1440,32 +1388,39 @@ public class LoginActivity extends AppCompatActivity {
 
             if ((edtUsername.getText()).toString().equals("LS80069990") && edtPassword.getText().toString().equals("LS09996008")) {
                 progressDialog.dismiss();
-                //match = true;
-                //isAdmin = true;
+                isAdmin =false;
+                isSuperAdmin =true;
+                isBizDonor =false;
+                isMarketAdmin =false;
+                isBizPartner =false;
+                isBizRegulator =false;
+                isBiz =false;
+                isAwajimaCustomer =false;
+                isAccountant =false;
+                isTeller =false;
 
                 //SharedPreferences sharedPreferences = getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
-                Intent intentBecky = new Intent(this, SuperAdminOffice.class);
-                intentBecky.putExtra("id", "12");
-                intentBecky.putExtra("USER_PASSWORD", "LS09996008");
-                intentBecky.putExtra("machine", "UserSuperAdmin");
-                intentBecky.putExtra("machine", "SuperAdmin");
-                intentBecky.putExtra("Role", "SuperAdmin");
-                intentBecky.putExtra("USERNAME", "LS80069990");
-                intentBecky.putExtra("PROFILE_ID", LOGIN_ID_EXTRA_KEY);
-                intentBecky.putExtra("USER_SURNAME", "Super");
-                intentBecky.putExtra("USER_FIRSTNAME", "Admin");
-                intentBecky.putExtra("USER_PASSWORD", "LS09996008");
-                intentBecky.putExtra(PROFILE_USERNAME, "LS80069990");
-                intentBecky.putExtra(PROFILE_ID, LOGIN_ID_EXTRA_KEY);
-                intentBecky.putExtra(PROFILE_SURNAME, "Super");
-                intentBecky.putExtra(PROFILE_FIRSTNAME, "Admin");
-                startActivity(intentBecky);
+                Intent intentSA = new Intent(this, SuperAdminOffice.class);
+                intentSA.putExtra("id", "12");
+                intentSA.putExtra("machine", "SuperAdmin");
+                intentSA.putExtra("Role", "SuperAdmin");
+                intentSA.putExtra("PROFILE_USERNAME", "LS80069990");
+                intentSA.putExtra("PROFILE_ID", LOGIN_ID_EXTRA_KEY);
+                intentSA.putExtra("PROFILE_SURNAME", "Super");
+                intentSA.putExtra("PROFILE_FIRSTNAME", "Admin");
+                intentSA.putExtra("PROFILE_PASSWORD", "LS09996008");
+                intentSA.putExtra(PROFILE_PASSWORD, "LS09996008");
+                intentSA.putExtra(PROFILE_USERNAME, "LS80069990");
+                intentSA.putExtra(PROFILE_ID, LOGIN_ID_EXTRA_KEY);
+                intentSA.putExtra(PROFILE_SURNAME, "Super");
+                intentSA.putExtra(PROFILE_FIRSTNAME, "Admin");
+                startActivity(intentSA);
 
                 SharedPreferences.Editor editor = userPreferences.edit();
-                editor.putString("USERNAME", "LS80069990");
-                editor.putString("USER_PASSWORD", "LS09996008");
-                editor.putString("USER_SURNAME", "Super");
-                editor.putString("USER_FIRSTNAME", "Admin");
+                editor.putString("PROFILE_USERNAME", "LS80069990");
+                editor.putString("PROFILE_PASSWORD", "LS09996008");
+                editor.putString("PROFILE_SURNAME", "Super");
+                editor.putString("PROFILE_FIRSTNAME", "Admin");
                 editor.putString("PROFILE_ID", LOGIN_ID_EXTRA_KEY);
                 editor.putString("LOGIN_ID_EXTRA_KEY", LOGIN_ID_EXTRA_KEY);
                 editor.putString(PROFILE_USERNAME, "LS80069990");
@@ -1474,7 +1429,6 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString(PROFILE_FIRSTNAME, "Admin");
                 editor.putString(PROFILE_ID, LOGIN_ID_EXTRA_KEY);
                 editor.putString(LOGIN_ID_EXTRA_KEY, LOGIN_ID_EXTRA_KEY);
-                editor.putString("machine", "UserSuperAdmin");
                 editor.putString("machine", "SuperAdmin");
                 editor.putString("Role", "SuperAdmin");
                 gson = new Gson();
@@ -1486,17 +1440,25 @@ public class LoginActivity extends AppCompatActivity {
             }
             if (edtUsername.getText().toString().equals("LSG800690") && edtPassword.getText().toString().equals("LSG815501")) {
                 progressDialog.dismiss();
+                isAdmin =false;
+                isSuperAdmin =true;
+                isBizDonor =false;
+                isMarketAdmin =false;
+                isBizPartner =false;
+                isBizRegulator =false;
+                isBiz =false;
+                isAwajimaCustomer =false;
+                isAccountant =false;
+                isTeller =false;
                 SharedPreferences.Editor editor2 = userPreferences.edit();
-                editor2.putString("USERNAME", "LSG800690");
+                editor2.putString("PROFILE_USERNAME", "LSG800690");
                 editor2.putString("machine", "SuperAdmin");
-                editor2.putString("USER_PASSWORD", "LSG815501");
+                editor2.putString("PROFILE_PASSWORD", "LSG815501");
                 editor2.putString("LOGIN_ID_EXTRA_KEY", LOGIN_ID_EXTRA_KEY);
-                editor2.putString("USER_SURNAME", "Alpha ");
-                editor2.putString("USER_FIRSTNAME", "Super");
-                editor2.putString("USER_ROLE", "SuperAdmin");
-
+                editor2.putString("PROFILE_SURNAME", "Alpha");
+                editor2.putString("PROFILE_FIRSTNAME", "Super");
+                editor2.putString("PROFILE_ROLE", "SuperAdmin");
                 editor2.putString(PROFILE_USERNAME, "LSG800690");
-                editor2.putString("machine", "SuperAdmin");
                 editor2.putString(PROFILE_PASSWORD, "LSG815501");
                 editor2.putString(LOGIN_ID_EXTRA_KEY, LOGIN_ID_EXTRA_KEY);
                 editor2.putString(PROFILE_SURNAME, "Alpha");
@@ -1508,35 +1470,42 @@ public class LoginActivity extends AppCompatActivity {
                 userPreferences.edit().putBoolean("rememberMe", chkRememberCred.isChecked()).apply();
                 editor2.apply();
 
-                Intent intentBen = new Intent(this, SuperAdminOffice.class);
-                intentBen.putExtra("id", "12");
-                intentBen.putExtra("USER_PASSWORD", "LSG815501");
-                intentBen.putExtra("machine", "UserSuperAdmin");
-                intentBen.putExtra("machine", "SuperAdmin");
-                intentBen.putExtra("Role", "SuperAdmin");
-                intentBen.putExtra("USERNAME", "LSG800690");
-                intentBen.putExtra("PROFILE_ID", LOGIN_ID_EXTRA_KEY);
-                intentBen.putExtra("USER_SURNAME", "Alpha");
-                intentBen.putExtra("USER_FIRSTNAME", "Super");
-                intentBen.putExtra("USER_PASSWORD", "LSG815501");
-                intentBen.putExtra(PROFILE_PASSWORD, "LSG815501");
-                intentBen.putExtra(PROFILE_USERNAME, "LSG800690");
-                intentBen.putExtra(PROFILE_ID, LOGIN_ID_EXTRA_KEY);
-                intentBen.putExtra(PROFILE_ROLE, "Admin");
-                intentBen.putExtra(PROFILE_FIRSTNAME, "Super");
-                startActivity(intentBen);
+                Intent intentS = new Intent(this, SuperAdminOffice.class);
+                intentS.putExtra("id", "12");
+                intentS.putExtra("machine", "SuperAdmin");
+                intentS.putExtra("Role", "SuperAdmin");
+                intentS.putExtra("PROFILE_USERNAME", "LSG800690");
+                intentS.putExtra("PROFILE_ID", LOGIN_ID_EXTRA_KEY);
+                intentS.putExtra("PROFILE_SURNAME", "Alpha");
+                intentS.putExtra("PROFILE_FIRSTNAME", "Super");
+                intentS.putExtra(PROFILE_PASSWORD, "LSG815501");
+                intentS.putExtra(PROFILE_USERNAME, "LSG800690");
+                intentS.putExtra(PROFILE_ID, LOGIN_ID_EXTRA_KEY);
+                intentS.putExtra(PROFILE_ROLE, "Admin");
+                intentS.putExtra(PROFILE_FIRSTNAME, "Super");
+                startActivity(intentS);
             }
             if (edtUsername.getText().toString().equals("L1000690") && edtPassword.getText().toString().equals("L81550122")) {
                 progressDialog.dismiss();
+                isAdmin =false;
+                isSuperAdmin =true;
+                isBizDonor =false;
+                isMarketAdmin =false;
+                isBizPartner =false;
+                isBizRegulator =false;
+                isBiz =false;
+                isAwajimaCustomer =false;
+                isAccountant =false;
+                isTeller =false;
                 SharedPreferences.Editor editor2 = userPreferences.edit();
                 editor2.putString(PROFILE_USERNAME, "L1000690");
                 editor2.putString("machine", "SuperAdmin");
-                editor2.putString("USER_PASSWORD", "L81550122");
+                editor2.putString("PROFILE_PASSWORD", "L81550122");
                 editor2.putString("LOGIN_ID_EXTRA_KEY", LOGIN_ID_EXTRA_KEY);
-                editor2.putString("USER_SURNAME", " ");
-                editor2.putString("USER_FIRSTNAME", "Admin UOE Road");
+                editor2.putString("PROFILE_SURNAME", " ");
+                editor2.putString("PROFILE_FIRSTNAME", "Admin UOE Road");
                 editor2.putString("USER_ROLE", "SuperAdmin");
-                editor2.putString("USERNAME", "L1000690");
+                editor2.putString("PROFILE_USERNAME", "L1000690");
                 editor2.putString("machine", "SuperAdmin");
                 editor2.putString(PROFILE_PASSWORD, "L81550122");
                 editor2.putString(LOGIN_ID_EXTRA_KEY, LOGIN_ID_EXTRA_KEY);
@@ -1547,15 +1516,13 @@ public class LoginActivity extends AppCompatActivity {
 
                 Intent intentBen = new Intent(this, SuperAdminOffice.class);
 //                    intentBen.putExtra("id", lastProfileUsed.getDbId());
-                intentBen.putExtra("USER_PASSWORD", "L81550122");
-                intentBen.putExtra("machine", "UserSuperAdmin");
                 intentBen.putExtra("machine", "SuperAdmin");
                 intentBen.putExtra("Role", "SuperAdmin");
-                intentBen.putExtra("USERNAME", "L1000690");
+                intentBen.putExtra("PROFILE_USERNAME", "L1000690");
                 intentBen.putExtra("PROFILE_ID", LOGIN_ID_EXTRA_KEY);
-                intentBen.putExtra("USER_SURNAME", "Beta");
-                intentBen.putExtra("USER_FIRSTNAME", "Super");
-                intentBen.putExtra("USER_PASSWORD", "L81550122");
+                intentBen.putExtra("PROFILE_SURNAME", "Beta");
+                intentBen.putExtra("PROFILE_FIRSTNAME", "Super");
+                intentBen.putExtra("PROFILE_PASSWORD", "L81550122");
                 intentBen.putExtra(PROFILE_PASSWORD, "L81550122");
                 intentBen.putExtra(PROFILE_USERNAME, "L1000690");
                 intentBen.putExtra(PROFILE_ID, LOGIN_ID_EXTRA_KEY);
@@ -1565,36 +1532,43 @@ public class LoginActivity extends AppCompatActivity {
             }
             if (edtUsername.getText().toString().equals("LS8006120") && edtPassword.getText().toString().equals("LS810231")) {
                 progressDialog.dismiss();
+                isAdmin =false;
+                isSuperAdmin =true;
+                isBizDonor =false;
+                isMarketAdmin =false;
+                isBizPartner =false;
+                isBizRegulator =false;
+                isBiz =false;
+                isAwajimaCustomer =false;
+                isAccountant =false;
+                isTeller =false;
                 //SharedPreferences sharedPreferences = getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor2 = userPreferences.edit();
                 editor2.putString(PROFILE_USERNAME, "LS8006120");
-                editor2.putString("machine", "UserSuperAdmin");
                 editor2.putString("machine", "SuperAdmin");
                 editor2.putString(PROFILE_PASSWORD, "LS810231");
                 editor2.putString(LOGIN_ID_EXTRA_KEY, LOGIN_ID_EXTRA_KEY);
                 editor2.putString(PROFILE_SURNAME, "");
                 editor2.putString(PROFILE_FIRSTNAME, "Admin 6");
                 editor2.putString(PROFILE_ROLE, "SuperAdmin");
-                editor2.putString("USER_PASSWORD", "LS810231");
+                editor2.putString("PROFILE_PASSWORD", "LS810231");
                 editor2.putString("LOGIN_ID_EXTRA_KEY", LOGIN_ID_EXTRA_KEY);
-                editor2.putString("USER_SURNAME", "Tera");
-                editor2.putString("USER_FIRSTNAME", "Super");
-                editor2.putString("USER_ROLE", "SuperAdmin");
+                editor2.putString("PROFILE_ID", LOGIN_ID_EXTRA_KEY);
+                editor2.putString("PROFILE_SURNAME", "Tera");
+                editor2.putString("PROFILE_FIRSTNAME", "Super");
+                editor2.putString("PROFILE_ROLE", "SuperAdmin");
                 editor2.apply();
 
                 Intent intentBen = new Intent(this, SuperAdminOffice.class);
                 intentBen.putExtra("id", lastProfileUsed.getPID());
-                intentBen.putExtra("USER_PASSWORD", "LS810231");
-                intentBen.putExtra("machine", "UserSuperAdmin");
+                intentBen.putExtra("PROFILE_PASSWORD", "LS810231");
                 intentBen.putExtra("machine", "SuperAdmin");
-                intentBen.putExtra("Role", "SuperAdmin");
-                intentBen.putExtra("USERNAME", "LS8006120");
+                intentBen.putExtra("PROFILE_ROLE", "SuperAdmin");
+                intentBen.putExtra("PROFILE_USERNAME", "LS8006120");
                 intentBen.putExtra("PROFILE_ID", LOGIN_ID_EXTRA_KEY);
-                intentBen.putExtra("USER_SURNAME", "Tera");
-                intentBen.putExtra("USER_FIRSTNAME", "Super");
-                intentBen.putExtra("USER_PASSWORD", "LS810231");
-                intentBen.putExtra("machine", "UserSuperAdmin");
-                intentBen.putExtra("machine", "SuperAdmin");
+                intentBen.putExtra("PROFILE_SURNAME", "Tera");
+                intentBen.putExtra("PROFILE_FIRSTNAME", "Super");
+                intentBen.putExtra("PROFILE_PASSWORD", "LS810231");
                 intentBen.putExtra(PROFILE_PASSWORD, "LS810231");
                 intentBen.putExtra(PROFILE_USERNAME, "LS8006120");
                 intentBen.putExtra(PROFILE_ID, LOGIN_ID_EXTRA_KEY);
@@ -1607,19 +1581,28 @@ public class LoginActivity extends AppCompatActivity {
 
             if (edtUsername.getText().toString().equals("AU100690") && edtPassword.getText().toString().equals("AU815012")) {
                 progressDialog.dismiss();
+                isAdmin =false;
+                isSuperAdmin =true;
+                isBizDonor =false;
+                isMarketAdmin =false;
+                isBizPartner =false;
+                isBizRegulator =false;
+                isBiz =false;
+                isAwajimaCustomer =false;
+                isAccountant =false;
+                isTeller =false;
                 SharedPreferences.Editor editor2 = userPreferences.edit();
                 editor2.putString(PROFILE_USERNAME, "Sky1000690");
-                editor2.putString("machine", "UserSuperAdmin");
                 editor2.putString("machine", "SuperAdmin");
-
-                editor2.putString("USER_PASSWORD", "AU815012");
+                editor2.putString("PROFILE_PASSWORD", "AU815012");
                 editor2.putString("LOGIN_ID_EXTRA_KEY", LOGIN_ID_EXTRA_KEY);
-                editor2.putString("USER_SURNAME", "Belle ");
-                editor2.putString("USER_FIRSTNAME", "Super");
-                editor2.putString("USER_ROLE", "SuperAdmin");
+                editor2.putString("PROFILE_SURNAME", "Belle ");
+                editor2.putString("PROFILE_FIRSTNAME", "Super");
+                editor2.putString("PROFILE_ROLE", "SuperAdmin");
 
                 editor2.putString(PROFILE_PASSWORD, "AU815012");
                 editor2.putString(LOGIN_ID_EXTRA_KEY, LOGIN_ID_EXTRA_KEY);
+                editor2.putString(PROFILE_ID, LOGIN_ID_EXTRA_KEY);
                 editor2.putString(PROFILE_SURNAME, " Belle");
                 editor2.putString(PROFILE_FIRSTNAME, "Super");
                 editor2.putString(PROFILE_ROLE, "SuperAdmin");
@@ -1648,35 +1631,45 @@ public class LoginActivity extends AppCompatActivity {
 
             if (edtUsername.getText().toString().equals("AU801920") && edtPassword.getText().toString().equals("AU28151")) {
                 progressDialog.dismiss();
+                isAdmin =false;
+                isSuperAdmin =true;
+                isBizDonor =false;
+                isMarketAdmin =false;
+                isBizPartner =false;
+                isBizRegulator =false;
+                isBiz =false;
+                isAwajimaCustomer =false;
+                isAccountant =false;
+                isTeller =false;
                 SharedPreferences.Editor editor2 = userPreferences.edit();
                 editor2.putString(PROFILE_USERNAME, "AU801920");
                 editor2.putString("machine", "UserSuperAdmin");
                 editor2.putString("machine", "SuperAdmin");
                 editor2.putString(PROFILE_PASSWORD, "AU28151");
                 editor2.putString(LOGIN_ID_EXTRA_KEY, LOGIN_ID_EXTRA_KEY);
+                editor2.putString(PROFILE_ID, LOGIN_ID_EXTRA_KEY);
                 editor2.putString(PROFILE_SURNAME, "De");
                 editor2.putString(PROFILE_FIRSTNAME, "Super");
                 editor2.putString(PROFILE_ROLE, "SuperAdmin");
 
-                editor2.putString("USER_PASSWORD", "AU28151");
+                editor2.putString("PROFILE_PASSWORD", "AU28151");
                 editor2.putString("LOGIN_ID_EXTRA_KEY", LOGIN_ID_EXTRA_KEY);
-                editor2.putString("USER_SURNAME", "De");
-                editor2.putString("USER_FIRSTNAME", "Super");
-                editor2.putString("USER_ROLE", "SuperAdmin");
+                editor2.putString("PROFILE_SURNAME", "De");
+                editor2.putString("PROFILE_FIRSTNAME", "Super");
+                editor2.putString("PROFILE_ROLE", "SuperAdmin");
                 editor2.apply();
 
                 Intent intentAdmin = new Intent(this, SuperAdminOffice.class);
 //                    intentBen.putExtra("id", lastProfileUsed.getDbId());
                 intentAdmin.putExtra("id", "12");
-                intentAdmin.putExtra("USER_PASSWORD", "AU28151");
-                intentAdmin.putExtra("machine", "UserSuperAdmin");
+                intentAdmin.putExtra("PROFILE_PASSWORD", "AU28151");
                 intentAdmin.putExtra("machine", "SuperAdmin");
-                intentAdmin.putExtra("Role", "SuperAdmin");
-                intentAdmin.putExtra("USERNAME", "AU801920");
+                intentAdmin.putExtra("PROFILE_ROLE", "SuperAdmin");
+                intentAdmin.putExtra("PROFILE_USERNAME", "AU801920");
                 intentAdmin.putExtra("PROFILE_ID", LOGIN_ID_EXTRA_KEY);
-                intentAdmin.putExtra("USER_SURNAME", "De");
-                intentAdmin.putExtra("USER_FIRSTNAME", "Super");
-                intentAdmin.putExtra("USER_PASSWORD", "AU28151");
+                intentAdmin.putExtra("PROFILE_SURNAME", "De");
+                intentAdmin.putExtra("PROFILE_FIRSTNAME", "Super");
+                intentAdmin.putExtra("PROFILE_PASSWORD", "AU28151");
                 intentAdmin.putExtra(PROFILE_PASSWORD, "AU28151");
                 intentAdmin.putExtra(PROFILE_USERNAME, "AU801920");
                 intentAdmin.putExtra(PROFILE_ID, LOGIN_ID_EXTRA_KEY);
@@ -1692,7 +1685,17 @@ public class LoginActivity extends AppCompatActivity {
             if(userName.equals(sharedPrefUserName)&& password.equals(sharedPrefUserPassword)&& sharedPrefUserMachine.equals("Teller")){
                 if (checkBoxteller.isChecked()) {
                     progressDialog.dismiss();
-                    Intent intent = new Intent(this, TellerDrawerAct.class);
+                    isAdmin =false;
+                    isSuperAdmin =false;
+                    isBizDonor =false;
+                    isMarketAdmin =false;
+                    isBizPartner =false;
+                    isBizRegulator =false;
+                    isBiz =false;
+                    isAwajimaCustomer =false;
+                    isAccountant =false;
+                    isTeller =true;
+                    Intent intent = new Intent(this, TellerHomeChoices.class);
                     intent.putExtra(PROFILE_USERNAME, userName);
                     intent.putExtra(PROFILE_ID, String.valueOf(sharedPrefProfileID));
                     intent.putExtra(PASSWORD, password);
@@ -1706,6 +1709,16 @@ public class LoginActivity extends AppCompatActivity {
             if(userName.equals(sharedPrefUserName)&& password.equals(sharedPrefUserPassword)&& sharedPrefUserMachine.equals("Teller")){
                 if (checkBoxCustomer.isChecked()) {
                     progressDialog.dismiss();
+                    isAdmin =false;
+                    isSuperAdmin =false;
+                    isBizDonor =false;
+                    isMarketAdmin =false;
+                    isBizPartner =false;
+                    isBizRegulator =false;
+                    isBiz =false;
+                    isAwajimaCustomer =true;
+                    isAccountant =false;
+                    isTeller =false;
                     Intent intent = new Intent(this, NewCustomerDrawer.class);
                     intent.putExtra(PROFILE_USERNAME, userName);
                     intent.putExtra(PROFILE_ID, String.valueOf(sharedPrefProfileID));
@@ -1720,6 +1733,16 @@ public class LoginActivity extends AppCompatActivity {
             }
             if(userName.equals(sharedPrefUserName)&& password.equals(sharedPrefUserPassword)&& sharedPrefUserMachine.equals("Customer")){
                 if (checkBoxCustomer.isChecked()) {
+                    isAdmin =false;
+                    isSuperAdmin =false;
+                    isBizDonor =false;
+                    isMarketAdmin =false;
+                    isBizPartner =false;
+                    isBizRegulator =false;
+                    isBiz =false;
+                    isAwajimaCustomer =true;
+                    isAccountant =false;
+                    isTeller =false;
                     progressDialog.dismiss();
                     Intent intent = new Intent(this, NewCustomerDrawer.class);
                     intent.putExtra(PROFILE_USERNAME, userName);
@@ -1784,24 +1807,7 @@ public class LoginActivity extends AppCompatActivity {
         return false;
     }
 
-    // md5 encrypt function
-    public static String md5(String s) {
-        try {
-            MessageDigest digest = MessageDigest
-                    .getInstance("MD5");
-            digest.update(s.getBytes());
-            byte[] messageDigest = digest.digest();
 
-            StringBuilder hexString = new StringBuilder();
-            for (int i = 0; i < messageDigest.length; i++)
-                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
-            return hexString.toString();
-
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -1856,7 +1862,7 @@ public class LoginActivity extends AppCompatActivity {
         smsBundle.putString("smsMessage",smsMessage);
         smsBundle.putString("from","Awajima");
         smsBundle.putString("to",sharedPrefPhone);
-        Intent itemPurchaseIntent = new Intent(LoginActivity.this, SMSAct.class);
+        Intent itemPurchaseIntent = new Intent(LoginAct.this, SMSAct.class);
         itemPurchaseIntent.putExtras(smsBundle);
         itemPurchaseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         //startActivity(itemPurchaseIntent);
@@ -1921,7 +1927,7 @@ public class LoginActivity extends AppCompatActivity {
         sharedPrefUserMachine = userPreferences.getString("machine", "");
 
         if (userProfile != null) {
-            Intent tellerIntent = new Intent(LoginActivity.this, LoginDirAct.class);
+            Intent tellerIntent = new Intent(LoginAct.this, LoginDirAct.class);
             tellerIntent.putExtra(PROFILE_ID, profileID);
             tellerIntent.putExtra(PROFILE_PASSWORD, sharedPrefUserPassword);
             tellerIntent.putExtra(PROFILE_OFFICE, SharedPrefOffice);

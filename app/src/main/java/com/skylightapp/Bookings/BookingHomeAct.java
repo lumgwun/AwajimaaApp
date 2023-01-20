@@ -160,7 +160,7 @@ public class BookingHomeAct extends ActionBarBaseAct implements NavigationView.O
     private String formatAddress = "";
     private BookingHomeAct activity;
     private Context context;
-    private FloatingActionButton fabChange;
+    private com.google.android.material.floatingactionbutton.FloatingActionButton fabChange;
     private AppCompatImageButton fabBack;
 
 

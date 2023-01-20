@@ -1,198 +1,235 @@
 package com.skylightapp.Markets;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Geocoder;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
-import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
-import com.quickblox.users.model.QBUser;
 import com.skylightapp.Classes.Profile;
-import com.skylightapp.ConfirmationActivity;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.MarketBizDAO;
-import com.skylightapp.MarketClasses.MarketAdapter;
+import com.skylightapp.LogisticDetailsAct;
+import com.skylightapp.MarketClasses.GridSpacingDeco;
 import com.skylightapp.MarketClasses.MarketBizRecyAdapter;
 import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
-import com.skylightapp.SuperAdmin.Awajima;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
 
-public class MarketBizListAct extends AppCompatActivity implements MarketBizRecyAdapter.OnItemsClickListener{
-    List<MarketBusiness> marketBusinessList;
-    List<MarketBusiness> myMarketarketBusinesses;
+public class MarketBizListAct extends AppCompatActivity implements  MarketBizRecyAdapter.OnBizClickListener{
+    ArrayList<MarketBusiness> marketBizS;
     private EditText etSearch;
     private ImageView btn_close1,btn_search1,btn_close2;
-    private TextView tv_languages;
+    private TextView txt_search_For;
     private RelativeLayout lout_2,lout_1;
     private String keyWord;
-    private MarketBizRecyAdapter mAdapter;
+    private static MarketBizRecyAdapter mAdapter;
     private DBHelper dbHelper;
     private int marketCount;
-    private SwipyRefreshLayout allMarketRefreshLayout,myMarketRefreshLayout;
-    private RecyclerView marketRecyclerView,myMarketRecyclerView;
+    int spanCount = 3; // 3 columns
+    int spacing = 50; // 50px
+    boolean includeEdge = true;
+    private SQLiteDatabase sqLiteDatabase;
     private static final String PREF_NAME = "awajima";
     SharedPreferences userPreferences;
-    Gson gson, gson1;
-    String json, json1, nIN;
-    Profile userProfile, customerProfile, lastProfileUsed;
-    private int profID;
-    private MarketBizRecyAdapter marketBizRecyAdapter;
+    Gson gson;
+    String json,dateOfTranx,SharedPrefRole,SharedPrefUserName,SharedPrefUser,SharedPrefPassword;
+    int profileUID,SharedPrefProfileID,SharedPrefCusID;
+    private Profile userProfile;
     private MarketBizDAO marketBizDAO;
-    private TextView text_No;
-    private Awajima awajima;
-    private int marketBizCount,myMarketBizCount;
-    String selectedCountry, selectedBank, bankName, bankNumber, officePref, userNamePref;
+    public static final int SELECT_MARKET = 10;
+    public static final int MANAGE_MARKET = 190;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_market_biz_list);
         dbHelper= new DBHelper(this);
-        marketBizDAO= new MarketBizDAO(this);
-        marketRecyclerView = findViewById(R.id.markets_list);
-        myMarketRecyclerView = findViewById(R.id.my_market_Biz);
-        text_No = findViewById(R.id.text_No);
-        awajima= new Awajima();
-        marketBusinessList = new ArrayList<MarketBusiness>();
-        myMarketarketBusinesses = new ArrayList<MarketBusiness>();
-
-        //mAdapter = new MarketBizRecyAdapter(this, getTestData());
-        //marketRecyclerView.setAdapter(mAdapter);
-        allMarketRefreshLayout = findViewById(R.id.market_refresh_l);
-        userProfile = new Profile();
-        gson1 = new Gson();
-        gson = new Gson();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        gson = new Gson();
+        marketBizS = new ArrayList<>();
+        userProfile=new Profile();
+        marketBizDAO= new MarketBizDAO(this);
+        etSearch = findViewById(R.id.et_whs_search);
+        btn_close1 = findViewById(R.id.btn_close_whs);
+        btn_close2 = findViewById(R.id.btn_whs_close);
+        btn_search1 = findViewById(R.id.btn_whs_search);
+        lout_2 = findViewById(R.id.lout_2_biz);
+        lout_1 = findViewById(R.id.lout_1_biz);
+        txt_search_For = findViewById(R.id.whs_search);
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
-
-        if(userProfile !=null){
-            profID=userProfile.getPID();
-        }
+        SharedPrefProfileID=userPreferences.getInt("PROFILE_ID", 0);
+        SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefPassword=userPreferences.getString("PROFILE_PASSWORD", "");
+        SharedPrefCusID=userPreferences.getInt("CUSTOMER_ID", 0);
+        SharedPrefUser=userPreferences.getString("machine", "");
+        SharedPrefRole = userPreferences.getString("PROFILE_ROLE", "");
+        mAdapter = new MarketBizRecyAdapter(MarketBizListAct.this, marketBizS);
         if(marketBizDAO !=null){
             try {
-                marketBusinessList=marketBizDAO.getBusinessesFromProfile(profID);
+                marketBizS=marketBizDAO.getAllBusFromSubAndType("active","Transport Company");
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
 
+
         }
-
-
-        myMarketRecyclerView.setLayoutManager(new LinearLayoutManager(MarketBizListAct.this, LinearLayoutManager.HORIZONTAL, false));
-        Collections.shuffle(marketBusinessList, new Random(System.currentTimeMillis()));
-        mAdapter = new MarketBizRecyAdapter(MarketBizListAct.this, marketBusinessList);
-        myMarketRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        myMarketRecyclerView.setNestedScrollingEnabled(false);
-        myMarketRecyclerView.setClickable(true);
-        myMarketRecyclerView.setAdapter(mAdapter);
-
-
-        allMarketRefreshLayout.setOnRefreshListener(new SwipyRefreshLayout.OnRefreshListener() {
+        etSearch.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onRefresh(SwipyRefreshLayoutDirection direction) {
-                loadMarketsFromQb();
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                keyWord = s.toString();
+
+                if (keyWord.isEmpty()) {
+                    mAdapter.updateItems(marketBizS);
+                } else {
+                    searchForBiz();
+                }
+
+
             }
         });
 
-        allMarketRefreshLayout.setColorSchemeResources(R.color.color_new_blue, R.color.random_color_2, R.color.random_color_3, R.color.random_color_7);
+        btn_search1.setOnClickListener(v -> {
 
-    }
-    public void loadMarketsFromQb() {
-        marketRecyclerView = findViewById(R.id.markets_list);
-        text_No = findViewById(R.id.text_No);
-        marketBusinessList= new ArrayList<>();
-        userProfile = new Profile();
-        gson1 = new Gson();
-        gson = new Gson();
-        awajima= new Awajima();
-        marketBizDAO= new MarketBizDAO(this);
-        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        json = userPreferences.getString("LastProfileUsed", "");
-        userProfile = gson.fromJson(json, Profile.class);
-        json1 = userPreferences.getString("LastAwajimaUsed", "");
-        awajima = gson1.fromJson(json1, Awajima.class);
-        if(userProfile !=null){
-            profID=userProfile.getPID();
-        }
-        if(marketBizDAO !=null){
-            try {
-                marketBusinessList=marketBizDAO.getBusinessesFromProfile(profID);
-            } catch (NullPointerException e) {
-                e.printStackTrace();
+
+            lout_1.setVisibility(View.GONE);
+            lout_2.setVisibility(View.VISIBLE);
+
+
+        });
+        btn_close2.setOnClickListener(v -> {
+            lout_1.setVisibility(View.VISIBLE);
+            lout_2.setVisibility(View.GONE);
+
+        });
+
+        btn_close1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+
             }
+        });
+        marketBizS.add(new MarketBusiness("", "GUO Transport Co."));
+        marketBizS.add(new MarketBusiness("", "Khome Global Logistics Ltd"));
+        marketBizS.add(new MarketBusiness("", "Rivers Transport Company Limited"));
+        marketBizS.add(new MarketBusiness("", "God is Good Motors"));
+        marketBizS.add(new MarketBusiness("", "ABC Transport"));
+        marketBizS.add(new MarketBusiness("", "Chisco Transport Company"));
+        marketBizS.add(new MarketBusiness("", "Young Shall Grow Motors Ltd."));
+        marketBizS.add(new MarketBusiness("", "Cross Country Motors"));
+        marketBizS.add(new MarketBusiness("", "Ifesinachi Transport Ltd."));
+        marketBizS.add(new MarketBusiness("", "Peace Mass transit"));
+        marketBizS.add(new MarketBusiness("", "Bonny Way Motor"));
+        marketBizS.add(new MarketBusiness("", "Benue Link"));
+        marketBizS.add(new MarketBusiness("", "Iyare Motors"));
+        marketBizS.add(new MarketBusiness("", "Libra Motors"));
+        marketBizS.add(new MarketBusiness("", "E.Ekesons Transports"));
+        marketBizS.add(new MarketBusiness("", "Agofure Transports"));
+        marketBizS.add(new MarketBusiness("", "Delta line Motors"));
+        marketBizS.add(new MarketBusiness("", "Efex Transports"));
+
+        marketBizS.add(new MarketBusiness("", "Delta line Motors"));
+
+
+        marketBizS.add(new MarketBusiness("", "Mediterranean Shipping Com. Nig Ltd"));
+        marketBizS.add(new MarketBusiness("", "Bonny Way Motor"));
+        marketBizS.add(new MarketBusiness("", "Metro Ferry"));
+        marketBizS.add(new MarketBusiness("", "Toron Nigeria Limited"));
+        marketBizS.add(new MarketBusiness("", "Transport Services Limited"));
+        marketBizS.add(new MarketBusiness("", "Alibe & Sons Transport Com."));
+        marketBizS.add(new MarketBusiness("", "Blue Cheetah Services"));
+        marketBizS.add(new MarketBusiness("", "Ekili Haulage"));
+        marketBizS.add(new MarketBusiness("", "Faith Motors"));
+        marketBizS.add(new MarketBusiness("", "LAGBUS"));
+        marketBizS.add(new MarketBusiness("", "Maids To Run Services"));
+        marketBizS.add(new MarketBusiness("", "Marvel Transport"));
+        marketBizS.add(new MarketBusiness("", "Mushilab Nigeria Limited"));
+        marketBizS.add(new MarketBusiness("", "NoblePat Group"));
+        marketBizS.add(new MarketBusiness("", "Safe Motorway"));
+        marketBizS.add(new MarketBusiness("", "Saima Nigeria"));
+
+        RecyclerView marketRecyclerView = (RecyclerView)findViewById(R.id.whs_recyler_list);
+        GridLayoutManager gridLayout = new GridLayoutManager(this, 2);
+        marketRecyclerView.addItemDecoration(new GridSpacingDeco(spanCount, spacing, includeEdge));
+        marketRecyclerView.setLayoutManager(gridLayout);
+        marketRecyclerView.setHasFixedSize(true);
+        marketRecyclerView.setAdapter(mAdapter);
+        mAdapter.setWhenClickListener(this);
+
+    }
+    private void searchForBiz() {
+        if(marketBizS !=null){
+            marketBizS.clear();
 
         }
 
 
-        marketRecyclerView.setLayoutManager(new LinearLayoutManager(MarketBizListAct.this, LinearLayoutManager.VERTICAL, false));
-        Collections.shuffle(marketBusinessList, new Random(System.currentTimeMillis()));
-        marketBizRecyAdapter = new MarketBizRecyAdapter(MarketBizListAct.this, marketBusinessList);
-        marketRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        marketRecyclerView.setNestedScrollingEnabled(false);
-        marketRecyclerView.setClickable(true);
-        marketRecyclerView.setAdapter(marketBizRecyAdapter);
-    }
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+        if (marketBizS != null) {
+            for (int i = 0; i < marketBizS.size(); i++) {
 
+                if (marketBizS.get(i).getBizBrandname().toLowerCase().contains(keyWord)) {
+                    MarketBusiness business = new MarketBusiness();
+                    business.setBizBrandname(marketBizS.get(i).getBizBrandname());
+                    business.setBizPicture(marketBizS.get(i).getBizPicture());
+                    business.setBizID(marketBizS.get(i).getBusinessID());
+                    business.setBizDescription(marketBizS.get(i).getBizDescription());
+                    mAdapter.addItem(business);
+                }
+            }
+        }
+        mAdapter.updateItems(marketBizS);
     }
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
-    }
-    @Override
-    protected void onStart() {
-        super.onStart();
-        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        overridePendingTransition(R.anim.base_slide_left_out, R.anim.bounce);
-
-    }
-
 
     @Override
     public void onBizClick(MarketBusiness marketBusiness) {
         Bundle bundle = new Bundle();
         bundle.putParcelable("MarketBusiness",marketBusiness);
-        Intent loginRIntent = new Intent(MarketBizListAct.this, BizDetailsAct.class);
-        loginRIntent.putExtras(bundle);
-        loginRIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(loginRIntent);
+        Intent myIntent = new Intent(MarketBizListAct.this, BizDetailsAct.class);
         overridePendingTransition(R.anim.slide_in_right,
                 R.anim.slide_out_left);
+        myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        myIntent.putExtras(bundle);
+        startActivity(myIntent);
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Bundle bundle = new Bundle();
+        if(position>0){
+            bundle.putInt("position",position);
+            Intent loginRIntent = new Intent(MarketBizListAct.this, BizDetailsAct.class);
+            loginRIntent.putExtras(bundle);
+            loginRIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(loginRIntent);
+            overridePendingTransition(R.anim.slide_in_right,
+                    R.anim.slide_out_left);
+
+        }
 
     }
 }

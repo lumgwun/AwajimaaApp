@@ -82,15 +82,11 @@ import com.google.gson.Gson;
 import com.skylightapp.Classes.AppController;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
+import com.skylightapp.Classes.UserSuperAdmin;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.EmergReportNextDAO;
 import com.skylightapp.R;
-import com.teliver.sdk.core.Teliver;
-import com.teliver.sdk.core.TrackingListener;
-import com.teliver.sdk.models.MarkerOption;
-import com.teliver.sdk.models.TLocation;
-import com.teliver.sdk.models.TrackingBuilder;
-import com.teliver.sdk.models.UserBuilder;
+
 import com.twilio.Twilio;
 
 import org.jetbrains.annotations.NotNull;
@@ -104,6 +100,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import io.teliver.sdk.core.Teliver;
+import io.teliver.sdk.core.TrackingListener;
+import io.teliver.sdk.models.MarkerOption;
+import io.teliver.sdk.models.TLocation;
+import io.teliver.sdk.models.TrackingBuilder;
+import io.teliver.sdk.models.UserBuilder;
 
 public class ReportSceneMAct extends FragmentActivity implements MapListener,OnMapReadyCallback, LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     long accountNo, acctID;
@@ -205,6 +208,7 @@ public class ReportSceneMAct extends FragmentActivity implements MapListener,OnM
     String latlong;
     String[] latlongs;
     private LatLng emergNextLatLng;
+    private UserSuperAdmin superAdmin;
     //AppCompatTextView txtLoc;
     String machineUser, office,state,role,dbRole,joinedDate,password,firstName, email,phoneNO, dob,gender,surname;
 
@@ -288,7 +292,7 @@ public class ReportSceneMAct extends FragmentActivity implements MapListener,OnM
         userProfile = new Profile();
         emergencyReport= new EmergencyReport();
         emergReportNextLatLngStng = new ArrayList<>();
-        gson = new Gson();
+        superAdmin = new UserSuperAdmin();
         dbHelper = new DBHelper(this);
         txtStatus = findViewById(R.id.statusTextView);
         txtMyLoc = findViewById(R.id.locTextV);
@@ -309,7 +313,7 @@ public class ReportSceneMAct extends FragmentActivity implements MapListener,OnM
         geocoder = new Geocoder(ReportSceneMAct.this, Locale.getDefault());
         sharedpreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         //sharedpreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
-        Twilio.init("ACb6e4c829a5792a4b744a3e6bd1cf2b4e", "0d5cbd54456dd0764786db0c37212578");
+        //Twilio.init("ACb6e4c829a5792a4b744a3e6bd1cf2b4e", "0d5cbd54456dd0764786db0c37212578");
         json = sharedpreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         joinedDate = sharedpreferences.getString("PROFILE_DATE_JOINED", "");
@@ -321,9 +325,9 @@ public class ReportSceneMAct extends FragmentActivity implements MapListener,OnM
         gender = sharedpreferences.getString("PROFILE_GENDER", "");
         address = sharedpreferences.getString("PROFILE_ADDRESS", "");
         pictureLink = Uri.parse(sharedpreferences.getString("PICTURE_URI", ""));
-        json = sharedpreferences.getString("LastSuperAdminProfileUsed", "");
-        userProfile = gson1.fromJson(json1, Profile.class);
-        Teliver.identifyUser(new UserBuilder(email).setUserType(UserBuilder.USER_TYPE.CONSUMER).registerPush().build());
+        json1 = sharedpreferences.getString("LastSuperAdminProfileUsed", "");
+        superAdmin = gson1.fromJson(json1, UserSuperAdmin.class);
+        //Teliver.identifyUser(new UserBuilder(email).setUserType(UserBuilder.USER_TYPE.CONSUMER).registerPush().build());
 
         if (typeBundle != null) {
             type = typeBundle.getString("Type");
@@ -394,8 +398,8 @@ public class ReportSceneMAct extends FragmentActivity implements MapListener,OnM
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
-        mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-        mMap.getMyLocation();
+        //mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        //mMap.getMyLocation();
         locationRequest = LocationRequest.create();
         //cancellationTokenSource = new CancellationTokenSource();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -755,7 +759,7 @@ public class ReportSceneMAct extends FragmentActivity implements MapListener,OnM
             markerOptionList.add(option);
         }
 
-        Teliver.startTracking(new TrackingBuilder(markerOptionList).withYourMap(mMap).withListener(new TrackingListener() {
+        /*Teliver.startTracking(new TrackingBuilder(markerOptionList).withYourMap(mMap).withListener(new TrackingListener() {
             @Override
             public void onTrackingStarted(String trackingId) {
 
@@ -775,7 +779,7 @@ public class ReportSceneMAct extends FragmentActivity implements MapListener,OnM
             public void onTrackingError(String reason) {
 
             }
-        }).build());
+        }).build());*/
     }
 
     @Override

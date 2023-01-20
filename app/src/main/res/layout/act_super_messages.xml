@@ -12,7 +12,7 @@
         android:background="@drawable/shape_rect_7"
         android:orientation="vertical">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -119,6 +119,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="15sp"
+                android:layout_marginTop="10dp"
                 android:textAlignment="center"
                 android:focusable="false"
                 android:backgroundTintMode="src_in"
@@ -136,6 +137,7 @@
             android:id="@+id/btnSearchOfficeSuper"
             android:textSize="20sp"
             android:background="@null"
+            android:layout_marginTop="10dp"
             android:layout_height="wrap_content"/>
 
 
@@ -146,11 +148,13 @@
             tools:listitem="@layout/message_item_row"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
+            android:layout_marginTop="10dp"
             android:scrollbars="vertical" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_SuperToday"
             android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
             tools:listitem="@layout/message_item_row"
             android:layout_height="wrap_content"
             android:clipToPadding="false"

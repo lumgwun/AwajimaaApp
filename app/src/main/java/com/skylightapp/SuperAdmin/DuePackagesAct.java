@@ -13,6 +13,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -60,6 +61,7 @@ public class DuePackagesAct extends AppCompatActivity implements SuperSkylightPa
     AppCompatSpinner spnDaysAhead;
     private AppCompatButton btnSearchDB;
     private SearchView searchView;
+    private int spnIndex=0;
     ;
     TextView txtPackageToday, txtPackageInTwoDays,txtPackageSevenDays,txtPackageCustomDay;
     String dateOfToday,dateOfTomorrow,dateOfTwoDays,dateOfSevenDays,stringSpnDay,dateOfCustomDays;
@@ -90,7 +92,14 @@ public class DuePackagesAct extends AppCompatActivity implements SuperSkylightPa
         spnDaysAhead.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                stringSpnDay = (String) parent.getSelectedItem();
+                if(spnIndex==position){
+                    return;
+                }else {
+                    stringSpnDay = (String) parent.getSelectedItem();
+
+                }
+
+
                 try {
                     noOfDay= Integer.parseInt(stringSpnDay);
 
@@ -122,7 +131,7 @@ public class DuePackagesAct extends AppCompatActivity implements SuperSkylightPa
         calendarCustom.add(Calendar.DAY_OF_YEAR, noOfDay);
         customDayDate = calendarCustom.getTime();
         SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "dd/MM/yyyy", Locale.getDefault());
+                "yyyy-MM-dd", Locale.getDefault());
 
         try {
             dateOfToday =dateFormat.format(currentDate);
@@ -135,78 +144,110 @@ public class DuePackagesAct extends AppCompatActivity implements SuperSkylightPa
 
         } catch (ParseException ignored) {
         }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            //dbHelper = new DBHelper(this);
-            sqLiteDatabase = dbHelper.getWritableDatabase();
+
+        if(dbHelper !=null){
             try {
-                sevenDaysPackageCount =dbHelper.getPackEnding7DaysCount(dateOfSevenDays);
+                try {
+                    sevenDaysPackageCount =dbHelper.getPackEnding7DaysCount(dateOfSevenDays);
+
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
+                }
+
 
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
 
-
         }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            //dbHelper = new DBHelper(this);
-            sqLiteDatabase = dbHelper.getWritableDatabase();
+
+
+        if(dbHelper !=null){
             try {
-                todaysPackageCount =dbHelper.getPackEndingTomoroCount(dateOfTomorrow);
+                try {
+                    todaysPackageCount =dbHelper.getPackEndingTomoroCount(dateOfTomorrow);
+
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
+                }
+
 
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
 
-
         }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            //dbHelper = new DBHelper(this);
-            sqLiteDatabase = dbHelper.getWritableDatabase();
+
+        if(dbHelper !=null){
             try {
-                todayPackageCount =dbHelper.getPackEndingToDayCount(dateOfToday);
+                try {
+                    todayPackageCount =dbHelper.getPackEndingToDayCount(dateOfToday);
+
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
+                }
+
 
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
 
-
         }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            //dbHelper = new DBHelper(this);
-            sqLiteDatabase = dbHelper.getWritableDatabase();
+
+
+        if(dbHelper !=null){
             try {
-                package7ArrayList = dbHelper.getPackageEnding7Days(dateOfSevenDays);
+                try {
+                    package7ArrayList = dbHelper.getPackageEnding7Days(dateOfSevenDays);
+
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
+                }
+
 
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
 
-
         }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            //dbHelper = new DBHelper(this);
-            sqLiteDatabase = dbHelper.getWritableDatabase();
+
+
+        if(dbHelper !=null){
+
             try {
-                package2ArrayList = dbHelper.getPackageEndingIn3Days(dateOfTomorrow);
+                try {
+                    package2ArrayList = dbHelper.getPackageEndingIn3Days(dateOfTomorrow);
+
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
+                }
+
 
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
 
-
         }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            //dbHelper = new DBHelper(this);
-            sqLiteDatabase = dbHelper.getWritableDatabase();
+
+
+
+        if(dbHelper !=null){
             try {
-                nowPackageArrayList = dbHelper.getPackageEndingToday1(dateOfToday);
+                try {
+                    nowPackageArrayList = dbHelper.getPackageEndingToday1(dateOfToday);
+
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
+                }
+
 
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
 
-
         }
+
+
 
 
 
@@ -219,30 +260,40 @@ public class DuePackagesAct extends AppCompatActivity implements SuperSkylightPa
                 txtPackageSevenDays.setVisibility(View.GONE);
                 txtPackageInTwoDays.setVisibility(View.GONE);
                 txtPackageToday.setVisibility(View.GONE);
-                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                    //dbHelper = new DBHelper(this);
-                    sqLiteDatabase = dbHelper.getWritableDatabase();
+
+                if(dbHelper !=null){
                     try {
-                        customDayPackageCount =dbHelper.getPackageCountCustomDay(dateOfCustomDays);
+                        try {
+                            customDayPackageCount =dbHelper.getPackageCountCustomDay(dateOfCustomDays);
+
+                        } catch (SQLiteException e) {
+                            e.printStackTrace();
+                        }
+
 
                     } catch (NullPointerException e) {
                         e.printStackTrace();
                     }
 
-
                 }
-                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                    //dbHelper = new DBHelper(this);
-                    sqLiteDatabase = dbHelper.getWritableDatabase();
+
+                if(dbHelper !=null){
                     try {
-                        packageCustomArrayList = dbHelper.getPackEndingCustomDay(dateOfCustomDays);
+                        try {
+                            packageCustomArrayList = dbHelper.getPackEndingCustomDay(dateOfCustomDays);
+
+                        } catch (SQLiteException e) {
+                            e.printStackTrace();
+                        }
+
 
                     } catch (NullPointerException e) {
                         e.printStackTrace();
                     }
 
-
                 }
+
+
 
 
                 LinearLayoutManager layoutManagerC

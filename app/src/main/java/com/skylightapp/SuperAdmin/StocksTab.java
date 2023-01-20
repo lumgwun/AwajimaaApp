@@ -155,4 +155,5 @@ public class StocksTab extends TabActivity {
         overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
 
+
 }

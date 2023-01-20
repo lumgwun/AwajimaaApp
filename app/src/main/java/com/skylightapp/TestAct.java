@@ -13,11 +13,13 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.skylightapp.Accountant.AcctantBackOffice;
 import com.skylightapp.Admins.AdminHomeChoices;
+import com.skylightapp.Bookings.BookingHomeAct;
 import com.skylightapp.Bookings.BookingsMainTab;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.StandingOrderAcct;
 
+import com.skylightapp.Customers.CusLoanTab;
 import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.MapAndLoc.ClimateCOffice;
 import com.skylightapp.MapAndLoc.NOSDRAOffice;
@@ -428,8 +430,8 @@ public class TestAct extends AppCompatActivity {
                         startActivity(intent);
                     }
                     else if(finalI==3) {
-                        tosend = "Biz Logistics";
-                        Intent intent=new Intent(TestAct.this, BizLogisticsOffice.class);
+                        tosend = "Loans";
+                        Intent intent=new Intent(TestAct.this, CusLoanTab.class);
                         intent.putExtra("info",tosend);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -448,8 +450,8 @@ public class TestAct extends AppCompatActivity {
                         startActivity(intent);
                     }
                     else if(finalI==5) {
-                        tosend = "Market Admin";
-                        Intent intent=new Intent(TestAct.this, MarketAdminOffice.class);
+                        tosend = "Bookings";
+                        Intent intent=new Intent(TestAct.this, BookingHomeAct.class);
                         intent.putExtra("info",tosend);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -457,7 +459,7 @@ public class TestAct extends AppCompatActivity {
                                 R.anim.slide_out_left);
                         startActivity(intent);
                     }
-                    else if(finalI==6) {
+                    /*else if(finalI==6) {
                         tosend = "Biz Partner";
                         Intent intent=new Intent(TestAct.this, MarketBizPOffice.class);
                         intent.putExtra("info",tosend);
@@ -466,7 +468,7 @@ public class TestAct extends AppCompatActivity {
                         overridePendingTransition(R.anim.slide_in_right,
                                 R.anim.slide_out_left);
                         startActivity(intent);
-                    }
+                    }*/
 
                 }
             });

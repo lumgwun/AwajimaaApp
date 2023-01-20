@@ -3,6 +3,7 @@ package com.skylightapp.Bookings;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.skylightapp.Classes.Profile;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledExecutorService;
@@ -19,6 +20,7 @@ public class LocalProviderService {
     private final RestProvider provider;
 
     private final Executor executor;
+    TripResponse trip ;
     private final ScheduledExecutorService scheduledExecutor;
 
     public LocalProviderService(
@@ -36,17 +38,18 @@ public class LocalProviderService {
         return provider.getProfileToken(tripId);
     }
 
-    public ListenableFuture<TripData> fetchMatchedTrip(String tripName) {
+    public ListenableFuture<Profile> fetchMatchedTrip(String tripName) {
         String tripId = null;
         if (TripName.create(tripName) != null) {
-            tripId = TripName.create(tripName).getTripId();
+            if (TripName.create(tripName) != null) {
+                tripId = TripName.create(tripName).getTripId();
+            }
         }
         ListenableFuture<GetTripResponse> getTripResponseFuture = fetchMatchedTripWithRetries(tripId);
         String finalTripId = tripId;
         return Futures.transform(
-                getTripResponseFuture,
-                getTripResponse -> {
-                    TripResponse trip = null;
+                getTripResponseFuture, getTripResponse -> {
+
                     if (getTripResponse != null) {
                         trip = getTripResponse.getTrip();
                     }

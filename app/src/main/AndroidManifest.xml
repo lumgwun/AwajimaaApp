@@ -102,6 +102,24 @@
         tools:node="merge"
         tools:replace="android:allowBackup,android:icon">
         <activity
+            android:name=".Bookings.TripOpMonitorAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.BookingDriverAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.BookingCusAct"
+            android:exported="false" />
+        <activity
+            android:name=".Bookings.TripOpLaunchAct"
+            android:exported="false" />
+        <activity
+            android:name=".MapAndLoc.GeoFAct"
+            android:exported="false" />
+        <activity
+            android:name=".Markets.MarketBizListAct"
+            android:exported="false" />
+        <activity
             android:name=".VerifiAct"
             android:exported="false" />
         <activity
@@ -406,7 +424,7 @@
             android:name=".Bookings.TaxiCusAct"
             android:exported="false" />
         <activity
-            android:name=".Bookings.TransportComAct"
+            android:name=".Bookings.LogisticsComLAct"
             android:exported="false" />
         <activity
             android:name=".Bookings.TripStopPointAct"
@@ -439,7 +457,7 @@
         <activity android:name=".Bookings.TrackUserAct" />
         <activity android:name=".Bookings.LocActivity" />
         <activity android:name=".Bookings.DriverStartTripAct" />
-        <activity android:name=".Bookings.MotorTripsBAct" />
+        <activity android:name=".Bookings.LogisticsMatchAct" />
         <activity
             android:name=".Bookings.BookingsMainTab"
             android:exported="false"
@@ -530,7 +548,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".Markets.MarketBizListAct" />
+        <activity android:name=".Markets.MyBizListAct" />
         <activity
             android:name=".Markets.MarketBizDonorOffice"
             android:theme="@style/Theme.OurCApp" />
@@ -807,7 +825,6 @@
                 <data android:mimeType="pdf/*" />
             </intent-filter>
         </activity>
-        <activity android:name=".SuperAdmin.SuperUserCreator" />
         <activity
             android:name=".Admins.BranchReportTab"
             android:theme="@style/Theme.OurCApp" />
@@ -1048,7 +1065,7 @@
         <activity
             android:name=".CusPackListAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".Customers.SavingsStandingOrderWeb" />
+        <activity android:name=".Customers.QuickTSOWebHookAct" />
         <activity android:name=".CheckMailActivity" />
         <activity
             android:name=".PrivacyPolicy_Web"
@@ -1060,7 +1077,7 @@
         <activity
             android:name=".Admins.AdminCusActionAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".Admins.CustomerListActivity" />
+        <activity android:name=".Admins.CustomerListAct" />
         <activity
             android:name=".Tellers.BusinessSMSAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -1069,7 +1086,7 @@
         <activity android:name=".CusSmsAct" />
         <activity android:name=".Tellers.TellerDashboardAct" />
         <activity android:name=".Admins.AdminTransActivity" />
-        <activity android:name=".Admins.SkylightUsersActivity" />
+        <activity android:name=".Admins.AwajimaUsersAct" />
         <activity
             android:name=".Admins.AdminTabActivity"
             android:theme="@style/Theme.OurCApp" />
@@ -1141,7 +1158,7 @@
         <activity android:name=".MapAndLoc.MapPanoramaStVAct" />
 
         <receiver
-            android:name=".MapAndLoc.LocationUpdatesBroadcastReceiver"
+            android:name=".MapAndLoc.LocUpdatesBReceiver"
             android:enabled="true"
             android:exported="true" />
         <receiver
@@ -1166,7 +1183,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".UserPrefActivity" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".LoginAct"
             android:theme="@style/AwajimaThemeNoBar" />
         <activity
             android:name=".MoneyTxDetailAct"
@@ -1185,7 +1202,7 @@
         <activity android:name=".Transactions.GOTVDetailsActivity" />
         <activity android:name=".Transactions.StarTimeDetailsActivity" />
         <activity
-            android:name=".PlanPaymentActivity"
+            android:name=".PlanPaymentAct"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".NEPABILLDetailsActivity"
@@ -1207,11 +1224,13 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.awajima.UserContentProvider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:grantUriPermissions="true"
-                android:resource="@xml/filepath_pdf" />
+                android:resource="@xml/filepath_pdf"
+                tools:replace="android:resource" />
         </provider>
         <provider
             android:name=".Database.UserContentProvider"

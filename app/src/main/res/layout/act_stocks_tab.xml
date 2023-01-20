@@ -9,7 +9,6 @@
     android:id="@android:id/tabhost"
     android:background="#f1f5f7"
     tools:context="com.skylightapp.SuperAdmin.StocksTab">
-    <include layout="@layout/tool_bar_11c"/>
 
     <LinearLayout
         android:orientation="vertical"

@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.SnapHelper;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +22,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.location.LocationServices;
 import com.google.gson.Gson;
 import com.melnykov.fab.FloatingActionButton;
 import com.skylightapp.Adapters.PaymentAdapterSuper;
@@ -29,6 +32,7 @@ import com.skylightapp.Classes.TimeLine;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.PaymentDAO;
 import com.skylightapp.Database.WorkersDAO;
+import com.skylightapp.MapAndLoc.TrackerService;
 import com.skylightapp.R;
 import com.skylightapp.Tellers.ManualPCodeUpdate;
 import com.skylightapp.Tellers.ManualPaymentList;
@@ -71,19 +75,14 @@ public class SuperMPaymentListA extends AppCompatActivity implements PaymentAdap
 
 
 
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            try {
-                if(paymentDAO !=null){
-                    paymentArrayList = paymentDAO.getALLPaymentsSuper();
+        try {
+            if(paymentDAO !=null){
+                paymentArrayList = paymentDAO.getALLPaymentsSuper();
 
-                }
-
-            } catch (NullPointerException e) {
-                e.printStackTrace();
             }
 
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
         mAdapter = new PaymentAdapterSuper(this, R.layout.super_payment_row, paymentArrayList);
 
@@ -151,6 +150,20 @@ public class SuperMPaymentListA extends AppCompatActivity implements PaymentAdap
             searchView.setIconified(true);
             return;
         }
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
         super.onBackPressed();
     }
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+
 }

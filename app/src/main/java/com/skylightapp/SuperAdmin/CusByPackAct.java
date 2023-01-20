@@ -18,6 +18,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -118,6 +119,7 @@ public class CusByPackAct extends AppCompatActivity implements  CusAdaptSuper.Cu
     private MarketBizPackAd marketBizPackAd;
     private MarketBizPackage marketBizPackage;
     private Awajima awajima;
+    private int spnIndex=0;
     String selectedPackageType, office,state,role,surname,dbRole,firstName,joinedDate,password, email,phoneNO, dob,gender,address;
 
     String SharedPrefUserPassword,userName,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
@@ -202,7 +204,13 @@ public class CusByPackAct extends AppCompatActivity implements  CusAdaptSuper.Cu
         spinnerPackType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                marketBizPackage = (MarketBizPackage) parent.getSelectedItem();
+                if(spnIndex==position){
+                    return;
+                }else {
+                    marketBizPackage = (MarketBizPackage) parent.getSelectedItem();
+
+                }
+
 
             }
 
@@ -222,12 +230,75 @@ public class CusByPackAct extends AppCompatActivity implements  CusAdaptSuper.Cu
         sByPTypeCustomers = new ArrayList<Customer>();
         dbHelper=new DBHelper(this);
         if(cusDAO !=null){
+            try {
+                try {
+                    cusByJoinDate = cusDAO.getCustomersForBizToday(bizID,todayDate);
+
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
+                }
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                try {
+                    thisMonthCus =cusDAO.getCustomersForBizJoinedThisYear(bizID,todayDate);
+
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
+                }
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                try {
+                    allCustomers = cusDAO.getCustomerFromBiz(bizID);
+
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
+                }
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                try {
+                    blockedCus =cusDAO.getCustomersBlockedForBiz(bizID,"blocked");
+
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
+                }
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                try {
+                    sByPTypeCustomers =cusDAO.getAllCusForSo();
+
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
+                }
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
             //noPackCus = cusDAO.getCusWithoutPackage();
-            cusByJoinDate = cusDAO.getCustomersForBizToday(bizID,todayDate);
-            allCustomers = cusDAO.getCustomerFromBiz(bizID);
-            thisMonthCus =cusDAO.getCustomersForBizJoinedThisYear(bizID,todayDate);
-            blockedCus =cusDAO.getCustomersBlockedForBiz(bizID,"blocked");
-            sByPTypeCustomers =cusDAO.getAllCusForSo();
+
+
+
 
         }
 
@@ -314,7 +385,20 @@ public class CusByPackAct extends AppCompatActivity implements  CusAdaptSuper.Cu
 
         }
         if(profileDao !=null){
-            userRole=profileDao.getProfileRoleByUserNameAndPassword(cusUserName,cusUserPassword);
+
+            try {
+                try {
+                    userRole=profileDao.getProfileRoleByUserNameAndPassword(cusUserName,cusUserPassword);
+
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
+                }
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
 
         }
 
@@ -421,6 +505,11 @@ public class CusByPackAct extends AppCompatActivity implements  CusAdaptSuper.Cu
     public void onStop() {
         super.onStop();
         overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
     }
 
 }

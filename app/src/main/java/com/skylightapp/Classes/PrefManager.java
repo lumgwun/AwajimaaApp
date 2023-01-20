@@ -11,7 +11,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.quickblox.core.helper.StringifyArrayList;
 import com.quickblox.users.model.QBUser;
-import com.skylightapp.LoginActivity;
+import com.skylightapp.LoginAct;
 import com.skylightapp.MapAndLoc.Region;
 import com.skylightapp.MarketClasses.MarketBizPackModel;
 import com.skylightapp.MarketClasses.MarketBizPackage;
@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.skylightapp.Bookings.BookingConstant.MANUAL;
-import static com.skylightapp.Classes.Profile.PROFILE_ID;
-import static com.skylightapp.Classes.Profile.PROFILE_USERNAME;
 import static com.skylightapp.Classes.Profile.PROFILE_EMAIL;
 import static com.skylightapp.Classes.Profile.PROFILE_PASSWORD;
 import static com.skylightapp.Classes.Profile.PROF_REF_LINK;
@@ -488,7 +486,7 @@ public class PrefManager {
         if(!this.isUserLoggedIn()){
 
 
-            Intent i = new Intent(_context, LoginActivity.class);
+            Intent i = new Intent(_context, LoginAct.class);
 
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 

@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/event_rect"
-    tools:context="com.skylightapp.Bookings.TransportComAct">
-    <TextView
+    tools:context="com.skylightapp.Bookings.LogisticsComLAct">
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Transport Companies"
@@ -29,7 +29,7 @@
             android:layout_margin="10dp"
             android:visibility="visible">
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/btn_close_biz"
                 android:layout_width="17dp"
                 android:layout_height="17dp"
@@ -37,7 +37,7 @@
                 android:src="@drawable/ic_close"
                 app:tint="@color/black" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txt_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                 android:textSize="20sp" />
 
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/btn_search_biz"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
@@ -73,7 +73,7 @@
             android:visibility="gone">
 
 
-            <EditText
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/et_search_biz"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -94,7 +94,7 @@
                 android:textColorHint="@color/gray"
                 android:textSize="16sp" />
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/btn_biz_close"
                 android:layout_width="17dp"
                 android:layout_height="17dp"
@@ -116,8 +116,8 @@
         android:id="@+id/tc_recyler_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/market_list_row"
         android:orientation="vertical"
+        tools:listitem="@layout/biz_row"
         android:padding="6dp"
         android:scrollbars="none" />
 

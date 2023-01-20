@@ -16,16 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.blongho.country_data.Currency;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.MultiTransformation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.mikepenz.materialdrawer.view.BezelImageView;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Utils;
 import com.skylightapp.Customers.CusPackageList;
 import com.skylightapp.R;
-import com.skylightapp.SignUpAct;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -38,9 +34,9 @@ public class MarketBizRecyAdapter extends RecyclerView.Adapter<MarketBizRecyAdap
     private List<MarketBusiness> businessList;
     private Context mcontext;
     int resources;
-    private OnItemsClickListener listener;
+    private OnBizClickListener listener;
     private Profile profile;
-    private String curCode, bizStatus;
+    private String curSymbol, bizStatus;
     private MarketBusiness marketBusiness;
     private Currency currency;
     private Uri bizPicture;
@@ -62,6 +58,7 @@ public class MarketBizRecyAdapter extends RecyclerView.Adapter<MarketBizRecyAdap
         this.mcontext = context;
     }
 
+
     public MarketBizRecyAdapter(CusPackageList cusPackageList, ArrayList<MarketBusiness> businessArrayList) {
         this.businessList = businessArrayList;
         this.mcontext = cusPackageList;
@@ -80,7 +77,7 @@ public class MarketBizRecyAdapter extends RecyclerView.Adapter<MarketBizRecyAdap
         this.businessArrayList.add(sliderItem);
         notifyDataSetChanged();
     }
-    public void setWhenClickListener(OnItemsClickListener listener){
+    public void setWhenClickListener(OnBizClickListener listener){
         this.listener = listener;
     }
 
@@ -117,7 +114,7 @@ public class MarketBizRecyAdapter extends RecyclerView.Adapter<MarketBizRecyAdap
         }
     }
 
-    @SuppressLint({"ResourceAsColor", "DefaultLocale"})
+    @SuppressLint({"ResourceAsColor", "DefaultLocale", "SetTextI18n"})
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         MarketBusiness marketBusiness = businessArrayList.get(position);
@@ -129,7 +126,7 @@ public class MarketBizRecyAdapter extends RecyclerView.Adapter<MarketBizRecyAdap
 
         }
         if(currency !=null){
-            curCode =currency.getCode();
+            curSymbol =currency.getSymbol();
         }
 
         if (marketBusiness != null) {
@@ -138,7 +135,7 @@ public class MarketBizRecyAdapter extends RecyclerView.Adapter<MarketBizRecyAdap
             holder.desc.setText(MessageFormat.format("Desc:{0}", marketBusiness.getBizDescription()));
             holder.bizState.setText(MessageFormat.format("State:{0}", marketBusiness.getBizState()));
             holder.bizDateJoined.setText(MessageFormat.format("Joined date:{0}", marketBusiness.getDateOfJoin()));
-            holder.bizRevenueAmt.setText(MessageFormat.format("Revenue Amount: curCode{0}", String.format("%.2f", marketBusiness.getMarketBizRevenue())));
+            holder.bizRevenueAmt.setText("Revenue:"+ curSymbol+Utils.awajimaAmountFormat(marketBusiness.getMarketBizRevenue()));
             holder.bizMarketID.setText(MessageFormat.format("Market ID:{0}", String.valueOf(marketBusiness.getBizMarketID())));
             Glide.with(mcontext)
                     .asBitmap()
@@ -175,11 +172,8 @@ public class MarketBizRecyAdapter extends RecyclerView.Adapter<MarketBizRecyAdap
         return text.substring(0, decoratedTextLength).replaceAll("\n", " ").trim();
     }
 
-    public interface OnClickListener {
-        void onItemClick(int position);
-
-    }
-    public interface OnItemsClickListener{
+    public interface OnBizClickListener {
         void onBizClick(MarketBusiness marketBusiness);
+        void onItemClick(int position);
     }
 }

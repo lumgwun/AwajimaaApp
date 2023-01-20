@@ -46,7 +46,6 @@
     <com.google.android.gms.maps.MapView
         android:layout_width="match_parent"
         android:id="@+id/mapBooking"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_height="250dp"/>
     <LinearLayout
         android:id="@+id/map_container"

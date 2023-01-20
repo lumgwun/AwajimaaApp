@@ -54,6 +54,9 @@ public class BoatTripListAct extends AppCompatActivity implements  TripAdapter.B
     private Spinner spnFrom,spnTo;
     private DBHelper dbHelper;
     private AppCompatButton btnSearch;
+    int index1=0;
+    int index10=0;
+    int index100=0;
     String SharedPrefUserPassword,tripType,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID,selectedTo,selectedFrom;
     private SQLiteDatabase sqLiteDatabase;
 
@@ -97,7 +100,13 @@ public class BoatTripListAct extends AppCompatActivity implements  TripAdapter.B
                 spnFrom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        selectedFrom = spnFrom.getSelectedItem().toString();
+                        if(index1==position){
+                            return;
+                        }else {
+                            selectedFrom = spnFrom.getSelectedItem().toString();
+
+                        }
+
                         //selectedOffice = (String) parent.getSelectedItem();
 
                     }
@@ -111,7 +120,13 @@ public class BoatTripListAct extends AppCompatActivity implements  TripAdapter.B
                 spnTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        selectedTo = spnTo.getSelectedItem().toString();
+                        if(index10==position){
+                            return;
+                        }else {
+                            selectedTo = spnTo.getSelectedItem().toString();
+
+                        }
+
                         //selectedOffice = (String) parent.getSelectedItem();
 
                     }
@@ -194,16 +209,21 @@ public class BoatTripListAct extends AppCompatActivity implements  TripAdapter.B
             }
         });
     }
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
+    }
     public void RearrangeItemsParam() {
         Collections.shuffle(tripsParam, new Random(System.currentTimeMillis()));
-        Collections.shuffle(tripsParam, new Random(System.currentTimeMillis()));
+        //Collections.shuffle(tripsParam, new Random(System.currentTimeMillis()));
         tripAParam = new TripAdapter(this, tripsParam);
         recyclerParam.setAdapter(tripAParam);
         notifyAll();
     }
     public void RearrangeItems() {
         Collections.shuffle(trips, new Random(System.currentTimeMillis()));
-        Collections.shuffle(trips, new Random(System.currentTimeMillis()));
+        //Collections.shuffle(trips, new Random(System.currentTimeMillis()));
         tripAdapter = new TripAdapter(this, trips);
         recyclerView.setAdapter(tripAdapter);
     }

@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 import com.skylightapp.Classes.AdminUser;
-import com.skylightapp.Classes.CustomerManager;
 
 import java.util.ArrayList;
 
@@ -30,8 +29,6 @@ import static com.skylightapp.Classes.AdminUser.ADMIN_STATUS;
 import static com.skylightapp.Classes.AdminUser.ADMIN_SURNAME;
 import static com.skylightapp.Classes.AdminUser.ADMIN_TABLE;
 import static com.skylightapp.Classes.AdminUser.ADMIN_USER_NAME;
-import static com.skylightapp.Classes.CustomerManager.CUSTOMER_TELLER_BIZ_ID;
-import static com.skylightapp.Classes.CustomerManager.CUSTOMER_TELLER_TABLE;
 import static com.skylightapp.Classes.StandingOrder.SO_ID;
 import static java.lang.String.valueOf;
 
@@ -41,10 +38,11 @@ public class AdminUserDAO extends DBHelperDAO{
     public AdminUserDAO(Context context) {
         super(context);
     }
-    public long insertAdminUser(int profileID, String surname, String firstName, String phoneNO, String emailAddress, String dob, String gender, String address, String officeBranch, String dateJoined, String userName, String password, String nin, String selectedState, Uri selectedImage, String status) {
+    public long insertAdminUser(int profileID, long bizID, String surname, String firstName, String phoneNO, String emailAddress, String dob, String gender, String address, String officeBranch, String dateJoined, String userName, String password, String nin, String selectedState, Uri selectedImage, String status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(ADMIN_PROFILE_ID, profileID);
+        values.put(ADMIN_BUSINESS_ID, bizID);
         values.put(ADMIN_SURNAME, surname);
         values.put(ADMIN_FIRST_NAME, firstName);
         values.put(ADMIN_PHONE_NUMBER, phoneNO);

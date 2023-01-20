@@ -12,7 +12,7 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.skylightapp.Admins.AdminTransActivity;
-import com.skylightapp.Admins.SkylightUsersActivity;
+import com.skylightapp.Admins.AwajimaUsersAct;
 import com.skylightapp.Customers.CustomerHelpActTab;
 import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.MapAndLoc.HotEmergAct;
@@ -61,7 +61,7 @@ public class MarketInvTab extends TabActivity {
         TabHost tabhost = (TabHost) findViewById(android.R.id.tabhost);
         tabhost.setup(getLocalActivityManager());
 
-        Intent intentsupport = new Intent().setClass(this, SkylightUsersActivity.class);
+        Intent intentsupport = new Intent().setClass(this, AwajimaUsersAct.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabUserSupport = tabhost
                 .newTabSpec("Users")
                 .setIndicator("", resources.getDrawable(R.drawable.user3))

@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.R;
+import com.skylightapp.SignUpAct;
 
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
@@ -68,7 +69,7 @@ public class CreationTab extends TabActivity {
         SharedPrefCusID=sharedPreferences.getString(CUSTOMER_ID, "");
         SharedPrefUserMachine=sharedPreferences.getString("machine", "");
         SharedPrefProfileID=sharedPreferences.getString(PROFILE_ID, "");
-        Intent intentSignUp = new Intent().setClass(this, SuperUserCreator.class);
+        Intent intentSignUp = new Intent().setClass(this, SignUpAct.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecSignUp = tabhost
                 .newTabSpec("New User")
                 .setIndicator("", resources.getDrawable(R.drawable.ic_icon2))

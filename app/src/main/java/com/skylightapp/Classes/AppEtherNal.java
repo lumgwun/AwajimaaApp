@@ -7,6 +7,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.quickblox.auth.session.QBSettings;
 import com.quickblox.core.ServiceZone;
+import com.skylightapp.CustomApplication;
 import com.skylightapp.MarketClasses.ConfigUtils;
 import com.skylightapp.MarketClasses.ImageLoader;
 import com.skylightapp.MarketClasses.MyPreferences;
@@ -18,7 +19,7 @@ import com.skylightapp.MarketInterfaces.ConstsInterface;
 import java.io.IOException;
 import java.util.Calendar;
 
-public class AppEtherNal extends Application {
+public class AppEtherNal extends CustomApplication {
     public static final String TAG = App.class.getSimpleName();
 
     private static AppEtherNal instance;
@@ -45,9 +46,9 @@ public class AppEtherNal extends Application {
         AppEtherNal.context = getApplicationContext();
         preferencesManager = new PreferencesManager(AppEtherNal.context);
         preferences = preferencesManager.getMyPreferences();
-        imageLoader = new ImageLoader();
+        //imageLoader = new ImageLoader();
         initSampleConfigs();
-        initCredentials();
+        //initCredentials();
     }
 
     private void initSampleConfigs() {

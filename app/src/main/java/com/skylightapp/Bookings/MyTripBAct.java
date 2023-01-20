@@ -112,6 +112,11 @@ public class MyTripBAct extends AppCompatActivity implements TripBookingAdapter.
         //Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this));
         //mapView.onResume(); //needed for compass, my location overlays, v6.0.0 and up
     }
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
+    }
 
     @Override
     public void onTriBClicked(TripBooking tripBooking) {

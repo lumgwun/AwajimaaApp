@@ -10,12 +10,12 @@ public class MmsReceivedReceiverImpl extends MmsReceivedReceiver {
 
     @Override
     public void onMessageReceived(Context context, Uri messageUri) {
-        Log.v("SkylightSMSReceived", "message received: " + messageUri.toString());
+        Log.v("AwajimaSMSReceived", "message received: " + messageUri.toString());
     }
 
     @Override
     public void onError(Context context, String error) {
-        Log.v("SkylightSMSReceived", "error: " + error);
+        Log.v("AwajimaSMSReceived", "error: " + error);
     }
 
 }

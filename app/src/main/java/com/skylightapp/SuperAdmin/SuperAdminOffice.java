@@ -54,15 +54,14 @@ import com.skylightapp.Admins.AdminTabActivity;
 import com.skylightapp.Admins.AdminTimelineAct;
 import com.skylightapp.Admins.AdminTransActivity;
 import com.skylightapp.Admins.BirthdayTab;
-import com.skylightapp.Admins.CustomerListActivity;
+import com.skylightapp.Admins.CustomerListAct;
 import com.skylightapp.Admins.SODueDateListAct;
 import com.skylightapp.Admins.ImportDateTab;
 import com.skylightapp.Admins.SendSingleUserMAct;
 import com.skylightapp.Admins.SkylightAllWeb;
-import com.skylightapp.Admins.SkylightUsersActivity;
+import com.skylightapp.Admins.AwajimaUsersAct;
 import com.skylightapp.AwajimaSliderAct;
 import com.skylightapp.CameraActivity;
-import com.skylightapp.Classes.ChartData;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
@@ -72,12 +71,13 @@ import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.Database.SODAO;
 import com.skylightapp.Inventory.SuperInvTab;
-import com.skylightapp.LoginActivity;
+import com.skylightapp.LoginAct;
 import com.skylightapp.MapAndLoc.StateEmergList;
 import com.skylightapp.MarketClasses.ResourceUtils;
 import com.skylightapp.PayClientActivity;
 import com.skylightapp.R;
 import com.skylightapp.SignTabMainActivity;
+import com.skylightapp.SignUpAct;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -763,7 +763,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
 
 
                         case 1:
-                            Intent myIntent4 = new Intent(SuperAdminOffice.this, CustomerListActivity.class);
+                            Intent myIntent4 = new Intent(SuperAdminOffice.this, CustomerListAct.class);
                             overridePendingTransition(R.anim.slide_in_right,
                                     R.anim.slide_out_left);
                             myIntent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -876,7 +876,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
                 return true;
 
             case R.id.nav_SignupSuper:
-                Intent active = new Intent(SuperAdminOffice.this, SuperUserCreator.class);
+                Intent active = new Intent(SuperAdminOffice.this, SignUpAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 active.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -916,7 +916,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.clear();
                 editor.apply();
-                Intent loginIntent = new Intent(this, LoginActivity.class);
+                Intent loginIntent = new Intent(this, LoginAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -951,7 +951,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
                 startActivity(timelineIntent);
                 break;
             case R.id.nav_SignupSuper:
-                Intent active = new Intent(SuperAdminOffice.this, SuperUserCreator.class);
+                Intent active = new Intent(SuperAdminOffice.this, SignUpAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 active.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -1033,7 +1033,7 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
 
 
             case R.id.nav_UsersSuper:
-                Intent uIntent = new Intent(this, SkylightUsersActivity.class);
+                Intent uIntent = new Intent(this, AwajimaUsersAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 uIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -1236,5 +1236,10 @@ public class SuperAdminOffice extends AppCompatActivity implements NavigationVie
         pIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(pIntent);
+    }
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
     }
 }

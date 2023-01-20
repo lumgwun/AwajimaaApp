@@ -1,7 +1,6 @@
 package com.skylightapp.VideoChat;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,7 +27,7 @@ import com.quickblox.users.model.QBUser;
 import com.quickblox.videochat.webrtc.QBRTCClient;
 import com.quickblox.videochat.webrtc.QBRTCSession;
 import com.quickblox.videochat.webrtc.QBRTCTypes;
-import com.skylightapp.LoginActivity;
+import com.skylightapp.LoginAct;
 import com.skylightapp.MarketClasses.CollectionsUtils;
 import com.skylightapp.MarketClasses.QbUsersDbManager;
 import com.skylightapp.MarketClasses.UsersUtils;
@@ -349,7 +348,7 @@ public class OpponentsActivity extends BaseActivity {
     }
 
     private void startLoginActivity() {
-        LoginActivity.start(this);
+        LoginAct.start(this);
         finish();
     }
 

@@ -81,7 +81,7 @@ import com.skylightapp.Database.TReportDAO;
 import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.Interfaces.Consts;
-import com.skylightapp.LoginActivity;
+import com.skylightapp.LoginAct;
 import com.skylightapp.LoginDirAct;
 import com.skylightapp.MarketClasses.AttachmentPreviewAdapter;
 import com.skylightapp.MarketClasses.BizDealAccount;
@@ -483,7 +483,7 @@ public class SingleCusMessagingAct extends AppCompatActivity implements TextWatc
             public void onSuccess(Void aVoid, Bundle bundle) {
                 Log.d(TAG, "SignOut Successful");
                 //SharedPrefsHelper.getInstance().removeQbUser();
-                Intent myIntent = new Intent(SingleCusMessagingAct.this, LoginActivity.class);
+                Intent myIntent = new Intent(SingleCusMessagingAct.this, LoginAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -8,10 +8,12 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.GsonBuilder;
-import com.teliver.sdk.core.Teliver;
-import com.teliver.sdk.models.NotificationData;
+
 
 import java.util.Map;
+
+import io.teliver.sdk.core.Teliver;
+import io.teliver.sdk.models.NotificationData;
 
 public class DriverFirebaseMessaging extends FirebaseMessagingService {
 

@@ -87,6 +87,8 @@ public class MyNewGrpSavings extends AppCompatActivity implements View.OnClickLi
     private SQLiteDatabase sqLiteDatabase;
     private int freqInt,durationInt;
     private Uri grpLink;
+    int index=0;
+    int currencyIndex=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +105,7 @@ public class MyNewGrpSavings extends AppCompatActivity implements View.OnClickLi
 
         currencyList= new ArrayList<>();
         json = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
         edtTittle =  findViewById(R.id.grpTittle);
         edtPurpose =  findViewById(R.id.grpPurpose);
         edtFirstName =  findViewById(R.id.grpFirstName);
@@ -115,14 +118,20 @@ public class MyNewGrpSavings extends AppCompatActivity implements View.OnClickLi
         spnDuration =  findViewById(R.id.grp_Duration);
         btnCreateGroup =  findViewById(R.id.grpCreateGrp);
 
-        userProfile = gson.fromJson(json, Profile.class);
+
         userBundle=new Bundle();
 
         spnFrequency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //selectedOffice = office.getSelectedItem().toString();
-                selectedFreq = (String) parent.getSelectedItem();
+                if(index==position){
+                    return;
+                }else{
+                    selectedFreq = (String) parent.getSelectedItem();
+
+                }
+
 
             }
 
@@ -134,7 +143,13 @@ public class MyNewGrpSavings extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //selectedOffice = office.getSelectedItem().toString();
-                selectedDuration = (String) parent.getSelectedItem();
+                if(index==position){
+                    return;
+                }else{
+                    selectedDuration = (String) parent.getSelectedItem();
+
+                }
+
 
             }
 
@@ -148,13 +163,32 @@ public class MyNewGrpSavings extends AppCompatActivity implements View.OnClickLi
         spnCurrency.setSelection(0);
         spnCurrency.setSelection(currencyAdapter.getPosition(currency));
 
-        selectedCurrencyIndex = spnCurrency.getSelectedItemPosition();
-        try {
+        //selectedCurrencyIndex = spnCurrency.getSelectedItemPosition();
+
+        spnCurrency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //selectedOffice = office.getSelectedItem().toString();
+                if(currencyIndex==position){
+                    return;
+                }else{
+                    currency = (Currency) parent.getSelectedItem();
+
+                }
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        /*try {
             currency = currencyList.get(selectedCurrencyIndex);
 
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Oops!");
-        }
+        }*/
         if(currency !=null){
             currencyCode=currency.getCode();
         }
@@ -366,5 +400,33 @@ public class MyNewGrpSavings extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         //grpCreateGrp
 
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
     }
 }

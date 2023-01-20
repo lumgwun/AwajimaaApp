@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/logistics"
+        android:icon="@drawable/map_foreground"
+        android:title="Logistics" />
+
+    <item
+        android:id="@+id/wholesellers"
+        android:icon="@drawable/map_foreground"
+        android:title="Whole Sellers" />
+    <item
+        android:id="@+id/commodities"
+        android:icon="@drawable/map_foreground"
+        android:title="Commodities" />
+    <item
+        android:id="@+id/market_Loans"
+        android:icon="@drawable/map_foreground"
+        android:title="Loans" />
+    <item
+        android:id="@+id/auto_savings"
+        android:icon="@drawable/map_foreground"
+        android:title="Savings" />
+
+    <item
+        android:id="@+id/m_inv"
+        android:icon="@drawable/map_foreground"
+        android:title="Market Investments" />
+    <item
+        android:id="@+id/m_grp_savings"
+        android:icon="@drawable/map_foreground"
+        android:title="Market Group Savings" />
+    <item
+        android:id="@+id/m_anno"
+        android:icon="@drawable/map_foreground"
+        android:title="Market Announcements" />
+
+</menu>

@@ -11,7 +11,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
-public class PlanPaymentActivity extends AppCompatActivity {
+public class PlanPaymentAct extends AppCompatActivity {
     private WebView mywebView;
     private TextView txtRate;
 

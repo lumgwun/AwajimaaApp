@@ -23,7 +23,7 @@ import com.google.gson.Gson;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.skylightapp.Adapters.CurrAdapter;
 import com.skylightapp.Admins.AdminTransActivity;
-import com.skylightapp.Admins.SkylightUsersActivity;
+import com.skylightapp.Admins.AwajimaUsersAct;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
@@ -111,7 +111,7 @@ public class CoachOffice extends TabActivity {
         TabHost tabhost = (TabHost) findViewById(android.R.id.tabhost);
         tabhost.setup(getLocalActivityManager());
 
-        Intent intentsupport = new Intent().setClass(this, SkylightUsersActivity.class);
+        Intent intentsupport = new Intent().setClass(this, AwajimaUsersAct.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabUserSupport = tabhost
                 .newTabSpec("Users")
                 .setIndicator("", resources.getDrawable(R.drawable.user3))

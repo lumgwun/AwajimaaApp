@@ -100,7 +100,7 @@ import com.skylightapp.Classes.StandingOrderAcct;
 import com.skylightapp.Classes.Utils;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.ProfDAO;
-import com.skylightapp.LoginActivity;
+import com.skylightapp.LoginAct;
 import com.skylightapp.MapAndLoc.ClimateCOffice;
 import com.skylightapp.MapAndLoc.NewOSReportAct;
 import com.skylightapp.MarketClasses.Market;
@@ -119,8 +119,10 @@ import com.skylightapp.SecureAppAct;
 import com.skylightapp.SignTabMainActivity;
 import com.skylightapp.AwajimaSliderAct;
 import com.skylightapp.MapAndLoc.UserReportEmergAct;
+import com.skylightapp.SignUpAct;
 import com.skylightapp.SubHistoryAct;
 import com.skylightapp.SuperAdmin.StocksTab;
+import com.skylightapp.Tellers.TellerHomeChoices;
 import com.skylightapp.UserPrefActivity;
 import com.skylightapp.StateDir.WasteRequestAct;
 import com.skylightapp.VerifiAct;
@@ -210,7 +212,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
     private RecyclerView recyclerView;
     private AccountRecylerAdap accountRecylerAdap;
     private ArrayList<Account> accounts;
-    private Bundle chooserBundle;
+    private Bundle chooserBundle,reportBundle;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 201;
     private MaterialCardView cardViewE,cardViewA,cardViewM,cardViewI,cardViewP;
     ActivityResultLauncher<Intent> startCusPictureActivityForResult = registerForActivityResult(
@@ -288,6 +290,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
         applicationDb= new DBHelper(this);
         market= new Market();
         accounts= new ArrayList<>();
+        reportBundle= new Bundle();
         recyclerView = findViewById(R.id.recycl_accts);
         cardViewE = findViewById(R.id.bd_card_E);
         cardViewA = findViewById(R.id.bd_card_A);
@@ -321,7 +324,9 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
         toggle.syncState();
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setTitle("Customer BackOffice");
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home_black_24dp);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_notification_icon);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         navigationView.bringToFront();
         toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
@@ -345,6 +350,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
         accountArrayList= new ArrayList<>();
         gson1 = new Gson();
         gson3= new Gson();
+        gson2= new Gson();
         countries=World.getAllCountries();
         currencies= new ArrayList<>();
         //currency= new Currency();
@@ -387,7 +393,6 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
         balance = findViewById(R.id.cus_BankBalance4444);
         accountNo = findViewById(R.id.cus_BankNo33);
         imgTime = findViewById(R.id.cusGreetings);
-
         imgProfilePic = findViewById(R.id.profile_image_cus);
         final RippleBackground rippleBackground=(RippleBackground)findViewById(R.id.content);
         imgTime.setOnClickListener(new View.OnClickListener() {
@@ -618,6 +623,11 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
 
 
     }
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
+    }
     protected synchronized void buildGoogleApiClient() {
         /*mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -654,7 +664,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
                         if (!task.isSuccessful()) {
-                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            //Log.w(TAG, "Fetching FCM registration token failed", task.getException());
                             return;
                         }
 
@@ -676,7 +686,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
                             msg = "Subscribe failed";
                         }
                         Log.d(TAG, msg);
-                        Toast.makeText(NewCustomerDrawer.this, msg, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(NewCustomerDrawer.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -689,7 +699,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
                             msg = "Subscribe failed";
                         }
                         Log.d(TAG, msg);
-                        Toast.makeText(NewCustomerDrawer.this, msg, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(NewCustomerDrawer.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -703,7 +713,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
                             msg = "Subscribe failed";
                         }
                         Log.d(TAG, msg);
-                        Toast.makeText(NewCustomerDrawer.this, msg, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(NewCustomerDrawer.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -717,7 +727,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
                             msg = "Subscribe failed";
                         }
                         Log.d(TAG, msg);
-                        Toast.makeText(NewCustomerDrawer.this, msg, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(NewCustomerDrawer.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -730,7 +740,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
                             msg = "Subscribe failed";
                         }
                         Log.d(TAG, msg);
-                        Toast.makeText(NewCustomerDrawer.this, msg, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(NewCustomerDrawer.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -743,7 +753,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
                             msg = "Subscribe failed";
                         }
                         Log.d(TAG, msg);
-                        Toast.makeText(NewCustomerDrawer.this, msg, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(NewCustomerDrawer.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -756,7 +766,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
                             msg = "Subscribe failed";
                         }
                         Log.d(TAG, msg);
-                        Toast.makeText(NewCustomerDrawer.this, msg, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(NewCustomerDrawer.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -769,7 +779,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
                             msg = "Subscribe failed";
                         }
                         Log.d(TAG, msg);
-                        Toast.makeText(NewCustomerDrawer.this, msg, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(NewCustomerDrawer.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -783,7 +793,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
                             msg = "Subscribe failed";
                         }
                         Log.d(TAG, msg);
-                        Toast.makeText(NewCustomerDrawer.this, msg, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(NewCustomerDrawer.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -907,6 +917,9 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
+        reportBundle= new Bundle();
+        reportBundle.putParcelable("Profile",userProfile);
+        reportBundle.putString("ReportType",reportCategory);
         switch (id) {
             case R.id.nav_dashboard44:
 
@@ -955,20 +968,24 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
                 startActivity(grpSavings);
                 break;
             case R.id.nav_cus_Env:
-                Intent active = new Intent(NewCustomerDrawer.this, UserReportEmergAct.class);
+                reportCategory="Environmental Issues";
+                Intent envIntent = new Intent(NewCustomerDrawer.this, UserReportEmergAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
-                active.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                active.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(active);
+                envIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                envIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                envIntent.putExtras(reportBundle);
+                startActivity(envIntent);
                 break;
             case R.id.nav_Crime_Cus:
-                Intent history = new Intent(NewCustomerDrawer.this, UserReportEmergAct.class);
+                reportCategory="Crimes";
+                Intent intentCrimes = new Intent(NewCustomerDrawer.this, UserReportEmergAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
-                history.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                history.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(history);
+                intentCrimes.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intentCrimes.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intentCrimes.putExtras(reportBundle);
+                startActivity(intentCrimes);
                 break;
 
             case R.id.jet_charter_cus:
@@ -990,12 +1007,24 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
                 break;
 
             case R.id.nav_Cus_Emerg:
-                Intent chat = new Intent(NewCustomerDrawer.this, UserReportEmergAct.class);
+                reportCategory="Emergencies";
+                Intent emergIntent = new Intent(NewCustomerDrawer.this, UserReportEmergAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
-                chat.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                chat.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(chat);
+                emergIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                emergIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                emergIntent.putExtras(reportBundle);
+                startActivity(emergIntent);
+                break;
+            case R.id.cusClimate_menu:
+                reportCategory="Climate Change";
+                Intent cIntent = new Intent(NewCustomerDrawer.this, UserReportEmergAct.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                cIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                cIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                cIntent.putExtras(reportBundle);
+                startActivity(cIntent);
                 break;
             case R.id.nav_OilS:
                 Intent oilSRIntent = new Intent(NewCustomerDrawer.this, NewOSReportAct.class);
@@ -1165,6 +1194,24 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
                 startActivity(newMarketIntent);
                 break;
 
+            case R.id.nav_New_virtualT:
+                Intent tellerIntent = new Intent(NewCustomerDrawer.this, TellerHomeChoices.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                tellerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                tellerIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(tellerIntent);
+                break;
+
+            case R.id.nav_New_User:
+                Intent newIntent = new Intent(NewCustomerDrawer.this, SignUpAct.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(newIntent);
+                break;
+
 
             case R.id.nav_logout4:
                 Toast.makeText(this, "Logging out", Toast.LENGTH_SHORT).show();
@@ -1293,7 +1340,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.clear();
                 editor.apply();
-                Intent loginIntent = new Intent(this, LoginActivity.class);
+                Intent loginIntent = new Intent(this, LoginAct.class);
                 loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                         Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 overridePendingTransition(R.anim.slide_in_right,

@@ -39,9 +39,10 @@ public class Trip implements Parcelable, Serializable {
     public static final String A_TRIP_BIZ_ID = "aTrip_Biz_ID";
     public static final String A_TRIP_COUNTRY = "aTrip_Country";
     public static final String A_TRIP_DRIVER_ID = "aTrip_Driver_ID";
+    public static final String A_TRIP_CUS_PROF_ID = "aTrip_Cus_ID";
 
     public static final String CREATE_BOAT_TRIP_TABLE = "CREATE TABLE " + A_TRIP_TABLE + " (" + A_TRIP_DBID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + A_TRIP_ID + " INTEGER, " + A_TRIP_PROF_ID + " INTEGER , " +
-            A_TRIP_STATE + " TEXT ,"+ A_TRIP_STATION + " TEXT, "+ A_TRIP_DEST_NAME + " TEXT, "+ A_TRIP_TOTAL_AMT + " TEXT, "+ A_TRIP_START_TIME + " TEXT, "+ A_TRIP_ENDT + " TEXT, "+ A_TRIP_DATE + " TEXT, "+ A_TRIP_AMOUNT_ADULT + " INTEGER, "+ A_TRIP_AMT_CHILDREN + " INTEGER, "+ A_TRIP_STATUS + " TEXT, "+ A_TRIP_NO_OF_SIT + " INTEGER, "+ A_TRIP_TAKE_OFF_POINT + " TEXT, "+ A_TRIP_TAKE_OFF_LATLNG + " TEXT, "+ A_TRIP_NO_OF_BOATS + " INTEGER, "+ A_TRIP_TYPE_OF_BOAT + " TEXT, "+ A_TRIP_TYPE + " TEXT, "+ A_TRIP_CURRENCY + " TEXT, "+ A_TRIP_BIZ_ID + " Long, "+ A_TRIP_COUNTRY + " TEXT, "+ A_TRIP_DRIVER_ID + " TEXT, "+"FOREIGN KEY(" + A_TRIP_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
+            A_TRIP_STATE + " TEXT ,"+ A_TRIP_STATION + " TEXT, "+ A_TRIP_DEST_NAME + " TEXT, "+ A_TRIP_TOTAL_AMT + " TEXT, "+ A_TRIP_START_TIME + " TEXT, "+ A_TRIP_ENDT + " TEXT, "+ A_TRIP_DATE + " TEXT, "+ A_TRIP_AMOUNT_ADULT + " INTEGER, "+ A_TRIP_AMT_CHILDREN + " INTEGER, "+ A_TRIP_STATUS + " TEXT, "+ A_TRIP_NO_OF_SIT + " INTEGER, "+ A_TRIP_TAKE_OFF_POINT + " TEXT, "+ A_TRIP_TAKE_OFF_LATLNG + " TEXT, "+ A_TRIP_NO_OF_BOATS + " INTEGER, "+ A_TRIP_TYPE_OF_BOAT + " TEXT, "+ A_TRIP_TYPE + " TEXT, "+ A_TRIP_CURRENCY + " TEXT, "+ A_TRIP_BIZ_ID + " Long, "+ A_TRIP_COUNTRY + " TEXT, "+ A_TRIP_DRIVER_ID + " TEXT, "+ A_TRIP_CUS_PROF_ID + " INTEGER, "+"FOREIGN KEY(" + A_TRIP_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "))";
 
     private int aTripID;
     private int aTripProfID;
@@ -83,6 +84,7 @@ public class Trip implements Parcelable, Serializable {
     private TaxiDriver tripTaxiDriver;
     private int tripDriverID;
     private int tripTaxiDriverID;
+    private String tripId;
 
     public Trip() {
         super();
@@ -521,5 +523,13 @@ public class Trip implements Parcelable, Serializable {
 
     public void setTripTaxiDriverID(int tripTaxiDriverID) {
         this.tripTaxiDriverID = tripTaxiDriverID;
+    }
+
+    public String getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(String tripId) {
+        this.tripId = tripId;
     }
 }

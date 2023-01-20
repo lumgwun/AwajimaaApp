@@ -78,6 +78,10 @@ public class TimeLine  implements Serializable ,Parcelable{
         }
     };
 
+    public TimeLine() {
+        super();
+    }
+
     public int getTimeLineCusID() {
         return timeLineCusID;
     }

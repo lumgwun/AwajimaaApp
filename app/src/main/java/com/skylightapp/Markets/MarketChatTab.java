@@ -1,52 +1,27 @@
 package com.skylightapp.Markets;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TabWidget;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.progressindicator.CircularProgressIndicator;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.quickblox.auth.session.QBSettings;
-import com.quickblox.chat.model.QBChatDialog;
-import com.quickblox.chat.model.QBChatMessage;
 import com.quickblox.users.model.QBUser;
-import com.skylightapp.Bookings.BoatTripListAct;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.CoachOffice;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.LoginActivity;
-import com.skylightapp.MarketClasses.AttachmentPreviewAdapter;
-import com.skylightapp.MarketClasses.ChatAdapter;
 import com.skylightapp.MarketClasses.MarketBusiness;
-import com.skylightapp.MarketClasses.StrokedTextView;
 import com.skylightapp.MarketClasses.UserProfileInfo;
 import com.skylightapp.R;
-import com.skylightapp.SignTabMainActivity;
-import com.skylightapp.SignUpAct;
-
-import org.jivesoftware.smack.ConnectionListener;
-
-import java.util.ArrayList;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 
 import static com.skylightapp.BuildConfig.QUICKBLOX_ACCT_KEY;

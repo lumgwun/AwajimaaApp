@@ -37,9 +37,12 @@ import android.widget.Spinner;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.AsyncListener;
+import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.HttpRequester;
 import com.skylightapp.Classes.PrefManager;
+import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.UtilsExtra;
 import com.skylightapp.R;
 import com.skylightapp.ViewPayAct;
@@ -85,9 +88,20 @@ public class TourBookingAct extends AppCompatActivity implements AdapterView.OnI
     SharedPreferences userPreferences;
     ContentLoadingProgressBar progressBar;
     private ProgressDialog progressDialog;
+    String SharedPrefUserPassword;
+    int SharedPrefCusID;
+    String SharedPrefUserRole;
+    String SharedPrefUserName;
+    int SharedPrefProfileID;
     Gson gson;
-    String json,dateOfTranx,SharedPrefRole,SharedPrefUserName,SharedPrefUser,SharedPrefPassword;
-    int profileUID,SharedPrefProfileID,SharedPrefCusID,marketProfID;
+    String json,dateOfTranx,SharedPrefRole,SharedPrefUser,SharedPrefPassword;
+    int profileUID,marketProfID;
+    private Gson gson1,gson2,gson3;
+    private Profile userProfile;
+    private int profileID;
+    private Account account;
+    private String json1,json2,json3,nBankN,marketName;
+    private Customer customer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +111,11 @@ public class TourBookingAct extends AppCompatActivity implements AdapterView.OnI
         month = cal.get(Calendar.MONTH);
         year = cal.get(Calendar.YEAR);
         gson= new Gson();
+        gson1 = new Gson();
+        gson3= new Gson();
+        gson2= new Gson();
+        customer= new Customer();
+        userProfile= new Profile();
         spnTourPackage = (Spinner) findViewById(R.id.spnTourPackage);
         spnTourType = (Spinner) findViewById(R.id.spnTourType);
         spnTourSchedule = (Spinner) findViewById(R.id.spnTourSchedule);
@@ -104,13 +123,19 @@ public class TourBookingAct extends AppCompatActivity implements AdapterView.OnI
         tvTotalTarrif = findViewById(R.id.tvTotalTarrif);
         txtTourDate = findViewById(R.id.txtTourDate);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
+        SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
+        SharedPrefCusID=userPreferences.getInt("CUSTOMER_ID", 0);
+        SharedPrefUserRole = userPreferences.getString("PROFILE_ROLE", "");
+        SharedPrefProfileID=userPreferences.getInt("PROFILE_ID", 0);
+        json = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
+        customer = gson1.fromJson(json1, Customer.class);
 
         fullDayBundle = bundle.getBundle(FULL_DAY);
         halfDayBundle = bundle.getBundle(HALF_DAY);
-        fullDayPriceList = (ArrayList<PTour>) fullDayBundle
-                .getSerializable(FULL_DAY_PRIVATE_PRICE);
-        halfDayPriceList = (ArrayList<PTour>) halfDayBundle
-                .getSerializable(HALF_DAY_PRIVATE_PRICE);
+        fullDayPriceList = (ArrayList<PTour>) fullDayBundle.getSerializable(FULL_DAY_PRIVATE_PRICE);
+        halfDayPriceList = (ArrayList<PTour>) halfDayBundle.getSerializable(HALF_DAY_PRIVATE_PRICE);
 
         fullDayCommonPrice = fullDayBundle
                 .getDouble(FULL_DAY_COMMON_PRICE);

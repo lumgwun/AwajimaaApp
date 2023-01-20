@@ -15,7 +15,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -70,17 +72,17 @@ public class SuperStockTrAct extends AppCompatActivity {
     DBHelper dbHelper;
     private ArrayList<Stocks> stocksArrayListTeller;
     private ArrayList<Stocks> stocksListBranch;
-    private ArrayList<Stocks> stocksArraySkylight;
+    private ArrayList<Stocks> stocksArrayAwajima;
     TextView txtTotalSCForDate,txtTotalSCForToday,txtTotalSCTotal;
     double totalSCForDate,totalSCForToday,totalSC;
     private StockTransferAdapter adapterTeller;
     private StockTransferAdapter adapterAdmin;
-    private StockTransferAdapter adapterSkylight;
+    private StockTransferAdapter adapterAwajima;
     StocksArrayAdapter stocksArrayAdapter;
     CustomerManager customerManager;
     Random ran;
     SecureRandom random;
-    Spinner spnReceipient,spnStocks,spnCus,spnTeller,spnBranch;
+    Spinner spnStocks,spnCus,spnTeller,spnBranch;
     String selectedRecipient;
     String transferDate;
     OfficeBranch selectedBranch;
@@ -127,6 +129,8 @@ public class SuperStockTrAct extends AppCompatActivity {
     private OfficeBranchDAO officeBranchDAO;
     private CusDAO cusDAO;
     private ProfDAO profDAO;
+    private int branchIndex=0;
+    private Profile branchProfile,bizProfile;
 
 
     @Override
@@ -138,6 +142,8 @@ public class SuperStockTrAct extends AppCompatActivity {
         gson = new Gson();
         gson2 = new Gson();
         gson3= new Gson();
+        branchProfile= new Profile();
+        bizProfile= new Profile();
         cusDAO= new CusDAO(this);
         marketBiz= new MarketBusiness();
         stockTransferDAO= new StockTransferDAO(this);
@@ -148,7 +154,8 @@ public class SuperStockTrAct extends AppCompatActivity {
         stocksArrayListTeller =new ArrayList<>();
         stockTransferArrayList =new ArrayList<>();
         stocksListBranch =new ArrayList<>();
-        stocksArraySkylight =new ArrayList<>();
+        stocksArrayAwajima =new ArrayList<>();
+
         officeBranchDAO= new OfficeBranchDAO(this);
         stocksArrayList =new ArrayList<>();
         tellers =new ArrayList<>();
@@ -160,6 +167,7 @@ public class SuperStockTrAct extends AppCompatActivity {
         officeBranchArrayList = new ArrayList<OfficeBranch>();
         marketBizDAO=new MarketBizDAO(this);
         profDAO = new ProfDAO(SuperStockTrAct.this);
+        marketBusinessList= new ArrayList<>();
         marketBiz= new MarketBusiness();
         recipientProfile = new Profile();
         userProfile= new Profile();
@@ -190,12 +198,20 @@ public class SuperStockTrAct extends AppCompatActivity {
 
         ran = new Random();
         random = new SecureRandom();
-        spnReceipient = findViewById(R.id.gender);
         transferID = random.nextInt((int) (Math.random() * 250) + 111);
         newStockId = random.nextInt((int) (Math.random() * 150) + 1015);
         transferCode = (long) random.nextInt((int) (Math.random() * 101) + 101);
         if(marketBiz !=null){
             bizID=marketBiz.getBusinessID();
+            bizProfile=marketBiz.getmBusProfile();
+
+            if(bizProfile !=null){
+                marketBusinessList=bizProfile.getProfile_Businesses();
+            }
+        }else {
+            if(awajima !=null){
+                marketBusinessList=awajima.getAwajimaMarketBusinesses();
+            }
         }
 
         mBizAdapter = new MarketBizArrayAdapter(SuperStockTrAct.this,R.layout.item_market_biz, marketBusinessList);
@@ -222,23 +238,23 @@ public class SuperStockTrAct extends AppCompatActivity {
                 if(stocksDAO !=null){
                     try {
                         stocksArrayList=stocksDAO.getALLStocksSuper();
-                    } catch (NullPointerException e) {
+                    } catch (SQLException e) {
                         System.out.println("Oops!");
                     }
                 }
                 if(cusDAO !=null){
                     try {
                         customers=cusDAO.getAwajimaCusRole("awajima");
-                    } catch (NullPointerException e) {
+                    } catch (SQLException e) {
                         System.out.println("Oops!");
                     }
 
                 }
 
-                if(cusDAO !=null){
+                if(officeBranchDAO !=null){
                     try {
                         officeBranchArrayList=officeBranchDAO.getAllOfficeBranches("awajima");
-                    } catch (NullPointerException e) {
+                    } catch (SQLException e) {
                         System.out.println("Oops!");
                     }
 
@@ -246,7 +262,7 @@ public class SuperStockTrAct extends AppCompatActivity {
                 if(marketBizDAO !=null){
                     try {
                         marketBusinessList=marketBizDAO.getAllBusinesses();
-                    } catch (NullPointerException e) {
+                    } catch (SQLException e) {
                         System.out.println("Oops!");
                     }
 
@@ -261,7 +277,7 @@ public class SuperStockTrAct extends AppCompatActivity {
                 if(stocksDAO !=null){
                     try {
                         stocksArrayList=stocksDAO.getALLStocksSuper();
-                    } catch (Exception e) {
+                    } catch (SQLException e) {
                         System.out.println("Oops!");
                     }
 
@@ -269,7 +285,7 @@ public class SuperStockTrAct extends AppCompatActivity {
                 if(cusDAO !=null){
                     try {
                         customers=cusDAO.getAwajimaCusRole("awajima");
-                    } catch (Exception e) {
+                    } catch (SQLException e) {
                         System.out.println("Oops!");
                     }
 
@@ -277,7 +293,7 @@ public class SuperStockTrAct extends AppCompatActivity {
                 if(officeBranchDAO !=null){
                     try {
                         officeBranchArrayList=officeBranchDAO.getAllOfficeBranches("awajima");
-                    } catch (Exception e) {
+                    } catch (SQLException e) {
                         System.out.println("Oops!");
                     }
 
@@ -285,7 +301,7 @@ public class SuperStockTrAct extends AppCompatActivity {
                 if(marketBizDAO !=null){
                     try {
                         marketBusinessList=marketBizDAO.getAllBusinesses();
-                    } catch (Exception e) {
+                    } catch (SQLException e) {
                         System.out.println("Oops!");
                     }
 
@@ -309,7 +325,13 @@ public class SuperStockTrAct extends AppCompatActivity {
         spnBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedBranch = (OfficeBranch) parent.getSelectedItem();
+                if(branchIndex==position){
+                    return;
+                }else {
+                    selectedBranch = (OfficeBranch) parent.getSelectedItem();
+
+                }
+
 
             }
 
@@ -334,20 +356,14 @@ public class SuperStockTrAct extends AppCompatActivity {
             selectedOffice=selectedBranch.getOfficeBranchName();
         }
 
-        if(selectedBranch !=null){
-            selectedOffice=selectedBranch.getOfficeBranchName();
-        }
-
-        if(dbHelper !=null){
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-
-        }
-
         if(stockTransferDAO !=null){
-            stocksArrayList =stockTransferDAO.getAllStockForProfile(profileID);
+            try {
+                stocksArrayList =stockTransferDAO.getAllStockForProfile(profileID);
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
 
         }
-
 
 
         //stocksArrayListForRecipient=dbHelper.getAllStockForProfile(receiverID);
@@ -358,7 +374,13 @@ public class SuperStockTrAct extends AppCompatActivity {
         spnStocks.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedStocks = (Stocks) parent.getSelectedItem();
+                if(branchIndex==position){
+                    return;
+                }else {
+                    selectedStocks = (Stocks) parent.getSelectedItem();
+
+                }
+
             }
 
             @Override
@@ -369,10 +391,15 @@ public class SuperStockTrAct extends AppCompatActivity {
             selectedStocksID=selectedStocks.getStockID();
             stocksName=selectedStocks.getStockName();
         }
-        if(dbHelper !=null){
-            recipientStock =stockTransferDAO.getRecipientAndStock(receiverID,stocksName);
+        if(stockTransferDAO !=null){
+            try {
+                recipientStock =stockTransferDAO.getRecipientAndStock(receiverID,stocksName);
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
 
         }
+
 
 
         if(userProfile !=null){
@@ -391,8 +418,12 @@ public class SuperStockTrAct extends AppCompatActivity {
                 spnCus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        //selectedStocks = spnStocks.getSelectedItem().toString();
-                        selectedCustomer = (Customer) parent.getSelectedItem();
+                        if(branchIndex==position){
+                            return;
+                        }else {
+                            selectedCustomer = (Customer) parent.getSelectedItem();
+
+                        }
                         //Toast.makeText(StocksTransferAct.this, "Selected Stocks: "+ selectedStocks,Toast.LENGTH_SHORT).show();
                     }
 
@@ -425,11 +456,17 @@ public class SuperStockTrAct extends AppCompatActivity {
                 layoutCompatBranch.setVisibility(View.GONE);
                 layoutCompatCus.setVisibility(View.GONE);
 
-
                 if(profDAO !=null){
-                    tellers=profDAO.getTellersFromMachineAndBiz(machine,bizID);
+                    try {
+                        tellers=profDAO.getTellersFromMachineAndBiz(machine,bizID);
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
 
                 }
+
+
+
                 profileAdapter = new ProfileSimpleAdapter(SuperStockTrAct.this, android.R.layout.simple_spinner_item, tellers);
                 spnTeller.setAdapter(profileAdapter);
                 spnTeller.setSelection(0);
@@ -437,7 +474,13 @@ public class SuperStockTrAct extends AppCompatActivity {
                 spnTeller.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        recipientProfile = (Profile) parent.getSelectedItem();
+                        if(branchIndex==position){
+                            return;
+                        }else {
+                            recipientProfile = (Profile) parent.getSelectedItem();
+
+                        }
+
                         //transferAccepter=selectedRecipient;
                         Toast.makeText(SuperStockTrAct.this, "Receiving Teller: "+ selectedRecipient,Toast.LENGTH_SHORT).show();
                     }
@@ -486,24 +529,31 @@ public class SuperStockTrAct extends AppCompatActivity {
                     branches=profDAO.getBizProfiles(bizID);
 
                 }
-                profileAdapter = new ProfileSimpleAdapter(SuperStockTrAct.this, android.R.layout.simple_spinner_item, branches);
-                spnBranch.setAdapter(profileAdapter);
+
+                officeAdapter = new OfficeAdapter(SuperStockTrAct.this, officeBranchArrayList);
+                spnBranch.setAdapter(officeAdapter);
                 spnBranch.setSelection(0);
 
                 spnBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        selectedBranch = (OfficeBranch) parent.getSelectedItem();
-                        //transferAccepter=selectedBranch;
-                        //Toast.makeText(StocksTransferAct.this, "Branch Office: "+ selectedBranch,Toast.LENGTH_SHORT).show();
+                        if(branchIndex==position){
+                            return;
+                        }else {
+                            selectedBranch = (OfficeBranch) parent.getSelectedItem();
+
+                        }
+
+
                     }
 
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
                     }
                 });
+
                 if(selectedBranch !=null){
-                    receiverID=selectedBranch.getProfile().getPID();
+                    branchProfile=selectedBranch.getProfile();
                     transferAccepter=selectedBranch.getOfficeBranchName();
                 }
 
@@ -511,6 +561,10 @@ public class SuperStockTrAct extends AppCompatActivity {
 
             }
         });
+        if(branchProfile !=null){
+            receiverID=branchProfile.getPID();
+
+        }
         btnBranch.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -525,7 +579,7 @@ public class SuperStockTrAct extends AppCompatActivity {
                 to="Teller";
                 try {
                     qty = Integer.parseInt(Objects.requireNonNull(edtQty.getText()).toString());
-                } catch (Exception e) {
+                } catch (NumberFormatException e) {
                     System.out.println("Oops!");
                     edtQty.requestFocus();
                 }

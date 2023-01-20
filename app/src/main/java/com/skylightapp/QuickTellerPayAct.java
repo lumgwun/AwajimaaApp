@@ -246,8 +246,6 @@ public class QuickTellerPayAct extends AppCompatActivity implements IswMobileSdk
         startActivity(intent);
 
     }
-
-
     private void toast(String msg) {
 
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();

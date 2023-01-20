@@ -98,6 +98,7 @@ import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.EmergReportDAO;
 import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
+import com.skylightapp.SMSAct;
 import com.skylightapp.SignUpAct;
 import com.skylightapp.SuperAdmin.Awajima;
 
@@ -183,8 +184,11 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
     private Customer customer;
     private LatLng latlonNew;
     private long bizID;
+    private  String newReportMessage,userPhoneNO, userEmailAddress;
     private EmergencyReport emergencyReport;
     RectangularBounds stateBounds;
+    boolean reportIsOld = false;
+    private int spnIndex=0;
 
     int PERMISSION_ALL33 = 2;
     String[] PERMISSIONS33 = {
@@ -316,14 +320,16 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
 
         }
 
-            SharedPrefUserMachine = userPreferences.getString("PROFILE_ROLE", "");
-            profileID1=userPreferences.getInt("PROFILE_ID", 0);
-            json = userPreferences.getString("LastProfileUsed", "");
-            userProfile = gson.fromJson(json, Profile.class);
-            json1 = userPreferences.getString("LastCustomerUsed", "");
-            customer = gson1.fromJson(json1, Customer.class);
-            json3 = userPreferences.getString("LastMarketBusinessUsed", "");
-            marketBusiness = gson3.fromJson(json1, MarketBusiness.class);
+        SharedPrefUserMachine = userPreferences.getString("PROFILE_ROLE", "");
+        userPhoneNO = userPreferences.getString("PROFILE_PHONE", "");
+        userEmailAddress = userPreferences.getString("PROFILE_EMAIL", "");
+        profileID1=userPreferences.getInt("PROFILE_ID", 0);
+        json = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastCustomerUsed", "");
+        customer = gson1.fromJson(json1, Customer.class);
+        json3 = userPreferences.getString("LastMarketBusinessUsed", "");
+        marketBusiness = gson3.fromJson(json3, MarketBusiness.class);
         PlacesClient placesClient = Places.createClient(this);
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
@@ -449,8 +455,14 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
             spnOilCom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedOilCompany = spnOilCom.getSelectedItem().toString();
+                if(spnIndex==position){
+                    btnSendReport.setEnabled(false);
+                    return;
+                }else {
+                    selectedOilCompany = spnOilCom.getSelectedItem().toString();
+                    btnSendReport.setEnabled(true);
 
+                }
             }
 
             @Override
@@ -460,7 +472,15 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
         spnAvalaibility.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                iamAvailable = spnAvalaibility.getSelectedItem().toString();
+                if(spnIndex==position){
+                    btnSendReport.setEnabled(false);
+                    return;
+                }else {
+                    btnSendReport.setEnabled(true);
+                    iamAvailable = spnAvalaibility.getSelectedItem().toString();
+
+                }
+
 
             }
 
@@ -471,7 +491,20 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
         spnLGA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedLGA = spnLGA.getSelectedItem().toString();
+                if(spnIndex==position){
+                    selectedLGA = edtOtherLGA.getText().toString().trim();
+                    if(selectedLGA.isEmpty()){
+                        btnSendReport.setEnabled(false);
+
+                    }else {
+                        btnSendReport.setEnabled(true);
+                    }
+                    //return;
+                }else {
+                    btnSendReport.setEnabled(true);
+                    selectedLGA = spnLGA.getSelectedItem().toString();
+
+                }
 
             }
 
@@ -496,15 +529,15 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
             public void onClick(View v) {
                 cal = Calendar.getInstance();
                 year = cal.get(Calendar.YEAR);
-                month = cal.get(Calendar.MONTH);
-                newMonth = month + 1;
+                month = (cal.get(Calendar.MONTH)+1);
+                //newMonth = month + 1;
                 day = cal.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog dialog = new DatePickerDialog(NewOSReportAct.this, R.style.DatePickerDialogStyle, mDateSetListener, day, month, year);
                 //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //make transparent background.
                 dialog.show();
-                reportDateReversed = year + "-" + newMonth + "-" + day;
-                reportDate = day + "-" + newMonth + "-" + year;
+                reportDateReversed = year + "-" + month + "-" + day;
+                reportDate = day + "-" + month + "-" + year;
                 spillageDateText.setText("Your date of Spillage:" + reportDateReversed);
 
             }
@@ -514,8 +547,8 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
             @Override
             public void onDateSet(DatePicker datePicker, int day, int month, int year) {
                 Log.d(ImageUtil.TAG, "onDateSet: date of Spillage: " + day + "-" + month + "-" + year);
-                reportDateReversed = year + "-" + newMonth + "-" + day;
-                reportDate = day + "-" + newMonth + "-" + year;
+                reportDateReversed = year + "-" + month + "-" + day;
+                reportDate = day + "-" + month + "-" + year;
                 spillageDateText.setText("Your date of Spillage:" + reportDateReversed);
 
 
@@ -523,7 +556,7 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
 
 
         };
-            reportDate = day + "-" + newMonth + "-" + year;
+            reportDate = year + "-" + month + "-" + day;
 
 
 
@@ -561,74 +594,66 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
             calendar = Calendar.getInstance();
             @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             reportDate = mdformat.format(calendar.getTime());
-        if(dbHelper !=null){
-            try {
 
-                if(sqLiteDatabase !=null){
-                    sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
-                }
-            } catch (SQLiteException e) {
-                e.printStackTrace();
-            }
-
-
-
-        }
         Animation translater = AnimationUtils.loadAnimation(this, R.anim.bounce);
         Animation translER = AnimationUtils.loadAnimation(this, R.anim.pro_animation);
         Animation translater44 = AnimationUtils.loadAnimation(this, R.anim.bounce);
+        newReportMessage="The Governments have received your Spillage Report, and we would respond immediately";
 
-        btnSendReport.setOnClickListener(this::sendReportToTeam);
+        //btnSendReport.setOnClickListener(this::sendReportToTeam);
+        emergencyReport= new EmergencyReport();
         btnSendReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 view.startAnimation(translater44);
                 lgaEdtStrng = edtOtherLGA.getText().toString().trim();
                 moreInfo = edtObservation.getText().toString().trim();
-                boolean reportIsOld = false;
+
 
 
                 for (int i = 0; i < emergencyReports.size(); i++) {
                     try {
                         if (emergencyReports.get(i).getEmergRTime().equalsIgnoreCase(reportDate) && emergencyReports.get(i).getEmergRTown().equalsIgnoreCase(subUrb)) {
+                            reportIsOld = false;
                             Toast.makeText(NewOSReportAct.this, "A similar Spillage Report, exist, here", Toast.LENGTH_LONG).show();
                             return;
 
                         } else {
-                            //doOtpNotification(otpMessage);
+                            reportIsOld=true;
+                            doNotification(newReportMessage,userPhoneNO,userEmailAddress);
+                            doSyNotification(newReportMessage,userPhoneNO,userEmailAddress);
 
-                            if(dbHelper !=null){
-                                sqLiteDatabase = dbHelper.getWritableDatabase();
+                            if(reportIsOld){
+                                try {
+
+                                    if(sqLiteDatabase !=null){
+                                        sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                                    }
+                                } catch (SQLiteException e) {
+                                    e.printStackTrace();
+                                }
+
                                 if(emergReportDAO !=null){
-                                    try {
-
-                                        if(sqLiteDatabase !=null){
-                                            sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
-                                        }
-                                    } catch (SQLiteException e) {
-                                        e.printStackTrace();
-                                    }
-                                    emergencyReport= new EmergencyReport();
-                                    try {
-
-                                        awajima.addEmergReport(sReportID, profileID1,bizID,reportDate,"Oil Spillage Report",localityString,subUrb,selectedLGA,selectedOilCompany,address,strngLatLng,moreInfo,iamAvailable);
-                                    } catch (NullPointerException e) {
-                                        e.printStackTrace();
-                                    }
                                     try {
 
                                         emergReportDAO.insertUserEmergencyReport(sReportID, profileID1,bizID,reportDate,"Oil Spillage Report",localityString,subUrb,selectedLGA,selectedOilCompany,address,strngLatLng,moreInfo,iamAvailable );
 
-                                    } catch (NullPointerException e) {
+                                    } catch (SQLiteException e) {
                                         e.printStackTrace();
                                     }
 
                                 }
+                                if(awajima !=null){
+                                    try {
 
+                                        awajima.addEmergReport(sReportID, profileID1,bizID,reportDate,"Oil Spillage Report",localityString,subUrb,selectedLGA,selectedOilCompany,address,strngLatLng,moreInfo,iamAvailable);
+                                    } catch (SQLiteException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
 
 
                             }
-
                         }
                     } catch (NullPointerException e) {
                         System.out.println("Oops!");
@@ -641,9 +666,26 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
 
 
     }
+    public void doSyNotification(String newReportMessage,String userPhoneNO,String userEmailAddress) {
+        Bundle smsBundle = new Bundle();
+        smsBundle.putString("PROFILE_PHONE", userPhoneNO);
+        smsBundle.putString("USER_PHONE", userPhoneNO);
+        smsBundle.putString("smsMessage", newReportMessage);
+        //smsBundle.putString("from", "Awajima");
+        smsBundle.putString("to", userPhoneNO);
+        smsBundle.putString("PROFILE_EMAIL", userEmailAddress);
+        Intent otpIntent = new Intent(NewOSReportAct.this, SMSAct.class);
+        otpIntent.putExtras(smsBundle);
+        otpIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //startActivity(itemPurchaseIntent);
+
+    }
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-        if (position > 0) {
+        if(spnIndex==position){
+            return;
+        }else {
+
             state = (String) spnState.getItemAtPosition(position);
             if(state !=null){
                 if(state.equalsIgnoreCase("Rivers State")){
@@ -663,6 +705,29 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
                     cardViewOtherLGA.setVisibility(View.GONE);
                     spnLGA.setAdapter(arrayAdapter);
 
+                    spnLGA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            if(spnIndex==position){
+                                selectedLGA = edtOtherLGA.getText().toString().trim();
+                                if(selectedLGA.isEmpty()){
+                                    btnSendReport.setEnabled(false);
+
+                                }else {
+                                    btnSendReport.setEnabled(true);
+                                }
+                            }else {
+                                selectedLGA = spnLGA.getSelectedItem().toString();
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                        }
+                    });
+
                 }
                 if(state.equalsIgnoreCase("Bayelsa State")){
                     try {
@@ -680,6 +745,28 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
                     arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     cardViewOtherLGA.setVisibility(View.GONE);
                     spnLGA.setAdapter(arrayAdapter);
+                    spnLGA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            if(spnIndex==position){
+                                selectedLGA = edtOtherLGA.getText().toString().trim();
+                                if(selectedLGA.isEmpty()){
+                                    btnSendReport.setEnabled(false);
+
+                                }else {
+                                    btnSendReport.setEnabled(true);
+                                }
+                            }else {
+                                selectedLGA = spnLGA.getSelectedItem().toString();
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                        }
+                    });
 
                 }
                 if(state.equalsIgnoreCase("Delta State")){
@@ -698,6 +785,28 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
                     arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     cardViewOtherLGA.setVisibility(View.GONE);
                     spnLGA.setAdapter(arrayAdapter);
+                    spnLGA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            if(spnIndex==position){
+                                selectedLGA = edtOtherLGA.getText().toString().trim();
+                                if(selectedLGA.isEmpty()){
+                                    btnSendReport.setEnabled(false);
+
+                                }else {
+                                    btnSendReport.setEnabled(true);
+                                }
+                            }else {
+                                selectedLGA = spnLGA.getSelectedItem().toString();
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                        }
+                    });
 
                 }
                 if(state.equalsIgnoreCase("Akwa-Ibom State")){
@@ -715,6 +824,28 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
                     arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     cardViewOtherLGA.setVisibility(View.GONE);
                     spnLGA.setAdapter(arrayAdapter);
+                    spnLGA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            if(spnIndex==position){
+                                selectedLGA = edtOtherLGA.getText().toString().trim();
+                                if(selectedLGA.isEmpty()){
+                                    btnSendReport.setEnabled(false);
+
+                                }else {
+                                    btnSendReport.setEnabled(true);
+                                }
+                            }else {
+                                selectedLGA = spnLGA.getSelectedItem().toString();
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                        }
+                    });
 
                 }
                 if(state.equalsIgnoreCase("Imo State")){
@@ -732,6 +863,28 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
                     arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     cardViewOtherLGA.setVisibility(View.GONE);
                     spnLGA.setAdapter(arrayAdapter);
+                    spnLGA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            if(spnIndex==position){
+                                selectedLGA = edtOtherLGA.getText().toString().trim();
+                                if(selectedLGA.isEmpty()){
+                                    btnSendReport.setEnabled(false);
+
+                                }else {
+                                    btnSendReport.setEnabled(true);
+                                }
+                            }else {
+                                selectedLGA = spnLGA.getSelectedItem().toString();
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                        }
+                    });
 
                 }
                 if(state.equalsIgnoreCase("Abia State")){
@@ -749,6 +902,28 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
                     arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     cardViewOtherLGA.setVisibility(View.GONE);
                     spnLGA.setAdapter(arrayAdapter);
+                    spnLGA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            if(spnIndex==position){
+                                selectedLGA = edtOtherLGA.getText().toString().trim();
+                                if(selectedLGA.isEmpty()){
+                                    btnSendReport.setEnabled(false);
+
+                                }else {
+                                    btnSendReport.setEnabled(true);
+                                }
+                            }else {
+                                selectedLGA = spnLGA.getSelectedItem().toString();
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                        }
+                    });
 
                 }
                 if(state.equalsIgnoreCase("Ondo State")){
@@ -766,6 +941,28 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
                     arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     cardViewOtherLGA.setVisibility(View.GONE);
                     spnLGA.setAdapter(arrayAdapter);
+                    spnLGA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            if(spnIndex==position){
+                                selectedLGA = edtOtherLGA.getText().toString().trim();
+                                if(selectedLGA.isEmpty()){
+                                    btnSendReport.setEnabled(false);
+
+                                }else {
+                                    btnSendReport.setEnabled(true);
+                                }
+                            }else {
+                                selectedLGA = spnLGA.getSelectedItem().toString();
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                        }
+                    });
 
                 }
                 if(state.equalsIgnoreCase("Cross River State")){
@@ -783,6 +980,28 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
                     arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     cardViewOtherLGA.setVisibility(View.GONE);
                     spnLGA.setAdapter(arrayAdapter);
+                    spnLGA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            if(spnIndex==position){
+                                selectedLGA = edtOtherLGA.getText().toString().trim();
+                                if(selectedLGA.isEmpty()){
+                                    btnSendReport.setEnabled(false);
+
+                                }else {
+                                    btnSendReport.setEnabled(true);
+                                }
+                            }else {
+                                selectedLGA = spnLGA.getSelectedItem().toString();
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                        }
+                    });
 
                 }
                 if(state.equalsIgnoreCase("Edo State")){
@@ -800,6 +1019,28 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
                     arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     cardViewOtherLGA.setVisibility(View.GONE);
                     spnLGA.setAdapter(arrayAdapter);
+                    spnLGA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            if(spnIndex==position){
+                                selectedLGA = edtOtherLGA.getText().toString().trim();
+                                if(selectedLGA.isEmpty()){
+                                    btnSendReport.setEnabled(false);
+
+                                }else {
+                                    btnSendReport.setEnabled(true);
+                                }
+                            }else {
+                                selectedLGA = spnLGA.getSelectedItem().toString();
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                        }
+                    });
 
                 }
                 if(state.equalsIgnoreCase("Others")){
@@ -809,11 +1050,11 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
                 }
             }
 
-
         }
 
+
     }
-    private void doOtpNotification(String otpMessage) {
+    private void doNotification(String newReportMessage, String userPhoneNO, String otpMessage) {
 
         try {
             Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -848,7 +1089,7 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
                     .build() ;
             int importance = NotificationManager. IMPORTANCE_HIGH ;
             NotificationChannel notificationChannel = new
-                    NotificationChannel( NOTIFICATION_CHANNEL_ID , "NOTIFICATION_CHANNEL_NAME" , importance) ;
+                    NotificationChannel( NOTIFICATION_CHANNEL_ID , "OIL Spillage Channel" , importance) ;
             notificationChannel.enableLights( true ) ;
             notificationChannel.setLightColor(Color. RED ) ;
             notificationChannel.enableVibration( true ) ;
@@ -1233,15 +1474,15 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
     public void reportDatePicker(View view) {
         cal = Calendar.getInstance();
         year = cal.get(Calendar.YEAR);
-        month = cal.get(Calendar.MONTH);
-        newMonth = month + 1;
+        month = (cal.get(Calendar.MONTH)+1);
+        //newMonth = month + 1;
         day = cal.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog dialog = new DatePickerDialog(NewOSReportAct.this, R.style.DatePickerDialogStyle, mDateSetListener, day, month, year);
         //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //make transparent background.
         dialog.show();
-        reportDate = year + "-" + newMonth + "-" + day;
-        reportDateReversed = day + "-" + newMonth + "-" + year;
+        reportDate = year + "-" + month + "-" + day;
+        reportDateReversed = year + "-" + month + "-" + day;
         spillageDateText.setText("Your date of Birth:" + reportDate);
 
 
@@ -1301,18 +1542,13 @@ public class NewOSReportAct extends AppCompatActivity implements GoogleApiClient
 
     }
 
-    public void getPlaceOnMap(View view) {
-    }
-
-    public void sendReportToTeam(View view) {
-    }
-
-    public void ourPrivacyPolicy(View view) {
-    }
-
-
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
     }
 }

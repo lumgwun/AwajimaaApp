@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="@color/black"
     android:layout_height="match_parent"
-    tools:context="com.skylightapp.PlanPaymentActivity">
+    tools:context="com.skylightapp.PlanPaymentAct">
     <TextView
         android:layout_width="match_parent"
         android:text="Our Rate"

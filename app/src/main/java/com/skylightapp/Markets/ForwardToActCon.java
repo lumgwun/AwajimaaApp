@@ -19,7 +19,7 @@ import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.core.request.QBRequestGetBuilder;
 import com.quickblox.users.model.QBUser;
-import com.skylightapp.LoginActivity;
+import com.skylightapp.LoginAct;
 import com.skylightapp.MarketClasses.BaseAsyncTaskCon;
 import com.skylightapp.MarketClasses.DialogsAdapter;
 import com.skylightapp.MarketClasses.DialogsManager;
@@ -110,7 +110,7 @@ public class ForwardToActCon extends BaseActCon {
                 @Override
                 public void onError(QBResponseException e) {
                     Log.d(TAG, "Relogin Failed " + e.getMessage());
-                    LoginActivity.start(ForwardToActCon.this);
+                    LoginAct.start(ForwardToActCon.this);
                     hideProgressDialog();
                     finish();
                 }

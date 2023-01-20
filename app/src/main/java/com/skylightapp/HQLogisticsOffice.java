@@ -21,7 +21,7 @@ import com.google.gson.Gson;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.skylightapp.Adapters.CurrAdapter;
 import com.skylightapp.Admins.AdminTransActivity;
-import com.skylightapp.Admins.SkylightUsersActivity;
+import com.skylightapp.Admins.AwajimaUsersAct;
 import com.skylightapp.Classes.Account;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
@@ -30,6 +30,7 @@ import com.skylightapp.Customers.CustomerHelpActTab;
 import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.MarketClasses.MarketBizSub;
 import com.skylightapp.Markets.MarketTab;
+import com.skylightapp.StateDir.WasteRequestAct;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,15 +64,16 @@ public class HQLogisticsOffice extends TabActivity {
 
     String SharedPrefUserPassword,SharedPrefCusID,SharedPrefUserMachine,SharedPrefUserName,SharedPrefProfileID;
     CardView cardViewPackges,cardViewGrpSavings,cardViewHistory, cardViewStandingOrders, cardViewOrders, cardViewSupport;
-    private FloatingActionButton fab;
+    private FloatingActionButton fab, fabH;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_hqlogistics_office);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        chipNavigationBar = findViewById(R.id.bottom_nav_barC);
+        chipNavigationBar = findViewById(R.id.log_nav_bar);
         fab = findViewById(R.id.logTab);
+        fabH = findViewById(R.id.fab_log);
         gson = new Gson();
         World.init(this);
         countries=new ArrayList<>();
@@ -85,9 +87,28 @@ public class HQLogisticsOffice extends TabActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent wasteIntent = new Intent(HQLogisticsOffice.this, HQLogisticsOffice.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                wasteIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                wasteIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(wasteIntent);
 
             }
         });
+        fabH.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent wasteIntent = new Intent(HQLogisticsOffice.this, NewCustomerDrawer.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                wasteIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                wasteIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(wasteIntent);
+
+            }
+        });
+
         SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
         SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
         SharedPrefCusID=userPreferences.getString("CUSTOMER_ID", "");
@@ -102,7 +123,7 @@ public class HQLogisticsOffice extends TabActivity {
         TabHost tabhost = (TabHost) findViewById(android.R.id.tabhost);
         tabhost.setup(getLocalActivityManager());
 
-        Intent intentsupport = new Intent().setClass(this, SkylightUsersActivity.class);
+        Intent intentsupport = new Intent().setClass(this, AwajimaUsersAct.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabUserSupport = tabhost
                 .newTabSpec("Users")
                 .setIndicator("", resources.getDrawable(R.drawable.user3))

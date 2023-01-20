@@ -70,7 +70,7 @@ public class BaseActivity <L extends BaseView, L1 extends BasePresenter<LoginVie
     }
 
     private void startLoginActivity() {
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, LoginAct.class);
         startActivity(intent);
     }
     private void startCustomerActivity() {

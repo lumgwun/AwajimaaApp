@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,7 +36,7 @@ public class MBizRecyA extends RecyclerView.Adapter<MBizRecyA.RecyclerViewHolder
     int resources;
     private OnItemsClickListener listener;
     private Profile profile;
-    private String bizLogo, bizStatus;
+    private String bizLogo, bizStatus,type,name;
     private MarketBusiness marketBusiness;
     private Currency currency;
 
@@ -88,9 +89,9 @@ public class MBizRecyA extends RecyclerView.Adapter<MBizRecyA.RecyclerViewHolder
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView  brandName,customerID;
+        public AppCompatTextView brandName,customerID;
         public final BezelImageView bizLogo;
-        private TextView  bizType;
+        private AppCompatTextView  bizType;
         public AppCompatButton btnMore;
         LinearLayoutCompat p_01,p_41;
 
@@ -110,15 +111,17 @@ public class MBizRecyA extends RecyclerView.Adapter<MBizRecyA.RecyclerViewHolder
         if(marketBusiness !=null){
             bizStatus =marketBusiness.getBizStatus();
             bizLogo=marketBusiness.getBizDrivePix();
+            type =marketBusiness.getBizStatus();
+            name =marketBusiness.getBizStatus();
 
         }
 
         if (marketBusiness != null) {
-            holder.bizType.setText(MessageFormat.format("Type:{0}", marketBusiness.getBizType()));
-            holder.brandName.setText(MessageFormat.format("Brand Name:", marketBusiness.getBizBrandname()));
+            holder.bizType.setText(MessageFormat.format("Type:{0}", type));
+            holder.brandName.setText(MessageFormat.format("Brand Name:", name));
             Glide.with(mcontext)
                     .asBitmap()
-                    .load(bizLogo)
+                    .load(R.drawable.ifesinachi)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .error(R.drawable.ic_alert)
                     //.listener(listener)

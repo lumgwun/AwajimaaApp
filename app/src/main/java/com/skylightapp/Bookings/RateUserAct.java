@@ -42,6 +42,11 @@ public class RateUserAct extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.act_rate_user);
         assignViews();
     }
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
+    }
     private void assignViews() {
         ratingBar = (RatingBar) findViewById(R.id.rating_bar);
         ratingBar.setOnRatingBarChangeListener(this);

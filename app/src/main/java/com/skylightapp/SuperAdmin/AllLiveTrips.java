@@ -16,20 +16,24 @@ import android.view.View;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.gson.Gson;
+import com.skylightapp.Bookings.OurTeliver;
 import com.skylightapp.Bookings.TaxiDriver;
+import com.skylightapp.Bookings.Trip;
+import com.skylightapp.Bookings.TripListener;
 import com.skylightapp.Bookings.TripTAd;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.CustomApplication;
+import com.skylightapp.Database.TripDAO;
 import com.skylightapp.Interfaces.Consts;
 import com.skylightapp.R;
-import com.teliver.sdk.core.Teliver;
-import com.teliver.sdk.core.TripListener;
-import com.teliver.sdk.models.Trip;
+
 
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 public class AllLiveTrips extends AppCompatActivity implements TripListener,View.OnClickListener {
     private LocationManager manager;
@@ -51,14 +55,17 @@ public class AllLiveTrips extends AppCompatActivity implements TripListener,View
     private Awajima awajima;
     private List<Trip> currentTrips;
     CustomApplication application;
+    private TripDAO tripDAO;
+    boolean refresh=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_all_live_trips);
         application= new CustomApplication();
-        Teliver.setTripListener(this);
+        OurTeliver.setTripListener(this);
         userProfile = new Profile();
+        tripDAO= new TripDAO(this);
         gson1 = new Gson();
         gson = new Gson();
         customer = new Customer();
@@ -79,10 +86,24 @@ public class AllLiveTrips extends AppCompatActivity implements TripListener,View
         awajima = gson2.fromJson(json2, Awajima.class);
         RecyclerView recyclerView = findViewById(R.id.live_recycler);
         //viewEmpty = findViewById(R.id.view_empty);
-        currentTrips.addAll(Teliver.getCurrentTrips());
+        if(tripDAO !=null){
+            try {
+                currentTrips.addAll(tripDAO.getAllCurrentTrips());
+            }
+            catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new TripTAd(this);
-        mAdapter.setData(currentTrips, this);
+        if(currentTrips !=null){
+            mAdapter.setData(currentTrips, this);
+
+        }
+
         recyclerView.setAdapter(mAdapter);
         /*if (currentTrips.isEmpty())
             viewEmpty.setVisibility(View.VISIBLE);*/
@@ -91,7 +112,7 @@ public class AllLiveTrips extends AppCompatActivity implements TripListener,View
     @Override
     public void onTripStarted(Trip tripDetails) {
         Log.d("Driver:", "Trip started::" + tripDetails);
-        changeStatus(tripDetails.getTrackingId(), true);
+        changeStatus(tripDetails.getTripId(), true);
 
     }
 
@@ -108,8 +129,19 @@ public class AllLiveTrips extends AppCompatActivity implements TripListener,View
     }
     @SuppressLint("NotifyDataSetChanged")
     private void changeStatus(String id, boolean status) {
+        tripDAO= new TripDAO(this);
         currentTrips.clear();
-        currentTrips.addAll(Teliver.getCurrentTrips());
+        if(tripDAO !=null){
+            try {
+                currentTrips.addAll(tripDAO.getAllCurrentTrips());
+            }
+            catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
         mAdapter.notifyDataSetChanged();
         viewEmpty.setVisibility(currentTrips.isEmpty() ? View.VISIBLE : View.GONE);
     }

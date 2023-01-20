@@ -35,18 +35,13 @@ import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Utils;
 import com.skylightapp.CustomApplication;
+import com.skylightapp.Database.TripDAO;
 import com.skylightapp.Interfaces.Consts;
 import com.skylightapp.R;
-import com.skylightapp.SignUpAct;
-import com.teliver.sdk.core.Teliver;
-import com.teliver.sdk.core.TripListener;
-import com.teliver.sdk.models.PushData;
-import com.teliver.sdk.models.Trip;
-import com.teliver.sdk.models.TripBuilder;
+
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+
 
 public class FragDriver extends Fragment implements TripListener, View.OnClickListener, OnSuccessListener<Location> {
 
@@ -67,15 +62,17 @@ public class FragDriver extends Fragment implements TripListener, View.OnClickLi
     private TripTAd mAdapter;
     private Gson gson, gson1,gson2;
     private String json, json1,json2;
-    private Profile userProfile;
+    private Profile userProfile,driverProfile;
     private Customer customer;
     String SharedPrefUserPassword;
     String SharedPrefCusID;
     String SharedPrefUserMachine,surName,firstName;
     String SharedPrefUserName;
-    int SharedPrefProfileID;
+    int SharedPrefProfileID, driverID, profileID;
     private TaxiDriver driver;
-    private List<Trip> currentTrips;
+    private ArrayList<Trip> currentTrips;
+    private boolean itIsDriver;
+    private TripDAO tripDAO;
 
     @Nullable
     @Override
@@ -88,13 +85,16 @@ public class FragDriver extends Fragment implements TripListener, View.OnClickLi
         super.onViewCreated(view, savedInstanceState);
         context = getActivity();
         application= new CustomApplication();
-        Teliver.setTripListener(this);
+        OurTeliver.setTripListener(this);
         userProfile = new Profile();
+        tripDAO= new TripDAO(getContext());
         gson1 = new Gson();
         gson = new Gson();
+        gson2 = new Gson();
         customer = new Customer();
         driver= new TaxiDriver();
-        currentTrips = new ArrayList<>();
+        driverProfile=new Profile();
+        currentTrips = new ArrayList<Trip>();
         mPreference = new PrefManager(context);
         userPreferences = requireActivity().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPrefUserName = userPreferences.getString("PROFILE_USERNAME", "");
@@ -114,7 +114,28 @@ public class FragDriver extends Fragment implements TripListener, View.OnClickLi
         ExtendedFloatingActionButton txtTripStatus = view.findViewById(R.id.add_trip);
         RecyclerView recyclerView = view.findViewById(R.id.recycler_driver_trips);
         viewEmpty = view.findViewById(R.id.view_empty);
-        currentTrips.addAll(Teliver.getCurrentTrips());
+        if(userProfile!=null){
+            profileID=userProfile.getPID();
+        }
+        if(driver !=null){
+            driverProfile=driver.getDriverProfile();
+            driverID=driver.getDriverID();
+        }
+        if(userProfile==driverProfile){
+            itIsDriver=true;
+
+        }
+        if(itIsDriver){
+
+            if(tripDAO !=null){
+                try {
+                    currentTrips.addAll(tripDAO.getCurrentTripForDriver(driverID));
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         mAdapter = new TripTAd(context);
         mAdapter.setData(currentTrips, this);
@@ -190,7 +211,7 @@ public class FragDriver extends Fragment implements TripListener, View.OnClickLi
                     pushData.setMessage(title);
                     builder.withUserPushObject(pushData);
                 }
-                Teliver.startTrip(builder.build());
+                OurTeliver.startTrip(builder.build());
                 Utils.showSnack(viewRoot, getString(R.string.txt_wait_start_trip));
             }
         } catch (Exception e) {
@@ -200,9 +221,9 @@ public class FragDriver extends Fragment implements TripListener, View.OnClickLi
 
 
     @Override
-    public void onTripStarted(com.teliver.sdk.models.Trip tripDetails) {
+    public void onTripStarted(Trip tripDetails) {
         Log.d("Driver:", "Trip started::" + tripDetails);
-        changeStatus(tripDetails.getTrackingId(), true);
+        changeStatus(tripDetails.getTripId(), true);
 
     }
 
@@ -222,7 +243,31 @@ public class FragDriver extends Fragment implements TripListener, View.OnClickLi
         mPreference.storeBoolean(Consts.IS_TRIP_ACTIVE, status);
         mPreference.storeString(Consts.TRACKING_ID, id);
         currentTrips.clear();
-        currentTrips.addAll(Teliver.getCurrentTrips());
+        if(userProfile!=null){
+            profileID=userProfile.getPID();
+        }
+        if(driver !=null){
+            driverProfile=driver.getDriverProfile();
+            driverID=driver.getDriverID();
+        }
+        if(userProfile==driverProfile){
+            itIsDriver=true;
+
+        }
+        if(itIsDriver){
+
+            if(tripDAO !=null){
+                try {
+                    currentTrips.addAll(tripDAO.getCurrentTripForDriver(driverID));
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+
+        }
         mAdapter.notifyDataSetChanged();
         viewEmpty.setVisibility(currentTrips.isEmpty() ? View.VISIBLE : View.GONE);
     }
@@ -237,7 +282,7 @@ public class FragDriver extends Fragment implements TripListener, View.OnClickLi
         switch (v.getId()) {
             case R.id.stop:
                 try {
-                    Teliver.stopTrip(v.getTag().toString());
+                    OurTeliver.stopTrip(v.getTag().toString());
                     Utils.showSnack(viewRoot, getString(R.string.txt_wait_stop_trip));
                 } catch (Exception e) {
                     e.printStackTrace();

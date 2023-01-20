@@ -59,6 +59,15 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    //android.buildTypes.release.ndk.debugSymbolLevel = { SYMBOL_TABLE | FULL }
+    /*flavorDimensions "version"
+    productFlavors {
+        flavor1 {
+        }
+        flavor2 {
+            proguardFile 'flavor2-rules.pro'
+        }
+    }*/
     //android.suppressUnsupportedCompileSdk=32
 
 
@@ -68,14 +77,16 @@ android {
             minifyEnabled true
             multiDexEnabled true
             shrinkResources true
+            consumerProguardFiles 'proguard-rules.txt'
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField("String", "MAPS_API_KEY", localProperties['map_api_key22'])
             debug {
                 resValue("string", "DB_PASSWORD_DATABASE_NAME", "password")
             }
             debug {
-                minifyEnabled true
-                shrinkResources true
+                //minifyEnabled true
+                //shrinkResources true
+                consumerProguardFiles 'proguard-rules.txt'
                 proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
                 buildConfigField("String", "MAPS_API_KEY", localProperties['map_api_key22'])
 
@@ -440,7 +451,8 @@ dependencies {
     implementation 'com.timehop.stickyheadersrecyclerview:library:[0.4.3]@aar'
 
 
-    implementation 'com.teliver.sdk:TeliverSdk:3.0.1'
+    //implementation 'com.teliver.sdk:TeliverSdk:3.0.1'
+    implementation 'io.teliver.sdk:TeliverSdk:4.0.9'
 
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     implementation 'com.github.bumptech.glide:annotations:4.12.0'
@@ -557,6 +569,7 @@ dependencies {
     implementation 'de.halfbit:pinned-section-listview:1.0.0'
     implementation 'com.google.firebase:firebase-perf'
     implementation platform('com.google.firebase:firebase-bom:31.1.1')
+    implementation 'com.google.firebase:firebase-iid'
     implementation 'com.squareup.okhttp3:okhttp:4.9.2'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.2'
     implementation "com.squareup.okhttp3:okhttp-urlconnection:4.9.2"
@@ -588,6 +601,8 @@ dependencies {
 
     implementation 'androidx.wear:wear:1.2.0'
     implementation "com.interswitchng:isw-mobile-payment-sdk:$versionName"
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0-beta02'
+    implementation 'com.google.android.material:material:1.5.0-alpha01'
     //implementation 'com.amap.api:search:7.9.0'
     //implementation 'com.amap.api:location:6.2.0'
     //implementation 'com.amap.api:3dmap:9.5.0'

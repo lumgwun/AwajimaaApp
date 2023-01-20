@@ -103,10 +103,9 @@ import static com.skylightapp.Classes.CustomerDailyReport.REPORT_PACK_ID_FK;
 import static com.skylightapp.Classes.CustomerDailyReport.REPORT_CUS_ID_FK;
 import static com.skylightapp.Classes.CustomerDailyReport.REPORT_OFFICE_BRANCH;
 import static com.skylightapp.Classes.CustomerDailyReport.REPORT_PROF_ID_FK;
-import static com.skylightapp.Classes.CustomerManager.CREATE_WORKERS_TABLE;
+
 import static com.skylightapp.Classes.CustomerManager.CUSTOMER_TELLER_PIX;
 import static com.skylightapp.Classes.CustomerManager.CUSTOMER_TELLER_PROF_ID;
-import static com.skylightapp.Classes.CustomerManager.WORKER_TABLE;
 import static com.skylightapp.Classes.DailyAccount.CREATE_DAILY_ACCOUNTING_TABLE;
 
 import static com.skylightapp.Classes.DailyAccount.DAILY_ACCOUNTING_TABLE;
@@ -122,6 +121,8 @@ import static com.skylightapp.Bookings.TripStopPoint.CREATE_TRIP_STOP_POINT_TABL
 import static com.skylightapp.Classes.SOReceived.CREATE_SO_RECEIVED_TABLE;
 import static com.skylightapp.Classes.SOReceived.SO_RECEIVED_TABLE;
 
+import static com.skylightapp.Classes.Worker.CREATE_WORKERS_TABLE;
+import static com.skylightapp.Classes.Worker.WORKER_TABLE;
 import static com.skylightapp.MapAndLoc.Distance.CREATE_DISTANCE_TABLE;
 import static com.skylightapp.MapAndLoc.Distance.DISTANCE_TABLE;
 import static com.skylightapp.MapAndLoc.Fence.CREATE_FENCE_TABLE;
@@ -688,7 +689,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_EXCHANGER_TABLE);
 
 
-            db.execSQL("create table ROLES " + "(role_ID integer primary key, roleUserName text,rolePassword text,rolePhoneNo text,role text)");
+            db.execSQL("create table ROLES " + "(role_ID integer primary key,role_biz_ID integer, roleUserName text,rolePassword text,rolePhoneNo text,role text)");
             //db.setTransactionSuccessful();
         } catch (SQLiteException e) {
             e.printStackTrace();
@@ -6063,9 +6064,17 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<MarketBizPackage> packages = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         String selection = PACKAGE_END_DATE + "=?";
+        Cursor cursor=null;
         String[] selectionArgs = new String[]{valueOf(dateOfToday)};
-        @SuppressLint("Recycle") Cursor cursor = db.query(PACKAGE_TABLE, null, selection, selectionArgs, null,
-                null, null);
+        try {
+            cursor = db.query(PACKAGE_TABLE, null, selection, selectionArgs, null,
+                    null, null);
+
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+
         if(cursor!=null && cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
                 do {
@@ -6269,6 +6278,16 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("role_ID", id);
         contentValues.put("rolePhoneNo", rolerPhoneNo);
         return sqLiteDatabase.insert("ROLES", null, contentValues);
+    }
+    public long insertRole(int profileID1, String selectedUserType, long bizID, String ccString) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("ROLE", selectedUserType);
+        contentValues.put("role_biz_ID", bizID);
+        contentValues.put("role_ID", profileID1);
+        contentValues.put("rolePhoneNo", ccString);
+        return sqLiteDatabase.insert("ROLES", null, contentValues);
+
     }
 
 

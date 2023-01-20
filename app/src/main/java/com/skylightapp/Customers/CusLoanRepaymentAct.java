@@ -111,14 +111,14 @@ public class CusLoanRepaymentAct extends AppCompatActivity {
     private TranXDAO tranXDAO;
     private MessageDAO messageDAO;
     private LoanDAO loanDAO;
-    private CodeDAO codeDAO;
-    private PaymentCodeDAO paymentCodeDAO;
+    //private CodeDAO codeDAO;
+    //private PaymentCodeDAO paymentCodeDAO;
     private ProfDAO profileDao;
-    private PaymentDAO paymentDAO;
-    private AdminBalanceDAO adminBalanceDAO;
+    //private PaymentDAO paymentDAO;
+    //private AdminBalanceDAO adminBalanceDAO;
     private TimeLineClassDAO timeLineClassDAO;
-    private WorkersDAO workersDAO;
-    private OfficeBranchDAO officeBranchDAO;
+    //private WorkersDAO workersDAO;
+    //private OfficeBranchDAO officeBranchDAO;
 
     Long userID;
     int loanID;
@@ -144,10 +144,33 @@ public class CusLoanRepaymentAct extends AppCompatActivity {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent intent = result.getData();
                         Toast.makeText(CusLoanRepaymentAct.this, "Re-payment returned successful", Toast.LENGTH_SHORT).show();
-                        unpaidLoanBalance=loan.getLoanBalance();
-                        residueAmt=unpaidLoanBalance-loanAmount;
-                        loan.setLoanBalance(residueAmt);
-                        loanDAO.updateLoan("paid",loanID,residueAmt);
+                        if(loanDAO !=null){
+                            try {
+
+                                unpaidLoanBalance=loan.getLoanBalance();
+                                residueAmt=unpaidLoanBalance-loanAmount;
+                                loan.setLoanBalance(residueAmt);
+
+                            } catch (NullPointerException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+
+
+                        if(loanDAO !=null){
+                            try {
+
+                                loanDAO.updateLoan("paid",loanID,residueAmt);
+
+                            } catch (NullPointerException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+
                         dateFormatWithZone= new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                         currentDate = dateFormatWithZone.format(date);
                         sendSMSMessageD();
@@ -156,9 +179,25 @@ public class CusLoanRepaymentAct extends AppCompatActivity {
                         String tittle = "Loan repayment Alert!";
                         String mYtimelineDetails = "You made loan payment of N" + loanAmount + " for"  + customerName+ "on" + currentDate;
                         String custimelineDetails = "loan repayment of N" + loanAmount + " was recorded at" + currentDate;
-                        timeLineClassDAO.insertTimeLine(tittle,timelineDetails,currentDate,null);
-                        userProfile.addPTimeLine(tittle,mYtimelineDetails);
-                        customer.addCusTimeLine(tittle,custimelineDetails);
+                        if(loanDAO !=null){
+                            try {
+
+                                timeLineClassDAO.insertTimeLine(tittle,timelineDetails,currentDate,null);
+
+                            } catch (NullPointerException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                        if(userProfile !=null){
+                            userProfile.addPTimeLine(tittle,mYtimelineDetails);
+
+                        }
+                        if(customer !=null){
+                            customer.addCusTimeLine(tittle,custimelineDetails);
+
+                        }
+
                         finish();
                     }
                 }
@@ -171,18 +210,11 @@ public class CusLoanRepaymentAct extends AppCompatActivity {
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         gson = new Gson();
         loanCustomer= new Customer();
-        workersDAO= new WorkersDAO(this);
-        officeBranchDAO= new OfficeBranchDAO(this);
-        paymentCodeDAO= new PaymentCodeDAO(this);
         profileDao= new ProfDAO(this);
-        paymentDAO= new PaymentDAO(this);
-        adminBalanceDAO= new AdminBalanceDAO(this);
         timeLineClassDAO= new TimeLineClassDAO(this);
         tranXDAO= new TranXDAO(this);
         messageDAO= new MessageDAO(this);
         loanDAO= new LoanDAO(this);
-
-        codeDAO= new CodeDAO(this);
         random= new SecureRandom();
         loanBundle=new Bundle();
         userProfile=new Profile();

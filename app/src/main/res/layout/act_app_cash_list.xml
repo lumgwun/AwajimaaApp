@@ -22,11 +22,11 @@
             android:layout_marginBottom="10dp"
             android:gravity="center">
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 style="@style/MaterialAlertDialog.MaterialComponents.Title.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Skylight In House Cash Transfers"
+                android:text="Our Cash Transfers"
                 android:textAlignment="center"
                 android:textSize="17sp"
                 android:textStyle="bold" />
@@ -41,7 +41,7 @@
             android:layout_marginStart="1dp"
             android:layout_marginBottom="3dp"
             android:layout_height="wrap_content">
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -81,7 +81,6 @@
                     android:text="From"
                     android:textSize="15sp"
                     android:padding="15dp"
-                    android:onClick="revealFromLayout"
                     android:layout_weight="1"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
@@ -98,7 +97,6 @@
                     android:text="To"
                     android:textSize="15sp"
                     android:padding="15dp"
-                    android:onClick="revealToLayout"
                     android:layout_weight="1"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
@@ -116,7 +114,6 @@
                     android:text="Date"
                     android:textSize="15sp"
                     android:padding="15dp"
-                    android:onClick="revealCashDateLayout"
                     android:layout_weight="1"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
@@ -156,7 +153,6 @@
                     android:text="Payer"
                     android:textSize="15sp"
                     android:padding="15dp"
-                    android:onClick="revealPayerLayout"
                     android:layout_weight="1"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
@@ -173,7 +169,6 @@
                     android:text="Payee"
                     android:textSize="15sp"
                     android:padding="15dp"
-                    android:onClick="revealPayeeLayout"
                     android:layout_weight="1"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
@@ -195,7 +190,7 @@
             android:layout_marginStart="1dp"
             android:layout_marginBottom="3dp"
             android:layout_height="wrap_content">
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -208,7 +203,7 @@
                 android:layout_gravity="start"
                 android:background="@drawable/shape_rect14c"
                 android:textColorHint="@color/colorPrimary"
-                android:text="From Skylight Today:" />
+                android:text="From Us, Today:" />
 
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
@@ -230,7 +225,7 @@
             android:visibility="gone"
             android:layout_marginBottom="3dp"
             android:layout_height="wrap_content">
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -336,7 +331,6 @@
                     android:textSize="17sp"
                     android:padding="20dp"
                     android:layout_weight="1"
-                    android:onClick="getSkylightCashByDate"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:textStyle="bold"
@@ -359,7 +353,7 @@
             android:id="@+id/layoutPayer"
             android:visibility="gone"
             android:layout_height="wrap_content">
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -465,7 +459,6 @@
                     android:textSize="17sp"
                     android:padding="20dp"
                     android:layout_weight="1"
-                    android:onClick="getSCashByPayer"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:textStyle="bold"
@@ -491,7 +484,7 @@
             android:id="@+id/layoutFrom"
             android:visibility="gone"
             android:layout_height="wrap_content">
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -598,7 +591,6 @@
                     android:textSize="17sp"
                     android:padding="20dp"
                     android:layout_weight="1"
-                    android:onClick="getSCashByFrom"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:textStyle="bold"
@@ -622,7 +614,7 @@
             android:id="@+id/layoutTo"
             android:visibility="gone"
             android:layout_height="wrap_content">
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -729,7 +721,6 @@
                     android:textSize="17sp"
                     android:padding="20dp"
                     android:layout_weight="1"
-                    android:onClick="getSCashByPayer"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:textStyle="bold"
@@ -752,7 +743,7 @@
             android:layout_marginBottom="3dp"
             android:id="@+id/layoutAllSkylightCash"
             android:layout_height="wrap_content">
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -765,7 +756,7 @@
                 android:layout_gravity="center"
                 android:background="@drawable/rect6b"
                 android:textColorHint="@color/colorPrimary"
-                android:text="All Skylight Cash :" />
+                android:text="All  Cash :" />
 
         </LinearLayout>
 
@@ -805,7 +796,6 @@
                     android:textSize="17sp"
                     android:padding="20dp"
                     android:layout_weight="1"
-                    android:onClick="getAllSkylightCash"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:textStyle="bold"
@@ -827,7 +817,7 @@
             android:layout_marginBottom="3dp"
             android:id="@+id/layoutPayee33"
             android:layout_height="wrap_content">
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -931,7 +921,6 @@
                     android:textSize="17sp"
                     android:padding="20dp"
                     android:layout_weight="1"
-                    android:onClick="getSkylightCashByPayee"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:textStyle="bold"

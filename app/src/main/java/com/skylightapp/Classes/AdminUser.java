@@ -75,6 +75,8 @@ public class AdminUser  implements Parcelable, Serializable {
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     private Profile adminProf;
 
+
+
     public String getAdminType() {
         return adminType;
     }
@@ -119,7 +121,7 @@ public class AdminUser  implements Parcelable, Serializable {
     String adminNextOfKin;
     private Uri adminPhoto;
     private String adminUserName;
-    private int adminBusinessID;
+    private long adminBusinessID;
     private int adminMarketID;
     private ArrayList<Integer> adminMarketIDList;
     private ArrayList<Long> adminBusinessIDList;
@@ -158,6 +160,24 @@ public class AdminUser  implements Parcelable, Serializable {
         payments = in.createTypedArrayList(Payment.CREATOR);
         alreadyAdded = in.readByte() != 0;
         timeLines = in.createTypedArrayList(TimeLine.CREATOR);
+    }
+    public AdminUser(int adminID, long bizID, String uSurname, String uFirstName, String uPhoneNumber, String dateOfBirth, String uEmail, String uAddress, String selectedGender, String selectedOffice, String selectedState, Uri mImageUri, String joinedDate, String uUserName, String uPassword) {
+        this.adminID = adminID;
+        this.adminBusinessID = bizID;
+        this.adminSurname = uSurname;
+        this.adminFirstName = uFirstName;
+        this.adminPhoneNo = uPhoneNumber;
+        this.adminDob = dateOfBirth;
+        this.adminEmailAddress = uEmail;
+        this.adminAddress = uAddress;
+        this.adminGender = selectedGender;
+        this.adminOffice = selectedOffice;
+        this.adminState = selectedState;
+        this.adminPhoto = mImageUri;
+        this.adminDateJoined = joinedDate;
+        this.adminUserName = uUserName;
+        this.adminPassword = uPassword;
+
     }
     public void addDepositReport(AdminBankDeposit adminBankDeposit) {
         adminBankDeposits = new ArrayList<>();
@@ -572,11 +592,11 @@ public class AdminUser  implements Parcelable, Serializable {
         parcel.writeTypedList(timeLines);
     }
 
-    public int getAdminBusinessID() {
+    public long getAdminBusinessID() {
         return adminBusinessID;
     }
 
-    public void setAdminBusinessID(int adminBusinessID) {
+    public void setAdminBusinessID(long adminBusinessID) {
         this.adminBusinessID = adminBusinessID;
     }
 

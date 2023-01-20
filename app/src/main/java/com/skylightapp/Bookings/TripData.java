@@ -1,6 +1,7 @@
 package com.skylightapp.Bookings;
 
 import com.google.auto.value.AutoValue;
+import com.skylightapp.Classes.Profile;
 
 import java.util.List;
 
@@ -20,7 +21,6 @@ public abstract class TripData {
         return null;
     }
 
-    /** Builder for TripData. */
     @AutoValue.Builder
     public abstract static class Builder {
 
@@ -34,6 +34,6 @@ public abstract class TripData {
 
         public abstract Builder setTripId(String tripId);
 
-        public abstract TripData build();
+        public abstract Profile build();
     }
 }

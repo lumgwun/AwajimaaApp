@@ -12,8 +12,10 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -86,10 +88,43 @@ public class SuperUnconfirmedSavings extends AppCompatActivity implements Saving
     private OfficeBranchDAO officeBranchDAO;
     private SQLiteDatabase sqLiteDatabase;
     private String officeName;
+    private int indexD=0;
+    private ProfDAO profDAO;
 
     String SharedPrefUserPassword,noOfDays, tellerMachine,status,stringNoOfSavings, customerPhoneNo,officeBranch,dateOfReport,nameOfCustomer, cmFirstName,cmLastName,cmName,SharedPrefUserMachine,phoneNo,SharedPrefUserName,SharedPrefProfileID,adminName;
 
+    private AdapterView.OnItemSelectedListener spn_listener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if(indexD == position){
+                return; //do nothing
+            }
+            else {
+                try {
 
+                    selectedTellerIndex = spnSelectTeller.getSelectedItemPosition();
+
+                } catch (NullPointerException e) {
+                    System.out.println("Oops!");
+                }
+                try {
+
+                    selectedTellerIndex = spnSelectTeller.getSelectedItemPosition();
+
+                } catch (NullPointerException e) {
+                    System.out.println("Oops!");
+                }
+
+            }
+
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,11 +138,10 @@ public class SuperUnconfirmedSavings extends AppCompatActivity implements Saving
         dbHelper= new DBHelper(this);
         officeBranchDAO= new OfficeBranchDAO(this);
         marketBiz= new MarketBusiness();
-        ProfDAO profDAO1 = new ProfDAO(this);
+        profDAO = new ProfDAO(this);
         customerDailyReports = new ArrayList<CustomerDailyReport>();
         dbHelper = new DBHelper(this);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-
         json2 = userPreferences.getString("LastMarketBusinessUsed", "");
         marketBiz = gson2.fromJson(json2, MarketBusiness.class);
         json3 = userPreferences.getString("LastOfficeBranchUsed", "");
@@ -132,22 +166,17 @@ public class SuperUnconfirmedSavings extends AppCompatActivity implements Saving
         profileArrayList= new ArrayList<>();
         btnTellerSearch = findViewById(R.id.TellerIDButton);
         spnSelectTeller = findViewById(R.id.spnTeller);
+        spnSelectTeller.setOnItemSelectedListener(spn_listener);
 
 
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            try {
-                if(profDAO1 !=null){
-                    profileArrayList=profDAO1.getTellersFromMachineAndBiz(tellerMachine,bizID);
+        try {
+            if(profDAO !=null){
+                profileArrayList=profDAO.getTellersFromMachineAndBiz(tellerMachine,bizID);
 
-                }
-
-
-            } catch (NullPointerException e) {
-                e.printStackTrace();
             }
 
+        } catch (SQLiteException e) {
+            e.printStackTrace();
         }
 
         btnTellerSearch.setOnClickListener(this::getIDReports);
@@ -195,13 +224,12 @@ public class SuperUnconfirmedSavings extends AppCompatActivity implements Saving
             linearLayout.setVisibility(View.VISIBLE);
             recyclerView3.setVisibility(View.GONE);
             recyclerView = findViewById(R.id.recycler_AllUnConfirmed);
-            if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                dbHelper.openDataBase();
-                sqLiteDatabase = dbHelper.getReadableDatabase();
+            if(dbHelper !=null){
+
                 try {
                     customerDailyReports = dbHelper.getAllIncompleteSavings("unconfirmed");
 
-                } catch (NullPointerException e) {
+                } catch (SQLiteException e) {
                     e.printStackTrace();
                 }
 
@@ -236,17 +264,16 @@ public class SuperUnconfirmedSavings extends AppCompatActivity implements Saving
                     }
 
                 }
-                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                    dbHelper.openDataBase();
-                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                if(dbHelper !=null){
                     try {
                         customerDailyReports = dbHelper.getIncompleteSavingsForTeller(tellerID,"unPaid");
 
-                    } catch (NullPointerException e) {
+                    } catch (SQLiteException e) {
                         e.printStackTrace();
                     }
 
                 }
+
 
 
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SuperUnconfirmedSavings.this);
@@ -278,6 +305,11 @@ public class SuperUnconfirmedSavings extends AppCompatActivity implements Saving
     public void onPause() {
         super.onPause();
         overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+    }
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
     }
 
     @Override

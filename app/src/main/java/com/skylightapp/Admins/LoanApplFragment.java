@@ -35,7 +35,7 @@ import java.util.List;
 
 public class LoanApplFragment extends Fragment {
     private static final String TAG = LoanApplFragment.class.getSimpleName();
-    private static final String URL = "https://skylightciacs.com/loanListAdmin";
+    private static final String URL = "https://awajima.com/loanListAdmin";
 
     private RecyclerView recyclerView;
 
@@ -44,10 +44,11 @@ public class LoanApplFragment extends Fragment {
 
 
     DBHelper dbHelper;
-    SQLiteDatabase sqLiteDatabase;
     Gson gson;
-    String json;
+    String json, cusName,startDate,endDate,currency,profileName,loanDate;
     Profile userProfile;
+    double loanAmount, loanBalance;
+    private Customer customer;
     private OnFragmentInteractionListener listener;
 
     private static final String ARG_PARAM1 = "param1";
@@ -99,21 +100,25 @@ public class LoanApplFragment extends Fragment {
         dbHelper = new DBHelper(getContext());
         loanDAO = new LoanDAO(getContext());
 
-        sqLiteDatabase = dbHelper.getWritableDatabase();
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-
-            dbHelper.openDataBase();
-            try {
-
-                loanList = loanDAO.getAllLoansAdmin();
 
 
-            } catch (SQLiteException e) {
-                System.out.println("Oops!");
+
+        try {
+            if(loanDAO !=null){
+                try {
+                    loanList = loanDAO.getAllLoansAdmin();
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+
             }
 
 
 
+
+        } catch (SQLiteException e) {
+            System.out.println("Oops!");
         }
 
 
@@ -174,23 +179,24 @@ public class LoanApplFragment extends Fragment {
 
                 Toast.makeText(getContext(), "Loan approval :" + loanStatusSwitch, Toast.LENGTH_LONG).show();
                 dbHelper = new DBHelper(getContext());
-                sqLiteDatabase = dbHelper.getWritableDatabase();
+                try {
+                    if(loanDAO !=null){
+                        try {
+                            loanDAO.overwriteLoan1(profile,customer,loan);
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                        }
 
-                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
 
-                    dbHelper.openDataBase();
-                    try {
-
-                        loanDAO.overwriteLoan1(profile,customer,loan);
-
-
-                    } catch (SQLiteException e) {
-                        System.out.println("Oops!");
                     }
 
 
 
+
+                } catch (SQLiteException e) {
+                    System.out.println("Oops!");
                 }
+
 
 
             }
@@ -214,25 +220,43 @@ public class LoanApplFragment extends Fragment {
         @Override
         public void onBindViewHolder(MyViewHolder holder, final int position) {
             final Loan loan = loans.get(position);
-            final Profile profile = loan.getLoan_profile();
-            final Customer customer = loan.getLoan_customer();
-            holder.profileName.setText(MessageFormat.format("{0},{1}", profile.getProfileLastName(), profile.getProfileFirstName()));
-            holder.customerName.setText("Customer Name:"+customer.getCusSurname()+""+customer.getCusFirstName());
-            holder.loan_request_amount.setText("NGN"+loan.getAmount());
-            holder.requestDate_of_customer.setText(loan.getLoan_date());
+            if(loan !=null){
+                currency=loan.getloanCurrency();
+                userProfile = loan.getLoan_profile();
+                customer = loan.getLoan_customer();
+                startDate=loan.getLoan_startDate();
+                endDate=loan.getLoan_endDate();
+                loanDate=loan.getLoan_date();
+                loanAmount=loan.getAmount1();
+                loanBalance=loan.getLoanBalance();
+
+            }
+
+            if(customer !=null){
+                cusName=customer.getCusSurname()+""+customer.getCusFirstName();
+            }
+            if(userProfile !=null){
+                profileName=userProfile.getProfileLastName()+""+userProfile.getProfileFirstName();
+            }
+
+            holder.profileName.setText(MessageFormat.format("{0},{1}", profileName));
+            holder.customerName.setText("Customer Name:"+cusName);
+            holder.loan_request_amount.setText(currency+loanAmount);
+            holder.requestDate_of_customer.setText(loanDate);
             holder.status.setText(loan.getLoan_status());
-            holder.startDate.setText("Start Date:"+loan.getLoan_startDate());
-            holder.endDate.setText(("End Date"+loan.getLoan_endDate()));
-            holder.loanBalance.setText("NGN"+loan.getLoanBalance());
+            holder.startDate.setText("Start Date:"+startDate);
+            holder.endDate.setText(("End Date"+endDate));
+            holder.loanBalance.setText(currency+loanBalance);
 
 
         }
-
         @Override
         public int getItemCount() {
-            return loans.size();
+            return (null != loans ? loans.size() : 0);
         }
+
     }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);

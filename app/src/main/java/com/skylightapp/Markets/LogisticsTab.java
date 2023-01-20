@@ -15,12 +15,13 @@ import android.widget.TabWidget;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.skylightapp.Bookings.TransportComAct;
+import com.skylightapp.Bookings.BookingDrawerAct;
+import com.skylightapp.Bookings.LogisticsComLAct;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.LoginDirAct;
 import com.skylightapp.MarketClasses.MarketBusiness;
-import com.skylightapp.Bookings.MotorTripsBAct;
+import com.skylightapp.Bookings.LogisticsMatchAct;
 import com.skylightapp.R;
 import com.webgeoservices.woosmapgeofencing.Woosmap;
 
@@ -71,21 +72,21 @@ public class LogisticsTab extends TabActivity {
         tabhost.setup(getLocalActivityManager());
         Resources resources = getResources();
         floatingActionButton = findViewById(R.id.fab_tc);
-        Intent intentCom = new Intent().setClass(this, TransportComAct.class);
-        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecSignUp = tabhost
+        Intent intentCom = new Intent().setClass(this, LogisticsComLAct.class);
+        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecCom = tabhost
                 .newTabSpec("Transport Companies")
                 .setIndicator("", resources.getDrawable(R.drawable.ic_icon2))
                 .setContent(intentCom);
 
-        Intent intentTrips = new Intent().setClass(this, MotorTripsBAct.class);
-        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecLogin = tabhost
-                .newTabSpec("Motor Trips")
+        Intent intentTrips = new Intent().setClass(this, BookingDrawerAct.class);
+        @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecMy = tabhost
+                .newTabSpec("My Bookings")
                 .setIndicator("", resources.getDrawable(R.drawable.ic_icon1))
                 .setContent(intentTrips);
 
 
-        tabhost.addTab(tabSpecSignUp);
-        tabhost.addTab(tabSpecLogin);
+        tabhost.addTab(tabSpecCom);
+        tabhost.addTab(tabSpecMy);
 
         tabhost.setCurrentTab(0);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {

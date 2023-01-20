@@ -34,7 +34,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.rom4ek.arcnavigationview.ArcNavigationView;
 import com.skylightapp.Admins.AdminLoanList;
-import com.skylightapp.Admins.CustomerListActivity;
+import com.skylightapp.Admins.CustomerListAct;
 import com.skylightapp.Admins.SOCompletedList;
 import com.skylightapp.Admins.SOListAct;
 import com.skylightapp.Admins.SendSingleUserMAct;
@@ -53,7 +53,7 @@ import com.skylightapp.Database.AdminBalanceDAO;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.PaymentDAO;
 import com.skylightapp.Database.ProfDAO;
-import com.skylightapp.LoginActivity;
+import com.skylightapp.LoginAct;
 import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.MyTimelineAct;
 import com.skylightapp.PasswordRecovAct;
@@ -493,7 +493,7 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.clear();
                 editor.apply();
-                Intent loginIntent = new Intent(this, LoginActivity.class);
+                Intent loginIntent = new Intent(this, LoginAct.class);
                 loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                         Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(loginIntent);
@@ -665,7 +665,7 @@ public class AcctantBackOffice extends AppCompatActivity implements NavigationVi
                     }
                     else if(finalI==11) {
                         tosend = "Customers";
-                        Intent intent=new Intent(AcctantBackOffice.this, CustomerListActivity.class);
+                        Intent intent=new Intent(AcctantBackOffice.this, CustomerListAct.class);
                         intent.putExtra("Customers",tosend);
                         startActivity(intent);
                     }

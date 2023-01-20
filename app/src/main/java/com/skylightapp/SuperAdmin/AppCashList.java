@@ -16,6 +16,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -93,7 +94,10 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
     private  Bundle bundle;
     DatePicker picker;
     private  WorkersDAO workersDAO;
+    private int spnIndex=0;
+    private boolean takeAction=false;
     double tCTotalPayer,tCTotalBranch,tCTotalPayee;
+    private static final String PREF_NAME = "awajima";
     LinearLayout layoutCustomDate, layoutPayer, allTCLayout, layoutPayeeTittle,layoutTo,layoutFrom;
     CardView dateCard, cardPayer2, allTCCard, cardLayoutPayeeSpn,cardLayoutTo, cardATo,cardPayeeBtnLayout,dateCard2,cardLayoutAF, cardLayoutFrom,cardPayerLayout;
 
@@ -166,15 +170,16 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
         spnPayee.setOnItemSelectedListener(this);
         bundle= new Bundle();
 
-        btnLayoutFrom.setOnClickListener(this::revealFromLayout);
-        btnLayoutPayer.setOnClickListener(this::revealPayerLayout);
+        //btnLayoutFrom.setOnClickListener(this::revealFromLayout);
+        //btnLayoutPayer.setOnClickListener(this::revealPayerLayout);
         btnLayoutDate.setOnClickListener(this::revealDateLayout);
-        btnLayoutTo.setOnClickListener(this::revealToLayout);
-        btnLayoutPayee.setOnClickListener(this::revealPayeeLayout);
-        buttonSCFrom.setOnClickListener(this::getSCashByFrom);
+        //btnLayoutTo.setOnClickListener(this::revealToLayout);
+        //btnLayoutPayee.setOnClickListener(this::revealPayeeLayout);
+        //buttonSCFrom.setOnClickListener(this::getSCashByFrom);
         btnLayoutPayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                takeAction=true;
                 layoutPayer.setVisibility(View.VISIBLE);
                 recyclerViewPayer.setVisibility(View.VISIBLE);
                 spnCashPayer.setVisibility(View.VISIBLE);
@@ -200,6 +205,7 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
         btnLayoutPayee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                takeAction=true;
                 cardLayoutPayeeSpn.setVisibility(View.VISIBLE);
                 cardPayeeBtnLayout.setVisibility(View.VISIBLE);
                 layoutPayeeTittle.setVisibility(View.VISIBLE);
@@ -222,7 +228,7 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
         btnLayoutFrom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                takeAction=true;
                 layoutFrom.setVisibility(View.VISIBLE);
                 recyclerViewFrom.setVisibility(View.VISIBLE);
                 cardLayoutFrom.setVisibility(View.VISIBLE);
@@ -247,7 +253,7 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
         btnLayoutTo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                takeAction=true;
                 layoutTo.setVisibility(View.VISIBLE);
                 recyclerCTo.setVisibility(View.VISIBLE);
                 cardLayoutTo.setVisibility(View.VISIBLE);
@@ -274,6 +280,7 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
         btnLayoutDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                takeAction=true;
                 recyclerViewCustomDate.setVisibility(View.VISIBLE);
                 dateCard.setVisibility(View.VISIBLE);
                 dateCard2.setVisibility(View.VISIBLE);
@@ -292,18 +299,22 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
             }
         });
 
-        btnByAPayer.setOnClickListener(this::getSCashByPayer);
-        btnByPayee.setOnClickListener(this::getSkylightCashByPayee);
-        btnByDate.setOnClickListener(this::getSkylightCashByDate);
+        //btnByAPayer.setOnClickListener(this::getSCashByPayer);
+        //btnByPayee.setOnClickListener(this::getSkylightCashByPayee);
+        //btnByDate.setOnClickListener(this::getSkylightCashByDate);
 
 
         Calendar calendar1 = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
 
-        if(dbHelper !=null){
-            workersNames =workersDAO.getAllWorkers();
+        if(workersDAO !=null){
+            try {
+                workersNames =workersDAO.getAllWorkers();
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
 
         }
-
 
         try {
 
@@ -316,7 +327,13 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
         spnPayee.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedPayee = parent.getItemAtPosition(position).toString();
+                if(spnIndex==position){
+                    return;
+                }else {
+                    selectedPayee = parent.getItemAtPosition(position).toString();
+
+                }
+
                 Toast.makeText(AppCashList.this, "Payee: "+ selectedPayee,Toast.LENGTH_SHORT).show();
             }
 
@@ -336,8 +353,15 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
         spnCashPayer.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedPayer = parent.getItemAtPosition(position).toString();
-                Toast.makeText(AppCashList.this, "Payer: "+ selectedPayer,Toast.LENGTH_SHORT).show();
+                if(spnIndex==position){
+                    return;
+                }else {
+                    selectedPayer = parent.getItemAtPosition(position).toString();
+                    Toast.makeText(AppCashList.this, "Payer: "+ selectedPayer,Toast.LENGTH_SHORT).show();
+
+                }
+
+
             }
 
             @Override
@@ -347,8 +371,15 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
         spnCashFrom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedFrom = parent.getItemAtPosition(position).toString();
-                Toast.makeText(AppCashList.this, "From: "+ selectedFrom,Toast.LENGTH_SHORT).show();
+                if(spnIndex==position){
+                    return;
+                }else {
+                    selectedFrom = parent.getItemAtPosition(position).toString();
+                    Toast.makeText(AppCashList.this, "From: "+ selectedFrom,Toast.LENGTH_SHORT).show();
+
+                }
+
+
             }
 
             @Override
@@ -358,8 +389,14 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
         spnCashTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedTo = parent.getItemAtPosition(position).toString();
-                Toast.makeText(AppCashList.this, "To: "+ selectedTo,Toast.LENGTH_SHORT).show();
+                if(spnIndex==position){
+                    return;
+                }else {
+                    selectedTo = parent.getItemAtPosition(position).toString();
+                    Toast.makeText(AppCashList.this, "To: "+ selectedTo,Toast.LENGTH_SHORT).show();
+
+                }
+
             }
 
             @Override
@@ -381,23 +418,91 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
             dateOfSC =todayDate;
         }
         if(dbHelper !=null){
-            todaySCAmount =dbHelper.getAllSkylightCashCountForDate(todayDate);
-            payeeOfAppCashes =dbHelper.getAllSkylightCashForPayee(selectedPayee);
-            appCashCustomDate =dbHelper.getAllSCashAtDate(dateOfSC);
-            payersOfAppCashes =dbHelper.getAllSkylightCashForPayer(selectedPayer);
+            try {
+                todaySCAmount =dbHelper.getAllSkylightCashCountForDate(todayDate);
 
-            fromCategoryOfSkylightUsers =dbHelper.getAllSkylightCashForFromCategory(selectedFrom);
-            toCategoryOfSkylightUsers =dbHelper.getAllSkylightCashForToCategory(selectedTo);
-            fromCategoryOfSkylightUsersWithDate =dbHelper.getAllSkylightCashForFromCategoryAndDate(selectedTo,dateOfSC);
-            toCategoryOfSkylightUsersWithDate =dbHelper.getAllSkylightCashForToCategoryAndDate(selectedTo,dateOfSC);
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+            try {
+                payeeOfAppCashes =dbHelper.getAllSkylightCashForPayee(selectedPayee);
 
-            tCCountPayer =dbHelper.getTellerCashCountForPayerWithDate(selectedPayer, dateOfSC);
-            tCTotalPayer =dbHelper.getSCashTotalForPayerAndDate(selectedPayer, dateOfSC);
-            tCTotalPayee =dbHelper.getSCashTotalForPayeeAndDate(selectedPayer, dateOfSC);
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+            try {
+                appCashCustomDate =dbHelper.getAllSCashAtDate(dateOfSC);
 
-            tCCountAll =dbHelper.getAllTellerCashCountWithDate(dateOfSC);
-            tCCountPayee =dbHelper.getTellerCashCountForPayeeWithDate(selectedPayee, dateOfSC);
-            appCashAll =dbHelper.getAllSkylightCash();
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+            try {
+                payersOfAppCashes =dbHelper.getAllSkylightCashForPayer(selectedPayer);
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+            try {
+                fromCategoryOfSkylightUsers =dbHelper.getAllSkylightCashForFromCategory(selectedFrom);
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+            try {
+                toCategoryOfSkylightUsers =dbHelper.getAllSkylightCashForToCategory(selectedTo);
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+            try {
+                tCCountPayer =dbHelper.getTellerCashCountForPayerWithDate(selectedPayer, dateOfSC);
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+            try {
+                toCategoryOfSkylightUsersWithDate =dbHelper.getAllSkylightCashForToCategoryAndDate(selectedTo,dateOfSC);
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+            try {
+                fromCategoryOfSkylightUsersWithDate =dbHelper.getAllSkylightCashForFromCategoryAndDate(selectedTo,dateOfSC);
+
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+            try {
+                tCCountPayee =dbHelper.getTellerCashCountForPayeeWithDate(selectedPayee, dateOfSC);
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+            try {
+                appCashAll =dbHelper.getAllSkylightCash();
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+            try {
+                tCTotalPayer =dbHelper.getSCashTotalForPayerAndDate(selectedPayer, dateOfSC);
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+            try {
+                tCTotalPayee =dbHelper.getSCashTotalForPayeeAndDate(selectedPayer, dateOfSC);
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+            try {
+                tCCountAll =dbHelper.getAllTellerCashCountWithDate(dateOfSC);
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
 
         }
 
@@ -424,6 +529,7 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
         buttonSCFrom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                takeAction=true;
                 recyclerViewFrom.setLayoutManager(new LinearLayoutManager(AppCashList.this, LinearLayoutManager.HORIZONTAL, false));
                 adapterFroms = new SkylightCashAdapter(AppCashList.this, fromCategoryOfSkylightUsersWithDate);
                 recyclerViewFrom.setItemAnimator(new DefaultItemAnimator());
@@ -436,6 +542,7 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
         buttonSCTo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                takeAction=true;
                 recyclerCTo.setLayoutManager(new LinearLayoutManager(AppCashList.this, LinearLayoutManager.HORIZONTAL, false));
                 adapterTos = new SkylightCashAdapter(AppCashList.this, toCategoryOfSkylightUsersWithDate);
                 recyclerCTo.setItemAnimator(new DefaultItemAnimator());
@@ -448,6 +555,7 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
         btnByPayee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                takeAction=true;
                 recyclerViewPayee.setLayoutManager(new LinearLayoutManager(AppCashList.this, LinearLayoutManager.HORIZONTAL, false));
                 adapterOffice = new SkylightCashAdapter(AppCashList.this, payeeOfAppCashes);
                 recyclerViewPayee.setItemAnimator(new DefaultItemAnimator());
@@ -460,6 +568,7 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
         btnByAPayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                takeAction=true;
                 recyclerViewPayer.setLayoutManager(new LinearLayoutManager(AppCashList.this, LinearLayoutManager.HORIZONTAL, false));
                 adapterPayers = new SkylightCashAdapter(AppCashList.this, payersOfAppCashes);
                 recyclerViewPayer.setItemAnimator(new DefaultItemAnimator());
@@ -474,6 +583,7 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
         btnByDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                takeAction=true;
                 recyclerViewCustomDate.setLayoutManager(linearLayoutManager);
                 recyclerViewCustomDate.setItemAnimator(new DefaultItemAnimator());
                 recyclerViewCustomDate.setAdapter(adapterCustomDate);
@@ -593,7 +703,7 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
 
     }
 
-    public void getSkylightCashByDate(View view) {
+    /*public void getSkylightCashByDate(View view) {
     }
 
     public void getSCashByPayer(View view) {
@@ -615,7 +725,7 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
     }
 
     public void revealCashTellerLayout(View view) {
-    }
+    }*/
 
     @Override
     public void onItemClick(AppCash appCash) {
@@ -657,8 +767,13 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
         super.onStop();
         overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
+    }
 
-    public void revealFromLayout(View view) {
+    /*public void revealFromLayout(View view) {
     }
 
     public void revealToLayout(View view) {
@@ -668,5 +783,5 @@ public class AppCashList extends AppCompatActivity implements SkylightCashAdapte
     }
 
     public void getSCashByFrom(View view) {
-    }
+    }*/
 }

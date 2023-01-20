@@ -2,7 +2,8 @@ package com.skylightapp.Bookings;
 
 import androidx.multidex.MultiDexApplication;
 
-import com.teliver.sdk.core.Teliver;
+import io.teliver.sdk.core.Teliver;
+
 
 public class MapApp extends MultiDexApplication {
 

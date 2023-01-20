@@ -18,6 +18,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -175,6 +176,7 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
     private  ArrayList<MarketBusiness> marketBizOld;
     private MarketBizDAO marketBizDAO;
     String tellerName, cusName;
+    private int spnIndex=0;
 
     LinearLayout layoutCustomDate, layoutFromTeller, layoutAllST, layoutSkylightTittle, layoutToCustomers, layoutFromBranch;
     CardView dateCard, cardTellerBtn, allTCCard, cardLayoutToCus, cardBtnToCus, cardBtnSkyLayout, dateCardBtn, cardLayoutBtnBranch, cardLayoutFromBranch, cardTellerLayout;
@@ -185,6 +187,9 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_super_all_stlist);
         datePicker = findViewById(R.id.stocksT_datePicker);
+        spnBranch = findViewById(R.id.spnSTFromBranch);
+        spnSTToCus = findViewById(R.id.spnSTToCus);
+        spnTellers = findViewById(R.id.spnTeller_St);
         awajima = new Awajima();
         gson = new Gson();
         gson2 = new Gson();
@@ -257,7 +262,13 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
         spnBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedBranch = (OfficeBranch) parent.getSelectedItem();
+                if(spnIndex==position){
+                    return;
+
+                }else {
+                    selectedBranch = (OfficeBranch) parent.getSelectedItem();
+                }
+
 
             }
 
@@ -280,8 +291,15 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
         spnTellers.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedTeller = parent.getItemAtPosition(position).toString();
-                Toast.makeText(SuperAllSTList.this, "Teller: "+ selectedTeller,Toast.LENGTH_SHORT).show();
+                if(spnIndex==position){
+                    return;
+
+                }else {
+                    selectedTeller = parent.getItemAtPosition(position).toString();
+                    Toast.makeText(SuperAllSTList.this, "Teller: "+ selectedTeller,Toast.LENGTH_SHORT).show();
+                }
+
+
             }
 
             @Override
@@ -304,9 +322,14 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
         spnSTToCus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //selectedStocks = spnStocks.getSelectedItem().toString();
-                selectedCustomer = (Customer) parent.getSelectedItem();
-                //Toast.makeText(StocksTransferAct.this, "Selected Stocks: "+ selectedStocks,Toast.LENGTH_SHORT).show();
+                if(spnIndex==position){
+                    return;
+
+                }else {
+                    selectedCustomer = (Customer) parent.getSelectedItem();
+                }
+
+
             }
 
             @Override
@@ -324,119 +347,152 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
             customerProfileID =customerProfile.getPID();
 
         }
-
-
-
-
-        if(cusDAO !=null){
+        try {
             try {
                 customers=cusDAO.getAllCustomersNames();
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
 
 
 
-
-
-        if(workersDAO !=null){
+        try {
             try {
                 workersNames =workersDAO.getAllWorkers();
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
 
 
 
-
-        if(stockTransferDAO !=null){
+        try {
             try {
                 sTArrayListToday =stockTransferDAO.getStocksTransferAtDate(todayDate);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-        if(stockTransferDAO !=null){
+
+        try {
             try {
                 tellerSTArrayList=stockTransferDAO.getStocksTransferFromTeller(tellerName);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-        if(stockTransferDAO !=null){
+
+        try {
             try {
                 tellerArrayListWithDate=stockTransferDAO.getStocksTransferFromTellerWithDate(tellerName,dateOfST);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-        if(stockTransferDAO !=null){
+
+        try {
             try {
                 arrayListAllST=stockTransferDAO.getAllStocksTransfers();
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-        if(stockTransferDAO !=null){
+
+        try {
             try {
                 branchSTArrayList=stockTransferDAO.getStocksTransferFromBranch(selectedOffice);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-        if(stockTransferDAO !=null){
+
+        try {
             try {
                 skylightSTArrayList=stockTransferDAO.getStocksTransferFromAwajima("Awajima");
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-        if(stockTransferDAO !=null){
+
+        try {
             try {
                 sTCustomDateArrayList=stockTransferDAO.getStocksTransferAtDate(dateOfST);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-        if(stockTransferDAO !=null){
+
+        try {
             try {
                 toCustomerArrayList=stockTransferDAO.getStocksToCustomer(cusName);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-        if(dbHelper !=null){
+
+        try {
             try {
                 todaySTAmount =dbHelper.getAllSkylightCashCountForDate(todayDate);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
-        }
 
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
 
 
         btnFromTellerLayout = findViewById(R.id.buttonSTFromTellerBtn);
@@ -481,19 +537,29 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
         dateCard = findViewById(R.id.cardSTDatePicker);
         spnTellers.setOnItemSelectedListener(this);
         try {
-
-
-            if(dbHelper !=null){
+            try {
                 workersNames =workersDAO.getAllWorkers();
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
             }
 
-            if (dbHelper != null) {
-                officeBranchArrayList=dbHelper.getAllBranchOffices();
-            }
+
         } catch (NullPointerException e) {
-            System.out.println("Oops!");
+            e.printStackTrace();
         }
+        try {
+            try {
+                officeBranchArrayList=dbHelper.getAllBranchOffices();
 
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
 
 
         bundle= new Bundle();
@@ -507,6 +573,7 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
         btnByTeller.setOnClickListener(this::getSTByTeller);
         btnBySkylight.setOnClickListener(this::getSkylightST);
         btnByDate.setOnClickListener(this::getSTByCustomDate);
+        btnAllDB.setOnClickListener(this::getAllST);
 
         btnLayoutSkylight.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -829,57 +896,42 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         if (adapterView.getId() == spnSTToCus.getId()) {
             selectedCustomerIndex = i;
-            try {
+            if(spnIndex==i){
+                spnSTToCus.setFocusable(true);
+                return;
+
+            }else {
                 selectedCustomer = (Customer) adapterView.getSelectedItem();
 
-                try {
-                    if(selectedCustomerIndex ==0){
-                        spnSTToCus.setFocusable(true);
-                    }
-                } catch (NullPointerException e) {
-                    System.out.println("Oops!");
-                }
-            } catch (IndexOutOfBoundsException e) {
-                System.out.println("Oops!");
             }
-            selectedCustomer = (Customer) adapterView.getSelectedItem();
+
 
         }
         if (adapterView.getId() == spnBranch.getId()) {
             selectedBranchIndex = i;
-            try {
+
+            if(spnIndex==i){
+                spnBranch.setFocusable(true);
+                return;
+
+            }else {
                 selectedBranch = (OfficeBranch) adapterView.getSelectedItem();
 
-                try {
-                    if(selectedBranchIndex ==0){
-                        spnBranch.setFocusable(true);
-                    }
-                } catch (NullPointerException e) {
-                    System.out.println("Oops!");
-                }
-            } catch (IndexOutOfBoundsException e) {
-                System.out.println("Oops!");
             }
-            selectedBranch = (OfficeBranch) adapterView.getSelectedItem();
+
 
         }
 
         else if (adapterView.getId() == spnTellers.getId()) {
             selectedTellerIndex = i;
-            try {
+            if(spnIndex==i){
+                spnTellers.setFocusable(true);
+                return;
+
+            }else {
                 selectedTeller = (String) adapterView.getSelectedItem();
 
-                try {
-                    if(selectedTellerIndex ==0){
-                        spnTellers.setFocusable(true);
-                    }
-                } catch (NullPointerException e) {
-                    System.out.println("Oops!");
-                }
-            } catch (IndexOutOfBoundsException e) {
-                System.out.println("Oops!");
             }
-            selectedTeller = (String) adapterView.getSelectedItem();
 
         }
 
@@ -934,36 +986,199 @@ public class SuperAllSTList extends AppCompatActivity implements StockTransferAd
     }
 
     public void revealFromTellerLayout(View view) {
+        layoutFromTeller.setVisibility(View.VISIBLE);
+        recyclerViewFromTeller.setVisibility(View.VISIBLE);
+        cardTellerLayout.setVisibility(View.VISIBLE);
+        cardTellerBtn.setVisibility(View.VISIBLE);
+
+        layoutToCustomers.setVisibility(View.GONE);
+        recyclerToCustomers.setVisibility(View.GONE);
+        cardLayoutToCus.setVisibility(View.GONE);
+        cardBtnToCus.setVisibility(View.GONE);
+        layoutCustomDate.setVisibility(View.GONE);
+        recyclerViewCustomDate.setVisibility(View.GONE);
+        dateCard.setVisibility(View.GONE);
+        dateCardBtn.setVisibility(View.GONE);
+        layoutFromBranch.setVisibility(View.GONE);
+        recyclerViewFromBranch.setVisibility(View.GONE);
+        cardLayoutFromBranch.setVisibility(View.GONE);
+        buttonFromBranch.setVisibility(View.GONE);
+        layoutAllST.setVisibility(View.GONE);
+        recyclerViewAll.setVisibility(View.GONE);
+        allTCCard.setVisibility(View.GONE);
+        layoutSkylightTittle.setVisibility(View.GONE);
+        recyclerViewSkylight.setVisibility(View.GONE);
+        cardBtnSkyLayout.setVisibility(View.GONE);
+
+        recyclerViewFromTeller.setLayoutManager(new LinearLayoutManager(SuperAllSTList.this, LinearLayoutManager.HORIZONTAL, false));
+        adapterTeller = new StockTransferAdapter(SuperAllSTList.this, tellerSTArrayList);
+        recyclerViewFromTeller.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewFromTeller.setAdapter(adapterTeller);
+        recyclerViewFromTeller.setNestedScrollingEnabled(false);
+        recyclerViewFromTeller.setClickable(true);
     }
 
     public void revealFromBranchLayout(View view) {
+        layoutFromBranch.setVisibility(View.VISIBLE);
+        recyclerViewFromBranch.setVisibility(View.VISIBLE);
+        cardLayoutFromBranch.setVisibility(View.VISIBLE);
+        buttonFromBranch.setVisibility(View.VISIBLE);
+        layoutToCustomers.setVisibility(View.GONE);
+        recyclerToCustomers.setVisibility(View.GONE);
+        cardLayoutToCus.setVisibility(View.GONE);
+        cardBtnToCus.setVisibility(View.GONE);
+        layoutCustomDate.setVisibility(View.GONE);
+        recyclerViewCustomDate.setVisibility(View.GONE);
+        dateCard.setVisibility(View.GONE);
+        dateCardBtn.setVisibility(View.GONE);
+        layoutFromTeller.setVisibility(View.GONE);
+        recyclerViewFromTeller.setVisibility(View.GONE);
+        cardTellerLayout.setVisibility(View.GONE);
+        cardTellerBtn.setVisibility(View.GONE);
+        layoutAllST.setVisibility(View.GONE);
+        recyclerViewAll.setVisibility(View.GONE);
+        allTCCard.setVisibility(View.GONE);
+        layoutSkylightTittle.setVisibility(View.GONE);
+        recyclerViewSkylight.setVisibility(View.GONE);
+        cardBtnSkyLayout.setVisibility(View.GONE);
     }
 
     public void revealSTDateLayout(View view) {
+        layoutCustomDate.setVisibility(View.VISIBLE);
+        recyclerViewCustomDate.setVisibility(View.VISIBLE);
+        dateCard.setVisibility(View.VISIBLE);
+        dateCardBtn.setVisibility(View.VISIBLE);
+        layoutFromBranch.setVisibility(View.GONE);
+        recyclerViewFromBranch.setVisibility(View.GONE);
+        cardLayoutFromBranch.setVisibility(View.GONE);
+        buttonFromBranch.setVisibility(View.GONE);
+        layoutToCustomers.setVisibility(View.GONE);
+        recyclerToCustomers.setVisibility(View.GONE);
+        cardLayoutToCus.setVisibility(View.GONE);
+        cardBtnToCus.setVisibility(View.GONE);
+        layoutFromTeller.setVisibility(View.GONE);
+        recyclerViewFromTeller.setVisibility(View.GONE);
+        cardTellerLayout.setVisibility(View.GONE);
+        cardTellerBtn.setVisibility(View.GONE);
+        layoutAllST.setVisibility(View.GONE);
+        recyclerViewAll.setVisibility(View.GONE);
+        allTCCard.setVisibility(View.GONE);
+        layoutSkylightTittle.setVisibility(View.GONE);
+        recyclerViewSkylight.setVisibility(View.GONE);
+        cardBtnSkyLayout.setVisibility(View.GONE);
+
     }
 
     public void revealFromSkylightLayout(View view) {
+        layoutSkylightTittle.setVisibility(View.VISIBLE);
+        recyclerViewSkylight.setVisibility(View.VISIBLE);
+        cardBtnSkyLayout.setVisibility(View.VISIBLE);
+        layoutCustomDate.setVisibility(View.GONE);
+        recyclerViewCustomDate.setVisibility(View.GONE);
+        dateCard.setVisibility(View.GONE);
+        dateCardBtn.setVisibility(View.GONE);
+        layoutFromTeller.setVisibility(View.GONE);
+        recyclerViewFromTeller.setVisibility(View.GONE);
+        cardTellerLayout.setVisibility(View.GONE);
+        cardTellerBtn.setVisibility(View.GONE);
+        layoutFromBranch.setVisibility(View.GONE);
+        recyclerViewFromBranch.setVisibility(View.GONE);
+        cardLayoutFromBranch.setVisibility(View.GONE);
+        buttonFromBranch.setVisibility(View.GONE);
+        layoutToCustomers.setVisibility(View.GONE);
+        recyclerToCustomers.setVisibility(View.GONE);
+        cardLayoutToCus.setVisibility(View.GONE);
+        cardBtnToCus.setVisibility(View.GONE);
+        layoutAllST.setVisibility(View.GONE);
+        recyclerViewAll.setVisibility(View.GONE);
+        allTCCard.setVisibility(View.GONE);
     }
 
     public void revealToCustomersLayout(View view) {
+        layoutToCustomers.setVisibility(View.VISIBLE);
+        recyclerToCustomers.setVisibility(View.VISIBLE);
+        cardLayoutToCus.setVisibility(View.VISIBLE);
+        cardBtnToCus.setVisibility(View.VISIBLE);
+        layoutCustomDate.setVisibility(View.GONE);
+        recyclerViewCustomDate.setVisibility(View.GONE);
+        dateCard.setVisibility(View.GONE);
+        dateCardBtn.setVisibility(View.GONE);
+        layoutFromTeller.setVisibility(View.GONE);
+        recyclerViewFromTeller.setVisibility(View.GONE);
+        cardTellerLayout.setVisibility(View.GONE);
+        cardTellerBtn.setVisibility(View.GONE);
+        layoutFromBranch.setVisibility(View.GONE);
+        recyclerViewFromBranch.setVisibility(View.GONE);
+        cardLayoutFromBranch.setVisibility(View.GONE);
+        buttonFromBranch.setVisibility(View.GONE);
+        layoutAllST.setVisibility(View.GONE);
+        recyclerViewAll.setVisibility(View.GONE);
+        allTCCard.setVisibility(View.GONE);
+        layoutSkylightTittle.setVisibility(View.GONE);
+        recyclerViewSkylight.setVisibility(View.GONE);
+        cardBtnSkyLayout.setVisibility(View.GONE);
+
     }
 
     public void getSTByCustomDate(View view) {
+        adapterCustomDate = new StockTransferAdapter(this, R.layout.skylight_cash_row, sTCustomDateArrayList);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerViewCustomDate.setLayoutManager(linearLayoutManager);
+        recyclerViewCustomDate.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewCustomDate.setAdapter(adapterCustomDate);
+        recyclerViewCustomDate.addItemDecoration(new DividerItemDecoration(SuperAllSTList.this,DividerItemDecoration.VERTICAL));
+        recyclerViewCustomDate.setNestedScrollingEnabled(false);
+        //SnapHelper snapHelperCDate = new PagerSnapHelper();
+        //snapHelperCDate.attachToRecyclerView(recyclerViewCustomDate);
+        recyclerViewCustomDate.setClickable(true);
     }
 
     public void getSTByTeller(View view) {
+        recyclerViewFromTeller.setLayoutManager(new LinearLayoutManager(SuperAllSTList.this, LinearLayoutManager.HORIZONTAL, false));
+        adapterTeller = new StockTransferAdapter(SuperAllSTList.this, tellerArrayListWithDate);
+        recyclerViewFromTeller.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewFromTeller.setAdapter(adapterTeller);
+        recyclerViewFromTeller.setNestedScrollingEnabled(false);
+        recyclerViewFromTeller.setClickable(true);
     }
 
     public void getSTByBranch(View view) {
+        recyclerViewFromBranch.setLayoutManager(new LinearLayoutManager(SuperAllSTList.this, LinearLayoutManager.HORIZONTAL, false));
+        adapterBranch = new StockTransferAdapter(SuperAllSTList.this, branchSTArrayList);
+        recyclerViewFromBranch.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewFromBranch.setAdapter(adapterBranch);
+        recyclerViewFromBranch.setNestedScrollingEnabled(false);
+        recyclerViewFromBranch.setClickable(true);
     }
 
     public void getSTForCus(View view) {
+        recyclerToCustomers.setLayoutManager(new LinearLayoutManager(SuperAllSTList.this, LinearLayoutManager.HORIZONTAL, false));
+        adapterCustomer = new StockTransferAdapter(SuperAllSTList.this, toCustomerArrayList);
+        recyclerToCustomers.setItemAnimator(new DefaultItemAnimator());
+        recyclerToCustomers.setAdapter(adapterCustomer);
+        recyclerToCustomers.setNestedScrollingEnabled(false);
+        recyclerToCustomers.setClickable(true);
     }
 
     public void getAllST(View view) {
+        adapterAll = new StockTransferAdapter(this, R.layout.skylight_cash_row, arrayListAllST);
+        recyclerViewAll.setLayoutManager(new LinearLayoutManager(SuperAllSTList.this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewAll.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewAll.setAdapter(adapterAll);
+        recyclerViewAll.addItemDecoration(new DividerItemDecoration(SuperAllSTList.this,DividerItemDecoration.VERTICAL));
+        recyclerViewAll.setNestedScrollingEnabled(false);
+        recyclerViewAll.setClickable(true);
+        SnapHelper snapHelperT = new PagerSnapHelper();
+        snapHelperT.attachToRecyclerView(recyclerViewAll);
     }
 
     public void getSkylightST(View view) {
+        recyclerViewSkylight.setLayoutManager(new LinearLayoutManager(SuperAllSTList.this, LinearLayoutManager.HORIZONTAL, false));
+        adapterSkylight = new StockTransferAdapter(SuperAllSTList.this, skylightSTArrayList);
+        recyclerViewSkylight.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewSkylight.setAdapter(adapterSkylight);
+        recyclerViewSkylight.setNestedScrollingEnabled(false);
+        recyclerViewSkylight.setClickable(true);
     }
 }
 

@@ -57,7 +57,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,7 +66,7 @@ import com.skylightapp.Classes.MultiSelectSpinner;
 import com.skylightapp.Classes.PinEntryView;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Database.MarketBizDAO;
-import com.skylightapp.LoginActivity;
+import com.skylightapp.LoginAct;
 import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
 import com.skylightapp.SignUpAct;
@@ -358,7 +357,7 @@ public class BizRegAct extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(BizRegAct.this, LoginActivity.class);
+                Intent intent = new Intent(BizRegAct.this, LoginAct.class);
                 startActivity(intent);
                 finish();
             }

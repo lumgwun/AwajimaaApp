@@ -13,6 +13,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -86,7 +87,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
     SharedPreferences sharedpreferences;
     protected DBHelper dbHelper;
     Gson gson,gson2,gson3,gson4;
-    CusSimpleAdapter customerArrayAdapter;
+    CusSimpleAdapter cusSimpleAdapter;
     ArrayList<Customer> customerArrayList;
     ArrayAdapter<Profile> profileArrayAdapter;
     ArrayAdapter<Customer> cusArrayAdapter;
@@ -461,12 +462,16 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
 
         btnGetBranchDetails.setOnClickListener(this::getBranchPaymentToday);
 
-        try {
-            profileArrayList=profileDao.getTellersFromMachineAndBiz(tellerMachine,bizID);
+        if(profileDao !=null){
+            try {
+                profileArrayList=profileDao.getTellersFromMachineAndBiz(tellerMachine,bizID);
 
-        } catch (NullPointerException e) {
-            e.printStackTrace();
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+
         }
+
 
 
         //customerArrayList=dbHelper.getCustomerFromMachine();
@@ -498,9 +503,9 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
 
             spnTellersDetails.setAdapter(new ProfileSimpleAdapter(BizSuperAdminAllView.this, R.layout.profile_row,
                     profileArrayList));
-            profileArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            //profileArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spnTellersDetails.setAdapter(profileSimpleAdapter);
-            spnTellersDetails.setSelection(1);
+            spnTellersDetails.setSelection(0);
         } catch (NullPointerException e) {
             System.out.println("Oops!");
         }
@@ -537,8 +542,8 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
         try {
             spnCusDetails.setAdapter(new CusSimpleAdapter(BizSuperAdminAllView.this, R.layout.customer_row3,
                     customerArrayList));
-            cusArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spnCusDetails.setAdapter(customerArrayAdapter);
+            //cusArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spnCusDetails.setAdapter(cusSimpleAdapter);
             spnCusDetails.setSelection(0);
         } catch (NullPointerException e) {
             System.out.println("Oops!");
@@ -576,17 +581,17 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
             try {
                 marketBizPackages = dbHelper.getAllPackagesAdmin();
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
         }
 
-        if(sodao !=null){
+        if(codeDAO !=null){
             try {
                 paymentCodeArrayList = codeDAO.getAllSavingsCodes();
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -598,7 +603,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
             try {
                 customerDailyReports3 = dbHelper.getAllReportsAdmin();
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -609,7 +614,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
             try {
                 allUsers = profileDao.getAllProfileUsers();
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -619,7 +624,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
             try {
                 paymentArrayListAll=paymentDAO.getALLPaymentsSuper();
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -631,7 +636,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
             try {
                 tellerReportsAll=tReportDAO.getTellerReportsAll();
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -642,7 +647,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
             try {
                 paymentForTellerToday=paymentDAO.getTotalPaymentTodayForTeller1(tellerID,stringDate);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -653,7 +658,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
             try {
                 paymentTotalForTeller=paymentDAO.getTotalPaymentForTeller(tellerID);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -664,18 +669,18 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
             try {
                 customersForTeller=cusDAO.getNewCustomersCountForTodayTeller(tellerID,todayDate);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
         }
 
 
-        if(sodao !=null){
+        if(paymentDAO !=null){
             try {
                 paymentForBranchTotal=paymentDAO.getTotalPaymentForBranch(branchName1);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -687,7 +692,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
                 paymentForBranchToday=paymentDAO.getTotalPaymentTodayForBranch1(branchName2,stringDate);
 
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -698,7 +703,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
             try {
                 soCount=sodao.getStandingOrderCountToday(todayDate);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -709,7 +714,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
             try {
                 totalSavingsToday=dbHelper.getSavingsCountToday(todayDate);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -720,7 +725,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
             try {
                 totalSavings2Today33=dbHelper.getTotalSavingsToday(todayDate);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -731,7 +736,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
             try {
                 customerCountToday=cusDAO.getAllNewCusCountForToday(todayDate);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -741,7 +746,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
             try {
                 countPackageToday=dbHelper.getNewPackageCountToday(todayDate);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -752,7 +757,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
             try {
                 countToday =tranXDAO.getAllTxCountForToday(todayDate);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -773,7 +778,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
             try {
                 savingsAll=dbHelper.getAllReportsAdmin();
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -785,7 +790,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
             try {
                 paymentCodeDate =codeDAO.getSavingsCodeForDate(stringDate);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -796,7 +801,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
                 customersTellerAll=cusDAO.getCustomersFromCurrentProfile(tellerID);
 
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -808,18 +813,18 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
                 customersTellerToday=cusDAO.getCustomersFromProfileWithDate(tellerID,stringDate);
 
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
         }
 
 
-        if(sodao !=null){
+        if(dbHelper !=null){
             try {
                 marketBizPackagesTellerAll =dbHelper.getAllPackagesProfile(tellerID);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -830,7 +835,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
                 marketBizPackagesTellerToday =dbHelper.getPackagesForTellerProfileWithDate(tellerID,stringDate);
 
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -842,7 +847,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
                 paymentCodeForTeller=codeDAO.getCodesFromCurrentTeller(tellerNames);
 
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -854,7 +859,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
             try {
                 tellerCashArrayList=tCashDAO.getTellerCashForTeller(tellerID);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -865,7 +870,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
             try {
                 tellerReportsTeller=tReportDAO.getTellerReportForTeller(tellerID);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -878,7 +883,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
             try {
                 manualPaymentTeller=paymentDAO.getALLPaymentsTeller(tellerID);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -889,7 +894,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
                 marketBizPackagesToday = dbHelper.getPackagesSubscribedToday(todayDate);
 
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -902,7 +907,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
             try {
                 savingsToday=dbHelper.getCustomerDailyReportToday(todayDate);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -913,7 +918,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
             try {
                 transactionsToday=tranXDAO.getTransactionsToday(todayDate);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -925,7 +930,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
                 manualPaymentToday=paymentDAO.getALLPaymentsSuperToday(todayDate);
 
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -938,7 +943,7 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
                 paymentCodeForCus=codeDAO.getCodesFromCurrentCustomer(customerID);
 
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -1164,11 +1169,19 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
                 recyclerCusTXToday.setVisibility(View.VISIBLE);
                 recyclerCusAllPayments.setVisibility(View.VISIBLE);
                 recyclerCusUnconfirmedSavings.setVisibility(View.VISIBLE);
-                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                    dbHelper.openDataBase();
-                    paymentForCusToday=paymentDAO.getTotalPaymentTodayForCustomer(customerID,todayDate);
+
+                if(paymentDAO !=null){
+                    try {
+                        paymentForCusToday=paymentDAO.getTotalPaymentTodayForCustomer(customerID,todayDate);
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
 
                 }
+
+
 
                 recyclerBranchAllDeposits.setVisibility(View.GONE);
                 recyclerBranchAllStocks.setVisibility(View.GONE);
@@ -1226,19 +1239,30 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
                 recyclerCusTXToday.setVisibility(View.GONE);
                 recyclerCusAllPayments.setVisibility(View.GONE);
                 recyclerCusUnconfirmedSavings.setVisibility(View.GONE);
-                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                    dbHelper.openDataBase();
-                    totalTellerCashForTheMonth = cashDAO.getTellerTotalTellerCashForTheMonth(tellerNames, monthYearStrFinal);
 
+                if(cashDAO !=null){
+                    try {
+                        totalTellerCashForTheMonth = cashDAO.getTellerTotalTellerCashForTheMonth(tellerNames, monthYearStrFinal);
+
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
 
                 }
-                if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                    dbHelper.openDataBase();
-                    totalTellerNewCusForTheMonth = cusDAO.getTellerMonthCusCountNew(tellerID,monthYearStrFinal);
 
+
+                if(cusDAO !=null){
+                    try {
+                        totalTellerNewCusForTheMonth = cusDAO.getTellerMonthCusCountNew(tellerID,monthYearStrFinal);
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
 
                 }
-
 
                 if (totalTellerNewCusForTheMonth > 0) {
                     txtTellerNewCus.setText("Number of New Customers for the Month" + totalTellerNewCusForTheMonth);
@@ -1542,9 +1566,6 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-
-
     }
 
     public void getCusPaymentToday(View view) {
@@ -1611,4 +1632,11 @@ public class BizSuperAdminAllView extends AppCompatActivity implements AdapterVi
     public void onItemClick(Transaction transaction) {
 
     }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
+    }
+
 }

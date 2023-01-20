@@ -6,6 +6,7 @@
     tools:showIn="navigation_view">
     <group android:checkableBehavior="single"
         android:menuCategory="system">
+
         <item android:title="Home">
             <menu>
                 <group android:checkableBehavior="single">
@@ -16,7 +17,28 @@
                 </group>
             </menu>
         </item>
-        <item android:title="Reports">
+        <item android:title="Teller">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_New_virtualT"
+                        android:icon="@drawable/users_fg"
+                        android:title="Virtual Assistants" />
+                </group>
+            </menu>
+        </item>
+        <item android:title="New User">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_New_User"
+                        android:icon="@drawable/fab_add"
+                        android:title="New Sign Up" />
+
+                </group>
+            </menu>
+        </item>
+        <item android:title="New Reports">
             <menu>
                 <group android:checkableBehavior="single">
                     <item
@@ -35,6 +57,11 @@
                         android:id="@+id/nav_Cus_Emerg"
                         android:icon="@drawable/ic_loc_searching"
                         android:title="Emergency Reports" />
+
+                    <item
+                        android:id="@+id/cusClimate_menu"
+                        android:icon="@drawable/ic_loc_searching"
+                        android:title="Climate Change Reports" />
                 </group>
             </menu>
         </item>

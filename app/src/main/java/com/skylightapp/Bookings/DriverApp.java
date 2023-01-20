@@ -14,7 +14,8 @@ import androidx.multidex.MultiDexApplication;
 
 import com.skylightapp.CustomApplication;
 import com.skylightapp.R;
-import com.teliver.sdk.core.Teliver;
+
+import io.teliver.sdk.core.Teliver;
 
 public class DriverApp extends CustomApplication {
 

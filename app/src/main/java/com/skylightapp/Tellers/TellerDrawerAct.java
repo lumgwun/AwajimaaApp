@@ -959,7 +959,7 @@ public class TellerDrawerAct extends AppCompatActivity {
             SharedPreferences.Editor editor = preferences.edit();
             editor.clear();
             editor.apply();
-            Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
+            Intent loginIntent = new Intent(getApplicationContext(), LoginAct.class);
             loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                     Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(loginIntent);

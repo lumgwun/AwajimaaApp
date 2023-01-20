@@ -19,7 +19,6 @@ public class SubManualAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_sub_manual);
         mywebView =  findViewById(R.id.webview_m_one);
-        mywebView.setWebViewClient(new WebViewClient());
         WebSettings webViewSettings = mywebView.getSettings();
         webViewSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         webViewSettings.setJavaScriptEnabled(true);

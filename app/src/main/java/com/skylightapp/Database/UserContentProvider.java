@@ -13,7 +13,7 @@ import static com.skylightapp.Classes.Customer.CUSTOMER_LOCATION_TABLE;
 import static com.skylightapp.Classes.Customer.CUSTOMER_TABLE;
 import static com.skylightapp.Classes.CustomerDailyReport.DAILY_REPORT_TABLE;
 import static com.skylightapp.Classes.CustomerManager.CUSTOMER_TELLER_TABLE;
-import static com.skylightapp.Classes.CustomerManager.WORKER_TABLE;
+
 import static com.skylightapp.Classes.DailyAccount.DAILY_ACCOUNTING_TABLE;
 import static com.skylightapp.Classes.GroupAccount.GRP_ACCT_TABLE;
 import static com.skylightapp.Classes.GroupAccount.GRP_PROFILE_TABLE;
@@ -51,6 +51,7 @@ import static com.skylightapp.Classes.Transaction.GRP_TRANX_TABLE;
 import static com.skylightapp.Classes.Transaction.TRANSACTIONS_TABLE;
 import static com.skylightapp.Classes.TransactionGranting.TANSACTION_EXTRA_TABLE;
 import static com.skylightapp.Classes.UserSuperAdmin.SUPER_ADMIN_TABLE;
+import static com.skylightapp.Classes.Worker.WORKER_TABLE;
 import static com.skylightapp.Database.DBHelper.TAG;
 import static com.skylightapp.Inventory.StockTransfer.T_STOCKS_TABLE;
 import static com.skylightapp.Inventory.Stocks.STOCKS_TABLE;

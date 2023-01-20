@@ -2,8 +2,11 @@ package com.skylightapp.Database;
 
 import static com.skylightapp.Bookings.Trip.A_TRIP_AMOUNT_ADULT;
 import static com.skylightapp.Bookings.Trip.A_TRIP_AMT_CHILDREN;
+import static com.skylightapp.Bookings.Trip.A_TRIP_BIZ_ID;
+import static com.skylightapp.Bookings.Trip.A_TRIP_CUS_PROF_ID;
 import static com.skylightapp.Bookings.Trip.A_TRIP_DATE;
 import static com.skylightapp.Bookings.Trip.A_TRIP_DEST_NAME;
+import static com.skylightapp.Bookings.Trip.A_TRIP_DRIVER_ID;
 import static com.skylightapp.Bookings.Trip.A_TRIP_ENDT;
 import static com.skylightapp.Bookings.Trip.A_TRIP_ID;
 import static com.skylightapp.Bookings.Trip.A_TRIP_NO_OF_BOATS;
@@ -31,6 +34,7 @@ import com.skylightapp.Bookings.Trip;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Locale;
 
 public class TripDAO extends DBHelperDAO{
@@ -49,7 +53,7 @@ public class TripDAO extends DBHelperDAO{
         cursor.close();
         return cursor.getCount();
     }
-    public long insertNewTrip(int tripID, int profID, String state, double amtForAdult, double amtForChildren, int noOfSits, String takeOffPoint, String destination, String date, String startTime, String endTime, LatLng takeOffLatLng,String type, String status) {
+    public long insertNewTrip(int tripID, int profID, long comID, int driverID, String state, double amtForAdult, double amtForChildren, int noOfSits, String takeOffPoint, String destination, String date, String startTime, String endTime, LatLng takeOffLatLng, String type, String status) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(A_TRIP_ID, tripID);
@@ -65,11 +69,13 @@ public class TripDAO extends DBHelperDAO{
         contentValues.put(A_TRIP_TAKE_OFF_POINT, takeOffPoint);
         contentValues.put(A_TRIP_DATE, date);
         contentValues.put(A_TRIP_TYPE, type);
+        contentValues.put(A_TRIP_BIZ_ID, comID);
+        contentValues.put(A_TRIP_DRIVER_ID, driverID);
         contentValues.put(A_TRIP_TAKE_OFF_LATLNG, String.valueOf(takeOffLatLng));
         return sqLiteDatabase.insert(A_TRIP_TABLE, null, contentValues);
 
     }
-    public long insertNewTrip(int tripID, int profID, int noOfBoatInt, String selectedBoatType, String takeOffPoint, String  destination, String state, String date, String selectedTripType) {
+    public long insertNewBoatTrip(int tripID, int profID, int noOfBoatInt, String selectedBoatType, String takeOffPoint, String  destination, String state, String date, String selectedTripType) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(A_TRIP_ID, tripID);
@@ -338,8 +344,263 @@ public class TripDAO extends DBHelperDAO{
         return tripArrayList;
     }
 
+    public ArrayList<Trip> getAllTripsForBiz(long bizID) {
+        ArrayList<Trip> tripArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = A_TRIP_BIZ_ID + "=?";
+        String[] selectionArgs = new String[]{valueOf(bizID)};
+        Cursor cursor = db.query(A_TRIP_TABLE, null,  selection, selectionArgs, null,
+                null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getTripFromCursor(tripArrayList, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
 
-    public ArrayList<Trip> getBoatTripForState(String state) {
+        }
+
+        db.close();
+
+        return tripArrayList;
+    }
+    public ArrayList<Trip> getCurrentTripsForBiz(long bizID) {
+        ArrayList<Trip> tripArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = A_TRIP_BIZ_ID + "=?AND " + A_TRIP_STATUS + "=?";
+        String[] selectionArgs = new String[]{valueOf(bizID),valueOf("current")};
+        Cursor cursor = db.query(A_TRIP_TABLE, null,  selection, selectionArgs, null,
+                null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getTripFromCursor(tripArrayList, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        db.close();
+
+        return tripArrayList;
+    }
+    public ArrayList<Trip> getCurrentTripForDriver(int driverID) {
+        ArrayList<Trip> tripArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = A_TRIP_DRIVER_ID + "=?AND " + A_TRIP_STATUS + "=?";
+        String[] selectionArgs = new String[]{valueOf(driverID),valueOf("current")};
+        Cursor cursor = db.query(A_TRIP_TABLE, null,  selection, selectionArgs, null,
+                null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getTripFromCursor(tripArrayList, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        db.close();
+
+        return tripArrayList;
+    }
+    public ArrayList<Trip> getAllCurrentTrips() {
+        ArrayList<Trip> tripArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = A_TRIP_STATUS + "=?";
+        String[] selectionArgs = new String[]{("current")};
+        Cursor cursor = db.query(A_TRIP_TABLE, null,  selection, selectionArgs, null,
+                null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getTripFromCursor(tripArrayList, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        db.close();
+
+        return tripArrayList;
+    }
+    public ArrayList<Trip> getCurrentTripsToState(String state) {
+        ArrayList<Trip> tripArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = A_TRIP_STATE + "=?AND " + A_TRIP_STATUS + "=?";
+        String[] selectionArgs = new String[]{state,valueOf("current")};
+        Cursor cursor = db.query(A_TRIP_TABLE, null,  selection, selectionArgs, null,
+                null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getTripFromCursor(tripArrayList, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        db.close();
+
+        return tripArrayList;
+    }
+    public ArrayList<Trip> getTripsForCustomerProf(int cusProfID) {
+        ArrayList<Trip> tripArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = A_TRIP_CUS_PROF_ID + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(cusProfID)};
+        Cursor cursor = db.query(A_TRIP_TABLE, null,  selection, selectionArgs, null,
+                null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getTripFromCursor(tripArrayList, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        db.close();
+
+        return tripArrayList;
+    }
+    public ArrayList<Trip> getCurrentTripForCustomerProf(int cusProfID) {
+        ArrayList<Trip> tripArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = A_TRIP_CUS_PROF_ID + "=?AND " + A_TRIP_STATUS + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(cusProfID),valueOf("current")};
+        Cursor cursor = db.query(A_TRIP_TABLE, null,  selection, selectionArgs, null,
+                null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getTripFromCursor(tripArrayList, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        db.close();
+
+        return tripArrayList;
+    }
+    public ArrayList<Trip> getCurrentTripsToDest(String destination) {
+        ArrayList<Trip> tripArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = A_TRIP_DEST_NAME + "=?AND " + A_TRIP_STATUS + "=?";
+        String[] selectionArgs = new String[]{destination,valueOf("current")};
+        Cursor cursor = db.query(A_TRIP_TABLE, null,  selection, selectionArgs, null,
+                null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getTripFromCursor(tripArrayList, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        db.close();
+
+        return tripArrayList;
+    }
+
+    public ArrayList<Trip> getTodayTripsForBiz(long bizID,String today) {
+        ArrayList<Trip> tripArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = A_TRIP_BIZ_ID + "=?AND " + A_TRIP_DATE + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(bizID),today};
+        Cursor cursor = db.query(A_TRIP_TABLE, null,  selection, selectionArgs, null,
+                null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getTripFromCursor(tripArrayList, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        db.close();
+
+        return tripArrayList;
+    }
+
+    public ArrayList<Trip> getAllStateTripsForBiz(long bizID, String selectedState) {
+        ArrayList<Trip> tripArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = A_TRIP_BIZ_ID + "=?AND " + A_TRIP_STATE + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(bizID),selectedState};
+        Cursor cursor = db.query(A_TRIP_TABLE, null,  selection, selectionArgs, null,
+                null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getTripFromCursor(tripArrayList, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        db.close();
+
+        return tripArrayList;
+    }
+    public ArrayList<Trip> getTodayTripsForBizState(long bizID, String todayDate, String selectedState) {
+        ArrayList<Trip> tripArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = A_TRIP_BIZ_ID + "=?AND " + A_TRIP_DATE + "=?AND " + A_TRIP_STATE + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(bizID),todayDate,selectedState};
+        Cursor cursor = db.query(A_TRIP_TABLE, null,  selection, selectionArgs, null,
+                null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getTripFromCursor(tripArrayList, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        db.close();
+
+        return tripArrayList;
+    }
+    public ArrayList<Trip> getCurrentBizTripsToDest(long bizID,String destination) {
+        ArrayList<Trip> tripArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = A_TRIP_BIZ_ID + "=?AND " + A_TRIP_DEST_NAME + "=?AND " + A_TRIP_STATUS + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(bizID),destination,"current"};
+        Cursor cursor = db.query(A_TRIP_TABLE, null,  selection, selectionArgs, null,
+                null, null);
+        if(cursor!=null && cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    getTripFromCursor(tripArrayList, cursor);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        db.close();
+
+        return tripArrayList;
+    }
+
+
+    public ArrayList<Trip> getTripForState(String state) {
         ArrayList<Trip> tripArrayList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String selection = A_TRIP_STATE + "=?";
@@ -380,7 +641,5 @@ public class TripDAO extends DBHelperDAO{
 
         return reportArrayList;
     }
-
-
 
 }

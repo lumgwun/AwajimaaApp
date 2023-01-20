@@ -23,8 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_ID;
-import static com.skylightapp.Classes.OfficeBranch.OFFICE_BRANCH_TABLE;
+
 import static com.skylightapp.Classes.Profile.PROFILES_TABLE;
 import static com.skylightapp.Classes.Profile.PROFILE_ID;
 
@@ -67,23 +66,14 @@ public class CustomerManager  implements Parcelable, Serializable , BaseColumns 
     public static final String CUSTOMER_TELLER_MARKET_ID = "teller_Market_ID";
 
     //@Ignore
-    public static final String WORKER_TELLER_PROF_ID = "worker_Prof_ID";
+
 
     //@Ignore
     public static final String CUSTOMER_TELLER_TABLE = "tellers_table";
     //@Ignore
-    public static final String WORKER_TABLE = "workers_table";
-   //@Ignore
-    public static final String WORKER = "workerName";
-    //@Ignore
-    public static final String WORKER_ID = "worker_id";
-    public static final String WORKER_DB_ID = "worker_DB_id";
-    public static final String WORKER_BIZ_ID = "worker_Biz_id";
-    public static final String WORKER_BIZ_BRANCH_ID = "worker_Branch_id";
+
     //@Ignore
 
-    public static final String CREATE_WORKERS_TABLE = "CREATE TABLE IF NOT EXISTS " + WORKER_TABLE + " ( " + WORKER_ID + " INTEGER ,  " + WORKER + " TEXT  , "+ WORKER_DB_ID + " TEXT, " +
-            WORKER_TELLER_PROF_ID + " INTEGER, " + WORKER_BIZ_ID + " INTEGER,"+ WORKER_BIZ_BRANCH_ID + " INTEGER," + "FOREIGN KEY(" + WORKER_BIZ_BRANCH_ID + ") REFERENCES " + OFFICE_BRANCH_TABLE + "(" + OFFICE_BRANCH_ID + "),"+  "FOREIGN KEY(" + WORKER_TELLER_PROF_ID + ") REFERENCES " + PROFILES_TABLE + "(" + PROFILE_ID + "),"+"PRIMARY KEY(" + WORKER_DB_ID  + "))";
 
     //@Ignore
     public static final String CREATE_CUSTOMERS_TELLER_TABLE = "CREATE TABLE IF NOT EXISTS " + CUSTOMER_TELLER_TABLE + " ( " + CUSTOMER_TELLER_ID + " INTEGER   ,  " + CUSTOMER_TELLER_PROF_ID + " INTEGER  , " +
@@ -143,6 +133,24 @@ public class CustomerManager  implements Parcelable, Serializable , BaseColumns 
     private String TGender;
     private ArrayList<Long> tellerMarketBizIDs;
     private MarketBusiness tellerMarketBiz;
+
+    public CustomerManager(int tellerID, long bizID, String uSurname, String uFirstName, String uPhoneNumber, String dateOfBirth, String uEmail, String uAddress, String selectedGender, String selectedOffice, String selectedState, Uri mImageUri, String joinedDate, String uUserName, String uPassword) {
+        this.tID = tellerID;
+        this.tellerMarketBizID = bizID;
+        this.tSurname = uSurname;
+        this.tFirstName = uFirstName;
+        this.tPhoneNumber = uPhoneNumber;
+        this.tDob = dateOfBirth;
+        this.tEmailAddress = uEmail;
+        this.tAddress = uAddress;
+        this.TGender = selectedGender;
+        this.tOffice = selectedOffice;
+        this.tState = selectedState;
+        this.tPhoto = mImageUri;
+        this.tDateJoined = joinedDate;
+        this.tUserName = uUserName;
+        this.tPassword = uPassword;
+    }
 
     public void setTOffice(String tOffice) {
         this.tOffice = tOffice;

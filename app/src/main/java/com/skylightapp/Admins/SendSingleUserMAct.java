@@ -58,7 +58,7 @@ import com.skylightapp.Database.MarketBizDAO;
 import com.skylightapp.Database.MarketDAO;
 import com.skylightapp.Database.MessageDAO;
 import com.skylightapp.Interfaces.Consts;
-import com.skylightapp.LoginActivity;
+import com.skylightapp.LoginAct;
 import com.skylightapp.LoginDirAct;
 import com.skylightapp.MarketClasses.BizAdmin;
 import com.skylightapp.MarketClasses.BizDealPartner;
@@ -75,7 +75,6 @@ import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.MarketClasses.MarketCustomer;
 import com.skylightapp.Markets.ToastUtils;
 import com.skylightapp.R;
-import com.twilio.Twilio;
 
 import java.security.SecureRandom;
 import java.text.MessageFormat;
@@ -1155,7 +1154,7 @@ public class SendSingleUserMAct extends AppCompatActivity implements TextWatcher
             public void onSuccess(Void aVoid, Bundle bundle) {
                 Log.d(TAG, "SignOut Successful");
                 //SharedPrefsHelper.getInstance().removeQbUser();
-                Intent myIntent = new Intent(SendSingleUserMAct.this, LoginActivity.class);
+                Intent myIntent = new Intent(SendSingleUserMAct.this, LoginAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

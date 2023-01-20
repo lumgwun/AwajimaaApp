@@ -53,7 +53,6 @@ import com.skylightapp.MarketClasses.MyPreferences;
 import com.skylightapp.MarketClasses.SampleConfigs;
 import com.skylightapp.MarketClasses.MarketStock;
 import com.skylightapp.R;
-import com.teliver.sdk.core.Teliver;
 
 import org.acra.ACRA;
 import org.acra.ReportField;

@@ -44,7 +44,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome to the Awajima App, the Household App for reporting and responding to Hydrocarbon Spillages, Emergencies, and Crimes. The Multi-Branch Logistics distribution System &amp; digital biz book with multiple Currencies, Biz Deals,Live Streaming, and markets across Africa"
+            android:text="Welcome to the Awajima App, the Household App for Surveillance, digital Market Place, with  Multi-Branch Logistics management System"
             android:textColor="@android:color/holo_orange_dark"
             android:textSize="25sp"
             android:ellipsize="marquee"
@@ -83,6 +83,15 @@
             android:fontFamily="@font/proxima_nova_light"
             android:textColor="@color/darkSlateBlue"
             android:textSize="25sp" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="1dp"
+            android:id="@+id/bbbb"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/linear3"
+            android:src="@drawable/booking" />
+
 
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -100,13 +109,23 @@
             android:scrollHorizontally="true"
             android:singleLine="false"
             android:background="@drawable/rect_new"
-            android:text="Digital , Automated, and stress free Akawo is here ! The Awajima App has MarketPlace, Savings (Individual and Group ), and Bookings"
+            android:text="Awajima is the National Software Biz Infrastructure, with Biz deals, Taxi booking, Train Booking, and Boat Booking"
             android:textAlignment="center"
             android:fontFamily="@font/proxima_nova_light"
             android:textColor="@color/darkSlateBlue"
             android:textSize="25sp" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="1dp"
+            android:id="@+id/surv"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/linear3"
+            android:src="@drawable/market44" />
+
 
     </LinearLayout>
+
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

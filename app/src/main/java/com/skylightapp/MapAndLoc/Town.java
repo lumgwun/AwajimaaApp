@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.blongho.country_data.Country;
 import com.google.android.gms.maps.model.LatLng;
+import com.skylightapp.StateDir.State;
 
 import java.io.Serializable;
 import java.util.ArrayList;

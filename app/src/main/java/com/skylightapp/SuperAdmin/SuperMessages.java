@@ -75,14 +75,61 @@ public class SuperMessages extends AppCompatActivity implements  MessageAdapter.
     Gson gson3;
     String json3;
     private ArrayList<OfficeBranch> officeBranchArrayList;
+    private ArrayList<OfficeBranch> awajimaOffices;
     private MarketBusiness marketBiz;
     private MarketBizDAO marketBizDAO;
     OfficeBranch selectedBranch;
     private OfficeAdapter officeAdapter;
     private long bizID;
+    private int index=0;
+    private int branchIndex=0;
     private OfficeBranchDAO officeDAO;
+    private static final String PREF_NAME = "awajima";
 
     String machine;
+    private AdapterView.OnItemSelectedListener office_listener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if(index == position){
+                return; //do nothing
+            }
+            else {
+                selectedOffice = spnOfficeBranch.getSelectedItem().toString();
+
+            }
+
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+
+    };
+    private AdapterView.OnItemSelectedListener branch_listener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if(branchIndex == position){
+                return;
+            }
+            else {
+                selectedBranch = (OfficeBranch) parent.getSelectedItem();
+
+
+            }
+
+            if(selectedBranch !=null){
+                selectedOffice=selectedBranch.getOfficeBranchName();
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,18 +141,24 @@ public class SuperMessages extends AppCompatActivity implements  MessageAdapter.
         userProfile= new Profile();
         officeDAO= new OfficeBranchDAO(this);
         superAdmin = new UserSuperAdmin();
-        userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        //userPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         gson = new Gson();
+        awajima= new Awajima();
         officeBranchArrayList= new ArrayList<>();
+        awajimaOffices= new ArrayList<>();
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         gson1 = new Gson();
         gson2=new Gson();
+        gson3=new Gson();
         marketBiz= new MarketBusiness();
         json1 = userPreferences.getString("LastAdminUserProfileUsed", "");
         superAdmin = gson1.fromJson(json1, UserSuperAdmin.class);
         json2 = userPreferences.getString("LastMarketBusinessUsed", "");
         marketBiz = gson2.fromJson(json2, MarketBusiness.class);
+        json3 = userPreferences.getString("LastAwajimaUsed", "");
+        awajima = gson3.fromJson(json3, Awajima.class);
         btnSearchMessages = findViewById(R.id.btnSearchMessagesSuper);
         spnOfficeBranch = findViewById(R.id.spnOfficeMessages);
         btnSearchByOffice = findViewById(R.id.btnSearchOfficeSuper);
@@ -114,40 +167,41 @@ public class SuperMessages extends AppCompatActivity implements  MessageAdapter.
         recyclerViewToday = findViewById(R.id.recycler_view_SuperToday);
         messages = new ArrayList<Message>();
         messagesToday = new ArrayList<Message>();
+        spnOfficeBranch.setOnItemSelectedListener(branch_listener);
+        if(awajima !=null){
+            try {
+                awajimaOffices = officeDAO.getAllOfficeBranches("awajima");
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+
+        }
 
         if(marketBiz !=null){
             bizID=marketBiz.getBusinessID();
+
+            if(officeDAO !=null){
+                try {
+                    officeBranchArrayList = officeDAO.getOfficesForBusiness(bizID);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }else{
+            officeBranchArrayList=awajimaOffices;
+
         }
+
 
         picker=(DatePicker)findViewById(R.id.messageSuperDatePicker);
         Calendar calendar = Calendar.getInstance();
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
 
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            officeBranchArrayList = officeDAO.getOfficesForBusiness(bizID);
-        }
 
         officeAdapter = new OfficeAdapter(SuperMessages.this, officeBranchArrayList);
         spnOfficeBranch.setAdapter(officeAdapter);
         spnOfficeBranch.setSelection(0);
-
-        spnOfficeBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedBranch = (OfficeBranch) parent.getSelectedItem();
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        if(selectedBranch !=null){
-            selectedOffice=selectedBranch.getOfficeBranchName();
-        }
-
-
         try {
 
             btnSearchByOffice.setOnClickListener(this::searchOfficeMessages);
@@ -184,7 +238,7 @@ public class SuperMessages extends AppCompatActivity implements  MessageAdapter.
         }
         try {
 
-            dateOfMessage = picker.getDayOfMonth()+"/"+ (picker.getMonth() + 1)+"/"+picker.getYear();
+            dateOfMessage = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
 
         } catch (NullPointerException e) {
             System.out.println("Oops!");
@@ -199,20 +253,32 @@ public class SuperMessages extends AppCompatActivity implements  MessageAdapter.
             btnSearchMessages.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                        dbHelper.openDataBase();
-                        sqLiteDatabase = dbHelper.getReadableDatabase();
-                        messages = messageDAO.getAllMessages2();
+                    if(messageDAO !=null){
+                        try {
+                            messages = messageDAO.getAllMessages2();
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                        }
+
                     }
-                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                        dbHelper.openDataBase();
-                        sqLiteDatabase = dbHelper.getReadableDatabase();
-                        messagesToday=messageDAO.getMessagesToday(dateOfMessage);
+
+
+                    if(messageDAO !=null){
+                        try {
+                            messagesToday=messageDAO.getMessagesToday(dateOfMessage);
+
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                        }
+
                     }
-                    if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-                        dbHelper.openDataBase();
-                        sqLiteDatabase = dbHelper.getReadableDatabase();
-                        messageCount=messageDAO.getMessageCountToday(dateOfMessage);
+                    if(messageDAO !=null){
+                        try {
+                            messageCount=messageDAO.getMessageCountToday(dateOfMessage);
+
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                        }
 
                     }
 
@@ -274,48 +340,74 @@ public class SuperMessages extends AppCompatActivity implements  MessageAdapter.
     }
     public void searchByDate(View view) {
         messageDAO= new MessageDAO(this);
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            messages = messageDAO.getAllMessages2();
-        }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            messagesToday=messageDAO.getMessagesToday(dateOfMessage);
-        }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            messageCount=messageDAO.getMessageCountToday(dateOfMessage);
+        if(messageDAO !=null){
+            try {
+                messages = messageDAO.getAllMessages2();
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
 
         }
+
+
+        if(messageDAO !=null){
+            try {
+                messagesToday=messageDAO.getMessagesToday(dateOfMessage);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+        if(messageDAO !=null){
+            try {
+                messageCount=messageDAO.getMessageCountToday(dateOfMessage);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
 
     }
 
     public void searchOfficeMessages(View view) {
         messageDAO= new MessageDAO(this);
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            messages = messageDAO.getAllMessages2();
-        }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            messagesToday=messageDAO.getMessagesToday(dateOfMessage);
-        }
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            messageCount=messageDAO.getMessageCountToday(dateOfMessage);
+        if(messageDAO !=null){
+            try {
+                messages = messageDAO.getAllMessages2();
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
 
         }
+
+
+        if(messageDAO !=null){
+            try {
+                messagesToday=messageDAO.getMessagesToday(dateOfMessage);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+        if(messageDAO !=null){
+            try {
+                messageCount=messageDAO.getMessageCountToday(dateOfMessage);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+
     }
     private void chooseDate() {
         try {
 
-            dateOfMessage = picker.getDayOfMonth()+"/"+ (picker.getMonth() + 1)+"/"+picker.getYear();
+            dateOfMessage = picker.getYear()+"-"+ (picker.getMonth() + 1)+"-"+picker.getDayOfMonth();
 
         } catch (NullPointerException e) {
             System.out.println("Oops!");

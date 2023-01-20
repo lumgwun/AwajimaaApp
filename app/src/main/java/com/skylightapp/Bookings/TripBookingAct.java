@@ -100,6 +100,9 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
     private ArrayList<TripStopPoint> tripStopPoints;
     private TripStopPointAdap tripStopPointAdap;
     SharedPreferences.Editor editor;
+    int sitIndex=0;
+    int stateIndex=0;
+    private boolean letsGo=false;
     private ActivityResultLauncher<Intent> startNinActForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
 
             new ActivityResultCallback<ActivityResult>() {
@@ -239,7 +242,13 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
         spnState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedState = spnState.getSelectedItem().toString();
+                if(stateIndex==position){
+                    return;
+                }else{
+                    selectedState = spnState.getSelectedItem().toString();
+
+                }
+
             }
 
             @Override
@@ -249,7 +258,14 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
         spnSitSel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedSitStrng = spnSitSel.getSelectedItem().toString();
+                if(stateIndex==position){
+                    return;
+                }else{
+                    selectedSitStrng = spnSitSel.getSelectedItem().toString();
+
+
+                }
+
             }
 
             @Override
@@ -268,7 +284,7 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
 
         try {
             if(selectedState !=null){
-                tripArrayList = tripDAO.getBoatTripForState(selectedState);
+                tripArrayList = tripDAO.getTripForState(selectedState);
 
 
             }
@@ -324,7 +340,14 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
         spnTripType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedTripType = spnTripType.getSelectedItem().toString();
+                if(stateIndex==position){
+                    return;
+                }else{
+                    selectedTripType = spnTripType.getSelectedItem().toString();
+
+
+                }
+
             }
 
             @Override
@@ -335,7 +358,14 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
         spnNoOfBoats.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedNoOfBoats = spnNoOfBoats.getSelectedItem().toString();
+                if(stateIndex==position){
+                    return;
+                }else{
+                    selectedNoOfBoats = spnNoOfBoats.getSelectedItem().toString();
+
+
+                }
+
             }
 
             @Override
@@ -345,7 +375,14 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
         spnAdults.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                adults = spnState.getSelectedItem().toString();
+                if(stateIndex==position){
+                    return;
+                }else{
+                    adults = spnState.getSelectedItem().toString();
+
+
+                }
+
             }
 
             @Override
@@ -355,7 +392,14 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
         spnChildren.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                children = spnState.getSelectedItem().toString();
+                if(stateIndex==position){
+                    return;
+                }else{
+                    children = spnState.getSelectedItem().toString();
+
+
+                }
+
             }
 
             @Override
@@ -365,7 +409,14 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
         spnBoatTypes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedBoatType = spnBoatTypes.getSelectedItem().toString();
+                if(stateIndex==position){
+                    return;
+                }else{
+                    selectedBoatType = spnBoatTypes.getSelectedItem().toString();
+
+
+                }
+
             }
 
             @Override
@@ -444,7 +495,7 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
                         }
                         if(tripDAO !=null){
                             try {
-                                tripDAO.insertNewTrip(boatTripID, profID, noOfBoatInt,selectedBoatType, tripTakeOffPoints, tripDestination, takeOffState, dateOfTripRequest,selectedTripType);
+                                tripDAO.insertNewBoatTrip(boatTripID, profID, noOfBoatInt,selectedBoatType, tripTakeOffPoints, tripDestination, takeOffState, dateOfTripRequest,selectedTripType);
 
                             } catch (NullPointerException e) {
                                 e.printStackTrace();
@@ -484,6 +535,7 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
         txtTotalAmt =  findViewById(R.id.trip_TotalP);
         btnGoToPayment =  findViewById(R.id.btnPayment_Trip);
         if(userNIN.isEmpty()){
+            letsGo=true;
             Intent myIntent = new Intent(TripBookingAct.this, NinIDAct.class);
             overridePendingTransition(R.anim.slide_in_right,
                     R.anim.slide_out_left);
@@ -498,7 +550,14 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
         spnSitSel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedSitStrng = spnSitSel.getSelectedItem().toString();
+                if(sitIndex==position){
+                    return;
+
+                }else{
+                    selectedSitStrng = spnSitSel.getSelectedItem().toString();
+
+                }
+
             }
 
             @Override
@@ -557,6 +616,7 @@ public class TripBookingAct extends AppCompatActivity implements AdapterView.OnI
         btnGoToPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                letsGo=true;
                 Intent myIntent = new Intent(TripBookingAct.this, GooglePayAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);

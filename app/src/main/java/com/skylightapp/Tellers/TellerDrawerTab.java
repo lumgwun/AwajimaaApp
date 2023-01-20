@@ -25,7 +25,7 @@ import com.github.mzule.fantasyslide.Transformer;
 import com.skylightapp.AllCusPackTab;
 import com.skylightapp.AwajimaSliderAct;
 import com.skylightapp.Customers.SOTab;
-import com.skylightapp.LoginActivity;
+import com.skylightapp.LoginAct;
 import com.skylightapp.PasswordRecovAct;
 import com.skylightapp.PrivacyPolicy_Web;
 import com.skylightapp.R;
@@ -222,7 +222,7 @@ public class TellerDrawerTab extends AppCompatActivity {
             SharedPreferences.Editor editor = preferences.edit();
             editor.clear();
             editor.apply();
-            Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
+            Intent loginIntent = new Intent(getApplicationContext(), LoginAct.class);
             loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                     Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(loginIntent);

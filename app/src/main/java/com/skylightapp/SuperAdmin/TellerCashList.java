@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -76,6 +77,7 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
     private TCashDAO tCashDAO;
     OfficeBranch selectedBranch;
     private SharedPreferences userPreferences;
+    private int index=0;
 
     private void openDetailActivity(String[] data){
         /*Intent intent = new Intent(this, DetailsActivity.class);
@@ -113,6 +115,7 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
         layoutSpn = findViewById(R.id.grp_Teller);
         layoutBranch = findViewById(R.id.layout5);
         tellerCashList = new ArrayList<>();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastAwajimaUsed", "");
         awajima = gson.fromJson(json, Awajima.class);
         userRole = userPreferences.getString("machine", "");
@@ -144,7 +147,7 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
             try {
                 tellerCashStringTeller=tCashDAO.getAllTellerCashTellerNames();
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -153,7 +156,7 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
             try {
                 tellerCashStringBranch=tCashDAO.getAllTellerCashBranchNames();
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -174,7 +177,13 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //branchName1 = spnPaymentBranchT.getSelectedItem().toString();
-                tellerByName = (String) parent.getSelectedItem();
+                if(index==position){
+                    return;
+                }else {
+                    tellerByName = (String) parent.getSelectedItem();
+
+                }
+
             }
 
             @Override
@@ -185,7 +194,7 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
             try {
                 tellerCashArrayListTeller=tCashDAO.getTellerCashByTellerName(tellerByName);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -231,7 +240,13 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
         spnBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedBranch = (OfficeBranch) parent.getSelectedItem();
+                if(index==position){
+                    return;
+                }else {
+                    selectedBranch = (OfficeBranch) parent.getSelectedItem();
+
+                }
+
 
             }
 
@@ -248,7 +263,7 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
             try {
                 tellerCashArrayListBranches=tCashDAO.getTellerCashForBranch(branchByName);
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -259,7 +274,6 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
             @Override
             public void onClick(View view) {
                 layoutBranch.setVisibility(View.VISIBLE);
-
                 LinearLayoutManager layoutManager
                         = new LinearLayoutManager(TellerCashList.this, LinearLayoutManager.HORIZONTAL, false);
                 mRecyclerViewBranch.setLayoutManager(layoutManager);
@@ -345,10 +359,16 @@ public class TellerCashList extends AppCompatActivity implements TellerCashAdapt
 
 
     }
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
+    }
 
     public void getBranchTellerCash(View view) {
     }
 
     public void getTellerTC(View view) {
     }
+
 }

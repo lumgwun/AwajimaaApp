@@ -20,7 +20,7 @@ public class AdminTabActivity extends TabActivity {
         TabHost tabhost = (TabHost) findViewById(android.R.id.tabhost);
         tabhost.setup(getLocalActivityManager());
 
-        Intent intentsupport = new Intent().setClass(this, SkylightUsersActivity.class);
+        Intent intentsupport = new Intent().setClass(this, AwajimaUsersAct.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabUserSupport = tabhost
                 .newTabSpec("Users")
                 .setIndicator("", resources.getDrawable(R.drawable.user3))

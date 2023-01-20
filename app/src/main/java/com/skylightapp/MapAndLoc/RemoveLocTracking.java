@@ -69,8 +69,8 @@ public class RemoveLocTracking extends AppCompatActivity {
         SharedPrefProfileID=userPreferences.getString("PROFILE_ID", "");
         json1 = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson1.fromJson (json1, Profile.class);
-        Intent intent = new Intent(this, LocationUpdatesBroadcastReceiver.class);
-        intent.setAction(LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES);
+        Intent intent = new Intent(this, LocUpdatesBReceiver.class);
+        intent.setAction(LocUpdatesBReceiver.ACTION_PROCESS_UPDATES);
         PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -85,8 +85,8 @@ public class RemoveLocTracking extends AppCompatActivity {
     }
     private PendingIntent getPendingIntent() {
 
-        Intent intent = new Intent(this, LocationUpdatesBroadcastReceiver.class);
-        intent.setAction(LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES);
+        Intent intent = new Intent(this, LocUpdatesBReceiver.class);
+        intent.setAction(LocUpdatesBReceiver.ACTION_PROCESS_UPDATES);
         return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         //return null;
     }
@@ -106,8 +106,8 @@ public class RemoveLocTracking extends AppCompatActivity {
                     public void onClick(View view) {
 
                         Intent intent = new Intent();
-                        intent = new Intent(RemoveLocTracking.this, LocationUpdatesBroadcastReceiver.class);
-                        intent.setAction(LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES);
+                        intent = new Intent(RemoveLocTracking.this, LocUpdatesBReceiver.class);
+                        intent.setAction(LocUpdatesBReceiver.ACTION_PROCESS_UPDATES);
                         PendingIntent.getBroadcast(RemoveLocTracking.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                         intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
                         startActivity( intent );

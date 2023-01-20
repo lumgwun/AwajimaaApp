@@ -52,7 +52,7 @@ import com.quickblox.messages.services.QBPushManager;
 import com.quickblox.messages.services.SubscribeService;
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
-import com.skylightapp.LoginActivity;
+import com.skylightapp.LoginAct;
 import com.skylightapp.MarketClasses.BaseAsyncTaskCon;
 import com.skylightapp.MarketClasses.CallServiceConf;
 import com.skylightapp.MarketClasses.DialogsAdapterCon;
@@ -382,7 +382,7 @@ public class DialogsActCon extends BaseActCon implements NavigationView.OnNaviga
                 QBChatService.getInstance().destroy();
                 getSharedPrefsHelper().removeQbUser();
                 getQBDialogsHolder().clear();
-                LoginActivity.start(DialogsActCon.this);
+                LoginAct.start(DialogsActCon.this);
                 hideProgressDialog();
                 finish();
             }

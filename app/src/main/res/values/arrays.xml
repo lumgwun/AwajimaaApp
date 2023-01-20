@@ -820,6 +820,24 @@
         <item>Customer</item>
     </string-array>
 
+    <string-array name="Awajima_user_Type">
+        <item>REGULATOR</item>
+        <item>TELLER</item>
+        <item>RECORD_KEEPER</item>
+        <item>PARTNER</item>
+        <item>WORKER</item>
+        <item>INVESTOR</item>
+        <item>Teller</item>
+        <item>Customer</item>
+        <item>AdminUser</item>
+        <item>SuperAdmin</item>
+        <item>Accountant</item>
+        <item>BlockedUser</item>
+        <item>State</item>
+        <item>Others</item>
+    </string-array>
+
+
 
     <string-array name="reply_values">
         <item>reply</item>
@@ -843,34 +861,14 @@
         <item>@color/dot_dark_screen2</item>
 
     </array>
-    <string-array name="EmergencyReport">
-        <item>Building Collapse</item>
-        <item>Rape</item>
-        <item>Oil Spillage</item>
-        <item>Flooding</item>
-        <item>Landslide</item>
-        <item>Outbreak of Disease</item>
-        <item>Fire Disaster</item>
-        <item>Road Accident</item>
-        <item>Air Accident</item>
-        <item>Water Accident</item>
-        <item>Gun Men Attack</item>
-        <item>Kidnapping</item>
-        <item>Robbery</item>
-        <item>Domestic Violence</item>
-        <item>Fake Products</item>
-        <item>Money Laundering</item>
-        <item>Strange Faces</item>
-        <item>Suicide</item>
-        <item>Murder</item>
-        <item>Child Abuse</item>
-    </string-array>
 
     <string-array name="EmergencyCategory">
+        <item></item>
         <item>Environmental Issues</item>
         <item>Crimes</item>
         <item>Emergencies</item>
         <item>Oil Spillage</item>
+        <item>Climate Change</item>
         <item>All</item>
     </string-array>
 
@@ -880,6 +878,13 @@
         <item>weekly</item>
     </string-array>
 
+    <string-array name="report_question">
+        <item></item>
+        <item>yes</item>
+        <item>no</item>
+        <item>not sure</item>
+    </string-array>
+
     <string-array name="Plan_Currency">
         <item></item>
         <item>NGN</item>
@@ -887,6 +892,18 @@
         <item>ZAR</item>
         <item>USD</item>
     </string-array>
+    <string-array name="EmergencyReport">
+        <item>Building Collapse</item>
+        <item>Outbreak of Disease</item>
+        <item>Fire Disaster</item>
+        <item>Road Accident</item>
+        <item>Air Accident</item>
+        <item>Water Accident</item>
+        <item>Gun Men Attack</item>
+        <item>Strange Faces</item>
+
+    </string-array>
+
 
     <string-array name="EnvironmentalReport">
         <item></item>
@@ -895,6 +912,14 @@
         <item>Other Spillages</item>
         <item>Flooding</item>
         <item>Bad Roads</item>
+        <item>LandSlide</item>
+        <item>Earth Quake</item>
+        <item>Bad Roads</item>
+    </string-array>
+    <string-array name="Climate_change">
+        <item></item>
+        <item>LandSlide</item>
+        <item>Flooding</item>
     </string-array>
 
 
@@ -902,12 +927,19 @@
         <item></item>
         <item>Robbery</item>
         <item>Kidnapping</item>
+        <item>Murder</item>
+        <item>Rape</item>
+        <item>Suicide</item>
+        <item>Fake Products</item>
+        <item>Human Trafficking</item>
         <item>GunMen attack</item>
-        <item>Fake Product</item>
         <item>Drug Abuse</item>
         <item>Child Abuse</item>
         <item>Car Jarking</item>
         <item>Money Laundering</item>
+        <item>Domestic Violence</item>
+        <item>Strange Faces</item>
+
     </string-array>
     <string-array name="Savings_Frequency">
         <item>Daily</item>

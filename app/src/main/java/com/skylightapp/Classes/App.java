@@ -18,6 +18,7 @@ import com.quickblox.auth.session.QBSettings;
 import com.quickblox.conference.ConferenceConfig;
 import com.quickblox.core.ServiceZone;
 import com.quickblox.messages.services.QBPushManager;
+import com.skylightapp.CustomApplication;
 import com.skylightapp.Interfaces.QBDialogsHolder;
 import com.skylightapp.Interfaces.QBUsersHolder;
 import com.skylightapp.MarketClasses.QBDialogsHolderImpl;
@@ -44,7 +45,7 @@ import static com.skylightapp.BuildConfig.QUICKBLOX_APP_ID;
 import static com.skylightapp.BuildConfig.QUICKBLOX_AUTH_KEY;
 import static com.skylightapp.BuildConfig.QUICKBLOX_SECRET_KEY;
 
-public class App extends MultiDexApplication {
+public class App extends CustomApplication {
     private static final String TAG = App.class.getSimpleName();
     private static final String PREF_NAME = "skylight";
 
@@ -111,25 +112,24 @@ public class App extends MultiDexApplication {
         //ActivityLifecycle.init();
         checkConfig();
         initCredentials();
-        initQBSessionManager();
-        initPushManager();
+        //initQBSessionManager();
+        //initPushManager();
 
         App.context = getApplicationContext();
         preferencesManager = new PreferencesManager(App.context);
         preferences = preferencesManager.getMyPreferences();
-        imageLoader = new ImageLoader();
         initConferenceConfig();
         initCredentials();
         checkConfig();
 
         initApplication();
-        checkAppCredentials();
-        checkChatSettings();
+        //checkAppCredentials();
+        //checkChatSettings();
         initSharedPreferences();
-        initUsersHolder();
-        initDialogsHolder();
-        initChatHelper();
-        initDialogsManager();
+        //initUsersHolder();
+        //initDialogsHolder();
+        //initChatHelper();
+        //initDialogsManager();
 
 
         ProcessLifecycleOwner.get().getLifecycle().addObserver(new BackgroundListener());
@@ -305,17 +305,17 @@ public class App extends MultiDexApplication {
         qbDialogsHolder = new QBDialogsHolderImpl();
     }
 
-    public QBDialogsHolder getQBDialogsHolder() {
+    /*public QBDialogsHolder getQBDialogsHolder() {
         return qbDialogsHolder;
-    }
+    }*/
 
     private void initChatHelper() {
         chatHelper = new ChatHelper(getApplicationContext());
     }
 
-    public ChatHelper getChatHelper() {
+    /*public ChatHelper getChatHelper() {
         return chatHelper;
-    }
+    }*/
 
     private void initDialogsManager() {
         dialogsManager = new DialogsManager(getApplicationContext());

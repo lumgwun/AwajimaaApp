@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/rect_their44"
+    android:background="@drawable/rect_new"
     android:layout_height="match_parent"
     style="@style/TextAppearance.AppCompat">
 
@@ -460,19 +460,22 @@
                     app:cardPreventCornerOverlap="false"
                     app:contentPadding="0dp">
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/txt_account_type4"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:drawableLeft="@drawable/ic_star"
-                        android:drawableRight="@drawable/ic_member"
+                        android:text=" Membership"
+                        android:id="@+id/txt_account_type4"
                         android:layout_marginEnd="2dp"
+                        android:textStyle="bold"
+                        android:drawableRight="@drawable/ic_member"
+                        android:drawableLeft="@drawable/ic_star"
+                        android:layout_marginStart="2dp"
                         android:layout_marginBottom="5dp"
                         android:textColor="@color/red_brown_dark"
-                        tools:text="Membership" />
+                        android:layout_height="wrap_content"/>
 
 
                 </com.google.android.material.card.MaterialCardView>
+
+
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -482,23 +485,25 @@
                     android:gravity="center_horizontal"
                     android:id="@+id/bd_card_A"
                     app:cardBackgroundColor="@color/white"
+                    android:layout_marginTop="3dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="3dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_marginLeft="2dp"
                     android:layout_marginRight="2dp"
                     app:cardPreventCornerOverlap="false"
                     app:contentPadding="0dp">
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/txt_account_ty"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:drawableLeft="@drawable/ic_icon2"
-                        android:drawableRight="@drawable/ic_not_verified"
+                        android:text=" Address"
+                        android:id="@+id/txt_account_ty"
                         android:layout_marginEnd="2dp"
+                        android:textStyle="bold"
+                        android:drawableRight="@drawable/ic_not_verified"
+                        android:drawableLeft="@drawable/ic_icon2"
+                        android:layout_marginStart="2dp"
                         android:layout_marginBottom="5dp"
                         android:textColor="@color/red_brown_dark"
-                        tools:text="Address" />
+                        android:layout_height="wrap_content"/>
 
 
                 </com.google.android.material.card.MaterialCardView>

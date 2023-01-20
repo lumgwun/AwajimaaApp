@@ -19,6 +19,7 @@ import com.skylightapp.Admins.AdminBankDeposit;
 import com.skylightapp.Bookings.Trip;
 import com.skylightapp.Bookings.Driver;
 import com.skylightapp.Bookings.TripBooking;
+import com.skylightapp.Bookings.TripData;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Inventory.StockTransfer;
 import com.skylightapp.Inventory.Stocks;
@@ -358,6 +359,7 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     private String profNin_Status;
     private ArrayList<Fence> profFenceArrayList;
     private ArrayList<FenceEvent> profFenceEvents;
+    private TripData.Builder builder;
 
 
     public void setProfilePassword(String profilePassword)   {
@@ -365,7 +367,8 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     }
 
     public String getProfilePassword() { return profilePassword; }
-    public String getProfileFirstName() { return profileFirstName; }
+    public String getProfileFirstName() { return profileFirstName;
+    }
 
 
     /*@ColumnInfo(name = PROFILE_DOB)
@@ -388,6 +391,9 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     @Override
     public int hashCode() {
         return Objects.hash(this.pID, this.profileFirstName, this.profileRole);
+    }
+    public TripData.Builder registerPush() {
+        return builder;
     }
 
 
@@ -1935,5 +1941,6 @@ public class Profile implements Parcelable, Serializable, BaseColumns {
     public void setProfileBusinessID(int profileBusinessID) {
         this.profileBusinessID = profileBusinessID;
     }
+
 
 }

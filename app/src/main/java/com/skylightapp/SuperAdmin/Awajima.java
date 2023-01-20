@@ -26,7 +26,6 @@ import com.skylightapp.MapAndLoc.EmergReportNext;
 import com.skylightapp.MapAndLoc.EmergencyReport;
 import com.skylightapp.MapAndLoc.Fence;
 import com.skylightapp.MapAndLoc.FenceEvent;
-import com.skylightapp.MapAndLoc.State;
 import com.skylightapp.MarketClasses.BizDealAccount;
 import com.skylightapp.MarketClasses.BusinessDeal;
 import com.skylightapp.MarketClasses.BusinessDealDoc;
@@ -40,6 +39,7 @@ import com.skylightapp.MarketClasses.MarketBizDonor;
 import com.skylightapp.MarketClasses.MarketBizPartner;
 import com.skylightapp.MarketClasses.MarketBizSub;
 import com.skylightapp.MarketClasses.MarketBusiness;
+import com.skylightapp.StateDir.State;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -280,6 +280,11 @@ public class Awajima implements Parcelable, Serializable {
         String history = "History" + (awajimaTimeLines.size() + 1);
         TimeLine timeLine = new TimeLine( tittle,timelineDetails);
         awajimaTimeLines.add(timeLine);
+    }
+    public void addTimeLine(TimeLine timeLine) {
+        awajimaTimeLines = new ArrayList<>();
+        awajimaTimeLines.add(timeLine);
+
     }
     public void addTransaction(long transactionId, String surname, String firstName, String customerPhoneNumber, double amount,String accountNumber,String description,String date,String type) {
         skyTransactions = new ArrayList<>();
@@ -560,4 +565,6 @@ public class Awajima implements Parcelable, Serializable {
     public void setAwajimaAccts(ArrayList<Account> awajimaAccts) {
         this.awajimaAccts = awajimaAccts;
     }
+
+
 }

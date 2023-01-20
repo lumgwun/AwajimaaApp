@@ -14,7 +14,7 @@ import com.skylightapp.R;
 
 public class BizDetailsAct extends AppCompatActivity {
     private FloatingActionButton fabHome,fabAcct,fabTranx;
-    int profileID;
+    int profileID,position;
     private static final String PREF_NAME = "awajima";
     Gson gson, gson1,gson3;
     String json, json1,json3;
@@ -42,6 +42,7 @@ public class BizDetailsAct extends AppCompatActivity {
         userProfile = gson.fromJson(json, Profile.class);
         if(bundle !=null){
             marketBusiness=bundle.getParcelable("MarketBusiness");
+            position=bundle.getInt("position");
 
         }
         fabHome.setOnClickListener(new View.OnClickListener() {

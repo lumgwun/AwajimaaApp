@@ -88,7 +88,7 @@ public class EmergencyReport implements Parcelable, Serializable {
     private String emergRCountry;
     private String emergRTown;
     private String emergRLGA;
-    private String emergRCompany;
+    private String emergRCompanyResp;
     private String emergRMoreInfo;
     private String emergRGroup;
     private PlaceData emerGPlaceDate;
@@ -103,6 +103,9 @@ public class EmergencyReport implements Parcelable, Serializable {
     private POI emrPoi;
     private Visit emrVisit;
     private ArrayList<Visit> emrVisitList;
+    private String emergRCategory;
+
+
 
 
     public EmergencyReport(int reportID, int profileID, long bizID, String dateOfToday, String selectedType, String stringLatLng, String locality, String bgAddress, String address, String country) {
@@ -136,10 +139,36 @@ public class EmergencyReport implements Parcelable, Serializable {
 
 
     }
-
     public EmergencyReport(int sReportID, int profileID1, long bizID, String reportDate, String oil_spillage_report, String localityString, String subUrb, String selectedLGA, String selectedOilCompany, String address, String strngLatLng, String moreInfo, String iamAvailable) {
-
+        this.emergReportID = sReportID;
+        this.profileID = profileID1;
+        this.emergRBizID = bizID;
+        this.emergRTime = reportDate;
+        this.emergRMoreInfo = moreInfo;
+        this.emergRType = oil_spillage_report;
+        this.emergRLatLng = strngLatLng;
+        this.emergRTown = localityString;
+        this.emergR_SubLocality = subUrb;
+        this.emergRLGA = selectedLGA;
+        this.emergRLocAddress = address;
+        this.emergRCompanyResp = selectedOilCompany;
     }
+
+    public EmergencyReport(int reportID, int profileID, long bizID, String dateOfToday, String category, String selectedType, String stringLatLng, String locality, String bgAddress, String address, String country) {
+        this.emergReportID = reportID;
+        this.profileID = profileID;
+        this.emergRBizID = bizID;
+        this.emergRTime = dateOfToday;
+        this.emergRCategory = category;
+        this.emergRType = selectedType;
+        this.emergRLatLng = stringLatLng;
+        this.emergR_SubLocality = locality;
+        this.emergR_BackgAddress = bgAddress;
+        this.emergRLocAddress = address;
+        this.emergRCountry = country;
+    }
+
+
 
     public void addERGeofenceResponse(ERGeofenceResponse ERGeofenceResponse) {
         ERGeofenceResponses = new ArrayList<>();
@@ -543,12 +572,12 @@ public class EmergencyReport implements Parcelable, Serializable {
         this.emergRLGA = emergRLGA;
     }
 
-    public String getEmergRCompany() {
-        return emergRCompany;
+    public String getEmergRCompanyResp() {
+        return emergRCompanyResp;
     }
 
-    public void setEmergRCompany(String emergRCompany) {
-        this.emergRCompany = emergRCompany;
+    public void setEmergRCompanyResp(String emergRCompanyResp) {
+        this.emergRCompanyResp = emergRCompanyResp;
     }
 
     public String getEmergRMoreInfo() {
@@ -637,5 +666,13 @@ public class EmergencyReport implements Parcelable, Serializable {
 
     public void setEmrMovingPosition(ArrayList<MovingPosition> emrMovingPosition) {
         this.emrMovingPosition = emrMovingPosition;
+    }
+
+    public String getEmergRCategory() {
+        return emergRCategory;
+    }
+
+    public void setEmergRCategory(String emergRCategory) {
+        this.emergRCategory = emergRCategory;
     }
 }

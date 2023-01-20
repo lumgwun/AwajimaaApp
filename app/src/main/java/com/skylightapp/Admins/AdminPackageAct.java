@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -86,28 +87,12 @@ public class AdminPackageAct extends AppCompatActivity implements SkyLightPackag
     private SODAO sodao;
     private TranXDAO tranXDAO;
     private MessageDAO messageDAO;
-    private LoanDAO loanDAO;
-    private AcctDAO acctDAO;
-    private CodeDAO codeDAO;
-    private PaymDocDAO paymDocDAO;
-    private CusDAO cusDAO;
-    private PaymentCodeDAO paymentCodeDAO;
-    private ProfDAO profileDao;
-    private TCashDAO cashDAO;
-    private TReportDAO tReportDAO;
-    private PaymentDAO paymentDAO;
-    private AdminBalanceDAO adminBalanceDAO;
     private TimeLineClassDAO timeLineClassDAO;
-    private GrpProfileDAO grpProfileDAO;
 
-
-    private StocksDAO stocksDAO;
-    private WorkersDAO workersDAO;
-    private StockTransferDAO stockTransferDAO;
-    private OfficeBranchDAO officeBranchDAO;
-    private BirthdayDAO birthdayDAO;
     SharedPreferences sharedpreferences;
     private static final String PREF_NAME = "awajima";
+    private CodeDAO codeDAO;
+    private AcctDAO acctDAO;
 
 
     @Override
@@ -137,30 +122,13 @@ public class AdminPackageAct extends AppCompatActivity implements SkyLightPackag
         marketBizPackages =new ArrayList<MarketBizPackage>();
         customerDailyReports3=new ArrayList<CustomerDailyReport>();
         accounts=new ArrayList<Account>();
-        workersDAO= new WorkersDAO(this);
-        stocksDAO= new StocksDAO(this);
-        cusDAO= new CusDAO(this);
-        birthdayDAO= new BirthdayDAO(this);
-        officeBranchDAO= new OfficeBranchDAO(this);
-        stockTransferDAO= new StockTransferDAO(this);
-
-        paymentCodeDAO= new PaymentCodeDAO(this);
-        profileDao= new ProfDAO(this);
-        cashDAO= new TCashDAO(this);
-        paymDocDAO= new PaymDocDAO(this);
-        tReportDAO= new TReportDAO(this);
-        paymentDAO= new PaymentDAO(this);
-        adminBalanceDAO= new AdminBalanceDAO(this);
+        codeDAO= new CodeDAO(this);
         timeLineClassDAO= new TimeLineClassDAO(this);
-        grpProfileDAO= new GrpProfileDAO(this);
 
         sodao= new SODAO(this);
         tranXDAO= new TranXDAO(this);
         sodao= new SODAO(this);
         messageDAO= new MessageDAO(this);
-        loanDAO= new LoanDAO(this);
-
-        codeDAO= new CodeDAO(this);
         acctDAO= new AcctDAO(this);
 
         RecyclerView recyclerPackages = findViewById(R.id.recyclerViewPackages);
@@ -172,55 +140,61 @@ public class AdminPackageAct extends AppCompatActivity implements SkyLightPackag
 
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             sqLiteDatabase = dbHelper.getWritableDatabase();
-            try {
-                if(sodao !=null){
-                    standingOrders = sodao.getStandingOrdersToday(todayDate);
+            if(codeDAO !=null){
 
-                }
-
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-            try {
-                if (codeDAO != null) {
+                try {
                     paymentCodeArrayList=codeDAO.getAllSavingsCodes();
 
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
                 }
 
-            } catch (NullPointerException e) {
-                e.printStackTrace();
             }
-            try {
-                if(dbHelper !=null){
+
+
+            if(sodao !=null){
+
+                try {
+                    standingOrders = sodao.getStandingOrdersToday(todayDate);
+
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            if(dbHelper !=null){
+
+                try {
                     marketBizPackages = dbHelper.getPackageEndingToday1(todayDate);
 
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
                 }
 
-
-
-            } catch (NullPointerException e) {
-                e.printStackTrace();
             }
-            try {
-                if (dbHelper != null) {
+
+            if(dbHelper !=null){
+
+                try {
                     customerDailyReports3 = dbHelper.getAllReportsAdmin();
+
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
                 }
 
-
-            } catch (RuntimeException e) {
-                e.printStackTrace();
             }
-            try {
-                if(acctDAO !=null){
+
+            if(acctDAO !=null){
+
+                try {
                     accounts = acctDAO.getAllAccounts();
 
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
                 }
 
-            } catch (NullPointerException e) {
-                e.printStackTrace();
             }
-
-
 
         }
 
@@ -274,23 +248,17 @@ public class AdminPackageAct extends AppCompatActivity implements SkyLightPackag
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
         recyclerPackages.setLayoutManager(layoutManager1);
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            //dbHelper = new DBHelper(this);
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-            if(dbHelper !=null){
-                try {
-                    marketBizPackages = dbHelper.getAllPackagesAdmin();
 
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
+        if(dbHelper !=null){
 
+            try {
+                marketBizPackages = dbHelper.getAllPackagesAdmin();
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
             }
 
-
-
         }
-
 
         packageAdapter = new SkyLightPackageAdapter(AdminPackageAct.this, marketBizPackages);
         //recyclerPackages.setHasFixedSize(true);
@@ -306,18 +274,18 @@ public class AdminPackageAct extends AppCompatActivity implements SkyLightPackag
 
         LinearLayoutManager layoutManager2
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getReadableDatabase();
+
+        if(codeDAO !=null){
+
             try {
                 paymentCodeArrayList = codeDAO.getAllSavingsCodes();
 
-
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
         }
+
 
         try {
             codeInt=paymentCodeArrayList.size();
@@ -346,19 +314,17 @@ public class AdminPackageAct extends AppCompatActivity implements SkyLightPackag
 
         rcyclerTransactions.setLayoutManager(layoutManager3);
 
-        if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
-            dbHelper.openDataBase();
-            sqLiteDatabase = dbHelper.getReadableDatabase();
+        if(tranXDAO !=null){
+
             try {
                 transactions2 = tranXDAO.getAllTransactionAdmin();
 
-
-
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
         }
+
 
 
         try {
@@ -500,5 +466,10 @@ public class AdminPackageAct extends AppCompatActivity implements SkyLightPackag
     @Override
     public void onItemClick(MarketBizPackage lightPackage) {
 
+    }
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
     }
 }

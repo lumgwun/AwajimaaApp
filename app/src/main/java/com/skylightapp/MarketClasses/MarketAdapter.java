@@ -6,9 +6,12 @@ import static com.skylightapp.Markets.MarketHub.SELECT_MARKET;
 import static com.skylightapp.Markets.MarketHub.refreshItem;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,16 +19,32 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+import com.skylightapp.Bookings.LogisticsComLAct;
 import com.skylightapp.Classes.Customer;
+import com.skylightapp.Customers.CusLoanTab;
+import com.skylightapp.Customers.SOTab;
+import com.skylightapp.GroupSavingsTab;
+import com.skylightapp.Markets.BizDetailsAct;
+import com.skylightapp.Markets.LogisticsTab;
+import com.skylightapp.Markets.MarketBizListAct;
 import com.skylightapp.Markets.MarketDetailsAct;
 import com.skylightapp.Markets.MarketHub;
+import com.skylightapp.Markets.MarketInvTab;
+import com.skylightapp.Markets.MarketMessagingTab;
+import com.skylightapp.Markets.MarketStockDAct;
+import com.skylightapp.Markets.MyBizListAct;
+import com.skylightapp.MyGrpSavingsTab;
 import com.skylightapp.R;
+import com.skylightapp.SignUpAct;
 import com.skylightapp.SuperAdmin.Awajima;
 
 import java.util.ArrayList;
@@ -53,6 +72,7 @@ public class MarketAdapter extends RecyclerView.Adapter<MarketAdapter.RecyclerVi
     private static Gson gson1;
     private String json;
     private static String json1;
+    private int index=0;
 
 
     public MarketAdapter(ArrayList<Market> recyclerDataArrayList, Context mcontext) {
@@ -153,11 +173,11 @@ public class MarketAdapter extends RecyclerView.Adapter<MarketAdapter.RecyclerVi
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView txtMarketName;
-        private TextView txtType;
-        private final ImageView marketPicture;
-        private TextView txtLGA;
-        private TextView txtState;
+        private AppCompatTextView txtMarketName;
+        private AppCompatTextView txtType;
+        private AppCompatImageView marketPicture,menu;
+        private AppCompatTextView txtLGA;
+        private AppCompatTextView txtState;
         private int MODE;
         private LinearLayoutCompat optionContainer;
         private int preSelectedPosition = -1;
@@ -174,6 +194,7 @@ public class MarketAdapter extends RecyclerView.Adapter<MarketAdapter.RecyclerVi
             txtState = itemView.findViewById(R.id.market_State);
             marketPicture = itemView.findViewById(R.id.img_market);
             optionContainer = itemView.findViewById(R.id.option_market);
+            menu = itemView.findViewById(R.id.menu_market);
 
         }
         private void setData(String marketName, String marketState, String marketLGA, int commodityCount, int marketImage, List<Uri> marketImageUris, final Boolean selected, final int position, ArrayList<Market> marketArrayList) {
@@ -233,6 +254,105 @@ public class MarketAdapter extends RecyclerView.Adapter<MarketAdapter.RecyclerVi
                         optionContainer.setVisibility(View.VISIBLE);
                         refreshItem(preSelectedPosition, preSelectedPosition);
                         preSelectedPosition = position;
+
+                    }
+                });
+                menu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if (preSelectedPosition != position) {
+                            marketArrayList.get(position).setSelected(true);
+                            marketArrayList.get(preSelectedPosition).setSelected(false);
+                            //refreshItem(preSelectedPosition, position);
+                            final PopupMenu popup = new PopupMenu(context, menu);
+                            popup.getMenuInflater().inflate(R.menu.market_options, popup.getMenu());
+
+                            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                public boolean onMenuItemClick(MenuItem item) {
+                                    if (item.getItemId() == R.id.logistics) {
+                                        Bundle bundle = new Bundle();
+                                        bundle.putInt("position",position);
+                                        Intent loginRIntent = new Intent(context, LogisticsComLAct.class);
+                                        loginRIntent.putExtras(bundle);
+                                        loginRIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        context.startActivity(loginRIntent);
+
+                                    }
+                                    if (item.getItemId() == R.id.commodities) {
+                                        Bundle bundle = new Bundle();
+                                        bundle.putInt("position",position);
+                                        Intent loginRIntent = new Intent(context, MarketStockDAct.class);
+                                        loginRIntent.putExtras(bundle);
+                                        loginRIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        context.startActivity(loginRIntent);
+
+                                    }
+                                    if (item.getItemId() == R.id.market_Loans) {
+                                        Bundle bundle = new Bundle();
+                                        bundle.putInt("position",position);
+                                        Intent loginRIntent = new Intent(context, CusLoanTab.class);
+                                        loginRIntent.putExtras(bundle);
+                                        loginRIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        context.startActivity(loginRIntent);
+
+                                    }
+                                    if (item.getItemId() == R.id.auto_savings) {
+                                        Bundle bundle = new Bundle();
+                                        bundle.putInt("position",position);
+                                        Intent loginRIntent = new Intent(context, SOTab.class);
+                                        loginRIntent.putExtras(bundle);
+                                        loginRIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        context.startActivity(loginRIntent);
+
+                                    }
+                                    if (item.getItemId() == R.id.m_grp_savings) {
+                                        Bundle bundle = new Bundle();
+                                        bundle.putInt("position",position);
+                                        Intent loginRIntent = new Intent(context, GroupSavingsTab.class);
+                                        loginRIntent.putExtras(bundle);
+                                        loginRIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        context.startActivity(loginRIntent);
+
+                                    }
+
+                                    if (item.getItemId() == R.id.wholesellers) {
+                                        Bundle bundle = new Bundle();
+                                        bundle.putInt("position",position);
+                                        Intent loginRIntent = new Intent(context, MarketBizListAct.class);
+                                        loginRIntent.putExtras(bundle);
+                                        loginRIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        context.startActivity(loginRIntent);
+
+                                    }
+                                    if (item.getItemId() == R.id.m_anno) {
+                                        Bundle bundle = new Bundle();
+                                        bundle.putInt("position",position);
+                                        Intent loginRIntent = new Intent(context, MarketMessagingTab.class);
+                                        loginRIntent.putExtras(bundle);
+                                        loginRIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        context.startActivity(loginRIntent);
+
+                                    }
+                                    if (item.getItemId() == R.id.m_inv) {
+                                        Bundle bundle = new Bundle();
+                                        bundle.putInt("position",position);
+                                        Intent loginRIntent = new Intent(context, MarketInvTab.class);
+                                        loginRIntent.putExtras(bundle);
+                                        loginRIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        context.startActivity(loginRIntent);
+
+                                    }
+                                    if (item.getItemId() == R.id.cancel_action) {
+
+                                    }
+
+                                    return true;
+                                }
+                            });
+                            popup.show();//showing popup menu
+                        }
+
 
                     }
                 });

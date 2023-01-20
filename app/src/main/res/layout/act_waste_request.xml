@@ -51,6 +51,7 @@
             android:text="credit link"
             android:textColor="@color/yellowgreen"
             android:textSize="16sp" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvComSt"
             android:layout_marginTop="10dp"
@@ -60,26 +61,17 @@
             android:textSize="18sp"
             android:layout_height="wrap_content"
             android:text="State" />
-
-        <com.google.android.material.payStackCard.MaterialCardView
-            android:id="@+id/cvC_state"
+        <androidx.appcompat.widget.AppCompatSpinner
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp"
-            android:layout_marginTop="5dp"
-            app:cardCornerRadius="8dp"
-            app:cardBackgroundColor="@color/whitesmoke">
-
-            <Spinner
-                android:id="@+id/pickup_state"
-                android:entries="@array/state"
-                android:padding="20dp"
-                android:background="@drawable/rect6g_a"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </com.google.android.material.payStackCard.MaterialCardView>
+            android:padding="30dp"
+            android:id="@+id/pickup_state"
+            android:entries="@array/state"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/rect6g_a"
+            android:layout_height="wrap_content"/>
 
         <!-- Category -->
 
@@ -93,7 +85,7 @@
             android:layout_height="wrap_content"
             android:text="Category" />
 
-        <com.google.android.material.payStackCard.MaterialCardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/cvCom1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -110,9 +102,7 @@
                 android:background="@drawable/rect6g_a"
                 android:layout_height="wrap_content" />
 
-        </com.google.android.material.payStackCard.MaterialCardView>
-
-        <!-- Frequence -->
+        </androidx.cardview.widget.CardView>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvCom2"
@@ -124,7 +114,7 @@
             android:layout_height="wrap_content"
             android:text="Frequency" />
 
-        <com.google.android.material.payStackCard.MaterialCardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/cvCom2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -142,9 +132,9 @@
                 android:background="@drawable/rect6g_a"
                 android:layout_height="wrap_content" />
 
-        </com.google.android.material.payStackCard.MaterialCardView>
+        </androidx.cardview.widget.CardView>
 
-        <!-- Creneau -->
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvCom3"
             android:layout_marginTop="10dp"
@@ -156,7 +146,7 @@
             android:text="schedule"
             />
 
-        <com.google.android.material.payStackCard.MaterialCardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/cvCom3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -174,9 +164,9 @@
                 android:background="@drawable/rect6g_a"
                 android:layout_height="wrap_content" />
 
-        </com.google.android.material.payStackCard.MaterialCardView>
+        </androidx.cardview.widget.CardView>
 
-        <!-- Jour de ramassage -->
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvCom7"
             android:layout_marginTop="10dp"
@@ -187,8 +177,8 @@
             android:layout_height="wrap_content"
             android:text="Pick up day" />
 
-        <!-- Days of collects chooser -->
-        <com.google.android.material.payStackCard.MaterialCardView
+
+        <androidx.cardview.widget.CardView
             android:id="@+id/cvDays"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -196,7 +186,6 @@
             android:layout_marginRight="1dp"
             android:layout_marginTop="5dp"
             app:cardCornerRadius="8dp"
-            android:padding="20dp"
             app:cardBackgroundColor="@color/white_good">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -213,7 +202,7 @@
                 android:text="Days"
                 />
 
-        </com.google.android.material.payStackCard.MaterialCardView>
+        </androidx.cardview.widget.CardView>
 
         <!-- Amount -->
         <androidx.appcompat.widget.AppCompatTextView
@@ -235,7 +224,7 @@
             android:layout_marginStart="10dp"
             />
 
-        <!-- Days of collects  -->
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_days"
             android:layout_width="0dp"
@@ -244,7 +233,6 @@
             android:visibility="invisible"
             android:layout_marginStart="10dp" />
 
-        <!-- Residence -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/inputResidence"
             android:layout_width="match_parent"
@@ -315,9 +303,7 @@
             android:layout_width="match_parent"
             android:layout_marginTop="20dp"
             android:layout_height="wrap_content">
-
-            <!-- Confirmer -->
-            <com.google.android.material.payStackCard.MaterialCardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/cvConfirm"
                 android:layout_width="180dp"
                 android:layout_height="50dp"
@@ -340,7 +326,7 @@
                     android:text="@string/confirm"
                     />
 
-            </com.google.android.material.payStackCard.MaterialCardView>
+            </androidx.cardview.widget.CardView>
 
         </RelativeLayout>
 

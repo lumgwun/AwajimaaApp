@@ -16,7 +16,6 @@ import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
@@ -77,6 +76,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.WebResourceRequest;
@@ -84,16 +84,16 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.installreferrer.api.InstallReferrerClient;
 import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.android.installreferrer.api.ReferrerDetails;
-import com.blongho.country_data.Country;
 import com.blongho.country_data.Currency;
 import com.blongho.country_data.World;
 import com.bumptech.glide.Glide;
@@ -135,14 +135,17 @@ import com.skylightapp.Classes.Birthday;
 import com.skylightapp.Classes.Customer;
 import com.skylightapp.Classes.CustomerManager;
 import com.skylightapp.Classes.Message;
+import com.skylightapp.Classes.PasswordHelpers;
 import com.skylightapp.Classes.PinEntryView;
 import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.StandingOrderAcct;
-import com.skylightapp.Classes.UserSuperAdmin;
+import com.skylightapp.Classes.TimeLine;
+import com.skylightapp.Classes.Worker;
 import com.skylightapp.Customers.MyAcctOverViewAct;
 import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Database.AcctDAO;
+import com.skylightapp.Database.AdminUserDAO;
 import com.skylightapp.Database.BirthdayDAO;
 import com.skylightapp.Database.CusDAO;
 import com.skylightapp.Database.DBHelper;
@@ -151,11 +154,13 @@ import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.Database.SODAO;
 import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.Database.TranXDAO;
+import com.skylightapp.Database.WorkersDAO;
 import com.skylightapp.MarketClasses.AppInstallRefReceiver;
+import com.skylightapp.MarketClasses.Market;
+import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.MarketClasses.RandomAcctNo;
 import com.skylightapp.MarketClasses.ResourceUtils;
 import com.skylightapp.SuperAdmin.Awajima;
-import com.teliver.sdk.models.PushData;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -182,12 +187,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.teliver.sdk.models.PushData;
 
 import static com.skylightapp.BuildConfig.QUICKBLOX_ACCT_KEY;
 import static com.skylightapp.BuildConfig.QUICKBLOX_APP_ID;
 import static com.skylightapp.BuildConfig.QUICKBLOX_AUTH_KEY;
 import static com.skylightapp.BuildConfig.QUICKBLOX_SECRET_KEY;
-import static com.skylightapp.Classes.Account.BANK_ACCT_NO;
 import static com.skylightapp.Classes.AppConstants.AWAJIMA_PRIVACY_POLICIES;
 import static com.skylightapp.Classes.Customer.CUSTOMER_ID;
 import static com.skylightapp.Classes.Customer.CUSTOMER_LATLONG;
@@ -213,10 +218,12 @@ import static com.skylightapp.Classes.Profile.PROFILE_STATE;
 import static com.skylightapp.Classes.Profile.PROFILE_STATUS;
 import static com.skylightapp.Classes.Profile.PROFILE_SURNAME;
 import static com.skylightapp.Database.DBHelper.DATABASE_NAME;
+import static com.skylightapp.Database.DBHelper.DATABASE_NEW_VERSION;
+import static com.skylightapp.Database.DBHelper.DATABASE_VERSION;
 
 public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, LocationListener {
     public static final int PICTURE_REQUEST_CODE = 505;
-    SharedPreferences userPreferences;
+    SharedPreferences userPreferences,preferences;
     AppCompatEditText edtPhone_number;
     AppCompatEditText email_address;
     AppCompatEditText edtNIN;
@@ -239,7 +246,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
     String ManagerSurname;
     String managerFirstName, uPassword;
     String managerPhoneNumber1;
-    String managerEmail, managerGender;
+    String managerEmail, managerGender,businessName;
     String managerAddress;
     int numMessages;
     public static final String NOTIFICATION_CHANNEL_ID = "10001" ;
@@ -279,7 +286,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
     int  day, month, year, newMonth;
     String userType;
     String userRole, sponsorIDString;
-    int sponsorID;
+    int sponsorID,timeLineID;
     String address,signUpK;
     LatLng userLocation;
     File destination;
@@ -294,9 +301,6 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
     CircleImageView profilePix;
     AppCompatImageView imgGreetings;
     private CustomerManager customerManager, customerManager2;
-    ArrayList<CustomerManager> tellers;
-    ArrayList<AdminUser> adminUserArrayList;
-    ArrayList<UserSuperAdmin> superAdminArrayList;
     private Uri mImageUri;
     ContentLoadingProgressBar progressBar;
     List<Address> addresses;
@@ -319,12 +323,11 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
     String dob;
     String otpMessage;
     String smsMessage;
-    private AppCompatButton btnVerifyOTPAndSignUp,btnSendOTP;
+    private AppCompatButton btnCont11,btnContFinal;
     private int otpDigit;
-    String otpPhoneNumber;
+    String otpPhoneNumber,country;
     PinEntryView pinEntry;
-    private LinearLayoutCompat layoutOTP, layoutPreOTP;
-    private EditText[] editTexts;
+    private LinearLayoutCompat layoutFinal, layoutFirst;
 
     Location location;
     AppCompatTextView txtLoc, locTxt,otpTxt;
@@ -352,15 +355,18 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
     private Account lastAccountUsed,usdAccount,gbpAccount,cadAccount,ghaAccount,kenAccount,philAccount,saAccount,pakistanAccount;
     private Awajima awajima;
     private Currency currency;
-    String usd,gbp , cad, cedi,pak,keny,sa,phil,ccString,plink;
+    private Profile   LastProfileUsed;
+    private Customer LastCustomerUsed;
+    String usd,gbp , cad, cedi,pak,keny,sa,phil,ccString,plink,selectedUserType;
     private long cadNo, audNo,pakNo,saNo,ghaNo,kenNo,philNo,indianNo;
     private BirthdayDAO birthdayDAO;
     private TimeLineClassDAO timeLineClassDAO;
     private Customer lastCustomerUsed;
     private static final String APPLICATION_ID = QUICKBLOX_APP_ID;   //QUICKBLOX_APP_ID
     public static final String USER_DEFAULT_PASSWORD = "quickblox";
-    private static final int EXISTING_PROFILE_LOADER = 0;
     private BottomSheetBehavior mBottomSheetBehavior;
+    private boolean doNewReg;
+    private int spnIndex=0;
     String regEx =
             "^(([w-]+.)+[w-]+|([a-zA-Z]{1}|[w-]{2,}))@"
                     + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9]).([0-1]?"
@@ -373,22 +379,21 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private Bundle bizNameBundle;
-    private int bizID,marketID,managerProfileID;
+    private long bizID;
+    private int marketID, workerID,tellerID;
+    private int managerProfileID;
     private LinearLayout layoutPrivacyAndTerms;
     private WebView webView;
     private AppCompatImageView btnClose;
-
-    //private PlaceAutocompleteAdapter mAdapter;
-    private AutoCompleteTextView mAutocompleteView;
     protected GoogleApiClient mGoogleApiClient;
     private Intent data;
-    private Country countryUS,countryUK;
-    //private AppController appController;
     private Currency currency2;
     int genderIndex =0;
     int stateIndex =0;
     int officeIndex=0;
-    private CoordinatorLayout coordinatorLayout;
+    private Animation translater44;
+    boolean userSelected=false;
+    private LinearLayoutCompat coordinatorLayout,layoutCompatSign11,layoutSecond,layout_admin_type;
 
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {
@@ -521,11 +526,21 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         }
 
     };
-    private String deviceMobileNo;
+    private String deviceMobileNo,selectedAdminType;
     private Uri currentProfileUri;
+    private int ppIndex=0;
     private StandingOrderAcct lastStandingOrderAcctUsed;
-
-
+    private Bundle userBundle;
+    private boolean signUp = true;
+    private boolean isNewBizUser = true;
+    private MarketBusiness business;
+    private Spinner spnNewUserType,spnAdminType;
+    private Market market;
+    private AdminUser.ADMIN_TYPE admin_type;
+    private WorkersDAO workersDAO;
+    private  AdminUserDAO adminUserDAO;
+    private AdminUser admminUser;
+    private Worker worker;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -534,18 +549,56 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         if (savedInstanceState != null) {
             signUpK = savedInstanceState.getString(SIGNUP_STATE_KEY);
         }
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        //setTitle("Onboarding Arena");
         currencies= new ArrayList<>();
         accountArrayList= new ArrayList<>();
         setContentView(R.layout.act_sign_up);
-        checkUser();
-        dbHelper = new DBHelper(this);
-        awajima= new Awajima();
-
-        //appController= new AppController();
+        prefManager = new PrefManager(this);
+        workersDAO= new WorkersDAO(this);
         gson3 = new Gson();
         gson6 = new Gson();
         gson5 = new Gson();
         gson7 = new Gson();
+        gson1 = new Gson();
+        gson = new Gson();
+        userProfile = new Profile();
+        account = new Account();
+        awajima= new Awajima();
+        userProfile1 = new Profile();
+        userProfile2 = new Profile();
+        userProfile3 = new Profile();
+        customerManager = new CustomerManager();
+        customerManager2 = new CustomerManager();
+        customer = new Customer();
+        managerProfile = new Profile();
+        standingOrderAcct = new StandingOrderAcct();
+        customerProfile = new Profile();
+        birthday = new Birthday();
+        business= new MarketBusiness();
+        admminUser= new AdminUser();
+        market= new Market();
+        if (!prefManager.isFirstTimeLaunch()) {
+            //checkUser();
+        }
+        doDummyDump();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        json = userPreferences.getString("LastProfileUsed", "");
+        managerProfile = gson.fromJson(json, Profile.class);
+        json1 = userPreferences.getString("LastCustomerManagerUsed", "");
+        customerManager = gson1.fromJson(json1, CustomerManager.class);
+        json3 = userPreferences.getString("LastMarketBusinessUsed", "");
+        business = gson3.fromJson(json3, MarketBusiness.class);
+        json4 = userPreferences.getString("LastAwajimaUsed", "");
+        awajima = gson5.fromJson(json4, Awajima.class);
+        userBundle = new Bundle();
+
+        dbHelper = new DBHelper(this);
+
+        //appController= new AppController();
+
 
         prefManager= new PrefManager();
         lastQBUserUsed= qbUser;
@@ -571,13 +624,13 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         appInstallRefReceiver= new AppInstallRefReceiver();
         //QBSettings.getInstance().init(this, APPLICATION_ID, AUTH_KEY, AUTH_SECRET);
         //QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
-        setTitle("OnBoarding Arena");
         bizNameBundle=getIntent().getExtras();
         createLocationRequest();
         cusDAO= new CusDAO(this);
 
         profileDao= new ProfDAO(this);
         birthdayDAO= new BirthdayDAO(this);
+        adminUserDAO = new AdminUserDAO(this);
 
         timeLineClassDAO= new TimeLineClassDAO(this);
         if(bizNameBundle !=null){
@@ -592,10 +645,117 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         doLocationStuff();
 
         setInitialLocation();
+        layoutFirst = findViewById(R.id.layout_first);
+        layoutSecond = findViewById(R.id.lay11);
+        layout_admin_type = findViewById(R.id.admin_layout_type);
+
+        spnNewUserType = findViewById(R.id.super_spinner_User);
+
         txtLoc = findViewById(R.id.hereYou333);
+
         locTxt = findViewById(R.id.whereYou222);
-        coordinatorLayout = findViewById(R.id.bottomSheet_Coord);
-        mBottomSheetBehavior = BottomSheetBehavior.from(coordinatorLayout);
+        coordinatorLayout = findViewById(R.id.bottomSheet_child);
+        layoutCompatSign11 = findViewById(R.id.sign_up_l11);
+        layoutFinal = findViewById(R.id.layout_last22);
+        spnAdminType = findViewById(R.id.admin_spinner_type);
+        btnCont11 = findViewById(R.id.continue_btn11);
+        btnContFinal = findViewById(R.id.btn_last_signUp);
+        btnCont11.setOnClickListener(this::sendCont11);
+        btnContFinal.setOnClickListener(this::DoLastSignUp);
+
+        if(business !=null){
+            if(isNewBizUser){
+                layoutFirst.setVisibility(View.VISIBLE);
+                layoutSecond.setVisibility(View.GONE);
+
+            }
+            bizID=business.getBusinessID();
+            market=business.getBizMarket();
+
+
+        }
+        if(market !=null){
+            marketID=market.getMarketID();
+
+        }
+        if(awajima !=null){
+            try {
+                ArrayAdapter<String> myAdaptor = new ArrayAdapter<String>(SignUpAct.this,
+                        android.R.layout.simple_spinner_item,
+                        getResources().getStringArray(R.array.Awajima_user_Type));
+                myAdaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spnNewUserType.setAdapter(myAdaptor);
+                spnNewUserType.setSelection(0);
+            } catch (NullPointerException e) {
+                System.out.println("Oops!");
+            }
+
+        }
+
+        spnNewUserType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(spnIndex==position){
+                    return;
+
+                }else {
+                    selectedUserType = (String) parent.getSelectedItem();
+
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        if(selectedUserType !=null){
+            if(selectedUserType.equalsIgnoreCase("Admin User")){
+                userSelected=true;
+                layout_admin_type.setVisibility(View.VISIBLE);
+                spnAdminType.setVisibility(View.VISIBLE);
+
+            }else {
+                layout_admin_type.setVisibility(View.GONE);
+
+            }
+
+        }
+
+
+
+        spnAdminType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(spnIndex==position){
+                    return;
+
+                }else {
+                    selectedAdminType = parent.getSelectedItem().toString();
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        if(selectedAdminType !=null){
+            admin_type=AdminUser.ADMIN_TYPE.valueOf(selectedAdminType);
+        }
+        btnCont11.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                return false;
+            }
+        });
+
+        btnContFinal.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                return false;
+            }
+        });
 
         btnClose = findViewById(R.id.btn_closeT);
         btnClose.setOnClickListener(new View.OnClickListener() {
@@ -611,22 +771,17 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         layoutPrivacyAndTerms.setOnClickListener(this::showPrivacyPolicy);
 
         getSkylightRefferer(referrerClient);
-        btnSendOTP = findViewById(R.id.sendOTPCode);
         progressBar = findViewById(R.id.progressBar);
         accountTypeStr = null;
         spnGender = findViewById(R.id.gender);
         imgGreetings = findViewById(R.id.Greetings);
         profilePix = findViewById(R.id.profile_image_j);
         edtSponsorID = findViewById(R.id.user_sponsor);
-        btnVerifyOTPAndSignUp = findViewById(R.id.idBtnVerify);
-        layoutOTP = findViewById(R.id.layoutOtp);
         otpTxt = findViewById(R.id.textOTP);
 
         customers = null;
         ran = new Random();
         random = new SecureRandom();
-        //SQLiteDataBaseBuild();
-
         getDeviceLocation();
 
 
@@ -652,23 +807,9 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
             }
         }).start();*/
-        layoutPreOTP = findViewById(R.id.layoutSign);
 
-        userProfile = new Profile();
-        account = new Account();
-        awajima= new Awajima();
-        userProfile1 = new Profile();
-        userProfile2 = new Profile();
-        userProfile3 = new Profile();
-        customerManager = new CustomerManager();
-        customerManager2 = new CustomerManager();
-        gson1 = new Gson();
-        gson = new Gson();
-        customer = new Customer();
-        managerProfile = new Profile();
-        standingOrderAcct = new StandingOrderAcct();
-        customerProfile = new Profile();
-        birthday = new Birthday();
+
+
         try {
 
             if (dbHelper != null) {
@@ -680,11 +821,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         }
 
         //dbHelper.onUpgrade(sqLiteDatabase, dbHelper.getDatabaseVersion(), DBHelper.DATABASE_NEW_VERSION);
-        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        json = userPreferences.getString("LastProfileUsed", "");
-        managerProfile = gson.fromJson(json, Profile.class);
-        json1 = userPreferences.getString("LastCustomerManagerUsed", "");
-        customerManager = gson1.fromJson(json1, CustomerManager.class);
+
         try {
 
             loadProfiles(dbHelper);
@@ -693,47 +830,6 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
             e.printStackTrace();
         }
 
-        otpDigit = ThreadLocalRandom.current().nextInt(122, 1631);
-        messageID = ThreadLocalRandom.current().nextInt(1125, 10400);
-        usdSymbolNo = ThreadLocalRandom.current().nextInt(18225, 1040012);
-        gbpSymbolNo = ThreadLocalRandom.current().nextInt(10235, 10721400);
-        audNo = ThreadLocalRandom.current().nextInt(10235, 10301400);
-        cadNo = ThreadLocalRandom.current().nextInt(10235, 10021000);
-        pakNo = ThreadLocalRandom.current().nextInt(1120, 10400);
-        saNo = ThreadLocalRandom.current().nextInt(1121, 10400);
-        ghaNo = ThreadLocalRandom.current().nextInt(1022, 10200);
-        kenNo = ThreadLocalRandom.current().nextInt(1103, 10500);
-        philNo = ThreadLocalRandom.current().nextInt(1314, 10700);
-        indianNo = ThreadLocalRandom.current().nextInt(1014, 10301);
-
-
-        otpMessage = "&message=" + "Hello Awajima New User, Your OTP Code is " + otpDigit;
-
-        profileID1 = random.nextInt((int) (Math.random() * 1400) + 1115);
-        try {
-            virtualAccountNumber = Integer.parseInt(RandomAcctNo.getAcctNumeric(10));
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-        //virtualAccountNumber = random.nextInt((int) (Math.random() * 123045) + 100123);
-        soAccountNumber = random.nextInt((int) (Math.random() * 133044) + 100125);
-        customerID = random.nextInt((int) (Math.random() * 1203) + 1101);
-        //profileID2 = random.nextInt((int) (Math.random() * 1001) + 101);
-
-        investmentAcctID = random.nextInt((int) (Math.random() * 1011) + 1010);
-        savingsAcctID = random.nextInt((int) (Math.random() * 1101) + 1010);
-        itemPurchaseAcctID = random.nextInt((int) (Math.random() * 1010) + 1010);
-        promoAcctID = random.nextInt((int) (Math.random() * 1111) + 1010);
-        packageAcctID = random.nextInt((int) (Math.random() * 1000) + 1010);
-        profiles = null;
-
-        accountInvestment = new AccountInvestment();
-        accountItemPurchase = new AccountItemPurchase();
-        accountPromo = new AccountPromo();
-        accountSavings = new AccountSavings();
-        tellers = null;
-        adminUserArrayList = null;
-        superAdminArrayList = null;
         cal = Calendar.getInstance();
         dobText = findViewById(R.id.dob_text_signUp);
         dobText.setOnClickListener(this::dobPicker);
@@ -743,14 +839,14 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
             public void onClick(View v) {
                 cal = Calendar.getInstance();
                 year = cal.get(Calendar.YEAR);
-                month = cal.get(Calendar.MONTH+1);
+                month = (cal.get(Calendar.MONTH)+1);
                 newMonth = month;
                 day = cal.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog dialog = new DatePickerDialog(SignUpAct.this, R.style.DatePickerDialogStyle, mDateSetListener, day, month, year);
                 //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //make transparent background.
                 dialog.show();
-                dob = year + "-" + newMonth + "-" + day;
+                dob = year + "-" + month + "-" + day;
                 dateOfBirth = dob;
                 dobText.setText("Your date of Birth:" + dob);
 
@@ -761,7 +857,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
             @Override
             public void onDateSet(DatePicker datePicker, int day, int month, int year) {
                 Log.d(TAG, "onDateSet: date of Birth: " + day + "-" + month + "-" + year);
-                dob = year + "-" + newMonth + "-" + day;
+                dob = year + "-" + month + "-" + day;
                 dateOfBirth = dob;
                 dobText.setText("Your date of Birth:" + dob);
 
@@ -781,36 +877,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         //dobText.setText("Your date of Birth:"+dateOfBirth);
 
         birthday = new Birthday();
-
-
-        if (managerProfile != null) {
-            ManagerSurname = managerProfile.getProfileLastName();
-            managerFirstName = managerProfile.getProfileFirstName();
-            profileID = managerProfile.getPID();
-            //profileID1=profileID;
-            managerPhoneNumber1 = managerProfile.getProfilePhoneNumber();
-            managerEmail = managerProfile.getProfileEmail();
-            managerUserName = managerProfile.getProfileUserName();
-            userType = managerProfile.getProfileMachine();
-            userRole = managerProfile.getProfileRole();
-
-        } else {
-            profileID = 0;
-
-        }
-        edtSponsorID.setText("Your Sponsor's ID:" + profileID);
-
-        profiles = new ArrayList<>();
-        customers = new ArrayList<>();
-        tellers = new ArrayList<>();
-        adminUserArrayList = new ArrayList<>();
-        superAdminArrayList = new ArrayList<>();
-
-        nIN = null;
-
         profilePix.setOnClickListener(this::doSelectPix);
-        managerProfile = new Profile();
-
         StringBuilder welcomeString = new StringBuilder();
 
         int timeOfDay = calendar.get(Calendar.HOUR_OF_DAY);
@@ -866,6 +933,8 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(genderIndex==position){
+                    btnContFinal.setEnabled(false);
+                    btnContFinal.setTextColor(Color.argb(50, 0, 0, 0));
                     return;
                 }else{
                     selectedGender = spnGender.getSelectedItem().toString();
@@ -885,6 +954,8 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(officeIndex==position){
+                    btnContFinal.setEnabled(false);
+                    btnContFinal.setTextColor(Color.argb(50, 0, 0, 0));
                     return;
                 }else{
                     selectedOffice = office.getSelectedItem().toString();
@@ -906,6 +977,8 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(stateIndex==position){
+                    btnContFinal.setEnabled(false);
+                    btnContFinal.setTextColor(Color.argb(50, 0, 0, 0));
                     return;
                 }else{
                     selectedState = state.getSelectedItem().toString();
@@ -972,7 +1045,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
                 final PopupMenu popup = new PopupMenu(SignUpAct.this, profilePix);
                 popup.getMenuInflater().inflate(R.menu.profile, popup.getMenu());
-                setTitle("Photo selection in Progress...");
+                //setTitle("Photo selection in Progress...");
 
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
@@ -989,7 +1062,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
                             startActivityForResult(i, RESULT_LOAD_IMAGE);
                         }
                         if (item.getItemId() == R.id.cancel_action) {
-                            setTitle("Awajima onBoarding");
+                            //setTitle("Awajima onBoarding");
                         }
 
                         return true;
@@ -1002,194 +1075,251 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
         });
 
-        if (managerProfile != null) {
-            ManagerSurname = managerProfile.getProfileLastName();
-            managerFirstName = managerProfile.getProfileFirstName();
-            profileID = managerProfile.getPID();
-            //profileID1=profileID;
-            managerPhoneNumber1 = managerProfile.getProfilePhoneNumber();
-            managerEmail = managerProfile.getProfileEmail();
-            managerUserName = managerProfile.getProfileUserName();
-            userType = managerProfile.getProfileMachine();
-            userRole = managerProfile.getProfileRole();
-
-        } else {
-            profileID = 0;
-
-        }
-        if(dbHelper !=null){
+        if(cusDAO !=null){
             try {
-
-                if(sqLiteDatabase !=null){
-                    sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
-                }
+                customers = cusDAO.getAllCustomers11();
             } catch (SQLiteException e) {
                 e.printStackTrace();
             }
-            if(cusDAO !=null){
-                try {
-                    customers = cusDAO.getAllCustomers11();
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
 
 
         }
 
-        //dbHelper.open();
-        btnVerifyOTPAndSignUp.setOnClickListener(this::DoAwajimaSignUp);
         pinEntryView = (PinEntryView) findViewById(R.id.txt_pin_entry);
 
         Animation translater = AnimationUtils.loadAnimation(this, R.anim.bounce);
         Animation translER = AnimationUtils.loadAnimation(this, R.anim.pro_animation);
 
-        btnSendOTP.setOnClickListener(this::sendOTPToCus);
-
-        Animation translater44 = AnimationUtils.loadAnimation(this, R.anim.bounce);
-        btnSendOTP.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.startAnimation(translater44);
-                uFirstName = edtFirstName.getText().toString().trim();
-                uSurname = edtSurname.getText().toString().trim();
-                uEmail = email_address.getText().toString();
-                sponsorIDString = edtSponsorID.getText().toString().trim();
-                uAddress = Objects.requireNonNull(edtAddress_2.getText()).toString();
-                uPassword = edtPassword.getText().toString().trim();
-                ccString=ccp.getFullNumberWithPlus();
-                //uPhoneNumber = Objects.requireNonNull(phone_number.getText()).toString();
-                uUserName = userName.getText().toString();
-                boolean usernameTaken = false;
-                nIN = null;
-                customerName = uSurname + "," + uFirstName;
-                try {
-                    sponsorID = Integer.parseInt(sponsorIDString);
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                }
-
-
-                try {
-
-                    if (TextUtils.isEmpty(uFirstName)) {
-                        edtFirstName.setError("Please enter Your First Name");
-                    } else if (TextUtils.isEmpty(uSurname)) {
-                        edtSurname.setError("Please enter your Last/SurName");
-                    } else if (TextUtils.isEmpty(uPassword)) {
-                        edtPassword.setError("Please enter your Password");
-                    } else if (uPhoneNumber.isEmpty() || uPhoneNumber.length() < 11) {
-                        //edtPhone_number.setError("Enter a valid mobile Number");
-                        //edtPhone_number.requestFocus();
-                    } else if (TextUtils.isEmpty(uUserName)) {
-                        userName.setError("Please enter your userName");
-                    } else if (TextUtils.isEmpty(uAddress)) {
-                        edtAddress_2.setError("Please enter Address");
-                    } else {
-                        //sendOTPVerCode(otpPhoneNumber,mAuth,sponsorID,account,standingOrderAcct,customer,joinedDate,uFirstName,uSurname,uPhoneNumber,uAddress,uUserName,uPassword,customer,customerProfile,nIN,managerProfile,dateOfBirth,selectedGender,selectedOffice,selectedState,birthday,customerManager,dateOfBirth,profileID1,virtualAccountNumber,soAccountNumber, customerID,profileID2,birthdayID, investmentAcctID,itemPurchaseAcctID,promoAcctID,packageAcctID,profiles,customers,tellers,adminUserArrayList,superAdminArrayList);
-
-                        for (int i = 0; i < customers.size(); i++) {
-                            try {
-                                if (customers.get(i).getCusPhoneNumber().equalsIgnoreCase(uPhoneNumber)) {
-                                    Toast.makeText(SignUpAct.this, "This Phone Number is already in use, here", Toast.LENGTH_LONG).show();
-                                    return;
-
-                                } else {
-                                    doOtpNotification(otpMessage);
-
-                                    layoutOTP.setVisibility(View.VISIBLE);
-                                    layoutPreOTP.setVisibility(View.GONE);
-                                    otpTxt.setText("Check your Message for your OTP:");
-                                    otpPhoneNumber = uPhoneNumber;
-                                    doOtpNotification(otpMessage);
-                                    sendOTPMessage(otpPhoneNumber, otpMessage);
-                                    doTeliverNoti(otpMessage);
-
-                                    if(dbHelper !=null){
-                                        sqLiteDatabase = dbHelper.getReadableDatabase();
-                                        if(messageDAO !=null){
-                                            try {
-
-                                                if(sqLiteDatabase !=null){
-                                                    sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
-                                                }
-                                            } catch (SQLiteException e) {
-                                                e.printStackTrace();
-                                            }
-                                            try {
-                                                messageDAO.insertMessage(profileID, customerID, messageID, bizID, otpMessage, "Awajima App", customerName, selectedOffice, joinedDate);
-
-                                            } catch (NullPointerException e) {
-                                                e.printStackTrace();
-                                            }
-
-                                        }
-
-
-
-                                    }
-
-                                    //sendOTPVerCode(otpPhoneNumber,mAuth,sponsorID,account,standingOrderAcct,customer,joinedDate,uFirstName,uSurname,uPhoneNumber,uAddress,uUserName,uPassword,customer,customerProfile,nIN,managerProfile,dateOfBirth,selectedGender,selectedOffice,selectedState,birthday,customerManager,dateOfBirth,profileID1,virtualAccountNumber,soAccountNumber, customerID,profileID2,birthdayID, investmentAcctID,itemPurchaseAcctID,promoAcctID,packageAcctID,profiles,customers,tellers,adminUserArrayList,superAdminArrayList);
-                                }
-                            } catch (NullPointerException e) {
-                                System.out.println("Oops!");
-                            }
-
-                        }
-                        //long accountNumber = Long.parseLong(String.valueOf((long) (Math.random() * 10501) + 10010));
-
-
-                    }
-
-                } catch (Exception e) {
-                    System.out.println("Oops!");
-                }
-
-            }
-        });
-
-        /*btnVerifyOTPAndSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.startAnimation(translater);
-                boolean usernameTaken = false;
-                nIN = null;
-                accountTypeStr = AccountTypes.EWALLET;
-                //long accountNumber = Long.parseLong(String.valueOf((long) (Math.random() * 10501) + 10010));
-
-                otpPhoneNumber = "+234" + uPhoneNumber;
-                code = pinEntryView.getText().toString().trim();
-
-                if (code != null) {
-                    if (code.equals(String.valueOf(otpDigit))) {
-                        Toast.makeText(SignUpAct.this, "OTP verification, a Success", Toast.LENGTH_SHORT).show();
-                        if (checkInputs()) {
-
-                            //saveMyPreferences(sponsorID, cusLatLng, account, standingOrderAcct, joinedDate, uFirstName, uSurname, uPhoneNumber, uAddress, uUserName, uPassword,  customer, customerProfile, nIN, managerProfile, dateOfBirth, selectedGender,  selectedOffice, selectedState, birthday,  customerManager, dateOfBirth, profileID1, virtualAccountNumber, soAccountNumber, customerID, birthdayID, investmentAcctID, itemPurchaseAcctID,promoAcctID, packageAcctID,  customers);
-                            saveInDatabase(sponsorID, cusLatLng, account, standingOrderAcct, joinedDate, uFirstName, uSurname, uPhoneNumber, uAddress, uUserName, uPassword, customer, customerProfile, nIN, managerProfile, dateOfBirth, selectedGender, selectedOffice, selectedState, birthday, customerManager, dateOfBirth, profileID1, virtualAccountNumber, soAccountNumber, customerID, birthdayID, investmentAcctID, itemPurchaseAcctID, promoAcctID, packageAcctID, customers);
-                            saveNewCustomer(sponsorID, cusLatLng, account, standingOrderAcct, joinedDate, uFirstName, uSurname, uPhoneNumber, uAddress, uUserName, uPassword,  customer, customerProfile, nIN, managerProfile, dateOfBirth, selectedGender,  selectedOffice, selectedState, birthday,  customerManager, dateOfBirth, profileID1, virtualAccountNumber, soAccountNumber, customerID, birthdayID, investmentAcctID, itemPurchaseAcctID,promoAcctID, packageAcctID,  customers);
-
-                        }
-
-
-                    } else {
-                        Toast.makeText(SignUpAct.this, "Incorrect OTP", Toast.LENGTH_SHORT).show();
-                        pinEntryView.setText("Wrong OTP...");
-                        pinEntryView.requestFocus();
-                    }
-                    progressBar.setVisibility(View.VISIBLE);
-
-                }
-
-
-            }
-        });*/
 
 
     }
-    public void DoAwajimaSignUp(View view) {
+
+    private void doDummyDump() {
+        try {
+
+            if(sqLiteDatabase !=null){
+                sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+
+        if(dbHelper !=null){
+            dbHelper.onUpgrade(sqLiteDatabase,DATABASE_VERSION,DATABASE_NEW_VERSION);
+
+        }else{
+            try {
+                if (dbHelper != null) {
+                    dbHelper.openDataBase();
+                }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+        }
+        userProfile1= new Profile(profileID1,"Emma", "Uja", "08069524599", "unne@gmail.com", "25/04/1988", "female", "Awajima", "","Rivers", "Nigeria", "19/04/2022","Admin", "Unne4ever", "@Unne2","Confirmed","");
+        //user=new User(profileID1, "Ezekiel", "Gwun-orene", "07038843102", "lumgwun1@gmail.com", "25/04/1983", "male", "Ilabuchi", "", "Rivers", "Elelenwo", "19/04/2022", "SuperAdmin", "Lumgwun", "@Awajima1", "Confirmed", "");
+        try {
+            try {
+                dbHelper.insertCustomer11(savingsAcctID, savingsAcctID, "Gogo", "Papa", "09030043102", "lu@gmail.com", "25/04/1983", "male", "Iloabuchi", "Rivers", "", "19/04/2022","LBaby", "@LBaby1", Uri.parse(""), "Customer");
+
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+
+
+        MessageDAO messageDAO = new MessageDAO(this);
+        TimeLineClassDAO timeLineClassDAO1 = new TimeLineClassDAO(this);
+
+        try {
+            try {
+                messageDAO.insertMessage(profileID1,customerID,messageID, bizID, otpMessage,"Awajima App",customerName,selectedOffice,joinedDate);
+
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            try {
+                timeLineClassDAO1.insertTimeLine("Sign up", "", "23/09/2022", mCurrentLocation);
+
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            try {
+                dbHelper.saveNewProfile(userProfile);
+
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendCont11(View view) {
+        if(userPreferences !=null){
+            json1 = userPreferences.getString("LastCustomerManagerUsed", "");
+
+
+        }
+        if(json1 !=null){
+            customerManager = gson1.fromJson(json1, CustomerManager.class);
+        }
+
+
+        edtPhone_number = findViewById(R.id.phone_number);
+        email_address = findViewById(R.id.email_address);
+        edtAddress_2 = findViewById(R.id.address_all);
+        edtFirstName = findViewById(R.id.first_Name_00);
+        userName = findViewById(R.id.user_name_1);
+        edtSurname = findViewById(R.id.surname1);
+        edtPassword = findViewById(R.id.user_password_sig);
+        edtNIN = findViewById(R.id.profile_NIN);
+        ccp = (CountryCodePicker) findViewById(R.id.ccp);
+        ccString=ccp.getFullNumberWithPlus();
+        if(cusDAO !=null){
+            try {
+                customers = cusDAO.getAllCustomers11();
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        translater44 = AnimationUtils.loadAnimation(this, R.anim.bounce);
+        layoutCompatSign11 = findViewById(R.id.sign_up_l11);
+        layoutFinal = findViewById(R.id.layout_last22);
+        view.startAnimation(translater44);
+        uFirstName = edtFirstName.getText().toString().trim();
+        uSurname = edtSurname.getText().toString().trim();
+        uEmail = email_address.getText().toString();
+        sponsorIDString = edtSponsorID.getText().toString().trim();
+        uAddress = Objects.requireNonNull(edtAddress_2.getText()).toString();
+        uPassword = edtPassword.getText().toString().trim();
+        ccString=ccp.getFullNumberWithPlus();
+        country =ccp.getDefaultCountryName();
+        //uPhoneNumber = Objects.requireNonNull(phone_number.getText()).toString();
+        uUserName = userName.getText().toString();
+        boolean usernameTaken = false;
+        nIN = edtNIN.getText().toString().trim();
+        customerName = uSurname + "," + uFirstName;
+
+        @SuppressLint("UseCompatLoadingForDrawables") Drawable customErrorIcon = getResources().getDrawable(R.drawable.ic_error_black_24dp);
+        customErrorIcon.setBounds(0, 0, customErrorIcon.getIntrinsicWidth(), customErrorIcon.getIntrinsicHeight());
+        try {
+            sponsorID = Integer.parseInt(sponsorIDString);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        edtSponsorID.setText("Your Sponsor's ID:" + sponsorID);
+
+
+        try {
+
+            if (TextUtils.isEmpty(uFirstName)) {
+                edtFirstName.setError("Please enter Your First Name", customErrorIcon);
+                btnCont11.setEnabled(false);
+                btnCont11.setTextColor(Color.argb(50, 0, 0, 0));
+            } else if (TextUtils.isEmpty(uSurname)) {
+                edtSurname.setError("Please enter your Last/SurName", customErrorIcon);
+                btnCont11.setEnabled(false);
+                btnCont11.setTextColor(Color.argb(50, 0, 0, 0));
+            } else if (TextUtils.isEmpty(uPassword)) {
+                edtPassword.setError("Please enter your Password");
+            } else if (uPhoneNumber.isEmpty() || uPhoneNumber.length() < 11) {
+                edtPhone_number.setError("Enter a valid mobile Number");
+                edtPhone_number.requestFocus();
+            } else if (TextUtils.isEmpty(uUserName)) {
+                userName.setError("Please enter your userName", customErrorIcon);
+                btnCont11.setEnabled(false);
+            }
+            else if (edtPassword.getText().toString().length() < 6) {
+                edtPassword.setError("Password cannot be less than 6 characters", customErrorIcon);
+                btnCont11.setEnabled(false);
+                btnCont11.setTextColor(Color.argb(50, 0, 0, 0));
+                //edtPassword.requestFocus();
+            }
+            else if (TextUtils.isEmpty(edtPassword.getText().toString())) {
+                edtPassword.setError("Enter Password", customErrorIcon);
+                btnCont11.setEnabled(false);
+                btnCont11.setTextColor(Color.argb(50, 0, 0, 0));
+                //edtPassword.requestFocus();
+            }
+            else if (TextUtils.isEmpty(edtNIN.getText().toString())) {
+                edtNIN.setError("Enter your National ID. Number", customErrorIcon);
+                btnCont11.setEnabled(false);
+                btnCont11.setTextColor(Color.argb(50, 0, 0, 0));
+                edtNIN.requestFocus();
+            }else if (TextUtils.isEmpty(edtAddress_2.getText().toString())) {
+                edtAddress_2.setError("Enter Your Address", customErrorIcon);
+                btnCont11.setEnabled(false);
+                btnCont11.setTextColor(Color.argb(50, 0, 0, 0));
+                //edtPhone_number.requestFocus();
+            } else {
+
+                for (int i = 0; i < customers.size(); i++) {
+                    try {
+                        if (customers.get(i).getCusPhoneNumber().equalsIgnoreCase(ccString)||customers.get(i).getCusPhoneNumber().equalsIgnoreCase(uPhoneNumber)) {
+                            Toast.makeText(SignUpAct.this, "This Phone Number is already in use, here", Toast.LENGTH_LONG).show();
+                            return;
+
+                        } else {
+                            layoutCompatSign11.setVisibility(View.GONE);
+                            layoutFinal.setVisibility(View.VISIBLE);
+                            btnCont11.setEnabled(true);
+                            btnCont11.setTextColor(Color.rgb(0, 0, 0));
+
+                            //otpTxt.setText("Check your Message for your OTP:");
+                            otpPhoneNumber = uPhoneNumber;
+                            setTitle(customerName);
+                            if(signUp){
+                                saveTimeLine(profileID1,ccString,uFirstName,uSurname,selectedUserType,selectedAdminType,selectedOffice,sponsorID,bizID,business);
+                                doFirstPrefSaving(uFirstName,uSurname,uEmail,sponsorID,uAddress,uPassword,ccString,uUserName,nIN,customerName,country,customerManager,bizID,business);
+
+                            }
+
+                        }
+                    } catch (NullPointerException e) {
+                        System.out.println("Oops!");
+                    }
+
+                }
+
+            }
+
+        } catch (Exception e) {
+            System.out.println("Oops!");
+        }
+
+    }
+
+
+    private void doFirstPrefSaving(String uFirstName, String uSurname, String uEmail, int sponsorID, String uAddress, String uPassword, String ccString, String uUserName, String nIN, String customerName, String country, CustomerManager customerManager, long bizID, MarketBusiness business) {
+        prefManager= new PrefManager();
         otpDigit = ThreadLocalRandom.current().nextInt(122, 1631);
         messageID = ThreadLocalRandom.current().nextInt(1125, 10400);
         usdSymbolNo = ThreadLocalRandom.current().nextInt(18225, 1040012);
@@ -1202,31 +1332,61 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         kenNo = ThreadLocalRandom.current().nextInt(1103, 10500);
         philNo = ThreadLocalRandom.current().nextInt(1314, 10700);
         indianNo = ThreadLocalRandom.current().nextInt(1014, 10301);
+        doTimelines(selectedUserType,selectedAdminType,uFirstName,uSurname,ccString,bizID,country,business);
+        if(business !=null){
+            /*if(isNewBizUser){
+                layoutFirst.setVisibility(View.VISIBLE);
+                layoutSecond.setVisibility(View.GONE);
+
+            }*/
+            market= business.getBizMarket();
+
+
+        }
+        if(market !=null){
+            marketID=market.getMarketID();
+
+        }
         userProfile = new Profile();
         account = new Account();
+        usdAccount = new Account();
+        gbpAccount = new Account();
+        cadAccount = new Account();
+        philAccount = new Account();
+        saAccount = new Account();
+        indianAccount = new Account();
+        pakistanAccount = new Account();
+        kenAccount = new Account();
+        ghaAccount = new Account();
+
         awajima= new Awajima();
         userProfile1 = new Profile();
-        userProfile2 = new Profile();
-        userProfile3 = new Profile();
-        customerManager = new CustomerManager();
-        customerManager2 = new CustomerManager();
         gson1 = new Gson();
         gson = new Gson();
         customer = new Customer();
+        otpPhoneNumber=ccString;
+        LastCustomerUsed = new Customer();
         managerProfile = new Profile();
         standingOrderAcct = new StandingOrderAcct();
         customerProfile = new Profile();
         birthday = new Birthday();
+        prefManager.saveLoginDetails(uEmail,uPassword);
 
-
-        otpMessage = "&message=" + "Hello Awajima New User, Your OTP Code is " + otpDigit;
-
-        profileID1 = random.nextInt((int) (Math.random() * 1400) + 1115);
+        otpDigit = ThreadLocalRandom.current().nextInt(122, 1631);
+        profileID = random.nextInt((int) (Math.random() * 1400) + 1115);
         try {
             virtualAccountNumber = Integer.parseInt(RandomAcctNo.getAcctNumeric(10));
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
+        //virtualAccountNumber = random.nextInt((int) (Math.random() * 123045) + 100123);
+        soAccountNumber = random.nextInt((int) (Math.random() * 133044) + 100125);
+        customerID = random.nextInt((int) (Math.random() * 1203) + 1101);
+        otpMessage = "&message=" + "Hello Awajima New User, Your OTP Code is " + otpDigit;
+
+        profileID1 = random.nextInt((int) (Math.random() * 1400) + 1115);
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        joinedDate = mdformat.format(calendar.getTime());
         //virtualAccountNumber = random.nextInt((int) (Math.random() * 123045) + 100123);
         soAccountNumber = random.nextInt((int) (Math.random() * 133044) + 100125);
         customerID = random.nextInt((int) (Math.random() * 1203) + 1101);
@@ -1237,225 +1397,1013 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         itemPurchaseAcctID = random.nextInt((int) (Math.random() * 1010) + 1010);
         promoAcctID = random.nextInt((int) (Math.random() * 1111) + 1010);
         packageAcctID = random.nextInt((int) (Math.random() * 1000) + 1010);
-        profiles = null;
-
-        accountInvestment = new AccountInvestment();
-        accountItemPurchase = new AccountItemPurchase();
-        accountPromo = new AccountPromo();
-        accountSavings = new AccountSavings();
-        state = findViewById(R.id.state1);
-        office = findViewById(R.id.office5);
-        spnGender = findViewById(R.id.gender);
-        calendar = Calendar.getInstance();
-        profiles = new ArrayList<>();
-        customers = new ArrayList<>();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        joinedDate = mdformat.format(calendar.getTime());
-        prefManager= new PrefManager();
-        lastQBUserUsed= qbUser;
-        bizNameBundle= new Bundle();
-        qbUser= new QBUser();
         profile= new Profile();
-        lastAccountUsed = new Account();
-        tellerProfile = new Profile();
-        lastCustomerUsed=new Customer();
-        usdAccount= new Account();
-        gbpAccount= new Account();
-        indianAccount= new Account();
-        cadAccount= new Account();
-        ghaAccount= new Account();
-        kenAccount= new Account();
-        philAccount= new Account();
-        saAccount= new Account();
-        pakistanAccount= new Account();
-        lastStandingOrderAcctUsed= new StandingOrderAcct();
+        LastProfileUsed= new Profile();
+        name =uSurname+","+uFirstName;
+        accountArrayList= new ArrayList<>();
+        prefManager= new PrefManager();
+        awajima= new Awajima();
+        gson3 = new Gson();
+        gson6 = new Gson();
+        gson5 = new Gson();
+        doOtpNotification(otpMessage);
+        sendOTPMessage(otpPhoneNumber, otpMessage);
+        doTeliverNoti(otpMessage);
+        //currency= new Currency();
+        try {
+            usdSymbolNo = Integer.parseInt(RandomAcctNo.getAcctNumeric(10));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        currencies=World.getAllCurrencies();
+        currency2 = World.getAllCurrencies().get(7);
+        AcctDAO acctDAO1= new AcctDAO(this);
+        gbpSymbolNo = ThreadLocalRandom.current().nextInt(10235, 10721400);
+        usdAccount= new Account(virtualAccountNumber,profileID1,customerID,name,"USD",usdSymbolNo,0.00,AccountTypes.BANK_ACCT, "new");
+        cadAccount= new Account(virtualAccountNumber,profileID1,customerID,name,"CAD",cadNo,0.00,AccountTypes.BANK_ACCT, "new");
+        saAccount= new Account(virtualAccountNumber,profileID1,customerID,name,"ZAR",saNo,0.00,AccountTypes.BANK_ACCT, "new");
+        philAccount= new Account(virtualAccountNumber,profileID1,customerID,name,"PHP",philNo,0.00,AccountTypes.BANK_ACCT, "new");
+        ghaAccount= new Account(virtualAccountNumber,profileID1,customerID,name,"GHS",ghaNo,0.00,AccountTypes.BANK_ACCT, "new");
+        kenAccount= new Account(virtualAccountNumber,profileID1,customerID,name,"KES",kenNo,0.00,AccountTypes.BANK_ACCT, "new");
+        pakistanAccount= new Account(virtualAccountNumber,profileID1,customerID,name,"PKR",pakNo,0.00,AccountTypes.BANK_ACCT, "new");
+        gbpAccount= new Account(virtualAccountNumber,profileID1,customerID,name,"GBP",gbpSymbolNo,0.00,AccountTypes.BANK_ACCT, "new");
+        indianAccount= new Account(virtualAccountNumber,profileID1,customerID,name,"INR",indianNo,0.00,AccountTypes.BANK_ACCT, "new");
 
-        edtPhone_number = findViewById(R.id.phone_number);
-        email_address = findViewById(R.id.email_address);
-        edtAddress_2 = findViewById(R.id.address_all);
-        edtFirstName = findViewById(R.id.first_Name_00);
-        userName = findViewById(R.id.user_name_1);
-        edtSurname = findViewById(R.id.surname1);
-        edtPassword = findViewById(R.id.user_password_sig);
-        edtNIN = findViewById(R.id.profile_NIN);
-        selectedState = state.getSelectedItem().toString();
-        selectedOffice = office.getSelectedItem().toString();
-        ccp = (CountryCodePicker) findViewById(R.id.ccp);
-        cusDAO= new CusDAO(this);
-        if (managerProfile != null) {
-            ManagerSurname = managerProfile.getProfileLastName();
-            managerFirstName = managerProfile.getProfileFirstName();
-            profileID = managerProfile.getPID();
-            //profileID1=profileID;
-            managerPhoneNumber1 = managerProfile.getProfilePhoneNumber();
-            managerEmail = managerProfile.getProfileEmail();
-            managerUserName = managerProfile.getProfileUserName();
-            userType = managerProfile.getProfileMachine();
-            userRole = managerProfile.getProfileRole();
+        profile = new Profile(profileID1, uSurname, uFirstName, ccString, uEmail, dateOfBirth, selectedGender, uAddress, nIN, selectedState, selectedOffice, joinedDate, selectedUserType, uUserName, uPassword, "pending", "");
 
-        } else {
-            profileID = 0;
+        qbUser= new QBUser();
+        qbUser.setEmail(uEmail);
+        qbUser.setPassword(uPassword);
+        qbUser.setCustomDataClass(profile.getClass());
+        qbUser.setFullName(name);
+        qbUser.setExternalId(String.valueOf(profileID));
+        qbUser.setPhone(ccString);
+        qbUser.setId(profileID1);
+        //qbUser.setExternalId(String.valueOf(customerID));
+        //usd=currency.toString();
+        accountArrayList.add(gbpAccount);
+        accountArrayList.add(usdAccount);
+        accountArrayList.add(cadAccount);
+        accountArrayList.add(saAccount);
+        accountArrayList.add(philAccount);
+        accountArrayList.add(pakistanAccount);
+        accountArrayList.add(kenAccount);
+        accountArrayList.add(ghaAccount);
+        accountArrayList.add(indianAccount);
+
+        if(acctDAO1 !=null){
+            acctDAO1.insertAccounts(accountArrayList);
+        }
+
+
+        if (userPreferences !=null){
+            userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+            lastQBUserUsed= qbUser;
+            json3 = gson3.toJson(lastQBUserUsed);
+
+            LastProfileUsed= profile;
+            json4 = gson5.toJson(LastProfileUsed);
+
+            LastCustomerUsed= customer;
+            json6 = gson6.toJson(LastCustomerUsed);
+
+
+            SharedPreferences.Editor editor = userPreferences.edit();
+            editor.putString("PROFILE_DOB", dateOfBirth);
+            editor.putString("PROFILE_EMAIL", uEmail);
+            editor.putString("PROFILE_FIRSTNAME", uFirstName);
+            editor.putString("PROFILE_COUNTRY", country);
+            editor.putString("PROFILE_NEXT_OF_KIN", "");
+            editor.putString("PROFILE_PHONE", ccString);
+            editor.putString("PROFILE_SURNAME", uSurname);
+            editor.putString("PICTURE_URI", String.valueOf(mImageUri));
+            editor.putString("CUSTOMER_LATLONG", String.valueOf(cusLatLng));
+            editor.putString("PROFILE_USERNAME", uUserName);
+            editor.putString("PROFILE_PASSWORD", uPassword);
+            editor.putString("PROFILE_NIN", nIN);
+            editor.putString("PROFILE_ROLE", "Customer");
+            editor.putString("PROFILE_STATUS", "Pending Approval");
+            editor.putInt("PROFILE_ID", profileID1);
+            editor.putString("PROFILE_DATE_JOINED", joinedDate);
+            editor.putString("signUpK", signUpK);
+            editor.putInt("CUSTOMER_ID", customerID);
+            editor.putString("PROFILE_DOB", dateOfBirth);
+            editor.putString("PROFILE_ADDRESS", uAddress);
+            editor.putInt("PROFILE_SPONSOR_ID", sponsorID);
+            editor.putString(PROFILE_DOB, dateOfBirth);
+            editor.putString(PROFILE_EMAIL, uEmail);
+            editor.putString(PROFILE_FIRSTNAME, uFirstName);
+            editor.putString(PROFILE_COUNTRY, country);
+            editor.putString(PROFILE_NEXT_OF_KIN, "");
+            editor.putString(PROFILE_PHONE, ccString);
+            editor.putString(PROFILE_SURNAME, uSurname);
+            editor.putString("PICTURE_URI", String.valueOf(mImageUri));
+            editor.putString(PICTURE_URI, String.valueOf(mImageUri));
+            editor.putString(CUSTOMER_LATLONG, String.valueOf(cusLatLng));
+            editor.putString(PROFILE_PASSWORD, uPassword);
+            editor.putString(PROFILE_NIN, nIN);
+            editor.putInt(PROFILE_SPONSOR_ID, sponsorID);
+            editor.putString(PROFILE_ROLE, "Customer");
+            editor.putString(PROFILE_STATUS, "Pending Approval");
+            editor.putInt(PROFILE_ID, profileID1);
+            editor.putString(PROFILE_DATE_JOINED, joinedDate);
+            editor.putString(PROFILE_USERNAME, uUserName);
+            editor.putInt(CUSTOMER_ID, customerID);
+            editor.putString(PROFILE_ADDRESS, uAddress);
+            editor.putString("machine", "Customer");
+            editor.putString("Machine", "Customer");
+            editor.putLong("EWalletID", virtualAccountNumber);
+            editor.putLong("StandingOrderAcctNo", soAccountNumber);
+            editor.putInt("InvestmentAcctID", investmentAcctID);
+            editor.putInt("PromoAcctID", promoAcctID);
+            editor.putInt("ItemsPurchaseAcctID", itemPurchaseAcctID);
+            editor.putInt("SavingsAcctID", savingsAcctID);
+            editor.putString("LastProfileUsed", json4);
+            editor.putString("LastCustomerUsed", json6);
+            editor.putString("LastQBUserUsed", json3).apply();
 
         }
-        if(cusDAO !=null){
+        saveNewCustomer(sponsorID,  cusLatLng,  account,  accountArrayList , standingOrderAcct,  joinedDate,  uFirstName, uSurname, ccString,  uAddress, uUserName, uPassword, customer, customerProfile, nIN, managerProfile, dateOfBirth, customerManager,  profileID, virtualAccountNumber,  soAccountNumber,  customerID, birthdayID, investmentAcctID, itemPurchaseAcctID, promoAcctID, packageAcctID, qbUser);
+        if(dbHelper !=null){
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            if(messageDAO !=null){
+                try {
+                    if(sqLiteDatabase !=null){
+                        sqLiteDatabase = openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+                    }
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    messageDAO.insertMessage(profileID, customerID, messageID, this.bizID, otpMessage, "Awajima App", customerName, selectedOffice, joinedDate);
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+
+
+        }
+
+    }
+    private void saveTimeLine(int profileID1, String ccString, String uFirstName, String uSurname, String selectedUserType, String selectedAdminType, String selectedOffice, int sponsorID, long bizID, MarketBusiness business) {
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        joinedDate = mdformat.format(calendar.getTime());
+        name =uSurname+","+uFirstName;
+        workerID = random.nextInt((int) (Math.random() * 3101) + 10122);
+        profileID1 = random.nextInt((int) (Math.random() * 1200) + 1113);
+        profileID = random.nextInt((int) (Math.random() * 1302) + 1113);
+        timeLineID = random.nextInt((int) (Math.random() * 1001) + 1101);
+
+        try {
             try {
-                customers = cusDAO.getAllCustomers11();
-            } catch (NullPointerException e) {
+                dbHelper.insertRole(profileID1, selectedUserType, bizID, ccString);
+
+
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
 
-        }
-
-        Animation translater = AnimationUtils.loadAnimation(this, R.anim.bounce);
-        selectedGender = spnGender.getSelectedItem().toString();
-        edtSponsorID = findViewById(R.id.user_sponsor);
-        uFirstName = edtFirstName.getText().toString().trim();
-        uSurname = edtSurname.getText().toString().trim();
-        uEmail = email_address.getText().toString();
-        sponsorIDString = edtSponsorID.getText().toString().trim();
-        uAddress = Objects.requireNonNull(edtAddress_2.getText()).toString();
-        uPassword = edtPassword.getText().toString().trim();
-        //uPhoneNumber=ccp.getFullNumberWithPlus();
-        uPhoneNumber = edtPhone_number.getText().toString();
-        uUserName = userName.getText().toString();
-        boolean usernameTaken = false;
-        nIN = null;
-        customerName = uSurname + "," + uFirstName;
-        ccString=ccp.getFullNumberWithPlus();
-        try {
-            sponsorID = Integer.parseInt(sponsorIDString);
-        } catch (NumberFormatException e) {
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        view.startAnimation(translater);
-        nIN = null;
-        accountTypeStr = AccountTypes.EWALLET;
-        //long accountNumber = Long.parseLong(String.valueOf((long) (Math.random() * 10501) + 10010));
-
-        //ccp.registerCarrierNumberEditText(edtPhone_number);
 
 
-        try {
+    }
 
-            if (TextUtils.isEmpty(uFirstName)) {
-                edtFirstName.setError("Please enter Your First Name");
-            } else if (TextUtils.isEmpty(uSurname)) {
-                edtSurname.setError("Please enter your Last/SurName");
-            } else if (TextUtils.isEmpty(uPassword)) {
-                edtPassword.setError("Please enter your Password");
-            } else if (uPhoneNumber.isEmpty()) {
-                edtPhone_number.setError("Enter a valid mobile Number");
-                //edtPhone_number.requestFocus();
-            } else if (TextUtils.isEmpty(uUserName)) {
-                userName.setError("Please enter your userName");
-            } else if (TextUtils.isEmpty(uAddress)) {
-                edtAddress_2.setError("Please enter Address");
-            } else {
-                //sendOTPVerCode(otpPhoneNumber,mAuth,sponsorID,account,standingOrderAcct,customer,joinedDate,uFirstName,uSurname,uPhoneNumber,uAddress,uUserName,uPassword,customer,customerProfile,nIN,managerProfile,dateOfBirth,selectedGender,selectedOffice,selectedState,birthday,customerManager,dateOfBirth,profileID1,virtualAccountNumber,soAccountNumber, customerID,profileID2,birthdayID, investmentAcctID,itemPurchaseAcctID,promoAcctID,packageAcctID,profiles,customers,tellers,adminUserArrayList,superAdminArrayList);
 
-                for (int i = 0; i < customers.size(); i++) {
+    private void doTimelines(String selectedUserType, String selectedAdminType, String uFirstName, String uSurname, String ccString, long bizID, String country, MarketBusiness business) {
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        timeLineTime = mdformat.format(calendar.getTime());
+        name = uSurname +","+ uFirstName;
+        timeLineID = random.nextInt((int) (Math.random() * 102) + 1510);
+        if(business !=null){
+            businessName=business.getBizBrandname();
+        }
+        worker= new Worker(workerID,profileID1,bizID,selectedOffice, name,selectedUserType,timeLineTime);
+        if (selectedUserType != null) {
+            if (selectedUserType.equalsIgnoreCase("Customer")) {
+                String timelineDetailCus = name +""+ "was added as a" +""+"Customer"+""+ "for" + businessName +""+ "@" + timeLineTime;
+                String tittleTCus = "Customer"+""+"Sign Up Alert!";
+                String timelineDetailsTMyCus = "You added" + name + "as a" +""+"Customer"+""+ "on" + timeLineTime;
+                TimeLine timeLine= new TimeLine(timeLineID,tittleTCus, timelineDetailsTMyCus, timeLineTime);
+                TimeLine timeLineA= new TimeLine(timeLineID,tittleTCus, timelineDetailCus, timeLineTime);
+                worker= new Worker(workerID,profileID1,bizID,selectedOffice, name,"Customer",timeLineTime);
+
+
+                try {
                     try {
-                        if (customers.get(i).getCusPhoneNumber().equalsIgnoreCase(ccString)) {
-                            Toast.makeText(SignUpAct.this, "This Phone Number is already in use, here", Toast.LENGTH_LONG).show();
-                            return;
-
-                        } else {
-                            if (checkInputs()) {
-                                //progressBar.setVisibility(View.VISIBLE);
-
-                                //saveMyPreferences(sponsorID, cusLatLng, account, standingOrderAcct, joinedDate, uFirstName, uSurname, uPhoneNumber, uAddress, uUserName, uPassword,  customer, customerProfile, nIN, managerProfile, dateOfBirth, selectedGender,  selectedOffice, selectedState, birthday,  customerManager, dateOfBirth, profileID1, virtualAccountNumber, soAccountNumber, customerID, birthdayID, investmentAcctID, itemPurchaseAcctID,promoAcctID, packageAcctID,  customers);
-                                saveInDatabase(sponsorID, this.cusLatLng, account, standingOrderAcct, joinedDate, uFirstName, uSurname, ccString, uAddress, uUserName, uPassword, customer, customerProfile, nIN, managerProfile, dateOfBirth, selectedGender, selectedOffice, selectedState, birthday, customerManager, this.dateOfBirth, profileID1, virtualAccountNumber, soAccountNumber, customerID, birthdayID, investmentAcctID, itemPurchaseAcctID, promoAcctID, packageAcctID, customers);
-                                saveNewCustomer(sponsorID, this.cusLatLng, account, standingOrderAcct, joinedDate, uFirstName, uSurname, ccString, uAddress, uUserName, uPassword,  customer, customerProfile, nIN, managerProfile, dateOfBirth, selectedGender,  selectedOffice, selectedState, birthday,  customerManager, this.dateOfBirth, profileID1, virtualAccountNumber, soAccountNumber, customerID, birthdayID, investmentAcctID, itemPurchaseAcctID,promoAcctID, packageAcctID,  customers);
-                                openDashboard(sponsorID, this.cusLatLng, account, standingOrderAcct, joinedDate, uFirstName, uSurname, ccString, uAddress, uUserName, uPassword,  customer, customerProfile, nIN, managerProfile, dateOfBirth, selectedGender,  selectedOffice, selectedState, birthday,  customerManager, this.dateOfBirth, profileID1, virtualAccountNumber, soAccountNumber, customerID, birthdayID, investmentAcctID, itemPurchaseAcctID,promoAcctID, packageAcctID,  customers);
-
-                            }
+                        timeLineClassDAO.insertTimeLine(tittleTCus, timelineDetailCus, timeLineTime, mCurrentLocation);
 
 
-                        }
-                    } catch (NullPointerException e) {
-                        System.out.println("Oops!");
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
                     }
 
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+                if(business !=null){
+                    business.addTimeLine(timeLine);
+
+
+                }
+                if(awajima !=null){
+                    awajima.addTimeLine(timeLineA);
+                }
+
+
+
+
+            }
+            if (selectedUserType.equalsIgnoreCase("State")) {
+                String timelineDetailCus = name +""+ "was added as a" +""+"State"+""+ "for" + businessName +""+ "@" + timeLineTime;
+                String tittleTCus = "State"+""+"Sign Up Alert!";
+                String timelineDetailsTMyCus = "You added" + name + "as a" +""+"State"+""+ "on" + timeLineTime;
+                TimeLine timeLine= new TimeLine(timeLineID,tittleTCus, timelineDetailsTMyCus, timeLineTime);
+                TimeLine timeLineA= new TimeLine(timeLineID,tittleTCus, timelineDetailCus, timeLineTime);
+
+
+                try {
+                    try {
+                        timeLineClassDAO.insertTimeLine(tittleTCus, timelineDetailCus, timeLineTime, mCurrentLocation);
+
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+                if(awajima !=null){
+                    awajima.addTimeLine(timeLine);
+                }
+
+
+            }
+            if (selectedUserType.equalsIgnoreCase("Teller")) {
+
+                String timelineDetailCus = name +""+ "was added as a" +""+"Teller"+""+ "for" + businessName +""+ "@" + timeLineTime;
+                String tittleTCus = "Teller"+""+"Sign Up Alert!";
+                String timelineDetailsTMyCus = "You added" + name + "as a" +""+"Teller"+""+ "on" + timeLineTime;
+                worker= new Worker(workerID,profileID1,bizID,selectedOffice, name,"Teller",timeLineTime);
+                customerManager2 = new CustomerManager(tellerID,bizID, uSurname, uFirstName, uPhoneNumber, dateOfBirth, uEmail, uAddress, selectedGender, selectedOffice, selectedState, mImageUri, joinedDate, uUserName, uPassword);
+                TimeLine timeLineA= new TimeLine(timeLineID,tittleTCus, timelineDetailCus, timeLineTime);
+
+
+                try {
+                    try {
+                        timeLineClassDAO.insertTimeLine(tittleTCus, timelineDetailCus, timeLineTime, mCurrentLocation);
+
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+                TimeLine timeLine= new TimeLine(timeLineID,tittleTCus, timelineDetailsTMyCus, timeLineTime);
+                if(business !=null){
+                    business.addTimeLine(timeLine);
+                    business.addBizTeller(customerManager2);
+                    business.addWorker(worker);
+                }
+                if(awajima !=null){
+                    awajima.addTimeLine(timeLineA);
+                }
+
+
+
+                try {
+                    try {
+                        workersDAO.saveNewWorker(workerID,profileID1,bizID,selectedOffice, name,"Teller",timeLineTime);
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+
+
+            }
+            if (selectedUserType.equalsIgnoreCase("Admin User")) {
+                String timelineDetailCus = name +""+ "was added as an" +""+"Admin User"+""+ "for" + businessName +""+ "@" + timeLineTime;
+                String tittleTCus = "Admin User"+""+"Sign Up Alert!";
+                String timelineDetailsTMyCus = "You added" + name + "as an" +""+"Admin User"+""+ "on" + timeLineTime;
+                worker= new Worker(workerID,profileID1,bizID,selectedOffice, name,"Admin User",timeLineTime);
+                TimeLine timeLineA= new TimeLine(timeLineID,tittleTCus, timelineDetailCus, timeLineTime);
+                admminUser = new AdminUser(tellerID,bizID, uSurname, uFirstName, uPhoneNumber, dateOfBirth, uEmail, uAddress, selectedGender, selectedOffice, selectedState, mImageUri, joinedDate, uUserName, uPassword);
+
+
+                try {
+                    try {
+                        timeLineClassDAO.insertTimeLine(tittleTCus, timelineDetailCus, timeLineTime, mCurrentLocation);
+
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+                TimeLine timeLine= new TimeLine(timeLineID,tittleTCus, timelineDetailsTMyCus, timeLineTime);
+                if(business !=null){
+                    business.addTimeLine(timeLine);
+                    business.addAdminUser(admminUser);
+                    business.addWorker(worker);
+                }
+                if(awajima !=null){
+                    awajima.addTimeLine(timeLineA);
+                }
+
+
+
+                try {
+                    try {
+                        workersDAO.saveNewWorker(workerID,profileID1,bizID,selectedOffice, name,"Admin User",timeLineTime);
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+
+                try {
+                    try {
+                        adminUserDAO.insertAdminUser(profileID1,bizID, uSurname, uFirstName, uPhoneNumber, uEmail, dateOfBirth, selectedGender, uAddress, selectedOffice, joinedDate, uUserName, uPassword, nIN, selectedState, mImageUri, "new");
+
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+
+
+
+
+            }
+            if (selectedUserType.equalsIgnoreCase("Accountant")) {
+                String timelineDetailCus = name +""+ "was added as an" +""+"Accountant"+""+ "for" + businessName +""+ "@" + timeLineTime;
+                String tittleTCus = "Accountant"+""+"Sign Up Alert!";
+                String timelineDetailsTMyCus = "You added" + name + "as an" +""+"Accountant"+""+ "on" + timeLineTime;
+                TimeLine timeLineA= new TimeLine(timeLineID,tittleTCus, timelineDetailCus, timeLineTime);
+                worker= new Worker(workerID,profileID1,bizID,selectedOffice, name,"Accountant",timeLineTime);
+
+
+                try {
+                    try {
+                        timeLineClassDAO.insertTimeLine(tittleTCus, timelineDetailCus, timeLineTime, mCurrentLocation);
+
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+                TimeLine timeLine= new TimeLine(timeLineID,tittleTCus, timelineDetailsTMyCus, timeLineTime);
+                if(business !=null){
+                    business.addTimeLine(timeLine);
+                    //business.addAdminUser(admminUser);
+                    business.addWorker(worker);
+                }
+                if(awajima !=null){
+                    awajima.addTimeLine(timeLineA);
+                }
+
+
+
+                try {
+                    try {
+                        workersDAO.saveNewWorker(workerID,profileID1,bizID,selectedOffice, name,"Accountant",timeLineTime);
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            if (selectedUserType.equalsIgnoreCase("Super Admin")) {
+                String timelineDetailCus = name +""+ "was added as a/an" +""+"Super Admin"+""+ "for" + businessName +""+ "@" + timeLineTime;
+                String tittleTCus = "Super Admin"+""+"Sign Up Alert!";
+                String timelineDetailsTMyCus = "You added" + name + "as a/an" +""+"Super Admin"+""+ "on" + timeLineTime;
+                worker= new Worker(workerID,profileID1,bizID,selectedOffice, name,"Super Admin",timeLineTime);
+                TimeLine timeLineA= new TimeLine(timeLineID,tittleTCus, timelineDetailCus, timeLineTime);
+                admminUser = new AdminUser(tellerID,bizID, uSurname, uFirstName, uPhoneNumber, dateOfBirth, uEmail, uAddress, selectedGender, selectedOffice, selectedState, mImageUri, joinedDate, uUserName, uPassword);
+
+
+                try {
+                    try {
+                        timeLineClassDAO.insertTimeLine(tittleTCus, timelineDetailCus, timeLineTime, mCurrentLocation);
+
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+                TimeLine timeLine= new TimeLine(timeLineID,tittleTCus, timelineDetailsTMyCus, timeLineTime);
+                if(business !=null){
+                    business.addTimeLine(timeLine);
+                    business.addAdminUser(admminUser);
+                    business.addWorker(worker);
+                }
+                if(awajima !=null){
+                    awajima.addTimeLine(timeLineA);
+                }
+
+
+
+                try {
+                    try {
+                        workersDAO.saveNewWorker(workerID,profileID1,bizID,selectedOffice, name,"Super Admin",timeLineTime);
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+
+
+            if (selectedUserType.equalsIgnoreCase("Support Manager")) {
+                String timelineDetailCus = name +""+ "was added as a" +""+"Support Manager"+""+ "for" + businessName +""+ "@" + timeLineTime;
+                String tittleTCus = "Support Manager"+""+"Sign Up Alert!";
+                String timelineDetailsTMyCus = "You added" + name + "as a" +""+"Support Manager"+""+ "on" + timeLineTime;
+                worker= new Worker(workerID,profileID1,bizID,selectedOffice, name,"Support Manager",timeLineTime);
+                TimeLine timeLineA= new TimeLine(timeLineID,tittleTCus, timelineDetailCus, timeLineTime);
+                //admminUser = new AdminUser(tellerID,bizID, uSurname, uFirstName, uPhoneNumber, dateOfBirth, uEmail, uAddress, selectedGender, selectedOffice, selectedState, selectedImage, joinedDate, uUserName, uPassword);
+
+
+                try {
+                    try {
+                        timeLineClassDAO.insertTimeLine(tittleTCus, timelineDetailCus, timeLineTime, mCurrentLocation);
+
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+                TimeLine timeLine= new TimeLine(timeLineID,tittleTCus, timelineDetailsTMyCus, timeLineTime);
+                if(business !=null){
+                    business.addTimeLine(timeLine);
+                    //business.addAdminUser(admminUser);
+                    business.addWorker(worker);
+                }
+                if(awajima !=null){
+                    awajima.addTimeLine(timeLineA);
+                }
+
+
+
+                try {
+                    try {
+                        workersDAO.saveNewWorker(workerID,profileID1,bizID,selectedOffice, name,"Support Manager",timeLineTime);
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
                 }
 
 
             }
 
-        } catch (Exception e) {
-            System.out.println("Oops!");
+            if (selectedUserType.equalsIgnoreCase("REGULATOR")) {
+                String timelineDetailCus = name +""+ "was added as a" +""+"REGULATOR"+""+ "for" + businessName +""+ "@" + timeLineTime;
+                String tittleTCus = "REGULATOR"+""+"Sign Up Alert!";
+                String timelineDetailsTMyCus = "You added" + name + "as a" +""+"REGULATOR"+""+ "on" + timeLineTime;
+                worker= new Worker(workerID,profileID1,bizID,selectedOffice, name,"REGULATOR",timeLineTime);
+                TimeLine timeLineA= new TimeLine(timeLineID,tittleTCus, timelineDetailCus, timeLineTime);
+                //admminUser = new AdminUser(tellerID,bizID, uSurname, uFirstName, uPhoneNumber, dateOfBirth, uEmail, uAddress, selectedGender, selectedOffice, selectedState, selectedImage, joinedDate, uUserName, uPassword);
+
+
+                try {
+                    try {
+                        timeLineClassDAO.insertTimeLine(tittleTCus, timelineDetailCus, timeLineTime, mCurrentLocation);
+
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+                TimeLine timeLine= new TimeLine(timeLineID,tittleTCus, timelineDetailsTMyCus, timeLineTime);
+                if(business !=null){
+                    business.addTimeLine(timeLine);
+                    //business.addAdminUser(admminUser);
+                    business.addWorker(worker);
+                }
+                if(awajima !=null){
+                    awajima.addTimeLine(timeLineA);
+                }
+
+
+
+                try {
+                    try {
+                        workersDAO.saveNewWorker(workerID,profileID1,bizID,selectedOffice, name,"REGULATOR",timeLineTime);
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+            if (selectedUserType.equalsIgnoreCase("RECORD_KEEPER")) {
+                String timelineDetailCus = name +""+ "was added as a" +""+"RECORD_KEEPER"+""+ "for" + businessName +""+ "@" + timeLineTime;
+                String tittleTCus = "RECORD_KEEPER"+""+"Sign Up Alert!";
+                String timelineDetailsTMyCus = "You added" + name + "as a" +""+"RECORD_KEEPER"+""+ "on" + timeLineTime;
+                worker= new Worker(workerID,profileID1,bizID,selectedOffice, name,"RECORD_KEEPER",timeLineTime);
+                TimeLine timeLineA= new TimeLine(timeLineID,tittleTCus, timelineDetailCus, timeLineTime);
+                //admminUser = new AdminUser(tellerID,bizID, uSurname, uFirstName, uPhoneNumber, dateOfBirth, uEmail, uAddress, selectedGender, selectedOffice, selectedState, selectedImage, joinedDate, uUserName, uPassword);
+
+
+                try {
+                    try {
+                        timeLineClassDAO.insertTimeLine(tittleTCus, timelineDetailCus, timeLineTime, mCurrentLocation);
+
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+                TimeLine timeLine= new TimeLine(timeLineID,tittleTCus, timelineDetailsTMyCus, timeLineTime);
+                if(business !=null){
+                    business.addTimeLine(timeLine);
+                    //business.addAdminUser(admminUser);
+                    business.addWorker(worker);
+                }
+                if(awajima !=null){
+                    awajima.addTimeLine(timeLineA);
+                }
+
+
+
+                try {
+                    try {
+                        workersDAO.saveNewWorker(workerID,profileID1,bizID,selectedOffice, name,"RECORD_KEEPER",timeLineTime);
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+            if (selectedUserType.equalsIgnoreCase("PARTNER")) {
+                String timelineDetailCus = name +""+ "was added as a" +""+"PARTNER"+""+ "for" + businessName +""+ "@" + timeLineTime;
+                String tittleTCus = "PARTNER"+""+"Sign Up Alert!";
+                String timelineDetailsTMyCus = "You added" + name + "as a" +""+"PARTNER"+""+ "on" + timeLineTime;
+                worker= new Worker(workerID,profileID1,bizID,selectedOffice, name,"PARTNER",timeLineTime);
+                TimeLine timeLineA= new TimeLine(timeLineID,tittleTCus, timelineDetailCus, timeLineTime);
+                //admminUser = new AdminUser(tellerID,bizID, uSurname, uFirstName, uPhoneNumber, dateOfBirth, uEmail, uAddress, selectedGender, selectedOffice, selectedState, selectedImage, joinedDate, uUserName, uPassword);
+
+
+                try {
+                    try {
+                        timeLineClassDAO.insertTimeLine(tittleTCus, timelineDetailCus, timeLineTime, mCurrentLocation);
+
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+                TimeLine timeLine= new TimeLine(timeLineID,tittleTCus, timelineDetailsTMyCus, timeLineTime);
+                if(business !=null){
+                    business.addTimeLine(timeLine);
+                    //business.addAdminUser(admminUser);
+                    business.addWorker(worker);
+                }
+                if(awajima !=null){
+                    awajima.addTimeLine(timeLineA);
+                }
+
+
+
+                try {
+                    try {
+                        workersDAO.saveNewWorker(workerID,profileID1,bizID,selectedOffice, name,"PARTNER",timeLineTime);
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+            if (selectedUserType.equalsIgnoreCase("INVESTOR")) {
+                String timelineDetailCus = name +""+ "was added as a" +""+"INVESTOR"+""+ "for" + businessName +""+ "@" + timeLineTime;
+                String tittleTCus = "INVESTOR"+""+"Sign Up Alert!";
+                String timelineDetailsTMyCus = "You added" + name + "as a" +""+"INVESTOR"+""+ "on" + timeLineTime;
+                worker= new Worker(workerID,profileID1,bizID,selectedOffice, name,"INVESTOR",timeLineTime);
+                TimeLine timeLineA= new TimeLine(timeLineID,tittleTCus, timelineDetailCus, timeLineTime);
+                //admminUser = new AdminUser(tellerID,bizID, uSurname, uFirstName, uPhoneNumber, dateOfBirth, uEmail, uAddress, selectedGender, selectedOffice, selectedState, selectedImage, joinedDate, uUserName, uPassword);
+
+
+                try {
+                    try {
+                        timeLineClassDAO.insertTimeLine(tittleTCus, timelineDetailCus, timeLineTime, mCurrentLocation);
+
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+                TimeLine timeLine= new TimeLine(timeLineID,tittleTCus, timelineDetailsTMyCus, timeLineTime);
+                if(business !=null){
+                    business.addTimeLine(timeLine);
+                    //business.addAdminUser(admminUser);
+                    business.addWorker(worker);
+                }
+                if(awajima !=null){
+                    awajima.addTimeLine(timeLineA);
+                }
+
+
+
+                try {
+                    try {
+                        workersDAO.saveNewWorker(workerID,profileID1,bizID,selectedOffice, name,"INVESTOR",timeLineTime);
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+            if (selectedUserType.equalsIgnoreCase("WORKER")) {
+                String timelineDetailCus = name +""+ "was added as a" +""+"WORKER"+""+ "for" + businessName +""+ "@" + timeLineTime;
+                String tittleTCus = "WORKER"+""+"Sign Up Alert!";
+                String timelineDetailsTMyCus = "You added" + name + "as a" +""+"WORKER"+""+ "on" + timeLineTime;
+                worker= new Worker(workerID,profileID1,bizID,selectedOffice, name,"WORKER",timeLineTime);
+                TimeLine timeLineA= new TimeLine(timeLineID,tittleTCus, timelineDetailCus, timeLineTime);
+                //admminUser = new AdminUser(tellerID,bizID, uSurname, uFirstName, uPhoneNumber, dateOfBirth, uEmail, uAddress, selectedGender, selectedOffice, selectedState, selectedImage, joinedDate, uUserName, uPassword);
+
+
+                try {
+                    try {
+                        timeLineClassDAO.insertTimeLine(tittleTCus, timelineDetailCus, timeLineTime, mCurrentLocation);
+
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+                TimeLine timeLine= new TimeLine(timeLineID,tittleTCus, timelineDetailsTMyCus, timeLineTime);
+                if(business !=null){
+                    business.addTimeLine(timeLine);
+                    //business.addAdminUser(admminUser);
+                    business.addWorker(worker);
+                }
+                if(awajima !=null){
+                    awajima.addTimeLine(timeLineA);
+                }
+
+
+
+                try {
+                    try {
+                        workersDAO.saveNewWorker(workerID,profileID1,bizID,selectedOffice, name,"WORKER",timeLineTime);
+
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+
+        }
+        setResult(Activity.RESULT_OK, new Intent());
+    }
+
+    public void DoLastSignUp(View view) {
+        gson6 = new Gson();
+        gson3 = new Gson();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        json6 = userPreferences.getString("LastCustomerManagerUsed", "");
+        customerManager = gson6.fromJson(json6, CustomerManager.class);
+        json3 = userPreferences.getString("LastMarketBusinessUsed", "");
+        business = gson3.fromJson(json3, MarketBusiness.class);
+        if(business !=null){
+            /*if(isNewBizUser){
+                layoutFirst.setVisibility(View.VISIBLE);
+                layoutSecond.setVisibility(View.GONE);
+
+            }*/
+            bizID=business.getBusinessID();
+            market=business.getBizMarket();
+
+
+        }
+        if(market !=null){
+            marketID=market.getMarketID();
+
+        }
+        state = findViewById(R.id.state1);
+        office = findViewById(R.id.office5);
+        spnGender = findViewById(R.id.gender);
+        selectedState = state.getSelectedItem().toString();
+        selectedOffice = office.getSelectedItem().toString();
+        selectedGender = spnGender.getSelectedItem().toString();
+        //Toast.makeText(SignUpAct.this, "Some or all of the selections are empty", Toast.LENGTH_LONG).show();
+        if(signUp){
+            doFinalSignUpSaving(selectedState,selectedOffice,selectedGender,customerManager,bizID,marketID,business);
+
+        }
+    }
+
+    private void doFinalSignUpSaving(String selectedState, String selectedOffice, String selectedGender, CustomerManager customerManager, long bizID, int marketID, MarketBusiness business) {
+        gson3 = new Gson();
+        gson = new Gson();
+        gson5 = new Gson();
+        userProfile= new Profile();
+        customer= new Customer();
+        qbUser= new QBUser();
+        awajima= new Awajima();
+        userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = userPreferences.edit();
+        editor.putString(PROFILE_GENDER, selectedGender);
+        editor.putString(PROFILE_STATE, selectedState);
+        editor.putString(PROFILE_OFFICE, selectedOffice);
+        editor.putString("PROFILE_GENDER", selectedGender);
+        editor.putString("PROFILE_STATE", selectedState);
+        editor.putString("PROFILE_OFFICE", selectedOffice).apply();
+        preferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        json = userPreferences.getString("LastProfileUsed", "");
+        userProfile = gson.fromJson(json, Profile.class);
+        json3 = userPreferences.getString("LastCustomerUsed", "");
+        customer = gson3.fromJson(json3, Customer.class);
+        json4 = userPreferences.getString("LastQBUserUsed", "");
+        qbUser = gson5.fromJson(json4, QBUser.class);
+        if(customer !=null){
+            customer.setCusOffice(selectedOffice);
+            customer.setCusState(selectedState);
+            customer.setCusGender(selectedGender);
+            customer.addCusAccountManager(customerManager);
+        }
+        if(userProfile !=null){
+            userProfile.setProfileState(selectedState);
+            userProfile.setProfOfficeName(selectedOffice);
+            userProfile.setProfileGender(selectedGender);
+            userProfile.setProfQbUser(qbUser);
+            userProfile.addBusinessID(bizID);
+            userProfile.addMarketID(marketID);
+        }
+
+        if(qbUser !=null){
+            qbUser.setCustomData(selectedState);
+        }
+        if(doNewReg){
+            SignUpUser(qbUser,userProfile);
+
+        }
+
+        if(signUp){
+            openDashboard(customer, customerProfile, qbUser, selectedOffice, selectedState);
+
+        }
+
+
+        try {
+            awajima.addNewCustomer(customer);
+            awajima.addProfile(userProfile);
+            awajima.addQBUsers(qbUser);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+
+        if (customerManager != null) {
+            ManagerSurname = customerManager.getTSurname();
+            managerFirstName = customerManager.getTFirstName();
+            profileID = customerManager.getTellerProfileID();
+            managerPhoneNumber1 = customerManager.getTPhoneNumber();
+            managerEmail = customerManager.getTEmailAddress();
+            managerUserName = customerManager.getTUserName();
+            officePref = customerManager.getTOffice();
+            managerAddress = customerManager.getTAddress();
+            managerGender = customerManager.getTGender();
+            customerManager.addCustomer(0,customerID, name, ccString,  joinedDate,"New");
+
+        }
+
+
+
+    }
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
+    }
+
+    private void openDashboard(Customer customer, Profile customerProfile, QBUser qbUser, String selectedOffice, String selectedState) {
+        /*userBundle.putInt("PROFILE_ID", profileID1);
+        userBundle.putString("PROFILE_DATE_JOINED", joinedDate);
+        userBundle.putString("PROFILE_SPONSOR_ID", uFirstName);
+        userBundle.putString("PROFILE_SPONSOR_ID", uSurname);
+        userBundle.putString("machine", "Customer");
+        userBundle.putInt("CUSTOMER_ID", customerID);
+        userBundle.putString("PROFILE_PASSWORD", uPassword);
+        userBundle.putString("PROFILE_STATE", selectedState);
+        userBundle.putString("PROFILE_USERNAME", uUserName);
+        userBundle.putString("PROFILE_ROLE", "Customer");
+        userBundle.putString("PROFILE_STATUS", "Pending Approval");
+        userBundle.putString("PICTURE_URI", String.valueOf(mImageUri));*/
+        userBundle.putString("PROFILE_OFFICE", selectedOffice);
+        userBundle.putString("PROFILE_STATE", selectedState);
+        userBundle.putParcelable("Customer", customer);
+        userBundle.putParcelable("Profile", customerProfile);
+        userBundle.putParcelable("QBUser", (Parcelable) qbUser);
+
+        doNewReg=true;
+        //prefManager.setFirstTimeLaunch(false);
+        if(doNewReg){
+            Intent intent = new Intent(SignUpAct.this, NewCustomerDrawer.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtras(userBundle);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right,
+                    R.anim.slide_out_left);
+            Toast.makeText(SignUpAct.this, "Thank you" + "" +
+                    "for Signing up " + "" + uFirstName + "" + "on the Awajima. App", Toast.LENGTH_LONG).show();
+
+
+        }
+
+    }
+
+    private void saveNewCustomer(int sponsorID, LatLng cusLatLng, Account account, ArrayList<Account> accountArrayList ,StandingOrderAcct standingOrderAcct, String joinedDate, String uFirstName, String uSurname, String ccString, String uAddress, String uUserName, String uPassword, Customer customer, Profile customerProfile, String nIN, Profile managerProfile, String dateOfBirth,  CustomerManager customerManager,  int profileID, int virtualAccountNumber, int soAccountNumber, int customerID, int birthdayID, int investmentAcctID, int itemPurchaseAcctID, int promoAcctID, int packageAcctID, QBUser qbUser) {
+        profile= new Profile();
+        profile=customerProfile;
+        tellerProfile = new Profile();
+        name =uSurname+","+uFirstName;
+
+        tellerProfile=managerProfile;
+
+
+        if(customer !=null){
+            customer.setCusProfile(customerProfile);
+            customer.setCusFirstName(uFirstName);
+            customer.setCusSurname(uSurname);
+            customer.setCusPin(uPassword);
+            customer.setCusAddress(uAddress);
+            customer.setCusDob(dateOfBirth);
+            customer.setCusUID(customerID);
+            customer.setCusDateJoined(joinedDate);
+            customer.setCusEmail(uEmail);
+            customer.setCusRole("customer");
+            customer.setCusPhoneNumber(ccString);
+            customer.setCustomerLocation(cusLatLng);
+            customer.setCusUserName(uUserName);
+
+            customer.setCusSponsorID(sponsorID);
+
+            customer.setCusAccount(account);
+            customer.setCusStandingOrderAcct(standingOrderAcct);
+            customer.setCusProfilePicture(String.valueOf(mImageUri));
+            customer.setCusAccounts(accountArrayList);
+            customer.addCusAccountManager(customerManager);
+
+            profile.setProfileFirstName(uFirstName);
+            profile.setProfileLastName(uSurname);
+            profile.setProfileAddress(uAddress);
+            profile.setProfilePassword(uPassword);
+            profile.setProfileDob(dateOfBirth);
+            profile.setProfileDateJoined(joinedDate);
+            profile.setProfileEmail(uEmail);
+            profile.setProfileRole("customer");
+            profile.setProfilePhoneNumber(ccString);
+            profile.setProfileIdentity(nIN);
+            profile.setProfileLastKnownLocation(this.cusLatLng);
+            profile.setProfileMachine("customer");
+            profile.setProfileUserName(uUserName);
+
+            profile.setProfQbUser(qbUser);
+            profile.setProfileSponsorID(profileID);
+            profile.setProfile_CustomerManager(customerManager);
+            profile.setProfilePicture(mImageUri);
+            profile.setProfile_Accounts(accountArrayList);
+
         }
 
 
     }
 
-    private void openDashboard(int sponsorID, LatLng cusLatLng, Account account, StandingOrderAcct standingOrderAcct, String joinedDate, String uFirstName, String uSurname, String ccString, String uAddress, String uUserName, String uPassword, Customer customer, Profile customerProfile, String nIN, Profile managerProfile, String dateOfBirth, String selectedGender, String selectedOffice, String selectedState, Birthday birthday, CustomerManager customerManager, String dateOfBirth1, int profileID1, int virtualAccountNumber, int soAccountNumber, int customerID, int birthdayID, int investmentAcctID, int itemPurchaseAcctID, int promoAcctID, int packageAcctID, ArrayList<Customer> customers) {
-        Bundle userBundle = new Bundle();
-        userBundle.putString(PROFILE_DOB, dateOfBirth);
-        userBundle.putString(BANK_ACCT_NO, bankAcctNumber);
-        userBundle.putString("BANK_ACCT_NO", bankAcctNumber);
-        userBundle.putString(PROFILE_EMAIL, uEmail);
-        userBundle.putString(PROFILE_OFFICE, selectedOffice);
-        userBundle.putString(PROFILE_FIRSTNAME, uFirstName);
-        userBundle.putString(PROFILE_GENDER, selectedGender);
-        userBundle.putString(PROFILE_COUNTRY, "");
-        userBundle.putString(PROFILE_NEXT_OF_KIN, "");
-        userBundle.putString(PROFILE_PHONE, ccString);
-        userBundle.putString(PROFILE_SURNAME, uSurname);
-        userBundle.putString(PICTURE_URI, String.valueOf(mImageUri));
-        userBundle.putString(CUSTOMER_LATLONG, String.valueOf(cusLatLng));
-        userBundle.putString(PROFILE_PASSWORD, uPassword);
-        userBundle.putString(PROFILE_NIN, nIN);
-        userBundle.putString(PROFILE_STATE, selectedState);
-        userBundle.putString(PROFILE_ROLE, "Customer");
-        userBundle.putString(PROFILE_STATUS, "Pending Approval");
-        userBundle.putString(PROFILE_USERNAME, uUserName);
-        userBundle.putInt(PROFILE_ID, profileID1);
-        userBundle.putString(PROFILE_DATE_JOINED, joinedDate);
-        userBundle.putInt(PROFILE_SPONSOR_ID, sponsorID);
-        userBundle.putString("machine", "Customer");
-
-        userBundle.putString("PICTURE_URI", String.valueOf(mImageUri));
-        userBundle.putString("PROFILE_NIN", nIN);
-        userBundle.putLong("PROFILE_ID", profileID1);
-
-        userBundle.putString("CHOSEN_OFFICE", selectedOffice);
-        userBundle.putInt("CUSTOMER_ID", customerID);
-        userBundle.putString("EMAIL_ADDRESS", uEmail);
-        userBundle.putString("DATE_OF_BIRTH_KEY", dateOfBirth);
-        userBundle.putString("GENDER_KEY", selectedGender);
-        userBundle.putInt("USER_SPONSOR_ID", sponsorID);
-        userBundle.putString("PROFILE_DOB", dateOfBirth);
-        userBundle.putString("BANK_ACCT_NO", bankAcctNumber);
-        userBundle.putString("BANK_ACCT_NO", bankAcctNumber);
-        userBundle.putString("PROFILE_EMAIL", uEmail);
-        userBundle.putString("PROFILE_OFFICE", selectedOffice);
-        userBundle.putString("PROFILE_FIRSTNAME", uFirstName);
-        userBundle.putString("PROFILE_GENDER", selectedGender);
-        userBundle.putString("PROFILE_COUNTRY", "");
-        userBundle.putString("PROFILE_PHONE", ccString);
-        userBundle.putString("PROFILE_SURNAME", uSurname);
-        userBundle.putString("PICTURE_URI", String.valueOf(mImageUri));
-        userBundle.putString("CUSTOMER_LATLONG", String.valueOf(cusLatLng));
-        userBundle.putString("PROFILE_PASSWORD", uPassword);
-        userBundle.putString("PROFILE_NIN", nIN);
-        userBundle.putString("PROFILE_STATE", selectedState);
-        userBundle.putString("PROFILE_ROLE", "Customer");
-        userBundle.putString("PROFILE_STATUS", "Pending Approval");
-        userBundle.putString("PROFILE_USERNAME", uUserName);
-        userBundle.putInt("PROFILE_ID", profileID1);
-        userBundle.putString("PROFILE_DATE_JOINED", joinedDate);
-        userBundle.putInt("PROFILE_SPONSOR_ID", sponsorID);
-        Intent intent = new Intent(SignUpAct.this, NewCustomerDrawer.class);
-        intent.putExtras(userBundle);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_right,
-                R.anim.slide_out_left);
-        Toast.makeText(SignUpAct.this, "Thank you" + "" +
-                "for Signing up " + "" + uFirstName + "" + "on the Awajima. App", Toast.LENGTH_LONG).show();
-
-    }
 
 
     private void checkUser() {
@@ -1468,13 +2416,15 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
             bundle.putParcelable("Profile", profile);
             bundle.putParcelable("Customer", customer);
             //bundle.putString("FirstName", profileFirstName);
+            prefManager.setFirstTimeLaunch(false);
             Intent intent = new Intent(this, NewCustomerDrawer.class);
             intent.putExtras(bundle);
+            startActivity(intent);
             overridePendingTransition(R.anim.slide_in_right,
                     R.anim.slide_out_left);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+
         }
     }
 
@@ -1625,11 +2575,10 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
                         .setDefaults(Notification.DEFAULT_SOUND)
                         .setAutoCancel(true)
                         .setNumber(++numMessages)
-                         .setContentIntent(resultPendingIntent)
+                        .setContentIntent(resultPendingIntent)
                         .setContentText(otpMessage);
 
 
-        layoutOTP.setVisibility(View.VISIBLE);
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context. NOTIFICATION_SERVICE ) ;
         if (android.os.Build.VERSION. SDK_INT >= android.os.Build.VERSION_CODES. O ) {
@@ -1654,304 +2603,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         mNotificationManager.notify(20, builder.build());
     }
 
-    private boolean checkInputs() {
-        @SuppressLint("UseCompatLoadingForDrawables") Drawable customErrorIcon = getResources().getDrawable(R.drawable.ic_error_black_24dp);
-        customErrorIcon.setBounds(0, 0, customErrorIcon.getIntrinsicWidth(), customErrorIcon.getIntrinsicHeight());
 
-        if (TextUtils.isEmpty(edtFirstName.getText().toString())) {
-            edtFirstName.setError("Enter First Name", customErrorIcon);
-            btnVerifyOTPAndSignUp.setEnabled(false);
-            btnVerifyOTPAndSignUp.setTextColor(Color.argb(50, 0, 0, 0));
-            //edtFirstName.requestFocus();
-        } else if (TextUtils.isEmpty(edtSurname.getText().toString())) {
-            edtSurname.setError("Enter Surname", customErrorIcon);
-            btnVerifyOTPAndSignUp.setEnabled(false);
-            btnVerifyOTPAndSignUp.setTextColor(Color.argb(50, 0, 0, 0));
-            //edtSurname.requestFocus();
-        } else if (TextUtils.isEmpty(userName.getText().toString())) {
-            userName.setError("Enter UserName", customErrorIcon);
-            btnVerifyOTPAndSignUp.setEnabled(false);
-            //edtPassword.requestFocus();
-        }
-        else if (edtPassword.getText().toString().length() < 4) {
-            edtPassword.setError("Password cannot be less than 4", customErrorIcon);
-            btnVerifyOTPAndSignUp.setEnabled(false);
-            btnVerifyOTPAndSignUp.setTextColor(Color.argb(50, 0, 0, 0));
-            //edtPassword.requestFocus();
-        }
-        else if (TextUtils.isEmpty(edtPassword.getText().toString())) {
-            edtPassword.setError("Enter Password", customErrorIcon);
-            btnVerifyOTPAndSignUp.setEnabled(false);
-            btnVerifyOTPAndSignUp.setTextColor(Color.argb(50, 0, 0, 0));
-            //edtPassword.requestFocus();
-        }
-        else if (TextUtils.isEmpty(edtNIN.getText().toString())) {
-            edtNIN.setError("Enter your National ID. Number", customErrorIcon);
-            btnVerifyOTPAndSignUp.setEnabled(false);
-            btnVerifyOTPAndSignUp.setTextColor(Color.argb(50, 0, 0, 0));
-            edtNIN.requestFocus();
-        }else if (TextUtils.isEmpty(edtAddress_2.getText().toString())) {
-            edtAddress_2.setError("Enter Your Address", customErrorIcon);
-            btnVerifyOTPAndSignUp.setEnabled(false);
-            btnVerifyOTPAndSignUp.setTextColor(Color.argb(50, 0, 0, 0));
-            //edtPhone_number.requestFocus();
-        }
-        else {
-            btnVerifyOTPAndSignUp.setEnabled(true);
-            btnVerifyOTPAndSignUp.setTextColor(Color.rgb(0, 0, 0));
-        }
-
-
-        return false;
-    }
-
-    private void saveNewCustomer(int sponsorID, LatLng cusLatLng, Account account, StandingOrderAcct standingOrderAcct, String joinedDate, String uFirstName, String uSurname, String ccString, String uAddress, String uUserName, String uPassword, Customer customer, Profile customerProfile, String nIN, Profile managerProfile, String dateOfBirth, String selectedGender, String selectedOffice, String selectedState, Birthday birthday, CustomerManager customerManager, String dateOfBirth1, int profileID1, int virtualAccountNumber, int soAccountNumber, int customerID, int birthdayID, int investmentAcctID, int itemPurchaseAcctID, int promoAcctID, int packageAcctID, ArrayList<Customer> customers) {
-        profile= new Profile();
-        profile=customerProfile;
-        tellerProfile = new Profile();
-        name =uSurname+","+uFirstName;
-        accountArrayList= new ArrayList<>();
-        //countryUS= new Country("USA",);
-        //countryUK= new Country();
-        AcctDAO acctDAO1= new AcctDAO(this);
-
-        Bundle userBundle = new Bundle();
-        prefManager= new PrefManager();
-        awajima= new Awajima();
-        gson6 = new Gson();
-        gson5 = new Gson();
-        gson7 = new Gson();
-        //currency= new Currency();
-        try {
-            usdSymbolNo = Integer.parseInt(RandomAcctNo.getAcctNumeric(10));
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-        currencies=World.getAllCurrencies();
-        currency2 = World.getAllCurrencies().get(7);
-        //usd,gbp , cad, cedi,pak,keny,sa,phil
-        //CAD,KES
-        pakNo = ThreadLocalRandom.current().nextInt(1120, 10400);
-        saNo = ThreadLocalRandom.current().nextInt(1121, 10400);
-        ghaNo = ThreadLocalRandom.current().nextInt(1022, 10200);
-        kenNo = ThreadLocalRandom.current().nextInt(1103, 10500);
-        philNo = ThreadLocalRandom.current().nextInt(1314, 10700);
-
-        //int awajimaAcctNo, int cusID, String accountName, String currencyCode,long accountNo, double accountBalance, AccountTypes accountType,String status
-
-        gbpSymbolNo = ThreadLocalRandom.current().nextInt(10235, 10721400);
-        usdAccount= new Account(virtualAccountNumber,profileID1,customerID,name,"USD",usdSymbolNo,0.00,AccountTypes.BANK_ACCT, "new");
-        cadAccount= new Account(virtualAccountNumber,profileID1,customerID,name,"CAD",cadNo,0.00,AccountTypes.BANK_ACCT, "new");
-        saAccount= new Account(virtualAccountNumber,profileID1,customerID,name,"ZAR",saNo,0.00,AccountTypes.BANK_ACCT, "new");
-        philAccount= new Account(virtualAccountNumber,profileID1,customerID,name,"PHP",philNo,0.00,AccountTypes.BANK_ACCT, "new");
-        ghaAccount= new Account(virtualAccountNumber,profileID1,customerID,name,"GHS",ghaNo,0.00,AccountTypes.BANK_ACCT, "new");
-        kenAccount= new Account(virtualAccountNumber,profileID1,customerID,name,"KES",kenNo,0.00,AccountTypes.BANK_ACCT, "new");
-        pakistanAccount= new Account(virtualAccountNumber,profileID1,customerID,name,"PKR",pakNo,0.00,AccountTypes.BANK_ACCT, "new");
-        gbpAccount= new Account(virtualAccountNumber,profileID1,customerID,name,"GBP",gbpSymbolNo,0.00,AccountTypes.BANK_ACCT, "new");
-        indianAccount= new Account(virtualAccountNumber,profileID1,customerID,name,"INR",indianNo,0.00,AccountTypes.BANK_ACCT, "new");
-
-
-        profile = new Profile(profileID1, uSurname, uFirstName, ccString, uEmail, dateOfBirth, selectedGender, uAddress, "", selectedState, selectedOffice, joinedDate, "Customer", uUserName, uPassword, "pending", "");
-
-        qbUser= new QBUser();
-        qbUser.setCustomData(selectedOffice);
-        qbUser.setEmail(uEmail);
-        qbUser.setPassword(uPassword);
-        qbUser.setCustomDataClass(profile.getClass());
-        qbUser.setFullName(name);
-        qbUser.setExternalId(String.valueOf(profileID));
-        qbUser.setPhone(ccString);
-        qbUser.setId(profileID1);
-        //qbUser.setExternalId(String.valueOf(customerID));
-        //usd=currency.toString();
-        accountArrayList.add(gbpAccount);
-        accountArrayList.add(usdAccount);
-        accountArrayList.add(cadAccount);
-        accountArrayList.add(saAccount);
-        accountArrayList.add(philAccount);
-        accountArrayList.add(pakistanAccount);
-        accountArrayList.add(kenAccount);
-        accountArrayList.add(ghaAccount);
-
-        if(acctDAO1 !=null){
-            acctDAO1.insertAccounts(accountArrayList);
-        }
-
-
-        if (userPreferences !=null){
-            userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-            gson3 = new Gson();
-            lastQBUserUsed= qbUser;
-            json3 = gson3.toJson(lastQBUserUsed);
-
-        }
-
-
-        SharedPreferences.Editor editor = userPreferences.edit();
-        editor.putString("PROFILE_DOB", dateOfBirth);
-        editor.putString("PROFILE_EMAIL", uEmail);
-        editor.putString("PROFILE_OFFICE", selectedOffice);
-        editor.putString("PROFILE_FIRSTNAME", uFirstName);
-        editor.putString("PROFILE_GENDER", selectedGender);
-        editor.putString("PROFILE_COUNTRY", "");
-        editor.putString("PROFILE_NEXT_OF_KIN", "");
-        editor.putString("PROFILE_PHONE", ccString);
-        editor.putString("PROFILE_SURNAME", uSurname);
-        editor.putString("PICTURE_URI", String.valueOf(mImageUri));
-        editor.putString("CUSTOMER_LATLONG", String.valueOf(cusLatLng));
-        editor.putString("PROFILE_PASSWORD", uPassword);
-        editor.putString("PROFILE_NIN", nIN);
-        editor.putString("PROFILE_STATE", selectedState);
-        editor.putString("PROFILE_ROLE", "Customer");
-        editor.putString("PROFILE_STATUS", "Pending Approval");
-        editor.putInt("PROFILE_ID", profileID1);
-        editor.putString("PROFILE_DATE_JOINED", joinedDate);
-        editor.putString("signUpK", signUpK);
-        editor.putString("PROFILE_USERNAME", uUserName);
-        editor.putString("PROFILE_PASSWORD", uPassword);
-        editor.putInt("CUSTOMER_ID", customerID);
-        editor.putString("PROFILE_SURNAME", uSurname);
-        editor.putString("PROFILE_FIRSTNAME", uFirstName);
-        editor.putString("PROFILE_PHONE", ccString);
-        editor.putString("PROFILE_EMAIL", uEmail);
-        editor.putString("PROFILE_DOB", dateOfBirth);
-        editor.putString("PROFILE_ADDRESS", uAddress);
-        editor.putString("PROFILE_GENDER", selectedGender);
-        editor.putString("PROFILE_STATE", selectedState);
-        editor.putString(PROFILE_DOB, dateOfBirth);
-        editor.putString(PROFILE_EMAIL, uEmail);
-        editor.putString(PROFILE_OFFICE, selectedOffice);
-        editor.putString(PROFILE_FIRSTNAME, uFirstName);
-        editor.putString(PROFILE_GENDER, selectedGender);
-        editor.putString(PROFILE_COUNTRY, "");
-        editor.putString(PROFILE_NEXT_OF_KIN, "");
-        editor.putString(PROFILE_PHONE, ccString);
-        editor.putString(PROFILE_SURNAME, uSurname);
-        editor.putString("PICTURE_URI", String.valueOf(mImageUri));
-        editor.putString(PICTURE_URI, String.valueOf(mImageUri));
-        editor.putString(CUSTOMER_LATLONG, String.valueOf(cusLatLng));
-        editor.putString(PROFILE_PASSWORD, uPassword);
-        editor.putString(PROFILE_NIN, nIN);
-        editor.putString(PROFILE_STATE, selectedState);
-        editor.putString(PROFILE_ROLE, "Customer");
-        editor.putString(PROFILE_STATUS, "New");
-        editor.putInt(PROFILE_ID, profileID1);
-        editor.putString(PROFILE_DATE_JOINED, joinedDate);
-        editor.putString(PROFILE_USERNAME, uUserName);
-        editor.putString(PROFILE_PASSWORD, uPassword);
-        editor.putInt(CUSTOMER_ID, customerID);
-        editor.putString(PROFILE_SURNAME, uSurname);
-        editor.putString(PROFILE_FIRSTNAME, uFirstName);
-        editor.putString(PROFILE_PHONE, ccString);
-        editor.putString(PROFILE_EMAIL, uEmail);
-        editor.putString(PROFILE_DOB, dateOfBirth);
-        editor.putString(PROFILE_ADDRESS, uAddress);
-        editor.putString(PROFILE_GENDER, selectedGender);
-        editor.putString(PROFILE_STATE, selectedState);
-        editor.putString("machine", "Customer");
-        editor.putString("Machine", "Customer");
-        editor.putLong("EWalletID", virtualAccountNumber);
-
-        editor.putLong("LastStandingOrderAcctUsed", soAccountNumber);
-        //editor.putLong("TransactionAcctID", transactionAcctID);
-        editor.putInt("InvestmentAcctID", investmentAcctID);
-        editor.putInt("PromoAcctID", promoAcctID);
-        editor.putInt("ItemsPurchaseAcctID", itemPurchaseAcctID);
-        editor.putInt("SavingsAcctID", savingsAcctID);
-        //editor.putLong("MessageAcctID", finalProfileID1);
-
-
-        editor.putString("PICTURE_URI", String.valueOf(mImageUri));
-        editor.putInt("PROFILE_ID", profileID1);
-        editor.putString("EMAIL_ADDRESS", uEmail);
-        editor.putString("Machine", "Customer");
-        editor.putString("LastQBUserUsed", json3).apply();
-        prefManager.saveLoginDetails(uEmail,uPassword);
-
-
-
-        tellerProfile=managerProfile;
-        if (customerManager != null) {
-            ManagerSurname = customerManager.getTSurname();
-            managerFirstName = customerManager.getTFirstName();
-            profileID = customerManager.getTellerProfileID();
-            managerPhoneNumber1 = customerManager.getTPhoneNumber();
-            managerEmail = customerManager.getTEmailAddress();
-            managerUserName = customerManager.getTUserName();
-            officePref = customerManager.getTOffice();
-            managerAddress = customerManager.getTAddress();
-            managerGender = customerManager.getTGender();
-            customerManager.addCustomer(0,customerID, name, ccString,  joinedDate,"New");
-
-        }
-
-        if(customer !=null){
-            customer.setCusProfile(customerProfile);
-            customer.setCusFirstName(uFirstName);
-            customer.setCusSurname(uSurname);
-            customer.setCusPin(uPassword);
-            customer.setCusAddress(uAddress);
-            customer.setCusDob(dateOfBirth);
-            customer.setCusUID(customerID);
-            customer.setCusDateJoined(joinedDate);
-            customer.setCusEmail(uEmail);
-            customer.setCusRole("customer");
-            customer.setCusPhoneNumber(ccString);
-            customer.setCusGender(selectedGender);
-            customer.setCustomerLocation(cusLatLng);
-            customer.setCusUserName(uUserName);
-            customer.setCusState(selectedState);
-            customer.setCusSponsorID(sponsorID);
-            customer.setCusOffice(selectedOffice);
-            customer.setCusAccount(account);
-            customer.setCusStandingOrderAcct(standingOrderAcct);
-            customer.setCusProfilePicture(String.valueOf(mImageUri));
-            customer.setCusAccount(account);
-            customer.setCusAccount(usdAccount);
-            customer.setCusAccount(gbpAccount);
-            customer.setCusStandingOrderAcct(standingOrderAcct);
-            customer.setCusProfile(profile);
-            customer.setCusAccounts(accountArrayList);
-            customer.addCusAccountManager(managerProfileID, ManagerSurname, managerFirstName, managerGender, officePref);
-
-            profile.setProfileFirstName(uFirstName);
-            profile.setProfileLastName(uSurname);
-            profile.setProfileAddress(uAddress);
-            profile.setProfilePassword(uPassword);
-            profile.setProfileDob(dateOfBirth);
-            profile.setProfileDateJoined(joinedDate);
-            profile.setProfileEmail(uEmail);
-            profile.setProfileRole("customer");
-            profile.setProfilePhoneNumber(ccString);
-            profile.setProfileGender(selectedGender);
-            profile.setProfileIdentity(null);
-            profile.setProfileLastKnownLocation(this.cusLatLng);
-            profile.setProfileMachine("customer");
-            profile.setProfileUserName(uUserName);
-            profile.setProfileState(selectedState);
-            profile.setProfileSponsorID(profileID);
-            profile.setProfOfficeName(selectedOffice);
-            profile.setProfile_CustomerManager(customerManager);
-            profile.setProfilePicture(mImageUri);
-            profile.setProfile_Accounts(accountArrayList);
-            int countC=0;
-            profile.setProfQbUser(qbUser);
-            try {
-                awajima.addNewCustomer(customer);
-                awajima.addProfile(profile);
-                awajima.addQBUsers(qbUser);
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-
-            SignUpUser(qbUser,profile);
-
-
-
-        }
-
-
-    }
     private void SignUpUser(final QBUser newUser, final Profile lastProfileUsed) {
         QBSettings.getInstance().init(this, APPLICATION_ID, QUICKBLOX_AUTH_KEY, QUICKBLOX_SECRET_KEY);
         QBSettings.getInstance().setAccountKey(QUICKBLOX_ACCT_KEY);
@@ -2058,7 +2710,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
             managerAddress = managerProfile.getProfileAddress();
             managerGender = managerProfile.getProfileGender();
             managerProfile.addPTimeLine(tittleT1, timelineDetailsT11);
-            managerProfile.addPCustomer(customerID, uSurname, uFirstName, ccString, uEmail, uAddress, selectedGender, selectedOffice, selectedState, mImageUri, joinedDate, uUserName, uPassword);
+            managerProfile.addPCustomer(customerID, uSurname, uFirstName, ccString, uEmail, uAddress, selectedGender, selectedOffice, selectedState, mImageUri, joinedDate, uUserName, PasswordHelpers.passwordHash(uPassword));
 
         }
         int finalProfileID = profileID1;
@@ -2067,7 +2719,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         standingOrderAcct = new StandingOrderAcct(virtualAccountNumber + 12, accountName, 0.00);
         customer = new Customer(customerID, uSurname, uFirstName, ccString, uEmail, nIN, dateOfBirth, selectedGender, uAddress, uUserName, uPassword, selectedOffice, joinedDate);
         birthday = new Birthday(birthdayID, profileID1, uSurname + "," + uFirstName, ccString, uEmail, selectedGender, uAddress, dateOfBirth, 0, "", "Not celebrated");
-        customerProfile = new Profile(profileID1, uSurname, uFirstName, ccString, uEmail, dateOfBirth, selectedGender, uAddress, "", selectedState, selectedOffice, joinedDate, "Customer", uUserName, uPassword, "pending", "");
+        customerProfile = new Profile(profileID1, uSurname, uFirstName, ccString, uEmail, dateOfBirth, selectedGender, uAddress, "", selectedState, selectedOffice, joinedDate, "Customer", uUserName, PasswordHelpers.passwordHash(uPassword), "pending", "");
 
         lastProfileUsed = customerProfile;
         SODAO sodao= new SODAO(this);
@@ -2087,7 +2739,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
                 try {
                     acctDAO.insertAccount(profileID1, customerID, skylightMFb, accountName, virtualAccountNumber, accountBalance, accountTypeStr);
 
-                } catch (NullPointerException e) {
+                } catch (SQLiteException e) {
                     e.printStackTrace();
                 }
 
@@ -2108,7 +2760,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
             try {
                 dbHelper.insertRole(profileID1, "Customer",  ccString);
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -2124,9 +2776,9 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
                 e.printStackTrace();
             }
             try {
-                dbHelper.insertCustomer11(profileID1, customerID, uSurname, uFirstName, ccString, uEmail, dateOfBirth, selectedGender, uAddress, selectedState, "", joinedDate, uUserName, uPassword, mImageUri, "Customer");
+                dbHelper.insertCustomer11(profileID1, customerID, uSurname, uFirstName, ccString, uEmail, dateOfBirth, selectedGender, uAddress, selectedState, "", joinedDate, uUserName, PasswordHelpers.passwordHash(uPassword), mImageUri, "Customer");
 
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -2146,7 +2798,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
                 try {
                     birthdayDAO.insertBirthDay3(birthday, dateOfBirth);
 
-                } catch (NullPointerException e) {
+                } catch (SQLiteException e) {
                     e.printStackTrace();
                 }
 
@@ -2167,7 +2819,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
             if(timeLineClassDAO !=null){
                 try {
                     timeLineClassDAO.insertTimeLine(tittleT1, timelineDetailsTD, timeLineTime, mCurrentLocation);
-                } catch (NullPointerException e) {
+                } catch (SQLiteException e) {
                     e.printStackTrace();
                 }
 
@@ -2187,7 +2839,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
             }
             try {
                 dbHelper.saveNewProfile(customerProfile);
-            } catch (NullPointerException e) {
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
@@ -2208,7 +2860,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
                 try {
                     sodao.insertStandingOrderAcct(profileID1, customerID, virtualAccountNumber, accountName, 0.00);
 
-                } catch (NullPointerException e) {
+                } catch (SQLiteException e) {
                     e.printStackTrace();
                 }
 
@@ -2230,10 +2882,9 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
             }
             if (cusLatLng != null) {
                 try {
-                    dbHelper.openDataBase();
                     try {
                         dbHelper.insertCustomerLocation(customerID, this.cusLatLng);
-                    } catch (NullPointerException e) {
+                    } catch (SQLiteException e) {
                         e.printStackTrace();
                     }
 
@@ -2616,14 +3267,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
                 e.printStackTrace();
             }
             try {
-                try {
-                    dbHelper.saveNewProfile(userProfile2);
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
-
-
-
+                dbHelper.saveNewProfile(userProfile2);
             } catch (SQLiteException e) {
                 e.printStackTrace();
             }
@@ -2634,7 +3278,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         }
 
 
-        if(dbHelper !=null){
+        if(messageDAO !=null){
             try {
 
                 if(sqLiteDatabase !=null){
@@ -2644,15 +3288,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
                 e.printStackTrace();
             }
             try {
-                dbHelper.openDataBase();
-                try {
-                    messageDAO.saveNewMessage(supportMessage);
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
-
-
-
+                messageDAO.saveNewMessage(supportMessage);
             } catch (SQLiteException e) {
                 e.printStackTrace();
             }
@@ -2660,7 +3296,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
         }
 
-        if(dbHelper !=null){
+        if(timeLineClassDAO !=null){
             try {
 
                 if(sqLiteDatabase !=null){
@@ -2670,15 +3306,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
                 e.printStackTrace();
             }
             try {
-                dbHelper.openDataBase();
-                try {
-                    timeLineClassDAO.insertTimeLine("Sign up", "", "2022-04-19", mCurrentLocation);
-
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
-
-
+                timeLineClassDAO.insertTimeLine("Sign up", "", "2022-04-19", mCurrentLocation);
 
             } catch (SQLiteException e) {
                 e.printStackTrace();
@@ -2697,17 +3325,16 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
                 e.printStackTrace();
             }
             try {
-                dbHelper.openDataBase();
                 try {
                     dbHelper.insertCustomer11(1000002, 10, "Ezekiel", "Gwun-orene", "07038843102", "lumgwun1@gmail.com", "1983-04-25", "male", "Ilabuchi", "Rivers", "", "2022-04-19", "Lumgwun", "@Awajima1", Uri.parse(""), "Customer");
 
-                } catch (NullPointerException e) {
+                } catch (SQLiteException e) {
                     e.printStackTrace();
                 }
 
 
 
-            } catch (SQLiteException e) {
+            } catch (NullPointerException e) {
                 e.printStackTrace();
             }
 
@@ -2727,25 +3354,19 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
                 e.printStackTrace();
             }
             try {
-                dbHelper.openDataBase();
+
                 try {
                     dbHelper.saveNewProfile(userProfile1);
-                } catch (NullPointerException e) {
+                } catch (SQLiteException e) {
                     e.printStackTrace();
                 }
 
 
 
-            } catch (SQLiteException e) {
+            } catch (NullPointerException e) {
                 e.printStackTrace();
             }
-
-
         }
-
-
-
-
     }
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -2976,33 +3597,38 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     public void showPrivacyPolicy(View view) {
         webView = findViewById(R.id.webViewT);
-        coordinatorLayout = findViewById(R.id.bottomSheet_Coord);
+        coordinatorLayout = findViewById(R.id.bottomSheet_child);
         mBottomSheetBehavior = BottomSheetBehavior.from(coordinatorLayout);
         mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-        webView.getSettings().setJavaScriptEnabled(true);
-        //webView.loadUrl(AWAJIMA_PRIVACY_POLICIES);
+        showPrivacyP (webView);
+
+    }
+    @SuppressLint("SetJavaScriptEnabled")
+    public void showPrivacyP(WebView webView) {
         webView.setWebViewClient(new SWebViewClient());
         WebSettings webViewSettings = webView.getSettings();
         webViewSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        webViewSettings.setJavaScriptEnabled(true);
         webViewSettings.setPluginState(WebSettings.PluginState.ON);
+        webView.loadUrl(AWAJIMA_PRIVACY_POLICIES);
+
 
     }
+
+
+
     private class SWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             if(plink !=null){
                 webView.loadUrl(AWAJIMA_PRIVACY_POLICIES);
-
                 if (plink.equals(request.getUrl().getHost())) {
-                    // This is my website, so do not override; let my WebView load the page
                     return false;
                 }
-
-
             }
-
             Intent intent = new Intent(Intent.ACTION_VIEW, request.getUrl());
             startActivity(intent);
             return true;
@@ -3534,15 +4160,15 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
     public void dobPicker(View view) {
         cal = Calendar.getInstance();
         year = cal.get(Calendar.YEAR);
-        month = cal.get(Calendar.MONTH+1);
+        month = (cal.get(Calendar.MONTH)+1);
         newMonth = month;
         day = cal.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog dialog = new DatePickerDialog(SignUpAct.this, R.style.DatePickerDialogStyle, mDateSetListener, day, month, year);
         //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //make transparent background.
         dialog.show();
-        dob = year + "-" + newMonth + "-" + day;
-        dateOfBirth = day + "-" + newMonth + "-" + year;
+        dob = year + "-" + month + "-" + day;
+        dateOfBirth = day + "-" + month + "-" + year;
         dobText.setText("Your date of Birth:" + dob);
 
 

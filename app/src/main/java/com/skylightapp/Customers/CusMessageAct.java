@@ -84,15 +84,13 @@ import com.skylightapp.Database.TimeLineClassDAO;
 import com.skylightapp.Database.TranXDAO;
 import com.skylightapp.Database.TransactionGrantingDAO;
 import com.skylightapp.Interfaces.Consts;
-import com.skylightapp.LoginActivity;
+import com.skylightapp.LoginAct;
 import com.skylightapp.MarketClasses.DialogsManager;
 import com.skylightapp.MarketClasses.MarketBizArrayAdapter;
 import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.MarketInterfaces.ConstsInterface;
 import com.skylightapp.Markets.ToastUtils;
-import com.skylightapp.MembershipSubAct;
 import com.skylightapp.R;
-import com.skylightapp.SubHistoryAct;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -687,7 +685,7 @@ public class CusMessageAct extends AppCompatActivity implements TextWatcher, Vie
             @Override
             public void onSuccess(Void aVoid, Bundle bundle) {
                 Log.d(TAG, "SignOut Successful");
-                Intent myIntent = new Intent(CusMessageAct.this, LoginActivity.class);
+                Intent myIntent = new Intent(CusMessageAct.this, LoginAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
