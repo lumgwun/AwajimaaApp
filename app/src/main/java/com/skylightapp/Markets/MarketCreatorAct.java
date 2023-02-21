@@ -336,6 +336,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.act_market_creator);
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, 0 /* clientId */, this)
                 .addApi(Places.GEO_DATA_API)
@@ -355,7 +356,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
             }
             locationManager.requestLocationUpdates(provider, 2 * 60 * 1000, 10, locationListenerNetwork);
         }
-        setContentView(R.layout.act_market_creator);
+
         setTitle("Market OnBoarding");
         checkInternetConnection();
         dbHelper = new DBHelper(this);
@@ -374,14 +375,14 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
         userProfile = gson.fromJson(json, Profile.class);
 
         createLocationRequest();
-        getDeviceLocation();
+        //getDeviceLocation();
         setInitialLocation();
 
         userBundle= new Bundle();
-        mGoogleMap.setMyLocationEnabled(true);
+        //mGoogleMap.setMyLocationEnabled(true);
 
         // Invoke LoaderCallbacks to retrieve and draw already saved locations in map
-        getSupportLoaderManager().initLoader(0, null, this);
+       // getSupportLoaderManager().initLoader(0, null, this);
         edtMarketName = findViewById(R.id.market_Name_Tittle);
         edtMarketAddress = findViewById(R.id.address_market);
         edtMarketLGA = findViewById(R.id.province_lga);
@@ -832,7 +833,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
         circleOptions.strokeWidth(4);
         mGoogleMap.addCircle(circleOptions);
     }
-    @Override
+    /*@Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
 
         mGoogleMap=googleMap;
@@ -859,7 +860,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
             mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(19));
         }
 
-    }
+    }*/
     private void doOtpNotification() {
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
@@ -971,51 +972,9 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
 
     }
 
-    @NonNull
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-        Uri uri = UserContentProvider.BASE_CONTENT_URI;
-        return new CursorLoader(this, uri, null, null, null, null);
-    }
 
-    @Override
-    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        int locationCount = 0;
-        double lat=0;
-        double lng=0;
-        float zoom=0;
 
-        /*locationCount = arg1.getCount();
 
-        arg1.moveToFirst();
-
-        for(int i=0;i<locationCount;i++){
-
-            lat = arg1.getDouble(arg1.getColumnIndex(LocationsDB.FIELD_LAT));
-
-            lng = arg1.getDouble(arg1.getColumnIndex(LocationsDB.FIELD_LNG));
-
-            zoom = arg1.getFloat(arg1.getColumnIndex(LocationsDB.FIELD_ZOOM));
-
-            LatLng location = new LatLng(lat, lng);
-
-            drawMarker(location);
-
-            arg1.moveToNext();
-        }*/
-
-        if(locationCount>0){
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lat,lng)));
-
-            mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(zoom));
-        }
-
-    }
-
-    @Override
-    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-
-    }
 
     private class LocationInsertTask extends AsyncTask<ContentValues, Void, Void>{
         @Override
@@ -1066,7 +1025,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
         super.onStart();
 
         geocoder = new Geocoder(this, Locale.getDefault());
-        getDeviceLocation();
+        //getDeviceLocation();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
     }
@@ -1370,7 +1329,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
     @Override
     public void onDestroy() {
         super.onDestroy();
-        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+        //overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
 
     }
     @Override
@@ -1383,13 +1342,13 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
     @Override
     public void onPause() {
         super.onPause();
-        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+        //overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
+        //overridePendingTransition(R.anim.move_left_in, R.anim.move_right_out);
     }
 
 }
