@@ -224,7 +224,12 @@ public class GoogleMapAct extends AppCompatActivity implements ConnectionCallbac
         editor.putBoolean(getString(R.string.setting_enabled), isChecked);
 
         editor.apply();
-        if (isChecked) mGeofencing.registerAllGeofences(reportID);
+        try {
+            if (isChecked) mGeofencing.registerAllGeofences(reportID);
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
         /*onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

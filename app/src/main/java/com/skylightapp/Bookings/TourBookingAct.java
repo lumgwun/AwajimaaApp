@@ -25,6 +25,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteException;
 import android.location.Geocoder;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -102,6 +103,7 @@ public class TourBookingAct extends AppCompatActivity implements AdapterView.OnI
     private Account account;
     private String json1,json2,json3,nBankN,marketName;
     private Customer customer;
+    private String selectedType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +116,7 @@ public class TourBookingAct extends AppCompatActivity implements AdapterView.OnI
         gson1 = new Gson();
         gson3= new Gson();
         gson2= new Gson();
+        fullDayBundle= new Bundle();
         customer= new Customer();
         userProfile= new Profile();
         spnTourPackage = (Spinner) findViewById(R.id.spnTourPackage);
@@ -131,28 +134,78 @@ public class TourBookingAct extends AppCompatActivity implements AdapterView.OnI
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
         customer = gson1.fromJson(json1, Customer.class);
+        try {
+            fullDayBundle = bundle.getBundle(FULL_DAY);
 
-        fullDayBundle = bundle.getBundle(FULL_DAY);
-        halfDayBundle = bundle.getBundle(HALF_DAY);
-        fullDayPriceList = (ArrayList<PTour>) fullDayBundle.getSerializable(FULL_DAY_PRIVATE_PRICE);
-        halfDayPriceList = (ArrayList<PTour>) halfDayBundle.getSerializable(HALF_DAY_PRIVATE_PRICE);
 
-        fullDayCommonPrice = fullDayBundle
-                .getDouble(FULL_DAY_COMMON_PRICE);
-        halfDayCommonPrice = halfDayBundle
-                .getDouble(HALF_DAY_COMMON_PRICE);
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        try {
+            halfDayBundle = bundle.getBundle(HALF_DAY);
+
+
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        try {
+            fullDayPriceList = (ArrayList<PTour>) fullDayBundle.getSerializable(FULL_DAY_PRIVATE_PRICE);
+
+
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        try {
+            halfDayPriceList = (ArrayList<PTour>) halfDayBundle.getSerializable(HALF_DAY_PRIVATE_PRICE);
+
+
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            fullDayCommonPrice = fullDayBundle.getDouble(FULL_DAY_COMMON_PRICE);
+
+
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            halfDayCommonPrice = halfDayBundle.getDouble(HALF_DAY_COMMON_PRICE);
+
+
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+
 
         tourPackages.add(getResources().getString(R.string.text_common_tour));
-        tourPackages
-                .add(getResources().getString(R.string.private_luxury_tour));
-        if (fullDayPriceList.size() > 0 && halfDayPriceList.size() > 0) {
-            tourType.add(getResources().getString(R.string.text_full_day_tour));
-            tourType.add(getResources().getString(R.string.text_half_day_tour));
-        } else if (fullDayPriceList.size() == 0) {
-            tourType.add(getResources().getString(R.string.text_half_day_tour));
-        } else if (halfDayPriceList.size() == 0) {
-            tourType.add(getResources().getString(R.string.text_full_day_tour));
+        tourPackages.add(getResources().getString(R.string.private_luxury_tour));
+        try {
+            if (fullDayPriceList.size() > 0 && halfDayPriceList.size() > 0) {
+                tourType.add(getResources().getString(R.string.text_full_day_tour));
+                tourType.add(getResources().getString(R.string.text_half_day_tour));
+            } else if (fullDayPriceList.size() == 0) {
+                tourType.add(getResources().getString(R.string.text_half_day_tour));
+            } else if (halfDayPriceList.size() == 0) {
+                tourType.add(getResources().getString(R.string.text_full_day_tour));
+            }
+
+
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
+
+
         packageAdapter = new ArrayAdapter<String>(this,
                 R.layout.tour_spinner_item, R.id.tvSpnItem, tourPackages);
         spnTourPackage.setAdapter(packageAdapter);
@@ -185,21 +238,29 @@ public class TourBookingAct extends AppCompatActivity implements AdapterView.OnI
     }
     @Override
     public void onClick(View v) {
+        preferenceHelper= new PrefManager();
         switch (v.getId()) {
             case R.id.btnBooking:
-                if (preferenceHelper.getDefaultCard() == 0) {
-                    UtilsExtra.showToast(getResources().getString(R.string.no_card),
-                            this);
-                    startActivity(new Intent(this, ViewPayAct.class));
-                } else {
-                    if (txtTourDate.getText().toString()
-                            .equals(getString(R.string.text_booking_date))) {
-                        UtilsExtra.showToast(
-                                getString(R.string.error), this);
+
+                try {
+                    if (preferenceHelper.getDefaultCard() == 0) {
+                        UtilsExtra.showToast(getResources().getString(R.string.no_card),
+                                this);
+                        startActivity(new Intent(this, ViewPayAct.class));
                     } else {
-                        bookTour();
+                        if (txtTourDate.getText().toString()
+                                .equals(getString(R.string.text_booking_date))) {
+                            UtilsExtra.showToast(
+                                    getString(R.string.error), this);
+                        } else {
+                            bookTour();
+                        }
                     }
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
                 }
+
                 break;
             case R.id.home:
                 onBackPressed();
@@ -376,29 +437,62 @@ public class TourBookingAct extends AppCompatActivity implements AdapterView.OnI
             scheduleAdapter.notifyDataSetChanged();
             personAdapter.notifyDataSetChanged();
         }
-        String selectedType = spnTourType.getSelectedItem().toString();
+        try {
+            selectedType = spnTourType.getSelectedItem().toString();
+
+
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
         // Common Tour Calculation
         if (spnTourPackage.getSelectedItemPosition() == 0) {
-            int totalPersons = spnTourPersons.getSelectedItemPosition() + 1;
-            if (selectedType.equals(getString(R.string.text_full_day_tour))) {
-                totalTarrif = fullDayCommonPrice * totalPersons;
-            } else {
-                totalTarrif = halfDayCommonPrice * totalPersons;
+            try {
+                int totalPersons = spnTourPersons.getSelectedItemPosition() + 1;
+                if(selectedType !=null){
+                    if (selectedType.equals(getString(R.string.text_full_day_tour))) {
+                        totalTarrif = fullDayCommonPrice * totalPersons;
+                    } else {
+                        totalTarrif = halfDayCommonPrice * totalPersons;
+                    }
+
+                }
+
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
+
+
+
         }
-        // Private Tour Calculation
+
         else {
-            if (selectedType.equals(getString(R.string.text_full_day_tour))) {
-                totalTarrif = fullDayPriceList.get(
-                        spnTourPersons.getSelectedItemPosition())
-                        .getpTourPrice();
-            } else {
-                totalTarrif = halfDayPriceList.get(
-                        spnTourPersons.getSelectedItemPosition())
-                        .getpTourPrice();
+            try {
+                if(selectedType !=null){
+                    if (selectedType.equals(getString(R.string.text_full_day_tour))) {
+                        totalTarrif = fullDayPriceList.get(
+                                spnTourPersons.getSelectedItemPosition())
+                                .getpTourPrice();
+                    } else {
+                        totalTarrif = halfDayPriceList.get(
+                                spnTourPersons.getSelectedItemPosition())
+                                .getpTourPrice();
+                    }
+
+                }
+
+
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
+
+
         }
-        tvTotalTarrif.setText("R" + totalTarrif);
+        tvTotalTarrif.setText("NGN" + totalTarrif);
     }
     private void hideProgressDialog() {
         if (progressDialog != null && progressDialog.isShowing()) {
@@ -427,5 +521,10 @@ public class TourBookingAct extends AppCompatActivity implements AdapterView.OnI
     @Override
     public void onTaskCompleted(String response, int serviceCode) {
 
+    }
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
     }
 }

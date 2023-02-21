@@ -84,7 +84,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableTop="@drawable/ic_icon2"
-                    android:text="Also Note that the Awajima App would Pay 40% yearly, as interest"
+                    android:text="Also Note that the Awajima App would Pay yearly interest"
                     android:textColor="@color/gradient"
                     android:textSize="20sp"
                     android:ellipsize="marquee"

@@ -70,7 +70,8 @@ public class BookingConstant {
     }
 
     // prefname
-    public static String PREF_NAME = "taxinowclient";
+
+    public static String PREF_NAME = "awajima";
 
     // fragments tag
     public static String FRAGMENT_REGISTER = "FRAGMENT_REGISTER";

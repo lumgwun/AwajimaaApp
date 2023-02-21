@@ -330,7 +330,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
     private LinearLayoutCompat layoutFinal, layoutFirst;
 
     Location location;
-    AppCompatTextView txtLoc, locTxt,otpTxt;
+    AppCompatTextView txtLoc, locTxt,otpTxt, txtUserTypeAdminName,txtUserTypeName;
     private LocationRequest request;
     private CancellationTokenSource cancellationTokenSource;
     private Calendar calendar;
@@ -546,16 +546,18 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            signUpK = savedInstanceState.getString(SIGNUP_STATE_KEY);
-        }
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.act_sign_up);
+        /*if (savedInstanceState != null) {
+            signUpK = savedInstanceState.getString(SIGNUP_STATE_KEY);
+        }
+        */
 
         //setTitle("Onboarding Arena");
         currencies= new ArrayList<>();
         accountArrayList= new ArrayList<>();
-        setContentView(R.layout.act_sign_up);
+
         prefManager = new PrefManager(this);
         workersDAO= new WorkersDAO(this);
         gson3 = new Gson();
@@ -580,10 +582,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         business= new MarketBusiness();
         admminUser= new AdminUser();
         market= new Market();
-        if (!prefManager.isFirstTimeLaunch()) {
-            //checkUser();
-        }
-        doDummyDump();
+        //doDummyDump();
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
         managerProfile = gson.fromJson(json, Profile.class);
@@ -647,6 +646,8 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
         setInitialLocation();
         layoutFirst = findViewById(R.id.layout_first);
         layoutSecond = findViewById(R.id.lay11);
+        txtUserTypeAdminName = findViewById(R.id.admin_type_name);
+        txtUserTypeName = findViewById(R.id.type_name);
         layout_admin_type = findViewById(R.id.admin_layout_type);
 
         spnNewUserType = findViewById(R.id.super_spinner_User);
@@ -665,8 +666,10 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
         if(business !=null){
             if(isNewBizUser){
+
                 layoutFirst.setVisibility(View.VISIBLE);
                 layoutSecond.setVisibility(View.GONE);
+
 
             }
             bizID=business.getBusinessID();
@@ -679,18 +682,21 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
         }
         if(awajima !=null){
-            try {
-                ArrayAdapter<String> myAdaptor = new ArrayAdapter<String>(SignUpAct.this,
-                        android.R.layout.simple_spinner_item,
-                        getResources().getStringArray(R.array.Awajima_user_Type));
-                myAdaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spnNewUserType.setAdapter(myAdaptor);
-                spnNewUserType.setSelection(0);
-            } catch (NullPointerException e) {
-                System.out.println("Oops!");
-            }
+
+            ArrayAdapter<String> myAdaptor = new ArrayAdapter<String>(SignUpAct.this,
+                    android.R.layout.simple_spinner_item,
+                    getResources().getStringArray(R.array.Awajima_user_Type));
+            myAdaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spnNewUserType.setAdapter(myAdaptor);
+            spnNewUserType.setSelection(0);
+
 
         }
+        /*try {
+
+        } catch (NullPointerException e) {
+            System.out.println("Oops!");
+        } */
 
         spnNewUserType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -710,9 +716,14 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
             }
         });
         if(selectedUserType !=null){
+            txtUserTypeName.setVisibility(View.VISIBLE);
+            txtUserTypeName.setText(MessageFormat.format("{0}SignUp", selectedUserType));
             if(selectedUserType.equalsIgnoreCase("Admin User")){
+
                 userSelected=true;
                 layout_admin_type.setVisibility(View.VISIBLE);
+                txtUserTypeName.setVisibility(View.VISIBLE);
+                txtUserTypeAdminName.setText("Admin UserSignUp");
                 spnAdminType.setVisibility(View.VISIBLE);
 
             }else {
@@ -741,7 +752,13 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
             }
         });
         if(selectedAdminType !=null){
-            admin_type=AdminUser.ADMIN_TYPE.valueOf(selectedAdminType);
+            try {
+
+                admin_type=AdminUser.ADMIN_TYPE.valueOf(selectedAdminType);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
         btnCont11.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -762,6 +779,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
             @Override
             public void onClick(View view) {
                 mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
 
             }
@@ -1075,13 +1093,18 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
         });
 
-        if(cusDAO !=null){
+        if (cusDAO != null) {
             try {
-                customers = cusDAO.getAllCustomers11();
-            } catch (SQLiteException e) {
+
+                try {
+                    customers = cusDAO.getAllCustomers11();
+
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
+                }
+            } catch (NullPointerException e) {
                 e.printStackTrace();
             }
-
 
         }
 
@@ -1095,6 +1118,9 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
     }
 
     private void doDummyDump() {
+        MessageDAO messageDAO = new MessageDAO(this);
+        TimeLineClassDAO timeLineClassDAO1 = new TimeLineClassDAO(this);
+        dbHelper= new DBHelper(this);
         try {
 
             if(sqLiteDatabase !=null){
@@ -1104,7 +1130,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
             e.printStackTrace();
         }
 
-        if(dbHelper !=null){
+        /*if(dbHelper !=null){
             dbHelper.onUpgrade(sqLiteDatabase,DATABASE_VERSION,DATABASE_NEW_VERSION);
 
         }else{
@@ -1116,7 +1142,7 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
                 e.printStackTrace();
             }
 
-        }
+        }*/
         userProfile1= new Profile(profileID1,"Emma", "Uja", "08069524599", "unne@gmail.com", "25/04/1988", "female", "Awajima", "","Rivers", "Nigeria", "19/04/2022","Admin", "Unne4ever", "@Unne2","Confirmed","");
         //user=new User(profileID1, "Ezekiel", "Gwun-orene", "07038843102", "lumgwun1@gmail.com", "25/04/1983", "male", "Ilabuchi", "", "Rivers", "Elelenwo", "19/04/2022", "SuperAdmin", "Lumgwun", "@Awajima1", "Confirmed", "");
         try {
@@ -1133,10 +1159,6 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
             e.printStackTrace();
         }
 
-
-
-        MessageDAO messageDAO = new MessageDAO(this);
-        TimeLineClassDAO timeLineClassDAO1 = new TimeLineClassDAO(this);
 
         try {
             try {
@@ -1179,6 +1201,66 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
             e.printStackTrace();
         }
     }
+    public void ContSecond(View view) {
+        layoutFirst = findViewById(R.id.layout_first);
+        layoutSecond = findViewById(R.id.lay11);
+        layout_admin_type = findViewById(R.id.admin_layout_type);
+        txtUserTypeAdminName = findViewById(R.id.admin_type_name);
+        txtUserTypeName = findViewById(R.id.type_name);
+
+
+        layoutFirst.setVisibility(View.GONE);
+        layout_admin_type.setVisibility(View.GONE);
+        layoutSecond.setVisibility(View.VISIBLE);
+    }
+
+    public void ContFirst(View view) {
+        spnNewUserType = findViewById(R.id.super_spinner_User);
+        layoutFirst = findViewById(R.id.layout_first);
+        layoutSecond = findViewById(R.id.lay11);
+        selectedUserType = spnNewUserType.getSelectedItem().toString();
+        layout_admin_type = findViewById(R.id.admin_layout_type);
+
+        if(selectedUserType !=null){
+            layoutFirst.setVisibility(View.GONE);
+
+
+        }
+        if(selectedUserType !=null){
+            if(selectedUserType.equalsIgnoreCase("Admin User")){
+                userSelected=true;
+                layout_admin_type.setVisibility(View.VISIBLE);
+                spnAdminType.setVisibility(View.VISIBLE);
+
+            }else {
+                layout_admin_type.setVisibility(View.GONE);
+                layoutSecond.setVisibility(View.VISIBLE);
+
+            }
+
+        }
+
+
+
+        spnNewUserType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(spnIndex==position){
+                    return;
+
+                }else {
+                    selectedUserType = (String) parent.getSelectedItem();
+
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
 
     public void sendCont11(View view) {
         if(userPreferences !=null){
@@ -3617,8 +3699,6 @@ public class SignUpAct extends AppCompatActivity implements GoogleApiClient.OnCo
 
 
     }
-
-
 
     private class SWebViewClient extends WebViewClient {
         @Override

@@ -22,7 +22,7 @@ public class AdminHomeChoices extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_admin_home_choices);
         ListView lv = new ListView(mContext);
-        lv.setCacheColorHint(Color.TRANSPARENT);
+        lv.setCacheColorHint(Color.BLACK);
         lv.setFadingEdgeLength(0);
         lv.setAdapter(new AdminHomeAdapter(mContext, mItems));
 

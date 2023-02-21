@@ -542,7 +542,7 @@ public class ResponseTeamOffice extends FragmentActivity implements OnMapReadyCa
                         //Fragment fragment = null;
                         switch (i) {
                             case R.id.new_EmA:
-                                Intent myIntent = new Intent(ResponseTeamOffice.this, UserReportEmergAct.class);
+                                Intent myIntent = new Intent(ResponseTeamOffice.this, AwajimaReportAct.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
                                 myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

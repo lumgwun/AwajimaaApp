@@ -35,12 +35,11 @@ import com.skylightapp.Classes.PrefManager;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Customers.NewCustomerDrawer;
 import com.skylightapp.Customers.SavingsSOAct;
-import com.skylightapp.Customers.StandingOrderList;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.LoginDirAct;
 import com.skylightapp.LogisticDetailsAct;
+import com.skylightapp.MapAndLoc.AwajimaReportAct;
 import com.skylightapp.MapAndLoc.HotEmergAct;
-import com.skylightapp.MapAndLoc.UserReportEmergAct;
 import com.skylightapp.R;
 import com.skylightapp.SignTabMainActivity;
 
@@ -283,7 +282,7 @@ public class MarketTab extends TabActivity implements NavigationView.OnNavigatio
         bundle.putLong("ProfileID", profileUID);
         bundle.putString(machine, machine);
         bundle.putParcelable("Profile",userProfile);
-        Intent intent = new Intent(this, UserReportEmergAct.class);
+        Intent intent = new Intent(this, AwajimaReportAct.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         overridePendingTransition(R.anim.slide_in_right,
@@ -312,7 +311,7 @@ public class MarketTab extends TabActivity implements NavigationView.OnNavigatio
             case R.id.emerg_marketM:
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
-                Intent emergIntent = new Intent(MarketTab.this, UserReportEmergAct.class);
+                Intent emergIntent = new Intent(MarketTab.this, AwajimaReportAct.class);
                 emergIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                         Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 overridePendingTransition(R.anim.slide_in_right,

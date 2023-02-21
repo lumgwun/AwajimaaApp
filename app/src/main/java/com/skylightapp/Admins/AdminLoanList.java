@@ -121,4 +121,9 @@ public class AdminLoanList extends AppCompatActivity implements LoanAdapter.OnLo
         startActivity(intent);
 
     }
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
+    }
 }

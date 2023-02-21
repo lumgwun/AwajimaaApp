@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/Platform.MaterialComponents"
-    android:background="@drawable/rect_their_message"
-    tools:context="com.skylightapp.MapAndLoc.UserReportEmergAct">
+    android:background="@drawable/rect_their_message">
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:id="@+id/cord_emergA"
@@ -48,10 +47,8 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_loc"
-            app:layout_anchor="@id/booking_navBar" />
+            app:layout_anchor="@id/eMERG_AppB" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
 
 </RelativeLayout>

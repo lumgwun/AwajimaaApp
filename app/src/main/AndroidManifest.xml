@@ -102,6 +102,9 @@
         tools:node="merge"
         tools:replace="android:allowBackup,android:icon">
         <activity
+            android:name=".MapAndLoc.AwajimaReportAct"
+            android:exported="false" />
+        <activity
             android:name=".Bookings.TripOpMonitorAct"
             android:exported="false" />
         <activity
@@ -1129,7 +1132,6 @@
             android:name=".MapAndLoc.FaceDetAndAudioAct"
             android:exported="false" />
         <activity android:name=".MapAndLoc.GeoDrivingAct" />
-        <activity android:name=".MapAndLoc.UserReportEmergAct" />
         <activity
             android:name=".MapAndLoc.ResponseTeamOffice"
             android:theme="@style/Theme.OurCApp" />

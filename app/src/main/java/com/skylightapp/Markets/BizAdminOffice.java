@@ -42,11 +42,11 @@ import com.skylightapp.Classes.Profile;
 import com.skylightapp.Customers.CustomerHelpActTab;
 import com.skylightapp.Customers.MyAcctOverViewAct;
 import com.skylightapp.Database.DBHelper;
+import com.skylightapp.MapAndLoc.AwajimaReportAct;
 import com.skylightapp.MapAndLoc.OurCleanUpAct;
 import com.skylightapp.MapAndLoc.OurJIVsAct;
 import com.skylightapp.MapAndLoc.RespTeamPrefAct;
 import com.skylightapp.MapAndLoc.TreatedReportAct;
-import com.skylightapp.MapAndLoc.UserReportEmergAct;
 import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.MyGrpSavingsTab;
 import com.skylightapp.MyInsTab;
@@ -377,7 +377,7 @@ public class BizAdminOffice extends TabActivity implements NavigationView.OnNavi
                 startActivity(messengerIntent);
 
             case R.id.reportB_emerg:
-                Intent history = new Intent(BizAdminOffice.this, UserReportEmergAct.class);
+                Intent history = new Intent(BizAdminOffice.this, AwajimaReportAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 history.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
