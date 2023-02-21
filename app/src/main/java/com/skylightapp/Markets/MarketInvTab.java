@@ -15,8 +15,8 @@ import com.skylightapp.Admins.AdminTransActivity;
 import com.skylightapp.Admins.AwajimaUsersAct;
 import com.skylightapp.Customers.CustomerHelpActTab;
 import com.skylightapp.Customers.NewCustomerDrawer;
+import com.skylightapp.MapAndLoc.AwajimaReportAct;
 import com.skylightapp.MapAndLoc.HotEmergAct;
-import com.skylightapp.MapAndLoc.UserReportEmergAct;
 import com.skylightapp.R;
 
 public class MarketInvTab extends TabActivity {
@@ -48,7 +48,7 @@ public class MarketInvTab extends TabActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(MarketInvTab.this, UserReportEmergAct.class);
+                Intent myIntent = new Intent(MarketInvTab.this, AwajimaReportAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

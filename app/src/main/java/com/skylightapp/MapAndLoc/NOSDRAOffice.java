@@ -318,7 +318,7 @@ public class NOSDRAOffice extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.report_new_emerg:
-                Intent history = new Intent(NOSDRAOffice.this, UserReportEmergAct.class);
+                Intent history = new Intent(NOSDRAOffice.this, AwajimaReportAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 history.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

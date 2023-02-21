@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.cardview.widget.CardView;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -19,7 +20,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.skylightapp.Classes.Customer;
@@ -36,7 +36,7 @@ public class WasteRequestAct extends AppCompatActivity implements View.OnClickLi
     final String TAG = "Facture";
     Context context;
     Spinner SP_client,SP_frequency, SP_Schedule,spnState;
-    MaterialCardView cvConfirm,cvDays;
+    private CardView cvConfirm,cvDays;
     String loginEmail = "";
     AppCompatTextView Amount,link_credit,Collects,tvDays,tvDays2;
     private ProgressDialog pd;
@@ -55,6 +55,7 @@ public class WasteRequestAct extends AppCompatActivity implements View.OnClickLi
     int SharedPrefProfileID;
     private Customer customer;
     private Bundle bundle;
+    String client,frequency,niche,place2,residence2,phone2,days,amount,collects;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -217,199 +218,208 @@ public class WasteRequestAct extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
 
-        String Client = SP_client.getSelectedItem().toString();
-        String Frequency = SP_frequency.getSelectedItem().toString();
+        client = SP_client.getSelectedItem().toString();
+        frequency = SP_frequency.getSelectedItem().toString();
+        if(client !=null){
+            if(frequency !=null){
 
-        if (Client.equalsIgnoreCase("Particular")) {
-            if (Frequency.equalsIgnoreCase("One Shot")) {
-                Amount.setText("500");
-            } else if (Frequency.equalsIgnoreCase("1* par week")) {
-                Amount.setText("1000");
-            } else if (Frequency.equalsIgnoreCase("2* par week")) {
-                Amount.setText("2000");
-            } else if (Frequency.equalsIgnoreCase("3* par week")) {
-                Amount.setText("3000");
-            } else if (Frequency.equalsIgnoreCase("4* par week")) {
-                Amount.setText("4000");
-            } else if (Frequency.equalsIgnoreCase("5* par week")) {
-                Amount.setText("5000");
-            }
-        } else if (Client.equalsIgnoreCase("Fast Food")) {
-            if (Frequency.equalsIgnoreCase("One Shot")) {
-                Amount.setText("500");
-            } else if (Frequency.equalsIgnoreCase("1* par week")) {
-                Amount.setText("1000");
-            } else if (Frequency.equalsIgnoreCase("2* par week")) {
-                Amount.setText("2000");
-            } else if (Frequency.equalsIgnoreCase("3* par week")) {
-                Amount.setText("3000");
-            } else if (Frequency.equalsIgnoreCase("4* par week")) {
-                Amount.setText("4000");
-            } else if (Frequency.equalsIgnoreCase("5* par week")) {
-                Amount.setText("5000");
+                if (client.equalsIgnoreCase("Particular")) {
+                    if (frequency.equalsIgnoreCase("One Shot")) {
+                        Amount.setText("500");
+                    } else if (frequency.equalsIgnoreCase("1* par week")) {
+                        Amount.setText("1000");
+                    } else if (frequency.equalsIgnoreCase("2* par week")) {
+                        Amount.setText("2000");
+                    } else if (frequency.equalsIgnoreCase("3* par week")) {
+                        Amount.setText("3000");
+                    } else if (frequency.equalsIgnoreCase("4* par week")) {
+                        Amount.setText("4000");
+                    } else if (frequency.equalsIgnoreCase("5* par week")) {
+                        Amount.setText("5000");
+                    }
+                } else if (client.equalsIgnoreCase("Fast Food")) {
+                    if (frequency.equalsIgnoreCase("One Shot")) {
+                        Amount.setText("500");
+                    } else if (frequency.equalsIgnoreCase("1* par week")) {
+                        Amount.setText("1000");
+                    } else if (frequency.equalsIgnoreCase("2* par week")) {
+                        Amount.setText("2000");
+                    } else if (frequency.equalsIgnoreCase("3* par week")) {
+                        Amount.setText("3000");
+                    } else if (frequency.equalsIgnoreCase("4* par week")) {
+                        Amount.setText("4000");
+                    } else if (frequency.equalsIgnoreCase("5* par week")) {
+                        Amount.setText("5000");
+                    }
+
+                } else if (client.equalsIgnoreCase("Church")) {
+                    if (frequency.equalsIgnoreCase("One Shot")) {
+                        Amount.setText("500");
+                    } else if (frequency.equalsIgnoreCase("1* par week")) {
+                        Amount.setText("1000");
+                    } else if (frequency.equalsIgnoreCase("2* par week")) {
+                        Amount.setText("2000");
+                    } else if (frequency.equalsIgnoreCase("3* par week")) {
+                        Amount.setText("3000");
+                    } else if (frequency.equalsIgnoreCase("4* par week")) {
+                        Amount.setText("4000");
+                    } else if (frequency.equalsIgnoreCase("5* par week")) {
+                        Amount.setText("5000");
+                    }
+
+                }else if (client.equalsIgnoreCase("School")) {
+                    if (frequency.equalsIgnoreCase("One Shot")) {
+                        Amount.setText("500");
+                    } else if (frequency.equalsIgnoreCase("1* par week")) {
+                        Amount.setText("1000");
+                    } else if (frequency.equalsIgnoreCase("2* par week")) {
+                        Amount.setText("2000");
+                    } else if (frequency.equalsIgnoreCase("3* par week")) {
+                        Amount.setText("3000");
+                    } else if (frequency.equalsIgnoreCase("4* par week")) {
+                        Amount.setText("4000");
+                    } else if (frequency.equalsIgnoreCase("5* par week")) {
+                        Amount.setText("5000");
+                    }
+
+                }else if (client.equalsIgnoreCase("Market")) {
+                    if (frequency.equalsIgnoreCase("One Shot")) {
+                        Amount.setText("500");
+                    } else if (frequency.equalsIgnoreCase("1* par week")) {
+                        Amount.setText("1000");
+                    } else if (frequency.equalsIgnoreCase("2* par week")) {
+                        Amount.setText("2000");
+                    } else if (frequency.equalsIgnoreCase("3* par week")) {
+                        Amount.setText("3000");
+                    } else if (frequency.equalsIgnoreCase("4* par week")) {
+                        Amount.setText("4000");
+                    } else if (frequency.equalsIgnoreCase("5* par week")) {
+                        Amount.setText("5000");
+                    }
+
+                }else if (client.equalsIgnoreCase("Local Waste Point")) {
+                    if (frequency.equalsIgnoreCase("One Shot")) {
+                        Amount.setText("500");
+                    } else if (frequency.equalsIgnoreCase("1* par week")) {
+                        Amount.setText("1000");
+                    } else if (frequency.equalsIgnoreCase("2* par week")) {
+                        Amount.setText("2000");
+                    } else if (frequency.equalsIgnoreCase("3* par week")) {
+                        Amount.setText("3000");
+                    } else if (frequency.equalsIgnoreCase("4* par week")) {
+                        Amount.setText("4000");
+                    } else if (frequency.equalsIgnoreCase("5* par week")) {
+                        Amount.setText("5000");
+                    }
+
+                }else if (client.equalsIgnoreCase("Occasion")) {
+                    if (frequency.equalsIgnoreCase("One Shot")) {
+                        Amount.setText("500");
+                    } else if (frequency.equalsIgnoreCase("1* par week")) {
+                        Amount.setText("1000");
+                    } else if (frequency.equalsIgnoreCase("2* par week")) {
+                        Amount.setText("2000");
+                    } else if (frequency.equalsIgnoreCase("3* par week")) {
+                        Amount.setText("3000");
+                    } else if (frequency.equalsIgnoreCase("4* par week")) {
+                        Amount.setText("4000");
+                    } else if (frequency.equalsIgnoreCase("5* par week")) {
+                        Amount.setText("5000");
+                    }
+
+                }else if (client.equalsIgnoreCase("Bar")) {
+                    if (frequency.equalsIgnoreCase("One Shot")) {
+                        Amount.setText("500");
+                    } else if (frequency.equalsIgnoreCase("1* par week")) {
+                        Amount.setText("1000");
+                    } else if (frequency.equalsIgnoreCase("2* par week")) {
+                        Amount.setText("2000");
+                    } else if (frequency.equalsIgnoreCase("3* par week")) {
+                        Amount.setText("3000");
+                    } else if (frequency.equalsIgnoreCase("4* par week")) {
+                        Amount.setText("4000");
+                    } else if (frequency.equalsIgnoreCase("5* par week")) {
+                        Amount.setText("5000");
+                    }
+
+                }else if (client.equalsIgnoreCase("Grocery store") || client.equalsIgnoreCase("Restaurant")) {
+                    if (frequency.equalsIgnoreCase("One Shot")) {
+                        Amount.setText("500");
+                    } else if (frequency.equalsIgnoreCase("1* par week")) {
+                        Amount.setText("1000");
+                    } else if (frequency.equalsIgnoreCase("2* par week")) {
+                        Amount.setText("2000");
+                    } else if (frequency.equalsIgnoreCase("3* par week")) {
+                        Amount.setText("3000");
+                    } else if (frequency.equalsIgnoreCase("4* par week")) {
+                        Amount.setText("4000");
+                    } else if (frequency.equalsIgnoreCase("5* par week")) {
+                        Amount.setText("5000");
+                    }
+                } else if (client.equalsIgnoreCase("Hotel")) {
+                    if (frequency.equalsIgnoreCase("One Shot")) {
+                        Amount.setText("500");
+                    } else if (frequency.equalsIgnoreCase("1* par week")) {
+                        Amount.setText("1000");
+                    } else if (frequency.equalsIgnoreCase("2* par week")) {
+                        Amount.setText("2000");
+                    } else if (frequency.equalsIgnoreCase("3* par week")) {
+                        Amount.setText("3000");
+                    } else if (frequency.equalsIgnoreCase("4* par week")) {
+                        Amount.setText("4000");
+                    } else if (frequency.equalsIgnoreCase("5* par week")) {
+                        Amount.setText("5000");
+                    }
+                }else if (client.equalsIgnoreCase("Party")) {
+                    if (frequency.equalsIgnoreCase("One Shot")) {
+                        Amount.setText("500");
+                    } else if (frequency.equalsIgnoreCase("1* par week")) {
+                        Amount.setText("1000");
+                    } else if (frequency.equalsIgnoreCase("2* par week")) {
+                        Amount.setText("2000");
+                    } else if (frequency.equalsIgnoreCase("3* par week")) {
+                        Amount.setText("3000");
+                    } else if (frequency.equalsIgnoreCase("4* par week")) {
+                        Amount.setText("4000");
+                    } else if (frequency.equalsIgnoreCase("5* par week")) {
+                        Amount.setText("5000");
+                    }
+                } else if (client.equalsIgnoreCase("Marriage") || client.equalsIgnoreCase("Ceremony")) {
+                    if (frequency.equalsIgnoreCase("One Shot")) {
+                        Amount.setText("500");
+                    } else if (frequency.equalsIgnoreCase("1* par week")) {
+                        Amount.setText("1000");
+                    } else if (frequency.equalsIgnoreCase("2* par week")) {
+                        Amount.setText("2000");
+                    } else if (frequency.equalsIgnoreCase("3* par week")) {
+                        Amount.setText("3000");
+                    } else if (frequency.equalsIgnoreCase("4* par week")) {
+                        Amount.setText("4000");
+                    } else if (frequency.equalsIgnoreCase("5* par week")) {
+                        Amount.setText("5000");
+                    }
+                }
+
+                if (frequency.equalsIgnoreCase("One Shot")) {
+                    Collects.setText("1");
+                } else if (frequency.equalsIgnoreCase("1* par week")) {
+                    Collects.setText("4* per month");
+                } else if (frequency.equalsIgnoreCase("2* par week")) {
+                    Collects.setText("8* per month");
+                } else if (frequency.equalsIgnoreCase("3* par week")) {
+                    Collects.setText("12* per month");
+                } else if (frequency.equalsIgnoreCase("4* par week")) {
+                    Collects.setText("16* per month");
+                } else if (frequency.equalsIgnoreCase("5* par week")) {
+                    Collects.setText("20* per month");
+                }
+
             }
 
-        } else if (Client.equalsIgnoreCase("Church")) {
-            if (Frequency.equalsIgnoreCase("One Shot")) {
-                Amount.setText("500");
-            } else if (Frequency.equalsIgnoreCase("1* par week")) {
-                Amount.setText("1000");
-            } else if (Frequency.equalsIgnoreCase("2* par week")) {
-                Amount.setText("2000");
-            } else if (Frequency.equalsIgnoreCase("3* par week")) {
-                Amount.setText("3000");
-            } else if (Frequency.equalsIgnoreCase("4* par week")) {
-                Amount.setText("4000");
-            } else if (Frequency.equalsIgnoreCase("5* par week")) {
-                Amount.setText("5000");
-            }
-
-        }else if (Client.equalsIgnoreCase("School")) {
-            if (Frequency.equalsIgnoreCase("One Shot")) {
-                Amount.setText("500");
-            } else if (Frequency.equalsIgnoreCase("1* par week")) {
-                Amount.setText("1000");
-            } else if (Frequency.equalsIgnoreCase("2* par week")) {
-                Amount.setText("2000");
-            } else if (Frequency.equalsIgnoreCase("3* par week")) {
-                Amount.setText("3000");
-            } else if (Frequency.equalsIgnoreCase("4* par week")) {
-                Amount.setText("4000");
-            } else if (Frequency.equalsIgnoreCase("5* par week")) {
-                Amount.setText("5000");
-            }
-
-        }else if (Client.equalsIgnoreCase("Market")) {
-            if (Frequency.equalsIgnoreCase("One Shot")) {
-                Amount.setText("500");
-            } else if (Frequency.equalsIgnoreCase("1* par week")) {
-                Amount.setText("1000");
-            } else if (Frequency.equalsIgnoreCase("2* par week")) {
-                Amount.setText("2000");
-            } else if (Frequency.equalsIgnoreCase("3* par week")) {
-                Amount.setText("3000");
-            } else if (Frequency.equalsIgnoreCase("4* par week")) {
-                Amount.setText("4000");
-            } else if (Frequency.equalsIgnoreCase("5* par week")) {
-                Amount.setText("5000");
-            }
-
-        }else if (Client.equalsIgnoreCase("Local Waste Point")) {
-            if (Frequency.equalsIgnoreCase("One Shot")) {
-                Amount.setText("500");
-            } else if (Frequency.equalsIgnoreCase("1* par week")) {
-                Amount.setText("1000");
-            } else if (Frequency.equalsIgnoreCase("2* par week")) {
-                Amount.setText("2000");
-            } else if (Frequency.equalsIgnoreCase("3* par week")) {
-                Amount.setText("3000");
-            } else if (Frequency.equalsIgnoreCase("4* par week")) {
-                Amount.setText("4000");
-            } else if (Frequency.equalsIgnoreCase("5* par week")) {
-                Amount.setText("5000");
-            }
-
-        }else if (Client.equalsIgnoreCase("Occasion")) {
-            if (Frequency.equalsIgnoreCase("One Shot")) {
-                Amount.setText("500");
-            } else if (Frequency.equalsIgnoreCase("1* par week")) {
-                Amount.setText("1000");
-            } else if (Frequency.equalsIgnoreCase("2* par week")) {
-                Amount.setText("2000");
-            } else if (Frequency.equalsIgnoreCase("3* par week")) {
-                Amount.setText("3000");
-            } else if (Frequency.equalsIgnoreCase("4* par week")) {
-                Amount.setText("4000");
-            } else if (Frequency.equalsIgnoreCase("5* par week")) {
-                Amount.setText("5000");
-            }
-
-        }else if (Client.equalsIgnoreCase("Bar")) {
-            if (Frequency.equalsIgnoreCase("One Shot")) {
-                Amount.setText("500");
-            } else if (Frequency.equalsIgnoreCase("1* par week")) {
-                Amount.setText("1000");
-            } else if (Frequency.equalsIgnoreCase("2* par week")) {
-                Amount.setText("2000");
-            } else if (Frequency.equalsIgnoreCase("3* par week")) {
-                Amount.setText("3000");
-            } else if (Frequency.equalsIgnoreCase("4* par week")) {
-                Amount.setText("4000");
-            } else if (Frequency.equalsIgnoreCase("5* par week")) {
-                Amount.setText("5000");
-            }
-
-        }else if (Client.equalsIgnoreCase("Grocery store") || Client.equalsIgnoreCase("Restaurant")) {
-            if (Frequency.equalsIgnoreCase("One Shot")) {
-                Amount.setText("500");
-            } else if (Frequency.equalsIgnoreCase("1* par week")) {
-                Amount.setText("1000");
-            } else if (Frequency.equalsIgnoreCase("2* par week")) {
-                Amount.setText("2000");
-            } else if (Frequency.equalsIgnoreCase("3* par week")) {
-                Amount.setText("3000");
-            } else if (Frequency.equalsIgnoreCase("4* par week")) {
-                Amount.setText("4000");
-            } else if (Frequency.equalsIgnoreCase("5* par week")) {
-                Amount.setText("5000");
-            }
-        } else if (Client.equalsIgnoreCase("Hotel")) {
-            if (Frequency.equalsIgnoreCase("One Shot")) {
-                Amount.setText("500");
-            } else if (Frequency.equalsIgnoreCase("1* par week")) {
-                Amount.setText("1000");
-            } else if (Frequency.equalsIgnoreCase("2* par week")) {
-                Amount.setText("2000");
-            } else if (Frequency.equalsIgnoreCase("3* par week")) {
-                Amount.setText("3000");
-            } else if (Frequency.equalsIgnoreCase("4* par week")) {
-                Amount.setText("4000");
-            } else if (Frequency.equalsIgnoreCase("5* par week")) {
-                Amount.setText("5000");
-            }
-        }else if (Client.equalsIgnoreCase("Party")) {
-            if (Frequency.equalsIgnoreCase("One Shot")) {
-                Amount.setText("500");
-            } else if (Frequency.equalsIgnoreCase("1* par week")) {
-                Amount.setText("1000");
-            } else if (Frequency.equalsIgnoreCase("2* par week")) {
-                Amount.setText("2000");
-            } else if (Frequency.equalsIgnoreCase("3* par week")) {
-                Amount.setText("3000");
-            } else if (Frequency.equalsIgnoreCase("4* par week")) {
-                Amount.setText("4000");
-            } else if (Frequency.equalsIgnoreCase("5* par week")) {
-                Amount.setText("5000");
-            }
-        } else if (Client.equalsIgnoreCase("Marriage") || Client.equalsIgnoreCase("Ceremony")) {
-            if (Frequency.equalsIgnoreCase("One Shot")) {
-                Amount.setText("500");
-            } else if (Frequency.equalsIgnoreCase("1* par week")) {
-                Amount.setText("1000");
-            } else if (Frequency.equalsIgnoreCase("2* par week")) {
-                Amount.setText("2000");
-            } else if (Frequency.equalsIgnoreCase("3* par week")) {
-                Amount.setText("3000");
-            } else if (Frequency.equalsIgnoreCase("4* par week")) {
-                Amount.setText("4000");
-            } else if (Frequency.equalsIgnoreCase("5* par week")) {
-                Amount.setText("5000");
-            }
         }
 
-        if (Frequency.equalsIgnoreCase("One Shot")) {
-            Collects.setText("1");
-        } else if (Frequency.equalsIgnoreCase("1* par week")) {
-            Collects.setText("4* per month");
-        } else if (Frequency.equalsIgnoreCase("2* par week")) {
-            Collects.setText("8* per month");
-        } else if (Frequency.equalsIgnoreCase("3* par week")) {
-            Collects.setText("12* per month");
-        } else if (Frequency.equalsIgnoreCase("4* par week")) {
-            Collects.setText("16* per month");
-        } else if (Frequency.equalsIgnoreCase("5* par week")) {
-            Collects.setText("20* per month");
-        }
+
+
 
         if (!emptyResidence(residence)){
 
@@ -419,15 +429,17 @@ public class WasteRequestAct extends AppCompatActivity implements View.OnClickLi
 
                     if (phoneValidate()){
 
-                        final String client = SP_client.getSelectedItem().toString();
-                        final String frequency = SP_frequency.getSelectedItem().toString();
-                        final String niche = SP_Schedule.getSelectedItem().toString();
-                        final String place2 = place.getText().toString();
-                        final String residence2 = residence.getText().toString();
-                        final String phone2 = phone.getText().toString();
-                        final String days = tvDays2.getText().toString();
-                        final String amount = Amount.getText().toString();
-                        final String collects = Collects.getText().toString();
+
+
+                        client = SP_client.getSelectedItem().toString();
+                        frequency = SP_frequency.getSelectedItem().toString();
+                        niche = SP_Schedule.getSelectedItem().toString();
+                         place2 = place.getText().toString();
+                        residence2 = residence.getText().toString();
+                         phone2 = phone.getText().toString();
+                         days = tvDays2.getText().toString();
+                         amount = Amount.getText().toString();
+                         collects = Collects.getText().toString();
 
                         HashMap<String, String> postData = new HashMap<>();
 
@@ -534,7 +546,7 @@ public class WasteRequestAct extends AppCompatActivity implements View.OnClickLi
 
         final int length = phone.length();
 
-        if (length < 8){
+        if (length < 11){
             inputPhone.setError(getString(R.string.err_msg_phone));
             requestFocus(inputPhone);
             return false;

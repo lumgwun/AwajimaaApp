@@ -129,7 +129,7 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback, LocationListener, LoaderManager.LoaderCallbacks<Cursor> {
+public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, LocationListener {
     SharedPreferences userPreferences;
     AppCompatEditText edtMarketName, edtMarketAddress, edtMarketLGA, edtTown, edtStateOutsideNig;
     String country, lga, marketName, marketAddress, marketType, marketState, stateOutSideNig;
@@ -195,6 +195,8 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
     private static int AUTOCOMPLETE_REQUEST_CODE = 19998;
     private ArrayList<Market>marketArrayList;
     private Awajima awajima;
+    String provider;
+    private boolean isActivatedEnabled = false;
 
 
     String[] PERMISSIONS33 = {
@@ -275,6 +277,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
                 if (marketCountry != null) {
                     layoutCompatState.setVisibility(View.VISIBLE);
                     if (marketCountry.equalsIgnoreCase("Nigeria")) {
+                        isActivatedEnabled=true;
                         cardViewSelectSpn.setVisibility(View.VISIBLE);
                         spnState.setVisibility(View.VISIBLE);
                         txtSelectState.setVisibility(View.VISIBLE);
@@ -283,6 +286,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
                         cardViewEnterState.setVisibility(View.GONE);
 
                     } else {
+                        isActivatedEnabled=true;
                         txtSelectState.setVisibility(View.VISIBLE);
                         edtStateOutsideNig.setVisibility(View.VISIBLE);
                         cardViewEnterState.setVisibility(View.VISIBLE);
@@ -332,6 +336,25 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, 0 /* clientId */, this)
+                .addApi(Places.GEO_DATA_API)
+                .build();
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        criteria.setAltitudeRequired(false);
+        criteria.setBearingRequired(false);
+        criteria.setCostAllowed(true);
+        criteria.setPowerRequirement(Criteria.POWER_LOW);
+
+        provider = locationManager.getBestProvider(criteria, true);
+        if (provider != null) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            }
+            locationManager.requestLocationUpdates(provider, 2 * 60 * 1000, 10, locationListenerNetwork);
+        }
         setContentView(R.layout.act_market_creator);
         setTitle("Market OnBoarding");
         checkInternetConnection();
@@ -349,29 +372,11 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         json = userPreferences.getString("LastProfileUsed", "");
         userProfile = gson.fromJson(json, Profile.class);
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, 0 /* clientId */, this)
-                .addApi(Places.GEO_DATA_API)
-                .build();
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        criteria.setAltitudeRequired(false);
-        criteria.setBearingRequired(false);
-        criteria.setCostAllowed(true);
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
+
         createLocationRequest();
         getDeviceLocation();
         setInitialLocation();
-        SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_Market_New);
-        if (fm != null) {
-            fm.getMapAsync(this);
-        }
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            return;
-        }
         userBundle= new Bundle();
         mGoogleMap.setMyLocationEnabled(true);
 
@@ -456,7 +461,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
         countryArrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);*/
         //spnState.setAdapter(countryArrayAdapter);
         cancellationTokenSource = new CancellationTokenSource();
-        mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+        /*mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
             @Override
             public void onMapClick(LatLng point) {
@@ -492,7 +497,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
                 deleteTask.execute();
 
             }
-        });
+        });*/
         spnMarketType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -513,13 +518,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
         txtLoc22 = findViewById(R.id.whereMarketIs);
         txtLocTxt = findViewById(R.id.here_market);
 
-        String provider = locationManager.getBestProvider(criteria, true);
-        if (provider != null) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            }
-            locationManager.requestLocationUpdates(provider, 2 * 60 * 1000, 10, locationListenerNetwork);
-        }
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
@@ -622,6 +621,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
                                 return;
 
                             } else {
+                                isActivatedEnabled=true;
                                 try {
 
                                     if (sqLiteDatabase != null) {
@@ -657,6 +657,9 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
                                     }
 
 
+                                }
+                                if(userProfile !=null){
+                                    userProfile.addMarket(market);
                                 }
 
                                 userBundle.putParcelable("Profile", userProfile);
@@ -917,54 +920,53 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
             newLat[0] = mCurrentLocation.getLatitude();
             newLng[0] = mCurrentLocation.getLongitude();
 
-        }
+            try {
+                if (Geocoder.isPresent()) {
+                    try {
+                        addresses = geocoder.getFromLocation(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(), 1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+
+                        address = addresses.get(0).getAddressLine(0);
+                        localityString = addresses.get(0).getSubLocality();
+                        city = addresses.get(0).getAdminArea();
+                        //txtLoc.setVisibility(View.VISIBLE);
 
 
-        try {
-            if (Geocoder.isPresent()) {
-                try {
-                    addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                } catch (IOException e) {
-                    e.printStackTrace();
+
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+
+                    StringBuilder street = new StringBuilder();
+
+
+
+                    street.append(localityString).append("");
+
+
+
+                    Toast.makeText(MarketCreatorAct.this, street,
+                            Toast.LENGTH_SHORT).show();
+
+                } else {
+
+                    txtLocTxt.setVisibility(View.GONE);
+                    txtLoc22.setVisibility(View.GONE);
+                    //go
                 }
-                try {
 
-                    address = addresses.get(0).getAddressLine(0);
-                    localityString = addresses.get(0).getSubLocality();
-                    city = addresses.get(0).getAdminArea();
-                    //txtLoc.setVisibility(View.VISIBLE);
+                Geocoder newGeocoder = new Geocoder(MarketCreatorAct.this, Locale.ENGLISH);
 
 
 
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
+            } catch (IndexOutOfBoundsException e) {
 
-                StringBuilder street = new StringBuilder();
-
-
-
-                street.append(localityString).append("");
-
-
-
-                Toast.makeText(MarketCreatorAct.this, street,
-                        Toast.LENGTH_SHORT).show();
-
-            } else {
-
-                txtLocTxt.setVisibility(View.GONE);
-                txtLoc22.setVisibility(View.GONE);
-                //go
+                Log.e("tag", e.getMessage());
             }
 
-            Geocoder newGeocoder = new Geocoder(MarketCreatorAct.this, Locale.ENGLISH);
-
-
-
-        } catch (IndexOutOfBoundsException e) {
-
-            Log.e("tag", e.getMessage());
         }
 
     }
@@ -1150,10 +1152,11 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
                                     cusLatLng = new LatLng(4.52871, 7.44507);
                                     Log.d(TAG, "Current location is null. Using defaults.");
                                 }
-
+                                location=location2;
                             }
 
                         });
+
 
                 geocoder = new Geocoder(this, Locale.getDefault());
 
@@ -1298,6 +1301,7 @@ public class MarketCreatorAct extends AppCompatActivity implements GoogleApiClie
 
                                     }
                                     cusLatLng = new LatLng(latitude, longitude);
+                                    location=location2;
 
 
                                 }

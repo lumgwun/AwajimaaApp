@@ -39,13 +39,13 @@ public class MyTripBAct extends AppCompatActivity implements TripBookingAdapter.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_my_train);
+        setContentView(R.layout.act_my_trip_booking);
         userProfile=new Profile();
         gson1 = new Gson();
         gson = new Gson();
         customer=new Customer();
         tripBookings= new ArrayList<>();
-        recyclerView = findViewById(R.id.recycler_boat_trips);
+        recyclerView = findViewById(R.id.user_trip_bookings);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPrefUserName=userPreferences.getString("PROFILE_USERNAME", "");
         SharedPrefUserPassword=userPreferences.getString("PROFILE_PASSWORD", "");
@@ -127,4 +127,5 @@ public class MyTripBAct extends AppCompatActivity implements TripBookingAdapter.
     public void onListItemClick(int index) {
 
     }
+
 }

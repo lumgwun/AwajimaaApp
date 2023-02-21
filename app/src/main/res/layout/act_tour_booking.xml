@@ -20,7 +20,7 @@
                 android:id="@+id/spnTourPackage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shadow_left" />
+                android:background="@drawable/rect_new" />
 
             <Spinner
                 android:id="@+id/spnTourType"

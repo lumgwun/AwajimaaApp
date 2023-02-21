@@ -7,11 +7,22 @@ import java.util.List;
 
 public class SliderData {
     private int imgUrl;
+    private String tittle;
     private List<Integer> imgLink;
     private ArrayList<SlideModel> slideModelList;
 
     public SliderData(int imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public SliderData(String taxi_booking, int imager) {
+        this.tittle = taxi_booking;
+        this.imgUrl = imager;
+
+    }
+
+    public SliderData() {
+        super();
     }
 
     public int getImgUrl() {
@@ -40,5 +51,13 @@ public class SliderData {
     public void setSlideModel(SlideModel slideModel) {
         slideModelList = new ArrayList<>();
         slideModelList.add(slideModel);
+    }
+
+    public String getTittle() {
+        return tittle;
+    }
+
+    public void setTittle(String tittle) {
+        this.tittle = tittle;
     }
 }

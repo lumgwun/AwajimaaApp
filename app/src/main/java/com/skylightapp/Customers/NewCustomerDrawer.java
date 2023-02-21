@@ -101,6 +101,7 @@ import com.skylightapp.Classes.Utils;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.LoginAct;
+import com.skylightapp.MapAndLoc.AwajimaReportAct;
 import com.skylightapp.MapAndLoc.ClimateCOffice;
 import com.skylightapp.MapAndLoc.NewOSReportAct;
 import com.skylightapp.MarketClasses.Market;
@@ -118,7 +119,6 @@ import com.skylightapp.R;
 import com.skylightapp.SecureAppAct;
 import com.skylightapp.SignTabMainActivity;
 import com.skylightapp.AwajimaSliderAct;
-import com.skylightapp.MapAndLoc.UserReportEmergAct;
 import com.skylightapp.SignUpAct;
 import com.skylightapp.SubHistoryAct;
 import com.skylightapp.SuperAdmin.StocksTab;
@@ -969,7 +969,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
                 break;
             case R.id.nav_cus_Env:
                 reportCategory="Environmental Issues";
-                Intent envIntent = new Intent(NewCustomerDrawer.this, UserReportEmergAct.class);
+                Intent envIntent = new Intent(NewCustomerDrawer.this, AwajimaReportAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 envIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -979,7 +979,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
                 break;
             case R.id.nav_Crime_Cus:
                 reportCategory="Crimes";
-                Intent intentCrimes = new Intent(NewCustomerDrawer.this, UserReportEmergAct.class);
+                Intent intentCrimes = new Intent(NewCustomerDrawer.this, AwajimaReportAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 intentCrimes.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -1008,7 +1008,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
 
             case R.id.nav_Cus_Emerg:
                 reportCategory="Emergencies";
-                Intent emergIntent = new Intent(NewCustomerDrawer.this, UserReportEmergAct.class);
+                Intent emergIntent = new Intent(NewCustomerDrawer.this, AwajimaReportAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 emergIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -1018,7 +1018,7 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
                 break;
             case R.id.cusClimate_menu:
                 reportCategory="Climate Change";
-                Intent cIntent = new Intent(NewCustomerDrawer.this, UserReportEmergAct.class);
+                Intent cIntent = new Intent(NewCustomerDrawer.this, AwajimaReportAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 cIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

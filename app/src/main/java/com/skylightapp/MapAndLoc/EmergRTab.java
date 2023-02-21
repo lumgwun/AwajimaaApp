@@ -125,7 +125,7 @@ public class EmergRTab extends TabActivity {
                 .setIndicator("", resources.getDrawable(R.drawable.boat33))
                 .setContent(intentFence);
 
-        Intent intentNew = new Intent().setClass(this, UserReportEmergAct.class);
+        Intent intentNew = new Intent().setClass(this, AwajimaReportAct.class);
         @SuppressLint("UseCompatLoadingForDrawables") TabHost.TabSpec tabSpecLogin = tabhost
                 .newTabSpec("New Report")
                 .setIndicator("", resources.getDrawable(R.drawable.boat33))

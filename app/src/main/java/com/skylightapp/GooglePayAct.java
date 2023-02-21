@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -40,6 +41,7 @@ import com.skylightapp.Bookings.Trip;
 import com.skylightapp.Bookings.TripBooking;
 import com.skylightapp.Classes.AppConstants;
 import com.skylightapp.Classes.Customer;
+import com.skylightapp.Classes.GooglePayMFactory;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Classes.Transaction;
 import com.skylightapp.GooglePayDir.ViewModelProvider;
@@ -103,6 +105,7 @@ public class GooglePayAct extends AppCompatActivity implements  View.OnClickList
     private Transaction transaction;
     private int bookingID,tripID,customerID,bundleProfID,bundleCusID,noOfMinors,marketID;
     private String paymentType;
+    private boolean doIt=false;
     private String serviceType,state,office,country,bookingName,currency,takeOffPoint;
     private static final String TIME_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss.SSSZZZZZ";
     ActivityResultLauncher<IntentSenderRequest> resolvePaymentForResult = registerForActivityResult(
@@ -124,6 +127,7 @@ public class GooglePayAct extends AppCompatActivity implements  View.OnClickList
                         break;
                 }
             });
+    private GooglePayMFactory viewModelFactory;
 
 
     public static PaymentsClient createPaymentsClient(Activity activity) {
@@ -138,6 +142,8 @@ public class GooglePayAct extends AppCompatActivity implements  View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_google_pay);
+
+        //AndroidInjection.inject(this);
         btnContinue = findViewById(R.id.con_to_Checkout);
         txtPayingFor = findViewById(R.id.payingForText);
         addToGoogleWalletButton = findViewById(R.id.addG);
@@ -178,6 +184,7 @@ public class GooglePayAct extends AppCompatActivity implements  View.OnClickList
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                doIt=true;
                 addToGoogleWalletButton.setVisibility(View.VISIBLE);
                 addToGoogleWalletButtonContainer.setVisibility(View.VISIBLE);
                 googlePayButton.setVisibility(View.VISIBLE);
@@ -188,6 +195,7 @@ public class GooglePayAct extends AppCompatActivity implements  View.OnClickList
 
         gPayBundle=getIntent().getExtras();
         if(gPayBundle !=null){
+            doIt=true;
             amount=gPayBundle.getLong("Amount");
             business=gPayBundle.getParcelable("MarketBusiness");
             paymentMarket=gPayBundle.getParcelable("Market");
@@ -218,8 +226,21 @@ public class GooglePayAct extends AppCompatActivity implements  View.OnClickList
             txtPayingFor.setText(currency+amount);
         }
 
-        model = new ViewModelProvider(this).get(CheckoutViewModel.class);
-        model.canUseGooglePay.observe(this, this::setGooglePayAvailable);
+        try {
+            model = ViewModelProviders.of(this, viewModelFactory).get(CheckoutViewModel.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        //model = new ViewModelProvider(this).get(CheckoutViewModel.class);
+
+        try {
+            model.canUseGooglePay.observe(this, this::setGooglePayAvailable);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
 
         try {
             model.canAddPasses.observe(this, this::setAddToGoogleWalletAvailable);
@@ -232,6 +253,7 @@ public class GooglePayAct extends AppCompatActivity implements  View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.con_to_Checkout:
+                doIt=true;
                 addToGoogleWalletButton.setVisibility(View.VISIBLE);
                 addToGoogleWalletButtonContainer.setVisibility(View.VISIBLE);
                 googlePayButton.setVisibility(View.VISIBLE);
@@ -269,6 +291,7 @@ public class GooglePayAct extends AppCompatActivity implements  View.OnClickList
 
         gPayBundle=getIntent().getExtras();
         if(gPayBundle !=null){
+            doIt=true;
             amount=gPayBundle.getLong("Amount");
             business=gPayBundle.getParcelable("MarketBusiness");
             paymentMarket=gPayBundle.getParcelable("Market");
@@ -356,6 +379,7 @@ public class GooglePayAct extends AppCompatActivity implements  View.OnClickList
                 } else if (exception instanceof ApiException) {
                     ApiException apiException = (ApiException) exception;
                     handleError(apiException.getStatusCode(), apiException.getMessage());
+                    doIt=true;
                     Intent dialogIntent = new Intent(GooglePayAct.this, BizSubQTOptionAct.class);
                     dialogIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     overridePendingTransition(R.anim.slide_in_right,
@@ -392,6 +416,7 @@ public class GooglePayAct extends AppCompatActivity implements  View.OnClickList
 
         gPayBundle=getIntent().getExtras();
         if(gPayBundle !=null){
+            doIt=true;
             amount=gPayBundle.getLong("Amount");
             business=gPayBundle.getParcelable("MarketBusiness");
             paymentMarket=gPayBundle.getParcelable("Market");
@@ -504,6 +529,7 @@ public class GooglePayAct extends AppCompatActivity implements  View.OnClickList
             }
 
             if(tripBookingDAO !=null){
+                doIt=true;
                 try {
                     tripBID=tripBookingDAO.insertTripBooking(bookingID,tripID,bundleProfID,bundleCusID,nin,paymentFor,sitCount,stopPointName,bookingAmt,modeOfPayment,subDate,"Paid",nin,noOfMinors,state,office,country,bookingName,currency,takeOffPoint);
 
@@ -528,6 +554,7 @@ public class GooglePayAct extends AppCompatActivity implements  View.OnClickList
                 totalPriceCents=amount;
 
                 if(subscriptionDAO !=null){
+                    doIt=true;
                     try {
                         subDBID=subscriptionDAO.insertSubscription(bookingID,bizID,marketID,amount,bundleProfID,bundleCusID,noOfMonths,subDate,subEndDate,modeOfPayment,paymentFor,status,state,office,country,bookingName,currency);
                     } catch (NullPointerException e) {
@@ -563,6 +590,7 @@ public class GooglePayAct extends AppCompatActivity implements  View.OnClickList
                 noOfMonths=1;
 
                 if(subscriptionDAO !=null){
+                    doIt=true;
                     try {
                         subDBID=subscriptionDAO.insertSubscription(0,amount,bundleProfID,bundleCusID,noOfMonths,subDate,subEndDate,modeOfPayment,paymentFor,status,currency,state,country,bookingName,office);
                     } catch (NullPointerException e) {
@@ -670,7 +698,4 @@ public class GooglePayAct extends AppCompatActivity implements  View.OnClickList
             addToGoogleWalletButton.setClickable(true);
         }
     }
-
-
-
 }

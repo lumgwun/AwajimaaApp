@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -57,6 +58,9 @@ public class LogisticsComLAct extends AppCompatActivity {
     public static final int SELECT_MARKET = 10;
     public static final int MANAGE_MARKET = 190;
     private int indexr=0;
+    private RecyclerView marketRecyclerView;
+    private boolean isSelected=false;
+
 
 
     @Override
@@ -65,6 +69,7 @@ public class LogisticsComLAct extends AppCompatActivity {
         setContentView(R.layout.act_transport_com);
         dbHelper= new DBHelper(this);
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        marketRecyclerView = (RecyclerView)findViewById(R.id.tc_recyler_list);
         gson = new Gson();
         marketBizS = new ArrayList<>();
         marketBizAll = new ArrayList<>();
@@ -125,23 +130,31 @@ public class LogisticsComLAct extends AppCompatActivity {
         marketBizS.add(new MarketBusiness(R.drawable.ifesinachi, "Safe Motorway","Transport Company"));
         marketBizS.add(new MarketBusiness(R.drawable.ifesinachi, "Saima Nigeria","Transport Company"));
 
-        RecyclerView marketRecyclerView = (RecyclerView)findViewById(R.id.tc_recyler_list);
-        mAdapter = new MBizRecyA(LogisticsComLAct.this, marketBizS);
+
+        mAdapter = new MBizRecyA(LogisticsComLAct.this,R.layout.biz_row, marketBizS);
         GridLayoutManager gridLayout = new GridLayoutManager(this, 2);
         marketRecyclerView.addItemDecoration(new GridSpacingDeco(spanCount, spacing, includeEdge));
         marketRecyclerView.setLayoutManager(gridLayout);
         marketRecyclerView.setHasFixedSize(true);
         marketRecyclerView.setAdapter(mAdapter);
-        if(marketBizDAO !=null){
+
+        try {
             try {
                 marketBizAll=marketBizDAO.getAllBusFromSubAndType("active","Transport Company");
-            } catch (NullPointerException e) {
+
+
+
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
 
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-        if(marketBizAll !=null){
+
+
+        /*if(marketBizAll !=null){
             marketBizS.addAll(marketBizAll);
 
             mAdapter = new MBizRecyA(LogisticsComLAct.this, marketBizS);
@@ -151,7 +164,7 @@ public class LogisticsComLAct extends AppCompatActivity {
             marketRecyclerView.setHasFixedSize(true);
             marketRecyclerView.setAdapter(mAdapter);
 
-        }
+        }*/
 
 
         etSearch.addTextChangedListener(new TextWatcher() {
@@ -206,14 +219,18 @@ public class LogisticsComLAct extends AppCompatActivity {
             mAdapter.setWhenClickListener(new MBizRecyA.OnItemsClickListener() {
                 @Override
                 public void onBizClick(MarketBusiness marketBusiness) {
-                    bundle.putParcelable("MarketBusiness",marketBusiness);
-                    Intent myIntent = new Intent(LogisticsComLAct.this, LogisticDetailsAct.class);
-                    overridePendingTransition(R.anim.slide_in_right,
-                            R.anim.slide_out_left);
-                    myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    myIntent.putExtras(bundle);
-                    startActivity(myIntent);
+                    if(isSelected){
+                        bundle.putParcelable("MarketBusiness",marketBusiness);
+                        Intent myIntent = new Intent(LogisticsComLAct.this, LogisticDetailsAct.class);
+                        overridePendingTransition(R.anim.slide_in_right,
+                                R.anim.slide_out_left);
+                        myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        myIntent.putExtras(bundle);
+                        startActivity(myIntent);
+
+                    }
+
                 }
 
                 /*@Override

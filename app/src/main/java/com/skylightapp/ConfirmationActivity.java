@@ -11,8 +11,9 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
-import com.skylightapp.Admins.AdminPackageAct;
 import com.skylightapp.Classes.PrefManager;
+import com.skylightapp.MapAndLoc.AwajimaReportAct;
+import com.skylightapp.Markets.MarketCreatorAct;
 
 
 public class ConfirmationActivity extends AppCompatActivity {
@@ -46,7 +47,7 @@ public class ConfirmationActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
                             prefManager.setFirstTimeLaunch(false);
-                                    @SuppressLint({"NewApi", "LocalSuppress"}) Intent loginRIntent = new Intent(ConfirmationActivity.this, SignUpAct.class);
+                                    @SuppressLint({"NewApi", "LocalSuppress"}) Intent loginRIntent = new Intent(ConfirmationActivity.this, MarketCreatorAct .class);
                             loginRIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(loginRIntent);
                             overridePendingTransition(R.anim.slide_in_right,
@@ -64,10 +65,15 @@ public class ConfirmationActivity extends AppCompatActivity {
     private void launchHomeScreen() {
         prefManager.setFirstTimeLaunch(false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            startActivity(new Intent(ConfirmationActivity.this, SignUpAct.class));
+            startActivity(new Intent(ConfirmationActivity.this, MarketCreatorAct.class));
         }
         overridePendingTransition(R.anim.slide_in_right,
                 R.anim.slide_out_left);
         finish();
+    }
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
     }
 }

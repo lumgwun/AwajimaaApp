@@ -60,7 +60,7 @@ import com.skylightapp.Customers.SOTab;
 import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.ProfDAO;
 import com.skylightapp.LoginAct;
-import com.skylightapp.MapAndLoc.UserReportEmergAct;
+import com.skylightapp.MapAndLoc.AwajimaReportAct;
 import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.MyGrpSavingsTab;
 import com.skylightapp.MyTimelineAct;
@@ -837,7 +837,7 @@ public class MarketBizOffice extends AppCompatActivity implements NavigationView
 
 
             case R.id.nav_report_Emerg:
-                Intent emegIntent = new Intent(MarketBizOffice.this, UserReportEmergAct.class);
+                Intent emegIntent = new Intent(MarketBizOffice.this, AwajimaReportAct.class);
                 overridePendingTransition(R.anim.slide_in_right,
                         R.anim.slide_out_left);
                 emegIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

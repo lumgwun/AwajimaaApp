@@ -88,7 +88,7 @@
                         android:fontFamily="@font/gilroy_bold"
                         android:textColor="@android:color/holo_green_light"
                         android:gravity="center_vertical|center_horizontal"
-                        android:text="Save for your Rent,   Marriage,   Property buying,   Japa Plans,  Stocking,Vacation plan,  medical Trip,  School fee,  and Investments"
+                        android:text="Save for your Property Purchase, Rent,   Marriage,    Japa Plans,  Stocking,Vacation plan,  medical Trip,  School fee,  and Investments"
                         android:background="@drawable/rect6g_a" />
 
                 </com.google.android.material.card.MaterialCardView>
@@ -135,32 +135,37 @@
                     android:id="@+id/card_l009871"
                     app:cardBackgroundColor="@color/white"
                     android:layout_height="wrap_content">
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="130dp"
-                        android:layout_marginTop="20dp"
-                        android:src="@drawable/ifesinachi" />
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="170dp"
-                        android:visibility="gone"
-                        android:layout_marginTop="20dp"
-                        android:src="@drawable/chisco_transport" />
 
+                    <com.smarteist.autoimageslider.SliderView
+                        android:id="@+id/slider_Welcome"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp"
+                        android:layout_centerInParent="true"
+                        app:sliderAnimationDuration="600"
+                        app:sliderAutoCycleDirection="back_and_forth"
+                        app:sliderIndicatorAnimationDuration="600"
+                        app:sliderIndicatorEnabled="true"
+                        app:sliderIndicatorGravity="center_horizontal|bottom"
+                        app:sliderIndicatorMargin="15dp"
+                        app:sliderIndicatorOrientation="horizontal"
+                        app:sliderIndicatorPadding="3dp"
+                        app:sliderIndicatorRadius="2dp"
+                        app:sliderIndicatorSelectedColor="#5A5A5A"
+                        app:sliderIndicatorUnselectedColor="#FFF"
+                        app:sliderScrollTimeInSec="1" />
 
                 </com.google.android.material.card.MaterialCardView>
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:layout_marginTop="5dp"
-                    android:src="@drawable/train" />
-
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_marginTop="20dp"
                     android:src="@drawable/boat33" />
 
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/train" />
 
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -168,8 +173,6 @@
                     android:layout_height="70dp"
                     android:layout_marginTop="5dp"
                     android:src="@drawable/ic_taxi" />
-
-
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/switcher2"

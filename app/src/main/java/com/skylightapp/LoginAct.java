@@ -16,6 +16,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -60,6 +61,7 @@ import com.skylightapp.Markets.MarketBizDonorOffice;
 import com.skylightapp.Markets.MarketBizOffice;
 import com.skylightapp.Markets.MarketBizPOffice;
 import com.skylightapp.Markets.ToastUtils;
+import com.skylightapp.StateDir.StateDashboard;
 import com.skylightapp.SuperAdmin.SuperAdminOffice;
 import com.skylightapp.Tellers.TellerDrawerAct;
 import com.skylightapp.Tellers.TellerHomeChoices;
@@ -192,6 +194,7 @@ public class LoginAct extends AppCompatActivity {
     private boolean isAwajimaCustomer ;
     private boolean isAccountant ;
     private boolean isTeller ;
+    private boolean isState;
 
     private static final String TAG = "EmailPassword";
     private static final String PREF_NAME = "awajima";
@@ -217,7 +220,7 @@ public class LoginAct extends AppCompatActivity {
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setTitle("Awajima Login Access");
         random= new Random();
-        SQLiteDataBaseBuild();
+        //SQLiteDataBaseBuild();
         prefManager= new PrefManager(this);
         profDAO= new ProfDAO(this);
         isSuperAdmin =false;
@@ -252,7 +255,7 @@ public class LoginAct extends AppCompatActivity {
             sharedPrefRole=userPreferences.getString("PROFILE_ROLE","");
             sharedPrefProfileID=userPreferences.getInt("PROFILE_ID",0);
         }
-        refLink = "https://skylightbizapp.page.link/?invitedby=" + sharedPrefProfileID;
+        refLink = "https://awajima.page.link/?signup=" + sharedPrefProfileID;
 
 
         //sqLiteDatabase = dbHelper.getWritableDatabase();
@@ -311,8 +314,8 @@ public class LoginAct extends AppCompatActivity {
 
         layout_Email = findViewById(R.id.emailAddressLayout);
         btn_loginEmail = findViewById(R.id.email_login);
-        btn_loginUserName.setOnClickListener(this::loginWithUserName);
-        btn_loginEmail.setOnClickListener(this::useEmailForLogin);
+        //btn_loginUserName.setOnClickListener(this::loginWithUserName);
+        //btn_loginEmail.setOnClickListener(this::useEmailForLogin);
 
         loginBtnWithUserName = findViewById(R.id.btn_login6);
         btn_loginUserName.setOnClickListener(new View.OnClickListener() {
@@ -362,7 +365,7 @@ public class LoginAct extends AppCompatActivity {
         edtUsername = findViewById(R.id.edt_username5);
         edtPassword = findViewById(R.id.edt_password6);
 
-        emailBtnLoginEmail.setOnClickListener(this::loginUserEmail);
+        //emailBtnLoginEmail.setOnClickListener(this::loginUserEmail);
         /*emailBtnLoginEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -599,28 +602,38 @@ public class LoginAct extends AppCompatActivity {
         profileDao= new ProfDAO(this);
         cusDAO= new CusDAO(this);
         customers=new ArrayList<Customer>();
-        if (profileDao != null) {
+
+        try {
             try {
                 profiles = profileDao.getAllProfiles();
 
-            } catch (NullPointerException e) {
+
+
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
 
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
 
-
-
-        if (cusDAO != null) {
+        try {
             try {
                 customers = cusDAO.getAllCustomers11();
 
-            } catch (NullPointerException e) {
+
+
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
+
+
 
         userPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = userPreferences.edit();
@@ -640,56 +653,69 @@ public class LoginAct extends AppCompatActivity {
         }
 
         progressBar.setVisibility(View.GONE);
-
-
-        if (profileDao != null) {
-
+        try {
             try {
                 sharedPrefRole=profileDao.getProfileRoleByUserNameAndPassword(userName,password);
 
-            } catch (NullPointerException e) {
+
+
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
 
-
-        if (profileDao != null) {
-
+        try {
             try {
                 profileID=profileDao.getProfileIDByUserNameAndPassword(userName,password);
 
-            } catch (NullPointerException e) {
+
+
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
 
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
 
-        if (profileDao != null) {
-
+        try {
             try {
                 sharedPrefUserMachine= profileDao.getProfileRoleByUserNameAndPassword(userName,password);
 
-            } catch (NullPointerException e) {
+
+
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
 
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
 
-
-        if (profileDao != null) {
-
+        try {
             try {
                 userProfile=profileDao.getProfileFromUserNameAndPassword(userName,password);
 
-            } catch (NullPointerException e) {
+
+
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
 
 
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
+
+
+
+
 
         if(userProfile !=null){
             profileID=userProfile.getPID();
@@ -1222,6 +1248,53 @@ public class LoginAct extends AppCompatActivity {
             isAccountant =false;
             isTeller =false;
             Intent adminIntent = new Intent(this, MarketBizDonorOffice.class);
+            adminIntent.putExtra("PROFILE_ID", profileID);
+            adminIntent.putExtra("PROFILE_USERNAME", userName);
+            adminIntent.putExtra("PROFILE_PASSWORD", password);
+            adminIntent.putExtra("PROFILE_OFFICE", officeBranch);
+            adminIntent.putExtra("PROFILE_STATE", state);
+            adminIntent.putExtra("PROFILE_ROLE", sharedPrefRole);
+            adminIntent.putExtra("PROFILE_EMAIL", email);
+            adminIntent.putExtra("PROFILE_PHONE", sharedPrefPhone);
+            adminIntent.putExtra("PROFILE_FIRSTNAME", sharedPrefPhone);
+            adminIntent.putExtra("PROFILE_SURNAME", sharedPrefSurName);
+            adminIntent.putExtra("PROFILE_DOB", dob);
+            adminIntent.putExtra("PROFILE_DATE_JOINED", dateJoined);
+            adminIntent.putExtra("CUSTOMER_ID", customerID1);
+            adminIntent.putExtra("PROFILE_GENDER", gender);
+            adminIntent.putExtra("PROFILE_ADDRESS", address);
+            adminIntent.putExtra("PICTURE_URI", picture);
+            adminIntent.putExtra(PROFILE_ID, profileID);
+            adminIntent.putExtra(PROFILE_USERNAME, userName);
+            adminIntent.putExtra(PROFILE_PASSWORD, password);
+            adminIntent.putExtra(PROFILE_OFFICE, officeBranch);
+            adminIntent.putExtra(PROFILE_STATE, state);
+            adminIntent.putExtra(PROFILE_ROLE, sharedPrefRole);
+            adminIntent.putExtra(PROFILE_DATE_JOINED, dateJoined);
+            adminIntent.putExtra(PROFILE_PHONE, sharedPrefPhone);
+            adminIntent.putExtra(PROFILE_FIRSTNAME, sharedPrefFirstName);
+            adminIntent.putExtra(PROFILE_SURNAME, sharedPrefSurName);
+            adminIntent.putExtra(PROFILE_DOB, dob);
+            adminIntent.putExtra(CUSTOMER_ID, customerID1);
+            adminIntent.putExtra(PROFILE_GENDER, gender);
+            adminIntent.putExtra(PROFILE_ADDRESS, address);
+            adminIntent.putExtra(PICTURE_URI, picture);
+            startActivity(adminIntent);
+
+        }
+        if(sharedPrefUserMachine.equalsIgnoreCase("State")){
+            isBizDonor =false;
+            isAdmin =false;
+            isSuperAdmin =false;
+            isMarketAdmin =false;
+            isBizPartner =false;
+            isBizRegulator =false;
+            isBiz =false;
+            isAwajimaCustomer =false;
+            isAccountant =false;
+            isTeller =false;
+            isState =false;
+            Intent adminIntent = new Intent(this, StateDashboard.class);
             adminIntent.putExtra("PROFILE_ID", profileID);
             adminIntent.putExtra("PROFILE_USERNAME", userName);
             adminIntent.putExtra("PROFILE_PASSWORD", password);
@@ -1978,12 +2051,12 @@ public class LoginAct extends AppCompatActivity {
     }
 
 
-    public void loginWithUserName(View view) {
+    /*public void loginWithUserName(View view) {
     }
 
     public void useEmailForLogin(View view) {
     }
 
     public void loginUserEmail(View view) {
-    }
+    }*/
 }

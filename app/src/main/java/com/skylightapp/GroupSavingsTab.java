@@ -9,16 +9,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TabHost;
 
-import com.github.clans.fab.FloatingActionButton;
 import com.google.gson.Gson;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.skylightapp.Classes.Profile;
 import com.skylightapp.Customers.CustomerHelpActTab;
-import com.skylightapp.Customers.NewCustomerDrawer;
-import com.skylightapp.Customers.PackListTab;
 import com.skylightapp.Database.DBHelper;
-import com.skylightapp.MapAndLoc.UserReportEmergAct;
-import com.skylightapp.Markets.BizRegulOffice;
+import com.skylightapp.MapAndLoc.AwajimaReportAct;
 import com.skylightapp.Markets.MarketTab;
 
 public class GroupSavingsTab extends TabActivity {
@@ -93,7 +89,7 @@ public class GroupSavingsTab extends TabActivity {
                         //Fragment fragment = null;
                         switch (i){
                             case R.id.gsavings_Em:
-                                Intent myIntent = new Intent(GroupSavingsTab.this, UserReportEmergAct.class);
+                                Intent myIntent = new Intent(GroupSavingsTab.this, AwajimaReportAct.class);
                                 overridePendingTransition(R.anim.slide_in_right,
                                         R.anim.slide_out_left);
                                 myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

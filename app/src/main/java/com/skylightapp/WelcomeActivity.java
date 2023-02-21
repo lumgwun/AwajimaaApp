@@ -24,6 +24,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.skylightapp.Classes.PrefManager;
+import com.skylightapp.Classes.SliderData;
+import com.skylightapp.Classes.WelcomeSliderAd;
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
+
+import java.util.ArrayList;
 
 @SuppressWarnings("deprecation")
 public class WelcomeActivity extends AppCompatActivity {
@@ -36,22 +43,73 @@ public class WelcomeActivity extends AppCompatActivity {
     private Button btnSkip, btnNext,buttonSwitchNext;
     private PrefManager prefManager;
     private AppCompatTextView txtWel2;
+    private ArrayList<SliderData> sliderDataArrayList ;
+    private WelcomeSliderAd welcomeSliderAd;
+    private SliderView sliderView;
+    private boolean isDoArrayGet=false;
+    SliderData sliderBus,sliderJet,sliderBoat,sliderTour,sliderTrain,sliderTaxi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_welcome);
         setTitle("Awajima Reception Area");
-        //int messageCount = strings.length;
+        sliderDataArrayList = new ArrayList<SliderData>();
         final int[] currentIndex = {-1};
-
+        sliderView = findViewById(R.id.slider_Welcome);
+        sliderBus= new SliderData();
+        sliderJet= new SliderData();
+        sliderBoat= new SliderData();
+        sliderTour= new SliderData();
+        sliderTrain= new SliderData();
+        sliderTaxi= new SliderData();
 
         prefManager = new PrefManager(this);
         if (!prefManager.isFirstTimeLaunch()) {
             launchHomeScreen();
             finish();
         }
+        sliderBus.setTittle("Transport Companies");
+        sliderBus.setImgUrl(R.drawable.ifesinachi);
+        sliderJet.setTittle("Jet Charter");
+        sliderJet.setImgUrl(R.drawable.jet_private);
+        sliderBoat.setTittle("Boat Booking");
+        sliderBoat.setImgUrl(R.drawable.boat33);
+        sliderTour.setTittle("Tour Bookings");
+        sliderTour.setImgUrl(R.drawable.dubai_tour);
+        sliderTrain.setTittle("Train Booking");
+        sliderTrain.setImgUrl(R.drawable.train);
+        sliderTaxi.setTittle("Taxi Booking");
+        sliderTaxi.setImgUrl(R.drawable.taxi2);
+
+
         getGoogleVersionNo();
+        sliderDataArrayList.add(sliderBus);
+        sliderDataArrayList.add(sliderJet);
+        sliderDataArrayList.add(sliderBoat);
+        sliderDataArrayList.add(sliderTour);
+        sliderDataArrayList.add(sliderTrain);
+        sliderDataArrayList.add(sliderTaxi);
+
+
+        //Animation bounce = AnimationUtils.loadAnimation(this, android.R.anim.bounce_interpolator);
+        try {
+            if(isDoArrayGet){
+                welcomeSliderAd = new WelcomeSliderAd(this, sliderDataArrayList);
+
+                sliderView.setAutoCycleDirection(SliderView.LAYOUT_DIRECTION_LTR);
+                sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
+                sliderView.setScrollTimeInSec(3);
+                sliderView.setAutoCycle(true);
+                sliderView.startAutoCycle();
+                sliderView.setSliderTransformAnimation(SliderAnimations.CUBEINSCALINGTRANSFORMATION);
+                sliderView.setSliderAdapter(welcomeSliderAd);
+
+            }
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
 
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
