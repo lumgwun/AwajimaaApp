@@ -939,6 +939,15 @@ public class NewCustomerDrawer extends SecureAppAct implements NavigationView.On
                 startActivity(profile);
                 break;
 
+            case R.id.market_N:
+                    Intent marketIntent = new Intent(NewCustomerDrawer.this, MarketCreatorAct.class);
+                overridePendingTransition(R.anim.slide_in_right,
+                        R.anim.slide_out_left);
+                marketIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                marketIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(marketIntent);
+                break;
+
             case R.id.nav_so_cus:
                 Intent soIntent = new Intent(NewCustomerDrawer.this, SOTab.class);
                 overridePendingTransition(R.anim.slide_in_right,

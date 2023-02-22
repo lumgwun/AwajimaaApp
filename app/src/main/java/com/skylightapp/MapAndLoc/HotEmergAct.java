@@ -16,6 +16,7 @@ import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.widget.Switch;
 
@@ -34,8 +35,7 @@ import com.skylightapp.Database.DBHelper;
 import com.skylightapp.Database.EmergReportDAO;
 import com.skylightapp.MarketClasses.MarketBusiness;
 import com.skylightapp.R;
-import com.webgeoservices.woosmapgeofencing.Woosmap;
-import com.webgeoservices.woosmapgeofencing.WoosmapSettings;
+
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -71,6 +71,7 @@ public class HotEmergAct extends AppCompatActivity {
     private EmergencyReport emergencyReport;
     private EmergReportDAO emergReportDAO;
     private Intent intent;
+    private boolean isDoHot=false;
 
 
 
@@ -79,7 +80,8 @@ public class HotEmergAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_listing_filters);
-        WoosmapSettings.trackingEnable = !WoosmapSettings.trackingEnable;
+        OtherPref.trackingEnable = !OtherPref.trackingEnable;
+
         gson = new Gson();
         gson1 = new Gson();
         gson2 = new Gson();
@@ -132,7 +134,7 @@ public class HotEmergAct extends AppCompatActivity {
         editor.putBoolean(getString(R.string.setting_enabled),true);
         editor.apply();
         String msg = "";
-        if(WoosmapSettings.trackingEnable) {
+        if(OtherPref.trackingEnable) {
             msg = "Tracking Enable";
             editor.putBoolean( "trackingEnable",true);
             editor.apply();
@@ -142,10 +144,17 @@ public class HotEmergAct extends AppCompatActivity {
             editor.putBoolean( "trackingEnable",false);
             editor.apply();
         }
-        woosmap.enableTracking(WoosmapSettings.trackingEnable);
-        WoosmapSettings.searchAPIEnable = !WoosmapSettings.searchAPIEnable;
+        try {
+
+            woosmap.enableTracking(OtherPref.trackingEnable);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+
+        OtherPref.searchAPIEnable = !OtherPref.searchAPIEnable;
         String msg1 = "";
-        if(WoosmapSettings.searchAPIEnable) {
+        if(OtherPref.searchAPIEnable) {
 
             editor.putBoolean( "searchAPIEnable",true);
             editor.apply();
@@ -154,7 +163,7 @@ public class HotEmergAct extends AppCompatActivity {
             editor.putBoolean( "searchAPIEnable",false);
             editor.apply();
         }
-        if(WoosmapSettings.distanceAPIEnable) {
+        if(OtherPref.distanceAPIEnable) {
 
             editor.putBoolean( "distanceAPIEnable",true);
             editor.apply();
@@ -165,7 +174,7 @@ public class HotEmergAct extends AppCompatActivity {
             editor.apply();
 
         }
-        EmergReportDAO emergReportDAO= new EmergReportDAO(HotEmergAct.this);
+
 
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -209,7 +218,17 @@ public class HotEmergAct extends AppCompatActivity {
         }
         stringLatLng= String.valueOf(placeLatLng);
         emergencyReport = new EmergencyReport(reportID, profileID,bizID, dateOfToday, "Hot",stringLatLng,String.valueOf(name), "",String.valueOf(address),"");
-        reportIDF =emergReportDAO.insertHotEmergReport(reportID, profileID,bizID, dateOfToday, "Hot",stringLatLng,String.valueOf(name), "",String.valueOf(address),"");
+        try {
+            if(emergReportDAO !=null){
+                isDoHot=true;
+                reportIDF =emergReportDAO.insertHotEmergReport(reportID, profileID,bizID, dateOfToday, "Hot",stringLatLng,String.valueOf(name), "",String.valueOf(address),"");
+
+
+            }
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
     }
     @Override
     public void onDestroy() {

@@ -32,10 +32,10 @@
         app:itemShapeInsetStart="10dp"
         app:itemHorizontalPadding="40dp"
         app:itemIconTint="@color/red_brown"
-        app:itemTextColor="@color/colorPrimaryDark"
+        app:itemTextColor="@color/red_brown_dark"
         android:layout_marginBottom="10dp"
-        app:itemBackground="@drawable/shape_layer_3b"
-        app:itemTextAppearance="?android:attr/textAppearanceSmallInverse"
+        app:itemBackground="@drawable/rect6g_a"
+        app:itemTextAppearance="@style/ChangelogHeader"
         app:headerLayout="@layout/customer_header"
         app:menu="@menu/customer_main_menu" />
 </androidx.drawerlayout.widget.DrawerLayout>

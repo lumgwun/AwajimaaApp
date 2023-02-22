@@ -92,6 +92,34 @@
                     app:cardCornerRadius="2dp"
                     app:cardElevation="2dp"
                     android:layout_marginBottom="10dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:contentPadding="0dp">
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/address_market"
+                        android:layout_width="match_parent"
+                        android:textStyle="bold"
+                        android:focusable="true"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:drawableEnd="@drawable/ic_icon_foreground"
+                        android:background="@drawable/rect6h"
+                        android:textSize="15sp"
+                        android:textColorHint="@color/black"
+                        android:hint="Market Address"
+                        android:clickable="false"
+                        android:drawableStart="@drawable/ic_icon_foreground"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:layout_gravity="center_horizontal|center"
+                        android:gravity="center_horizontal|center" />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginLeft="1dp"
                     android:layout_marginRight="1dp"
                     app:cardPreventCornerOverlap="false"
@@ -115,66 +143,6 @@
 
                 </androidx.cardview.widget.CardView>
 
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    app:cardCornerRadius="2dp"
-                    app:cardElevation="2dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="1dp"
-                    app:cardPreventCornerOverlap="false"
-                    app:contentPadding="0dp">
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/province_lga"
-                        android:layout_width="match_parent"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent"
-                        android:focusable="true"
-                        android:inputType="textShortMessage"
-                        android:textSize="15sp"
-                        android:drawableEnd="@drawable/ic_icon_foreground"
-                        android:background="@drawable/rect6h"
-                        android:drawableStart="@drawable/ic_icon_foreground"
-                        android:hint="Market LGA /Province"
-                        android:textStyle="bold"
-                        android:textColorHint="@color/black"
-                        android:clickable="false"
-                        android:layout_gravity="center_horizontal|center"
-                        android:gravity="center_horizontal|center" />
-
-                </androidx.cardview.widget.CardView>
-
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    app:cardCornerRadius="2dp"
-                    app:cardElevation="2dp"
-                    android:layout_marginBottom="10dp"
-                    app:cardPreventCornerOverlap="false"
-                    app:contentPadding="0dp">
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/address_market"
-                        android:layout_width="match_parent"
-                        android:textStyle="bold"
-                        android:focusable="true"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:drawableEnd="@drawable/ic_icon_foreground"
-                        android:background="@drawable/rect6h"
-                        android:textSize="15sp"
-                        android:textColorHint="@color/black"
-                        android:hint="Market Address"
-                        android:clickable="false"
-                        android:drawableStart="@drawable/ic_icon_foreground"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:layout_gravity="center_horizontal|center"
-                        android:gravity="center_horizontal|center"
-                        />
-
-                </androidx.cardview.widget.CardView>
                 <androidx.fragment.app.FragmentContainerView
                     android:id="@+id/autoM_frag"
                     android:layout_width="match_parent"
@@ -278,6 +246,7 @@
                         app:cardCornerRadius="2dp"
                         android:id="@+id/cardSelectSOutside"
                         app:cardElevation="2dp"
+                        android:visibility="gone"
                         android:layout_marginBottom="10dp"
                         app:cardPreventCornerOverlap="false"
                         app:contentPadding="0dp">
@@ -300,6 +269,36 @@
                             android:gravity="center_horizontal|center" />
 
                     </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        app:cardCornerRadius="2dp"
+                        app:cardElevation="2dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginRight="1dp"
+                        app:cardPreventCornerOverlap="false"
+                        app:contentPadding="0dp">
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/province_lga"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:focusable="true"
+                            android:inputType="textShortMessage"
+                            android:textSize="15sp"
+                            android:drawableEnd="@drawable/ic_icon_foreground"
+                            android:background="@drawable/rect6h"
+                            android:drawableStart="@drawable/ic_icon_foreground"
+                            android:hint="Market LGA /Province"
+                            android:textStyle="bold"
+                            android:textColorHint="@color/black"
+                            android:clickable="false"
+                            android:layout_gravity="center_horizontal|center"
+                            android:gravity="center_horizontal|center" />
+
+                    </androidx.cardview.widget.CardView>
+
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -346,18 +345,19 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:text="Create Awajima Market"
                     android:textSize="20sp"
                     android:padding="20dp"
+                    android:layout_marginTop="20dp"
                     android:layout_weight="1"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
                     android:textStyle="bold"
                     android:onClick="registerANewMarket"
                     android:id="@+id/create_market_new"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/rect6g"
+                    android:textColor="@android:color/black"
+                    android:background="@drawable/rect6h"
                     android:gravity="center_horizontal"
                     android:layout_gravity="center_horizontal"
                     android:layout_height="wrap_content"/>

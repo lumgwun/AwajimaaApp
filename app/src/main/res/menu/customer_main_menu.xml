@@ -27,16 +27,21 @@
                 </group>
             </menu>
         </item>
-        <item android:title="New User">
+        <item android:title="New Sign Up">
             <menu>
                 <group android:checkableBehavior="single">
                     <item
                         android:id="@+id/nav_New_User"
                         android:icon="@drawable/fab_add"
                         android:title="New Sign Up" />
+                    <item
+                        android:id="@+id/market_N"
+                        android:icon="@drawable/fab_add"
+                        android:title="New Market" />
 
                 </group>
             </menu>
+
         </item>
         <item android:title="New Reports">
             <menu>

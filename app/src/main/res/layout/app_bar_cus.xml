@@ -15,7 +15,7 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:background="@drawable/rect_their44"
+            android:background="@drawable/shape_layer_3b"
             android:layout_height="wrap_content">
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
